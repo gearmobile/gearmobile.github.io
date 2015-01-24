@@ -1,1 +1,0 @@
-# gearmobile.github.io
