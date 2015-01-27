@@ -45,20 +45,20 @@ categories: git
 
 Выполняется это командой:
 
-{% highlight %}
+`
 git config --global core.excludesfile ~/.gitignore_global 
-{% endhighlight %}
+`
 
 Если теперь взглянуть на конфигурационный файл Git, то увидим следующее:
 
-{% highlight %}
+`
 $ cat ~/.gitconfig 
 [user]
 	name = g***e
 	email = g***e@gmail.com
 [core]
 	excludesfile = /Users/g***e/.gitignore_global
-{% endhighlight %}
+`
 
 ### Игнорирование отслеживаемого файла
 
@@ -74,9 +74,9 @@ $ cat ~/.gitconfig
 
 Для этого нужно “вынуть” данный файл из **буфера обмена**. Это выполняется командой:
 
-{% highlight %}
+`
 git rm --cached name_of_file
-{% endhighlight %}
+`
 
 Данная команда удалит указанный файл из **буфера обмена**, однако оставит в рабочей директории и в репозитории. Последующий коммит произведет удаление этого файла и из репозитория.
 
@@ -100,9 +100,9 @@ git rm --cached name_of_file
 
 Одна только *маленькая поправка* - в мире Unix такой файл-заглушку можно создать с помощью команды `touch` и выглядеть такой файл будет так (*общепринятое соглашение*):
 
-{% highlight %}
+`
 .gitkeep
-{% endhighlight %}
+`
 
 Что же - этот способ более аккуратный и грамотный! )
 
