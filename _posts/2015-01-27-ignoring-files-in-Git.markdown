@@ -16,13 +16,13 @@ categories: git
 
 По ссылке ниже представлен **набор общих правил и рекомендаций** при создании файла `.gitignore`. Помимо этого, в данном разделе показан шаблон для самого общего случая использования `.gitignore`:
 
-[https://help.github.com/articles/ignoring-files](Общий список правил “https://help.github.com/articles/ignoring-files”)
+[Общий список правил игнорирования файлов в Git][git_common_rules]
 
 #### Деталированный список правил
 
 По ссылке ниже представлен **более детальный и полезный список** правил, по которым создается файл `.gitignore`. В этом списке можно найти рекомендации для разных операционных систем (Linux, Mac OS X, Windows, Android), разных языков программирования (Java, Perl  и т. д.), различных CMS (к примеру - Joomla, Magento, Jekyll). Даже для README есть свой набор правил!
 
-[https://github.com/gitignore](Деталированный список правил “https://github.com/gitignore”)
+[Деталированный список правил игнорирования файлов в Git][git_detailed_rules]
 
 Помимо списка языков программирования, в котором для каждого пункта этого списка представлены рекомендованные правила для файла `.gitignore`, имеется еще дополнительная директория **Global**.
 
@@ -45,19 +45,20 @@ categories: git
 
 Выполняется это командой:
 
-```
+{% highlight cli %}
 git config --global core.excludesfile ~/.gitignore_global 
-```
+{% endhighlight %}
+
 Если теперь взглянуть на конфигурационный файл Git, то увидим следующее:
 
-```
+{% highlight cli %}
 $ cat ~/.gitconfig 
 [user]
 	name = g***e
 	email = g***e@gmail.com
 [core]
 	excludesfile = /Users/g***e/.gitignore_global
-```
+{% endhighlight %}
 
 ### Игнорирование отслеживаемого файла
 
@@ -73,9 +74,9 @@ $ cat ~/.gitconfig
 
 Для этого нужно “вынуть” данный файл из **буфера обмена**. Это выполняется командой:
 
-```
+{% highlight cli %}
 git rm —cached name_of_file
-```
+{% endhighlight %}
 
 Данная команда удалит указанный файл из **буфера обмена**, однако оставит в рабочей директории и в репозитории. Последующий коммит произведет удаление этого файла и из репозитория.
 
@@ -99,9 +100,12 @@ git rm —cached name_of_file
 
 Одна только *маленькая поправка* - в мире Unix такой файл-заглушку можно создать с помощью команды `touch` и выглядеть такой файл будет так (*общепринятое соглашение*):
 
-```
+{% highlight cli %}
 .gitkeep
-```
+{% endhighlight %}
 
 Что же - этот способ более аккуратный и грамотный! )
+
+[git_common_rules]:	https://help.github.com/articles/ignoring-files/
+[git_detailed_rules]: https://github.com/github/gitignore
 
