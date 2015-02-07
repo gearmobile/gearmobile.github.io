@@ -1,0 +1,311 @@
+---
+title: Подключение веб-шрифтов с помощью @font-face
+author: gearmobile
+layout: post
+permalink: /css-font-face/
+cleanretina_sidebarlayout:
+  - default
+ratings_users:
+  - 10
+ratings_score:
+  - 50
+ratings_average:
+  - 5
+categories:
+  - Статьи по CSS
+tags:
+  - @font-face
+---
+Выжимка из замечательной книги "Большая книга CSS3 3-е издание" Дэвида Макфарланда о веб-шрифтах и способе их подключения с помощью директивы @font-face. Узнал об этой теме массу нового для себя. В частности, два способа подключения шрифтов, особенность работы с сервисом Google Fonts и числовая шкала плотности шрифтов, ресурсы для поиска бесплатных шрифтов, тонкости работы с генератором FontSquirrel, ресурсы по шрифтовым иконкам. Для меня информация оказалась чрезвычайно полезной и интересной.
+
+Ниже привожу краткий конспект всех вопросов, показавшихся мне интересными и новыми в моей практике, пересказанный своими собственными словами. Надеюсь, данный материал окажется полезным не только для меня одного.
+
+## Подключение веб-шрифтов с помощью @font-face:
+
+  * подключение нестандартного шрифта с помощью директивы `@font-face`
+  * назначение подключенного шрифта с помощью свойства `font-family`
+
+Директива `@font-face` указывает (название говорит само за себя &#8211; директива!) браузеру сделать две вещи:
+
+  * создать указываемое имя шрифта
+  * загрузить глифы для шрифта из указанного ею места
+
+Свойство `font-family` указывает браузеру применить шрифт с указанным именем выбранным элементам страницы.
+
+Существует несколько форматов веб-шрифтов. Наиболее распространенные из них: EOT, WOFF, OTF или TTF, 
+
+**Формат EOT**, который понимают браузеры IE вплоть до версии 8. Собственно, этот формат шрифта создан и существует только ради этого браузера и таких его версий. Чтобы получить шрифт формата EOT, необходимо специальное программное обеспечение для преобразования формата TTF в OET. 
+
+**Формат WOFF** (Web Open Font Format) является наилучшим на сегодняшний день для использования в Веб: самый маленький и легкий, поддерживается всеми современными браузерами (в том числе IE9 и выше); этот формат был создан специально для Веб. Фактически &#8211; это облегченная версия формата TTF или OTF.
+
+**Форматы OTF** (Open Type Font) и TTF (True Type Font) &#8211; это самые обычные компьютерные шрифты, которые используются в большинстве операционных систем (Windows, Macintosh, Linux) и в приложениях под эти системы. Но, помимо этого, такие шрифты можно легко использовать и в Интернете.
+
+**Формат SVG** &#8211; это даже не формат шрифта, а формат графики, графического изображения. Особенностью этого формата является то, что графика в этом формате создается исключительно с помощью векторов, то есть &#8211; математических формул. Благодаря этому изображения в таком формате масштабируются без потери качества &#8211; при увеличении размера картинки компьютеру достаточно пересчитать векторные точки. Особенность этого формата графики позволила применить его для создания "шрифтов". То есть, обычный шрифт преобразуется в формат SVG, где каждый шрифт &#8211; это фактически картинка в масштабируемом формате SVG.  
+Зачем потребовались такие трудности? Все дело в том, что браузеры под ОС Android (очень распространенная ОС под мобильные устройства) могут отображать веб-шрифты только в этом формате. Браузеры под iPhone (Safari 4.1 и ниже) также не умеют распознавать веб-шрифт. Вот этим "неумехам" и подсовывают картинки в виде шрифтов &#8211; "не умеешь кушать обычную пищу, так кушай хотя бы это!" ))
+
+### Правовой вопрос использования шрифтов
+
+Вопрос можно кратко cформулировать в следующих двух предложениях. Все шрифты делятся на **платные** или **бесплатные**.
+
+**Платные** шрифты делятся на те, которые:
+
+  * **можно** использовать в Веб
+  * **нельзя** использовать в Веб
+
+Чтобы не заморачиваться решением запутанного вопроса лицензии на шрифты, можно воспользоваться веб-службами [Google Fonts][1] или [TypeKit][2], на которых собраны все шрифты, **которые можно использовать в Веб**. Шрифты на этих серверах либо **бесплатные** ([Google Fonts][1]), либо **платные** ([TypeKit][2]).
+
+Краткий список **источников бесплатных шрифтов**, которые можно использовать в Веб:
+
+  * The League of Movable Type ([https://www.theleagueofmoveabletype.com/][3])
+  * FontSquirrel ([http://www.fontsquirrel.com/][4])
+  * Google Fonts ([https://www.google.com/fonts][1])
+  * The Open Font Library ([http://openfontlibrary.org/ru][5])
+  * Fontex.org ([http://fontex.org/][6])
+  * Exljbris Font Foundry ([http://www.exljbris.com/][7])<figure id="attachment_907" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/theleagueofmovabletype-600x459.png" alt="The League of Movable Type" width="600" height="459" class="size-medium wp-image-907" />][8]<figcaption class="wp-caption-text">The League of Movable Type</figcaption></figure> 
+
+Большинство веб-сервисов, которое предоставляет шрифты для Веб, "отдают" их в формате OTF или TTF. Поэтому нужно конвертировать этот шрифт в четыре формата, описанных выше, для того, чтобы максимальное число посетителей сайта смогло увидеть на своих устройствах содержимое данного сайта. Для конвертирования не нужно искать специальное программное обеспечение. Можно воспользоваться бесплатным генератором [@font-face Generator][9], находящемся на сервере FontSquirrel ([http://www.fontsquirrel.com/][4]). Единственное ограничение этого сервиса &#8211; он имеет свой собственный blacklist, в который помещены шрифты, запрещенные по лицензии для использования в Веб. Другими словам, если "подсунуть" этому генератору лицензионный шрифт, приобретенный пиратским способом, то он откажется от генерации последнего.
+
+Генератор @font-face Generator &#8211; не единственный в Веб сервис подобного рода. Существуют подобные ему генераторы, которые, в тому же, обладают "неразборчивостью" по отношению к лицензии конвертируемого шрифта.
+
+Порядок указания форматов шрифтов в директиве `@font-face` важен и должен быть следующим:
+
+<pre>@font-face{
+  font-family: 'PTSans';
+  src:  url('PTSansRegular.eot');
+  src:  url('PTSansRegular.eot#iefix') format('embedded-opentype'),
+    url('PTSansRegular.woff') format('woff'),
+    url('PTSansRegular.ttf') format('truetype'),
+    url('PTSansRegular.svg') format('svg');
+}
+</pre>
+
+  * **EOT** &#8211; формат только для Internet Explorer 8 и ниже
+  * **WOFF** &#8211; самый современный и маленький по размеру шрифт, который понимают большинство современных браузеров
+  * **TTF** &#8211; сравнительно большой по размеру шрифт и достаточно устаревший
+  * **SVG** &#8211; самый большой по размеру и объему шрифт, поэтому его необходимо размещать в самой последней строке. К тому же, этот формат шрифта используется только в браузерах ОС Android или в браузере Safari 4 (*то есть, iPhone*)
+
+Браузер читает тело директивы `@font-face` &#8211; каждую строку последовательно. Как только он обнаруживает понятный для него формат шрифта, то загружает его. Поэтому последовательность объявления форматов шрифтов в директиве `@font-face` является неслучайной и эмпирически выверенной на основе опыта предыдущих веб-разработчиков.
+
+<pre>h1{
+  font-family: 'League Gothic', Arial, sans-serif;
+  font-weight: normal;
+}
+</pre>
+
+Правильное применение подключенного web-шрифта League Gothic. Здесь указывается на первом месте имя подключенного шрифта, а затем &#8211; *резервные шрифты, которые заведомо установлены в системе пользователя* (имя шрифта, гарантировано имеющегося в системе и семейство шрифтов). Внимательный читатель обратит внимание на вторую строку и скажет: это здесь лишнее, бред какой-то. На самом деле не совсем так. Браузеры всегда пытаются отрисовать заголовки полужирным начертанием, по умолчанию. Поэтому, здесь мы говорим, чтобы браузер просто этого не делал, и все.
+
+Помимо букв, шрифты могут состоять из иконок или изображений. Ресурсы, посвященные теме шрифтовых иконок и значков:
+
+  * [The Big List of Flat Icons & Icon Fonts][10]
+  * [HTML for Icon Font Usage][11]
+  * [Icon Fonts are Awesome][12]
+  * [Шрифтовые иконки и сервис IcoMoon][13]
+
+### Виды шрифтов
+
+При подключении шрифтов, установленных на компьютере, обычно не возникает вопросов и мы не задумываемся о том, как так получается, что при указании браузеру отрисовать текст полужирным с помощью тега `strong` у нас действительно получается полужирный шрифт; при указании сделать текст курсивным через тег `em` текст действительно делается курсивным; а при полужирном курсиве через теги `strong em` он делается полужирным курсивом. Нам кажется, что браузер делает текст таким, каким мы указываем ему.
+
+На самом деле это не так. Или не совсем так. Браузер действительно отрисовывает шрифт указанным ему способом, но вот с самим шрифтом он ничего сделать не может. Он просто берет указанное тегом начертание шрифта и выводит его на экран. Дело в том, что дизайнеры или компании, занимающиеся разработкой шрифтов, создают шрифты таким образом: художник рисует четыре набора одного и того же шрифта. То есть, рисуется набор символов в обычном начертании (regular), затем рисуется набор символов в курсивном начертании (italic), потом набор символов в полужирном начертании (bold), и наконец набор символов в полужирном курсивном начертании (bold italic). Все эти четыре набора символов фактически являются отдельными шрифтами, хотя и носят одно общее название (Georgia, Tahoma, Helvetica и так далее).
+
+Когда браузеру указывается, какое начертание применить, он просто берет шрифт с указанным начертанием и отображает его. К примеру, шрифт Arial имеет четыре вида начертания. Если указывается, что нужно полужирное начертание, то браузер берет полужирное начертание Arial. Сам браузер преобразовать одно начертание в другое не может ни в коей мере. Он может выполнить только одну вещь &#8211; попытаться сделать и обычного начертания "курсивное". Команда, говорящая браузеру выполнить такую задачу, имеет название `oblique`. В этом случае браузер просто тупо выполняет наклон всех букв шрифта на 45 градусов, и все. Получившийся результат может быть просто ужасным, поэтому такая команда используется очень редко.
+
+В случае с веб-шрифтами веб-дизайнеру **нужно самому побеспокоиться от том, чтобы подключить все четыре вида начертания выбранного шрифта по отдельности**. Из-за браузера IE8 подключение веб-шрифтов с помощью директивы `@font-face` значительно осложняется и может быть выполнено двумя способами: **простым**, который IE8 не понимает (но понимают все остальные браузеры) и **сложным**, который будет доступен и IE8 также.
+
+### Простой способ подключения веб-шрифта
+
+Простой способ заключает в добавлении к директиве `@font-face` двух CSS-правил: `font-weight` и `font-style`. Обычно эти два правила задают браузеру команды отображать текст полужирным и курсивным начертанием. Но внутри директивы `@font-face` эти правила выполняют другую роль, они заставляют браузер загрузить веб-шрифт с указанным стилем и жирностью. Чтобы быть более понятным, приведем сразу пример подключения веб-шрифта PTSans с четырьмя вариантами его отображения: 
+
+<pre>@font-face{
+  font-family: 'PTSans';
+  src:  url('PTSansRegular.eot');
+  src:  url('PTSansRegular.eot#iefix') format('embedded-opentype'),
+  url('PTSansRegular.woff') format('woff'),
+  url('PTSansRegular.ttf') format('truetype'),
+  url('PTSansRegular.svg') format('svg');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: 'PTSans';
+  src:  url('PTSansItalic.eot');
+  src:  url('PTSansItalic.eot#iefix') format('embedded-opentype'),
+  url('PTSansItalic.woff') format('woff'),
+  url('PTSansItalic.ttf') format('truetype'),
+  url('PTSansItalic.svg') format('svg');
+  font-weight: normal;
+  font-style: italic;
+}
+
+@font-face{
+  font-family: 'PTSans';
+  src:  url('PTSansBold.eot');
+  src:  url('PTSansBold.eot#iefix') format('embedded-opentype'),
+  url('PTSansBold.woff') format('woff'),
+  url('PTSansBold.ttf') format('truetype'),
+  url('PTSansBold.svg') format('svg');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face{
+  font-family: 'PTSans';
+  src:  url('PTSansBoldItalic.eot');
+  src:  url('PTSansBoldItalic.eot#iefix') format('embedded-opentype'),
+  url('PTSansBoldItalic.woof') format('woff'),
+  url('PTSansBoldItalic.ttf') format('truetype'),
+  url('PTSansBoldItalic.svg') format('svg');
+  font-weight: bold;
+  font-style: italic;
+}
+</pre>
+
+Расскажу, как я понимаю данные CSS-правила. Директива `@font-face` является своего рода функцией наподобие функции в JavaScript (*а может это и есть функция на самом деле, уж больно похожа по своему функционалу?*). Эта функция (*я буду называть так здесь эту директиву*) объявляет имя переменной правилом `font-family: 'PTSans'`. Эта переменная является массивом, который заполняется значениями с помощью последующих правил:
+
+  * `src: url('PTSansBoldItalic.eot')` &#8211; местоположение шрифта;
+  * `font-weight: normal` &#8211; загрузить шрифт указанной жирности;
+  * `font-style: normal` &#8211; загрузить шрифт указанного стиля.
+
+CSS-правила требуют, чтобы при четырех вариантах отображения шрифта заполнение массива `PTSans` производилось каждый раз отдельным вызовом функции `@font-face`. После этого достаточно подключить переменную `PTSans` к выбранным элементам страницы:
+
+<pre>p{
+ font-family: PTSans;
+}
+</pre>
+
+И затем HTML-тегами `strong` или `em` указать, какое начертание шрифта применить к указанным элементам:
+
+<pre><p>
+  dolor ets <strong>lorem ipsum dolor ets</strong> lorem ipsum ipsum dolor ets lorem ipsum <em>dolor ets lorem ipsum dolor</em> ets lorem ipsum dolor ets
+</p>
+</pre>
+
+Браузер "вытащит" из массива PTSans шрифт нужного начертания (bold или italic или bold italic) и применит его к указанным элементам страницы.
+
+Преимуществом данного способа подключения веб-шрифта является его **универсальность**. Достаточно один раз объявить шрифт с помощью директивы `@font-face` и правила:
+
+<pre>какой-то элемент {
+ font-family: PTSans;
+}
+</pre>
+
+&#8230; чтобы потом управлять отображением этого шрифта посредством семантически верных тегов `strong` и `em`.
+
+### Сложный способ подключения веб-шрифта
+
+К сожалению, IE8 не понимает способа подключения веб-шрифта, описанного выше. Точнее, этот браузер не понимает способа подключения различных начертаний шрифта **к одному и тому же имени этого шрифта**. Если создать правила, описанные выше и попробовать загрузить полученную HTML-страницу в IE8, то весь текст будет отображен как: `font-family: PTSans; font-weight: normal; font-style: normal`. В тех местах, где применены теги `strong` или `em`, браузер IE8 будет сам делать из шрифта PTSans начертания `bold` и `italic`, а не подключать уже готовые шрифты в этих начертаниях. Результат такой "самодеятельности" будет плачевным.
+
+Выходом из положения будет применение различных имен шрифта в директиве `@font-face`. Пример варианта подключения веб-шрифта, понятного для IE8, показан ниже:
+
+<pre>@font-face{
+  font-family: 'PTSansRegular';
+  src:  url('PTSansRegular.eot');
+  src:  url('PTSansRegular.eot#iefix') format('embedded-opentype'),
+  url('PTSansRegular.woff') format('woff'),
+  url('PTSansRegular.ttf') format('truetype'),
+  url('PTSansRegular.svg') format('svg');
+}
+
+@font-face{
+  font-family: 'PTSansItalic';
+  src:  url('PTSansItalic.eot');
+  src:  url('PTSansItalic.eot#iefix') format('embedded-opentype'),
+  url('PTSansItalic.woff') format('woff'),
+  url('PTSansItalic.ttf') format('truetype'),
+  url('PTSansItalic.svg') format('svg');
+}
+
+@font-face{
+  font-family: 'PTSansBold';
+  src:  url('PTSansBold.eot');
+  src:  url('PTSansBold.eot#iefix') format('embedded-opentype'),
+  url('PTSansBold.woff') format('woff'),
+  url('PTSansBold.ttf') format('truetype'),
+  url('PTSansBold.svg') format('svg');
+}
+
+@font-face{
+  font-family: 'PTSansBoldItalic';
+  src:  url('PTSansBoldItalic.eot');
+  src:  url('PTSansBoldItalic.eot#iefix') format('embedded-opentype'),
+  url('PTSansBoldItalic.woof') format('woff'),
+  url('PTSansBoldItalic.ttf') format('truetype'),
+  url('PTSansBoldItalic.svg') format('svg');
+}
+</pre>
+
+Обратите внимание на отсутствие правил `font-weight` и `font-style` во всех четырех директивах `@font-face`. Такой код выглядит даже более понятным и логичным, нежели первый вариант. И вроде бы все хорошо, но задавайте теперь рассмотрим простой пример параграфа с тегами `strong` и `em`, к которому следует применить шрифт PTSans.
+
+Оцените этого CSS -"крокодила" ниже. Какой он громоздкий и неуклюжий! А если учесть, что на HTML-странице нужно будет применить шрифт PTSans не только к элементу p, а еще к заголовкам `h1`, `h2`, ссылке `a`? Насколько же "раздуются" таблицы стилей в этом случае! А если вдруг (не дай Бог!) придется вносить изменения в такой код?
+
+<pre>p{
+ font-family: PTSansRegular;
+ font-weight: normal;
+ font-italic: normal;
+ font-size: 36px;
+}
+
+p strong{
+ font-family: PTSansBold;
+ font-weight: bold;
+ font-italic: normal;
+}
+
+p em{
+ font-family: PTSansItalic;
+ font-weight: normal;
+ font-italic: italic;
+}
+
+p strong em{
+ font-family: PTSansBoldItalic;
+ font-weight: bold;
+ font-italic: italic;
+}
+</pre>
+
+Применять или не применять второй способ подключения веб-шрифтов &#8211; это вопрос того, насколько необходима поддержка IE8 для конкретного сайта. Следует учесть, что доля IE8 падает и будет продолжать падать.
+
+### Шрифты Google Fonts
+
+Чтобы не заморачиваться с поиском шрифта, скачиванием его в формате TTF или OTF, конвертации на генераторе типа FontSquirrel Generator, подключения полученных CSS-стилей в проект с помощью многочисленных директив `font-face`, можно воспользоваться сервисом Google Fonts. Преимущество этого способа заключается в простоте способа и его надежности &#8211; достаточно получить на сервере Google одну строку ссылки и поместить ее в свой проект.
+
+Примечательный момент использования шрифтов Google &#8211; **это способ подключения полученных шрифтов**. Первый способ &#8211; с помощью тега `link`, второй в помощью директивы `@import`, третий с помощью скрипта JavaScript.
+
+**Первый способ** прост, но имеет *один недостаток* &#8211; тег `link` нужно будет подключать к каждой из разрабатываемых HTML-страниц проекта.
+
+В тоже время, **второй способ** с помощью директивы `@import` более лаконичный &#8211; достаточно подключить ее в начало таблиц стилей, чтобы выбранные шрифты применялись ко всем HTML-страницам.
+
+**Третий способ** с помощью JavaScript кроме сложности, никаких других преимуществ перед двумя другими не имеет.
+
+В Google плотность шрифта обозначается не с помощью ключевых слов `normal`, `bold` или `bolder`, а в числовой шкале &#8211; 100 до 900. Значение 400 соответствует `normal`, 700 &#8211; `bold`.
+
+К примеру, код может выглядеть следующим образом. Зададим для элемента `em` шрифт Gentium Book Basic нормальной плотности курсивного начертания:
+
+<pre>em{
+ font-family: 'Gentium Book Basic', serif;
+ font-weight: 400;
+ font-style: italic;
+}
+</pre>
+
+На этом выжимка по веб-шрифтам заканчивается.
+
+Оцените статью:  
+<span id="post-ratings-905" class="post-ratings" data-nonce="151d5dae9d"><img id="rating_905_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(905, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_905_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(905, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_905_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(905, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_905_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(905, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_905_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(905, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>10</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_905_text"></span></span><span id="post-ratings-905-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
+
+ [1]: https://www.google.com/fonts "Google Fonts"
+ [2]: https://typekit.com/ "TypeKit"
+ [3]: https://www.theleagueofmoveabletype.com/ "The League of Movable Type"
+ [4]: http://www.fontsquirrel.com/ "FontSquirrel"
+ [5]: http://openfontlibrary.org/ru "The Open Font Library"
+ [6]: http://fontex.org/ "Fontex.org"
+ [7]: http://www.exljbris.com/ "Exljbris Font Foundry"
+ [8]: http://localhost:7788/third/wp-content/uploads/2014/02/theleagueofmovabletype.png
+ [9]: http://www.fontsquirrel.com/tools/webfont-generator "@font-face Generator"
+ [10]: http://css-tricks.com/flat-icons-icon-fonts/ "The Big List of Flat Icons & Icon Fonts"
+ [11]: http://css-tricks.com/html-for-icon-font-usage/ "HTML for Icon Font Usage"
+ [12]: http://css-tricks.com/examples/IconFont/ "Icon Fonts are Awesome"
+ [13]: http://goo.gl/Rhwrf6 "Шрифтовые иконки и сервис IcoMoon"
