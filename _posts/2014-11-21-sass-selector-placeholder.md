@@ -34,7 +34,7 @@ tags:
 
 Директива `@extend` в препроцессоре Sass позволяет CSS-селекторам с легкостью **обмениваться** между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   .icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -53,7 +53,7 @@ tags:
 
 Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   .icon, .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -86,7 +86,7 @@ tags:
 
 Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса `.icon` на имя &#8220;тихого&#8221; placeholder&#8217;а &#8211; `%icon`:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   %icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -105,7 +105,7 @@ tags:
 
 В результате скомпилированный CSS-код будет выглядеть таким образом:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -128,7 +128,7 @@ tags:
 
 Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином `@mixin icon`:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   @mixin icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -147,7 +147,7 @@ tags:
 
 Посмотрим на сгенерированный CSS-код:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   .error-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -171,7 +171,7 @@ tags:
 
 Рассмотрим такой пример:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   %icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -202,7 +202,7 @@ tags:
 
 Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для &#8220;тихого&#8221; placeholder, распространяют свои свойства на селекторы, не размещенные внутри этого запроса. Выражение достаточно запутанное, поэтому лучше приведу пример:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   @media screen {
     %icon {
       transition: background-color ease .2s;
@@ -221,7 +221,7 @@ tags:
 
 Компиляция пройдет без ошибок и ее результатом будет CSS-код:
 
-{% highlight scss %}
+{% highlight scss lineos %}
   @media screen {
     .error-icon, .info-icon {
       transition: background-color ease .2s;
