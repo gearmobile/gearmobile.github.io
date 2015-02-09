@@ -76,9 +76,9 @@ tags:
 
 Получается, что результирующий CSS-код будет **неоправданно раздут** из-за того, что в нем присутствует &#8220;лишний&#8221; элемент, который напрямую никогда не будет использован.
 
-И тут наступает момент для выхода на сцену героя этой статьи &#8211; **селектора placeholder** (его еще называют &#8220;тихим&#8221; placeholder&#8217;ом):<figure id="attachment_2045" style="width: 400px;" class="wp-caption aligncenter">
+И тут наступает момент для выхода на сцену героя этой статьи &#8211; **селектора placeholder** (его еще называют &#8220;тихим&#8221; placeholder&#8217;ом):
 
-[<img class="wp-image-2045 size-full" src="http://localhost:7788/third/wp-content/uploads/2014/11/placeholder.jpg" alt="placeholder" width="400" height="300" />][2]<figcaption class="wp-caption-text">&#8220;Тихий&#8221; placeholder</figcaption></figure> 
+[&#8220;Тихий&#8221; placeholder](wp-content/uploads/2014/11/placeholder.jpg)
 
 ### Знакомимся с селектором placeholder
 
