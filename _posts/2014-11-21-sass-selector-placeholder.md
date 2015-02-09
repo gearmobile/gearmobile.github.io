@@ -18,7 +18,7 @@ tags:
   - placeholder
   - sass
 ---
-> Статья посвящена вопросу &#8220;тихих&#8221; placeholder&#8217;ов в препроцессоре Sass. Что это такое и в чем преимущество их использования. Оригинал статьи размещен здесь &#8211; [Understanding placeholder selectors][1].
+> Статья посвящена вопросу &#8220;тихих&#8221; placeholder&#8217;ов в препроцессоре Sass. Что это такое и в чем преимущество их использования.
 
 Препроцессор Sass предоставляет несколько способов создания одного фрагмента кода, который будет многократно использоваться внутри CSS-кода.
 
@@ -34,8 +34,7 @@ tags:
 
 Директива `@extend` в препроцессоре Sass позволяет CSS-селекторам с легкостью **обмениваться** между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:
 
-<pre>// SCSS
-
+{% highlight scss %}
   .icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -50,12 +49,11 @@ tags:
     @extend .icon;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% highlight %}
 
 Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:
 
-<pre>// CSS
-
+{% highlight scss %}
   .icon, .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -68,7 +66,7 @@ tags:
   .info-icon {
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% highlight %}
 
 Рассмотрим &#8220;механизм&#8221; показанного выше примера более детально. В нем директива `@extend` играет ключевую роль. С помощью нее селекторы `.error-icon` и `.info-icon` **наследуют** свойства селектора `.icon`. При изменении CSS-свойств селектора `.icon` автоматически будут меняться свойства селекторов `.error-icon` и `.info-icon`, так как они наследуют определенный набор CSS-свойств у селектора `.icon`. Довольно изящный подход, не правда ли?
 
@@ -88,8 +86,7 @@ tags:
 
 Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса `.icon` на имя &#8220;тихого&#8221; placeholder&#8217;а &#8211; `%icon`:
 
-<pre>// SCSS
-
+{% highlight scss %}
   %icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -104,12 +101,11 @@ tags:
     @extend %icon;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% highlight %}
 
 В результате скомпилированный CSS-код будет выглядеть таким образом:
 
-<pre>// CSS
-
+{% highlight scss %}
   .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -122,7 +118,7 @@ tags:
   .info-icon {
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% highlight %}
 
 Обратите внимание на важный момент &#8211; класс `.icon` теперь **не присутствует** в результирующем CSS-коде! Его там нет!
 
@@ -132,8 +128,7 @@ tags:
 
 Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином `@mixin icon`:
 
-<pre>// SCSS
-
+{% highlight scss %}
   @mixin icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -148,12 +143,11 @@ tags:
     @include icon;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% highlight %}
 
 Посмотрим на сгенерированный CSS-код:
 
-<pre>// CSS
-
+{% highlight scss %}
   .error-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -165,7 +159,7 @@ tags:
     margin: 0 .5em;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% highlight %}
 
 С точки зрения разработки данный пример ничем не хуже примера с использованием &#8220;тихого&#8221; placeholder&#8217;а.
 
@@ -177,8 +171,7 @@ tags:
 
 Рассмотрим такой пример:
 
-<pre>// SCSS
-
+{% highlight scss %}
   %icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -195,7 +188,7 @@ tags:
     }
 
   }
-</pre>
+{% highlight %}
 
 Видим, что в данном случае &#8220;тихий&#8221; placeholder добавлен для селекторов, находящихся внутри медиа-запроса `@media`.
 
@@ -209,8 +202,7 @@ tags:
 
 Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для &#8220;тихого&#8221; placeholder, распространяют свои свойства на селекторы, не размещенные внутри этого запроса. Выражение достаточно запутанное, поэтому лучше приведу пример:
 
-<pre>// SCSS
-
+{% highlight scss %}
   @media screen {
     %icon {
       transition: background-color ease .2s;
@@ -225,19 +217,18 @@ tags:
   .info-icon {
     @extend %icon;
   }
-</pre>
+{% highlight %}
 
 Компиляция пройдет без ошибок и ее результатом будет CSS-код:
 
-<pre>// CSS
-
+{% highlight scss %}
   @media screen {
     .error-icon, .info-icon {
       transition: background-color ease .2s;
       margin: 0 .5em;
     }
   }
-</pre>
+{% highlight %}
 
 ### Заключение
 
@@ -245,8 +236,7 @@ tags:
 
 Конечно же, ничто не мешает вам смешивать между собой директиву `@extend` и миксин `mixin` (*если этого требуют обстоятельства*):
 
-<pre>// SCSS
-
+{% highlight scss linenos %}
   @media screen {
     %icon {
       transition: background-color ease .2s;
@@ -267,6 +257,6 @@ tags:
   .info-icon {
     @include icon(blue, '/images/info.png');
   }
-</pre>
+{% highlight %}
 
 Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.
