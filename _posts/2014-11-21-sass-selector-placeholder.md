@@ -78,7 +78,7 @@ tags:
 
 И тут наступает момент для выхода на сцену героя этой статьи &#8211; **селектора placeholder** (его еще называют &#8220;тихим&#8221; placeholder&#8217;ом):
 
-[&#8220;Тихий&#8221; placeholder](wp-content/uploads/2014/11/placeholder.jpg)
+["Тихий" placeholder]("Тихий" placeholder "../wp-content/uploads/2014/11/placeholder.jpg")
 
 ### Знакомимся с селектором placeholder
 
@@ -270,9 +270,3 @@ tags:
 </pre>
 
 Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.
-
-Оцените статью:  
-<span id="post-ratings-2044" class="post-ratings" data-nonce="8e6bdfcbef"><img id="rating_2044_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(2044, 1, '1 Star');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(2044, 2, '2 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(2044, 3, '3 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(2044, 4, '4 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(2044, 5, '5 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>4,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_2044_text"></span></span><span id="post-ratings-2044-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
-
- [1]: http://thesassway.com/intermediate/understanding-placeholder-selectors "Understanding placeholder selectors"
- [2]: http://localhost:7788/third/wp-content/uploads/2014/11/placeholder.jpg
