@@ -78,7 +78,7 @@ tags:
 
 И тут наступает момент для выхода на сцену героя этой статьи &#8211; **селектора placeholder** (его еще называют &#8220;тихим&#8221; placeholder&#8217;ом):
 
-[Тихий placeholder](Тихий placeholder "../wp-content/uploads/2014/11/placeholder.jpg")
+[Тихий placeholder]("../wp-content/uploads/2014/11/placeholder.jpg")
 
 ### Знакомимся с селектором placeholder
 
