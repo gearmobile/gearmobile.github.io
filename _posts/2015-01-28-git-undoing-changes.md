@@ -22,8 +22,9 @@ tags:
 
 Для отмены изменений в рабочей директории необходимо выполнить одну команду:
 
-<pre>git checkout -- name_of_file
-</pre>
+{% highlight lineos %}
+	git checkout -- name_of_file
+{% endhighlight %}
 
 Данная команда говорит Git вернуть состояние файла `name_of_file` до того, каким оно было зафиксировано в репозитории. Другими словами, произойдет сброс изменений файла в рабочей директории проекта.
 
@@ -33,8 +34,9 @@ tags:
 
 Для отмены изменений в буфере нужно использовать команду:
 
-<pre>git reset HEAD name_of_file
-</pre>
+{% highlight lineos %}
+	git reset HEAD name_of_file
+{% endhighlight %}
 
 Эта команда &#8220;вернет&#8221; файл `name_of_file` из буфера в рабочую директорию.
 
@@ -58,10 +60,11 @@ tags:
 
 Изменить крайний коммит можно просто **перезаписав** его. Для этой цели служит ключ `--amend`. Команда в целом представляет из себя следующее:
 
-<pre>git commit --amend -m "Add some commit"
-</pre>
+{% highlight lineos %}
+	git commit --amend -m "Add some commit"
+{% endhighlight %}
 
-Как только будет выполнена подобная команда, крайний коммит (тот, на котором находится указатель HEAD) будет **перезаписан** и это очень легко проследить &#8211; достаточно сравнить контрольную сумму SHA этого коммита до и после изменений.
+Как только будет выполнена подобная команда, крайний коммит (*тот, на котором находится указатель HEAD*) будет **перезаписан** и это очень легко проследить &#8211; достаточно сравнить контрольную сумму SHA этого коммита до и после изменений.
 
 #### Команда checkout
 
@@ -75,8 +78,9 @@ tags:
 
 Команда возврата к нужному коммиту выглядит таким образом:
 
-<pre>git checkout -- 4a2f59a32bd1074c42 name_of_file
-</pre>
+{% highlight lineos %}
+	git checkout -- 4a2f59a32bd1074c42 name_of_file
+{% endhighlight %}
 
 Можно указать только часть SHA-суммы, так как это показано выше.
 
@@ -84,8 +88,9 @@ tags:
 
 Дальше выполняем &#8220;выброс&#8221; изменений файла `name_of_file` из буфера в рабочую директорию, чтобы мы смогли внести правки в этот файл:
 
-<pre>git reset HEAD name_of_file
-</pre>
+{% highlight lineos %}
+	git reset HEAD name_of_file
+{% endhighlight %}
 
 Все, что будет внесено в этот файл, а затем закоммичено &#8211; будет иметь уже другую контрольную сумму. А следовательно &#8211; это уже будет совсем другой коммит.
 
@@ -97,8 +102,9 @@ tags:
 
 Синтаксис команды revert также прост:
 
-<pre>git revert 4a2f59a32bd1074c42
-</pre>
+{% highlight lineos %}
+	git revert 4a2f59a32bd1074c42
+{% endhighlight %}
 
 где `4a2f59a32bd1074c42` &#8211; это часть SHA-суммы крайнего коммита.
 
@@ -112,15 +118,15 @@ tags:
 
 У команды `reset` есть три ключа, которые незначительно видоизменяют ее работу:
 
-  * &#8211;soft
-  * &#8211;mixed
-  * &#8211;hard
+  * --soft
+  * --mixed
+  * --hard
 
-Команда `git reset --soft 4a2f59a32bd1074c42` произведет смещение указателя HEAD на указанный коммит 4a2f59a32bd1074c42. При этом Git произведет сброс изменений в буфер. В результате буфер и рабочая директория будут идентичными между собой; а репозиторий будет переведен в более ранее состояние.
+Команда `git reset --soft 4a2f59a32bd1074c42` произведет смещение указателя HEAD на указанный коммит `4a2f59a32bd1074c42`. При этом Git произведет сброс изменений в буфер. В результате буфер и рабочая директория будут идентичными между собой; а репозиторий будет переведен в более ранее состояние.
 
 Команда `git reset --mixd 4a2f59a32bd1074c42` аналогична предыдущей. Также будет произведено смещение указателя HEAD. Но теперь Git сбросит изменения в рабочую директорию. Репозиторий и буфер будут идентичными друг другу и находиться в более раннем состоянии.
 
-Команда `git reset --hard 4a2f59a32bd1074c42` самая “жесткая”. Также будет произведено смещение указателя HEAD на указанный коммит, но при этом будет произведен сброс всех трех деревьев Git &#8211; репозитория, буфера и рабочей директории. Все три будут идентичными друг другу.
+Команда `git reset --hard 4a2f59a32bd1074c42` самая "жесткая". Также будет произведено смещение указателя HEAD на указанный коммит, но при этом будет произведен сброс всех трех деревьев Git &#8211; репозитория, буфера и рабочей директории. Все три будут идентичными друг другу.
 
 ### Команда clean
 
@@ -135,6 +141,3 @@ tags:
 Запуск `git clean -n` &#8211; это тестовый запуск команды удаления. Ничего удалено не будет &#8211; система лишь покажет, что она собирается удалить, какие файлы.
 
 А вот запуск `git clean -f` произведен реальное удаление всех файлов, которые Git считает мусором. И в этом случае эти файлы будут потеряны навсегда.
-
-Оцените статью:  
-<span id="post-ratings-2228" class="post-ratings" data-nonce="3bc349cbd0"><img id="rating_2228_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(2228, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2228_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(2228, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2228_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(2228, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2228_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(2228, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2228_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(2228, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>1</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_2228_text"></span></span><span id="post-ratings-2228-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
