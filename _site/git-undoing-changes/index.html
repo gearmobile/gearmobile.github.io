@@ -1,0 +1,340 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
+<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
+<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
+<head>
+<meta charset="utf-8">
+<title>Отмена изменений в Git &#8211; Zencoder</title>
+<meta name="description" content="Заметки верстальщика">
+<meta name="keywords" content="git">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="/images/">
+<meta name="twitter:title" content="Отмена изменений в Git">
+<meta name="twitter:description" content="Заметки верстальщика">
+<meta name="twitter:creator" content="@gearmobile">
+
+<!-- Open Graph -->
+<meta property="og:locale" content="en_US">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Отмена изменений в Git">
+<meta property="og:description" content="Заметки верстальщика">
+<meta property="og:url" content="/git-undoing-changes/">
+<meta property="og:site_name" content="Zencoder">
+
+
+
+
+
+<link rel="canonical" href="/git-undoing-changes/">
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Zencoder Feed">
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+<!-- Webfonts -->
+<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
+
+<meta http-equiv="cleartype" content="on">
+
+<!-- Load Modernizr -->
+<script src="/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
+
+<!-- Icons -->
+<!-- 16x16 -->
+<link rel="shortcut icon" href="/favicon.ico">
+<!-- 32x32 -->
+<link rel="shortcut icon" href="/favicon.png">
+<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
+<link rel="apple-touch-icon-precomposed" href="/images/apple-touch-icon-precomposed.png">
+<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="/images/apple-touch-icon-72x72-precomposed.png">
+<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
+<link rel="apple-touch-icon-precomposed" sizes="114x114" href="/images/apple-touch-icon-114x114-precomposed.png">
+<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
+<link rel="apple-touch-icon-precomposed" sizes="144x144" href="/images/apple-touch-icon-144x144-precomposed.png">
+
+
+
+</head>
+
+<body id="post" >
+
+<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
+<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
+	<button class="dl-trigger">Open Menu</button>
+	<ul class="dl-menu">
+		<li><a href="/">Home</a></li>
+		<li>
+			<a href="#">About</a>
+			<ul class="dl-submenu">
+				<li>
+					<img src="/images/avatar.jpg" alt="Valery Semenencko photo" class="author-photo">
+					<h4>Valery Semenencko</h4>
+					<p>Создаю сайты. Владею HTML, CSS, jQuery, WordPress</p>
+				</li>
+				<li><a href="/about/"><span class="btn btn-inverse">Learn More</span></a></li>
+				<li>
+					<a href="mailto:gearmobile@gmail.com"><i class="fa fa-fw fa-envelope"></i> Email</a>
+				</li>
+				<li>
+					<a href="http://twitter.com/gearmobile"><i class="fa fa-fw fa-twitter"></i> Twitter</a>
+				</li>
+				
+				<li>
+					<a href="https://google.com/+gearmobile"><i class="fa fa-fw fa-google-plus"></i> Google+</a>
+				</li>
+				
+				<li>
+					<a href="http://github.com/gearmobile"><i class="fa fa-fw fa-github"></i> GitHub</a>
+				</li>
+				
+				
+				
+				
+			</ul><!-- /.dl-submenu -->
+		</li>
+		<li>
+			<a href="#">Posts</a>
+			<ul class="dl-submenu">
+				<li><a href="/posts/">All Posts</a></li>
+				<li><a href="/tags/">All Tags</a></li>
+			</ul>
+		</li>
+		
+	    
+	        
+	    
+	    <li><a href="/theme-setup/" >Theme Setup</a></li>
+	  
+	    
+	        
+	        
+	    <li><a href="http://mademistakes.com" target="_blank">External Link</a></li>
+	  
+	</ul><!-- /.dl-menu -->
+</nav><!-- /.dl-menuwrapper -->
+
+
+
+
+<div id="main" role="main">
+  <article class="hentry">
+    <header class="header-title">
+      <div class="header-title-wrap">
+        
+          <h1 class="entry-title"><a href="/git-undoing-changes/" rel="bookmark" title="Отмена изменений в Git">Отмена изменений в Git</a></h1>
+        
+        <h2><span class="entry-date date published"><time datetime="2015-01-28T00:00:00+03:00">January 28, 2015</time></span></h2>
+        
+        <p class="entry-reading-time">
+          <i class="fa fa-clock-o"></i>
+          
+          Reading time ~5 minutes
+        </p><!-- /.entry-reading-time -->
+        
+      </div><!-- /.header-title-wrap -->
+    </header>
+    <div class="entry-content">
+      <p>Обширная и достаточно сложная тема. Однако необходимая, если стоит задача изучить и иметь возможность работать в Git.</p>
+
+<p>Эта тема касается отмены изменений в Git. Так как эта система контроля версий представляет из себя три ветки – <strong>рабочая директория</strong>, <strong>буфер</strong>, <strong>репозиторий</strong> – то будут рассмотрены все <strong>три способа</strong>.</p>
+
+<h3 id="section">Отмена изменений в рабочей директории</h3>
+
+<p>Для отмены изменений в рабочей директории необходимо выполнить одну команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">checkout</span> <span class="p">--</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Данная команда говорит Git вернуть состояние файла <code>name_of_file</code> до того, каким оно было зафиксировано в репозитории. Другими словами, произойдет сброс изменений файла в рабочей директории проекта.</p>
+
+<p>Обязательным условием использования команды <code>checkout</code> является <strong>двойной дефис</strong>. Это “говорит” команде <code>checkout</code>, что в данном случае нужно оставаться в текущей ветке (branche).</p>
+
+<h3 id="section-1">Отмена изменений в буфере</h3>
+
+<p>Для отмены изменений в буфере нужно использовать команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Эта команда “вернет” файл <code>name_of_file</code> из буфера в рабочую директорию.</p>
+
+<h3 id="section-2">Отмена изменений в репозитории</h3>
+
+<p>Что касается репозитория, то здесь ситуация намного сложнее. Связано это с тем, что все коммиты в репозитории взаимосвязаны между собой.</p>
+
+<p>Нельзя просто так взять и изменить какой-либо определенный коммит – все они находятся в своеобразной цепочке и один коммит проистекает из предыдущего коммита.</p>
+
+<p>Другими словами, у каждого коммита есть свой <strong>коммит-родитель</strong> и <strong>коммит-потомок</strong>. Изменить какой-либо коммит – это значит вырвать его из этой цепочки взаимосвязей. Тем самым нарушится целостность всего репозитория и работа Git также нарушится. Ведь дело в том, что сама суть системы контроля версий Git основана на такой взаимосвязанной цепочке коммитов – один коммит проистекает из другого, второй из первого, третий из второго и так далее.</p>
+
+<p>Как же поступить в данной ситуации?</p>
+
+<p>Не все так мрачно, как кажется на первый взгляд. На самом деле существует много способов отмены изменений в репозитории. Ниже мы познакомимся с ними.</p>
+
+<h4 id="amend">Опция amend</h4>
+
+<p>Если следовать из логического рассуждения, представленного выше, то получается, что в цепочке коммитов должен быть крайний коммит – тот, который был внесен совсем недавно. У этого коммита есть коммит-родитель, но нет коммита-потомка, так как этот коммит – крайний в цепочке.</p>
+
+<p>Соответственно, раз у этого коммита нет потомков, то изменение этого коммита не повлечет за собой нарушение целостности всей цепочки коммитов. Измениться только этот коммит – и только.</p>
+
+<p>Изменить крайний коммит можно просто <strong>перезаписав</strong> его. Для этой цели служит ключ <code>--amend</code>. Команда в целом представляет из себя следующее:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">commit</span> <span class="p">-</span><span class="n">-amend</span> <span class="n">-m</span> <span class="s2">&quot;Add some commit&quot;</span></code></pre></div>
+
+<p>Как только будет выполнена подобная команда, крайний коммит (тот, на котором находится указатель HEAD) будет <strong>перезаписан</strong> и это очень легко проследить – достаточно сравнить контрольную сумму SHA этого коммита до и после изменений.</p>
+
+<h4 id="checkout">Команда checkout</h4>
+
+<p>С помощью команды <code>checkout</code> можно выполнять откат репозитория до нужной версии. Данный способ основан на самом факте существования цепочки коммитов, в которой в роли узлов выступают сами коммиты.</p>
+
+<p>Образно можно представить данную ситуацию очень наглядно – как обычную магнитофонную ленту в старых кассетных магнитофонах. То место на ленте, где произошла последняя остановка и на котором находится звукозаписывающая головка – это и есть крайний коммит. Предыдущие коммиты – это места на ленте, когда происходила остановка записи в те самые моменты.</p>
+
+<p>Команда <code>checkout</code> может заставить указатель HEAD вернуться назад, на предыдущее место остановки – на предыдущий коммит. И необязательно этот коммит должен быть предыдущим – он может быть любым более ранним.</p>
+
+<p>Все что для этого нужно – это указать тот коммит, к которому должен вернуться HEAD. Указать коммит просто – у каждого коммита есть уникальный идентификатор – контрольная SHA-сумма.</p>
+
+<p>Команда возврата к нужному коммиту выглядит таким образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">checkout</span> <span class="p">--</span> <span class="n">4a2f59a32bd1074c42</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Можно указать только часть SHA-суммы, так как это показано выше.</p>
+
+<p>И тогда Git произведет сброс состояния (<em>которые были сделаны в последнем коммите</em>) файла <code>name_of_file</code> в буфер. Если ввести команду <code>git status</code> то увидим, что в буфере будут изменения, готовые для коммита. Это те самые изменения файла <code>name_of_file</code>, которые мы “выбросили” из репозитория.</p>
+
+<p>Дальше выполняем “выброс” изменений файла <code>name_of_file</code> из буфера в рабочую директорию, чтобы мы смогли внести правки в этот файл:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Все, что будет внесено в этот файл, а затем закоммичено – будет иметь уже другую контрольную сумму. А следовательно – это уже будет совсем другой коммит.</p>
+
+<h4 id="section-3">Зеркалирование коммитов</h4>
+
+<p>Одной из разнообразных команд Git для внесения изменений в репозиторий является команда <code>revert</code>.</p>
+
+<p>Суть ее очень проста – она отменяет все изменения, зафиксированные в крайнем коммите; и создает новый коммит, который является потомком предыдущего коммита, но в тоже время его <strong>зеркальной копией</strong>, <strong>противоположностью</strong>.</p>
+
+<p>Синтаксис команды revert также прост:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">revert</span> <span class="n">4a2f59a32bd1074c42</span></code></pre></div>
+
+<p>где <code>4a2f59a32bd1074c42</code> – это часть SHA-суммы крайнего коммита.</p>
+
+<h4 id="reset">Команда reset</h4>
+
+<p>Команда <code>reset</code> также может изменять репозиторий Git. Делает она это путем смещения указателя HEAD на нужный коммит.</p>
+
+<p>После такого смещения HEAD все более поздние коммиты никуда не пропадут из репозитория – они все еще там. Но теперь любое закоммиченное изменение произведет перезапись более поздних коммитов – и тогда они будут потеряны навсегда.</p>
+
+<p>Ситуация очень похожа на то образное сравнение цепочки коммитов Git с магнитофонной лентой. Стоит отмотать ленту на 10-20 минут назад и снова начать запись, то все более поздние записи (<em>относительно этого места</em>) будут перезаписаны.</p>
+
+<p>У команды <code>reset</code> есть три ключа, которые незначительно видоизменяют ее работу:</p>
+
+<ul>
+  <li>–soft</li>
+  <li>–mixed</li>
+  <li>–hard</li>
+</ul>
+
+<p>Команда <code>git reset --soft 4a2f59a32bd1074c42</code> произведет смещение указателя HEAD на указанный коммит 4a2f59a32bd1074c42. При этом Git произведет сброс изменений в буфер. В результате буфер и рабочая директория будут идентичными между собой; а репозиторий будет переведен в более ранее состояние.</p>
+
+<p>Команда <code>git reset --mixd 4a2f59a32bd1074c42</code> аналогична предыдущей. Также будет произведено смещение указателя HEAD. Но теперь Git сбросит изменения в рабочую директорию. Репозиторий и буфер будут идентичными друг другу и находиться в более раннем состоянии.</p>
+
+<p>Команда <code>git reset --hard 4a2f59a32bd1074c42</code> самая “жесткая”. Также будет произведено смещение указателя HEAD на указанный коммит, но при этом будет произведен сброс всех трех деревьев Git – репозитория, буфера и рабочей директории. Все три будут идентичными друг другу.</p>
+
+<h3 id="clean">Команда clean</h3>
+
+<p>В системе Git существует команда <code>clean</code> для удаления не отслеживаемых файлов в рабочей директории.</p>
+
+<p>Разница между командой <code>git rm</code> и <code>clean</code> заключается в том, что при удалении файлов из рабочей директории первой командой они <strong>вроде как удаляются</strong>. Но на самом деле удаленные файлы все еще остаются в системе Git. Просто они <strong>помещены в раздел мусора</strong> и являются теперь <strong>мусором</strong>.</p>
+
+<p>Команда <code>clean</code> как раз и выполняет очистку мусора в системе. Она удаляет все не <strong>отслеживаемые</strong> и <strong>неиспользуемые файлы</strong>.</p>
+
+<p>Но даже это она делает очень осторожно. Если просто запустить <code>git clean</code>, то ничего не произойдет. Система Git скажет, что команду <code>clean</code> необходимо запускать либо с ключом <code>-n</code>, либо с ключом <code>-f</code>.</p>
+
+<p>Запуск <code>git clean -n</code> – это тестовый запуск команды удаления. Ничего удалено не будет – система лишь покажет, что она собирается удалить, какие файлы.</p>
+
+<p>А вот запуск <code>git clean -f</code> произведен реальное удаление всех файлов, которые Git считает мусором. И в этом случае эти файлы будут потеряны навсегда.</p>
+
+      <footer class="entry-meta">
+        <span class="entry-tags"><a href="/tags/#git" title="Pages tagged git" class="tag"><span class="term">git</span></a></span>
+        
+        <div class="social-share">
+  <ul class="socialcount socialcount-small inline-list">
+    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=/git-undoing-changes/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
+    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=/git-undoing-changes/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
+    <li class="googleplus"><a href="https://plus.google.com/share?url=/git-undoing-changes/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
+  </ul>
+</div><!-- /.social-share -->
+      </footer>
+    </div><!-- /.entry-content -->
+    <section id="disqus_thread"></section><!-- /#disqus_thread -->
+    <div class="read-more">
+  
+    <div class="read-more-header">
+      <a href="/git-gitignoring-files/" class="read-more-btn">Read More</a>
+    </div><!-- /.read-more-header -->
+    <div class="read-more-content">
+      <h3><a href="/git-gitignoring-files/" title="Игнорирование файлов в Git">Игнорирование файлов в Git</a></h3>
+      <p>  Два способа игнорирования файлов – локальный и глобальный. Шаблоны для игнорирования файлов в для различных операционных систем, языков...&hellip; <a href="/git-gitignoring-files/">Continue reading</a></p>
+    </div><!-- /.read-more-content -->
+  
+  <div class="read-more-list">
+    
+      <div class="list-item">
+        <h4><a href="/rupture-breakpoints-stylus/" title="Rupture &#8211; система breakpoint под Stylus">Rupture &#8211; система breakpoint под Stylus</a></h4>
+        <span>Published on January 16, 2015</span>
+      </div><!-- /.list-item -->
+    
+      <div class="list-item">
+        <h4><a href="/jeet-gs-first-introduction/" title="Jeet.gs &#8211; первое знакомство">Jeet.gs &#8211; первое знакомство</a></h4>
+        <span>Published on January 15, 2015</span>
+      </div><!-- /.list-item -->
+    
+  </div><!-- /.read-more-list -->
+</div><!-- /.read-more -->
+  </article>
+</div><!-- /#main -->
+
+<div class="footer-wrapper">
+  <footer role="contentinfo">
+    <span>&copy; 2015 Valery Semenencko. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/hpstr/" rel="notfollow">HPSTR Theme</a>.</span>
+  </footer>
+</div><!-- /.footer-wrapper -->
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
+<script src="/assets/js/scripts.min.js"></script>
+
+
+
+
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = 'gearmobile'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+            var s = document.createElement('script'); s.async = true;
+            s.type = 'text/javascript';
+            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
+            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+	        
+
+</body>
+</html>

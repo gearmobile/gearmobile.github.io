@@ -1,0 +1,138 @@
+---
+title: Отрицательный margin в нормальном потоке
+author: gearmobile
+layout: post
+permalink: /%d0%be%d1%82%d1%80%d0%b8%d1%86%d0%b0%d1%82%d0%b5%d0%bb%d1%8c%d0%bd%d1%8b%d0%b9-margin-%d0%b2-%d0%bd%d0%be%d1%80%d0%bc%d0%b0%d0%bb%d1%8c%d0%bd%d0%be%d0%bc-%d0%bf%d0%be%d1%82%d0%be%d0%ba%d0%b5/
+cleanretina_sidebarlayout:
+  - default
+ratings_users:
+  - 0
+ratings_score:
+  - 0
+ratings_average:
+  - 0
+categories:
+  - Статьи по CSS
+tags:
+  - negative margin
+---
+Свойство `margin` очень хорошо для решения задачи установления дистанции между элементами, но знаете ли вы, что отрицательные `margin` могут не увеличивать, а сокращать расстояние между элементами, вплоть до того, что эти элементы будут перекрывать друг друга.
+
+Создадим простой пример и для этого предположим, что у нас есть страница, на которой элемент после заголовка `h2` всегда должен находиться непосредственно под ним. Самый распространенный пример из практики для этого случая, когда первый параграф, идущий сразу же после заголовка, не имеет пустого пространства (*blank line*) между собой и этим параграфом.
+
+Решения такого вопроса два. **Первый способ** &#8211; это воспользоваться смежными селекторами. **Второй способ**, представленный на рисунке ниже, это применить отрицательный `margin-bottom` для `h2`:<figure id="attachment_891" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/header-paragraph-600x381.png" alt="Между заголовком и параграфом нет промежутка" width="600" height="381" class="size-medium wp-image-891" />][1]<figcaption class="wp-caption-text">Между заголовком и параграфом нет промежутка</figcaption></figure> 
+
+Можно подумать, что у параграфа, который следует сразу за заголовком, отсутствует `margin-top`, но это не так. `Margin-top` никуда не пропадал. Он просто оказался перекрытым заголовком `h2`, у которого край `margin-bottom` находится в непосредственной близости от края текста самого заголовка. Параграф и его собственный `margin` располагаются сразу под ним, а не у нижнего края границы заголовка. 
+
+Такой прием полезен на практике в случае, когда необходимо расположить часть контента &#8220;на одной линии&#8221;. Почему слово на одной линии заключено в кавычки &#8211; потому-что контент только визуально располагается на одной линии.
+
+Предположим, у нас есть список (HTML-разметка):
+
+<pre><ul class="jump">
+  <li class="prev">
+    <a class="ch03.html" href="#">Salaries</a>
+  </li>
+    
+  
+  <li class="next">
+    <a class="ch05.html" href="#">Punching the Clock</a>
+  </li>
+  
+</ul>
+</pre>
+
+В этом списке нам необходимо расположить оба пункта так, чтобы они находились на горизонтальной линии. Визуально это можно увидеть так, как изображено на рисунке ниже. Такую задачу можно выполнить обычным способом &#8211; через `float` (*прим. переводчика &#8211; я бы так и поступил, разбросал оба li по разным углам блока ul через float: left и float: right*) для обоих пунктов.
+
+Но можно решить такую задачу другим способом:<figure id="attachment_892" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/on_the_same_line-600x381.png" alt="Два пункта меню на одной линии" width="600" height="381" class="size-medium wp-image-892" />][2]<figcaption class="wp-caption-text">Два пункта меню на одной линии</figcaption></figure> 
+
+CSS-разметка:
+
+<pre>.jump{
+  list-style-type: none;
+  line-height: 1;
+  width: 25em;
+  margin: 0 auto;
+  padding: .25em 1em;
+  border: 1px solid;
+}
+  .jump .next{
+    text-align: right;
+    margin-top: -1em;
+  }
+</pre>
+
+В этом примере отрицательный `margin-top` величиной в `-1em` &#8220;поднимает&#8221; элемент `li.next` вверх ровно на высоту строки, установленную нами ранее в правиле `line-height: 1`. (*Прим. переводчика: очень понравилось, о таком способе решения даже не подозревал!*)
+
+Другим полезным приемом является **частичное выдвижение элемента изнутри наружу своего контейнера-родителя**. Предположим, у нас стоит задача расположить блок заголовка точно по центру разделительной линии так, как это показано на рисунке ниже:<figure id="attachment_893" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/centering_heading_on_a_dividing_line-600x381.png" alt="Расположение заголовка по центру разделительной линии" width="600" height="381" class="size-medium wp-image-893" />][3]<figcaption class="wp-caption-text">Расположение заголовка по центру разделительной линии</figcaption></figure> 
+
+HTML-разметка такого заголовка будет следующей:
+
+<pre><div class="entry">
+  <h2>
+    The Web Stack
+  </h2>
+    ...
+  
+</div>
+</pre>
+
+CSS-разметка:
+
+<pre>.entry{
+    border-top: 1px solid gray;
+  }
+  .entry h2{
+    width: 80%;
+    background-color: #fff;
+    border: 1px solid gray;
+    margin: -0.67em auto 0;
+    text-align: center;
+  }
+</pre>
+
+C другой стороны, может потребоваться задача, когда блок заголовка не имеет фиксированной ширины, а ширина задается только его содержимым. В этом случае необходимо добавить всего несколько строк кода в HTML-разметку и CSS-правила, соответственно:
+
+HTML-разметка, в которой добавлен еще один элемент &#8211; `span`:
+
+<pre><div class="entry">
+  <h2>
+    <span>The Web Stack</span>
+  </h2>
+    ...
+  
+</div>
+</pre>
+
+CSS-разметка:
+
+<pre>.entry h2{
+    margin-top: -0.67em;
+    text-align: center;
+    border-top: 1px solid gray;
+  }
+  .entry h2 span{
+    background-color: #fff;
+    border: 1px solid gray;
+    padding: .25em 1em;
+  }
+</pre><figure id="attachment_895" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/shrink_wraped_text-600x381.png" alt="Ширина блока заголовка задается его контентом" width="600" height="381" class="size-medium wp-image-895" />][4]<figcaption class="wp-caption-text">Ширина блока заголовка задается его контентом</figcaption></figure> 
+
+В этом примере все хорошо работает до тех пор, пока длина текста внутри блока меньше, чем длина разделительной линии. Заголовок разбивается на две линии, сам блок заголовка вмещается вниз от разделительной линии и перестает быть расположенным по центру. Для этого случая решение с помощью отрицательного `margin-top` не является самым лучшим. Можно лишь посоветовать убрать верхнюю границу `border-top` у блока-родителя и сделать для него фоновую заливку белого цвета, также. Это будет не совсем то, что нужно; но все же достаточно хорошее решение.
+
+**Автор статьи:** *Eric Meyer &#8211; Smashing CSS Professional Techniques for Modern Layout*
+
+Оцените статью:  
+<span id="post-ratings-889" class="post-ratings" data-nonce="32bd5b504a"><img id="rating_889_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(889, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_889_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(889, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_889_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(889, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_889_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(889, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_889_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(889, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_889_text"></span></span><span id="post-ratings-889-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
+
+ [1]: http://localhost:7788/third/wp-content/uploads/2014/02/header-paragraph.png
+ [2]: http://localhost:7788/third/wp-content/uploads/2014/02/on_the_same_line.png
+ [3]: http://localhost:7788/third/wp-content/uploads/2014/02/centering_heading_on_a_dividing_line.png
+ [4]: http://localhost:7788/third/wp-content/uploads/2014/02/shrink_wraped_text.png
