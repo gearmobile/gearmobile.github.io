@@ -22,7 +22,7 @@ tags:
 
 Для отмены изменений в рабочей директории необходимо выполнить одну команду:
 
-{% highlight cli lineos %}
+{% highlight command line lineos %}
 	git checkout -- name_of_file
 {% endhighlight %}
 
@@ -34,7 +34,7 @@ tags:
 
 Для отмены изменений в буфере нужно использовать команду:
 
-{% highlight cli lineos %}
+{% highlight command line lineos %}
 	git reset HEAD name_of_file
 {% endhighlight %}
 
@@ -60,7 +60,7 @@ tags:
 
 Изменить крайний коммит можно просто **перезаписав** его. Для этой цели служит ключ `--amend`. Команда в целом представляет из себя следующее:
 
-{% highlight cli lineos %}
+{% highlight command line lineos %}
 	git commit --amend -m "Add some commit"
 {% endhighlight %}
 
@@ -78,7 +78,7 @@ tags:
 
 Команда возврата к нужному коммиту выглядит таким образом:
 
-{% highlight cli lineos %}
+{% highlight command line lineos %}
 	git checkout -- 4a2f59a32bd1074c42 name_of_file
 {% endhighlight %}
 
@@ -88,7 +88,7 @@ tags:
 
 Дальше выполняем &#8220;выброс&#8221; изменений файла `name_of_file` из буфера в рабочую директорию, чтобы мы смогли внести правки в этот файл:
 
-{% highlight cli lineos %}
+{% highlight command line lineos %}
 	git reset HEAD name_of_file
 {% endhighlight %}
 
@@ -102,7 +102,7 @@ tags:
 
 Синтаксис команды revert также прост:
 
-{% highlight cli lineos %}
+{% highlight command line lineos %}
 	git revert 4a2f59a32bd1074c42
 {% endhighlight %}
 
