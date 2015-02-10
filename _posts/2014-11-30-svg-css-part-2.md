@@ -27,16 +27,19 @@ tags:
 
 Показанный ниже пример является кодом, в котором используются **презентационные атрибуты** для стилизации границы `“border” (stroke)` и фоновой заливки `“background color” (fill)` многоугольника в виде пятиконечной звезды:
 
-<pre>&lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300px" height="300px" viewBox="0 0 300 300">
-    &lt;polygon
-      fill = "#FF931E"
-      stroke = "#ED1C24"
-      stroke-width = "5"
-      points = "279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 "/>
-  &lt;/svg>
-  </pre><figure id="attachment_2092" style="width: 600px;" class="wp-caption aligncenter">
+<pre>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300px" height="300px" viewBox="0 0 300 300">
+  <polygon
+    fill = "#FF931E"
+    stroke = "#ED1C24"
+    stroke-width = "5"
+    points = "279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 "/>
+</svg>
+</pre>
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/star-600x470.png" alt="Пятиконечная звезда на SVG" width="600" height="470" class="size-medium wp-image-2092" />][1]<figcaption class="wp-caption-text">Пятиконечная звезда на SVG</figcaption></figure> 
+<figure id="attachment_2092" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/star-600x470.png" alt="Пятиконечная звезда на SVG" width="600" height="470" class="size-medium wp-image-2092" />][1]<figcaption class="wp-caption-text">Пятиконечная звезда на SVG</figcaption></figure>
 
 В этом примере атрибуты `fill`, `stroke`, `stroke-width` являются **презентационными атрибутами**.
 
@@ -46,12 +49,13 @@ tags:
 
 Другим способом стилизации SVG-элементов является использование для этой цели CSS-свойств. Точно также, как и в случае в HTML-элементами, CSS-свойства могут быть заданы с помощью inline-стиля:
 
-<pre>&lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="width: 300px; height: 300px;" viewBox="0 0 300 300">
-  &lt;polygon
+<pre>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="width: 300px; height: 300px;" viewBox="0 0 300 300">
+  <polygon
     style = "fill: #FF931E; stroke: #ED1C24; stroke-width: 5;"
     points = "279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 "/>
-  &lt;/svg>
-  </pre>
+</svg>
+</pre>
 
 CSS-свойства могут быть также заданы с помощью набора правил через тег `<br />
 
@@ -61,31 +65,31 @@ CSS-свойства могут быть также заданы с помощь
 <p>Или же размещен снаружи тега <code><svg>`, если тег `<svg>` встраивается в HTML-документ как inline-элемент:
 
 <pre><!-- HTML5 document -->
-  
-  
-  
-  
-  
+
+
+
+
+
 
 <!-- xmlns is optional in an HTML5 document →
   <svg viewBox="0 0 300 300">
   <!-- SVG content -->
-  &lt;/svg>
-  
-  
+  </svg>
+
+
   </pre>
 
 Если же вы хотите полностью отделить стили от разметки, то всегда можете сделать это при помощи ссылки на внешний файл стилей. Ссылка должна размещаться внутри SVG-элемента и иметь вид `<?xml-stylesheet>`:
 
 <pre><?xml version="1.0" standalone="no"?>
-  
+
 
 <?xml-stylesheet type="text/css" href="style.css"?>
-  &lt;svg xmlns="http://www.w3.org/2000/svg" version="1.1" width=".." height=".." viewBox="..">
-    
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width=".." height=".." viewBox="..">
+
 
 <!-- SVG content -->
-  &lt;/svg>
+  </svg>
   </pre>
 
 ### Каскады стилей SVG
@@ -94,14 +98,17 @@ CSS-свойства могут быть также заданы с помощь
 
 Презентационные атрибуты позиционируются как "авторские стилевые правила" и могут быть переопределены любыми другими определениями: внешними таблицами стилей, внутренними таблицами стилей или же inline-стилями.
 
-Диаграмма ниже показывает порядок расположения стилей в каскаде стилей. Чем ниже расположены стили в этой таблице, тем большим количеством вышележащих стилей они могут быть перезаписаны. В нашем случае презентационные стили могут быть переопределены почти всеми другими стилями, кроме **стилей агента пользователя**:<figure id="attachment_2093" style="width: 375px;" class="wp-caption aligncenter">
+Диаграмма ниже показывает порядок расположения стилей в каскаде стилей. Чем ниже расположены стили в этой таблице, тем большим количеством вышележащих стилей они могут быть перезаписаны. В нашем случае презентационные стили могут быть переопределены почти всеми другими стилями, кроме **стилей агента пользователя**:
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/diagram-375x600.jpg" alt="Таблица каскадности стилей SVG" width="375" height="600" class="size-medium wp-image-2093" />][4]<figcaption class="wp-caption-text">Таблица каскадности стилей SVG</figcaption></figure> 
+<figure id="attachment_2093" style="width: 375px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/diagram-375x600.jpg" alt="Таблица каскадности стилей SVG" width="375" height="600" class="size-medium wp-image-2093" />][4]<figcaption class="wp-caption-text">Таблица каскадности стилей SVG</figcaption></figure>
 
 Например, представленный ниже образец кода является кругом, написанным на SVG. Цвет заливки круга в виде атрибута `fill="blue"` будет переопределен цветом `deep pink` с помощью правила `style="fill:deepPink;"`:
 
-<pre>&lt;circle cx="100" cy="100" r="75" fill="blue" style="fill:deepPink;" />
-  </pre>
+<pre>
+<circle cx="100" cy="100" r="75" fill="blue" style="fill:deepPink;" />
+</pre>
 
 ### Селекторы SVG
 
