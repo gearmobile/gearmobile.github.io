@@ -76,7 +76,7 @@ $ sudo mkfs.exfat -n large_flash /dev/sdb1
 
 Вставляю вторую флешку и запускаю "Disk Utility":
 
-![Создание ExFAT в дисковой утилите Disk Utility]({{ http://127.0.0.1:4000/ }}/images/uploads/2014/11/small_flash_exfat.png){: .center-image .responsive-image }
+![Создание ExFAT в дисковой утилите Disk Utility]({{ http://zencoder.ru/ }}/images/uploads/2014/11/small_flash_exfat.png){: .center-image .responsive-image }
 
 Разобраться с работой этой утилиты нетрудно, но вкратце опишу.
 
