@@ -1,7 +1,7 @@
 ---
 title: Установка Node.js, npm и Bower под Linux Mint
 author: gearmobile
-excerpt: '<p>Статья посвящена вопросу установки Node.js и пакетного менеджера npm под операционную систему Linux Mint 17 “Qiana” Cinnamon (64-bit). Также рассмотрен вопрос установки пакетного менеджера Bower в этой же операционной системе.</p>'
+excerpt: 'Статья посвящена вопросу установки Node.js и пакетного менеджера npm под операционную систему Linux Mint 17 “Qiana” Cinnamon (64-bit). Также рассмотрен вопрос установки пакетного менеджера Bower в этой же операционной системе'
 layout: post
 permalink: /install-nodejs-npm-bower-in-linux-mint/
 cleanretina_sidebarlayout:
@@ -19,7 +19,7 @@ tags:
   - node.js
   - npm
 ---
-Статья посвящена вопросу установки Node.js и пакетного менеджера npm под операционную систему Linux Mint 17 “Qiana” Cinnamon (64-bit). Также рассмотрен вопрос установки пакетного менеджера Bower в этой же операционной системе.
+> Статья посвящена вопросу установки Node.js и пакетного менеджера npm под операционную систему Linux Mint 17 “Qiana” Cinnamon (64-bit). Также рассмотрен вопрос установки пакетного менеджера Bower в этой же операционной системе.
 
 Почему выбрана система Linux Mint &#8211; об этом не стоит говорить долго. Это система гораздо удобнее для задач кодинга, нежели Windows. Пакеты Node.js и пакетный менеджер npm необходим для дальнейшего изучения ремесла верстальщика. Дело в том, что популярный фреймворк Foundation для своей корректной работы требует первоначальной установки Node.js. Автор планирует в дальнейшем познакомиться с фреймворком Foundation, поэтому ему потребовалась установка вышеназванных пакетов.
 
@@ -33,14 +33,16 @@ tags:
 
 В терминале ввожу команду:
 
-<pre>$ sudo apt-get install nodejs
-  </pre>
+{% highlight powershell %}
+$ sudo apt-get install nodejs
+{% endhighlight %}
 
 &#8230; пару секунд терпения и у меня под Linux Mint 17 “Qiana” Cinnamon (64-bit) установлен пакет Node.js версии:
 
-<pre>$ nodejs -v
-  v0.10.25
-  </pre>
+{% highlight powershell %}
+$ nodejs -v
+v0.10.25
+{% endhighlight %}
 
 На момент написания статьи самая свежая версия Node.js (*как указано на официальном сайте*) &#8211; это 0.10.28. Как видим, разница в версиях небольшая, так что я поступил правильно, воспользовавшись `apt-get`.
 
@@ -52,32 +54,37 @@ tags:
 
 В терминале Linux ввожу команду:
 
-<pre>$ sudo apt-get install npm
-  </pre>
+{% highlight powershell %}
+$ sudo apt-get install npm
+{% endhighlight %}
 
 Пробежит много-много строк, но в результате в системе появиться пакет npm:
 
-<pre>$ npm -v
-  1.3.10
-  </pre>
+{% highlight powershell %}
+$ npm -v
+1.3.10
+{% endhighlight %}
 
 Использование менеджера npm очень похоже на использование менеджеров пакетов a-la Linux: `apt-get`, `emerge`, `pacman` и так далее. npm также является консольной командой и у него схожие ключи, поэтому пользователи Linux без труда разберутся с ним:
 
-<pre>$ npm -h
-  </pre>
+{% highlight powershell %}
+$ npm -h
+{% endhighlight %}
 
 Давайте проверим работу установленного менеджера npm. Для этого я в специально отведенной директории Projects создам поддиректорию npm, перейду в нее для дальнейшего удобства работы и установлю в этой поддиректории модуль `underscore` из репозитория npm:
 
-<pre>$ mkdir -p Projects/npm
-  $ cd Projects/npm
-  $ npm install underscore
-  </pre>
+{% highlight powershell %}
+$ mkdir -p Projects/npm
+$ cd Projects/npm
+$ npm install underscore
+{% endhighlight %}
 
 Если теперь посмотреть содержимое поддиректории npm c помощью команды `ls`, то обнаружим появление папки `node_modules`, внутри которой располагается подпапка `underscore` c содержимым одноименного модуля:
 
-<pre>$ ls node_modules/underscore/
-  LICENSE  package.json  README.md  underscore.js  underscore-min.js
-  </pre>
+{% highlight powershell %}
+$ ls node_modules/underscore/
+LICENSE  package.json  README.md  underscore.js  underscore-min.js
+{% endhighlight %}
 
 Модуль Underscore успешно установлен и менеджер npm также успешно справился со своей задачей.
 
@@ -93,87 +100,101 @@ Npm понимает и может работать только с JavaScript-�
 
 Я же приступлю к установке Bower на свою локальную машину. Так как Bower является модулем для Node.js, то его можно установить с помощью менеджера npm:
 
-<pre>$ sudo npm install -g bower
-  </pre>
+{% highlight powershell %}
+$ sudo npm install -g bower
+{% endhighlight %}
 
 Однако, если запустить после этого в терминале команду просмотра версии, то увидим такой результат:
 
-<pre>$ bower -v
-  /usr/bin/env: node: No such file or directory
-  </pre>
+{% highlight powershell %}
+$ bower -v
+/usr/bin/env: node: No such file or directory
+{% endhighlight %}
 
 Исправить ситуацию можно созданием ссылки:
 
-<pre>$ sudo ln -s /usr/bin/nodejs /usr/bin/node
-  </pre>
+{% highlight powershell %}
+$ sudo ln -s /usr/bin/nodejs /usr/bin/node
+{% endhighlight %}
 
 Теперь если снова посмотреть версию установленного пакета, увидим следующее:
 
-<pre>$ bower -v
-  1.3.3
-  </pre>
+{% highlight powershell %}
+$ bower -v
+1.3.3
+{% endhighlight %}
 
 Создаю специальную поддиректорию `bower` в директории Projects, перехожу туда и запускаю менеджер bower на установку пакета jquery:
 
-<pre>$ mkdir -p Projects/bower
-  $ cd Projects/bower
-  $ bower install jquery
-  </pre>
+{% highlight powershell %}
+$ mkdir -p Projects/bower
+$ cd Projects/bower
+$ bower install jquery
+{% endhighlight %}
 
 Если до этого момента на локальной машине (*как у меня*) не был установлен пакет `git`, то самое время это сделать, иначе bower не сможет установить указанный пакет jquery:
 
-<pre>$ bower install jquery
-  bower jquery#*  ENOGIT git is not installed or not in the PATH
-  </pre>
+{% highlight powershell %}
+$ bower install jquery
+bower jquery#*  ENOGIT git is not installed or not in the PATH
+{% endhighlight %}
 
 Все пакеты для скачивания и установки менеджер bower берет с GitHub, поэтому без пакета git этот менеджер не сможет обойтись.
 
 Установка Git на Linux производится простой командой:
 
-<pre>$ sudo apt-get install git
-  </pre>
+{% highlight powershell %}
+$ sudo apt-get install git
+{% endhighlight %}
 
 После этого, повторив команду установки jquery через bower, получаю следующий отзыв в консоли:
 
-<pre>$ bower install jquery
+{% highlight powershell %}
+$ bower install jquery
   bower jquery#*              not-cached git://github.com/jquery/jquery.git#*
   bower jquery#*                 resolve git://github.com/jquery/jquery.git#*
   bower jquery#*                download https://github.com/jquery/jquery/archive/2.1.1.tar.gz
   bower jquery#*                 extract archive.tar.gz
   bower jquery#*                resolved git://github.com/jquery/jquery.git#2.1.1
   bower jquery#~2.1.1            install jquery#2.1.1
-  </pre>
+{% endhighlight %}
 
 Если посмотреть на содержимое поддиректории `bower`, то увидим, что там появилась директория `bower_components`, в которой находится поддиректория `jquery` c установленным пакетом:
 
-<pre>$ ls bower_components/jquery/
-  bower.json  dist  MIT-LICENSE.txt  src
-  </pre>
+{% highlight powershell %}
+$ ls bower_components/jquery/
+bower.json  dist  MIT-LICENSE.txt  src
+{% endhighlight %}
 
 В результате была установлена **последняя версия** библиотеки jQuery &#8211; 2.1.1. Если нужна какая-то конкретная версия пакета (jQuery, в частности), то нужно это указать с помощью тега:
 
-<pre>$ bower install jquery#1.9.1
-  </pre>
+{% highlight powershell %}
+$ bower install jquery#1.9.1
+{% endhighlight %}
 
 Внимательный читатель мог заметить, менеджер пакетов Bower также (как и npm) является консольным. Список доступных для него команд можно получить вызовом:
 
-<pre>$ bower -h
-  </pre>
+{% highlight powershell %}
+$ bower -h
+{% endhighlight %}
 
 В частности, для обновления уже установленного пакета существует команда:
 
-<pre>$ bower update [name_package]
-  </pre>
+{% highlight powershell %}
+$ bower update [name_package]
+{% endhighlight %}
 
 Для удаления установленного пакета имеется команда:
 
-<pre>$ bower uninstall [name_package]
-  </pre>
+{% highlight powershell %}
+$ bower uninstall [name_package]
+{% endhighlight %}
 
 Посмотреть информацию о пакете:
 
-<pre>$ bower info [name_package]
-  </pre>
+{% highlight powershell %}
+$ bower info [name_package]
+{% endhighlight %}
 
 Этой командой можно воспользоваться при настройке файла пакетной установки `bower.json`
 
@@ -185,38 +206,44 @@ Npm понимает и может работать только с JavaScript-�
 
 Теперь попробуем установить какой-либо пакет, не выходя из Sublime Text, c помощью плагина Bower. Для этого снова нажмем сочетание клавиш **Shift+Ctrl+P**, вводим **Bower:Install** и из появившегося списка выбираем пакет Foundation (*к примеру*).
 
-Видим, как в панели проектов Sublime Text, в папке `bower_components` появилась целая куча подпапок, являющихся частью единого целого &#8211; фреймворка Foundation:<figure id="attachment_1310" style="width: 600px;" class="wp-caption aligncenter">
+Видим, как в панели проектов Sublime Text, в папке `bower_components` появилась целая куча подпапок, являющихся частью единого целого &#8211; фреймворка Foundation:
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/06/st-bower_components-600x288.png" alt="Установленный через Bower пакет Foundation в Sublime Text" width="600" height="288" class="size-medium wp-image-1310" />][6]<figcaption class="wp-caption-text">Установленный через Bower пакет Foundation в Sublime Text</figcaption></figure> 
+![Установленный через Bower пакет Foundation в Sublime Text]({{ http://127.0.0.1:4000/ }}/images/uploads/2014/06/st-bower_components.png)
+{: .center-image .responsive-image }
 
 #### Настройка плагина Bower
 
 Поддиректория `bower_components`, в которую плагин Bower производит установку пакетов, не является чем-то постоянным. То есть, можно легко изменить имя и расположение этой директории. Делается это следующим образом &#8211; в Sublime Text нажимаем сочетание клавиш **Shift+Ctrl+P** и вводим **Bower: Configure project** (*никто не запрещает создать файл конфигурации вручную*).
 
-В текущую директорию автоматически добавиться файл `.bowerrc` типа json, в котором будет всего лишь одна строка &#8211; имя директории, в которую производится установка пакетов через плагин Bower:<figure id="attachment_1311" style="width: 600px;" class="wp-caption aligncenter">
+В текущую директорию автоматически добавиться файл `.bowerrc` типа json, в котором будет всего лишь одна строка &#8211; имя директории, в которую производится установка пакетов через плагин Bower:
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/06/st-bower_configure_project-600x288.png" alt="Файл настроек пакета Bower" width="600" height="288" class="size-medium wp-image-1311" />][7]<figcaption class="wp-caption-text">Файл настроек пакета Bower</figcaption></figure> 
+![Файл настроек пакета Bower]({{ http://127.0.0.1:4000/ }}/images/uploads/2014/06/st-bower_configure_project.png)
+{: .center-image .responsive-image }
 
 Для эксперимента изменим имя папки с:
 
-<pre>"directory": "components"
-  </pre>
+{% highlight powershell %}
+"directory": "components"
+{% endhighlight %}
 
 на:
 
-<pre>"directory": "apps"
-  </pre>
+{% highlight powershell %}
+"directory": "apps"
+{% endhighlight %}
 
-&#8230; удалим старую директорию `bower_components` с пакетом foundation и установим через Bower другой пакет &#8211; underscore. В результате получим следущее:<figure id="attachment_1312" style="width: 600px;" class="wp-caption aligncenter">
+&#8230; удалим старую директорию `bower_components` с пакетом foundation и установим через Bower другой пакет &#8211; underscore. В результате получим следущее:
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/06/st-bower_configure_project_new_name-600x288.png" alt="Новое имя директории с пакетами в Bower" width="600" height="288" class="size-medium wp-image-1312" />][8]<figcaption class="wp-caption-text">Новое имя директории с пакетами в Bower</figcaption></figure> 
+![Новое имя директории с пакетами в Bower]({{ http://127.0.0.1:4000/ }}/images/uploads/2014/06/st-bower_configure_project_new_name.png)
+{: .center-image .responsive-image }
 
 #### Пакетная установка в менеджере Bower
 
 У менеджера пакетов Bower есть еще одна замечательная особенность. Это возможность пакетной установки через специально созданный конфигурационный файл. Другими словами, создается специальный файл формата json (`component.json`), в котором прописываются имена всех пакетов, которые необходимы для установки в данном проекте. Затем в консоли запускается менеджер Bower c одной командой:
 
-<pre>$ bower install
-  </pre>
+{% highlight powershell %}
+$ bower install
+{% endhighlight %}
 
 &#8230; менеджер bower прочитает файл `component.json` и автоматически установит все пакеты, перечисленные в нем. Отлично, не правда ли?
 
@@ -224,53 +251,58 @@ Npm понимает и может работать только с JavaScript-�
 
 Файл `bower.json` имеет следующий формат:
 
-<pre>{
-   "name": "name_of_project",
-   "version": "1.0.0",
-   "dependencies": {
-      "name_package": "version_package",
-      "name_package": "version_package"
-    }
+{% highlight powershell %}
+{
+"name": "name_of_project",
+"version": "1.0.0",
+  "dependencies": {
+    "name_package": "version_package",
+    "name_package": "version_package"
   }
-  </pre>
+}
+{% endhighlight %}
 
 &#8230; где `name` &#8211; это имя проекта, `version` &#8211; версия проекта, `dependencies` &#8211; зависимости проекта. Под зависимостями проекта подразумевается список сторонних пакетов (к примеру &#8211; foundation, backborne, jquery и так далее), которые используются при создании данного проекта.
 
 Прописав в этом списке нужные пакеты, тем самым мы заставим Bower автоматически отслеживать наличие указанных пакетов для текущего проекта. Но, от слов к делу &#8211; давайте попрактикуемся и создадим примерный файл `bower.json` для текущего &#8220;проекта&#8221; bower. Для этого я удалю все ранее установленные в этой поддиректории пакеты:
 
-<pre>$ bower uninstall [name_of_package]
-  </pre>
+{% highlight powershell %}
+$ bower uninstall [name_of_package]
+{% endhighlight %}
 
 &#8230; создам в этой директории пустой файл `bower.json` и наполню его следующим содержимым:
 
-<pre>{
-    "name": "bower",
-    "version": "0.0.1",
-    "dependencies": {
-       "jquery": "1.9.1",
-       "foundation": "latest"
-     }
-  }
-  </pre>
+{% highlight powershell %}
+{
+"name": "bower",
+"version": "0.0.1",
+  "dependencies": {
+     "jquery": "1.9.1",
+     "foundation": "latest"
+   }
+}
+{% endhighlight %}
 
 &#8230; где `latest` &#8211; самая последняя версия пакета. Сохраняю изменения, перехожу в консоль и запускаю команду:
 
-<pre>$ bower install
-  </pre>
+{% highlight powershell %}
+$ bower install
+{% endhighlight %}
 
 В результате будет произведена автоматическая установка всех перечисленных в файле пакетов. Кроме того, Bower умеет **отслеживать зависимости пакетов**. В моем примере в консоль была выведена следующая информация:
 
-<pre>...
-  Unable to find a suitable version for jquery, please choose one:
-      1) jquery#1.9.1 which resolved to 1.9.1 and is required by bower
-      2) jquery#>= 2.1.0 which resolved to 2.1.1 and is required by foundation#5.2.3
-      3) jquery#>=1.2 which resolved to 2.1.1 and is required by jquery.cookie#1.4.1
+{% highlight powershell %}
+...
+Unable to find a suitable version for jquery, please choose one:
+    1) jquery#1.9.1 which resolved to 1.9.1 and is required by bower
+    2) jquery#>= 2.1.0 which resolved to 2.1.1 and is required by foundation#5.2.3
+    3) jquery#>=1.2 which resolved to 2.1.1 and is required by jquery.cookie#1.4.1
 
-  Prefix the choice with ! to persist it to bower.json
+Prefix the choice with ! to persist it to bower.json
 
-  [?] Answer:
-  ...
-  </pre>
+[?] Answer:
+...
+{% endhighlight %}
 
 &#8230; то есть, Bower отследил, что я устанавливаю библиотеку jQuery версии 1.9.1; но при этом самая последняя версия фреймворка Foundation 5.2.3 требует для своей работы jQuery версии 2.1.1. Вот менеджер и спрашивает у меня &#8211; как быть дальше? Ай да Bower! ))
 
@@ -280,81 +312,79 @@ Npm понимает и может работать только с JavaScript-�
 
 Тогда выполняем следующую команду:
 
-<pre>$ bower install backbone --save
-  </pre>
+{% highlight powershell %}
+$ bower install backbone --save
+{% endhighlight %}
 
 &#8230; пакет backbone (и его зависимость underscore) успешно установились. Но нас интересует факт добавления записи в файл `bower.json`, поэтому смотрим:
 
-<pre>$ cat bower.json
-  {
-    "name": "bower",
-    "version": "0.0.1",
-    "dependencies": {
-      "jquery": "1.9.1",
-      "foundation": "latest",
-      "backbone": "~1.1.2"
-    }
+{% highlight powershell %}
+$ cat bower.json
+{
+"name": "bower",
+"version": "0.0.1",
+  "dependencies": {
+    "jquery": "1.9.1",
+    "foundation": "latest",
+    "backbone": "~1.1.2"
   }
-  </pre>
+}
+{% endhighlight %}
 
 ##### Автоматическое создание файла bower.json
 
 Помимо ручного создания и настройки файла `bower.json`, у данного менеджера предусмотрена команда для автоматического создания и настройки этого файла. Для этого необходимо в консоли запустить команду:
 
-<pre>$ bower init
-  </pre>
+{% highlight powershell %}
+$ bower init
+{% endhighlight %}
 
 &#8230; тогда менеджер проведет нас &#8220;за ручку&#8221; через все этапы создания настроек файла `bower.json` путем задания серии вопросов. Взгляните на примерный результат вышеназванной команды:
 
-<pre>$ cat bower.json
-  {
-    "name": "bower",
-    "version": "0.0.1",
-    "dependencies": {
-      "jquery": "1.9.1",
-      "foundation": "latest",
-      "backbone": "~1.1.2"
-    },
-    "description": "my firts project",
-    "moduleType": [
-      "amd"
-    ],
-    "authors": [
-      "zencoder"
-    ],
-    "license": "MIT",
-    "homepage": "http://localhost:7788/third/",
-    "ignore": [
-      "**/.*",
-      "node_modules",
-      "bower_components",
-      "apps",
-      "test",
-      "tests"
-    ]
-  }
-  </pre>
+{% highlight powershell %}
+$ cat bower.json
+{
+  "name": "bower",
+  "version": "0.0.1",
+  "dependencies": {
+    "jquery": "1.9.1",
+    "foundation": "latest",
+    "backbone": "~1.1.2"
+  },
+  "description": "my firts project",
+  "moduleType": [
+    "amd"
+  ],
+  "authors": [
+    "zencoder"
+  ],
+  "license": "MIT",
+  "homepage": "http://localhost:7788/third/",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "apps",
+    "test",
+    "tests"
+  ]
+}
+{% endhighlight %}
 
 ### Плагин AutoFileName в Sublime Text
 
-Редактор Sublime Text имеет неизмеримое количество полезных плагинов. Одним из них является [AutoFileName][9] &#8211; незаменимая вещь для автодополнения путей файлов в проекте. Кто имел мало-мальский опыт работы в Dreamveawer (или подобные ему IDE), могут сразу догадаться, о чем идет речь.
+Редактор Sublime Text имеет неизмеримое количество полезных плагинов. Одним из них является [AutoFileName][6] &#8211; незаменимая вещь для автодополнения путей файлов в проекте. Кто имел мало-мальский опыт работы в Dreamveawer (или подобные ему IDE), могут сразу догадаться, о чем идет речь.
 
 Поэтому данный плагин must have в коллекции под рабочую версию Sublime Text любого верстальщика.
 
 ### Заключение
 
-Завершаю обзор установки пакетов Node.js, npm и Bower под систему Linux Mint. Надеюсь, статья оказалась достаточно полной, точной и грамотной. В ее написании неоценимую помощь оказало видео &#8220;[Bower &#8211; Обзор пакетного менеджера][10]&#8221; Sorax&#8217;а.
-
-Оцените статью:  
-<span id="post-ratings-1308" class="post-ratings" data-nonce="0bc8df7488"><img id="rating_1308_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1308, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1308_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1308, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1308_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1308, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1308_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1308, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1308_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1308, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>7</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1308_text"></span></span><span id="post-ratings-1308-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
+Завершаю обзор установки пакетов Node.js, npm и Bower под систему Linux Mint. Надеюсь, статья оказалась достаточно полной, точной и грамотной. В ее написании неоценимую помощь оказало видео &#8220; [Bower &#8211; Обзор пакетного менеджера][7] &#8221; Sorax&#8217;а.
 
  [1]: http://nodejs.org/ "Node.js"
  [2]: http://nodejs.org/download/ "Download"
  [3]: https://www.npmjs.org/ "Node Packaged Modules"
  [4]: http://bower.io/ "Bower"
  [5]: http://bower.io/search/ "Search Packages"
- [6]: http://localhost:7788/third/wp-content/uploads/2014/06/st-bower_components.png
- [7]: http://localhost:7788/third/wp-content/uploads/2014/06/st-bower_configure_project.png
- [8]: http://localhost:7788/third/wp-content/uploads/2014/06/st-bower_configure_project_new_name.png
- [9]: https://sublime.wbond.net/packages/AutoFileName "AutoFileName"
- [10]: http://youtu.be/swUFx9p0M7g "Bower - Обзор пакетного менеджера"
+ [6]: https://sublime.wbond.net/packages/AutoFileName "AutoFileName"
+ [7]: http://youtu.be/swUFx9p0M7g "Bower - Обзор пакетного менеджера"
