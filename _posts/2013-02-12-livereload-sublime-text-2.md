@@ -15,7 +15,7 @@ tags: [sublime text, livereload]
 Открываем Sublime Text и переходим в меню по пути "View - Show Console" или же нажимаем сочетание клавиш `Ctrl + \`, затем копируем и вставляем нижеприведенный код в окно консоли:
 
 {% highlight powershell %}
-	import urllib2,os; pf=&#8217;Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),&#8217;wb&#8217;).write(urllib2.urlopen(&#8216;http://sublime.wbond.net/&#8217;+pf.replace(&#8216; &#8216;,&#8217;%20&#8242;)).read()); print(&#8216;Please restart Sublime Text to finish installation&#8217;)
+import urllib2,os; pf=&#8217;Package Control.sublime-package'; ipp=sublime.installed_packages_path(); os.makedirs(ipp) if not os.path.exists(ipp) else None; urllib2.install_opener(urllib2.build_opener(urllib2.ProxyHandler())); open(os.path.join(ipp,pf),&#8217;wb&#8217;).write(urllib2.urlopen(&#8216;http://sublime.wbond.net/&#8217;+pf.replace(&#8216; &#8216;,&#8217;%20&#8242;)).read()); print(&#8216;Please restart Sublime Text to finish installation&#8217;)
 {% endhighlight %}
 
 Жмем "Enter" и затем закрываем и снова открываем Sublime Text, чтобы изменения вступили в силу. Менеджер пакетов установлен.
