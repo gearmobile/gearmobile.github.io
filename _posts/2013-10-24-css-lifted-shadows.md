@@ -9,24 +9,24 @@ tags: [css, lifted shadow]
 
 Приступаем к написанию кода. Создаем элемент `p` и для него прописываем правила (*чтобы смотрелся хорошо*):
 
-{% highligh html %}
-<p class="lifted">
-  Lifted Corners
-</p>
-{% endhighligh %}
+{% highlight html %}
+  <p class="lifted">
+    Lifted Corners
+  </p>
+{% endhighlight %}
 
-{% highligh css %}
-.lifted{
-  width: 400px;
-  background-color: #fff;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-  line-height: 70px;
-  box-shadow: 0 0 40px rgba(0,0,0,0.3) inset;
-  position: relative;
-}
-{% endhighligh %}
+{% highlight css %}
+  .lifted{
+    width: 400px;
+    background-color: #fff;
+    text-align: center;
+    font-size: 18px;
+    font-weight: bold;
+    line-height: 70px;
+    box-shadow: 0 0 40px rgba(0,0,0,0.3) inset;
+    position: relative;
+  }
+{% endhighlight %}
 
 Здесь все несложно. Задаем ширину и высоту блока, а также косметическую красоту типа выравнивания по центру и придания тени для блока. Не забываем сделать блок относительно позиционированным, так как в последующих шагах нам потребуются псевдо-элементы, которые нужно будет позиционировать относительно блока-родителя.
 
@@ -34,50 +34,50 @@ tags: [css, lifted shadow]
 
 Необходимо получить две тени, одна из которых располагается под левым углом блока, а другая - под правым. Поэтому нам потребуются два псевдо-элемента - `:before` и `:after`. Создаем правила, общие для обоих псевдо-элементов:
 
-{% highligh css %}
-.lifted:before, .lifted:after{
-  content: '';
-  position: absolute;
-  width: 50%;
-  height: 10%;
-  bottom: 15px;
-  left: 4px;
-  z-index: -1;
-  -webkit-box-shadow: 0 15px 10px rgba(0,0,0,0.6);
-     -moz-box-shadow: 0 15px 10px rgba(0,0,0,0.6);
-       -o-box-shadow: 0 15px 10px rgba(0,0,0,0.6);
-          box-shadow: 0 15px 10px rgba(0,0,0,0.6);
-}
-{% endhighligh %}
+{% highlight css %}
+  .lifted:before, .lifted:after{
+    content: '';
+    position: absolute;
+    width: 50%;
+    height: 10%;
+    bottom: 15px;
+    left: 4px;
+    z-index: -1;
+    -webkit-box-shadow: 0 15px 10px rgba(0,0,0,0.6);
+       -moz-box-shadow: 0 15px 10px rgba(0,0,0,0.6);
+         -o-box-shadow: 0 15px 10px rgba(0,0,0,0.6);
+            box-shadow: 0 15px 10px rgba(0,0,0,0.6);
+  }
+{% endhighlight %}
 
 Немного "расшифруем" показанный выше код. Устанавливаем для обоих псевдо-элементов абсолютное позиционирование и координаты: от нижней границы 15px (`bottom: 15px`) и от левой границы 4px (`left: 4px;`). Ширину элемента устанавливаем в половину от ширины элемента-родителя (`width: 50%;`), высоту - 10% от ширины этого же элемента. Один интересный момент, про который не нужно забыть - "подсовываем" тени под блок-родитель с помощью свойства `z-index: -1`. Ну и создаем сами тени правилом `box-shadow: 0 15px 10px rgba(0,0,0,0.6)`, указав браузерные префиксы.
 
 Теперь у нас есть обе тени, но выглядят они как одна, так как первая накладывается на другую, ибо их координаты одинаковы. Поэтому нужно "разнести" их по разным углам, установив для псевдо-элемента `:after` иное позиционирование по оси X:
 
-{% highligh css %}
-.lifted:after{
-  left: auto;
-  right: 4px;
-}
-{% endhighligh %}
+{% highlight css %}
+  .lifted:after{
+    left: auto;
+    right: 4px;
+  }
+{% endhighlight %}
 
 Почти все готово. Осталось только сделать для обеих теней "косину", то есть развернуть их на определенное количество градусов. Левую тень развернем против часовой стрелки, чтобы ее внутренний угол оказался под блоком-родителем. Правую развернем точно также, только по часовой стрелке, чтобы ее внутренний угол также "спрятался" под блоком. Разворачивание будем выполнять с помощью правила `transform: rotate` для псевдо-элемента `:before` -
 
-{% highligh css %}
--webkit-transform: rotate(-3deg);
-   -moz-transform: rotate(-3deg);
-     -o-transform: rotate(-3deg);
-        transform: rotate(-3deg);
-{% endhighligh %}
+{% highlight css %}
+  -webkit-transform: rotate(-3deg);
+     -moz-transform: rotate(-3deg);
+       -o-transform: rotate(-3deg);
+          transform: rotate(-3deg);
+{% endhighlight %}
 
 и для псевдо-элемента `:after` -
 
-{% highligh css %}
--webkit-transform: rotate(3deg);
-   -moz-transform: rotate(3deg);
-     -o-transform: rotate(3deg);
-        transform: rotate(3deg);
-{% endhighligh %}
+{% highlight css %}
+  -webkit-transform: rotate(3deg);
+     -moz-transform: rotate(3deg);
+       -o-transform: rotate(3deg);
+          transform: rotate(3deg);
+{% endhighlight %}
 
 Результат нашей работы можно посмотреть ниже. Красиво!
 
@@ -88,10 +88,10 @@ tags: [css, lifted shadow]
 
 Можно немного усложнить задачу и сделать нижние уголки блока визуально приподнятыми. Создастся иллюзия того, что у блока завернутые вверх уголки, как у листочка бумаги. Для этого нужно вспомнить о том, что у свойства `border-radius` есть два параметра, а не одно. То есть, для одного угла можно задать два радиуса скругления, и тогда само скругление получиться не таким "правильным", но более реалистичным. Первый радиус делаем большого размера, а второй немного меньше. В результате угол получается не скругленным, а немного скошенным. В нашем примере для блока-родителя задаем радиусы скругления нижних углов следующим образом:
 
-{% highligh html %}
-border-bottom-left-radius: 40px 12px;
-border-bottom-right-radius: 40px 12px;
-{% endhighligh %}
+{% highlight html %}
+  border-bottom-left-radius: 40px 12px;
+  border-bottom-right-radius: 40px 12px;
+{% endhighlight %}
 
 Итогом получается картинка листочка бумаги с завернутыми уголками:
 
