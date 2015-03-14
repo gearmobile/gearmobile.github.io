@@ -35,9 +35,9 @@ tags: [kareebu secure, joomla]
 
 Третье поле "Mode" позволяет выбрать два режима авторизации на сайте с помощью плагина kareebu Secure. Первый (устаревший) режим "HTTP Authentication" работает следующим образом. В адресной строке браузера для входа в административную панель Joomla вводится:
 
-{% highligh html %}
+{% highlight html %}
 	http://localhost:7788/third/administartor?password
-{% endhighligh %}
+{% endhighlight %}
 
 где `password` - это тот самый пароль, который был задан во втором поле. Браузер переадресовывается в back-end сайта и открывается стандартное окно Joomla для входа в административную часть. Необходимо ввести только пароль в соответствующем поле.
 
@@ -45,15 +45,15 @@ tags: [kareebu secure, joomla]
 
 Кстати, если вы обратили внимание, стандартная строка:
 
-{% highligh html %}
+{% highlight html %}
 	http://localhost:7788/third/administrator
-{% endhighligh %}
+{% endhighlight %}
 
 для входа в административную часть Joomla после установки плагина kareebu Secure изменилась и теперь представляет из себя:
 
-{% highligh html %}
+{% highlight html %}
 	http://localhost:7788/third/administartor?password
-{% endhighligh %}
+{% endhighlight %}
 
 Об этом не стоит забывать. Теперь не зная секретного пароля, невозможно получить доступ к back-end Joomla и войти в нее. На этом обзор плагина kareebu Secure можно закончить.
 
