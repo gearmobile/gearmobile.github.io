@@ -1,22 +1,7 @@
 ---
 title: 'SVG fallback  с помощью jQuery'
 author: gearmobile
-excerpt: 'Реализация кросс-браузерной поддержки SVG с помощью плагинов под jQuery. Плагины SVGMagic и SVGeezy помогут облегчить задачу  SVG fallback на web-странице.'
 layout: post
-permalink: /svg-fallback-with-jquery/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 2
-ratings_score:
-  - 6
-ratings_average:
-  - 3
-categories:
-  - Web Development
-tags:
-  - jquery
-  - svg fallback
 ---
 Краткая статья, посвященная тому же вопросу &#8211; как реализовать кросс-браузерную поддержку SVG в браузерах. В предыдущей статье &#8220;[SVG fallback с помощью PNG][1]&#8221; было показано **четыре очень интересных способа** реализации такой задачи.
 
@@ -30,25 +15,23 @@ tags:
 
 Для реализации этого способа понадобиться библиотека Modernizr. Код реализации должен выглядеть таким образом:
 
-<pre>// Javascript
-
-if (Modernizr.svg) {
- // Supports SVG
-} else {
- // Doesn't support SVG (Fallback)
-}
- </pre>
+{% highlight javascript %}
+  if (Modernizr.svg) {
+   // Supports SVG
+  } else {
+   // Doesn't support SVG (Fallback)
+  }
+{% highlight %}
 
 Если Modernizr обнаружит, что пользовательский браузер не поддерживает SVG, то запуститься простой jQuery-скрипт, который произведет замену расширения `svg` на `png` у всех файлов-изображений:
 
-<pre>// Javascript
-
- if (!Modernizr.svg) {
+{% highlight javascript %}
+  if (!Modernizr.svg) {
     $('img[src*="svg"]').attr('src', function() {
        return $(this).attr('src').replace('.svg', '.png');
     });
- }
- </pre>
+  }
+{% highlight %}
 
 Данный способ имет точно такие же ограничения, что и скрипт из предыдущей статьи &#8211; &#8220;[SVG fallback с помощью PNG][1]&#8220;. То есть, нужно иметь два комплекта файлов &#8211; один в SVG-формате, другой в PNG-формате. Имена файлов должны быть идентичными.
 
@@ -58,12 +41,11 @@ if (Modernizr.svg) {
 
 Для работы с плагином SVGMagic достаточно установить его в проект и запустить инициализацию через jQuery:
 
-<pre>// jQuery
-
- $(document).ready(function(){
+{% highlight javascript %}
+  $(document).ready(function(){
     $('img').svgmagic();
- });
- </pre>
+  });
+{% highlight %}
 
 Работа плагина SVGMagic строится следующим образом. Проверяется возможность браузером пользователя отображения SVG-изображений. Если такой поддержки нет, то плагин выполняет полную проверку всего HTML-документа и собирает коллекцию всех URL на SVG-файлы, размещенные внутри этого документа.
 
@@ -77,10 +59,9 @@ if (Modernizr.svg) {
 
 Для работы с плагином нужно подключить его в проект и инициализировать:
 
-<pre>// jQuery
-
- svgeezy.init(false, 'png');
- </pre>
+{% highlight javascript %}
+  svgeezy.init(false, 'png');
+{% highlight %}
 
 Первый параметр плагина SVGeezy &#8220;говорит&#8221; ему &#8211; **не выполнять** или **выполнять** проверку. Если необходима проверка плагином SVGeezy браузера и замена изображений, то нужно оставить значение в `false`. Этот параметр может понадобиться в случае, когда нет необходимости в работе плагина на каких-то страницах.
 
@@ -91,9 +72,6 @@ if (Modernizr.svg) {
 * * *
 
 На этом самая интересная часть статьи &#8220;[How to fallback to PNG if SVG not supported?][4]&#8221; завершается. Как лично мне кажется, в данной статье заслуживают внимания только **первый** и **последний** способы реализации SVG fallback.
-
-Оцените статью:  
-<span id="post-ratings-2010" class="post-ratings" data-nonce="8b515de1e6"><img id="rating_2010_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(2010, 1, '1 Star');" onmouseout="ratings_off(3, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2010_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(2010, 2, '2 Stars');" onmouseout="ratings_off(3, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2010_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(2010, 3, '3 Stars');" onmouseout="ratings_off(3, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2010_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(2010, 4, '4 Stars');" onmouseout="ratings_off(3, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2010_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(2010, 5, '5 Stars');" onmouseout="ratings_off(3, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>2</strong> votes, average: <strong>3,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_2010_text"></span></span><span id="post-ratings-2010-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=2001 "SVG fallback с помощью PNG"
  [2]: https://dirkgroenen.github.io/SVGMagic/index.html "SVGMagic"

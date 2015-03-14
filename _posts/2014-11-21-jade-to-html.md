@@ -1,21 +1,7 @@
 ---
 title: 'Jade &#8211; два способа компиляции в HTML'
 author: gearmobile
-excerpt: 'Два способа настройки компиляции jade-файлов в HTML. Первый способ - с помощью родной утилиты Jade. Второй способ - с помощью плагина gulp-jade под Gulp. Настройка подсветки синтаксиса Jade в редакторе Sublime Text 3.'
 layout: post
-permalink: /jade-to-html/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 5
-ratings_score:
-  - 22
-ratings_average:
-  - 4.4
-categories:
-  - Web Development
-tags:
-  - jade
 ---
 В этом посте поделюсь своим опытом реализации задачи компиляции jade-файлов в HTML-формат.
 
@@ -51,10 +37,9 @@ tags:
 
 Инсталляция утилиты производиться **банально**:
 
-<pre>// Command Line
-
+{ highlight powershell }
   $ sudo npm install -g jade
-  </pre>
+{ endhighlight }
 
 Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации &#8211; [Jade &#8211; Command Line][4].
 
@@ -67,36 +52,31 @@ tags:
 
 Использование утилиты также является простым делом. К примеру, можно указать ей производить компиляцию всех файлов в директории `templates`:
 
-<pre>// Command Line
-
+{% highlight powershell %}
   $ jade templates
-  </pre>
+{ endhighlight }
 
 Утилита может сама создавать jade-файлы:
 
-<pre>// Command Line
-
+{% highlight powershell %}
   $ jade {foo,bar}.jade
-  </pre>
+{ endhighlight }
 
 Или же можно реализовать **два способа вывода**:
 
-<pre>// Command Line
-
+{% highlight powershell %}
   $ jade &lt; my.jade > my.html
-  </pre>
+{ endhighlight }
 
-<pre>// Command Line
-
+{% highlight powershell %}
   $ echo "h1 Jade!" | jade
-  </pre>
+{ endhighlight }
 
 Или же осуществить рендеринг двух директорий `foo` и `bar` в директорию `tmp`:
 
-<pre>// Command Line
-
+{% highlight powershell %}
   $ jade foo bar --out /tmp
-  </pre>
+{ endhighlight }
 
 ### Gulp-jade &#8211; компиляция под Gulp
 
@@ -104,15 +84,13 @@ tags:
 
 Установка плагина **стандартная**:
 
-<pre>// Command Line
-
+{% highlight powershell %}
   $ npm install --save-dev gulp-jade
-  </pre>
+{ endhighlight }
 
 Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:
 
-<pre>// JavaScript
-
+{% highlight javascript %}
   var gulp = require('gulp'),
   jade = require('gulp-jade');
 
@@ -127,14 +105,13 @@ tags:
   gulp.task('watch', function(){
    gulp.watch('./template/*.jade',['jade']);
   });
-  </pre>
+{ endhighlight }
 
 В Сети есть еще один интересный Gulp-task. Работоспособность его **не проверял**, взял как есть, для &#8211; &#8220;чтобы было&#8221;.
 
 Как говориться на [странице-оригинале][6], эта задача производит компиляцию файлов из директории `app/` в директорию `_public/`:
 
-<pre>// CoffeeScript
-
+{% highlight coffeescript %}
   jade = require 'gulp-jade'
 
   gulp.task 'jade', ->
@@ -142,14 +119,11 @@ tags:
     .pipe jade pretty: true
     .pipe gulp.dest parameters.web_path
     .on 'error', gutil.log
-  </pre>
+{ endhighlight }
 
 ### Заключение
 
 Я запомнил (*записал для себя*), а вы (*уважаемый читатель*) познакомились (*если не знали*) с двумя способами настройки компиляции jade-файлов в HTML-файлы.
-
-Оцените статью:  
-<span id="post-ratings-2022" class="post-ratings" data-nonce="d0ab5f29a6"><img id="rating_2022_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(2022, 1, '1 Star');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2022_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(2022, 2, '2 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2022_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(2022, 3, '3 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2022_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(2022, 4, '4 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2022_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(2022, 5, '5 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>5</strong> votes, average: <strong>4,40</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_2022_text"></span></span><span id="post-ratings-2022-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://jade-lang.com/ "Jade"
  [2]: http://localhost:7788/third/?p=717 "Язык Markdown - обзор редакторов для работы"

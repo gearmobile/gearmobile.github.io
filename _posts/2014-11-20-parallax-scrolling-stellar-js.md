@@ -1,21 +1,7 @@
 ---
-title: Parallax Scrolling с помощью Stellar.js
+title: 'Parallax Scrolling с помощью Stellar.js'
 author: gearmobile
-excerpt: 'Создание на web-странице эффекта parallax scrolling  с помощью плагина Stellar.js. Это надежный и простой в использовании плагин под jQuery с интересными настройками.'
 layout: post
-permalink: /parallax-scrolling-stellar-js/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 6
-ratings_score:
-  - 30
-ratings_average:
-  - 5
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - stellar.js
 ---
 > Отличный пример создания parallax scrolling с помощью Stellar.js. Оригинал статьи размещен здесь &#8211; [An Introduction to Parallax Scrolling Using Stellar.js][1].
 
@@ -39,29 +25,25 @@ tags:
 
 Начать работать с плагином Stellar.js очень просто. Для начала нужно **скачать** этот плагин и **подключить** к странице. Получить плагин Stellar.js можно двумя способами &#8211; из [Git-репозитория][6] или с помощью менеджера пакетов **Bower**. Если остановится на использовании Bower, то в консоли нужно набрать такую команду:
 
-<pre>// Command Line
-
+{% highlight powershell %}
   bower install jquery.stellar
-  </pre>
+{% endhighlight %}
 
-Когда плагин Stellar.js получен любым из вышеописанных способов, необходимо подключить его к странице как обычно, с помощью тега `
-  
-  </pre>
+Когда плагин Stellar.js получен любым из вышеописанных способов, необходимо подключить его к странице как обычно.
+
 <p>После подключения плагина Stellar.js все готово для того, чтобы применить эффект parallax scrolling на странице. Этот плагин позволяет применить данный эффект к любому scrolling-элементу на странице, будь то объект <code>window` или любой другой. Для этого нужно выполнить выборку нужного элемента с помощью jQuery, а затем применить к выбранному элементу метод `stellar()`.
 
 Самый простой пример применения плагина Stellar.js к объекту показан ниже:
 
-<pre>// JavaScript
-
+{% highlight javascript %}
   $('#someElement').stellar();
-  </pre>
+{% endhighlight %}
 
 Для объекта `window` можно использовать и более краткий синтаксис вышеприведенного примера:
 
-<pre>// JavaScript
-
+{% highlight javascript %}
   $.stellar();
-  </pre>
+{% endhighlight %}
 
 В этом коде производится поиск фоновых изображений или элементов, к которым применяется эффект parallax; и для этих элементов выполняется пересчет их расположения на web-странице при ее прокрутке.
 
@@ -94,64 +76,49 @@ tags:
 
 В этом разделе статьи мы создадим пример кода, в котором применим плагин Stellar.js и настроим его с помощью параметров, рассмотренных ранее. Первым делом нам понадобиться HTML-разметка. Для этого создадим шесть блоков `div`, внутри которых будет содержаться некоторый текст:
 
-<pre>// HTML
-
-  
-
+{% highlight html %}
 <div class="content" id="content1">
   <p>
     text here
   </p>
-    
 </div>
-  
 
 <div class="content" id="content2">
   <p>
     text here
   </p>
-    
 </div>
-  
 
 <div class="content" id="content3" data-stellar-background-ratio="0.5">
   <p>
     text here
   </p>
-    
 </div>
-  
 
 <div class="content" id="content4" data-stellar-background-ratio="0.5">
   <p>
     text here
   </p>
-    
 </div>
-  
 
 <div class="content" id="content5" data-stellar-background-ratio="0.5">
   <p>
     text here
   </p>
-    
 </div>
-  
 
 <div class="content" id="content6" data-stellar-background-ratio="0.5">
   <p>
     text here
   </p>
-    
 </div>
-  </pre>
+{% endhighlight %}
 
 Для представленной выше HTML-разметки необходимо написать некоторые CSS-стили для задания фоновых изображений. В нашем примере будут использоваться три изображения, при этом каждое из них будет использоваться дважды. Так как к последним трем блокам `div` применен атрибут `data-stellar-background-ratio`, то в CSS-стилях также необходимо прописать правило `background-attachment: fixed;`.
 
 Финальный вариант CSS-кода будет выглядеть таким образом:
 
-<pre>// SCSS
-
+{% highlight css %}
   @import "compass";
   @import "compass/reset";
 
@@ -199,17 +166,18 @@ tags:
   #content6 {
     background-image: url("http://www.zeus.aegee.org/magazine/wp-content/uploads/napoli-golfo-vesuvio.jpg");
   }
-  </pre>
+{% endhighlight %}
 
 Последний шаг, который нужно выполнить, это запустить эффект, вызвав метод `stellar()`. Этому методу также передадим **несколько аргументов**:
 
-<pre>// JavaScript
-
+{% highlight javascript %}
   $.stellar({
     horizontalScrolling: false,
     responsive: true
   });
-  </pre><figure id="attachment_2031" style="width: 600px;" class="wp-caption aligncenter">
+{% endhighlight %}
+
+<figure id="attachment_2031" style="width: 600px;" class="wp-caption aligncenter">
 
 [<img src="http://localhost:7788/third/wp-content/uploads/2014/11/stellar-600x382.png" alt="Stellar.js - parallax scrolling with jQuery" width="600" height="382" class="size-medium wp-image-2031" />][9]<figcaption class="wp-caption-text">Stellar.js - parallax scrolling with jQuery</figcaption></figure> 
 
@@ -220,9 +188,6 @@ tags:
 В данной статье был рассмотрен плагин Stellar.js для создания эффекта parallax на web-странице. Мною не были рассмотрены **все настройки и возможности этого плагина**. Но целью этой статьи было заинтересовать читателей плагином Stellar.js для того, чтобы продолжить его изучение самостоятельно.
 
 Что вы думаете о плагине Stellar.js? Вы слышали о таком или же используете его давно?
-
-Оцените статью:  
-<span id="post-ratings-2028" class="post-ratings" data-nonce="40fde9da69"><img id="rating_2028_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(2028, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2028_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(2028, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2028_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(2028, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2028_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(2028, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2028_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(2028, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>6</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_2028_text"></span></span><span id="post-ratings-2028-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://www.sitepoint.com/introduction-parallax-scrolling-using-stellar-js/ "An Introduction to Parallax Scrolling Using Stellar.js"
  [2]: http://community.saucony.com/kinvara3/ "Saucony Kinavara 3"

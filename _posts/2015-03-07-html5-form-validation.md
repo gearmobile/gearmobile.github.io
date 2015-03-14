@@ -1,5 +1,5 @@
 ---
-title: HTML5 Form Validation
+title: 'HTML5 Form Validation'
 author: gearmobile
 layout: post
 ---
