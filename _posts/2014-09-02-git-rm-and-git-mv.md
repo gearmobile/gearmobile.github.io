@@ -1,23 +1,7 @@
 ---
 title: 'git rm и git mv &#8211; удаление и переименование в Git'
 author: gearmobile
-excerpt: Команды служат git rm и git mv для операций с файлами, находящимися под контролем Git. С их помощью выполняется перемещение, переименование, удаление файлов. Команда git rm имеет пару интересных ключей, позволяющих производить выборочное удаление файлов.
 layout: post
-permalink: /git-rm-and-git-mv/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 1
-ratings_score:
-  - 5
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - git
-  - git mv
-  - git rm
 ---
 Еще один важный практический вопрос при работе с Git &#8211; это операции с файлами. В частности, это операции удаления и переименования файлов. В системе [Git][1] имеются специальные команды, которые очень похожи на консольные команды `rm` и `mv` в Linux/Mac OS. Но для Git они выглядят несколько иначе: `git rm` &#8211; для удаления файлов и `git mv` &#8211; для переименования файлов. Ниже я рассмотрю обе эти комадны более подробно.
 
@@ -91,9 +75,6 @@ tags:
 [<img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-mv_index-600x304.png" alt="Команда git mv - переименование файла в Git" width="600" height="304" class="size-medium wp-image-1760" />][9]<figcaption class="wp-caption-text">Команда git mv &#8211; переименование файла в Git</figcaption></figure> 
 
 Вот и все несложные операции по перемещению\переименованию или удалению файлов с помощью команд `git rm` и `git mv`, под всевидящим оком Git.
-
-Оцените статью:  
-<span id="post-ratings-1751" class="post-ratings" data-nonce="d491cb3f4c"><img id="rating_1751_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1751, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1751_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1751, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1751_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1751, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1751_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1751, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1751_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1751, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>1</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1751_text"></span></span><span id="post-ratings-1751-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://git-scm.com/ "Git"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/09/git-rm.png

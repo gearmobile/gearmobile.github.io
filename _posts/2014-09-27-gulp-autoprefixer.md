@@ -1,31 +1,16 @@
 ---
 title: Gulp-autoprefixer, gulp-rename, gulp-notify
 author: gearmobile
-excerpt: 'Обзор установки трех плагинов под Gulp - gulp-rename, gulp-notify, gulp-autoprefixer. Подробное описание настройки и работы с плагином gulp-autoprefixer.'
 layout: post
-permalink: /gulp-autoprefixer/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 6
-ratings_score:
-  - 30
-ratings_average:
-  - 5
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp-autoprefixer
-  - gulp-notify
-  - gulp-rename
 ---
-В статье рассмотрены три модуля для работы под Gulp &#8211; `gulp-rename`, `gulp-notify`, `gulp-autoprefixer`. Все три модуля слишком маленькие и слишком простые, чтобы их рассматривать в отдельности. Все приведенные в статье примеры являются **базовыми** и служат задаче показать **принцип работы** каждого из модулей.
+> В статье рассмотрены три модуля для работы под Gulp &#8211; `gulp-rename`, `gulp-notify`, `gulp-autoprefixer`. Все три модуля слишком маленькие и слишком простые, чтобы их рассматривать в отдельности. Все приведенные в статье примеры являются **базовыми** и служат задаче показать **принцип работы** каждого из модулей.
 
 ### Подготовка проекта
 
 Подготовим проект, создав его базовую основу. Первым файлом создадим файл `package.json` и наполним его таким содержимым:
 
-<pre>$ touch package.json
+<pre>
+$ touch package.json
   $ cat package.json
   {
     "name" : "three_modules",
@@ -35,7 +20,8 @@ tags:
 
 Затем установим *локально* Gulp.js и укажем npm, чтобы он внес этот пакет в качестве зависимостей в файл `package.json`:
 
-<pre>$ sudo npm install --save-dev gulp
+<pre>
+$ sudo npm install --save-dev gulp
   $ cat package.json
   {
     "name": "four_modules",
@@ -48,7 +34,8 @@ tags:
 
 Создаем js-файл, в котором будем прописывать задачи для Gulp:
 
-<pre>$ touch gulpfile.js
+<pre>
+$ touch gulpfile.js
   $ cat gulpfile.js
   var gulp = require('gulp');
 
@@ -64,7 +51,8 @@ tags:
 
 Задача модуля `gulp-rename` предназначена для одной маленькой цели &#8211; *переименования файлов*. Установим модуль с указанием зависимостей:
 
-<pre>$ sudo npm install --save-dev gulp-rename
+<pre>
+$ sudo npm install --save-dev gulp-rename
   $ cat package.json
   {
     "name": "four_modules",
@@ -78,7 +66,8 @@ tags:
 
 И создадим задачу в файле `gulpfile.js` для установленного модуля `gulp-rename`:
 
-<pre>$ cat gulpfile.js
+<pre>
+$ cat gulpfile.js
   var gulp = require('gulp'),
       rename = require('gulp-rename');
 
@@ -94,7 +83,8 @@ tags:
 
 Запускаю задачу `rename` в консоли и вижу, что процесс прошел успешно:
 
-<pre>$ gulp rename
+<pre>
+$ gulp rename
   Using gulpfile /media/aaron/application/develop/training/gulp_connect/gulpfile.js
   Starting 'rename'...
   Finished 'rename' after 11 ms
@@ -102,7 +92,8 @@ tags:
 
 Проверяю, &ldquo;положил&rdquo; ли Gulp переименованный файл `pretty_styles.css` по пути `build/css/`:
 
-<pre>$ ls build/css/
+<pre>
+$ ls build/css/
   pretty_styles.css
 </pre>
 
@@ -114,7 +105,8 @@ tags:
 
 Установка модуля `gulp-notify` выполняется как обычно:
 
-<pre>$ sudo npm install --save-dev gulp-notify
+<pre>
+$ sudo npm install --save-dev gulp-notify
   $ cat package.json
   {
     "name": "four_modules",
@@ -129,9 +121,10 @@ tags:
 
 Затем создаю задачу `notify`, которая будет отслеживать все изменения в файле `css/style.css`. Задача информирования об изменениях подразумевает ее использование в *фоновом режиме*. Поэтому, создаю еще одну задачу для мониторинга &#8211; `watch`, которую помещаю в дефолтную задачу `default`. В общем случае файл `gulpgile.js` будет выглядеть следующим образом:
 
-<pre>var gulp = require('gulp'),
-      rename = require('gulp-rename'),
-      notify = require('gulp-notify');
+<pre>
+var gulp = require('gulp'),
+  rename = require('gulp-rename'),
+  notify = require('gulp-notify');
 
   // Default Task
   gulp.task('default', ['watch']);
@@ -150,7 +143,8 @@ tags:
 
 В консоли запускаю Gulp с дефолтной задачей `default`:
 
-<pre>$ gulp
+<pre>
+$ gulp
   Using gulpfile /media/aaron/application/develop/training/gulp_connect/gulpfile.js
   Starting 'watch'...
   Finished 'watch' after 8.79 ms
@@ -179,9 +173,9 @@ tags:
 Помимо этого, модуль `gulp-autoprefixer` умеет **красиво форматировать** CSS-свойства с браузерными префиксами в виде [визульного каскада][6]:
 
 <pre>a {
-    -webkit-box-sizing: border-box;
-       -moz-box-sizing: border-box;
-            box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
   }
 </pre>
 
@@ -189,7 +183,8 @@ tags:
 
 Вступление было достаточно долгим и подробным &#8211; это потому, что модуль `gulp-autoprefixer` интересный и нужный. Приступаю к его установке:
 
-<pre>$ sudo npm install --save-dev gulp-autoprefixer
+<pre>
+$ sudo npm install --save-dev gulp-autoprefixer
   $ cat package.json
   {
     "name": "four_modules",
@@ -205,8 +200,9 @@ tags:
 
 Создаю задачу `autoprefixer` с описанием того, что нужно отслеживать изменения в файле `css/style.css` и при добавлении в него CSS3-свойств преобразовывать их в свойства с браузерными префиксами. При этом учитывать только две последние версии браузеров и результат помещать по пути `build/css/`.
 
-<pre>var gulp = require('gulp'),
-      autoprefixer = require('gulp-autoprefixer');
+<pre>
+var gulp = require('gulp'),
+  autoprefixer = require('gulp-autoprefixer');
 
   // Autoprefixer Task
   gulp.task('autoprefixer', function(){
@@ -220,22 +216,24 @@ tags:
 
 Внесу в файл `css/style.css` CSS3-свойство `transform`, которое заведомо нужно использовать с префиксами (для этого я заранее &ldquo;[подглядел][7]&rdquo; его на &ldquo;Can I Use&rdquo;):
 
-<pre>.block {
-    width: 100px;
-    height: 100px;
-    background-color: #778899;
-    transform: rotate(7deg);
+<pre>
+.block {
+  width: 100px;
+  height: 100px;
+  background-color: #778899;
+  transform: rotate(7deg);
   }
 </pre>
 
 Запускаю задачу `autoprefixer` и смотрю результат:
 
-<pre>.block {
-    width: 100px;
-    height: 100px;
-    background-color: #778899;
-    -webkit-transform: rotate(7deg);
-            transform: rotate(7deg);
+<pre>
+.block {
+  width: 100px;
+  height: 100px;
+  background-color: #778899;
+  -webkit-transform: rotate(7deg);
+          transform: rotate(7deg);
   }
 </pre>
 
@@ -243,7 +241,8 @@ tags:
 
 Можно немного &ldquo;углубить&rdquo; условие и &ldquo;опуститься&rdquo; до третьей версии всех браузеров:
 
-<pre>// Autoprefixer Task
+<pre>
+// Autoprefixer Task
   gulp.task('autoprefixer', function(){
     gulp.src('css/style.css')
     .pipe(autoprefixer({
@@ -255,20 +254,18 @@ tags:
 
 &hellip; и посмотреть результат:
 
-<pre>.block {
-    width: 100px;
-    height: 100px;
-    background-color: #778899;
-    -webkit-transform: rotate(7deg);
-        -ms-transform: rotate(7deg);
-            transform: rotate(7deg);
+<pre>
+.block {
+  width: 100px;
+  height: 100px;
+  background-color: #778899;
+  -webkit-transform: rotate(7deg);
+      -ms-transform: rotate(7deg);
+          transform: rotate(7deg);
   }
 </pre>
 
 Вывод в `build/css/style.css` красивый благодаря `cascade`, который можно и отключить, установив `cascade: false`.
-
-На этом все. Оцените статью:  
-<span id="post-ratings-1805" class="post-ratings" data-nonce="8f28a4b547"><img id="rating_1805_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1805, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1805_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1805, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1805_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1805, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1805_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1805, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1805_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1805, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>6</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1805_text"></span></span><span id="post-ratings-1805-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: https://www.npmjs.org/package/gulp-rename "gulp-rename"
  [2]: https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js "gulp-notify"

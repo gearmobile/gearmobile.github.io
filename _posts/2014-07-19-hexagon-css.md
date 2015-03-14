@@ -1,22 +1,7 @@
 ---
 title: Hexagon на CSS
 author: gearmobile
-excerpt: 'Три метода создания hexagon на чистом CSS: с помощью треугольников, псевдо-классов :before и :after, online-генератора. Обзор принципа построения  hexagon.'
 layout: post
-permalink: /hexagon-%d0%bd%d0%b0-css/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 4
-ratings_score:
-  - 20
-ratings_average:
-  - 5
-categories:
-  - Статьи по CSS
-tags:
-  - css
-  - hexagon
 ---
 В этой статье будет детально рассмотрен вопрос создания фигуры шестиугольника (hexagon) на CSS. Материал целиком основан на замечательной статье [CSS Hexagon Tutorial][1]. В Сети имеется хорошая статья по примерам создания различных видов фигур на CSS, и располагается эта статья на блоге известного CSS-гуру Chris Coyier &#8211; [Shapes of CSS][2]. Среди прочих фигур там есть и желанный шестиугольник `hexagon` с готовым CSS-кодом &#8211; что называется, &#8220;бери и пользуйся&#8221;. Но ведь такой подход для нас не интересен, правда? Это потом, когда мы изучим вопрос создания шестиугольника, мы будем делать так &#8211; нашел готовый код, скопировал к себе, подредактировал и готово! А сейчас мы пошагово пройдем весь путь, от начала и до конца &#8211; это даст нам понимание процесса.
 
@@ -635,9 +620,6 @@ tags:
 Адрес сервиса располагается здесь &#8211; [CSS Hexagon][21]. Помимо создания самого hexagon, там можно &#8220;прикрутить&#8221; к фигуре тень и границу, что просто великолепно!
 
 Все &#8211; на этом обзор закончен.
-
-Оцените статью:  
-<span id="post-ratings-1550" class="post-ratings" data-nonce="c6b5a496c7"><img id="rating_1550_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1550, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1550_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1550, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1550_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1550, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1550_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1550, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1550_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1550, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1550_text"></span></span><span id="post-ratings-1550-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://jtauber.github.io/articles/css-hexagon.html "CSS Hexagon Tutorial"
  [2]: http://css-tricks.com/examples/ShapesOfCSS/ "Shapes of CSS"

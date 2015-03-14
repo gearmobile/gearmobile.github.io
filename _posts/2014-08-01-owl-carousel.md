@@ -1,21 +1,7 @@
 ---
 title: Слайдер Owl Carousel
 author: gearmobile
-excerpt: 'Встретил на Google+ упоминание о плагине под jQuery для создания карусели - OWL Carousel. Попробовал с ним разобраться и посмотреть примеры создания слайдеров на официальной странице. Могу сказать, что я впечатлен данным скриптом и его возможностями. Слайдер адаптивный, имеет множество настроек, обладает хорошими эффектами "из коробки". Мое личное мнение - отличный выбор для применения на практике!'
 layout: post
-permalink: /owl-carousel/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 4
-ratings_score:
-  - 17
-ratings_average:
-  - 4.25
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - owlcarousel
 ---
 Встретил на Google+ упоминание о плагине под jQuery для создания карусели &#8211; OWL Carousel. Попробовал с ним разобраться и посмотреть примеры создания слайдеров на официальной странице. Могу сказать, что я впечатлен данным скриптом и его возможностями. Слайдер адаптивный, имеет множество настроек, обладает хорошими эффектами &#8220;из коробки&#8221;. Мое личное мнение &#8211; отличный выбор для применения на практике!
 
@@ -151,9 +137,6 @@ HTML-разметка и подключение скрипта будут выг
 ### Заключение
 
 Плагин OWL Carousel мне понравился и я буду стараться применять его на практике, при верстке страниц.
-
-Оцените статью:  
-<span id="post-ratings-1577" class="post-ratings" data-nonce="ec34cba003"><img id="rating_1577_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1577, 1, '1 Star');" onmouseout="ratings_off(4.3, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1577_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1577, 2, '2 Stars');" onmouseout="ratings_off(4.3, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1577_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1577, 3, '3 Stars');" onmouseout="ratings_off(4.3, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1577_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1577, 4, '4 Stars');" onmouseout="ratings_off(4.3, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1577_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1577, 5, '5 Stars');" onmouseout="ratings_off(4.3, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>4,25</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1577_text"></span></span><span id="post-ratings-1577-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://owlgraphic.com/owlcarousel/ "OWL Carousel"
  [2]: http://owlgraphic.com/owlcarousel/#demo "Demo"

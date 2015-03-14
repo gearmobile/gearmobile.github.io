@@ -1,22 +1,7 @@
 ---
 title: 'Spectacle &#8211; менеджер окон Mac OS X'
 author: gearmobile
-excerpt: 'Spectacle - бесплатное приложение под Mac OS X для удобной организации окон на экране монитора. Spectacle помогает ускорить и облегчить работу в системе Mac. Обладает достаточно большим набором возможностей для управлениями окнами приложений. Из разряда must have в системе.'
 layout: post
-permalink: /spectacle-window-management-mac-os-x/
-ratings_users:
-  - 2
-ratings_score:
-  - 10
-ratings_average:
-  - 5
-cleanretina_sidebarlayout:
-  - default
-categories:
-  - Mac OS X
-tags:
-  - mac os x
-  - spectacle
 ---
 С недавних пор (чуть больше двух недель) я стал счастливым обладателем Mac OS X. Если быть точнее &#8211; это iMac (21.5-inch, Mid 2014). Неделю чувствовал себя не своей &#8220;тарелке&#8221; под ним, еще неделю привыкал. Потом все уже пошло по накатанной &#8211; система хороша, ничего не скажешь. Для работы &#8211; лучше не придумаешь.
 
@@ -86,9 +71,6 @@ tags:
 Программа Spectacle мне понравилась однозначно. Первый фактор &#8211; она бесплатна. Второй &#8211; она (*можно сказать*) незаменима для удобной настройки workflow. Первое упоминание об этой программе я увидел у Sorax. До этого пытался &#8220;подружиться&#8221; с Divvy, которую рекомендовали ребята из Loftblog. Однако, как-то не получилось у меня с ней работать.
 
 А вот **Spectacle** понравилась с первого взгляда. Как мне кажется, из программа разряда must have.
-
-Оцените статью:  
-<span id="post-ratings-1917" class="post-ratings" data-nonce="a6660aebfb"><img id="rating_1917_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1917, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1917_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1917, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1917_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1917, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1917_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1917, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1917_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1917, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>2</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1917_text"></span></span><span id="post-ratings-1917-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://mizage.com/divvy/ "Divvy"
  [2]: https://itunes.apple.com/en/app/bettersnaptool/id417375580?mt=12 "BetterSnapTool"

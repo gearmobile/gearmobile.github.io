@@ -1,22 +1,7 @@
 ---
 title: 'Gulp &#8211; установка и запуск плагина gulp-uglify'
 author: gearmobile
-excerpt: Установка и создание задачи под Gulp на примере одного из его плагинов gulp-uglify. Произведем установку плагина, настройку именованной задачи и ее запуск.
 layout: post
-permalink: /gulp-install-and-launch-gulp-uglify/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 7
-ratings_score:
-  - 35
-ratings_average:
-  - 5
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
-  - gulp-uglify
 ---
 В предыдущей статье [Gulp &#8211; знакомство и первый запуск][1] мы познакомились с установкой менеджера Gulp и запуском первой задачи под него. В этой статье мы перейдем к еще более интересному материалу, в котором узнаем, как **устанавливать и запускать плагины под Gulp** на примере одного из них &#8211; [gulp-uglify][2].
 
@@ -117,9 +102,6 @@ tags:
   * **gulp-imagemin** // сжатие изображений в Gulp
   * **gulp-rename** // переименование файлов в Gulp
   * **gulp-plumber** // настройка обработки ошибок в Gulp
-
-Оцените статью:  
-<span id="post-ratings-1603" class="post-ratings" data-nonce="079cfa562b"><img id="rating_1603_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1603, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1603_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1603, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1603_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1603, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1603_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1603, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1603_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1603, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>7</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1603_text"></span></span><span id="post-ratings-1603-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=1588 "Gulp - знакомство и первый запуск"
  [2]: https://www.npmjs.org/package/gulp-uglify/ "gulp-uglify"

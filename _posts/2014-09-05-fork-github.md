@@ -1,22 +1,7 @@
 ---
 title: 'Fork на GitHub &#8211; что это такое'
 author: gearmobile
-excerpt: 'Fork на GitHub - это тоже, что и branch в Git. Fork предназначен для создания копии репозитория на GitHub. Измененный fork можно отправить как pull request.'
 layout: post
-permalink: /fork-github/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 6
-ratings_score:
-  - 30
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - fork
-  - github
 ---
 Продолжаю увлекательное знакомство новичка с сервисом GitHub и с системой контроля версий Git. Так как имею учетную запись на GitHub, которую регулярно использую, то у меня возник вопрос, который не мог не возникнуть, рано или поздно. Касается он такой темы, как fork.
 
@@ -52,9 +37,6 @@ Fork &#8211; это вcего навсего **копия репозитория
 Если изменения мне покажутся существенными, то я могу отправить пользователю akella запрос на слияние (pull request) моего репозитория **gearmobile/sass** с его репозиторием **akella/sass**. Если пользователь akella посчитает эти изменения действительно существенными (с его точки зрения), то он может и принять мой запрос.
 
 Я также могу удалить репозиторий **gearmobile/sass**, если в нем отпадет надобность. Надеюсь, вы хорошо помните, как удалять репозиторий на GitHub &#8211; [Как удалить репозиторий на GitHub][6].
-
-Оцените статью:  
-<span id="post-ratings-1767" class="post-ratings" data-nonce="4dcd968bbe"><img id="rating_1767_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1767, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1767_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1767, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1767_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1767, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1767_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1767, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1767_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1767, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>6</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1767_text"></span></span><span id="post-ratings-1767-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: https://help.github.com/articles/fork-a-repo "Fork A Repo"
  [2]: https://github.com/octocat/Spoon-Knife "Spoon-Knife"

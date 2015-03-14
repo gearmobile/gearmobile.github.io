@@ -1,22 +1,7 @@
 ---
 title: 'Gulp &#8211; мониторинг изменений gulp.watch'
 author: gearmobile
-excerpt: Создание задачи мониторинга в Gulp с помощью встроенной функции gulp.watch. Благодаря gulp.watch отслеживаются изменения и запускаются задачи для обработки.
 layout: post
-permalink: /gulp-watch/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 4
-ratings_score:
-  - 16
-ratings_average:
-  - 4
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
-  - gulp watch
 ---
 В Gulp имеется встроенная функция `gulp.watch` для отслеживания изменений в любом из файлов проекта. Это очень удобно в работе, так как отпадает необходимость вручную запускать определенную задачу каждый раз, когда нужно зафиксировать эти изменения. В [предыдущих статьях][1] мы так и делали &#8211; запускали вручную на выполнение задачи по умолчанию или же определенную именованную задачу.
 
@@ -158,9 +143,6 @@ Gulp &#8220;повис&#8221; в фоновом режиме и отслежив
 </pre>
 
 Отлично! Мы изучили вопрос создания задачи мониторинга в Gulp с помощью функции `gulp.watch`!
-
-Оцените статью:  
-<span id="post-ratings-1626" class="post-ratings" data-nonce="39f22829a3"><img id="rating_1626_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1626, 1, '1 Star');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1626_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1626, 2, '2 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1626_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1626, 3, '3 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1626_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1626, 4, '4 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1626_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1626, 5, '5 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>4,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1626_text"></span></span><span id="post-ratings-1626-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=1622
  [2]: http://localhost:7788/third/wp-content/uploads/2014/08/gulp.png

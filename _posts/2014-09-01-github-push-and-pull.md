@@ -1,23 +1,7 @@
 ---
 title: 'GitHub &#8211; команды push и pull'
 author: gearmobile
-excerpt: 'Работа с удаленным репозиторием на GitHub - возможность получения patch с помощью команды pull; возможность помещение patch на GitHub с помощью команды push. Также рассмотрено различие между командами pull и fetch.'
 layout: post
-permalink: /github-push-and-pull/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 0
-ratings_score:
-  - 0
-ratings_average:
-  - 0
-categories:
-  - Кодинг
-tags:
-  - github
-  - pull
-  - push
 ---
 Продолжаю открывать для себя возможности системы Git и сервиса GitHub. Уже сейчас, обладая минимальными базовыми знаниями Git и владея учетной записью на сервере GitHub, я не представляю, как я мог жить раньше без обоих этих вещей. Это действительно удобно и надежно! Благодаря им я знаю, что у меня никогда и ничто не потеряется; и все, что нужно &#8211; у меня всегда под рукой. На работе поработал над чем-либо &#8211; отправил на GitHub; домой пришел &#8211; &#8220;стянул&#8221; наработки с GitHub и продолжил работу с прерванного места.
 
@@ -100,9 +84,6 @@ tags:
 Производить слияние и разрешение конфликтов при слиянии я еще не умею, поэтому вопрос, как произвести слияние ветвей после команды `git fetch` я опущу в данной статье.
 
 Вернувшись к вышесказанному, можно сделать вывод, что команда `pull` **более универсальная**, нежели команда `fetch`. Именно команду `pull` имеет смысл применять в практической работе.
-
-Оцените статью:  
-<span id="post-ratings-1746" class="post-ratings" data-nonce="cf9896af04"><img id="rating_1746_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1746, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1746_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1746, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1746_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1746, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1746_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1746, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1746_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1746, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_1746_text"></span></span><span id="post-ratings-1746-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=1730 "GitHub и Git - создание и работа с репозиторием"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/08/github-pull.png

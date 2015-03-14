@@ -1,22 +1,7 @@
 ---
 title: Pattern в качестве фонового изображения
 author: gearmobile
-excerpt: Использование pattern в Photoshop для правильного вырезания фонового изображения из psd-макета. Три способа вырезания изображения из макета в качестве фоновой картинки для HTML-шаблона.
 layout: post
-permalink: /pattern-photoshop/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 3
-ratings_score:
-  - 12
-ratings_average:
-  - 4
-categories:
-  - Photoshop для кодера
-tags:
-  - pattern
-  - photoshop
 ---
 Недавно познакомился с **тремя способами вырезания фонового изображения** на макете. До недавнего времени знал о существовании только одного способа, с которым познакомился еще на сайте htmlbook.ru.
 
@@ -78,17 +63,23 @@ tags:
 
 В этой палитре нам необходимо **добавить** выбранный нами pattern в свою коллекцию паттернов. Это нужно для того, чтобы потом использовать этот pattern в своих &#8220;коварных&#8221; целях. Для этой цели кликаем на круглой кнопочке со стрелкой &#8211; *далее можно разобраться, что и как добавлять*.
 
-Закрываем окно &#8220;Стиль слоя&#8221; и создаем новый документ (Ctrl+N) с размерами, как у нашего pattern&#8217;а:<figure id="attachment_1870" style="width: 600px;" class="wp-caption aligncenter">
+Закрываем окно &#8220;Стиль слоя&#8221; и создаем новый документ (Ctrl+N) с размерами, как у нашего pattern&#8217;а:
+
+<figure id="attachment_1870" style="width: 600px;" class="wp-caption aligncenter">
 
 [<img src="http://localhost:7788/third/wp-content/uploads/2014/10/new_image-600x284.png" alt="Новое изображение с размерами pattern&#039;а" width="600" height="284" class="size-medium wp-image-1870" />][6]<figcaption class="wp-caption-text">Новое изображение с размерами pattern&#8217;а</figcaption></figure> 
 
 Здесь самое главное &#8211; правильно **указать размеры** будущего документа (как правило, все pattern&#8217;ы имеют форму квадрата), все остальное для нас неважно. Создаем новый документ.
 
-Затем в меню Photoshop переходим по пути &#8220;Слои&#8221; &#8211; &#8220;Новый слой-заливка&#8221; &#8211; &#8220;Узор &#8230;&#8221;. И в открывшемся окошке &#8220;Новый слой&#8221; просто кликаем по кнопке ОК, все остальное для нас опять неважно:<figure id="attachment_1871" style="width: 600px;" class="wp-caption aligncenter">
+Затем в меню Photoshop переходим по пути &#8220;Слои&#8221; &#8211; &#8220;Новый слой-заливка&#8221; &#8211; &#8220;Узор &#8230;&#8221;. И в открывшемся окошке &#8220;Новый слой&#8221; просто кликаем по кнопке ОК, все остальное для нас опять неважно:
+
+<figure id="attachment_1871" style="width: 600px;" class="wp-caption aligncenter">
 
 [<img src="http://localhost:7788/third/wp-content/uploads/2014/10/new_layer_pattern-600x151.png" alt="Заливка нового слоя с помощью pattern&#039;а" width="600" height="151" class="size-medium wp-image-1871" />][7]<figcaption class="wp-caption-text">Заливка нового слоя с помощью pattern&#8217;а</figcaption></figure> 
 
-Откроется еще одно окошко, в котором выбираем нужный нам pattern:<figure id="attachment_1872" style="width: 600px;" class="wp-caption aligncenter">
+Откроется еще одно окошко, в котором выбираем нужный нам pattern:
+
+<figure id="attachment_1872" style="width: 600px;" class="wp-caption aligncenter">
 
 [<img src="http://localhost:7788/third/wp-content/uploads/2014/10/select_pattern_for_layer-600x308.png" alt="Выбор pattern&#039;а для заливки слоя" width="600" height="308" class="size-medium wp-image-1872" />][8]<figcaption class="wp-caption-text">Выбор pattern&#8217;а для заливки слоя</figcaption></figure> 
 
@@ -110,9 +101,6 @@ tags:
 ### Заключение
 
 Вот мы и познакомились с **тремя способами** вырезания фонового изображения из psd-макета.
-
-Оцените статью:  
-<span id="post-ratings-1863" class="post-ratings" data-nonce="055a5b86f4"><img id="rating_1863_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1863, 1, '1 Star');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1863_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1863, 2, '2 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1863_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1863, 3, '3 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1863_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1863, 4, '4 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1863_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1863, 5, '5 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>4,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1863_text"></span></span><span id="post-ratings-1863-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/wp-content/uploads/2014/10/background_page.png
  [2]: http://nicothin.ru/

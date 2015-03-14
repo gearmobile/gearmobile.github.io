@@ -1,22 +1,7 @@
 ---
 title: 'ExFAT - файловая система для Mac OS X и Linux'
 author: gearmobile
-excerpt: 'ExFAT - универсальная файловая система для флеш-накопителей под Mac OS X. Идеальное решение для одновременной совместимости флеш-накопителя под Mac OS X, Linux и Windows. Эта система имеет нативную поддержку с Windows и Mac OS X. Поддержка в Linux решается одной строкой в консоли. Система поддерживает диски размером больше 4Gb и создана специально для флеш-накопителей. Умеет бережно "обращаться" с флешками.'
 layout: post
-permalink: /exfat-mac-os-linux/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 2
-ratings_score:
-  - 10
-ratings_average:
-  - 5
-categories:
-  - Mac OS X
-tags:
-  - exfat
-  - mac os x
 ---
 > Тема достаточно освещенная, но для меня, как новичка в мире Mac OS X - очередное маленькое открытие. Вопрос связан с одной небольшой проблемой - выбором файловой системы для флешек.
 
@@ -35,7 +20,7 @@ tags:
 Для включения поддержки файловой системы в Linux нужно установить пару пакетов - `exfat-fuse` и `exfat-utils`:
 
 {% highlight powershell %}
-$ sudo apt-get install exfat-fuse exfat-utils
+	$ sudo apt-get install exfat-fuse exfat-utils
 {% endhighlight %}
 
 Скажу, что приведенная выше команда на моей системе Linux Mint 17 Cinnamon **оказалась действенной** - все пакеты установились без проблем и поддержка ExFAT в системе появилась сразу же.
@@ -43,9 +28,9 @@ $ sudo apt-get install exfat-fuse exfat-utils
 В Интернете почти на всех ресурсах приведена другая команда для установки пакетов `exfat-fuse` и `exfat-utils` (*причем - один в один, перепечатывают друг у друга вслепую*):
 
 {% highlight powershell %}
-$ sudo add-apt-repository ppa:relan/exfat
-$ sudo apt-get update
-$ sudo apt-get install fuse fuse-exfat exfat-utils
+	$ sudo add-apt-repository ppa:relan/exfat
+	$ sudo apt-get update
+	$ sudo apt-get install fuse fuse-exfat exfat-utils
 {% endhighlight %}
 
 Однако, эта команда на моей системе не запустилась - выдала **ошибку ключа при подключении репозитория** `ppa:relan/exfat`. Именно этот факт и послужил для меня поводом написать этот краткий обзор.
@@ -55,13 +40,13 @@ $ sudo apt-get install fuse fuse-exfat exfat-utils
 Для этого сначала нахожу, где она расположена в файловой системе (в моем случае это устройство `/dev/sdb1`):
 
 {% highlight powershell %}
-$ sudo fdisk -l
+	$ sudo fdisk -l
 {% endhighlight %}
 
 ... и затем произвожу форматирование флешки командой:
 
 {% highlight powershell %}
-$ sudo mkfs.exfat -n large_flash /dev/sdb1
+	$ sudo mkfs.exfat -n large_flash /dev/sdb1
 {% endhighlight %}
 
 где ключ `-n` - это задание для флешки **имени как устройства**.

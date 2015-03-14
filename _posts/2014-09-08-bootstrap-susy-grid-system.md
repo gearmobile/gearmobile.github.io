@@ -1,23 +1,7 @@
 ---
 title: 'Bootstrap и Susy &#8211; сравнение grid system'
 author: gearmobile
-excerpt: 'Сравнение систем построения разметки (grid system) двух фреймворков - Susy и Bootstrap. Анализ слабых и сильных сторон. Вывод - наилучший выбор - это Susy!'
 layout: post
-permalink: /bootstrap-%d0%b8-susy-%d1%81%d1%80%d0%b0%d0%b2%d0%bd%d0%b5%d0%bd%d0%b8%d0%b5-grid-system/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 7
-ratings_score:
-  - 34
-ratings_average:
-  - 4.86
-categories:
-  - Статьи по CSS
-tags:
-  - bootstrap
-  - grid system
-  - susy
 ---
 Сегодня по подписке мне на почту пришла ссылка на статью &#8220;[Bootstrap’s Grid System vs. Susy: A Comparison][1]&#8220;. Пришла как нельзя кстати &#8211; я сам задавался для себя таким вопросом &#8211; что лучше выбрать для себя в качестве системы построения разметки (grid system) &#8211; мега-популярный Bootstrap или менее популярную, но более гибкую и функциональную Susy? И вот пожалуйста &#8211; сравнительное описание уже готово &#8211; осталось его только прочитать!
 
@@ -318,9 +302,6 @@ Bootstrap требует аккуратного обращения с имена
 Несмотря на тот факт, что Bootstrap и Susy являются совершенно различными инструментами, в этой статье мы смогли произвести сравнение между системами построения разметки (grid system) обоих фреймворков. Как я уже упоминал ранее, у меня есть твердое убеждение в том, что **Susy является гораздо более удобным инструментом для создания разметки**.
 
 Если вы заинтересовались возможностью дальнейшего изучения Susy, посетите [официальный сайт][8] этого проекта, почитайте [документацию][37] к этому фреймворку или скачайте бесплатно [5 глав из моей книги][6].
-
-Оцените статью:  
-<span id="post-ratings-1785" class="post-ratings" data-nonce="95ded38cca"><img id="rating_1785_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1785, 1, '1 Star');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1785_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1785, 2, '2 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1785_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1785, 3, '3 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1785_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1785, 4, '4 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1785_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1785, 5, '5 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>7</strong> votes, average: <strong>4,86</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1785_text"></span></span><span id="post-ratings-1785-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://goo.gl/F5mZ2n "Bootstrap’s Grid System vs. Susy: A Comparison"
  [2]: http://www.sitepoint.com/author/zliew/ "Zell Liew"

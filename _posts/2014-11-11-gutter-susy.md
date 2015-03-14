@@ -1,22 +1,7 @@
 ---
 title: Как управлять положением gutters в Susy
 author: gearmobile
-excerpt: Как управлять расположением отступов gutter в разметке, созданной с помощью Susy. Четыре варианта расположения gutter, устанавливаемые через ключевые слова before, after, split и inside для параметра gutter-position. Местоположение gutter оказывает ключевое влияние на всю разметку в целом, кардинально меняя ее вид и свойства.
 layout: post
-permalink: /gutter-susy/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 0
-ratings_score:
-  - 0
-ratings_average:
-  - 0
-categories:
-  - Статьи по CSS
-tags:
-  - gutter
-  - susy
 ---
 При изучении Susy одним из вопросов, который всегда стоял передо мной, заключался в следующем: &#8220;Как удалить `padding` или `margin` у первого и последнего столбца `column` в разметке Susy без применения CSS-свойств `first-child` и `last-child?`&#8220;.
 

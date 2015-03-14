@@ -1,30 +1,15 @@
 ---
 title: Spell check в Sublime Text 3
 author: gearmobile
-excerpt: Настройка проверки офографии (spell check) русского текста в Sublime Text 3. Подключение русского словаря, настройки проверки орфографии в Settings User.
 layout: post
-permalink: /spell-check-sublime-text-3/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 3
-ratings_score:
-  - 15
-ratings_average:
-  - 5
-categories:
-  - Web Tools
-tags:
-  - spell check
-  - sublime text
 ---
 Вопрос настройки орфографии (spell check) в редакторе Sublime Text 3. Этого вопроса никогда бы и не возникло у меня, если бы я не подписался на создание русского перевода книги [Learning Susy][1]. До этого момента все, что я делал в Sublime Text &#8211; это написание кода на HTML & CSS и немного на JavaScript.
 
 Сам вопрос подразумевает настройку проверки **орфографии (spell check) русского текста** в Sublime Text, ибо орфография английского языка включена в этом редакторе по умолчанию (точнее &#8211; есть встроенный словарь английского языка).
 
-## Установка русского словаря в Sublime Text
+## Установка русскаго словаря в Sublime Text
 
-Чтобы включить возможность проверки (spell check) русского текста в редакторе Sublime Text, необходимо подключить **словарь русского языка**. Готовый к использованию под Sublime Text словарь русского языка можно скачать по ссылке &#8211; [sublime*russian*english_dictonary.zip][2].
+Чтобы включить возможность проверки (spell check) русскаго текста в редакторе Sublime Text, необходимо подключить **словарь русского языка**. Готовый к использованию под Sublime Text словарь русского языка можно скачать по ссылке &#8211; [sublime*russian*english_dictonary.zip][2].
 
 После скачивания архива его нужно распаковать. В итоге получиться два файла:
 
@@ -37,8 +22,9 @@ tags:
 
 **Первый способ** &#8211; быстрый и простой, основан на использовании консоли Linux (я не забыл сказать, что пример приведен под Linux Mint 17 Cinnamon?). Для этого **в текущей директории со словарями** открываем терминал и выполняем всего одну команду:
 
-<pre>$ cp * ~/.config/sublime-text-3/Packages/
-  </pre>
+<pre>
+$ cp * ~/.config/sublime-text-3/Packages/
+</pre>
 
 &#8230; которая произведет копирование всех файлов (в данном случае &#8211; двух) в директорию с плагинами под Sublime Text.
 
@@ -77,9 +63,6 @@ tags:
 Очень полезная штучка оказалась для меня, возможность проверки орфографии (spell check) в Sublime Text. Открыл для себя с удивлением, сколько же много я ошибок и опечаток делаю в тексте!
 
 Один вопрос в данной теме остался для меня открытым &#8211; как самому вносить правки в русский словарь? Как самому добавлять в него слова? К примеру, чтобы он не &#8220;ругался&#8221; на незнакомое ему слово &#8220;фреймворк&#8221; или &#8220;плагин&#8221;?
-
-Оцените статью:  
-<span id="post-ratings-1839" class="post-ratings" data-nonce="cf4ac49f05"><img id="rating_1839_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1839, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1839_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1839, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1839_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1839, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1839_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1839, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1839_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1839, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1839_text"></span></span><span id="post-ratings-1839-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://zell-weekeat.com/learnsusy/ "Learning Susy"
  [2]: https://www.dropbox.com/s/rug0kg3gae8aha2/sublime_russian_english_dictonary.zip?dl=0 "sublime_russian_english_dictonary.zip"

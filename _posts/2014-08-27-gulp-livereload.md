@@ -1,22 +1,7 @@
 ---
 title: 'Gulp &#8211; плагин gulp-livereload'
 author: gearmobile
-excerpt: 'Установка и настройка плагина gulp-livereload для автоматического обновления разрабатываемых под Gulp страниц в окне браузера. Must have у web-верстальщика. '
 layout: post
-permalink: /gulp-livereload/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 2
-ratings_score:
-  - 9
-ratings_average:
-  - 4.5
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
-  - gulp-livereload
 ---
 Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин `gulp-livereload` под Gulp, который должен иметь каждый веб-разработчик в своей копилке. 
 
@@ -182,9 +167,6 @@ Finished 'sass' after 1.97 ms
 [<img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_02-600x402.png" alt="Изменения в gulp-livereload" width="600" height="402" class="size-medium wp-image-1688" />][7]<figcaption class="wp-caption-text">Изменения в gulp-livereload</figcaption></figure> 
 
 Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp &#8211; использование плагина `gulp-livereload`.
-
-Оцените статью:  
-<span id="post-ratings-1683" class="post-ratings" data-nonce="3f1ffd0e39"><img id="rating_1683_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1683, 1, '1 Star');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1683_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1683, 2, '2 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1683_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1683, 3, '3 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1683_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1683, 4, '4 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1683_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1683, 5, '5 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>2</strong> votes, average: <strong>4,50</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1683_text"></span></span><span id="post-ratings-1683-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=431 "Установка LiveReload в Sublime Text 2"
  [2]: https://www.npmjs.org/package/gulp-livereload "gulp-livereload"

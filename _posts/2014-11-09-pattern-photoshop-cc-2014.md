@@ -1,14 +1,7 @@
 ---
 title: 'Размер pattern'а в Photoshop CC 2014'
 author: gearmobile
-excerpt: "Способ узнать размер pattern'а в Photoshop CC 2014. Прежний способ в данной версии не работает. Нужно воспользоваться инструментом Pattern Stamp."
 layout: post
-permalink: /pattern-photoshop-cc-2014/
-categories:
-  - Photoshop для кодера
-tags:
-  - pattern
-  - photoshop cc 2014
 ---
 Коротенькая заметка о небольшом баге в Photoshop CC 2014, связанном с **невозможностью узнать размер pattern'а**.
 

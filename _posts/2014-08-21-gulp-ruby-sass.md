@@ -1,22 +1,7 @@
 ---
 title: 'Gulp &#8211; плагин gulp-ruby-sass'
 author: gearmobile
-excerpt: 'Компиляция Sass в CSS с помощью плагина gulp-ruby-sass. Процесс компиляции scss-файлов в css-файлы под Gulp с помощью одного из плагинов - gulp-ruby-sass.'
 layout: post
-permalink: /gulp-ruby-sass/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 0
-ratings_score:
-  - 0
-ratings_average:
-  - 0
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
-  - gulp-ruby-sass
 ---
 Рассмотрим очень нужный и полезный плагин `gulp-ruby-sass` под Gulp для компиляции файлов Sass в файлы формата CSS. Для разработчиков, которые пользуются препроцессором Sass данный плагин `gulp-ruby-sass` просто необходим.
 
@@ -148,9 +133,6 @@ tags:
 Пример получился не совсем удачный, но, тем не менее, наглядный. Видим, чтобы оба плагина отработали. Была произведена компиляция, а затем &#8220;склейка&#8221; двух файлов в один.
 
 Конечно, благодаря поточности в Gulp, в одну задачу можно добавлять не два плагина, а гораздо больше.
-
-Оцените статью:  
-<span id="post-ratings-1629" class="post-ratings" data-nonce="5cb64009a5"><img id="rating_1629_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1629, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1629_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1629, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1629_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1629, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1629_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1629, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1629_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1629, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_1629_text"></span></span><span id="post-ratings-1629-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin.png
  [2]: https://www.npmjs.org/package/gulp-ruby-sass "gulp-ruby-sass"

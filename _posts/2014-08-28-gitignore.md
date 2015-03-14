@@ -1,22 +1,7 @@
 ---
 title: 'gitignore &#8211; игнорирование файлов в Git'
 author: gearmobile
-excerpt: Cоздание файла .gitignore для игнорирования файлов и директорий в системе Git. Показаны примеры настройки файла .gitignore для игнорирования файлов и папок.
 layout: post
-permalink: /gitignore/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 3
-ratings_score:
-  - 15
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - git
-  - gitignore
 ---
 В системе Git можно настроить возможность автоматического **игнорирования файлов**. То есть, можно указать Git, что файлы определенного типа **не нужно отслеживать**. Выполняется такая настройка с помощью специального файла `.gitignore`. Подобная возможность отключения отслеживания файлов в системе Git может понадобиться в случае, когда автоматически генерируются **служебные файлы**.
 
@@ -28,10 +13,11 @@ tags:
 
 Создаю новый проект с именем `git_ignore`, в котором помещаю несколько файлов разного типа:
 
-<pre>$ mkdir git_ignore
-    $ cd git_ignore/
-    $ touch index.html style.css
-  </pre>
+<pre>
+  $ mkdir git_ignore
+  $ cd git_ignore/
+  $ touch index.html style.css
+</pre>
 
 Инициализирую репозиторий Git в директории `.git_ignore`, индексирую созданные файлы и фиксирую их:
 

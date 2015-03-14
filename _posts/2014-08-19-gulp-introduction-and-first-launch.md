@@ -1,21 +1,7 @@
 ---
 title: 'Gulp &#8211; знакомство и первый запуск'
 author: gearmobile
-excerpt: 'Эта статья является первой частью в серии статьей, посвященных знакомству с набирающим популярность менеджером задач Gulp. Произведем установку Gulp под Linux Mint и запустим свою первую задачу под Gulp. Также в кратце рассмотрим особенности менеджера Gulp - простоту файла настроек gulpfile.js, поточный метод работы, типы задач.'
 layout: post
-permalink: /gulp-introduction-and-first-launch/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 10
-ratings_score:
-  - 49
-ratings_average:
-  - 4.9
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
 ---
 В этой статье будем знакомиться с новым менеджером задач (task manager) под названием [Gulp][1]. Постепенно вместе с вами я пройду весь процесс &#8211; от установки Gulp до установки плагинов, создания задач, отслеживания ошибок и еще многое другое.
 
@@ -133,9 +119,6 @@ tags:
 Вот это да! А что означают все эти строки в консоли? Означают они только хорошее! Строка `Using gulpfile ~/Projects/gulp_test/gulpfile.js` говорит о том, что Gulp для своей работы воспользовался файлом настроек `gulpfile` по указанному пути. Затем было запущено выполнение задачи с именем `default` &#8211; `Starting 'default'...`. Результатом выполнения этой задачи был вывод в консоль строки &#8211; `Hello from Gulp!`. И задача с именем `default` благополучно завершилась &#8211; `Finished 'default' after 169 μs`, причем на ее выполнение ушло 169 миллисекунд.
 
 Можно поздравить самих себя &#8211; мы только что создали и запустили на выполнение свою первую задачу под Gulp!
-
-Оцените статью:  
-<span id="post-ratings-1588" class="post-ratings" data-nonce="44300f3990"><img id="rating_1588_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1588, 1, '1 Star');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1588_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1588, 2, '2 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1588_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1588, 3, '3 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1588_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1588, 4, '4 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1588_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1588, 5, '5 Stars');" onmouseout="ratings_off(4.9, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>10</strong> votes, average: <strong>4,90</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1588_text"></span></span><span id="post-ratings-1588-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://gulpjs.com/ "Gulp"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/08/gulp.png

@@ -2,19 +2,6 @@
 title: 'ArchLinux &#8211; кратко о загрузчике SLiM'
 author: gearmobile
 layout: post
-permalink: /archlinux-%d0%ba%d1%80%d0%b0%d1%82%d0%ba%d0%be-%d0%be-%d0%b7%d0%b0%d0%b3%d1%80%d1%83%d0%b7%d1%87%d0%b8%d0%ba%d0%b5-slim/
-ratings_users:
-  - 0
-ratings_score:
-  - 0
-ratings_average:
-  - 0
-cleanretina_sidebarlayout:
-  - default
-categories:
-  - OS Linux
-tags:
-  - slim archlinux
 ---
 Установка загрузчика SLiM в Archlinux. Краткий обзор конфигурационного файла. Команды включения, перезагрузки и выключения системы через SLim. Установка в Archlinux стандартная:
 
@@ -78,6 +65,3 @@ tags:
   3. Перезагрузка компьютера &#8211; команда reboot;
   4. Перевод компьютера в спящий режим &#8211; команда susliend;
   5. Перейти в консоль &#8211; команда exit.
-
-Оцените статью:  
-<span id="post-ratings-543" class="post-ratings" data-nonce="2be405d121"><img id="rating_543_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(543, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_543_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(543, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_543_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(543, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_543_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(543, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_543_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(543, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_543_text"></span></span><span id="post-ratings-543-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>

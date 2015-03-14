@@ -1,22 +1,7 @@
 ---
 title: 'Gulp &#8211; именованная задача (named task)'
 author: gearmobile
-excerpt: Создание именованной задачи (named task) в Gulp на примере установки и настройки плагина gulp-concat для конкатенации файлов. Вызов задачи из другой задачи.
 layout: post
-permalink: /gulp-named-task/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 3
-ratings_score:
-  - 14
-ratings_average:
-  - 4.67
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
-  - named task
 ---
 В предыдущей статье [Gulp &#8211; установка и запуск плагина gulp-uglify][1], где мы учились устанавливать и запускать плагины под Gulp, мы создавали задачу под этот плагин. Сами не зная того, тогда мы создали **именованную задачу** (named task). Как вы помните из вводной статьи [Gulp &#8211; знакомство и первый запуск][2], в этом менеджере имеется два типа задач &#8211; **задача по умолчанию** (default) и **именованная задача** (named task).
 
@@ -98,9 +83,6 @@ tags:
 </pre>
 
 В выводе консоли видим, что сначала запустилась задача `concat` и выполнилась за 7.17 миллисекунд, затем запустилась задача `uglify` и на ее выполнение ушло 2.64 милисекунды. И затем запустилась задача по умолчанию `default`, которая выполнилась за 7.04 миллисекунд. Все прошло успешно.
-
-Оцените статью:  
-<span id="post-ratings-1622" class="post-ratings" data-nonce="eda72eba77"><img id="rating_1622_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1622, 1, '1 Star');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1622_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1622, 2, '2 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1622_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1622, 3, '3 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1622_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1622, 4, '4 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1622_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1622, 5, '5 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>4,67</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1622_text"></span></span><span id="post-ratings-1622-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=1603 "Gulp - установка и запуск плагина gulp-uglify"
  [2]: http://localhost:7788/third/?p=1588 "Gulp - знакомство и первый запуск"

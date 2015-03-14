@@ -1,22 +1,7 @@
 ---
 title: 'Gulp-imagemin &#8211; сжатие картинок в Gulp'
 author: gearmobile
-excerpt: Создание автоматизированной задачи для сжатия графических файлов с помощью плагина gulp-imagemin под Gulp. Плагин поддерживает форматы png, jpeg, gif, svg. Остальные форматы игнорируются.
 layout: post
-permalink: /gulp-imagemin/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 5
-ratings_score:
-  - 24
-ratings_average:
-  - 4.8
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - gulp
-  - gulp-imagemin
 ---
 Крайне необходимая задача, возникающая в работе каждого верстальщика &#8211; это сжатие картинок, нарезанных из psd-макета или используемых в HTML-шаблоне. Для этой цели существует много разных инструментов, начиная с RIOT и заканчивая утилитами Linux. Но гораздо более удобной возможностью является автоматизация процесса сжатия картинок с помощью плагина под Gulp. Таким плагином является [gulp-imagemin][1]. Он умеет сжимать картинки форматов PNG, JPEG, GIF и SVG. Все остальные (*не поддерживаемые*) форматы графических файлов просто игнорируются плагином `gulp-imagemin`.
 
@@ -152,9 +137,6 @@ gulp-imagemin: Minified 6 images (saved 83.02 kB - 7.2%)
 Первое изменение &#8211; это добавлена **опция** `progressive: true` к плагину `gulp-imagemin`. Эта опция управляет методом сжатия графических файлов и приведена мною для наглядности примера.
 
 Второе изменение &#8211; изменена **директория назначения**. Теперь директория-источник изображений `gulp.src('images/*')` и директория-&#8220;выхлоп&#8221; `gulp.dest('images/')`, куда помещаются обработанные изображения &#8211; одна и та же. Таким образом, достаточно положить в директорию `images` какое-либо изображение и оно тут же преобразуется в точно такое же изображение, но меньшего размера! Удобно, не правда ли?
-
-Оцените статью:  
-<span id="post-ratings-1660" class="post-ratings" data-nonce="bd1199a7b6"><img id="rating_1660_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1660, 1, '1 Star');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1660_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1660, 2, '2 Stars');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1660_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1660, 3, '3 Stars');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1660_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1660, 4, '4 Stars');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1660_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1660, 5, '5 Stars');" onmouseout="ratings_off(4.8, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>5</strong> votes, average: <strong>4,80</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1660_text"></span></span><span id="post-ratings-1660-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: https://www.npmjs.org/package/gulp-imagemin "gulp-imagemin"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/08/gulp_origin_images.png

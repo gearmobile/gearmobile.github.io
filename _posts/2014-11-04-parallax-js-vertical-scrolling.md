@@ -1,21 +1,7 @@
 ---
 title: 'Parallax.js &#8211; создаем parallax со скроллингом'
 author: gearmobile
-excerpt: Создание эффекта parallax с вертикальным скроллингом с помощью скрипта Parallax.js. Скрипт имеет небольшое число настроек и требует незамысловатой HTML-разметки. С помощью него можно легко и быстро создать parallax.
 layout: post
-permalink: /parallax-js-vertical-scrolling/
-ratings_users:
-  - 2
-ratings_score:
-  - 9
-ratings_average:
-  - 4.5
-cleanretina_sidebarlayout:
-  - default
-categories:
-  - 'Javascript &amp; jQuery'
-tags:
-  - parallax.js
 ---
 В данном примере рассмотрим создание parallax **с эффектом вертикального скроллинга**. Это самый популярный вид parallax&#8217;а для страниц типа Landing Page.
 
@@ -242,9 +228,6 @@ jQuery &#8220;забираем&#8221; с Google, а скрипт Parallax.js &#8
 Отлично! Получился прямо таки совсем неплохой parallax с вертикальным скроллингом <img src="http://localhost:7788/third/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" />
 
 Готовый пример со всеми исходниками можно посмотреть на GitHub &#8211; [Parallax.js Scrolling][5].
-
-Оцените статью:  
-<span id="post-ratings-1940" class="post-ratings" data-nonce="074ccebc6b"><img id="rating_1940_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1940, 1, '1 Star');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1940_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1940, 2, '2 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1940_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1940, 3, '3 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1940_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1940, 4, '4 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1940_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1940, 5, '5 Stars');" onmouseout="ratings_off(4.5, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>2</strong> votes, average: <strong>4,50</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1940_text"></span></span><span id="post-ratings-1940-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=1934 "Parallax.js - создаем простой parallax"
  [2]: https://github.com/pixelcog/parallax.js/ "Parallax.js"

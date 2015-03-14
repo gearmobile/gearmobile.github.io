@@ -1,22 +1,7 @@
 ---
 title: 'GitHub и Git &#8211; создание и работа с репозиторием'
 author: gearmobile
-excerpt: Создание учетной записи на GitHub. Создание ssh-ключей под Linux Mint. Настройка авторизации Git с GtiHub с помощью ssh-ключей, созданных под Linux Mint 17.
 layout: post
-permalink: /github-and-git/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 4
-ratings_score:
-  - 20
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - github
-  - ssh-keys
 ---
 Данная статья является попыткой осмыслить (*в первую очередь для себя, конечно*) такой вопрос, как создание git-репозитория на GitHub, клонирование этого репозитория на локальный компьютер, внесение изменений в клонированный репозиторий, отправка изменений обратно на GitHub.
 
@@ -176,9 +161,6 @@ tags:
 Команда `git commit -m 'Added changes'` фиксирует изменения в локальном репозитории. Команда `git push` отправляет внесенные и зафиксированные изменения в локальном репозитории на удаленный репозиторий.
 
 Вот, таким образом я наладил Git-работу своей машины с GitHub.
-
-Оцените статью:  
-<span id="post-ratings-1730" class="post-ratings" data-nonce="59616f7a65"><img id="rating_1730_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1730, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1730_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1730, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1730_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1730, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1730_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1730, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1730_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1730, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1730_text"></span></span><span id="post-ratings-1730-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/wp-content/uploads/2014/08/github_ssh_keys.png
  [2]: http://localhost:7788/third/wp-content/uploads/2014/08/github_add_ssh_keys.png

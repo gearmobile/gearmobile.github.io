@@ -1,22 +1,7 @@
 ---
 title: 'Git &#8211; создание ветвей (branch)'
 author: gearmobile
-excerpt: Рассмотрен вопрос создания ветвей (branch) в Git. Перемещение (checkout) между ветвями, слияние (merge) ветвей. А также удаление (-d) ветвей в системе Git.
 layout: post
-permalink: /git-branch/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 2
-ratings_score:
-  - 10
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - git
-  - git branch
 ---
 Продолжаю совместно с вами постепенно изучать магию Git\GitHub. Слово магия здесь применено не случайно &#8211; не иначе, как магией возможности Git\GitHub не назовешь. По крайней мере, я впечатлен этими возможностями. Другое дело, что процесс изучения Git у меня лично идет как-то тяжеловато. Ну, это не страшно &#8211; главное, не останавливаться!
 
@@ -171,38 +156,37 @@ tags:
 
 В разделе слияния ветвей в Git я научился процессу объединения двух ветвей в одну. Такой процесс в Git имеет название `merge` (слияние). Теперь ветвь `master` имеет в себе все, что есть и в ветви `second`. Поэтому ветвь `second` можно удалить. Выполняется это командой:
 
-<pre>$ git branch -d second
-    Deleted branch second (was 19a8328).
-  </pre>
+<pre>
+$ git branch -d second
+  Deleted branch second (was 19a8328).
+</pre>
 
 Посмотрим на вывод команды `git hist`:
 
-<pre>$ git hist
-    * fa8b252 2014-09-03 | Last Commit in Master Branch (HEAD, master)
-    *   22a9487 2014-09-03 | Merge Second Branch in Master Branch (origin/master, origin/HEAD)
-    |\
-    | * 19a8328 2014-09-03 | Six Commit in Second Branch
-    | * e273e6c 2014-09-03 | Fifth Commit in Second Branch
-    | * 8e2fe40 2014-09-03 | Fourth Commit in Second Branch
-    | * 3290a23 2014-09-03 | Third Commit in Second Branch
-    | * 0584a1c 2014-09-03 | Second Commit in Second Branch
-    | * 38fab33 2014-09-03 | First Commit in Second Branch
-    * | 8543256 2014-09-03 | Seventh Commit in Master Branch
-    * | e852688 2014-09-03 | Six Commit in Master Branch
-    * | d6ccde3 2014-09-03 | Fifth Commit in Master Branch
-    * | c0d8e2f 2014-09-03 | Fourth Commit in Master Branch
-    * | 7d2377a 2014-09-03 | Third Commit in Master Branch
-    |/
-    * b3e0f1f 2014-09-03 | Second Commit in Master Branch
-    * be4e1f0 2014-09-03 | First Commit in Master Branch
-    * ac2961a 2014-09-03 | Added git_branches
-    * db9e01b 2014-09-03 | Initial commit
-  </pre>
+<pre>
+$ git hist
+  * fa8b252 2014-09-03 | Last Commit in Master Branch (HEAD, master)
+  *   22a9487 2014-09-03 | Merge Second Branch in Master Branch (origin/master, origin/HEAD)
+  |\
+  | * 19a8328 2014-09-03 | Six Commit in Second Branch
+  | * e273e6c 2014-09-03 | Fifth Commit in Second Branch
+  | * 8e2fe40 2014-09-03 | Fourth Commit in Second Branch
+  | * 3290a23 2014-09-03 | Third Commit in Second Branch
+  | * 0584a1c 2014-09-03 | Second Commit in Second Branch
+  | * 38fab33 2014-09-03 | First Commit in Second Branch
+  * | 8543256 2014-09-03 | Seventh Commit in Master Branch
+  * | e852688 2014-09-03 | Six Commit in Master Branch
+  * | d6ccde3 2014-09-03 | Fifth Commit in Master Branch
+  * | c0d8e2f 2014-09-03 | Fourth Commit in Master Branch
+  * | 7d2377a 2014-09-03 | Third Commit in Master Branch
+  |/
+  * b3e0f1f 2014-09-03 | Second Commit in Master Branch
+  * be4e1f0 2014-09-03 | First Commit in Master Branch
+  * ac2961a 2014-09-03 | Added git_branches
+  * db9e01b 2014-09-03 | Initial commit
+</pre>
 
 У меня осталась одна ветвь &#8211; `master`.
-
-Оцените статью:  
-<span id="post-ratings-1765" class="post-ratings" data-nonce="a525700f2a"><img id="rating_1765_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1765, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1765_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1765, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1765_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1765, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1765_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1765, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1765_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1765, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>2</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1765_text"></span></span><span id="post-ratings-1765-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging "Git Branching - Basic Branching and Merging"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/09/git_master_branch.png

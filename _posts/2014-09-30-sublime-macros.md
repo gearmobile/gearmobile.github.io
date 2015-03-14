@@ -1,22 +1,7 @@
 ---
 title: Macros в Sublime Text 3
 author: gearmobile
-excerpt: Создание макросов (macros) в редакторе Sublime Text. Сохранение макросов в редакторе Sublime Text. Назначение макросам сочетания клавиш для быстрого запуска.
 layout: post
-permalink: /sublime-macros/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 6
-ratings_score:
-  - 30
-ratings_average:
-  - 5
-categories:
-  - Web Tools
-tags:
-  - macro
-  - sublime text
 ---
 Отличная тема из разряда &#8220;как повысить эффективность своей работы&#8221;. Возможно, эта тема уже и избитая, но вот Google у меня выдает только англоязычные ресурсы со справкой по этим словам. Для меня это совсем не критично, но все же.
 
@@ -100,9 +85,10 @@ tags:
 
 Такого не оказалось, поэтому во вкладке **&#8220;Key Bindings &#8211; User&#8221;** добавляю такую строку:
 
-<pre>[
-    { "keys": ["alt+shift+c"], "command": "run_macro_file", "args": {"file": "Packages/User/comment.sublime-macro"} }
-  ]
+<pre>
+[
+  { "keys": ["alt+shift+c"], "command": "run_macro_file", "args": {"file": "Packages/User/comment.sublime-macro"} }
+]
 </pre>
 
 Эта строка легко читается.
@@ -131,8 +117,5 @@ tags:
 Отлично! Быстрота и легкость вставки комментариев впечатляет. А сколько времени и сил при этом экономится! Конечно, одними комментариями для макросов (macros) можно не ограничиваться &#8211; тут уж насколько хватит фантазии.
 
 Главное &#8211; что инструмент нужный и полезный, макросы (macros) в Sublime Text.
-
-Оцените статью:  
-<span id="post-ratings-1850" class="post-ratings" data-nonce="6619be1497"><img id="rating_1850_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1850, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1850_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1850, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1850_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1850, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1850_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1850, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1850_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1850, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>6</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1850_text"></span></span><span id="post-ratings-1850-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/wp-content/uploads/2014/09/sublime_macros.png

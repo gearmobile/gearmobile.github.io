@@ -1,22 +1,7 @@
 ---
 title: О пользе анализа psd-макета
 author: gearmobile
-excerpt: Краткая статья о пользе предварительного анализа psd-макета, прежде чем приступать к верстке. Анализ ошибок дизайнера при создании psd-макета в Photoshop.
 layout: post
-permalink: /analize-psd-mockup/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 4
-ratings_score:
-  - 15
-ratings_average:
-  - 3.75
-categories:
-  - Photoshop для кодера
-tags:
-  - psd
-  - ошибка дизайнера
 ---
 Совсем короткий пост. Думал даже, нужно ли его публиковать вообще? Но потом решил, что раз уже &ldquo;накропал&rdquo; статью, то стоит ее разместить на своем бложике. Написал ее на &ldquo;едином дыхании&rdquo;, так как на том момент &ldquo;наболело&rdquo;. Смысл статьи заключается в том, что **нужно внимательно анализировать** psd-макет, прежде чем приступать к его верстке.
 
@@ -49,9 +34,6 @@ tags:
 Такой макет нужно или отсылать на доработку; или верстать на &ldquo;ванильном&rdquo; CSS, без использования любой из grid system.
 
 **Мораль сей басни такова**: нужно **внимательно анализировать макет** перед тем, как приступать к верстке. Чтобы не потерять время даром (*а время &#8211; деньги, как хорошо известно*).
-
-Оцените статью:  
-<span id="post-ratings-1818" class="post-ratings" data-nonce="e6ae508859"><img id="rating_1818_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1818, 1, '1 Star');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1818_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1818, 2, '2 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1818_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1818, 3, '3 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1818_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1818, 4, '4 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1818_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1818, 5, '5 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>3,75</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1818_text"></span></span><span id="post-ratings-1818-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://zell-weekeat.com/learnsusy/ "Learning Susy"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/09/full_width.png

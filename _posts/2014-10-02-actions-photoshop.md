@@ -1,22 +1,7 @@
 ---
 title: Actions в Photoshop
 author: gearmobile
-excerpt: Создание операций (actions) для автоматизации рутинных задач в Photoshop. Пример создания простого action в Photoshop для экспортирования изображений в Web.
 layout: post
-permalink: /actions-photoshop/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 1
-ratings_score:
-  - 5
-ratings_average:
-  - 5
-categories:
-  - Photoshop для кодера
-tags:
-  - actions
-  - photoshop
 ---
 Рассмотрим вопрос **автоматизации действий** в программе Photoshop. Тема статьи перекликается с предыдущей статей &#8220;[Macros в Sublime Text 3][1]&#8220;, посвященной макросам в Sublime Text.
 
@@ -111,9 +96,6 @@ Actions в Photoshop не могут жить вне набора операци
 На этом можно закончить тему создания операций (actions) в Photoshop. На самом деле эта тема большая и достаточно сложная. Я видел даже специальный курс для дизайнеров по написанию actions под Photoshop.
 
 Но для верстальщика нет необходимости создавать большие и сложные операции. Поэтому этого уже достаточно для ускорения и облегчения своей работы. Попробуйте &#8211; оно того стоит!
-
-Оцените статью:  
-<span id="post-ratings-1881" class="post-ratings" data-nonce="ccaf21321a"><img id="rating_1881_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1881, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1881_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1881, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1881_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1881, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1881_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1881, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1881_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1881, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>1</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1881_text"></span></span><span id="post-ratings-1881-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://localhost:7788/third/?p=1850 "Macros в Sublime Text 3"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/10/png_hat.png
