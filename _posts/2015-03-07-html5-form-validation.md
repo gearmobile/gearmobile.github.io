@@ -2,7 +2,6 @@
 title: HTML5 Form Validation
 author: gearmobile
 layout: post
-permalink: /html5-form-validation/
 ---
 
 > К вопросу о типах форм в HTML5, регулярных выражениях и валидации форм на основе регулярных выражений. Философское рассуждение на ночь глядя.
