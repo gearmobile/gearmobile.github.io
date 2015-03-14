@@ -1,7 +1,7 @@
 ---
-title: 'Знакомимся с &#8220;тихими&#8221; placeholder'
-author: gearmobile
 layout: post
+title: "Знакомимся с &#8220;тихими&#8221; placeholder"
+author: gearmobile
 ---
 > Статья посвящена вопросу &#8220;тихих&#8221; placeholder&#8217;ов в препроцессоре Sass. Что это такое и в чем преимущество их использования. Оригинал статьи размещен здесь &#8211; [Understanding placeholder selectors][1].
 
@@ -61,7 +61,7 @@ layout: post
 
 И тут наступает момент для выхода на сцену героя этой статьи &#8211; **селектора placeholder** (его еще называют &#8220;тихим&#8221; placeholder&#8217;ом):<figure id="attachment_2045" style="width: 400px;" class="wp-caption aligncenter">
 
-[<img class="wp-image-2045 size-full" src="http://localhost:7788/third/wp-content/uploads/2014/11/placeholder.jpg" alt="placeholder" width="400" height="300" />][2]<figcaption class="wp-caption-text">&#8220;Тихий&#8221; placeholder</figcaption></figure> 
+[<img class="wp-image-2045 size-full" src="http://localhost:7788/third/wp-content/uploads/2014/11/placeholder.jpg" alt="placeholder" width="400" height="300" />][2]<figcaption class="wp-caption-text">&#8220;Тихий&#8221; placeholder</figcaption></figure>
 
 ### Знакомимся с селектором placeholder
 

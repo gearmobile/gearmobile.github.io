@@ -1,7 +1,7 @@
 ---
-title: 'Jade &#8211; два способа компиляции в HTML'
-author: gearmobile
 layout: post
+title: "Jade &#8211; два способа компиляции в HTML"
+author: gearmobile
 ---
 В этом посте поделюсь своим опытом реализации задачи компиляции jade-файлов в HTML-формат.
 
@@ -27,7 +27,7 @@ layout: post
 
 Пример подсветки синтаксиса Jade в Sublime Text 3:<figure id="attachment_2024" style="width: 501px;" class="wp-caption aligncenter">
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/jade-501x600.png" alt="Пример подсветки синтаксиса Jade в Sublime Text 3" width="501" height="600" class="size-medium wp-image-2024" />][3]<figcaption class="wp-caption-text">Пример подсветки синтаксиса Jade в Sublime Text 3</figcaption></figure> 
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/jade-501x600.png" alt="Пример подсветки синтаксиса Jade в Sublime Text 3" width="501" height="600" class="size-medium wp-image-2024" />][3]<figcaption class="wp-caption-text">Пример подсветки синтаксиса Jade в Sublime Text 3</figcaption></figure>
 
 ### Jade &#8211; родная утилита шаблонизатора
 
@@ -37,9 +37,9 @@ layout: post
 
 Инсталляция утилиты производиться **банально**:
 
-{ highlight powershell }
+{% highlight powershell %}
   $ sudo npm install -g jade
-{ endhighlight }
+{% highlight %}
 
 Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации &#8211; [Jade &#8211; Command Line][4].
 
@@ -54,29 +54,29 @@ layout: post
 
 {% highlight powershell %}
   $ jade templates
-{ endhighlight }
+{% highlight %}
 
 Утилита может сама создавать jade-файлы:
 
 {% highlight powershell %}
   $ jade {foo,bar}.jade
-{ endhighlight }
+{% highlight %}
 
 Или же можно реализовать **два способа вывода**:
 
 {% highlight powershell %}
-  $ jade &lt; my.jade > my.html
-{ endhighlight }
+  $ jade > my.jade > my.html
+{% highlight %}
 
 {% highlight powershell %}
   $ echo "h1 Jade!" | jade
-{ endhighlight }
+{% highlight %}
 
 Или же осуществить рендеринг двух директорий `foo` и `bar` в директорию `tmp`:
 
 {% highlight powershell %}
   $ jade foo bar --out /tmp
-{ endhighlight }
+{% highlight %}
 
 ### Gulp-jade &#8211; компиляция под Gulp
 
@@ -86,7 +86,7 @@ layout: post
 
 {% highlight powershell %}
   $ npm install --save-dev gulp-jade
-{ endhighlight }
+{% highlight %}
 
 Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:
 
@@ -105,7 +105,7 @@ layout: post
   gulp.task('watch', function(){
    gulp.watch('./template/*.jade',['jade']);
   });
-{ endhighlight }
+{% highlight %}
 
 В Сети есть еще один интересный Gulp-task. Работоспособность его **не проверял**, взял как есть, для &#8211; &#8220;чтобы было&#8221;.
 
@@ -119,7 +119,7 @@ layout: post
     .pipe jade pretty: true
     .pipe gulp.dest parameters.web_path
     .on 'error', gutil.log
-{ endhighlight }
+{% highlight %}
 
 ### Заключение
 
