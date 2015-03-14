@@ -39,7 +39,7 @@ author: gearmobile
 
 {% highlight powershell %}
   $ sudo npm install -g jade
-{% highlight %}
+{% endhighlight %}
 
 Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации &#8211; [Jade &#8211; Command Line][4].
 
@@ -54,29 +54,29 @@ author: gearmobile
 
 {% highlight powershell %}
   $ jade templates
-{% highlight %}
+{% endhighlight %}
 
 Утилита может сама создавать jade-файлы:
 
 {% highlight powershell %}
   $ jade {foo,bar}.jade
-{% highlight %}
+{% endhighlight %}
 
 Или же можно реализовать **два способа вывода**:
 
 {% highlight powershell %}
   $ jade > my.jade > my.html
-{% highlight %}
+{% endhighlight %}
 
 {% highlight powershell %}
   $ echo "h1 Jade!" | jade
-{% highlight %}
+{% endhighlight %}
 
 Или же осуществить рендеринг двух директорий `foo` и `bar` в директорию `tmp`:
 
 {% highlight powershell %}
   $ jade foo bar --out /tmp
-{% highlight %}
+{% endhighlight %}
 
 ### Gulp-jade &#8211; компиляция под Gulp
 
@@ -86,7 +86,7 @@ author: gearmobile
 
 {% highlight powershell %}
   $ npm install --save-dev gulp-jade
-{% highlight %}
+{% endhighlight %}
 
 Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:
 
@@ -105,7 +105,7 @@ author: gearmobile
   gulp.task('watch', function(){
    gulp.watch('./template/*.jade',['jade']);
   });
-{% highlight %}
+{% endhighlight %}
 
 В Сети есть еще один интересный Gulp-task. Работоспособность его **не проверял**, взял как есть, для &#8211; &#8220;чтобы было&#8221;.
 
@@ -119,7 +119,7 @@ author: gearmobile
     .pipe jade pretty: true
     .pipe gulp.dest parameters.web_path
     .on 'error', gutil.log
-{% highlight %}
+{% endhighlight %}
 
 ### Заключение
 
