@@ -1,22 +1,7 @@
 ---
 title: 'Знакомимся с &#8220;тихими&#8221; placeholder'
 author: gearmobile
-excerpt: Знакомство с селекторами placeholder в препроцессоре Sass. Что они из себя представляют и в чем преимущество директивы @extend перед директивой @include.
 layout: post
-permalink: /sass-selector-placeholder/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 4
-ratings_score:
-  - 16
-ratings_average:
-  - 4
-categories:
-  - Статьи по CSS
-tags:
-  - placeholder
-  - sass
 ---
 > Статья посвящена вопросу &#8220;тихих&#8221; placeholder&#8217;ов в препроцессоре Sass. Что это такое и в чем преимущество их использования. Оригинал статьи размещен здесь &#8211; [Understanding placeholder selectors][1].
 
@@ -34,8 +19,7 @@ tags:
 
 Директива `@extend` в препроцессоре Sass позволяет CSS-селекторам с легкостью **обмениваться** между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:
 
-<pre>// SCSS
-
+{% highlight css %}
   .icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -50,12 +34,11 @@ tags:
     @extend .icon;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% endhighlight %}
 
 Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:
 
-<pre>// CSS
-
+{% highlight css %}
   .icon, .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -68,7 +51,7 @@ tags:
   .info-icon {
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% endhighlight %}
 
 Рассмотрим &#8220;механизм&#8221; показанного выше примера более детально. В нем директива `@extend` играет ключевую роль. С помощью нее селекторы `.error-icon` и `.info-icon` **наследуют** свойства селектора `.icon`. При изменении CSS-свойств селектора `.icon` автоматически будут меняться свойства селекторов `.error-icon` и `.info-icon`, так как они наследуют определенный набор CSS-свойств у селектора `.icon`. Довольно изящный подход, не правда ли?
 
@@ -88,8 +71,7 @@ tags:
 
 Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса `.icon` на имя &#8220;тихого&#8221; placeholder&#8217;а &#8211; `%icon`:
 
-<pre>// SCSS
-
+{% highlight css %}
   %icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -104,12 +86,11 @@ tags:
     @extend %icon;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% endhighlight %}
 
 В результате скомпилированный CSS-код будет выглядеть таким образом:
 
-<pre>// CSS
-
+{% highlight css %}
   .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -122,7 +103,7 @@ tags:
   .info-icon {
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% endhighlight %}
 
 Обратите внимание на важный момент &#8211; класс `.icon` теперь **не присутствует** в результирующем CSS-коде! Его там нет!
 
@@ -132,8 +113,7 @@ tags:
 
 Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином `@mixin icon`:
 
-<pre>// SCSS
-
+{% highlight css %}
   @mixin icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -148,12 +128,11 @@ tags:
     @include icon;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% endhighlight %}
 
 Посмотрим на сгенерированный CSS-код:
 
-<pre>// CSS
-
+{% highlight css %}
   .error-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -165,7 +144,7 @@ tags:
     margin: 0 .5em;
     /* здесь - специфичные стили класса .info-icon */
   }
-</pre>
+{% endhighlight %}
 
 С точки зрения разработки данный пример ничем не хуже примера с использованием &#8220;тихого&#8221; placeholder&#8217;а.
 
@@ -177,8 +156,7 @@ tags:
 
 Рассмотрим такой пример:
 
-<pre>// SCSS
-
+{% highlight css %}
   %icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
@@ -195,7 +173,7 @@ tags:
     }
 
   }
-</pre>
+{% endhighlight %}
 
 Видим, что в данном случае &#8220;тихий&#8221; placeholder добавлен для селекторов, находящихся внутри медиа-запроса `@media`.
 
@@ -209,8 +187,7 @@ tags:
 
 Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для &#8220;тихого&#8221; placeholder, распространяют свои свойства на селекторы, не размещенные внутри этого запроса. Выражение достаточно запутанное, поэтому лучше приведу пример:
 
-<pre>// SCSS
-
+{% highlight css %}
   @media screen {
     %icon {
       transition: background-color ease .2s;
@@ -225,19 +202,18 @@ tags:
   .info-icon {
     @extend %icon;
   }
-</pre>
+{% endhighlight %}
 
 Компиляция пройдет без ошибок и ее результатом будет CSS-код:
 
-<pre>// CSS
-
+{% highlight css %}
   @media screen {
     .error-icon, .info-icon {
       transition: background-color ease .2s;
       margin: 0 .5em;
     }
   }
-</pre>
+{% endhighlight %}
 
 ### Заключение
 
@@ -245,8 +221,7 @@ tags:
 
 Конечно же, ничто не мешает вам смешивать между собой директиву `@extend` и миксин `mixin` (*если этого требуют обстоятельства*):
 
-<pre>// SCSS
-
+{% highlight css %}
   @media screen {
     %icon {
       transition: background-color ease .2s;
@@ -267,12 +242,9 @@ tags:
   .info-icon {
     @include icon(blue, '/images/info.png');
   }
-</pre>
+{% endhighlight %}
 
 Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.
-
-Оцените статью:  
-<span id="post-ratings-2044" class="post-ratings" data-nonce="8e6bdfcbef"><img id="rating_2044_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(2044, 1, '1 Star');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(2044, 2, '2 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(2044, 3, '3 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(2044, 4, '4 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_2044_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(2044, 5, '5 Stars');" onmouseout="ratings_off(4, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>4,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_2044_text"></span></span><span id="post-ratings-2044-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
 
  [1]: http://thesassway.com/intermediate/understanding-placeholder-selectors "Understanding placeholder selectors"
  [2]: http://localhost:7788/third/wp-content/uploads/2014/11/placeholder.jpg

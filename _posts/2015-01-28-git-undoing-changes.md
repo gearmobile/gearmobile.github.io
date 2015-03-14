@@ -1,18 +1,7 @@
 ---
 title: Отмена изменений в Git
 author: gearmobile
-layout: post
-permalink: /git-undoing-changes/
-ratings_users:
-  - 1
-ratings_score:
-  - 5
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - git
+layout: posts
 ---
 > Обширная и достаточно сложная тема. Однако необходимая, если стоит задача изучить и иметь возможность работать в Git.
 

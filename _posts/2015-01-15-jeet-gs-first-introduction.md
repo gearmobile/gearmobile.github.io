@@ -1,21 +1,7 @@
 ---
 title: 'Jeet.gs &#8211; первое знакомство'
 author: gearmobile
-excerpt: Первое знакомство с системой разметки jeet.gs. Установка под Stylus, рассмотрение основных функций системы. Создание файла настроек и задание переменных.
 layout: post
-permalink: /jeet-gs-first-introduction/
-ratings_users:
-  - 1
-ratings_score:
-  - 5
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - grid system
-  - jeet.gs
-  - stylus
 ---
 ### Вступление
 

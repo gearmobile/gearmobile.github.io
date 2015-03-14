@@ -1,21 +1,7 @@
 ---
 title: 'Rupture &#8211; система breakpoint под Stylus'
 author: gearmobile
-excerpt: 'Rupture - простая и гибкая система контрольных точек (breakpoints) под Stylus. Установка Rupture, обзор нужных миксинов. Несколько интересных возможностей.'
 layout: post
-permalink: /rupture-breakpoints-stylus/
-ratings_users:
-  - 2
-ratings_score:
-  - 10
-ratings_average:
-  - 5
-categories:
-  - Кодинг
-tags:
-  - breakpoint
-  - rupture
-  - stylus
 ---
 > Краткое знакомство с системой контрольных точек Rupture под препроцессор Stylus.
 

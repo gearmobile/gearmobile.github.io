@@ -2,17 +2,6 @@
 title: Теги шаблона WordPress
 author: gearmobile
 layout: post
-permalink: /tags-wordpress/
-ratings_users:
-  - 3
-ratings_score:
-  - 15
-ratings_average:
-  - 5
-categories:
-  - CMS WordPress
-tags:
-  - tag wordpress
 ---
 > Наверное, это очередная бестолковая вещь, которую мои руки так и чешутся сделать. <img src="http://localhost:7788/third/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" />
 
