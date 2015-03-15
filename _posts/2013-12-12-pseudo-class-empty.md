@@ -1,21 +1,10 @@
 ---
-title: Краткая заметка по псевдо-классу :empty
-author: gearmobile
 layout: post
-permalink: /pseudo-class-empty/
-cleanretina_sidebarlayout:
-  - default
-ratings_users:
-  - 2
-ratings_score:
-  - 9
-ratings_average:
-  - 4.5
-categories:
-  - Статьи по CSS
-tags:
-  - empty
+title: "Краткая заметка по псевдо-классу :empty"
+author: gearmobile
+tags: [empty, css]
 ---
+
 > Я люблю ту простоту, которую привносят CSS3-селекторы в таблицы стилей. В этой статье приведено краткое описание одного из моих любимых селекторов: псевдо-класса `:empty`.
 
 ## Что такое псевдо-класс :empty
@@ -178,4 +167,4 @@ tbody td:empty {
 
 Если вас этот селектор заинтересовал, то скажу, что он поддерживается всеми последними версиями браузеров Firefox, Safari, Chrome и Opera. И возможно, он работает в браузере Internet Explorer 9, наравне с остальными селекторами стандарта CSS3.
 
- [1]: http://webdesignernotebook.com/examples/empty-selector.html "Empty Selector"
+[1]: http://webdesignernotebook.com/examples/empty-selector.html "Empty Selector"
