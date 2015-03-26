@@ -1,8 +1,10 @@
 ---
 title: "Установка LiveReload в Sublime Text 2"
 layout: post
-categories: sublime text
+categories: sublime
 tags: [sublime text, livereload]
+description: ""
+excerpt: ""
 share: true
 ---
 

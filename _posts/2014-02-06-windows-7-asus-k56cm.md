@@ -3,6 +3,8 @@ title: "Установка Windows 7 на ноутбук ASUS K56CM"
 layout: post
 categories: windows
 tags: [asus k56cm, bios, windows 7]
+description: ""
+excerpt: ""
 share: true
 ---
 
