@@ -1,16 +1,18 @@
 ---
-layout: post
 title: "Установка LiveReload в Sublime Text 2"
-author: gearmobile
+layout: post
+categories: sublime text
 tags: [sublime text, livereload]
+share: true
 ---
+
 В предыдущей статье, посвященной вопросу автообновления страниц в окне браузера, я упоминал об плагине для редактора Sublime Text 2 под названием LiveReload. Сегодня я вернусь к этому вопросу и выполню установку этого плагина. Она проста - там нет ничего сложного.
 
 Итак, приступаем к установке и настройке LiveReload в Sublime Text 2.
 
 Первое, что необходимо сделать, это установить менеджер пакетов в редакторе. Установка пакетов в Sublime Text может выполняться двумя способами - *вручную* или же *автоматически*. Последний способ более простой и удобный, поэтому воспользуюсь им.
 
-### Установка менеджера пакетов
+## Установка менеджера пакетов
 
 Открываем Sublime Text и переходим в меню по пути "View - Show Console" или же нажимаем сочетание клавиш `Ctrl + \`, затем копируем и вставляем нижеприведенный код в окно консоли:
 
@@ -20,7 +22,7 @@ import urllib2,os; pf=&#8217;Package Control.sublime-package'; ipp=sublime.insta
 
 Жмем "Enter" и затем закрываем и снова открываем Sublime Text, чтобы изменения вступили в силу. Менеджер пакетов установлен.
 
-### Установка LiveReload
+## Установка LiveReload
 
 Переходим к установке плагина LiveReload в Sublime Text 2. Переходим в меню по пути "Preferences - Package Control":
 
@@ -50,7 +52,7 @@ import urllib2,os; pf=&#8217;Package Control.sublime-package'; ipp=sublime.insta
 	<figcaption class="wp-caption-text">Sublime Restart</figcaption>
 </figure>
 
-### Установка расширения LiveReload в Chrome
+## Установка расширения LiveReload в Chrome
 
 Плагин LiveReload работает совместно с одноименным расширением, которое устанавливается в браузер. В моем случае это будет Google Chrome. Приступаю к установке.
 
@@ -65,7 +67,7 @@ import urllib2,os; pf=&#8217;Package Control.sublime-package'; ipp=sublime.insta
 
 Установка расширения произведена.
 
-### Тестирование плагина LiveReload
+## Тестирование плагина LiveReload
 
 Открываю в Sublime Text 2 редактируемый HTML-файл. И открываю его же в браузере Google Chrome. Нажимаю мышью на значок расширения LiveReload в панели инструментов и вижу в строке статуса следующее:
 
@@ -76,13 +78,10 @@ import urllib2,os; pf=&#8217;Package Control.sublime-package'; ipp=sublime.insta
 
 Это говорит о том, что плагин в редакторе Sublime Text 2 успешно подключился к плагину LiveReload в браузере. Можно приступать к работе. Изменяю код в файле, сохраняю изменения и вижу, как они автоматически применились в окне Chrome.
 
-### Заключение
+## Заключение
 
-Применение плагина LiveReload мне кажется более удобным, нежели расширения, рассмотренные в предыдущей статье. Хотя бы тем, что изменения автоматически вступают в силу, не нужно ждать даже 1 секунды. Главное, не забыть нажать сочетание клавиш `Ctrl + S`. Вот если бы и этого не нужно было делать, было бы совсем замечательно! )).
+Применение плагина LiveReload мне кажется более удобным, нежели расширения, рассмотренные в предыдущей статье. Хотя бы тем, что изменения автоматически вступают в силу, не нужно ждать даже 1 секунды. Главное, не забыть нажать сочетание клавиш <kbd>Ctrl + S</kbd>. Вот если бы и этого не нужно было делать, было бы совсем замечательно!.
 
- [1]: http://localhost:7788/third/wp-content/uploads/2013/11/sublime-package_contol.png
- [2]: http://localhost:7788/third/wp-content/uploads/2013/11/sublime-install_package.png
- [3]: http://localhost:7788/third/wp-content/uploads/2013/11/sublime-livereload.png
- [4]: http://localhost:7788/third/wp-content/uploads/2013/11/sublime-restart.png
- [5]: http://localhost:7788/third/wp-content/uploads/2013/11/livereload-chrome.jpg
- [6]: http://localhost:7788/third/wp-content/uploads/2013/11/sublime-livereload-connected.jpg
+На этом все.
+
+---
