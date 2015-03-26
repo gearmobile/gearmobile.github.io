@@ -1,7 +1,6 @@
 ---
 layout: post
-title: "CSS-фреймворки - это зло?""
-author: gearmobile
+title: "CSS-фреймворки - это зло?"
 tags: [framework, css]
 ---
 
