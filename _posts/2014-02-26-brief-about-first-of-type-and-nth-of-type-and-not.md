@@ -44,7 +44,7 @@ tags: [:first-of-type, :not, :nth-of-type]
   color: green;
   font-weight: bold;
 }
-{% highlight %}
+{% endhighlight %}
 
 ![Псевдоэлемент :first-of-type]({{site.url}}/images/uploads/2014/02/first-of-type1.jpg)
 
