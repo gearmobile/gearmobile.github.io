@@ -30,7 +30,7 @@ Rupture был создан на примере плагина [Breakpoint Slice
 Перечень значений `breakpoints`, показанных выше, можно представить в виде диапазонов; каждому диапазону можно присвоить порядковый номер `slice number` и "обозвать" как `slice`:
 
 <figure>
-  <img src="images/uploads/2015/01/scale_rupture.png" alt="Rupture Scale">
+  <img src="../images/uploads/2015/01/scale_rupture.png" alt="Rupture Scale">
 </figure>
 
 Подключать библиотеку Rupture в проект **нет необходимости**. Достаточно установить библиотеку командой:

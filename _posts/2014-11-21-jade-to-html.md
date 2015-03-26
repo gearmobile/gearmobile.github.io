@@ -1,9 +1,12 @@
 ---
-layout: post
 title: "Jade - два способа компиляции в HTML"
-author: gearmobile
+layout: post
+categories: html
+share: true
+tags: [jade, html]
 ---
-В этом посте поделюсь своим опытом реализации задачи компиляции jade-файлов в HTML-формат.
+
+> В этом посте поделюсь своим опытом реализации задачи компиляции jade-файлов в HTML-формат.
 
 Рассмотрю два способа реализации этой задачи. Первый - самый нативный, с помощью родной утилиты `jade`. Второй - с помощью плагина `gulp-jade` под Gulp.
 
@@ -19,7 +22,7 @@ author: gearmobile
 
 Написание кода в этом шаблонизаторе чем-то похоже на написание текста в [Markdown][2]. Под Markdown имеются (и должны иметься) утилиты\программы для компиляции в HTML. Точно также для Jade должны иметься (и имеются) утилиты\программы для компиляции в HTML.
 
-### Jade - синтаксис для Sublime Text 3
+## Jade - синтаксис для Sublime Text 3
 
 Прежде чем писать код в редакторе, в моем случае необходимо настроить поддержку синтаксиса Jade. Я использую Sublime Text 3, который изначально не имеет таковой.
 
@@ -27,8 +30,9 @@ author: gearmobile
 
 Пример подсветки синтаксиса Jade в Sublime Text 3:
 
-<figure id="attachment_2024" style="width: 501px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/11/jade-501x600.png" alt="Пример подсветки синтаксиса Jade в Sublime Text 3" width="501" height="600" class="size-medium wp-image-2024" />][3]<figcaption class="wp-caption-text">Пример подсветки синтаксиса Jade в Sublime Text 3</figcaption></figure>
+<figure>
+  <img src="../images/uploads/2014/11/jade.png" alt="Пример подсветки синтаксиса Jade в Sublime Text 3">
+</figure>
 
 ### Jade - родная утилита шаблонизатора
 
@@ -39,7 +43,7 @@ author: gearmobile
 Инсталляция утилиты производиться **банально**:
 
 {% highlight powershell %}
-  $ sudo npm install -g jade
+$ sudo npm install -g jade
 {% endhighlight %}
 
 Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации - [Jade - Command Line][4].
@@ -54,58 +58,58 @@ author: gearmobile
 Использование утилиты также является простым делом. К примеру, можно указать ей производить компиляцию всех файлов в директории `templates`:
 
 {% highlight powershell %}
-  $ jade templates
+$ jade templates
 {% endhighlight %}
 
 Утилита может сама создавать jade-файлы:
 
 {% highlight powershell %}
-  $ jade {foo,bar}.jade
+$ jade {foo,bar}.jade
 {% endhighlight %}
 
 Или же можно реализовать **два способа вывода**:
 
 {% highlight powershell %}
-  $ jade > my.jade > my.html
+$ jade > my.jade > my.html
 {% endhighlight %}
 
 {% highlight powershell %}
-  $ echo "h1 Jade!" | jade
+$ echo "h1 Jade!" | jade
 {% endhighlight %}
 
 Или же осуществить рендеринг двух директорий `foo` и `bar` в директорию `tmp`:
 
 {% highlight powershell %}
-  $ jade foo bar --out /tmp
+$ jade foo bar --out /tmp
 {% endhighlight %}
 
-### Gulp-jade - компиляция под Gulp
+## Gulp-jade - компиляция под Gulp
 
 Кто знаком с task-manager'ом Gulp, тот может воспользоваться соответствующим плагином `gulp-jade` под него. Страничка плагина размещена здесь - [gulp-jade][5].
 
 Установка плагина **стандартная**:
 
 {% highlight powershell %}
-  $ npm install --save-dev gulp-jade
+$ npm install --save-dev gulp-jade
 {% endhighlight %}
 
 Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:
 
 {% highlight javascript %}
-  var gulp = require('gulp'),
-  jade = require('gulp-jade');
+var gulp = require('gulp'),
+jade = require('gulp-jade');
 
-  // Jade
-  gulp.task('jade', function(){
-    gulp.src('./template/*.jade')
-      .pipe(jade())
-      .pipe(gulp.dest('./dist/'))
-  });
+// Jade
+gulp.task('jade', function(){
+  gulp.src('./template/*.jade')
+    .pipe(jade())
+    .pipe(gulp.dest('./dist/'))
+});
 
-  // Watch
-  gulp.task('watch', function(){
-   gulp.watch('./template/*.jade',['jade']);
-  });
+// Watch
+gulp.task('watch', function(){
+ gulp.watch('./template/*.jade',['jade']);
+});
 {% endhighlight %}
 
 В Сети есть еще один интересный Gulp-task. Работоспособность его **не проверял**, взял как есть, для - "чтобы было".
@@ -113,16 +117,16 @@ author: gearmobile
 Как говориться на [странице-оригинале][6], эта задача производит компиляцию файлов из директории `app/` в директорию `_public/`:
 
 {% highlight coffeescript %}
-  jade = require 'gulp-jade'
+jade = require 'gulp-jade'
 
-  gulp.task 'jade', ->
-    gulp.src parameters.app_path + '/*.jade'
-    .pipe jade pretty: true
-    .pipe gulp.dest parameters.web_path
-    .on 'error', gutil.log
+gulp.task 'jade', ->
+  gulp.src parameters.app_path + '/*.jade'
+  .pipe jade pretty: true
+  .pipe gulp.dest parameters.web_path
+  .on 'error', gutil.log
 {% endhighlight %}
 
-### Заключение
+## Заключение
 
 Я запомнил (*записал для себя*), а вы (*уважаемый читатель*) познакомились (*если не знали*) с двумя способами настройки компиляции jade-файлов в HTML-файлы.
 

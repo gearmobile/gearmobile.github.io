@@ -106,6 +106,8 @@ add_filter('widget_text', 'do_shortcode');
 </body>
 {% endhighlight %}
 
+На этом все.
+
 
  [1]: https://wordpress.org/plugins/easy-fancybox/ "Easy FancyBox"
  [2]: http://contactform7.com/ "Contact Form 7"
