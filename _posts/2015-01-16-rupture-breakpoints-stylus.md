@@ -31,7 +31,6 @@ Rupture был создан на примере плагина [Breakpoint Slice
 
 <figure>
   <img src="images/uploads/2015/01/scale_rupture.png" alt="Rupture Scale">
-  <figcaption>Rupture Scale</figcaption>
 </figure>
 
 Подключать библиотеку Rupture в проект **нет необходимости**. Достаточно установить библиотеку командой:
