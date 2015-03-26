@@ -35,15 +35,15 @@ share: true
 
 Первым шагом заходим во вкладку **Boot** и включаем (**Enabled**) опцию **Launch CSM**:
 
-~~~ raw
+``` raw
 Boot - Launch CSM - Enabled
-~~~
+```
 
 Вторым шагом переходим на вкладку **Security** и отключаем (**Disabled**) опцию **Secure Boot Control**:
 
-~~~ raw
+``` raw
 Security - Secure Boot Control - Disabled
-~~~
+```
 
 Сохраняем изменения в BIOS и выходим из него, нажав клавишу <kbd>F10</kbd>.
 
