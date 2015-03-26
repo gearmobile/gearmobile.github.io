@@ -1,8 +1,11 @@
 ---
 title: "Плагин Sass CSS Importer"
 layout: post
+categories: css
+description: ""
+excerpt: ""
 share: true
-tags: [sass]
+tags: [sass, css importer]
 ---
 
 > Краткий обзор плагина Sass CSS Importer для импортирования файлов CSS в файлы Sass.
@@ -11,9 +14,9 @@ tags: [sass]
 
 Например, подключить файл `typography.scss` в файл `main.scss` можно так:
 
-{% highlight css %}
+~~~ css
 @import '_typography';
-{% endhighlight %}
+~~~
 
 Оба файла `main.scss` и `typography.scss` будут объединены препроцессором в один файл `main.scss`, который уже будет компилироваться в файл `main.css`.
 
@@ -25,7 +28,7 @@ tags: [sass]
 
 ### Плагин Sass CSS Importer
 
-Совсем недавно (*17 июля сего года*) Chris Eppstein выпустил специальный плагин, задачей которого и является **импортирование CSS-файлов** в Sass-файлы. Страничка с официальной документацией по плагину Sass CSS Importer расположена на GitHub - [Sass CSS Importer Plugin][3].
+Совсем недавно (*17 июля сего года*) Chris Eppstein[^4] выпустил специальный плагин, задачей которого и является **импортирование CSS-файлов** в Sass-файлы. Страничка с официальной документацией по плагину Sass CSS Importer расположена на GitHub - [Sass CSS Importer Plugin][3].
 
 Там все описано кратко и предельно ясно. Однако, я был так доволен тем фактом, что теперь могу свободно подключать CSS в Sass, что решил потратить часть своего времени, чтобы описать его своими словами, по-русски.
 
@@ -33,17 +36,17 @@ tags: [sass]
 
 Установка плагина выполняется как обычно, через менеджер пакетов `gem`:
 
-{% highlight powershell %}
+~~~ raw
 $ sudo gem install --pre sass-css-importer
-{% endhighlight %}
+~~~
 
 ### Подключение Sass CSS Importer
 
 При использовании фреймворка Compass нужно добавить строку в конфигурационный файл `config.rb` своего текущего проекта:
 
-{% highlight css %}
+~~~ css
 require 'sass-css-importer'
-{% endhighlight %}
+~~~
 
 ### Импортирование CSS в Sass
 
@@ -51,29 +54,28 @@ require 'sass-css-importer'
 
 В общем случае этот синтаксис выглядит таким образом:
 
-{% highlight css %}
+~~~ css
 @import 'CSS:имя_директории/имя_css_файла';
-{% endhighlight %}
+~~~
 
 В частном случае синтаксис будет выглядеть таким образом:
 
-{% highlight css %}
+~~~ css
 @import 'CSS:carousel';
-{% endhighlight %}
+~~~
 
 > Обратите внимание на важный момент: имя CSS-файла нужно указывать **без расширения**!
 
 Можно запустить процесс компиляции через командную строку:
 
-{% highlight powershell %}
+~~~ raw
 $ compass watch
-{% endhighlight %}
+~~~
 
 ... и проверить, что CSS-файл будет включен в общий вывод:
 
-<figure>
-  <img src="../images/uploads/2014/11/sass-css-importer.png" alt="Плагин Sass CSS Importer">
-</figure>
+![Плагин Sass CSS Importer]({{site.url}}/images/uploads/2014/11/sass-css-importer.png)
+{:.center}
 
 ### Заключение
 
@@ -82,3 +84,6 @@ $ compass watch
  [1]: #note-2082-1 "Sass - мощный препроцессор для CSS"
  [2]: #note-2082-2 "Chris Eppstein - один из двух создателей Compass"
  [3]: https://github.com/chriseppstein/sass-css-importer "Sass CSS Importer"
+ [^4]: Chris Eppstein - один из создателей фреймворка Compass
+
+ ---

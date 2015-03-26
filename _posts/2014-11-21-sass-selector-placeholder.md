@@ -6,7 +6,9 @@ share: true
 tags: [sass, placeholder]
 ---
 
-> Статья посвящена вопросу "тихих" placeholder'ов в препроцессоре Sass. Что это такое и в чем преимущество их использования. Оригинал статьи размещен здесь - [Understanding placeholder selectors][1].
+> Статья посвящена вопросу "тихих" placeholder'ов в препроцессоре Sass. Что это такое и в чем преимущество их использования.
+
+Оригинал статьи размещен здесь - [Understanding placeholder selectors][1].
 
 Препроцессор Sass предоставляет несколько способов создания одного фрагмента кода, который будет многократно использоваться внутри CSS-кода.
 
@@ -22,7 +24,7 @@ tags: [sass, placeholder]
 
 Директива `@extend` в препроцессоре Sass позволяет CSS-селекторам с легкостью **обмениваться** между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:
 
-{% highlight css %}
+~~~ css
 .icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -37,11 +39,11 @@ tags: [sass, placeholder]
   @extend .icon;
   /* здесь - специфичные стили класса .info-icon */
 }
-{% endhighlight %}
+~~~
 
 Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:
 
-{% highlight css %}
+~~~ css
 .icon, .error-icon, .info-icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -54,7 +56,7 @@ tags: [sass, placeholder]
 .info-icon {
   /* здесь - специфичные стили класса .info-icon */
 }
-{% endhighlight %}
+~~~
 
 Рассмотрим "механизм" показанного выше примера более детально. В нем директива `@extend` играет ключевую роль. С помощью нее селекторы `.error-icon` и `.info-icon` **наследуют** свойства селектора `.icon`. При изменении CSS-свойств селектора `.icon` автоматически будут меняться свойства селекторов `.error-icon` и `.info-icon`, так как они наследуют определенный набор CSS-свойств у селектора `.icon`. Довольно изящный подход, не правда ли?
 
@@ -64,19 +66,18 @@ tags: [sass, placeholder]
 
 И тут наступает момент для выхода на сцену героя этой статьи - **селектора placeholder** (его еще называют "тихим" `placeholder`'ом):
 
-<figure>
-  <img src="images/uploads/2014/11/placeholder.jpg" alt="Тихий placeholder">
-</figure>
+![Тихий placeholder]({{site.url}}/images/uploads/2014/11/placeholder.jpg)
+{: .center}
 
 ## Знакомимся с селектором placeholder
 
-Селекторы placeholder были введены в Sass как раз для того, чтобы решать вышеназванную проблему. Синтаксис placeholder очень похож на синтаксис обычных CSS-классов, только вместо точки (`.`) перед именем ставиться **символ процента** (`%`).
+Селекторы `placeholder` были введены в Sass как раз для того, чтобы решать вышеназванную проблему. Синтаксис placeholder очень похож на синтаксис обычных CSS-классов, только вместо точки (`.`) перед именем ставиться **символ процента** (`%`).
 
-Селекторы placeholder имеют одну специфичную для них особенность - они никак не проявляют себя в скомпилированном CSS-коде. Можно сказать по другому - вы никогда не найдете селекторов placeholder в результирующем CSS-коде (поэтому они и носят такое название - "тихие" placeholder). В скомпилированном CSS-коде будут только селекторы, которые **используют** "тихие" placeholder'ы, но никак не сами "тихие" placeholder'ы.
+Селекторы placeholder имеют одну специфичную для них особенность - они никак не проявляют себя в скомпилированном CSS-коде. Можно сказать по другому - вы никогда не найдете селекторов placeholder в результирующем CSS-коде (поэтому они и носят такое название - "тихие" `placeholder`). В скомпилированном CSS-коде будут только селекторы, которые **используют** "тихие" `placeholder`'ы, но никак не сами "тихие" `placeholder`'ы.
 
 Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса `.icon` на имя "тихого" placeholder'а - `%icon`:
 
-{% highlight css %}
+~~~ css
 %icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -91,11 +92,11 @@ tags: [sass, placeholder]
   @extend %icon;
   /* здесь - специфичные стили класса .info-icon */
 }
-{% endhighlight %}
+~~~
 
 В результате скомпилированный CSS-код будет выглядеть таким образом:
 
-{% highlight css %}
+~~~ css
 .error-icon, .info-icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -108,7 +109,7 @@ tags: [sass, placeholder]
 .info-icon {
   /* здесь - специфичные стили класса .info-icon */
 }
-{% endhighlight %}
+~~~
 
 Обратите внимание на важный момент - класс `.icon` теперь **не присутствует** в результирующем CSS-коде! Его там нет!
 
@@ -118,7 +119,7 @@ tags: [sass, placeholder]
 
 Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином `@mixin icon`:
 
-{% highlight css %}
+~~~ css
 @mixin icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -133,11 +134,11 @@ tags: [sass, placeholder]
   @include icon;
   /* здесь - специфичные стили класса .info-icon */
 }
-{% endhighlight %}
+~~~
 
 Посмотрим на сгенерированный CSS-код:
 
-{% highlight css %}
+~~~ css
 .error-icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -149,7 +150,7 @@ tags: [sass, placeholder]
   margin: 0 .5em;
   /* здесь - специфичные стили класса .info-icon */
 }
-{% endhighlight %}
+~~~
 
 С точки зрения разработки данный пример ничем не хуже примера с использованием "тихого" placeholder'а.
 
@@ -161,7 +162,7 @@ tags: [sass, placeholder]
 
 Рассмотрим такой пример:
 
-{% highlight css %}
+~~~ css
 %icon {
   transition: background-color ease .2s;
   margin: 0 .5em;
@@ -178,7 +179,7 @@ tags: [sass, placeholder]
   }
 
 }
-{% endhighlight %}
+~~~
 
 Видим, что в данном случае "тихий" placeholder добавлен для селекторов, находящихся внутри медиа-запроса `@media`.
 
@@ -192,7 +193,7 @@ tags: [sass, placeholder]
 
 Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для "тихого" placeholder, распространяют свои свойства на селекторы, не размещенные внутри этого запроса. Выражение достаточно запутанное, поэтому лучше приведу пример:
 
-{% highlight css %}
+~~~ css
 @media screen {
   %icon {
     transition: background-color ease .2s;
@@ -207,18 +208,18 @@ tags: [sass, placeholder]
 .info-icon {
   @extend %icon;
 }
-{% endhighlight %}
+~~~
 
 Компиляция пройдет без ошибок и ее результатом будет CSS-код:
 
-{% highlight css %}
+~~~ css
 @media screen {
   .error-icon, .info-icon {
     transition: background-color ease .2s;
     margin: 0 .5em;
   }
 }
-{% endhighlight %}
+~~~
 
 ## Заключение
 
@@ -226,7 +227,7 @@ tags: [sass, placeholder]
 
 Конечно же, ничто не мешает вам смешивать между собой директиву `@extend` и миксин `mixin` (*если этого требуют обстоятельства*):
 
-{% highlight css %}
+~~~ css
 @media screen {
   %icon {
     transition: background-color ease .2s;
@@ -247,8 +248,10 @@ tags: [sass, placeholder]
 .info-icon {
   @include icon(blue, '/images/info.png');
 }
-{% endhighlight %}
+~~~
 
 Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.
+
+---
 
 [1]: http://thesassway.com/intermediate/understanding-placeholder-selectors "Understanding placeholder selectors"

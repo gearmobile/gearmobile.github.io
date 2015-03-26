@@ -169,15 +169,13 @@ shift(ratios = 0, col_or_span = column, gutter = jeet.gutter)
 
 Чтобы функция заработала, достаточно включить ее в файле проекта в любом месте:
 
-{% highlight css %}
+~~~ css
 edit()
-{% endhighlight %}
+~~~
 
 Вид разметки будет примерно таким:
 
-<figure>
-  <img src="images/uploads/2015/01/jeet_edit.png" alt="Функция edit() в jeet.gs">
-</figure>
+![Функция edit() в jeet.gs]({{site.url}}/images/uploads/2015/01/jeet_edit.png)
 
 ##### Функция center()
 
@@ -247,6 +245,8 @@ stack(pad = 0, align = false)
 
 В данной статье возможны (и 100% - что есть) неточности и мелкие ошибки. Это и понятно - это мое первое знакомство с Jeet.gs. Поэтому, если будут замечания - милости просим.
 
+На этом все.
+
  [1]: http://susy.oddbird.net/ "Susy"
  [2]: http://learnboost.github.io/stylus/ "Stylus"
  [3]: http://jeet.gs/ "jeet.gs"
@@ -260,3 +260,5 @@ stack(pad = 0, align = false)
  [11]: https://github.com/mojotech/jeet/tree/master/stylus "Jeet for Stylus"
  [12]: http://jeet.gs/ "A grid system for humans"
  [13]: https://wooster.checkmy.ws/2014/04/responsive-grid-typographie/ "Fondations responsive avec Stylus, Jeet et Rupture"
+
+---

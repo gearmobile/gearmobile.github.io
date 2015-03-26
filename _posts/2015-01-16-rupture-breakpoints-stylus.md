@@ -1,6 +1,7 @@
 ---
 title: "Rupture - система breakpoint под Stylus"
 layout: post
+categories: css
 description: ""
 excerpt: ""
 share: true
@@ -17,33 +18,37 @@ share: true
 
 Rupture был создан на примере плагина [Breakpoint Slicer][3] под препроцессор Sass.
 
-### Шкала Rupture
+## Шкала Rupture
 
 Основа Rupture - шкала значений `breakpoints`, которая так и называется - `scale`. Фактически `scale` - это объект со своими свойствами и методами. Перечень контрольных точек (`breakpoints`) - это массив значений, передаваемых объекту `scale`.
 
 Ниже представлена `scale` по умолчанию (*но которую можно легко изменить при необходимости*):
 
-  scale = 0 400px 600px 800px 1050px 1800px
+~~~ raw
+scale = 0 400px 600px 800px 1050px 1800px
+~~~
 
 Количество этих значений - `0, 400px, 600px 800px, 1050px` - может быть необязательно равно 5 (пяти). Их может быть неограниченное количество - столько, сколько нужно.
 
 Перечень значений `breakpoints`, показанных выше, можно представить в виде диапазонов; каждому диапазону можно присвоить порядковый номер `slice number` и "обозвать" как `slice`:
 
-<figure>
-  <img src="../images/uploads/2015/01/scale_rupture.png" alt="Rupture Scale">
-</figure>
+![Rupture Scale]({{site.url}}/images/uploads/2015/01/scale_rupture.png)
 
 Подключать библиотеку Rupture в проект **нет необходимости**. Достаточно установить библиотеку командой:
 
-  $ sudo npm install rupture --global
+~~~ raw
+$ sudo npm install rupture --global
+~~~
 
 После этого Rupture готова к использованию. Можно запустить компиляцию из командной строки (*не рекомендуется*):
 
-  $ stylus -u rupture -c example.styl
+~~~ raw
+$ stylus -u rupture -c example.styl
+~~~
 
 Здесь `-c` - это сокращение от `--compress`, то есть - минифицировать CSS-код на выходе. Почему не рекомендуется использовать командную строку? Просто для этих целей лучше (*и целесообразнее*) использовать Gulp.
 
-### Миксины Rupture
+## Миксины Rupture
 
 В Rupture все управляется **миксинами**. Есть заранее созданный набор миксинов, которые необходимо применять для определенного случая (`breakpoints`).
 
@@ -54,7 +59,7 @@ Rupture был создан на примере плагина [Breakpoint Slice
 
 В этом кратком обзоре я буду рассматривать только "практические" миксины. Более сложные - нет, ибо "не зачем".
 
-#### Набор практических миксинов Rupture
+### Набор практических миксинов Rupture
 
 Первые три миксина - **наиболее применимые** и удобные на практике.
 
@@ -98,7 +103,7 @@ Rupture был создан на примере плагина [Breakpoint Slice
 **+portrait()**
 - если у окна браузера **высота больше, чем ширина**, то применить стили
 
-### Настройка Rupture
+## Настройка Rupture
 
 Как любая система, Rupture имеет свои собственные настройки. Которые можно задавать в файле проекта в виде **переменных** с их значениями.
 
@@ -106,28 +111,30 @@ Rupture был создан на примере плагина [Breakpoint Slice
 
 Поэтому, такой пример иллюстрирует **включение автоматической конвертации** из `px` в `em`; и задание базового размера шрифта в 18px (*базовый размер шрифта равен 16px*):
 
-{% highlight css %}
+~~~ css
 rupture.enable-em-breakpoints = true
 base-font-size = 18px
-{% endhighlight %}
+~~~
 
 **rupture.scale** - одна из **важнейших переменных** Rupture. В этой переменной можно в виде массива переопределить значения breakpoints.
 
 Например, таким образом:
 
-  rupture.scale = 0 380px 768px 1200px
+~~~ raw
+rupture.scale = 0 380px 768px 1200px
+~~~
 
-### Пример работы Rupture
+## Пример работы Rupture
 
 Перейдем от теории к практике и рассмотрим маленький рабочий пример - как будет *отрабатывать* Rupture:
 
-{% highlight html %}
+~~~ html
 div.wrapper
   div.left
   div.right
-{% endhighlight %}
+~~~
 
-{% highlight css %}
+~~~ css
 @import 'nib'
 @import 'jeet'
 
@@ -159,7 +166,7 @@ rupture.enable-em-breakpoints = true
     background-color lighten($color,30%)
   +below(400px)
     stack()
-{% endhighlight %}
+~~~
 
 Комментировать вышеприведенный код мне как-то не особого желания. Он очень простой и наглядный - слова тут излишни.
 
@@ -167,7 +174,7 @@ rupture.enable-em-breakpoints = true
 
 Но ничто не мешает использовать любые **произвольные переменные**, в которые можно "загружать" нужные значения. К примеру, код выше можно преобразовать таким образом:
 
-{% highlight css %}
+~~~ css
 @import 'nib'
 @import 'jeet'
 
@@ -203,12 +210,14 @@ rupture.enable-em-breakpoints = true
     background-color lighten($color,30%)
   +below($bp2)
     stack()
-{% endhighlight %}
+~~~
 
-### Заключение Rupture
+## Заключение о Rupture
 
 Вот я и познакомился с Rupture. Что можно сказать - система мне (*в очередной раз - все из мира Stylus*) понравилась, она очень проста и наглядна. Достаточно полчаса, чтобы ознакомиться с ее возможностями и начать применять на практике.
 
  [1]: http://jenius.github.io/rupture/ "Rupture"
  [2]: https://github.com/jenius/rupture "Rupture"
  [3]: https://github.com/lolmaus/breakpoint-slicer "Breakpoint Slicer"
+
+---

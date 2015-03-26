@@ -1,230 +1,276 @@
 ---
-title: Теги шаблона WordPress
-author: gearmobile
+title: "Теги шаблона WordPress"
 layout: post
+share: true
+tags: [wordpress, tag]
 ---
-> Наверное, это очередная бестолковая вещь, которую мои руки так и чешутся сделать. <img src="http://localhost:7788/third/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" />
+> Наверное, это очередная бестолковая вещь, которую мои руки так и чешутся сделать.
 
-И раз у меня есть на это время и нет сил на что-либо еще, то тогда уж точно &#8211; напишу! “О чем?” &#8211; может спросить уважаемый читатель. О тегах WordPress!
+И раз у меня есть на это время и нет сил на что-либо еще, то тогда уж точно - напишу! “О чем?" - может спросить уважаемый читатель. О тегах WordPress!
 
-“О Боже!” &#8211; это в полном праве может сказать читатель &#8211; “&#8230; но ведь есть же <a href="http://codex.wordpress.org/" title="Codex WordPress" target="_blank">Кодекс WordPress</a>! Зачем еще?!”
+"О Боже!" - это в полном праве может сказать читатель - но ведь есть же [Кодекс WordPress][1]! Зачем еще?!"
 
-Ну что же &#8211; очень и очень резонно! В качестве оправдания могу лишь привести две вещи.
+Ну что же - очень и очень резонно! В качестве оправдания могу лишь привести две вещи.
 
-**Первая причина** &#8211; из огромного количества тегов WordPress на практике используется лишь малая их часть. И вот здесь я хотел бы собрать воедино как раз те, которые используются.
+**Первая причина** - из огромного количества тегов WordPress на практике используется лишь малая их часть. И вот здесь я хотел бы собрать воедино как раз те, которые используются.
 
 Более того, могу сказать, что пользуясь лишь перечисленным ниже списком, я уже успел создать две вполне себе работающих темы под WordPress. Конечно, эти две темы простенькие, но факт остается фактом.
 
-**Вторая причина** &#8211; я так быстрее запомню все эти теги WordPress <img src="http://localhost:7788/third/wp-includes/images/smilies/icon_smile.gif" alt=":-)" class="wp-smiley" />
+**Вторая причина** - я так быстрее запомню все эти теги WordPress.
 
-Итак &#8211; ниже представлен список “практичных” тегов WordPress с их кратким описанием. Все теги условно мною разбиты на области их применения в теме WordPress.
+Итак - ниже представлен список "практичных" тегов WordPress с их кратким описанием. Все теги условно мною разбиты на области их применения в теме WordPress.
 
 ### Теги шаблона WordPress
 
 Выводит название сайта:
 
-{% highlight php %}<?php bloginfo('name'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('name'); ?>
+~~~
 
 Выводит описание сайта:
 
-{% highlight php %}<?php bloginfo('description'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('description'); ?>
+~~~
 
 Возвращает ссылку на главную страницу сайта:
 
-{% highlight php %}<?php bloginfo('url'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('url'); ?>
+~~~
 
 Возвращает кодировку сайта (под WordPress это всегда utf–8):
 
-{% highlight php %}<?php bloginfo('charset'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('charset'); ?>
+~~~
 
 Также возвращает ссылку на главную страницу сайта:
 
-{% highlight php %}<?php echo get_home_url(); ?>{% endhighlight %}
+~~~ php
+<?php echo get_home_url(); ?>
+~~~
 
 Возвращает путь к файлу стилей style.css темы WordPress (*устарело и не рекомендуется использовать*):
 
-{% highlight php %}<?php bloginfo('stylesheet_url'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('stylesheet_url'); ?>
+~~~
 
 Возвращает путь к текущей теме WordPress:
 
-{% highlight php %}<?php bloginfo('template_url'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('template_url'); ?>
+~~~
 
 Также возвращает путь к текущей теме WordPress:
 
-{% highlight php %}<?php echo get_directory_template_uri(); ?>{% endhighlight %}
+~~~ php
+<?php echo get_directory_template_uri(); ?>
+~~~
 
 Возвращает язык сайта (страницы):
 
-{% highlight php %}<?php language_attributes(); ?>{% endhighlight %}
+~~~ php
+<?php language_attributes(); ?>
+~~~
 
 Возвращает e-mail администратора сайта:
 
-{% highlight php %}<?php bloginfo('admin_email'); ?>{% endhighlight %}
+~~~ php
+<?php bloginfo('admin_email'); ?>
+~~~
 
 Возвращает заголовок просматриваемой статьи или записи:
 
-{% highlight php %}<?php wp_title(); ?>{% endhighlight %}
+~~~ php
+<?php wp_title(); ?>
+~~~
 
 Подключить файл шаблона header.php:
 
-{% highlight php %}<?php get_header(); ?>{% endhighlight %}
+~~~ php
+<?php get_header(); ?>
+~~~
 
 Подключить файл шаблона sidebar.php:
 
-{% highlight php %}<?php get_sidebar(); ?>{% endhighlight %}
+~~~ php
+<?php get_sidebar(); ?>
+~~~
 
 Подключить файл шаблона footer.php:
 
-{% highlight php %}<?php get_footer(); ?>{% endhighlight %}
+~~~ php
+<?php get_footer(); ?>
+~~~
 
 Запуск action в шапке и подвале страницы, обе функции необходимы для правильной работы некоторых плагинов и всей темы WordPress в целом:
 
-{% highlight php %}<?php wp_head(); ?>{% endhighlight %}
+~~~ php
+<?php wp_head(); ?>
+~~~
 
-&#8211; помещается перед тегом
+- помещается перед тегом
 
-{% highlight php %}<?php wp_footer(); ?>{% endhighlight %}
+~~~ php
+<?php wp_footer(); ?>
+~~~
 
-&#8211; помещается перед тегом
+- помещается перед тегом
 
 Подключить файл шаблона комментариев:
 
-{% highlight php %}<?php comments_template(); ?>{% endhighlight %}
+~~~ php
+<?php comments_template(); ?>
+~~~
 
 Вывод текущего года в шаблоне WordPress:
 
-{% highlight php %}<?php echo date('Y'); ?>{% endhighlight %}
+~~~ php
+<?php echo date('Y'); ?>
+~~~
 
 ### Теги записи WordPress
 
 Выводит *заголовок* текущей страницы или записи:
 
-{% highlight php %}<?php the_title(); ?>{% endhighlight %}
+~~~ php
+<?php the_title(); ?>
+~~~
 
 Возвращает *ссылку* на текущую страницу или запись:
 
-{% highlight php %}<?php the_permalink(); ?>{% endhighlight %}
+~~~ php
+<?php the_permalink(); ?>
+~~~
 
 Выводит *отрывок* (цитату) записи с помещением в конец этой цитаты символов \[…\] (может существовать только внутри цикла loop):
 
-{% highlight php %}<?php the_excerpt(); ?>{% endhighlight %}
+~~~ php
+<?php the_excerpt(); ?>
+~~~
 
 Выводит *полное содержимое* (весь текст) текущей записи (может существовать только внутри цикла loop):
 
-{% highlight php %}<?php the_content(); ?>{% endhighlight %}
+~~~ php
+<?php the_content(); ?>
+~~~
 
 Выводит *имя автора* записи:
 
-{% highlight php %}<?php the_author(); ?>{% endhighlight %}
+~~~ php
+<?php the_author(); ?>
+~~~
 
 Выводит *время* (дату) публикации текущей записи:
 
-{% highlight php %}<?php the_time(); ?>{% endhighlight %}
+~~~ php
+<?php the_time(); ?>
+~~~
 
 *Стандартный цикл* loop для вывода записей в шаблоне WordPress:
 
-{% highlight php %}<?php if(have_posts()) : while(have_posts()) : the_post(); ?>
-
-
-<?php endwhile; ?>
-
-
+~~~ php
+<?php if(have_posts()) : while(have_posts()) : the_post(); ?>
+  <?php endwhile; ?>
 <?php endif; ?>
-{% endhighlight %}
+~~~
 
 Расширенный пример (*показанного выше*) стандартного цикла loop, который может послужить в качестве *миниатюрного шаблона*:
 
-{% highlight php %}<?php if(have_posts()) : ?>
-
-
-<?php while(have_posts()) : the_post(); ?>
-
-
-<a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
-
-
-<?php the_content(); ?>
-
-
-<?php endwhile; ?>
-
-
+~~~ php
+<?php if(have_posts()) : ?>
+  <?php while(have_posts()) : the_post(); ?>
+    <a href="<?php the_permalink(); ?>"><?php the_title(); ?></a>
+    <?php the_content(); ?>
+  <?php endwhile; ?>
 <?php endif; ?>
-{% endhighlight %}
+~~~
 
 Возвращает ссылку на *предыдущую запись*:
 
-{% highlight php %}<?php previous_post_link(); ?>{% endhighlight %}
+~~~ php
+<?php previous_post_link(); ?>
+~~~
 
 Возвращает ссылку на *следующую запись*:
 
-{% highlight php %}<?php next_post_link(); ?>{% endhighlight %}
+~~~ php
+<?php next_post_link(); ?>
+~~~
 
 Вывести *теги* записи (может существовать только внутри цикла loop):
 
-{% highlight php %}<?php the_tags(); ?>{% endhighlight %}
+~~~ php
+<?php the_tags(); ?>
+~~~
 
 Вывести ссылку на *комментарии* к записи (может существовать только внутри цикла loop):
 
-{% highlight php %}<?php comments_popup_link(); ?>{% endhighlight %}
+~~~ php
+<?php comments_popup_link(); ?>
+~~~
 
 Вывести *миниатюру* записи внутри самой записи:
 
-{% highlight php %}<?php the_post_thumbnail(); ?>{% endhighlight %}
+~~~ php
+<?php the_post_thumbnail(); ?>
+~~~
 
 Вывод *миниатюры по умолчанию*, если не задана другая миниатюра:
 
-{% highlight php %}<?php if(has_post_thumbnail()): ?>
-
-
-<?php the_post_thumbnail(); ?>
-
-
-<?php else: ?>
-  &lt;img src=“
-
-<?php bloginfo('template_url'); ?>/images/image.jpg” alt=“Image”>
-
-
+~~~ php
+<?php if(has_post_thumbnail()): ?>
+  <?php the_post_thumbnail(); ?>
+  <?php else: ?>
+    <img src="<?php bloginfo('template_url'); ?>/images/image.jpg" alt="Image">
 <?php endif; ?>
-{% endhighlight %}
+~~~
 
 Вывести (создать) *постраничную навигацию* (пагинация):
 
-{% highlight php %}<?php posts_nav_link(); ?>{% endhighlight %}
+~~~ php
+<?php posts_nav_link(); ?>
+~~~
 
 Подключить виджет в шаблоне WordPress:
 
-{% highlight php %}<?php if(!dynamic_sidebar('идентификатор виджета')) : ?>
-
-
+~~~ php
+<?php if(!dynamic_sidebar('идентификатор виджета')) : ?>
 <?php endif; ?>
-{% endhighlight %}
+~~~
 
 ### Функции файла functions.php
 
 Поставить на загрузку файл js-скриптов:
 
-{% highlight php %}wp_enqueue_script();{% endhighlight %}
+~~~ php
+wp_enqueue_script();
+~~~
 
 Поставить на загрузку файл CSS-стилей:
 
-{% highlight php %}wp_enqueue_style();{% endhighlight %}
+~~~ php
+wp_enqueue_style();
+~~~
 
 Пример функции для загрузки скриптов и стилей:
 
-{% highlight php %}function load_scripts_and_styles(){
+~~~ php
+function load_scripts_and_styles(){
 	wp_enqueue_script('jquery_custom',get_directory_template_uri().'/js/my-jquery.js');
 	wp_enqueue_script('js_custom',get_directory_template_uri().'/js/my-js.js');
 	wp_enqueue_style('style',get_directory_template_uri().'/style.css');
 }
-
-	add_action('wp_enqueue_scripts','load_scripts_and_styles');
-{% endhighlight %}
+add_action('wp_enqueue_scripts','load_scripts_and_styles');
+~~~
 
 Зарегистрировать новую панель под виджеты в шаблоне WordPress:
 
-{% highlight php %}register_sidebar()
+~~~ php
+register_sidebar()
   'name' => 'имя новой панели',
   'id' => 'идентификатор новой панели',
   'description' => 'описание новой панели',
@@ -232,19 +278,24 @@ layout: post
   'after_widget' => '',
   'before_title' => '',
   'after_title' => ''
-{% endhighlight %}
+~~~
 
 Включить возможность применения миниатюр в шаблоне WordPress:
 
-{% highlight php %}add_theme_support('post-thumbnails');{% endhighlight %}
+~~~ php
+add_theme_support('post-thumbnails');
+~~~
 
 Установить размер миниатюр в шаблоне по умолчанию:
 
-{% highlight php %}set_post_thumbnail_size($width,$height);{% endhighlight %}
+~~~ php
+set_post_thumbnail_size($width,$height);
+~~~
 
 Шаблон с метаданными темы WordPress:
 
-{% highlight php %}/*
+~~~ php
+/*
   Theme Name: Имя темы
   Theme URI: Домашняя страница темы
   Description: Краткое описание темы
@@ -252,6 +303,10 @@ layout: post
   Author URI: Домашняя страница автора темы
   Version: Номер версии темы
 */
-{% endhighlight %}
+~~~
 
-Будет дополняться (*возможно*) &#8230;
+Будет дополняться (*возможно*).
+
+[1]: http://codex.wordpress.org/ "Codex WordPress"
+
+----

@@ -22,17 +22,16 @@ tags: [jade, html]
 
 Написание кода в этом шаблонизаторе чем-то похоже на написание текста в [Markdown][2]. Под Markdown имеются (и должны иметься) утилиты\программы для компиляции в HTML. Точно также для Jade должны иметься (и имеются) утилиты\программы для компиляции в HTML.
 
-## Jade - синтаксис для Sublime Text 3
+## Jade - синтаксис для Sublime Text
 
 Прежде чем писать код в редакторе, в моем случае необходимо настроить поддержку синтаксиса Jade. Я использую Sublime Text 3, который изначально не имеет таковой.
 
 Исправить это легко - достаточно через `Package Control` установить пакет `Jade`. Помимо подсветки синтаксиса, появиться поддержка автоматической табуляции, что значительно упрощает процесс написания кода.
 
-Пример подсветки синтаксиса Jade в Sublime Text 3:
+Пример подсветки синтаксиса Jade в Sublime Text:
 
-<figure>
-  <img src="../images/uploads/2014/11/jade.png" alt="Пример подсветки синтаксиса Jade в Sublime Text 3">
-</figure>
+![Пример подсветки синтаксиса Jade в Sublime Text]({{site.url}}/images/uploads/2014/11/jade.png)
+{:.center}
 
 ### Jade - родная утилита шаблонизатора
 
@@ -40,15 +39,15 @@ tags: [jade, html]
 
 Утилита является **модулем под Node.js**, поэтому последний у вас должен быть заранее установлен (*если еще не установлен по какой-то необъяснимой причине*).
 
-Инсталляция утилиты производиться **банально**:
+Инсталляция утилиты производиться банально:
 
-{% highlight powershell %}
+~~~ raw
 $ sudo npm install -g jade
-{% endhighlight %}
+~~~
 
 Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации - [Jade - Command Line][4].
 
-Но стоит обратить внимание на некоторые **интересные параметры**:
+Но стоит обратить внимание на некоторые интересные параметры:
 
 **К примеру**:
 
@@ -57,45 +56,45 @@ $ sudo npm install -g jade
 
 Использование утилиты также является простым делом. К примеру, можно указать ей производить компиляцию всех файлов в директории `templates`:
 
-{% highlight powershell %}
+~~~ raw
 $ jade templates
-{% endhighlight %}
+~~~
 
 Утилита может сама создавать jade-файлы:
 
-{% highlight powershell %}
+~~~ raw
 $ jade {foo,bar}.jade
-{% endhighlight %}
+~~~
 
 Или же можно реализовать **два способа вывода**:
 
-{% highlight powershell %}
+~~~ raw
 $ jade > my.jade > my.html
-{% endhighlight %}
+~~~
 
-{% highlight powershell %}
+~~~ raw
 $ echo "h1 Jade!" | jade
-{% endhighlight %}
+~~~
 
 Или же осуществить рендеринг двух директорий `foo` и `bar` в директорию `tmp`:
 
-{% highlight powershell %}
+~~~ raw
 $ jade foo bar --out /tmp
-{% endhighlight %}
+~~~
 
 ## Gulp-jade - компиляция под Gulp
 
 Кто знаком с task-manager'ом Gulp, тот может воспользоваться соответствующим плагином `gulp-jade` под него. Страничка плагина размещена здесь - [gulp-jade][5].
 
-Установка плагина **стандартная**:
+Установка плагина стандартная:
 
-{% highlight powershell %}
+~~~ raw
 $ npm install --save-dev gulp-jade
-{% endhighlight %}
+~~~
 
 Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:
 
-{% highlight javascript %}
+~~~ javascript
 var gulp = require('gulp'),
 jade = require('gulp-jade');
 
@@ -110,13 +109,13 @@ gulp.task('jade', function(){
 gulp.task('watch', function(){
  gulp.watch('./template/*.jade',['jade']);
 });
-{% endhighlight %}
+~~~
 
 В Сети есть еще один интересный Gulp-task. Работоспособность его **не проверял**, взял как есть, для - "чтобы было".
 
 Как говориться на [странице-оригинале][6], эта задача производит компиляцию файлов из директории `app/` в директорию `_public/`:
 
-{% highlight coffeescript %}
+~~~ coffeescript
 jade = require 'gulp-jade'
 
 gulp.task 'jade', ->
@@ -124,7 +123,7 @@ gulp.task 'jade', ->
   .pipe jade pretty: true
   .pipe gulp.dest parameters.web_path
   .on 'error', gutil.log
-{% endhighlight %}
+~~~
 
 ## Заключение
 
@@ -136,3 +135,5 @@ gulp.task 'jade', ->
  [4]: http://jade-lang.com/command-line/ "Jade - Command Line"
  [5]: https://www.npmjs.org/package/gulp-jade "gulp-jade"
  [6]: http://david.nowinsky.net/gulp-book/example/jade.html "Compiling Jade files"
+
+---

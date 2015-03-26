@@ -22,31 +22,31 @@ tags: [stylus, nib]
 
 Если вдруг в системе еще не установлен препроцессор Stylus, то первоначально необходимо установить его командой:
 
-{% highlight powershell %}
+~~~ raw
 $ sudo npm install stylus --global
-{% endhighlight %}
+~~~
 
 Не забудьте добавить ключ `--global`, чтобы препроцессор **установился глобально** в системе.
 
 **Установка библиотеки Nib** почти ничем не отличается от установки препроцессора и выполняется командой:
 
-{% highlight powershell %}
+~~~ raw
 $ sudo npm install nib --global
-{% endhighlight %}
+~~~
 
 Отлично! Все, что теперь осталось сделать - это **подключить библиотеку** в текущий проект (текущий рабочий Stylus-файл).
 
 Это выполняется директивой `@import`:
 
-{% highlight powershell %}
+~~~ raw
 @import 'nib'
-{% endhighlight %}
+~~~
 
 Проверим, что библиотека подключена без ошибок и отрабатывает в проекте\файле. Для этого запишем в файле `style.styl` несколько миксинов этой библиотеки и "натравим" на файл `style.styl` утилиту `stylus` с несколькими ключами:
 
-{% highlight powershell %}
+~~~ raw
 $ stylus -u nib -w style.styl
-{% endhighlight %}
+~~~
 
 здесь:
 
@@ -55,13 +55,11 @@ $ stylus -u nib -w style.styl
 
 Посмотрим на результат компиляции Stylus в CSS - очень уж любопытно, получилось ли?
 
-<figure>
-  <img src="../images/uploads/2014/12/nib.png" alt="Библиотека Nib в действии">
-</figure>
+![Библиотека Nib в действии]({{site.url}}/images/uploads/2014/12/nib.png)
 
 Отлично! Все работает четко - миксины преобразуются в готовый CSS-код. Правда, выглядит он немного неприглядно - не причесанный и не почищенный.
 
-Ну это решается просто - достаточно на этот CSS-файл натравить Gulp-плагины [gulp-csscomb][3] и [gulp-autoprefixer][4].
+Ну это решается просто - достаточно на этот CSS-файл натравить Gulp-плагины [gulp-csscomb][2] и [gulp-autoprefixer][3].
 
 Главное - библиотека подключена и работает!
 
@@ -71,7 +69,7 @@ $ stylus -u nib -w style.styl
 
 Однако, на практике такой способ вряд-ли будет использоваться. Я имею ввиду, что использование лишь одной утилиты `stylus` - я сомневаюсь, что кому-либо пригодиться.
 
-Гораздо практичнее использование Gulp, у которого есть соответствующий плагин [gulp-stylus][5] для компиляции из формата Stylus в CSS.
+Гораздо практичнее использование Gulp, у которого есть соответствующий плагин [gulp-stylus][4] для компиляции из формата Stylus в CSS.
 
 Этот плагин имеет поддержку библиотеки Nib, достаточно только настроить таковую в своем проекте.
 
@@ -81,33 +79,33 @@ $ stylus -u nib -w style.styl
 
 В своем рабочем проекте необходимо установить два плагина (*с помощью консоли*):
 
-{% highlight powershell %}
+~~~ raw
 $ sudo npm install gulp-stylus nib --save-dev
-{% endhighlight %}
+~~~
 
 В результате оба пакета установятся в проект и добавятся в файл package.json в качестве зависимостей:
 
-{% highlight javascript %}
+~~~ javascript
 ...
 "gulp-stylus": "^1.3.4",
 "nib": "^1.0.4"
 ...
-{% endhighlight %}
+~~~
 
 #### Настройка файла gulpfile.js
 
-В файле gulpfile.js необходимо внести несколько правок. Первым делом - добавляем в начало файла две с строки:
+В файле `gulpfile.js` необходимо внести несколько правок. Первым делом - добавляем в начало файла две с строки:
 
-{% highlight javascript %}
+~~~ javascript
 var gulp = require('gulp'),
   stylus = require('gulp-stylus'),
   nib = require('nib'),
 ...
-{% endhighlight %}
+~~~
 
 Затем создаем задачу task для компиляции из Stylus в CSS. В качестве параметра у метода `stylus` будет дополнительная строка `use:[nib()]`, говорящая о том, что необходимо использовать библиотеку Nib:
 
-{% highlight javascript %}
+~~~ javascript
 gulp.task('stylus', function () {
   gulp.src('app/styles/common.styl')
     .pipe(plumber())
@@ -118,15 +116,15 @@ gulp.task('stylus', function () {
     .pipe(csscomb())
     .pipe(gulp.dest('dist/assets/styles/'));
 });
-{% endhighlight %}
+~~~
 
 Вот это и все (*необходимый минимум*), чтобы подружить библиотеку Nib c Gulp.
 
 Не забываем подключить в stylus-файл проекта библиотеку:
 
-{% highlight css %}
+~~~ css
 @import 'nib'
-{% endhighlight %}
+~~~
 
 ### Миксины библиотеки Nib
 
@@ -134,16 +132,19 @@ gulp.task('stylus', function () {
 
 С малой толикой миксинов я уже познакомился, когда создавал тестовую страничку подключения и компиляции (*см. изображение выше*).
 
-На [официальной странице Nib][6] есть ссылка на документацию по миксинам - [Документация миксинов Nib][7].
+На [официальной странице Nib][5] есть ссылка на документацию по миксинам - [Документация миксинов Nib][6].
 
 Там все описано просто и понято, с подробными примерами. Осталось только читать и пользоваться.
 
 В принципе, больше и сказать мне нечего (*по крайней мере - мне*) по поводу миксинов в Nib. Дальше только - брать их и использовать на практике.
 
+На этом все.
+
  [1]: https://github.com/tj/nib "Nib"
- [2]: http://localhost:7788/third/wp-content/uploads/2014/12/nib.png
- [3]: https://www.npmjs.com/package/gulp-csscomb "gulp-csscomb"
- [4]: https://www.npmjs.com/package/gulp-autoprefixer "gulp-autoprefixer"
- [5]: https://www.npmjs.com/package/gulp-stylus "Stylus plugin for gulp"
- [6]: https://github.com/tj/nib "Nib GitHub"
- [7]: http://tj.github.io/nib/ "Документация миксинов Nib"
+ [2]: https://www.npmjs.com/package/gulp-csscomb "gulp-csscomb"
+ [3]: https://www.npmjs.com/package/gulp-autoprefixer "gulp-autoprefixer"
+ [4]: https://www.npmjs.com/package/gulp-stylus "Stylus plugin for gulp"
+ [5]: https://github.com/tj/nib "Nib GitHub"
+ [6]: http://tj.github.io/nib/ "Документация миксинов Nib"
+
+---
