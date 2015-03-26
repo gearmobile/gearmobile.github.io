@@ -1,7 +1,8 @@
 ---
-layout: post
 title: "CSS-разметка - применение outline вместо border"
-author: gearmobile
+layout: post
+categories: css
+share: true
 tags: [layout, outline]
 ---
 
@@ -13,10 +14,7 @@ tags: [layout, outline]
 
 `div {outline: 1px solid #ff0000}`
 
-<figure id="attachment_879" style="width: 600px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/layout_example-600x414.jpg" alt="Пример CSS-разметки" width="600" height="414" class="size-medium wp-image-879" />][1]
-	<figcaption class="wp-caption-text">Пример CSS-разметки</figcaption>
-</figure>
+![Пример CSS-разметки]({{site.url}}/images/uploads/2014/02/layout_example.jpg)
 
 Вы можете решить, что точно так можно сделать и с помощью свойства `border`, но в действительности это не так. Причина заключается в том, что границы (`border`) нарушают разметку. А свойство `outline` не нарушает ее.
 
@@ -24,10 +22,7 @@ tags: [layout, outline]
 
 Если ко всем трем блокам вы добавите свойство `border: 1px solid #ff0000;`, то последний из этих трех опустится вниз и расположиться под двумя первыми:
 
-<figure id="attachment_880" style="width: 600px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/layout_with_borders-600x414.jpg" alt="CSS-разметка с помощью border" width="600" height="414" class="size-medium wp-image-880" />][2]
-	<figcaption class="wp-caption-text">CSS-разметка с помощью border</figcaption>
-</figure>
+![CSS-разметка с помощью border]({{site.url}}/images/uploads/2014/02/layout_with_borders.jpg)
 
 Это произошло потому, что каждый из трех блоков div имеет ширину 320px; помимо этого справа и слева к каждому блоку добавлена граница толщиной в 1px, что делает ширину блока равной, как минимум, 322px. Умножьте это значение ширины на 3 (количество блоков-колонок) и в результате получиться общая ширина 966px, что явно больше ширины блока-родителя 960px. Результат для браузера - сместить последний блок вниз!
 
@@ -35,10 +30,7 @@ tags: [layout, outline]
 
 Не имеет значения, какой толщины вы сделаете `outline`, блоки div никогда не сдвинуться и не нарушат разметку (это касается не только блока div, а любого элемента страницы). Линии сделают перекрытие друг друга, как показано на рисунке ниже:
 
-<figure id="attachment_881" style="width: 600px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/layout_with_outlines-600x414.jpg" alt="CSS-разметка с помощью outlines" width="600" height="414" class="size-medium wp-image-881" />][3]
-	<figcaption class="wp-caption-text">CSS-разметка с помощью outlines</figcaption>
-</figure>
+![CSS-разметка с помощью outlines]({{site.url}}/images/uploads/2014/02/layout_with_outlines.jpg)
 
 Сразу становится ясно преимущество использования `outline` при создании разметки. Если в процессе ее создания вам кажется, что что-то идет не так, вы легко можете "нарисовать" границы интересующего вас элемента, не опасаясь при этом нарушить разметку.
 
@@ -48,14 +40,11 @@ tags: [layout, outline]
 
 Заметьте, что элемент может одновременно иметь оба свойства `border` и `outline`. В этом случае граница `outline` будет отрисована браузером снаружи от границы `border`, так что внутренний край `outline` будет соприкасаться с внешним краем границы `border`:
 
-<figure id="attachment_884" style="width: 600px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2014/02/outlines_with_borders-600x414.jpg" alt="Свойство outline и border для одного элемента" width="600" height="414" class="size-medium wp-image-884" />][4]
-	<figcaption class="wp-caption-text">Свойство outline и border для одного элемента</figcaption>
-</figure>
+![Свойство outline и border для одного элемента]({{site.url}}/images/uploads/2014/02/outlines_with_borders.jpg)
 
 Если элемент также имеет `margin`, то эти поля рисуются вокруг границ `outline`; но при этом `outline` не изменяют поля `margin` и не замещают их.
 
-**Автор статьи**: *Eric Meyer - Smashing CSS Professional Techniques for Modern Layout*
+Автор статьи: Eric Meyer - Smashing CSS Professional Techniques for Modern Layout
 
  [1]: http://localhost:7788/third/wp-content/uploads/2014/02/layout_example.jpg
  [2]: http://localhost:7788/third/wp-content/uploads/2014/02/layout_with_borders.jpg

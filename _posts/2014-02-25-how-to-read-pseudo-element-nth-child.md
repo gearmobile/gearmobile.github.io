@@ -1,7 +1,8 @@
 ---
-layout: post
 title: "Как правильно читать псевдо-элемент nth-child"
-author: gearmobile
+layout: post
+categories: css
+share: true
 tags: [nth-child, css]
 ---
 
@@ -27,10 +28,7 @@ li:nth-child(even) a{
 }
 {% endhighlight %}
 
-<figure id="attachment_918" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2014/02/nth-child_element-600x319.png" alt="Псевдо-элемент nth-child(even)" width="600" height="319" class="size-medium wp-image-918" />][1]
-  <figcaption class="wp-caption-text">Псевдо-элемент nth-child(even)</figcaption>
-</figure>
+![Псевдо-элемент nth-child(even)]({{site.url}}/images/uploads/2014/02/nth-child_element.png)
 
 А вот с общей формулой примерного вида **2n+2** было несколько сложнее. Пока я в "Большой книге CSS3" не нашел простого и краткого объяснения, как "читать" это выражение.
 
@@ -51,7 +49,7 @@ li:nth-child(2n+3){
   * .fifth li:nth-child(**5n+3**) - выбрать **каждый пятый элемент, начиная с третьего элемента**;
   * .forth li:nth-child(**4n+2**) - выбрать **каждый четвертый элемент, начиная со второго**.
 
-То есть, видя выражение типа **3n+4**, мы читаем его так: **каждый третий элемент, начиная с четвертого**. Вопрос остается открытым в отношении загадочной буквы **n**. Как уже можно было догадаться, это всего лишь счетчик. Это объяснение выражения было "подсмотрено" мною на CSS-TRICKS ([How nth-child Works][2]).
+То есть, видя выражение типа **3n+4**, мы читаем его так: **каждый третий элемент, начиная с четвертого**. Вопрос остается открытым в отношении загадочной буквы **n**. Как уже можно было догадаться, это всего лишь счетчик. Это объяснение выражения было "подсмотрено" мною на CSS-TRICKS ([How nth-child Works][1]).
 
 Буква **n** в этом выражении - счетчик, начинающийся с 0. То есть, если взять первое выражение - `.third li:nth-child(3n+2)`, то вычисление внутри него будет производиться следующим образом:
 
@@ -70,5 +68,8 @@ li:nth-child(2n+3){
 
 Тогда ключевое слово **odd** можно записать в виде выражения **3n**, а ключевое слово **even** как выражение **2n**. Ключевые слова были введены в употребление для удобства ввиду частого использования выражений **2n** и **3n**.
 
- [1]: http://localhost:7788/third/wp-content/uploads/2014/02/nth-child_element.png
- [2]: http://css-tricks.com/how-nth-child-works/ "How nth-child Works"
+На этом все.
+
+---
+
+ [1]: http://css-tricks.com/how-nth-child-works/ "How nth-child Works"

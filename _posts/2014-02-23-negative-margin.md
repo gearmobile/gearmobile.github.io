@@ -1,7 +1,8 @@
 ---
-layout: post
 title: "Отрицательный margin в нормальном потоке"
-author: gearmobile
+layout: post
+categories: css
+share: true
 tags: [negative margin, css]
 ---
 
@@ -9,14 +10,15 @@ tags: [negative margin, css]
 
 Создадим простой пример и для этого предположим, что у нас есть страница, на которой элемент после заголовка `h2` всегда должен находиться непосредственно под ним. Самый распространенный пример из практики для этого случая, когда первый параграф, идущий сразу же после заголовка, не имеет пустого пространства (*blank line*) между собой и этим параграфом.
 
-Решения такого вопроса два. **Первый способ** - это воспользоваться смежными селекторами. **Второй способ**, представленный на рисунке ниже, это применить отрицательный `margin-bottom` для `h2`:
+Решения такого вопроса два.
 
-<figure id="attachment_891" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2014/02/header-paragraph-600x381.png" alt="Между заголовком и параграфом нет промежутка" width="600" height="381" class="size-medium wp-image-891" />][1]
-  <figcaption class="wp-caption-text">Между заголовком и параграфом нет промежутка</figcaption>
-</figure> 
+**Первый способ** - это воспользоваться смежными селекторами.
 
-Можно подумать, что у параграфа, который следует сразу за заголовком, отсутствует `margin-top`, но это не так. `Margin-top` никуда не пропадал. Он просто оказался перекрытым заголовком `h2`, у которого край `margin-bottom` находится в непосредственной близости от края текста самого заголовка. Параграф и его собственный `margin` располагаются сразу под ним, а не у нижнего края границы заголовка. 
+**Второй способ**, представленный на рисунке ниже, это применить отрицательный `margin-bottom` для `h2`:
+
+![Между заголовком и параграфом нет промежутка]({{site.url}}/images/uploads/2014/02/header-paragraph.png)
+
+Можно подумать, что у параграфа, который следует сразу за заголовком, отсутствует `margin-top`, но это не так. `Margin-top` никуда не пропадал. Он просто оказался перекрытым заголовком `h2`, у которого край `margin-bottom` находится в непосредственной близости от края текста самого заголовка. Параграф и его собственный `margin` располагаются сразу под ним, а не у нижнего края границы заголовка.
 
 Такой прием полезен на практике в случае, когда необходимо расположить часть контента "на одной линии". Почему слово на одной линии заключено в кавычки - потому-что контент только визуально располагается на одной линии.
 
@@ -37,10 +39,7 @@ tags: [negative margin, css]
 
 Но можно решить такую задачу другим способом:
 
-<figure id="attachment_892" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2014/02/on_the_same_line-600x381.png" alt="Два пункта меню на одной линии" width="600" height="381" class="size-medium wp-image-892" />][2]
-  <figcaption class="wp-caption-text">Два пункта меню на одной линии</figcaption>
-</figure>
+![Два пункта меню на одной линии]({{site.url}}/images/uploads/2014/02/on_the_same_line.png)
 
 {% highlight css %}
 .jump{
@@ -61,10 +60,7 @@ tags: [negative margin, css]
 
 Другим полезным приемом является **частичное выдвижение элемента изнутри наружу своего контейнера-родителя**. Предположим, у нас стоит задача расположить блок заголовка точно по центру разделительной линии так, как это показано на рисунке ниже:
 
-<figure id="attachment_893" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2014/02/centering_heading_on_a_dividing_line-600x381.png" alt="Расположение заголовка по центру разделительной линии" width="600" height="381" class="size-medium wp-image-893" />][3]
-  <figcaption class="wp-caption-text">Расположение заголовка по центру разделительной линии</figcaption>
-</figure>
+![Расположение заголовка по центру разделительной линии]({{site.url}}/images/uploads/2014/02/centering_heading_on_a_dividing_line.png)
 
 HTML-разметка такого заголовка будет следующей:
 
@@ -100,7 +96,6 @@ HTML-разметка, в которой добавлен еще один эле
     <span>The Web Stack</span>
   </h2>
     ...
-  
 </div>
 {% endhighlight %}
 
@@ -117,16 +112,12 @@ HTML-разметка, в которой добавлен еще один эле
   }
 {% endhighlight %}
 
-<figure id="attachment_895" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2014/02/shrink_wraped_text-600x381.png" alt="Ширина блока заголовка задается его контентом" width="600" height="381" class="size-medium wp-image-895" />][4]
-  <figcaption class="wp-caption-text">Ширина блока заголовка задается его контентом</figcaption>
-</figure>
+![Ширина блока заголовка задается его контентом]({{site.url}}/images/uploads/2014/02/shrink_wraped_text.png)
 
 В этом примере все хорошо работает до тех пор, пока длина текста внутри блока меньше, чем длина разделительной линии. Заголовок разбивается на две линии, сам блок заголовка вмещается вниз от разделительной линии и перестает быть расположенным по центру. Для этого случая решение с помощью отрицательного `margin-top` не является самым лучшим. Можно лишь посоветовать убрать верхнюю границу `border-top` у блока-родителя и сделать для него фоновую заливку белого цвета, также. Это будет не совсем то, что нужно; но все же достаточно хорошее решение.
 
-**Автор статьи:** *Eric Meyer - Smashing CSS Professional Techniques for Modern Layout*
+Автор статьи: Eric Meyer - Smashing CSS Professional Techniques for Modern Layout
 
- [1]: http://localhost:7788/third/wp-content/uploads/2014/02/header-paragraph.png
- [2]: http://localhost:7788/third/wp-content/uploads/2014/02/on_the_same_line.png
- [3]: http://localhost:7788/third/wp-content/uploads/2014/02/centering_heading_on_a_dividing_line.png
- [4]: http://localhost:7788/third/wp-content/uploads/2014/02/shrink_wraped_text.png
+На этом все.
+
+---
