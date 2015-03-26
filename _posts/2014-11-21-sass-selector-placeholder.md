@@ -65,7 +65,7 @@ tags: [sass, placeholder]
 И тут наступает момент для выхода на сцену героя этой статьи - **селектора placeholder** (его еще называют "тихим" `placeholder`'ом):
 
 <figure>
-  <img src="../images/uploads/2014/11/placeholder.jpg" alt="Тихий placeholder">
+  <img src="images/uploads/2014/11/placeholder.jpg" alt="Тихий placeholder">
 </figure>
 
 ## Знакомимся с селектором placeholder
