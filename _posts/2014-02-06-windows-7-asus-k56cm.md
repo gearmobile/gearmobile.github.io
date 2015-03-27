@@ -35,15 +35,15 @@ share: true
 
 Первым шагом заходим во вкладку **Boot** и включаем (**Enabled**) опцию **Launch CSM**:
 
-~~~ raw
+{% highlight powershell %}
 Boot - Launch CSM - Enabled
-~~~
+{% endhighlight %}
 
 Вторым шагом переходим на вкладку **Security** и отключаем (**Disabled**) опцию **Secure Boot Control**:
 
-~~~ raw
+{% highlight powershell %}
 Security - Secure Boot Control - Disabled
-~~~
+{% endhighlight %}
 
 Сохраняем изменения в BIOS и выходим из него, нажав клавишу <kbd>F10</kbd>.
 

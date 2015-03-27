@@ -19,7 +19,7 @@ share: true
 
 Для начала посмотрим, как работает простое и привычное нам значение `repeat`:
 
-~~~ css
+{% highlight css %}
 .rnd{
   width: 700px;
   height: 500px;
@@ -29,7 +29,7 @@ share: true
   background-position: top left;
   background-repeat: repeat;
 }
-~~~
+{% endhighlight %}
 
 ![Свойство background-repeat: repeat]({{site.url}}/images/uploads/2014/03/background-repeat_repeat.jpg)
 
@@ -43,7 +43,7 @@ share: true
 
 Пример показан ниже:
 
-~~~ css
+{% highlight css %}
 .rnd{
   width: 700px;
   height: 500px;
@@ -53,7 +53,7 @@ share: true
   background-position: top left;
   background-repeat: round;
 }
-~~~
+{% endhighlight %}
 
 ![Свойство background-repeat: round]({{site.url}}/images/uploads/2014/03/background-repeat_round.jpg)
 
@@ -67,7 +67,7 @@ share: true
 
 Чтобы было понятно, о чем идет речь, посмотрите на пример ниже:
 
-~~~ css
+{% highlight css %}
 .rnd{
   width: 700px;
   height: 500px;
@@ -77,7 +77,7 @@ share: true
   background-position: top left;
   background-repeat: space;
 }
-~~~
+{% endhighlight %}
 
 ![Свойство background-repeat: space]({{site.url}}/images/uploads/2014/03/background-repeat_space.jpg)
 
@@ -95,7 +95,7 @@ share: true
 
 Например, таким кодом:
 
-~~~ css
+{% highlight css %}
 .element {
   width: 550px;
   height: 400px;
@@ -105,7 +105,7 @@ share: true
 .bgrepeatspace .element {
   background-repeat: space; /* for supporting browsers */
 }
-~~~
+{% endhighlight %}
 
 ## Заключение
 

@@ -155,16 +155,16 @@ share: true
 
 В шапке `header` файла `index.html` производим последовательное подключение полученных файлов. Только один из них - `style.css` - мы создадим самостоятельно, для написания своих собственных CSS-стилей. Все остальные файлы оставим без изменения - так и нужно поступать с файлами данного фреймворка (и не только этого):
 
-~~~ html
+{% highlight html %}
 <link rel="stylesheet" type="text/css" href="css/reset.css" />
 <link rel="stylesheet" type="text/css" href="css/text.css" />
 <link rel="stylesheet" type="text/css" href="css/960_24_col.css" />
 <link rel="stylesheet" type="text/css" href="css/style.css" />
-~~~
+{% endhighlight %}
 
 Затем создадим HTML-структуру страницы, применив знания классов, которые были рассмотрены выше. Шапке сайта задаем класс `.grid_24`, чтобы она заняла всю ширину 24-колоночного блока. Затем создаем левый блок шириной в 8 колонок с помощью класса `.grid_8`, центральный блок шириной в 13 колонок с помощью класса `.grid_13`, правый блок шириной в 3 колонки через класс `.grid_3`. И внизу помещаем "подвал" сайта опять на всю ширину страницы с помощью класса `.grid_24`:
 
-~~~ html
+{% highlight html %}
 <div class="container_24">
   <!-- header -->
     <header class="grid_24"></header>
@@ -176,11 +176,11 @@ share: true
     <footer class="grid_24"></footer>
 </div>
 <!-- end container -->
-~~~
+{% endhighlight %}
 
 Все, совсем несложными движениями мы создали структуру страницы сайта. Осталось применить некоторое оформление к блокам, чтобы визуально их отличать:
 
-~~~ css
+{% highlight css %}
 .container_24{
   background: url(../img/24_col.gif) top left repeat;
   margin-top: 10px;
@@ -213,7 +213,7 @@ footer{
   background-color: hsla(60,100%,50%,.7);
   min-height: 50px;
 }
-~~~
+{% endhighlight %}
 
 На официальном сайте проекта 960gs имеется ссылка на слайд-шоу, в котором есть несколько интересных примеров создания разметки с помощью 960gs. Давайте разберем их - кусочки кода, которые можно применить на практике (кстати, именно такое предназначение имеют сниппеты).
 
@@ -225,7 +225,7 @@ footer{
 
 Для этого создаем такую разметку:
 
-~~~ html
+{% highlight html %}
 <div class="container_12">
   <!-- header -->
   <div class="grid_4">
@@ -259,11 +259,11 @@ footer{
   </div>
 </div>
 <!-- end container -->
-~~~
+{% endhighlight %}
 
 ... и CSS-код:
 
-~~~ css
+{% highlight css %}
 .container_12{
   background: url(../img/12_col.gif) top left repeat;
   margin-top: 10px;
@@ -282,7 +282,7 @@ div[class="grid_4"]{
 div[class="grid_6"]{
   background-color: hsla(240,100%,50%,.4);
 }
-~~~
+{% endhighlight %}
 
 ## Ячейки, обернутые другой ячейкой
 
@@ -292,7 +292,7 @@ div[class="grid_6"]{
 
 HTML-код:
 
-~~~ html
+{% highlight html %}
 <div class="container_12">
   <!-- content -->
   <div role="wrap" class="grid_12">
@@ -319,11 +319,11 @@ HTML-код:
   </div>
 </div>
 <!-- end container -->
-~~~
+{% endhighlight %}
 
 ... и CSS-код:
 
-~~~ css
+{% highlight css %}
 .container_12{
   background: url(../img/12_col.gif) top left repeat;
 }
@@ -337,7 +337,7 @@ div[role="wrap"]{
 div[class^="grid_3"]{
   background-color: hsla(240,100%,50%,.4);
 }
-~~~
+{% endhighlight %}
 
 ## Смещение ячеек в 960gs
 
@@ -347,7 +347,7 @@ div[class^="grid_3"]{
 
 HTML-код:
 
-~~~ html
+{% highlight html %}
 <div class="container_12">
   <!-- header -->
   <div role="first" class="grid_6 push_6">
@@ -373,11 +373,11 @@ HTML-код:
   </div>
 </div>
 <!-- end container -->
-~~~
+{% endhighlight %}
 
 ... CSS-код:
 
-~~~ css
+{% highlight css %}
 .container_12{
   background: url(../img/12_col.gif) top left repeat;
   margin-top: 10px;
@@ -398,7 +398,7 @@ div[role="last"]{
 div[class^="grid_2"]{
   background-color: hsla(180,100%,50%,.2);
 }
-~~~
+{% endhighlight %}
 
 ## Создание рамки вокруг ячейки в 960gs
 
@@ -408,7 +408,7 @@ div[class^="grid_2"]{
 
 HTML-код:
 
-~~~ html
+{% highlight html %}
 <div class="container_12">
   <!-- content -->
   <div role="top" class="grid_7">
@@ -430,11 +430,11 @@ HTML-код:
   </div>
 </div>
 <!-- end container -->
-~~~
+{% endhighlight %}
 
 ... CSS-код:
 
-~~~ css
+{% highlight css %}
 .container_12{
   margin-top: 10px;
 }
@@ -458,7 +458,7 @@ div[role="border"]{
   div[role="border" ][class="banner"]{
     background: url(../img/weiss.jpg) top left no-repeat;
   }
-~~~
+{% endhighlight %}
 
 ## Ячейка с обтеканием в 960gs
 
@@ -466,7 +466,9 @@ div[role="border"]{
 
 ![Отмена обтекания ячейки в 960gs]({{site.url}}/images/uploads/2014/04/module_grid_960_clear_grids.jpg)
 
-~~~ html
+HTML-код:
+
+{% highlight html %}
 <div class="container_24">
   <!-- header -->
   <div class="grid_24 navbar">
@@ -492,11 +494,11 @@ div[role="border"]{
   <div class="grid_6 subtopic"></div>
 </div>
 <!-- end container -->
-~~~
+{% endhighlight %}
 
 ... CSS-код:
 
-~~~ css
+{% highlight css %}
 .container_24{
   background: url(../img/24_col.gif) top left repeat;
 }
@@ -553,7 +555,7 @@ div[role="border"]{
 .border{
   padding: 0 10px;
 }
-~~~
+{% endhighlight %}
 
 Вот и все. Объемной получилась статейка!
 

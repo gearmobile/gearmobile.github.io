@@ -12,9 +12,9 @@ tags: [box-sizing, css]
 
 Такой способ вычисления ширины блока делают все современные браузеры:
 
-~~~ raw
+{% highlight powershell %}
 200px + 25px*2 + 10px*2 + 15px*2 = 300px
-~~~
+{% endhighlight %}
 
 ![Модель расчета ширины блока в браузере по умолчанию]({{site.url}}/images/uploads/2014/03/content-box.jpg)
 
@@ -30,9 +30,9 @@ tags: [box-sizing, css]
 
 Первая модель `content-box` является *способом вычисления ширины блока по умолчанию*, принятым в современных браузерах:
 
-~~~ css
+{% highlight css %}
 box-sizing: content-box
-~~~
+{% endhighlight %}
 
 Ширина блока равна сумме: `Width = Width (Content) + Padding + Border + Margin`
 
@@ -42,9 +42,9 @@ box-sizing: content-box
 
 Вторая модель `padding-box` заключается в том, что ширина блока включает в себя ширину контента (`content`) и ширину `padding`. Остальные - `border-box` и `margin-box` - приплюсовываются к заданной ширине, как обычно. Данная модель, хоть и заявлена в спецификации CSS3, не поддерживается на сегодняшний день почти никакими браузерами; *так что о ней можно забыть (пока забыть)*:
 
-~~~ css
+{% highlight css %}
 box-sizing: padding-box
-~~~
+{% endhighlight %}
 
 Ширина блока равна сумме: `Width = Width (Content + Padding) + Border + Margin`
 
@@ -54,9 +54,9 @@ box-sizing: padding-box
 
 Третья модель `border-box` очень похожа на предыдущую модель `padding-box`. Но, в данном случае, ширина блока включает в себя еще и `border-box`; то есть ширина блока включает в себя область `content-box`, `padding-box` и `border-box`. Область `margin-box` прибавляется к ширине блока элемента, как обычно.
 
-~~~ css
+{% highlight css %}
 box-sizing: border-box
-~~~
+{% endhighlight %}
 
 Ширина блока равна сумме: `Width = Width (Content + Padding + Border) + Margin`
 
@@ -68,16 +68,16 @@ box-sizing: border-box
 
 HTML-разметка представлена ниже:
 
-~~~ html
+{% highlight html %}
 <div class="wrap">
   <div class="left"></div>
   <div class="right"></div>
 </div>
-~~~
+{% endhighlight %}
 
 ... и CSS-таблица, обычная для такого случая. Единственное "новое" правило в этом коде - это свойство `box-sizing`, указанное с вендорными префиксами. Обычно его можно не указывать, так как у браузеров по умолчанию свойство `box-sizing` установлено в значении `content-box` (*как уже упоминалось ранее*). Но в нашем случае понадобится **явно указать** это свойство. Для блоков-потомков здесь намерено мы не указываем (*пока не указываем*) `padding`, `border` и `margin`:
 
-~~~ css
+{% highlight css %}
 *{
   margin: 0;
   padding: 0;
@@ -116,7 +116,7 @@ body {
 .right{
   background-color: #fff;
 }
-~~~
+{% endhighlight %}
 
 ![Свойство box-sizing со значением content-box]({{site.url}}/images/uploads/2014/03/box-sizing_default.jpg)
 
@@ -124,7 +124,7 @@ body {
 
 Теперь добавим для блоков-потомков `padding: 5px`:
 
-~~~ css
+{% highlight css %}
 .left, .right{
   float: left;
   width: 400px;
@@ -134,7 +134,7 @@ body {
   box-sizing: content-box;
   padding: 5px;
 }
-~~~
+{% endhighlight %}
 
 Картина будет заранее предсказуемая - один из блоков-потомков опуститься вниз из-за добавления `padding: 5px` к обоим блокам:
 
@@ -142,7 +142,7 @@ body {
 
 Настало время применить свойство `box-sizing` со значением `border-box`. Браузер сразу же **пересчитает ширину обоих блоков** и картина, как по волшебству, изменится:
 
-~~~ css
+{% highlight css %}
 .left, .right{
   float: left;
   width: 400px;
@@ -152,13 +152,13 @@ body {
   box-sizing: border-box;
   padding: 5px;
 }
-~~~
+{% endhighlight %}
 
 ![Свойство box-sizing со значением border-box и padding: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border-box.jpg)
 
 Даже если добавить к блокам-потомкам границу `border`, то картинка останется прежней:
 
-~~~ css
+{% highlight css %}
 .left{
   background-color: #000;
   border: 6px solid #0000ff;
@@ -168,13 +168,13 @@ body {
   background-color: #fff;
   border: 6px solid #00ff00;
 }
-~~~
+{% endhighlight %}
 
 ![Свойство box-sizing со значением border-box и border: 6px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border_border-box.jpg)
 
 Но если прибавить к блокам `div class="left"` и `div class="right"` правило `margin`, то наша разметка снова "сломается":
 
-~~~ css
+{% highlight css %}
 .left, .right{
   float: left;
   width: 400px;
@@ -185,7 +185,7 @@ body {
   padding: 5px;
   margin-left: 5px;
 }
-~~~
+{% endhighlight %}
 
 Это происходит потому, что в модель вычисления `border-box` поля `margin` не входят. Поле `margin-left` размером 5px прибавляется к ширине блока-потомка. Суммарная ширина обоих блоков-потомков превышает ширину блока-родителя и один из них выходит из его, опускаясь (*снова*) вниз:
 
