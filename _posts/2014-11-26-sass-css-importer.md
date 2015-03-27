@@ -2,8 +2,6 @@
 title: "Плагин Sass CSS Importer"
 layout: post
 categories: css
-description: ""
-excerpt: ""
 share: true
 tags: [sass, css importer]
 ---
@@ -26,13 +24,13 @@ tags: [sass, css importer]
 
 Задача подключения CSS-файлов в Sass-файлы наиболее часто может возникнуть в случае использования различных готовых слайдеров или каруселей, которые зачастую идут "в комплекте" с минимальными правилами на CSS. Что же делать?
 
-### Плагин Sass CSS Importer
+## Плагин Sass CSS Importer
 
 Совсем недавно (*17 июля сего года*) Chris Eppstein[^4] выпустил специальный плагин, задачей которого и является **импортирование CSS-файлов** в Sass-файлы. Страничка с официальной документацией по плагину Sass CSS Importer расположена на GitHub - [Sass CSS Importer Plugin][3].
 
 Там все описано кратко и предельно ясно. Однако, я был так доволен тем фактом, что теперь могу свободно подключать CSS в Sass, что решил потратить часть своего времени, чтобы описать его своими словами, по-русски.
 
-### Установка Sass CSS Importer
+## Установка Sass CSS Importer
 
 Установка плагина выполняется как обычно, через менеджер пакетов `gem`:
 
@@ -40,7 +38,7 @@ tags: [sass, css importer]
 $ sudo gem install --pre sass-css-importer
 ~~~
 
-### Подключение Sass CSS Importer
+## Подключение Sass CSS Importer
 
 При использовании фреймворка Compass нужно добавить строку в конфигурационный файл `config.rb` своего текущего проекта:
 
@@ -48,7 +46,7 @@ $ sudo gem install --pre sass-css-importer
 require 'sass-css-importer'
 ~~~
 
-### Импортирование CSS в Sass
+## Импортирование CSS в Sass
 
 Теперь, чтобы импортировать CSS в Sass, нужно воспользоваться все той же директивой `@import`, но **со специальным синтаксисом**.
 
@@ -77,7 +75,7 @@ $ compass watch
 ![Плагин Sass CSS Importer]({{site.url}}/images/uploads/2014/11/sass-css-importer.png)
 {:.center}
 
-### Заключение
+## Заключение
 
 В принципе, вот и все, что можно сказать о Sass CSS Importer.
 

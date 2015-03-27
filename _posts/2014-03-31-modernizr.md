@@ -1,8 +1,9 @@
 ---
-layout: post
 title: "Что такое библиотека Modernizr"
-author: gearmobile
-tags: [modernizr]
+layout: post
+categories: javascript
+tags: [modernizr, javascript]
+share: true
 ---
 
 Добрался до такой достаточно интересной темы, как JavaScript-библиотека Modernizr. Что это за библиотека и для чего она предназначена? Немного отвлекусь - на этом сайтике уже есть статья, посвященная библиотеке Modernizr - [Как использовать Modernizr][1]. Но эта статья является переводом чужой статьи. Кроме того, тема библиотеки Modernizr отдаленно схожа с предыдущей темой, посвященной условным комментариям - [Что такое условные комментарии][2]. В ней также упоминается способ выборки возможностей браузера, но условные комментарии "нацелены" на один конкретный браузер - IE; в то время как библиотека Modernizr более универсальная и с широким возможностями.
@@ -15,7 +16,7 @@ tags: [modernizr]
 
 Надеюсь, мы разобрались тем, для чего предназначена библиотека Modernizr. Следовательно, ответили и на первый вопрос - что это за библиотека. Плавно переходим к вопросу - как воспользоваться этой библиотекой.
 
-### Подключение библиотеки Modernizr
+## Подключение библиотеки Modernizr
 
 Чтобы подключить библиотеку Modernizr к HTML-странице и воспользоваться ее возможностями, необходимо сначала скачать файл библиотеки с официального сайта проекта - [Modernizr][3]. При попытке скачивания на сайте откроется конструктор, с помощью которого можно выбрать CSS3 или HTML5 свойства, поддержка которых требуется в проекте. Преимущество такого подхода в минимизации самой библиотеки - зачем загружать и использовать Modernizr, если из всех его возможностей используется только одна или две?
 
@@ -25,39 +26,33 @@ tags: [modernizr]
   ...
 {% endhighlight %}
 
-### Пример библиотеки Modernizr
+## Пример библиотеки Modernizr
 
 После подключения библиотеки Modernizr открываем HTML-страницу в браузере и запускаем инспектор кода. И наблюдаем следующие "картины":
 
+{% highlight html %}
 <ul>
   <li>
     браузер Google Chrome v32:
   </li>
-  
-  
   <pre>
     <head>
   </pre>
-  
-  
   <li>
     браузер Mozilla Firefox v22:
   </li>
-  
-  
   <pre>
     <head>
   </pre>
   </ul>
-  
-  
   <p>
+{% endhighlight %}
 
 Первое, что бросается в глаза - класс `"no-js"` поменялся на `"js"`! Это сделала библиотека Modernizr. А дальше идут совсем непонятные слова, отдаленно похожие на названия CSS3-свойств или HTML5-свойств. Ничего сложного в этих служебных словах нет - это собственные классы библиотеки Modernizr, с помощью которых она отмечает, что поддерживается конкретным браузером, а что - нет.
 
-К примеру, если браузер поддерживает CSS-свойство `box-shadow`, то это отмечается собственным классом библиотечки - `boxshadow`. А вот если CSS-свойство (`flexbox`) не поддерживается, то библиотека Modernizr "прикрепляет" к названию своего класса префикс `"no-"` и получается `no-flexbox`. Поэтому, смотрим на вывод в инспекторе кода и сразу видим, что браузер Firefox v.22 (<em>например</em>) поддерживает очень много HTML5 и CSS3-свойств, но вот модель `flexbox`, сенсорный экран, базы данных в веб или же CSS-reflections - этого данный браузер выполнить не может: `no-flexbox`, `no-touch`, `no-websqldatabase`, `no-cssreflections`.
+К примеру, если браузер поддерживает CSS-свойство `box-shadow`, то это отмечается собственным классом библиотечки - `boxshadow`. А вот если CSS-свойство (`flexbox`) не поддерживается, то библиотека Modernizr "прикрепляет" к названию своего класса префикс `"no-"` и получается `no-flexbox`. Поэтому, смотрим на вывод в инспекторе кода и сразу видим, что браузер Firefox v.22 (например) поддерживает очень много HTML5 и CSS3-свойств, но вот модель `flexbox`, сенсорный экран, базы данных в веб или же CSS-reflections - этого данный браузер выполнить не может: `no-flexbox`, `no-touch`, `no-websqldatabase`, `no-cssreflections`.
 
-### Пример работы Modernizr
+## Пример работы Modernizr
 
 Все хорошо, скажете вы - определили возможности конкретного браузера. Но что нам это даст в практическом плане, при верстке страницы? Давайте рассмотрим небольшой пример. На странице в порядке эксперимента создан квадрат с фоновой заливкой зеленого (`hsl(120,100%,50%)`) цвета:
 
@@ -71,10 +66,7 @@ p {
 }
 {% endhighlight %}
 
-<figure id="attachment_1089" style="width: 600px;" class="wp-caption aligncenter">
-  <a href="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_simple_page.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_simple_page-600x272.jpg" alt="Пример обычного квадрата на CSS" width="600" height="272" class="size-medium wp-image-1089" /></a>
-  <figcaption class="wp-caption-text">Пример обычного квадрата на CSS</figcaption>
-</figure>
+![Пример обычного квадрата на CSS]({{site.url}}/images/uploads/2014/03/modernizr_simple_page.jpg)
 
 Допустим, мы хотим, чтобы для браузеров, в которых отсутствует поддержка сенсорного экрана, фоновая заливка этого квадрата была не зеленым (`hsl(120,100%,50%)`) цветом, а синим (`hsl(240,100%,50%)`). Для этого мы немного переделаем код, представленный выше и посмотрим на результат:
 
@@ -92,12 +84,9 @@ p{
 }
 {% endhighlight %}
 
-<figure id="attachment_1090" style="width: 600px;" class="wp-caption aligncenter">
-  <a href="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_class_no-touch.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_class_no-touch-600x272.jpg" alt="Стилизованный с помощью библиотеки Modernizr квадрат" width="600" height="272" class="size-medium wp-image-1090" /></a>
-  <figcaption class="wp-caption-text">Стилизованный с помощью библиотеки Modernizr квадрат</figcaption>
-</figure>
+![Стилизованный с помощью библиотеки Modernizr]({{site.url}}/images/uploads/2014/03/modernizr_class_no-touch.jpg)
 
-Фантастика! А что-же произошло, что наш квадрат стал из зеленого синим? Все просто - это обыкновенная <strong>CSS-специфичность</strong>. Библиотека Modernizr автоматически "прицепила" к элементу `html` класс `no-touch` (<em>в числе многих других - стоит отметить</em>). И вот получается, что наш браузер не поддерживает сенсорный экран, у родителя (`html`) ВСЕХ элементов страницы появляется класс `no-touch`, который по правилам CSS-специфичности (10+1=11 явно больше, чем 1) переопределяет значение правила `background-color` для элемента `p` с `hsl(120,100%,50%)` на `hsl(240,100%,50%)`. Вот и вся "хитрость" работы библиотеки Modernizr! ))
+Фантастика! А что-же произошло, что наш квадрат стал из зеленого синим? Все просто - это обыкновенная CSS-специфичность. Библиотека Modernizr автоматически "прицепила" к элементу `html` класс `no-touch` (в числе многих других - стоит отметить). И вот получается, что наш браузер не поддерживает сенсорный экран, у родителя (`html`) ВСЕХ элементов страницы появляется класс `no-touch`, который по правилам CSS-специфичности (10+1=11 явно больше, чем 1) переопределяет значение правила `background-color` для элемента `p` с `hsl(120,100%,50%)` на `hsl(240,100%,50%)`. Вот и вся "хитрость" работы библиотеки Modernizr! ))
 
 Теперь, зная принцип работы Modernizr, можно легко создавать CSS-правила под определенные возможности браузера. К примеру, зная, что IE6 не умеет работать с градиентами через CSS, можно прописать два правила:
 
@@ -106,7 +95,7 @@ p{
   background-image: -webkit-linear-gradient(bottom,#000,#fff);
   background-image:   -moz-background-image-linear-gradient(bottom,#000,#fff);
   background-image:     -o-background-image-linear-gradient(bottom,#000,#fff);
-  background-image:                         linear-gradient(bottom,#000,#fff); 
+  background-image:                         linear-gradient(bottom,#000,#fff);
 }
 
 .no-cssgradients .goo {
@@ -114,97 +103,98 @@ p{
 }
 {% endhighlight %}
 
-### Загрузчик библиотеки Modernizr
+## Загрузчик библиотеки Modernizr
 
 Отлично! Но писать по два условия на одно правило - это утомительно и не рационально (представьте, насколько раздуется код!). Поэтому в библиотеке Modernizr придумали специальный механизм для тестирования CSS-свойств и применения соответствующих CSS-правил. Заключается оно в следующем - при рендеринге HTML-страницы создается один большой JavaScript-объект с именем Modernizr.
 
 У этого объекта есть свойства:
 
+{% highlight html %}
   <ul>
     <li>
       Modernizr.flexbox
     </li>
-    
-    
+
+
     <li>
       Modernizr.canvas
     </li>
-    
-    
+
+
     <li>
       Modernizr.backgroundsize
     </li>
-    
-    
+
+
     <li>
       &#8230;
     </li>
-    
-    
+
+
     <li>
       Modernizr.boxshadow
     </li>
-    
-    
+
+
     <li>
       Modernizr.borderradius
     </li>
-    
+
   </ul>
-  
-  
+
+
   <p>
     &#8230; и так далее. В библиотеке Modernizr встроен загрузчик, который загружает указанное в условии проверки свойство и применяет к нему правила в зависимости от того, `true` или `false` получится в результате проверки.
   </p>
-  
-  
+
+
   <p>
     Например, давайте сделает так, чтобы наш квадрат имел фоновую заливку голубого (cyan) цвета, если браузер <strong>поддерживает</strong> модель `flexbox`, и фиолетового (magenta) цвета, если <strong>не поддерживает</strong> модель `flexbox`. Для этого создадим два разных CSS-файла:
   </p>
-  
-  
+
+
   <ul>
     <li>
       flexbox.css
     </li>
-    
-    
+
+
     <li>
       no_flexbox.css
     </li>
-    
+
   </ul>
-  
-  
+
+
   <p>
     &#8230; в первом (`flexbox.css`) из которых пропишем:
   </p>
-  
-  
+
+
   <pre>
 p{
   background-color: hsl(180,100%,50%);
 }
 </pre>
-  
-  
+
+
   <p>
     &#8230; во втором (`no_flexbox.css`) пропишем:
   </p>
-  
-  
+
+
   <pre>
 p{
   background-color: hsl(300,100%,50%);
 }
 </pre>
-  
-  
+
+
   <p>
     &#8230; и затем создадим еще один JavaScript-файл `check.js` (подключается к HTML-странице как обычно, тегом `script`), в котором запишем следующее:
   </p>
-  
-  
+
+
   <pre>
 Modernizr.load({
   test: Modernizr.flexbox,
@@ -212,51 +202,49 @@ Modernizr.load({
   nope: 'css/no_flexbox.css'
 });
 </pre>
-  
-  
+
+
   <p>
     Здесь:
   </p>
-  
-  
+
+
   <ul>
     <li>
       строка `Modernizr.load` - это загрузчик библиотеки Modernizr;
     </li>
-    
-    
+
+
     <li>
       строка `test: Modernizr.flexbox`    - условие проверки (какое свойство объекта Modernizr проверяем);
     </li>
-    
-    
+
+
     <li>
       строка `yep: 'css/flexbox.css'`     - загрузить файл `flexbox.css`, если условие выполняется (<em>yep - да</em>);
     </li>
-    
-    
+
+
     <li>
       строка `nope: 'css/no_flexbox.css'` - загрузить файл `no_flexbox.css`, если условие не выполняется (<em>nope - нет</em>).
     </li>
-    
+
   </ul>
+{% endhighlight %}
 
-    Результат работы вышеприведенного кода в браузере Chrome (поддерживает модель `flexbox`) и браузере Firefox (не поддерживает модель `flexbox`):
+Результат работы вышеприведенного кода в браузере Chrome (поддерживает модель `flexbox`) и браузере Firefox (не поддерживает модель `flexbox`):
 
-<figure id="attachment_1091" style="width: 600px;" class="wp-caption aligncenter">
-  <a href="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_yep_flexbox.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_yep_flexbox-600x272.jpg" alt="Modernizr - поддержка flexbox" width="600" height="272" class="size-medium wp-image-1091" /></a>
-  <figcaption class="wp-caption-text">Modernizr - поддержка flexbox</figcaption>
-</figure>
+![Modernizr - поддержка flexbox]({{site.url}}/images/uploads/2014/03/modernizr_yep_flexbox.jpg)
 
-<figure id="attachment_1092" style="width: 600px;" class="wp-caption aligncenter"><a href="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_nope_flexbox.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/03/modernizr_nope_flexbox-600x445.jpg" alt="Modernizr - отсутствие поддержки flexbox" width="600" height="445" class="size-medium wp-image-1092" /></a>
-  <figcaption class="wp-caption-text">Modernizr - отсутствие поддержки flexbox</figcaption>
-</figure>
+![Modernizr - отсутствие поддержки flexbox]({{site.url}}/images/uploads/2014/03/modernizr_nope_flexbox.jpg)
 
-### Заключение
+## Заключение
 
 В пользу применения библиотеки Modernizr можно сказать еще то, что такой полезный файлик, как `html5shiv.js` уже автоматически включен в состав этой библиотеки. Поэтому, при подключении Modernizr можно смело переходить на doctype html5 и не заморачиваться поиском и подключением файла `html5shiv.js`.
 
 На этом краткий обзор библиотеки Modernizr можно закончить.
+
+---
 
 [1]: http://localhost:7788/third/how-to-use-modernizr/ "Как использовать Modernizr"
 [2]: http://goo.gl/FGdZyl "Что такое условные комментарии"

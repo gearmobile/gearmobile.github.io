@@ -67,7 +67,6 @@ tags: [sass, placeholder]
 И тут наступает момент для выхода на сцену героя этой статьи - **селектора placeholder** (его еще называют "тихим" `placeholder`'ом):
 
 ![Тихий placeholder]({{site.url}}/images/uploads/2014/11/placeholder.jpg)
-{: .center}
 
 ## Знакомимся с селектором placeholder
 
