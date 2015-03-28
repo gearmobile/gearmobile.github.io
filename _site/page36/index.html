@@ -144,6 +144,53 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-07-24T00:00:00+04:00"><a href="http://zencoder.ru/joomla-%d0%ba%d0%b0%d0%ba-%d0%b2%d0%be%d1%81%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%b8%d1%82%d1%8c-%d0%bf%d0%b0%d1%80%d0%be%d0%bb%d1%8c-%d0%ba-%d0%b0%d0%b4%d0%bc%d0%b8%d0%bd%d0%b8%d1%81%d1%82%d1%80/">July 24, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/joomla-%d0%ba%d0%b0%d0%ba-%d0%b2%d0%be%d1%81%d1%81%d1%82%d0%b0%d0%bd%d0%be%d0%b2%d0%b8%d1%82%d1%8c-%d0%bf%d0%b0%d1%80%d0%be%d0%bb%d1%8c-%d0%ba-%d0%b0%d0%b4%d0%bc%d0%b8%d0%bd%d0%b8%d1%81%d1%82%d1%80/" rel="bookmark" title="Joomla &#8211; как восстановить пароль к административной панели" itemprop="url">Joomla &#8211; как восстановить пароль к административной панели</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Восстановить пароль пользователя к Joomla на самом деле совсем просто. Весь процесс занимает не более двух минут и пары-тройки действий. Недавно сам столкнулся с такой проблемой.</p>
+
+<p>Вариантов восстановления существует несколько, но самым простым и надежным для меня является ручная правка записи в базе данных MySQL. Для этого лучше всего воспользоваться удобным приложением, созданным специально для работы с подобными базами данных – phpMyAdmin (pma).</p>
+
+<p>Заходим в панель управления хостингом и открываем в ней phpMyAdmin. Далее находим ту базу данных, которой соответствует сайт на Joomla, к которому потерян пароль. Открываем ее и в левом окне находим таблицу, в которой размещены данные всех зарегистрированных пользователей. Обычно такая таблица имеет имя xxxx_users, где хххх – это префикс таблицы:<figure id="attachment_511" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2013/07/users_table.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/07/users_table-600x317.png" alt="Таблица пользователей в базе данных MySQL" width="600" height="317" class="size-medium wp-image-511" /></a>&lt;figcaption class="wp-caption-text"&gt;Таблица пользователей в базе данных MySQL&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>Открываем эту таблицу. В правом окне отображаются все пользователи, внесенные в базу данных MySQL:<figure id="attachment_512" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2013/07/edit_user_joomla.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/07/edit_user_joomla-600x315.png" alt="Пользователи сайта в базе данных MySQL" width="600" height="315" class="size-medium wp-image-512" /></a>&lt;figcaption class="wp-caption-text"&gt;Пользователи сайта в базе данных MySQL&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>Выбираем в таблице того пользователя, пароль которого нужно отредактировать. Если пользователей несколько, то нужно найти нужного и отметить его галочкой. Если же один, то достаточно просто нажать на ссылку “Изменить” напротив этой записи.</p>
+
+<p>Откроется большая таблица, в которой нужно найти строку “password”. В столбце “Значение” отображено значение текущего пароля, зашифрованного по алгоритму MD5. Восстановление его с практической точки зрения не имеет смысла. Может быть, это и можно сделать, но данный процесс займет слишком много времени и усилий. Проще заменить пароль на другой, заранее нам известный:<figure id="attachment_513" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2013/07/edit_password_user.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/07/edit_password_user-600x285.png" alt="Редактирование пароля пользователя Joomla" width="600" height="285" class="size-medium wp-image-513" /></a>&lt;figcaption class="wp-caption-text"&gt;Редактирование пароля пользователя Joomla&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>Для этого очищаем поле ввода в столбце “Значение”. В столбце “Функция” в поле ввода находится ниспадающий список. В нем нужно выбрать алгоритм шифрования MD5. И вводим новый пароль в поле “Значение”, например 123123. После того, как нажмем кнопку ОК, введенный заново пароль 123123 зашифруется и подставится наместо введенного нами.</p>
+
+<p>Нажимаем кнопку ОК и выходим из phpMyAdmin. Проверяем результат изменений. Переходим в административную панель Joomla по адресу http://super-site.com/administrator и вводим в форме входа пару логин и измененный пароль. Все должно работать, если не было допущено каких-либо ошибок.</p>
+
+<p>Оцените статью:<br />
+<span id="post-ratings-509" class="post-ratings" data-nonce="dfd74d6a47"><img id="rating_509_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(509, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_509_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(509, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_509_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(509, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_509_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(509, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_509_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(509, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>1</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_509_text"></span></span><span id="post-ratings-509-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-07-23T00:00:00+04:00"><a href="http://zencoder.ru/sublime-text-%d1%81%d0%bc%d0%b5%d0%bd%d0%b0-%d0%ba%d0%be%d0%b4%d0%b8%d1%80%d0%be%d0%b2%d0%ba%d0%b8-%d0%be%d1%82%d0%ba%d1%80%d1%8b%d1%82%d0%be%d0%b3%d0%be-%d1%84%d0%b0%d0%b9%d0%bb%d0%b0/">July 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -373,53 +420,6 @@
 
 <p>Оцените статью:<br />
 <span id="post-ratings-536" class="post-ratings" data-nonce="984e93fa21"><img id="rating_536_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(536, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(536, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(536, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(536, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(536, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_536_text"></span></span><span id="post-ratings-536-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-07-13T00:00:00+04:00"><a href="http://zencoder.ru/%d0%b2%d0%b5%d1%80%d1%81%d1%82%d0%ba%d0%b0-%d0%bc%d0%b0%d0%bb%d0%b5%d0%bd%d1%8c%d0%ba%d0%b0%d1%8f-%d1%85%d0%b8%d1%82%d1%80%d0%be%d1%81%d1%82%d1%8c-%d0%bf%d1%80%d0%b8-%d0%b2%d1%8b%d0%b1%d0%be%d1%80/">July 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/%d0%b2%d0%b5%d1%80%d1%81%d1%82%d0%ba%d0%b0-%d0%bc%d0%b0%d0%bb%d0%b5%d0%bd%d1%8c%d0%ba%d0%b0%d1%8f-%d1%85%d0%b8%d1%82%d1%80%d0%be%d1%81%d1%82%d1%8c-%d0%bf%d1%80%d0%b8-%d0%b2%d1%8b%d0%b1%d0%be%d1%80/" rel="bookmark" title="Верстка &#8211; маленькая хитрость при выборе цвета на макете" itemprop="url">Верстка &#8211; маленькая хитрость при выборе цвета на макете</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Маленькая заметка о хитрости верстки. Не знаю, вряд-ли можно назвать ее серьезной и тянущей на более-менее основательную статью. При верстке psd-макета часто встречаются градиенты (gradient). В последнее время использование градиентов очень популярно, особенно это касается таких элементов страницы, как фон или различные кнопки. С появлением стандарта CSS3 цветовые переходы можно передать в коде легко и быстро. Поэтому, закодировать градиент – это не вопрос. Главное – быть внимательным и не пропустить (заметить) его.</p>
-
-<p>Ведь встречаются такие элементы страницы, где “на глаз” сложно определить, есть ли там цветовой переход или нет его. Особенно, если он сделан в еле заметных оттенках серого цвета. По-серьезному, это нужно выделять слой с элементом, который содержит в себе градиент. И затем в палитре слоев (Layers) смотреть, какой цветовой переход дизайнер заложил в данном случае. Но вот, чтобы просто узнать, присутствует ли в элементе градиент или нет (и стоит ли с ним “повозиться” впоследствии для передачи в коде), можно поступить следующим образом.</p>
-
-<p>Допустим, есть страница 404 от известной web-студии TemplateMonster.com с фоновой заливкой определенного цвета:<figure id="attachment_419" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_404.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_404-600x420.png" alt="Страница с фоном в Photoshop" width="600" height="420" class="size-medium wp-image-419" /></a>&lt;figcaption class="wp-caption-text"&gt;Страница с фоном в Photoshop&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Мне нужно по-быстрому узнать, есть ли на ней градиентный переход по-вертикали. Выбираю инструмент Photoshop под названием “Пипетка” (Eyedropper). Можно активировать его на панели инструментов, или же проще и быстрее воспользоваться “горячей клавишей” I (<em>заглавная буковка i в английской раскладке</em>). И “забираю” цвет в верхней четверти фона страницы:<figure id="attachment_420" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_01.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_01-600x399.png" alt="Цвет в верхней половине фона в Photoshop" width="600" height="399" class="size-medium wp-image-420" /></a>&lt;figcaption class="wp-caption-text"&gt;Цвет в верхней половине фона в Photoshop&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Не закрываю окно “Пипетки”. “Забираю” цвет во-второй четверти фоновой заливки и проверяю, не изменился ли цвет. И так далее – третья четверть, четвертая четверть. И каждый раз смотрю, поменялся цвет или нет:<figure id="attachment_421" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_02.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_02-600x399.png" alt="Цвет в нижней половине фона в Photoshop" width="600" height="399" class="size-medium wp-image-421" /></a>&lt;figcaption class="wp-caption-text"&gt;Цвет в нижней половине фона в Photoshop&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Другими словами, я “пробежался” по-вертикали с помощью пипетки и выяснил, что в конкретном случае, который представлен здесь, цвет везде одинаков – <code>#140100</code>. Итог – фоновая заливка страницы 404 выполнена дизайнером с использованием одного цвета. Поэтому в CSS-правилах можно указать коротко:</p>
-
-<pre>background: #140100</pre>
-
-<p>Все. Просто и со вкусом.</p>
-
-<p>Оцените статью:<br />
-<span id="post-ratings-418" class="post-ratings" data-nonce="9ee5e0858b"><img id="rating_418_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(418, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(418, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(418, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(418, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(418, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_418_text"></span></span><span id="post-ratings-418-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -675,6 +675,12 @@
       <li>
         
           <a href="http://zencoder.ru/page41">41</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page42">42</a>
         
       </li>
     

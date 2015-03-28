@@ -1,8 +1,9 @@
 ---
-layout: post
 title: "PCLinuxOS LiveCD - восстановление загрузчика Grub"
-author: gearmobile
+layout: post
+categories: linux
 tags: [pclinuxos, linux]
+share: true
 ---
 
 С недавних пор открыл для себя такой дистрибутив Linux как PCLinuxOS. Поставил его исключительно для того, чтобы сделать скриншоты при написании статьи. Но в процессе установки и краткого пользования мне он понравился даже больше, чем Linux Mint, которым пользовался до этого.
@@ -15,29 +16,24 @@ tags: [pclinuxos, linux]
 
 Подумал немного и решил, что проще и быстрее мне переустановить Windows. Ничего сложного в этом нет. Но вот запись MBR была затерта. А у меня еще стоят Linux Mint и PCLinuxOS, к которым нужно открыть доступ. Хорошо, у меня сохранился PCLinuxOS LiveCD. С помощью него я быстро и в несколько шагов переустановил Grub в главную загрузочную запись жесткого диска. Ниже приведу 7 последовательный ход действий по восстановлению Grub под PCLinuxOS.
 
-### Последовательность действий:
+## Последовательность действий:
 
   * Вставляю PCLinuxOS LiveCD в дисковод и перезагружаюсь. В меню BIOS выбираю загрузку с оптического диска. Операционная система PCLinuxOS загружается на компьютер
-  * Открываю терминал и захожу в нем под учетную запись root с помощью команды "su -". Пароль для root в PCLinuxOS LiveCD имеет значение root (как ни странно!)
-  * Ввожу команду "grub". При этом приглашение командной строки изменится и примет вид "grub>"
+  * Открываю терминал и захожу в нем под учетную запись `root` с помощью команды `su -`. Пароль для `root` в PCLinuxOS LiveCD имеет значение `root` (как ни странно!)
+  * Ввожу команду `grub`. При этом приглашение командной строки изменится и примет вид "grub>"
 
-<figure id="attachment_529" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/11/grub_pclinuxos_livecd_1.jpg" alt="Вход в оболочку Grub" width="600" height="226" class="size-full wp-image-529" />][1]
-  <figcaption class="wp-caption-text">Вход в оболочку Grub</figcaption>
-</figure>
+![Вход в оболочку Grub]({{site.url}}/images/uploads/2013/11/grub_pclinuxos_livecd_1.jpg)
 
-  * Задаю команду для поиска файла stage1 - find /boot/grub/stage1. На моем компьютере Grub отыскал его только на одном разделе - (hd0,2). Это абсолютно верно, так как на /dev/sda3 установлена PCLinuxOS.
-  * Ввожу команду "root (hd0,2)"
-  * И устанавливаю Grub в MBR - "setup (hd0)"
+  * Задаю команду для поиска файла `stage1` - `find /boot/grub/stage1`. На моем компьютере Grub отыскал его только на одном разделе - `hd0,2`. Это абсолютно верно, так как на `/dev/sda3` установлена PCLinuxOS.
+  * Ввожу команду `root (hd0,2)`
+  * И устанавливаю Grub в MBR - `setup (hd0)`
 
-<figure id="attachment_530" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/11/grub_pclinuxos_livecd_2.jpg" alt="Успешная установка Grub" width="600" height="226" class="size-full wp-image-530" />][2]
-  <figcaption class="wp-caption-text">Успешная установка Grub</figcaption>
-</figure>
+![Успешная установка Grub]({{site.url}}/images/uploads/2013/11/grub_pclinuxos_livecd_2.jpg)
 
-Задача выполнена. Выхожу из оболочки Grub - "quit". И перезагружаюсь. Описанный здесь способ восстановления Grub с помощью PCLinuxOS LiveCD подходит не только для этой операционной системы. Для любого случая, когда в качестве загрузчика используется Grub (но не Grub2), данное описание поможет с высокой долей вероятности.
+Задача выполнена. Выхожу из оболочки Grub - `quit`. И перезагружаюсь.
+
+Описанный здесь способ восстановления Grub с помощью PCLinuxOS LiveCD подходит не только для этой операционной системы. Для любого случая, когда в качестве загрузчика используется Grub (но не Grub2), данное описание поможет с высокой долей вероятности.
 
 На этом все.
 
- [1]: http://localhost:7788/third/wp-content/uploads/2013/11/grub_pclinuxos_livecd_1.jpg
- [2]: http://localhost:7788/third/wp-content/uploads/2013/11/grub_pclinuxos_livecd_2.jpg
+---

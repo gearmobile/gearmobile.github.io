@@ -144,6 +144,319 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-03T00:00:00+04:00"><a href="http://zencoder.ru/css-grid-zurb-foundation-5/">July 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~10 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css-grid-zurb-foundation-5/" rel="bookmark" title="Руководство по CSS Grid в Zurb Foundation 5" itemprop="url">Руководство по CSS Grid в Zurb Foundation 5</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Большинство современных веб-сайтов используют CSS-сетку для визуальной организации контента в строки и столбцы. И почти любой из современных front-end фреймворков имеют в своем составе полноценную систему CSS-сеток. Если читатель немного знаком с фреймворками, то система CSS-сеток в <a href="http://foundation.zurb.com/" title="Zurb Foundation 5">Zurb Foundation 5</a> должна почти полностью отвечать его потребностям. В пользу изучения CSS-сеток в фреймворке можно сказать, что она значительно снижает объем кода, который бы иначе потребовалось написать вручную.</p>
+
+<p>Первым шагом при создании разметки под Foundation нужно скачать файл архива данного фреймворка и включить его в свой собственный проект. Если вы новичек в этом деле, то я рекомендую вам <a href="http://foundation.zurb.com/docs/css.html" title="Getting Started With Foundation CSS">Getting Started With Foundation CSS</a>; однако, помимо этого вы можете пойти по пути <a href="http://foundation.zurb.com/docs/sass.html" title="Getting Started With Sass">Getting Started With Sass</a> или же <a href="http://foundation.zurb.com/docs/applications.html" title="Applications">Applications</a>.</p>
+
+<h3 id="css--foundation">Основы CSS-сетки Foundation</h3>
+
+<p>Фреймворк Foundation создает на HTML-странице строки и столбцы с помощью соответствующих CSS-классов, которые применяются к HTML-элементам. Идея сама по себе проста, однако стоит обратить внимание на тот факт, Foundation прежде всего является адаптивным фреймворком, который ориентирован на мобильные устройства в первую очередь. Это означает, что Foundation был создан для работы на мобильных устройствах, планшетах и на устройствах большего размера, таких как ноутбуки и десктопы – <em>именно в таком порядке</em>.</p>
+
+<p>При создании веб-сайтов под фреймворком Foundation наиболее правильным будет подход, ориентированный на мобильные устройства, в первую очередь. И только потом нужно плавно дорабатывать дизайн сайта так, чтобы он также хорошо смотрелся на на десктопных размерах устройств. Это может показаться нелогичным, но это наиболее правильный подход при работе с Foundation. Многоколоночная разметка плохо работает на мобильных браузерах, потому что мобильные устройства, как правило, имеют экран, у которого высота больше, чем ширина. Впихивание большой разметки в маленький экран – задача гораздо более трудная, нежели создание простой разметки под мобильный экран; а затем постепенное усложенение разметки под большие мониторы.</p>
+
+<h3 id="css-">Шаблон CSS-сетки</h3>
+
+<p>Прежде чем описывать CSS-классы для создания сетки, я бы хотел показать вам <a href="images/foundation_basic_template.png" title="HTML-шаблон Foundation">HTML-шаблон на сайте Zurb</a>:<figure id="attachment_1444" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2014/07/foundation_basic_template.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/07/foundation_basic_template-600x454.png" alt="HTML-шаблон Foundation" width="600" height="454" class="size-medium wp-image-1444" /></a>&lt;figcaption class="wp-caption-text"&gt;HTML-шаблон Foundation&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>CSS-сетка в фреймворке Foundation состоит из 12 колонок. По горизонтали страница разбивается на строки (row). Таким образом, колонки помещаются внутрь каждой из строк. Каждая группа колонок внутри строки row в сумме составляет 12, однако существуют дополнительные возможности для того, чтобы обойти это правило.</p>
+
+<p>В приведенном выше HTML-шаблоне секция заголовка <code>header</code> является строкой. Внутри этой строки помещен блок div для логотипа и блок div для навигации. Блок-логотип имеет класс <code>large-3</code>, что означает, что данный блок должен в сумме занимать три колонки по ширине. Блок навигации имеет класс <code>large-9</code>, что заставляет этот блок в сумме занимать ширину девяти колонок. Оба класса <code>large-3</code> и <code>large-9</code> в сумме составляют 12 колонок (3 + 9 = 12) и полностью занимают всю ширину блока <code>header</code>.</p>
+
+<p>Следующее, большое изображение по центру страницы также является строкой row, внутри которой расположена одна единственная колонка. Эта колонка имеет класс <code>large-12</code>, чтобы занимать ширину всех 12 колонок CSS-сетки в целом. Остальная часть этой страницы-примера построена по такому же принципу, используя строки <code>row</code> и колонки <code>columns</code>. на картинке ниже мною были добавлены оранжевые границы к блокам-колонкам для того, чтобы визуально облегчить понимание того, как была построена эта страница:<figure id="attachment_1445" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2014/07/foundation-example-outline.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/07/foundation-example-outline-600x454.png" alt="Страница примера Foundation с очерченными границами блоков" width="600" height="454" class="size-medium wp-image-1445" /></a>&lt;figcaption class="wp-caption-text"&gt;Страница примера Foundation с очерченными границами блоков&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>Если взглянуть на исходный код данной страницы-примера, то можно увидеть достаточно много кода, большая часть из которого не имеет отношения к созданию CSS-сетки на этой странице. Мною специально было произведено упрощение кода данного шаблона, чтобы оставить только те классы и элементы, которые создают CSS-сетку этой страницы. Изучите представленный мною ниже код с тем, чтобы затем перейти к более детальному описанию каждого из CSS-классов:</p>
+
+<pre><!-- Header and Nav -->
+
+  
+
+<div class="row">
+  <div class="large-3 columns">
+    <!-- logo -->
+        
+  </div>
+      
+  
+  <div class="large-9 columns">
+    <!-- navigation -->
+        
+  </div>
+    
+</div>
+
+  
+
+<!-- First Band (Image) -->
+
+  
+
+<div class="row">
+  <div class="large-12 columns">
+    <!-- large center image -->
+        
+  </div>
+    
+</div>
+
+  
+
+<!-- Second Band (Image Left with Text) -->
+
+  
+
+<div class="row">
+  <div class="large-4 columns">
+    <!-- left image -->
+        
+  </div>
+      
+  
+  <div class="large-8 columns">
+    <!-- text content -->
+        
+  </div>
+    
+</div>
+
+  
+
+<!-- Third Band (Image Right with Text) -->
+
+  
+
+<div class="row">
+  <div class="large-8 columns">
+    <!-- text content -->
+        
+  </div>
+      
+  
+  <div class="large-4 columns">
+    <!-- right image -->
+        
+  </div>
+    
+</div>
+
+  
+
+<!-- Footer -->
+
+  &lt;footer class="row"&gt;
+    
+
+<div class="large-12 columns">
+  <div class="row">
+    <div class="large-6 columns">
+      <!-- copyright -->
+              
+    </div>
+            
+    
+    <div class="large-6 columns">
+      <!-- footer links -->
+              
+    </div>
+          
+  </div>
+      
+</div>
+  &lt;/footer&gt;
+  </pre>
+
+<h3 id="css--foundation-1">Классы CSS-сетки Foundation</h3>
+
+<p>Существует <strong>пять основных классов</strong> CSS-сетки, которые следует запомнить при работе в фреймворке Foundation 5:</p>
+
+<ul>
+  <li><strong>row</strong> – класс <code>.row</code> служит контейнером для вертикальных блоков-колонок; ни для каких других целей он не предназначен. При добавлении контента в HTML-страницу каждая новая строка занимает всю ее ширину. Например, такие блоки, как “шапка” сайта и его “подвал” обязаны иметь класс <code>row</code> с вложенными в него колонками.</li>
+  <li><strong>columns</strong> – внутри каждой строки любому HTML-элементу можно добавить класс <code>columns</code> для того, чтобы он смог занимать определенную часть от общей ширины в 12 колонок. Для удобства, можно использовать как класс <code>columns</code>, так и класс <code>column</code> – результат будет одинаковым. Каждый элемент, которому присвоен класс <code>columns</code> или <code>column</code> обязан иметь еще один класс, который определяет ширину этого элемента.</li>
+  <li><strong>small-#</strong> – фреймворк Foundation имеет в своем составе несколько CSS-классов, которые устанавливают <strong>адаптивную ширину колонки</strong>; каждый из таких классов имеет число, обозначающее, сколько именно колонок следует занимать для данного класса. Например, элемент с классом <code>small-4</code> будет занимать ширину четырех колонок. Если не указан никакой другой адаптивный размер, такой как <code>medium-#</code> или <code>large-#</code>, то указанные в этом классе CSS-правила унаследуются и для больших размеров экранов.</li>
+  <li><strong>medium-#</strong> – этот класс впервые был введен в Foundation 5 и он предназначен для экранов планшетных компьютеров. Если в коде HTML-элемент имеет как класс <code>small-#</code>, так и класс <code>medium-#</code>, то маленькие размеры колонок будут использоваться для показа на мобильных устройствах; средние размеры колонок будут использоваться на экранах планшетных компьютеров и десктопных также. Например, у вас в коде HTML-элемент может иметь одновременно класс <code>small-4</code> и класс <code>medium-8</code>, если необходимо, чтобы этот элемент занимал ширину четырех колонок на экране мобильного телефона, но увеличивал свой размер до восьми колонок на экране планшетного компьютера.</li>
+  <li><strong>large-#</strong> – как вы уже могли догадаться, класс <code>large-#</code> предназначен для создания колонок под экраны ноутбуков или десктопов. Однако, если для HTML-элемента будет задан только один класс для больших мониторов, без указания классов для средних и маленьких размеров экранов, то в результате разметка будет изменять свой вид и превращаться в одноколоночную при изменении размеров экрана. Это очень полезно в том случае, если разметка является многоколоночной для десктопного монитора, а для планшетного или мобильного – одноколоночной. В рассмотренном выше шаблоне-примере вы могли заметить, что все HTML-элементы имеют только один класс <code>large-#</code>; этот шаблон превращается в одноколоночный при меньший размерах экрана, потому что для элементов не заданы классы <code>small-#</code> и <code>medium-#</code>.</li>
+</ul>
+
+<p>Рассказанное выше звучит довольно запутанно, но на самом деле все просто. Если необходимо создать двухколоночную разметку сайта, которая будет превращаться в одноколоночную на экранах мобильных телефонов, необходимо поступить таким образом:</p>
+
+<pre><div class="row">
+  <div class="large-8 columns">
+    <!-- text content -->
+        
+  </div>
+      
+  
+  <div class="large-4 columns">
+    <!-- right image -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<p>Представленная выше разметка создана для больших мониторов и имеет ассиметричную ширину (один блок шире другого). Для средних и маленьких экранов нужно создать ширину, занимающую ровно половину экрана (оба блока имеют равную ширину). Для этого каждому элементу нужно добавить класс <code>small-6</code>:</p>
+
+<pre><div class="row">
+  <div class="small-6 large-8 columns">
+    <!-- text content -->
+        
+  </div>
+      
+  
+  <div class="small-6 large-4 columns">
+    <!-- right image -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<p>Именно класс <code>small-6</code> заставляет оба блока быть равными по ширине. Эти классы переопределяют значения классов <code>large-8</code> и <code>large-4</code>.</p>
+
+<h3 id="css--1">Дополнительные возможности CSS-сетки</h3>
+
+<p>Как и следовало ожидать, у CSS-сетки фреймворка Foundation имеется гораздо больше возможностей, чем было описано выше. Данная статья имеет целью описать только ее основные возможности, но если вы хотите узнать больше, почитайте эту документацию – <a href="http://foundation.zurb.com/docs/" title="Getting Started">Getting Started</a>.</p>
+
+<h4 id="css--2">Вложенность в CSS-сетке</h4>
+
+<p>В CSS-сетке фреймворка Foundation имеется возможность <strong>вкладывать строки внутрь колонок</strong>. Такой прием называется “вложенность” и с ним нужно быть достаточно осторожным на практике, так как можно легко запутаться при написании кода:</p>
+
+<pre><div class="row">
+  <div class="large-8 columns">
+    <!-- вложенность -->
+          
+    
+    <div class="row">
+      <div class="small-4 columns">
+        <!-- вложенный контент -->
+                
+      </div>
+              
+      
+      <div class="small-8 columns">
+        <!-- nested right image -->
+                
+      </div>
+            
+    </div>
+        
+  </div>
+      
+  
+  <div class="large-4 columns">
+    <!-- right image -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<h4 id="foundation">Центрирование колонок в Foundation</h4>
+
+<p>В некоторых случаях может потребоваться создать HTML-элемент, который не должен занимать все 12 колонок сетки, но, тем не менее, этот элемент должен <strong>располагаться точно по центру</strong>. К примеру, может потребоваться добавить в “подвал” сайта изображение, которое по ширине немного уже, чем весь элемент <code>footer</code> в целом. Класс <code>small-centered</code> поместит маленький элемент точно по центру внутри его строки-контейнера. Если необходимо, чтобы элемент располагался по центру только для больших экранов, то к нему необходимо применить класс <code>large-centered</code>:</p>
+
+<pre><div class="row">
+  <div class="large-8 large-centered columns">
+    <!-- центрируемое содержимое -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<h4 id="css--foundation-2">Смещение в CSS-сетке Foundation</h4>
+
+<p>Аналогично ситуации с центрированием колонок в CSS-сетке фреймворка Foundation, возможна ситуация, когда необходимо создать HTML-элемент небольшого размера, который не должен занимать всю ширину своего блока-родителя, но должен быть смещен таким образом, чтобы иметь некоторое пространство слева от себя. И при этом занимать всю оставшуюся ширину блока-родителя. В этих случаях можно использовать классы смещения (offset), например, такой – <code>large-offset-3</code>. Такой класс заставит элемент сместиться вправо на указанную ширину. Также, как и с классами колонок, здесь есть варианты смешения для маленьких экранов (<code>small-offset-#</code>), средних экранов (<code>medium-offset-#</code>), маленьких экранов (<code>small-offset-#</code>):</p>
+
+<pre><div class="row">
+  <div class="large-8 large-offset-3 columns">
+    <!-- смещаемый контент -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<h4 id="foundation-1">Незавершенные строки в Foundation</h4>
+
+<p>Возможность смещения колонок в Foundation – это прекрасная вещь. Но что, если необходимо оставить пустое пространство справа элемента, а не слева? Вообще-то, в случае, когда сумма всех столбцов в строке не равняется 12, фреймворк Foundation перемещает последующий элемент право так, чтобы заполнить пустое пространство. Такой подход позволяет решить некоторые проблемы, связанные с кросс-браузерностью, но если необходимо отменить такое поведение фреймворка, то просто добавьте класс <code>end</code> к последнему элементу, чтобы заставить его смещаться влево (<code>float: left</code>):</p>
+
+<pre><div class="row">
+  <div class="large-2 columns">
+    <!-- левая колонка -->
+        
+  </div>
+      
+  
+  <div class="large-3 columns">
+    <!-- центральная колонка -->
+        
+  </div>
+      
+  
+  <div class="large-2 end columns">
+    <!-- последняя колонка -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<h4 id="section">Порядок следования</h4>
+
+<p>При создании HTML-страниц с помощью строк row и колонок columns имеется уникальная возможность расположить элементы внутри этих страниц совсем не в том порядке, в каком они располагаются в браузере. Например, у вас имеется двухколоночная HTML-разметка, в которой есть левый боковой блок и блок с основным содержимым. Исходя из вопросов удобства пользованием сайтом и аспектов SEO, необходимо сделать так, чтобы блок с основным содержимым размещался первым в HTML-странице; но при этом в окне браузера визуально боковой блок должен находиться перед блоком с контентом.</p>
+
+<p>Два блока могут поменяться своими местами друг с другом используя такую возможность в фреймворке Foundation. Используя классы типа <code>large-pull-3</code> и <code>large-pull-9</code> можно изменить местоположение элементов (или группы элементов):</p>
+
+<pre><div class="row">
+  <div class="large-9 large-pull-3 columns">
+    <!-- основной блок -->
+        
+  </div>
+      
+  
+  <div class="large-3 large-pull-9 columns">
+    <!-- боковой блок -->
+        
+  </div>
+    
+</div>
+  </pre>
+
+<h4 id="section-1">И еще …</h4>
+
+<p>Данная статья является всего лишь введением в систему CSS-сеток фреймворка Foundation; но в нем есть еще много тем для изучения, таких как стилизация форм, модули и типографика. Обо всем этом вы можете почитать в главе <a href="http://foundation.zurb.com/docs/" title="Getting Started">Getting Started</a>.</p>
+
+<p>На этом перевод окончен. Оригинал статьи размещен здесь – <a href="http://blog.teamtreehouse.com/beginners-guide-grids-zurb-foundation-5">The Beginner’s Guide to Grids with Zurb Foundation 5</a>.</p>
+
+<p>Оцените статью:<br />
+<span id="post-ratings-1441" class="post-ratings" data-nonce="f46d9703ee"><img id="rating_1441_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1441, 1, '1 Star');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1441_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1441, 2, '2 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1441_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1441, 3, '3 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1441_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1441, 4, '4 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1441_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1441, 5, '5 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>12</strong> votes, average: <strong>4,67</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1441_text"></span></span><span id="post-ratings-1441-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-06-30T00:00:00+04:00"><a href="http://zencoder.ru/slider-slick/">June 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1018,159 +1331,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-24T00:00:00+04:00"><a href="http://zencoder.ru/slider-elastislide/">June 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/slider-elastislide/" rel="bookmark" title="Слайдер Elastislide" itemprop="url">Слайдер Elastislide</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Обзор слайдера Elastislide типа Carousel, созданного под библиотеку jQuery. Слайдер адаптивный, меняет свои размеры в зависимости от размера окна браузера. В качестве элементов управления применяются только кнопки перемотки вперед и назад. Кнопки генерируются скриптом Elastislide автоматически. Кроме этого, никаких других элементов управления не имеет.</p>
-
-<h3 id="elastislide">Подключение скрипта Elastislide</h3>
-
-<p>Для подключения скрипта к проекту необходимо выполнить несколько шагов. Первое, нужно создать HTML-разметку:</p>
-
-<pre><ul id="elastic" class="elastislide-list">
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 1" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 2" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 3" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 4" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 5" /></a>
-  </li>
-      
-</ul>
-  </pre>
-
-<p>Обязательное условие – нужно применить к списку идентификатор (<em>с произвольным именем</em>) и класс <code>elastislide-list</code>, на который будут “вешаться” CSS-стили. А так видим, что HTML-разметка минималистская, все отлично.</p>
-
-<p>Переходим на <a href="http://tympanus.net/codrops/2011/09/12/elastislide-responsive-carousel/" title="Elastslide">официальную страницу Elastislide</a> и скачиваем оттуда архив с исходниками (<em>кнопка Download Source</em>).</p>
-
-<p>Распаковываем архив и видим несколько папок и четыре HTML-файла с примерами работы слайдера Elastislide. Можно полюбоваться, какую красоту создает скрипт Elastislide ))</p>
-
-<p>Из распакованного архива потребуются не все файлы, а только некоторые из них.</p>
-
-<h4 id="js-">Подключаем JS-файлы</h4>
-
-<p>Из папки JS распакованного архива забираем все три js-файла и подключаем их следующим образом:</p>
-
-<ul>
-  <li>файл <code>modernizr.custom.17475.js</code> подключаем в head HTML-документа:</li>
-</ul>
-
-<pre></pre>
-
-<ul>
-  <li>файлы <code>jquery.elastislide.js</code>, <code>jquerypp.custom.js</code>, <code>jquery-1.8.2.min.js</code> подключаем в теле HTML-документа, перед закрывающим тегом <code>&lt;/body&gt;</code>:</li>
-</ul>
-
-<pre></pre>
-
-<p>Конечно, библиотеку jQuery можно подключать не локально, а через любой из CDN’ов – это кому как нравиться. На оф. сайте в качестве примера так и делается. jQuery используется версии 1.8.2 – я ее тоже использовал; более поздние версии не проверял на работоспособность с Elastislide.</p>
-
-<ul>
-  <li>там же создаем еще один js-файл, в котором инициализируем скрипт Elastislide и пропишем настройки для него (<em>если они понадобятся</em>):</li>
-</ul>
-
-<pre></pre>
-
-<h4 id="css-">Подключение CSS-стилей</h4>
-
-<p>Остался еще один файл, который нужно подключить в проект – это готовые CSS-стили “от автора”, чтобы слайдер Elastislide заработал. Забираем из папки CSS распакованного архива CSS-файл <code>elastislide.css</code> и подключаем его в head HTML-документа:</p>
-
-<pre><link rel="stylesheet" type="text/css" href="css/elastislide.css" />
-</pre>
-
-<p>Остальные два файла <code>custom.css</code> и <code>demo.css</code> в папке CSS нам не нужны – они созданы автором скрипта для презентационных целей в примерах.</p>
-
-<p>Итоговая картина подключения JS-скриптов, CSS-файла и HTML-разметки будет выглядеть следующим образом:</p>
-
-<pre>
-
-    
-
-<ul id="elastic" class="elastislide-list">
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 1" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 2" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 3" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 4" /></a>
-  </li>
-        
-  
-  <li>
-    <a href="#"><img src="http://placehold.it/200x100" alt="Elastic 5" /></a>
-  </li>
-      
-</ul>
-
-    
-    
-    
-
-    
-
-<!-- Кастомный скрипт для Elastislide -->
-    
-
-  
-  </pre>
-
-<p>Как результат успешного подключения всех файлов смотрим на картинку:<figure id="attachment_1382" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/06/elastislide_ready-slider.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/06/elastislide_ready-slider-600x279.jpg" alt="Запущенный слайдер Elastislide" width="600" height="279" class="size-medium wp-image-1382" /></a>&lt;figcaption class="wp-caption-text"&gt;Запущенный слайдер Elastislide&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Дальше уже можно смело редактировать файл <code>elastislide.css</code> для того, чтобы “подогнать” его под текущий дизайн страницы.</p>
-
-<p>На этом все.</p>
-
-<p>Оцените статью:<br />
-<span id="post-ratings-1379" class="post-ratings" data-nonce="533eb7e603"><img id="rating_1379_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1379, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1379_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1379, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1379_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1379, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1379_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1379, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1379_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1379, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_1379_text"></span></span><span id="post-ratings-1379-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1422,6 +1582,12 @@
       <li>
         
           <a href="http://zencoder.ru/page41">41</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page42">42</a>
         
       </li>
     

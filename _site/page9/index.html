@@ -144,6 +144,194 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp-livereload/" rel="bookmark" title="Gulp &#8211; плагин gulp-livereload" itemprop="url">Gulp &#8211; плагин gulp-livereload</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке. </p>
+
+<p>Суть плагина <code>gulp-livereload</code> в <strong>автоматизации обновления страниц в окне браузера</strong>. Это тоже самое, что и связка – плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка – плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
+
+<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье – <a href="http://localhost:7788/third/?p=431" title="Установка LiveReload в Sublime Text 2">Установка LiveReload в Sublime Text 2</a> меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда – почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
+
+<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер <strong>работает стабильно</strong>. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
+
+<h3 id="gulp-livereload">Установка плагина gulp-livereload</h3>
+
+<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу – <a href="https://www.npmjs.org/package/gulp-livereload" title="gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
+
+<pre>$ npm install --save-dev gulp-livereload
+</pre>
+
+<p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
+
+<pre>{
+ "name": "test",
+ "version": "0.0.1",
+ "devDependencies": {
+  "gulp": "~3.8.7",
+  "gulp-livereload": "~2.1.1"
+ }
+}
+</pre>
+
+<p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
+
+<pre>var gulp = require('gulp'),
+    livereload = require('gulp-livereload');
+</pre>
+
+<h3 id="livereload--">Установка плагина LiveReload под браузер</h3>
+
+<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера – Google Chrome и Safari.</p>
+
+<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla – <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится <strong>устаревшая версия плагина</strong>, которая наверняка не подойдет для вашего браузера.</p>
+
+<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров – <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
+
+<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин – он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
+
+<h3 id="gulp-livereload-1">Создание задачи под gulp-livereload</h3>
+
+<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него – это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас – устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
+
+<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:<figure id="attachment_1686" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_error_start_server.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_error_start_server-600x402.png" alt="Ошибка запуска сервера LiveReload" width="600" height="402" class="size-medium wp-image-1686" /></a>&lt;figcaption class="wp-caption-text"&gt;Ошибка запуска сервера LiveReload&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
+
+<pre>// Watch Task
+ gulp.task('watch', function(){
+  livereload.listen();
+  gulp.watch('sass/*.scss', ['sass']).on('change', livereload.changed);
+});
+</pre>
+
+<p>Все – мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
+
+<pre>// Sass Complie Task
+ gulp.task('sass', function(){
+ gulp.src('sass/*.scss')
+  .pipe(sassSCSS())
+  .pipe(gulp.dest('build/css'));
+});
+</pre>
+
+<p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
+
+<pre>var gulp = require('gulp'),
+    sassSCSS = require('gulp-sass'),
+    minifyHTML = require('gulp-minify-html'),
+    rename = require('gulp-rename'),
+    livereload = require('gulp-livereload');
+
+// Default Task
+gulp.task('default', ['sass', 'watch']);
+
+// Watch Task
+ gulp.task('watch', function(){
+  livereload.listen();
+  gulp.watch('sass/*.scss', ['sass']).on('change', livereload.changed);
+});
+
+// Sass Complie Task
+gulp.task('sass', function(){ 
+ gulp.src('sass/*.scss')
+  .pipe(sassSCSS())
+  .pipe(gulp.dest('build/css'));
+});
+</pre>
+
+<p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
+
+<h3 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h3>
+
+<p>Осталось выполнить две маленькие вещи. Первая – включаю плагин LiveReload в браузере. Вторая – запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
+
+<pre>$ gulp
+Using gulpfile ~/Projects/gulp_test/gulpfile.js
+Starting 'sass'...
+Finished 'sass' after 11 ms
+Starting 'watch'...
+Finished 'watch' after 17 ms
+Starting 'default'...
+Finished 'default' after 19 μs
+Live reload server listening on: 35729
+</pre>
+
+<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию – 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
+
+<pre>figure{
+  border: 1px solid #000;
+  padding: 5px;
+ }
+</pre>
+
+<p>… и смотрю на вывод в консоли:</p>
+
+<pre>$ gulp
+Using gulpfile ~/Projects/gulp_test/gulpfile.js
+Starting 'sass'...
+Finished 'sass' after 10 ms
+Starting 'watch'...
+Finished 'watch' after 15 ms
+Starting 'default'...
+Finished 'default' after 11 μs
+Live reload server listening on: 35729
+style.scss was reloaded.
+Starting 'sass'...
+Finished 'sass' after 3.58 ms
+</pre>
+
+<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> – он тоже подхватил изменения? Смотрим:<figure id="attachment_1687" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_01.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_01-600x402.png" alt="Изменения в gulp-livereload" width="600" height="402" class="size-medium wp-image-1687" /></a>&lt;figcaption class="wp-caption-text"&gt;Изменения в gulp-livereload&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> – “картинка” в окне браузера изменилась <strong>без перезагрузки</strong> последнего.</p>
+
+<p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
+
+<pre>$ gulp
+Using gulpfile ~/Projects/gulp_test/gulpfile.js
+Starting 'sass'...
+Finished 'sass' after 10 ms
+Starting 'watch'...
+Finished 'watch' after 15 ms
+Starting 'default'...
+Finished 'default' after 11 μs
+Live reload server listening on: 35729
+style.scss was reloaded.
+Starting 'sass'...
+Finished 'sass' after 3.58 ms
+style.scss was reloaded.
+Starting 'sass'...
+Finished 'sass' after 1.97 ms
+</pre>
+<figure id="attachment_1688" style="width: 600px;" class="wp-caption aligncenter">
+
+[<img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_02-600x402.png" alt="Изменения в gulp-livereload" width="600" height="402" class="size-medium wp-image-1688" />][7]<figcaption class="wp-caption-text">Изменения в gulp-livereload</figcaption></figure>
+
+<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp – использование плагина <code>gulp-livereload</code>.</p>
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-26T00:00:00+04:00"><a href="http://zencoder.ru/gulp-imagemin/">August 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -669,159 +857,6 @@ gulp-imagemin: Minified 6 images (saved 83.02 kB - 7.2%)
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-21T00:00:00+04:00"><a href="http://zencoder.ru/gulp-ruby-sass/">August 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp-ruby-sass/" rel="bookmark" title="Gulp &#8211; плагин gulp-ruby-sass" itemprop="url">Gulp &#8211; плагин gulp-ruby-sass</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Рассмотрим очень нужный и полезный плагин <code>gulp-ruby-sass</code> под Gulp для компиляции файлов Sass в файлы формата CSS. Для разработчиков, которые пользуются препроцессором Sass данный плагин <code>gulp-ruby-sass</code> просто необходим.</p>
-
-<p>Для компиляции Sass в CSS под Gulp имеется несколько плагинов. Например, <code>gulp-sass</code> или <code>gulp-ruby-sass</code>. Более стабильным плагином является <code>gulp-ruby-sass</code>. Вот его мы и установим.</p>
-
-<h3 id="gulp-ruby-sass">Установка плагина gulp-ruby-sass</h3>
-
-<p>Команда установки уже стандартная для нас:</p>
-
-<pre>$ sudo npm install --save-dev gulp-ruby-sass
-</pre>
-
-<p>В директории <code>sass</code> заранее помещены мною два scss-файла <code>main.scss</code> и <code>style.scss</code>:</p>
-
-<pre>$ ls sass/
-  main.scss  style.scss
-</pre>
-
-<p>После этого создаю именованную задачу <code>sass</code> для плагина <code>gulp-ruby-sass</code>:</p>
-
-<pre>// Sass Compile Task
-  gulp.task('sass', function() {
-    gulp.src('sass/**/*.scss')
-    .pipe(sass())
-    .pipe(gulp.dest('build/css'))
-  });
-</pre>
-
-<p>И запускаем задачу <code>sass</code>:</p>
-
-<pre>$ gulp sass
-  [14:31:48] Using gulpfile ~/Projects/gulp_test/gulpfile.js
-  [14:31:48] Starting 'sass'...
-  [14:31:48] Finished 'sass' after 12 ms
-  [14:31:49] gulp-ruby-sass: directory
-  [14:31:49] gulp-ruby-sass: write main.css
-  [14:31:49] gulp-ruby-sass: write style.css
-</pre>
-
-<p>Оба файла скомпилированы <code>main.scss</code> и <code>style.scss</code> и помещены по пути <code>build/css</code>:</p>
-
-<pre>$ ls build/css/
-  main.css  one.css  style.css
-</pre>
-
-<p>Взглянем на содержимое хотя бы одного из них (пускай это будет <code>main.css</code>), чтобы убедиться в том, что это уже CSS-файл, а не SCSS-файл:<figure id="attachment_1631" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin-600x398.png" alt="Компиляция Sass в CSS с помощью gulp-ruby-sass" width="600" height="398" class="size-medium wp-image-1631" /></a>&lt;figcaption class="wp-caption-text"&gt;Компиляция Sass в CSS с помощью gulp-ruby-sass&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Да, действительно, перед нами CSS-файл!</p>
-
-<h3 id="gulp-ruby-sass-1">Добавление опций к плагину gulp-ruby-sass</h3>
-
-<p>До этого момента все плагины, которые мы устанавливали и настраивали в виде задач, были без опций. То есть, в потоке мы просто вызывали плагин через переменную и передавали ему данные для обработки. На этом работа плагина заканчивалась.</p>
-
-<p>Однако внимательный читатель мог уже при первом знакостве с плагинами заметить, что в руководстве почти к каждому из них, помимо описания установки, есть раздел, посвященный опциям данного плагина. Другими словами, плагин может не просто обрабатывать данные, а обрабатывать так, как нам это нужно.</p>
-
-<p>Что касается плагина <code>gulp-ruby-sass</code>, то данный плагин может производить компиляцию из Sass в CSS <strong>несколькими способами</strong>. Достаточно почитать раздел <strong>API</strong> к документации к нему – <a href="https://www.npmjs.org/package/gulp-ruby-sass" title="gulp-ruby-sass">gulp-ruby-sass</a>.</p>
-
-<p>Мы же воспользуемся всего одной опцией из этого списка и сделаем так, чтобы результат компиляции был <strong>более сжатым</strong>. Для этого немного изменим созданную ранее задачу <code>sass</code> и добавим опцию <code>style: 'compressed'</code> к переменной <code>sass</code>:</p>
-
-<pre>// Sass Compile Task
-  gulp.task('sass', function() {
-    gulp.src('sass/**/*.scss')
-    .pipe(sass({
-      style: 'compressed'
-    }))
-    .pipe(gulp.dest('build/css'))
-  });
-</pre>
-
-<p>Снова запустим задачу <code>sass</code> из консоли:</p>
-
-<pre>$ gulp sass
-  [14:52:57] Using gulpfile ~/Projects/gulp_test/gulpfile.js
-  [14:52:57] Starting 'sass'...
-  [14:52:57] Finished 'sass' after 8.68 ms
-  [14:52:58] gulp-ruby-sass: directory
-  [14:52:58] gulp-ruby-sass: write main.css
-  [14:52:58] gulp-ruby-sass: write style.css
-</pre>
-
-<p>И взглянем на результат компиляции файла <code>main.scss</code> в файл <code>main.css</code>:<figure id="attachment_1632" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin_compressed.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin_compressed-600x398.png" alt="Компиляция gulp-ruby-sass с опцией compressed" width="600" height="398" class="size-medium wp-image-1632" /></a>&lt;figcaption class="wp-caption-text"&gt;Компиляция gulp-ruby-sass с опцией compressed&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Отлично! Видим, что плагин <code>gulp-ruby-sass</code> действительно отработал с опцией <code>compressed</code> и произвел не просто компиляцию из SCSS в CSS, но и сжатие CSS-файла <code>main.css</code> – удалены все лишние пробелы и табуляция, выкинуты лишние точки с запятой, а все CSS-правила размещены в одну строку.</p>
-
-<h3 id="section">Объединение нескольких плагинов в одной задаче</h3>
-
-<p>До недавнего момента при работе в Gulp мы всегда поступали таким образом – “один плагин – одна задача”. Однако, Gulp гораздо гибче и мощнее, чем можно было бы подумать. В частности, в одной задаче можно объединить несколько ранее установленных плагинов именно благодаря поточности Gulp.</p>
-
-<p>Чтобы было более понятно, разберем все вышесказанное на живом примере. Дополним задачу <code>sass</code> плагином конкатенации, чтобы “склеить” два результирующих файла <code>main.css</code> и <code>style.css</code> в один файл <code>compile.css</code>. Как вы уже догадались, для этой цели мы воспользуемся уже установленным ранее плагином <code>gulp-concat</code>.</p>
-
-<p>Видоизменим задачу <code>sass</code>, добавив строку <code>.pipe(concat('compile.css'))</code> после строки с вызовом плагина <code>gulp-ruby-sass</code>:</p>
-
-<pre>// Sass Compile Task
-  gulp.task('sass', function() {
-    gulp.src('sass/**/*.scss')
-    .pipe(sass({
-      style: 'compressed'
-    }))
-    .pipe(concat('compile.css'))
-    .pipe(gulp.dest('build/css'))
-  });
-</pre>
-
-<p>Вновь запустим в консоли задачу <code>sass</code>:</p>
-
-<pre>$ gulp sass
-  [15:14:44] Using gulpfile ~/Projects/gulp_test/gulpfile.js
-  [15:14:44] Starting 'sass'...
-  [15:14:44] Finished 'sass' after 9.05 ms
-  [15:14:45] gulp-ruby-sass: directory
-  [15:14:45] gulp-ruby-sass: write main.css
-  [15:14:45] gulp-ruby-sass: write style.css
-</pre>
-
-<p>Посмотрим содержимое по пути <code>build/css</code>:</p>
-
-<pre>aaron@zmk ~/Projects/gulp_test $ ls build/css/
-  compile.css  one.css
-</pre>
-
-<p>Файл <code>compile.css</code> появился по указанному пути. Взглянем на его содержимое в редакторе Sublime Text:<figure id="attachment_1633" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin_compressed_concat.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-ruby-sass_plugin_compressed_concat-600x398.png" alt="Компиляция gulp-ruby-sass и конкатенация Sass в CSS под Gulp" width="600" height="398" class="size-medium wp-image-1633" /></a>&lt;figcaption class="wp-caption-text"&gt;Компиляция gulp-ruby-sass и конкатенация Sass в CSS под Gulp&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Пример получился не совсем удачный, но, тем не менее, наглядный. Видим, чтобы оба плагина отработали. Была произведена компиляция, а затем “склейка” двух файлов в один.</p>
-
-<p>Конечно, благодаря поточности в Gulp, в одну задачу можно добавлять не два плагина, а гораздо больше.</p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1073,6 +1108,12 @@ gulp-imagemin: Minified 6 images (saved 83.02 kB - 7.2%)
       <li>
         
           <a href="http://zencoder.ru/page41">41</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page42">42</a>
         
       </li>
     

@@ -144,7 +144,261 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-01-15T00:00:00+04:00"><a href="http://zencoder.ru/css/jeet-gs-first-introduction/">January 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-01-16T00:00:00+03:00"><a href="http://zencoder.ru/css/rupture-breakpoints-stylus/">January 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/rupture-breakpoints-stylus/" rel="bookmark" title="Rupture - система breakpoint под Stylus" itemprop="url">Rupture - система breakpoint под Stylus</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Краткое знакомство с системой контрольных точек Rupture под препроцессор Stylus.</p>
+</blockquote>
+
+<p>Ниже приведено краткое и сбивчивое описание (<em>знакомство</em>) с системой <code>breakpoints</code> под препроцессор Stylus. Оно основано на двух материалах, оба являющихся официальными:</p>
+
+<ul>
+  <li><a href="http://jenius.github.io/rupture/" title="Rupture">rupture on GitHub</a></li>
+  <li><a href="https://github.com/jenius/rupture" title="Rupture">Rupture - official project</a></li>
+</ul>
+
+<p>А больше в Сети материалов по Rupture и нет, даже на английском языке. Есть, правда, очень краткий - на французском, которым я совсем не владею.</p>
+
+<p>Rupture был создан на примере плагина <a href="https://github.com/lolmaus/breakpoint-slicer" title="Breakpoint Slicer">Breakpoint Slicer</a> под препроцессор Sass.</p>
+
+<h2 id="rupture">Шкала Rupture</h2>
+
+<p>Основа Rupture - шкала значений <code>breakpoints</code>, которая так и называется - <code>scale</code>. Фактически <code>scale</code> - это объект со своими свойствами и методами. Перечень контрольных точек (<code>breakpoints</code>) - это массив значений, передаваемых объекту <code>scale</code>.</p>
+
+<p>Ниже представлена <code>scale</code> по умолчанию (<em>но которую можно легко изменить при необходимости</em>):</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>scale = 0 400px 600px 800px 1050px 1800px
+</pre></div>
+</div>
+</div>
+
+<p>Количество этих значений - <code>0, 400px, 600px 800px, 1050px</code> - может быть необязательно равно 5 (пяти). Их может быть неограниченное количество - столько, сколько нужно.</p>
+
+<p>Перечень значений <code>breakpoints</code>, показанных выше, можно представить в виде диапазонов; каждому диапазону можно присвоить порядковый номер <code>slice number</code> и “обозвать” как <code>slice</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/01/scale_rupture.png" alt="Rupture Scale" /></p>
+
+<p>Подключать библиотеку Rupture в проект <strong>нет необходимости</strong>. Достаточно установить библиотеку командой:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>$ sudo npm install rupture --global
+</pre></div>
+</div>
+</div>
+
+<p>После этого Rupture готова к использованию. Можно запустить компиляцию из командной строки (<em>не рекомендуется</em>):</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>$ stylus -u rupture -c example.styl
+</pre></div>
+</div>
+</div>
+
+<p>Здесь <code>-c</code> - это сокращение от <code>--compress</code>, то есть - минифицировать CSS-код на выходе. Почему не рекомендуется использовать командную строку? Просто для этих целей лучше (<em>и целесообразнее</em>) использовать Gulp.</p>
+
+<h2 id="rupture-1">Миксины Rupture</h2>
+
+<p>В Rupture все управляется <strong>миксинами</strong>. Есть заранее созданный набор миксинов, которые необходимо применять для определенного случая (<code>breakpoints</code>).</p>
+
+<p>Все миксины Rupture делятся на <strong>два вида</strong>:</p>
+
+<ul>
+  <li><strong>простые миксины</strong> для практического использования каждый день</li>
+  <li><strong>сложный набор миксинов</strong>, которые фактически представляют из себя <code>grid sistem</code></li>
+</ul>
+
+<p>В этом кратком обзоре я буду рассматривать только “практические” миксины. Более сложные - нет, ибо “не зачем”.</p>
+
+<h3 id="rupture-2">Набор практических миксинов Rupture</h3>
+
+<p>Первые три миксина - <strong>наиболее применимые</strong> и удобные на практике.</p>
+
+<p><strong>+above(measure)</strong>
+- если размер окна браузера <strong>больше</strong> указанного значения (<code>&gt; measure</code>), то применить стили
+- <code>+from-width(measure)</code> - это алиас миксина <strong>+above(measure)</strong></p>
+
+<p><strong>+below(measure)</strong>
+- если размер окна браузера <strong>меньше</strong> указанного значения (<code>&lt; measure</code>), то применить стили
+- <code>+to-width(measure)</code> - это алиас миксина <strong>+below(measure)</strong></p>
+
+<p><strong>+between(measure1, measure2)</strong>
+- если размер окна браузера находится в указанных пределах (<code>measure1 &lt;= between &lt;= measure2</code>), то применить стили</p>
+
+<p>Дальше пошли миксины - “по обстоятельствам”.</p>
+
+<p><strong>+at(measure)</strong>
+- если размер окна браузера <code>&gt;=</code> указанного значения, то применить стили</p>
+
+<p><strong>+mobile()</strong>
+- если размер окна браузера <code>&lt;= 400px</code>, то применить стили
+- <code>rupture.mobile-cutoff</code> - переменная, в которой хранится значение для миксина <code>mobile()</code></p>
+
+<p><strong>+tablet()</strong>
+- если размер окна браузера находится в пределах <code>&gt;= 1050px</code> и <code>&lt; 400px</code>, то применить стили</p>
+
+<p><strong>+desktop()</strong>
+- если размер окна браузера <code>&gt; 1050px</code>, то применить стили
+- <code>rupture.desktop-cutoff</code> - переменная, в которой хранится значение для миксина <code>desktop()</code></p>
+
+<p><strong>+hd()</strong>
+- если размер окна браузера <code>&gt;=</code> 1800px, то применить стили
+- <code>rupture.hd-cutoff</code> - переменная, в которой хранится значение для миксина <code>hd()</code></p>
+
+<p><strong>+retina()</strong>
+- если плотность размещения пикселей больше 1.5 <code>(retina display)</code>, то применить стили</p>
+
+<p><strong>+landscape()</strong>
+- если у окна браузера <strong>высота меньше, чем ширина</strong>, то применить стили</p>
+
+<p><strong>+portrait()</strong>
+- если у окна браузера <strong>высота больше, чем ширина</strong>, то применить стили</p>
+
+<h2 id="rupture-3">Настройка Rupture</h2>
+
+<p>Как любая система, Rupture имеет свои собственные настройки. Которые можно задавать в файле проекта в виде <strong>переменных</strong> с их значениями.</p>
+
+<p>К примеру, Rupture имеет возможность <strong>автоматического конвертирования</strong> значений <code>breakpoints</code> из пикселей (px) в <code>em</code>. Как говорится в официальном руководстве, в веб-разработке существует мнение, что задавать контрольные точки в <code>em</code> - это хорошая практика.</p>
+
+<p>Поэтому, такой пример иллюстрирует <strong>включение автоматической конвертации</strong> из <code>px</code> в <code>em</code>; и задание базового размера шрифта в 18px (<em>базовый размер шрифта равен 16px</em>):</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="tag">rupture</span><span class="class">.enable-em-breakpoints</span> = <span class="tag">true</span>
+<span class="tag">base-font-size</span> = <span class="float">18px</span>
+</pre></div>
+</div>
+</div>
+
+<p><strong>rupture.scale</strong> - одна из <strong>важнейших переменных</strong> Rupture. В этой переменной можно в виде массива переопределить значения breakpoints.</p>
+
+<p>Например, таким образом:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>rupture.scale = 0 380px 768px 1200px
+</pre></div>
+</div>
+</div>
+
+<h2 id="rupture-4">Пример работы Rupture</h2>
+
+<p>Перейдем от теории к практике и рассмотрим маленький рабочий пример - как будет <em>отрабатывать</em> Rupture:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre>div.wrapper
+  div.left
+  div.right
+</pre></div>
+</div>
+</div>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="directive">@import</span> <span class="string"><span class="delimiter">'</span><span class="content">nib</span><span class="delimiter">'</span></span>
+<span class="directive">@import</span> <span class="string"><span class="delimiter">'</span><span class="content">jeet</span><span class="delimiter">'</span></span>
+
+// <span class="tag">Partials</span>
+<span class="directive">@import</span> <span class="string"><span class="delimiter">'</span><span class="content">partials/*.styl</span><span class="delimiter">'</span></span>
+
+<span class="tag">rupture</span><span class="class">.enable-em-breakpoints</span> = <span class="tag">true</span>
+
+<span class="class">.wrapper</span>
+  <span class="error">c</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>()
+
+<span class="class">.left</span>
+  <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">1</span>/<span class="float">3</span>)
+  <span class="tag">height</span> <span class="float">20</span><span class="tag">vh</span>
+  <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">10%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="float">800px</span>)
+    <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">1</span>/<span class="float">4</span>)
+    <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">20%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="float">400px</span>)
+    <span class="error">s</span><span class="error">t</span><span class="error">a</span><span class="error">c</span><span class="error">k</span>()
+    <span class="tag">margin-bottom</span> <span class="float">10px</span>
+
+<span class="class">.right</span>
+  <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">2</span>/<span class="float">3</span>)
+  <span class="tag">height</span> <span class="float">20</span><span class="tag">vh</span>
+  <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">20%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="float">800px</span>)
+    <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">3</span>/<span class="float">4</span>)
+    <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">30%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="float">400px</span>)
+    <span class="error">s</span><span class="error">t</span><span class="error">a</span><span class="error">c</span><span class="error">k</span>()
+</pre></div>
+</div>
+</div>
+
+<p>Комментировать вышеприведенный код мне как-то не особого желания. Он очень простой и наглядный - слова тут излишни.</p>
+
+<p>Кроме одного вопроса, который чуть не забыл упомянуть! В этом коде (<em>и всех примерах выше</em>) применялось точное значение для миксинов - <code>+below(400px)</code>, к примеру.</p>
+
+<p>Но ничто не мешает использовать любые <strong>произвольные переменные</strong>, в которые можно “загружать” нужные значения. К примеру, код выше можно преобразовать таким образом:</p>
+
+<div class="highlighter-coderay"><div class="CodeRay">
+  <div class="code"><pre><span class="directive">@import</span> <span class="string"><span class="delimiter">'</span><span class="content">nib</span><span class="delimiter">'</span></span>
+<span class="directive">@import</span> <span class="string"><span class="delimiter">'</span><span class="content">jeet</span><span class="delimiter">'</span></span>
+
+// <span class="tag">Partials</span>
+<span class="directive">@import</span> <span class="string"><span class="delimiter">'</span><span class="content">partials/*.styl</span><span class="delimiter">'</span></span>
+
+// <span class="tag">Breakpoint</span> <span class="tag">Variables</span>
+<span class="error">$</span><span class="tag">bp1</span> = <span class="float">800px</span>
+<span class="error">$</span><span class="tag">bp2</span> = <span class="float">400px</span>
+
+<span class="tag">rupture</span><span class="class">.enable-em-breakpoints</span> = <span class="tag">true</span>
+
+<span class="class">.wrapper</span>
+  <span class="error">c</span><span class="error">e</span><span class="error">n</span><span class="error">t</span><span class="error">e</span><span class="error">r</span>()
+
+<span class="class">.left</span>
+  <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">1</span>/<span class="float">3</span>)
+  <span class="tag">height</span> <span class="float">20</span><span class="tag">vh</span>
+  <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">10%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="error">$</span><span class="tag">bp1</span>)
+    <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">1</span>/<span class="float">4</span>)
+    <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">20%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="error">$</span><span class="tag">bp2</span>)
+    <span class="error">s</span><span class="error">t</span><span class="error">a</span><span class="error">c</span><span class="error">k</span>()
+    <span class="tag">margin-bottom</span> <span class="float">10px</span>
+
+<span class="class">.right</span>
+  <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">2</span>/<span class="float">3</span>)
+  <span class="tag">height</span> <span class="float">20</span><span class="tag">vh</span>
+  <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">20%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="error">$</span><span class="tag">bp1</span>)
+    <span class="error">c</span><span class="error">o</span><span class="error">l</span>(<span class="float">3</span>/<span class="float">4</span>)
+    <span class="tag">background-color</span> <span class="error">l</span><span class="error">i</span><span class="error">g</span><span class="error">h</span><span class="error">t</span><span class="error">e</span><span class="error">n</span>(<span class="error">$</span><span class="tag">color</span>,<span class="float">30%</span>)
+  +<span class="error">b</span><span class="error">e</span><span class="error">l</span><span class="error">o</span><span class="error">w</span>(<span class="error">$</span><span class="tag">bp2</span>)
+    <span class="error">s</span><span class="error">t</span><span class="error">a</span><span class="error">c</span><span class="error">k</span>()
+</pre></div>
+</div>
+</div>
+
+<h2 id="rupture-5">Заключение о Rupture</h2>
+
+<p>Вот я и познакомился с Rupture. Что можно сказать - система мне (<em>в очередной раз - все из мира Stylus</em>) понравилась, она очень проста и наглядна. Достаточно полчаса, чтобы ознакомиться с ее возможностями и начать применять на практике.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-01-15T00:00:00+03:00"><a href="http://zencoder.ru/css/jeet-gs-first-introduction/">January 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -388,7 +642,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-01-07T00:00:00+04:00"><a href="http://zencoder.ru/tags-wordpress/">January 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-01-07T00:00:00+03:00"><a href="http://zencoder.ru/tags-wordpress/">January 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -802,7 +1056,7 @@ add_action(<span class="string"><span class="delimiter">'</span><span class="con
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+04:00"><a href="http://zencoder.ru/nib-stylus/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/nib-stylus/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -984,7 +1238,7 @@ add_action(<span class="string"><span class="delimiter">'</span><span class="con
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/modal-window-easy-fancybox/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/wordpress/modal-window-easy-fancybox/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -1107,233 +1361,6 @@ add_action(<span class="string"><span class="delimiter">'</span><span class="con
 </pre></div>
 </div>
 </div>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-12-27T00:00:00+04:00"><a href="http://zencoder.ru/css/stylus-introduction/">December 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/stylus-introduction/" rel="bookmark" title="Stylus - знакомство с препроцессором" itemprop="url">Stylus - знакомство с препроцессором</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Настало время познакомиться с препроцессором Stylus. Ниже привожу перевод статьи от David Walsh, посвященную малоизвестному, но крайне полезному препроцессору Stylus. Оригинал статьи размещен здесь - <a href="http://blog.teamtreehouse.com/getting-started-stylus" title="Getting Started with Stylus">Getting Started with Stylus</a></p>
-</blockquote>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/12/stylus-logo.png" alt="Stylus" /></p>
-
-<p>В среде web-разработчиков можно часто и постоянно слышать только о двух препроцессорах: <a href="http://sass-lang.com/" title="Sass">Sass</a> и <a href="http://lesscss.org/" title="LESS">LESS</a>. Однако, существует еще один препроцессор, о котором слышно совсем не так часто - это <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a>. При редизайне Mozilla Developer Network мною был выбран Stylus по нескольким причинам:</p>
-
-<ul>
-  <li>так как Stylus основан на <a href="http://nodejs.org/" title="Node.js">Node.js</a>, то отпадает необходимость в использовании сторонней технологии (Sass требует для своей работы Ruby)</li>
-  <li>Stylus предоставляет набор <a href="https://github.com/LearnBoost/stylus/blob/master/docs/js.md" title="JavaScript API">JavaScript API</a>, что делает возможным дальнейшую настройку этого инструмента</li>
-  <li>синтаксис Stylus не нуждается в скобках (brackets), запятых (comma), двоеточиях (colons), точках с запятыми (semicolon) - он целиком и полностью основан на использовании табуляции и пробелов; но если необходимо использовать любой из видов пунктуаций, то его можно легко применить в Stylus - компиляция произойдет корректно</li>
-  <li>под препроцессор Stylus имеется готовая библиотека миксинов (mixin) под названием <a href="https://github.com/visionmedia/nib" title="Nib">Nib</a></li>
-</ul>
-
-<h2 id="stylus">Установка Stylus</h2>
-
-<p>Препроцессор Stylus является Open Source проектом, расположенным на GitHub, поэтому его можно легко установить как из исходных файлов, так и с помощью менеджера пакетов <code>npm</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">stylus</span> <span class="n">-g</span></code></pre></div>
-
-<p>CSS-файлы, созданные при помощи синтаксиса Stylus, должны иметь расширение <code>.styl</code> и могут располагаться в любом месте проекта. Препроцессор Stylus не имеет какого-либо конфигурационного файла, для начала компиляции достаточно запустить утилиту командной строки <code>stylus</code> с минимальным набором ключей:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">app</span><span class="p">/</span><span class="n">main</span><span class="p">.</span><span class="n">styl</span> <span class="p">-</span><span class="n">-out</span> <span class="p">/</span><span class="n">dist</span> <span class="p">-</span><span class="n">-compress</span></code></pre></div>
-
-<p>Представленная выше команда выполняет компиляцию исходного stylus-файла <code>main.styl</code> в директорию <code>/dist</code> с тем же самым именем <code>main.styl</code>. Другими словами, файл <code>main.styl</code> компилируется в файл <code>main.css</code> и помещается в директорию <code>/dist</code>.</p>
-
-<p>Утилита <code>stylus</code> может запускаться не только для однократной компиляции, но и отслеживать изменения файлов, выполняя компиляцию на лету; для этого имеется ключ <code>--watch</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="p">-</span><span class="n">-watch</span> <span class="n">app</span><span class="p">/</span><span class="n">main</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
-
-<p>Как можно догадаться, у программы <code>stylus</code> имеется гораздо больше опций, с полным списком которых можно ознакомиться здесь - <a href="https://github.com/LearnBoost/stylus/blob/master/docs/executable.md" title="Executable">Executable</a>. В частности, с помощью нужных ключей можно выполнять обратную конвертацию из CSS в Stylus, сравнивать ввод\вывод и многое дугое.</p>
-
-<blockquote>
-  <p>Но приступим к рассмотрению самого главного, ради чего и затевался данный перевод - синтаксису и возможностям препроцессора Stylus</p>
-</blockquote>
-
-<h2 id="stylus-1">Основы синтаксиса Stylus</h2>
-
-<p>Синтаксис Stylus очень похож на синтаксис остальных препроцессоров (Sass или LESS). Но давайте более детально рассмотрим, что он из себя представляет на деле:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  Простая переменная  */</span>
-  <span class="nt">base-font-size</span> <span class="o">=</span> <span class="nt">12px</span>
-
-<span class="c">/* Инициализация переменной с помощью вызова миксина */</span>
-<span class="nt">body-background</span> <span class="o">=</span> <span class="nt">invert</span><span class="o">(</span><span class="nf">#ccc</span><span class="o">)</span>
-
-<span class="c">/* Селектор и набор правил для него */</span>
-<span class="nt">body</span>
-  <span class="nt">color</span> <span class="nf">#333</span>
-  <span class="nt">background</span> <span class="nf">#fff</span>
-
-<span class="c">/* Вложенность правил */</span>
-<span class="nt">nav</span>
-  <span class="nt">margin</span> <span class="nt">10px</span>
-    <span class="nt">ul</span>
-      <span class="nt">list-style-type</span> <span class="nt">none</span>
-        <span class="o">&gt;</span> <span class="nt">li</span>
-          <span class="nt">display</span> <span class="nt">inline-block</span>
-          <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;</span><span class="nc">.current</span>
-            <span class="nt">background-color</span> <span class="nt">lightblue</span>
-
-<span class="c">/* Использование вычисляемых значений */</span>
-<span class="nt">div</span><span class="nc">.column</span>
-  <span class="nt">margin-right</span> <span class="o">(</span><span class="nt">grid-spacing</span> <span class="o">/</span> <span class="nt">2</span><span class="o">)</span>
-  <span class="nt">margin-top</span> <span class="o">(</span><span class="nt">grid-spacing</span> <span class="o">*</span> <span class="nt">2</span><span class="o">)</span>
-
-<span class="c">/* Использование ранее установленного значения */</span>
-<span class="nt">div</span><span class="nc">.center-column</span>
-  <span class="nt">width</span> <span class="nt">200px</span>
-  <span class="nt">margin-left</span> <span class="nt">-</span><span class="o">(</span><span class="k">@width</span> <span class="o">/</span> <span class="nt">2</span><span class="o">)</span>
-
-<span class="c">/* Задание значений, полученных как результат вычислений миксинов */</span>
-<span class="nc">.promo</span>
-  <span class="nt">apply-promo-style</span><span class="o">()</span>
-  <span class="nt">apply-width-center</span><span class="o">(</span><span class="nt">400px</span><span class="o">)</span>
-
-<span class="c">/* Итерация в цикле */</span>
-<span class="nt">table</span>
-  <span class="nt">for</span> <span class="nt">row</span> <span class="nt">in</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">4</span> <span class="nt">5</span>
-    <span class="nt">tr</span><span class="nd">:nth-child</span><span class="o">(</span><span class="p">{</span><span class="nt">row</span><span class="p">}</span><span class="o">)</span>
-      <span class="nt">height</span> <span class="nt">10px</span> <span class="o">*</span> <span class="nt">row</span>
-
-<span class="c">/* Другой вариант итерации в цикле */</span>
-<span class="nt">for</span> <span class="nt">row</span> <span class="nt">in</span> <span class="o">(</span><span class="nt">1</span><span class="o">.</span><span class="nc">.5</span><span class="o">)</span>
-  <span class="nt">tr</span><span class="nd">:nth-child</span><span class="o">(</span><span class="p">{</span><span class="n">row</span><span class="p">}</span><span class="o">)</span>
-    <span class="nt">height</span> <span class="nt">10px</span> <span class="o">*</span> <span class="nt">row</span>
-
-<span class="c">/* Импортирование в Stylus-файл другой таблицы стилей в формате Stylus */</span>
-<span class="k">@import</span> <span class="s2">&quot;links.styl&quot;</span>
-
-<span class="c">/* extend существующего класса */</span>
-<span class="nc">.warning</span>
-  <span class="k">@extend</span> <span class="nc">.block</span></code></pre></div>
-
-<p>В принципе, ничего нового в вышесказанном нет - все эти моменты также существуют в других препроцессорах. Если вдруг в синтаксисе не достает скобок, двоеточий или запятых, то их можно смело добавлять в код - препроцессор Stylus вас прекрасно поймет и в этом случае.</p>
-
-<h2 id="section">Создание и использование миксинов</h2>
-
-<p>Миксины чрезвычайно полезны по нескольким причинам. Благодаря им при написании стилей на CSS можно использовать логику, а также структурировать код.</p>
-
-<p>Создание миксинов в Stylus является простой задачей, а синтаксис миксинов именно такой, какой и ожидалось увидеть:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Простой миксин для добавления вендорных префиксов.</span>
-
-<span class="c">  Использование:</span>
-<span class="c">  vendorize(box-sizing, border-box)</span>
-
-<span class="c">*/</span>
-
-<span class="nt">vendorize</span><span class="o">(</span><span class="nt">property</span><span class="o">,</span> <span class="nt">value</span><span class="o">)</span>
-  <span class="nt">-webkit-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
-  <span class="nt">-moz-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
-  <span class="nt">-ms-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
-  <span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span></code></pre></div>
-
-<p>При создании миксинов под Stylus можно задать значения по умолчанию для аргументов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин создания треугольника на CSS */</span>
-
-<span class="nt">generate-arrow</span><span class="o">(</span><span class="nt">arrow-width</span> <span class="o">=</span> <span class="nt">10px</span><span class="o">)</span>
-  <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;</span><span class="nd">:before</span><span class="o">,</span> <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;</span><span class="nd">:after</span>
-    <span class="nt">content</span> <span class="s1">&#39;&#39;</span>
-    <span class="nt">height</span> <span class="nt">0</span>
-    <span class="nt">width</span> <span class="nt">0</span>
-    <span class="nt">position</span> <span class="nt">absolute</span>
-    <span class="nt">border</span> <span class="nt">arrow-width</span> <span class="nt">solid</span> <span class="nt">transparent</span></code></pre></div>
-
-<p>Миксин может возвращать вычисляемое значение с помощью ключевого слова <code>return</code> или же возвращать стили, определенные внутри самого миксина. Такие стили можно применить к элементу, который вызывает этот миксин:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин для задания стилей к текущему элементу и дочерним элементам текущего элемента */</span>
-
-<span class="nt">special-homestyles</span><span class="o">(</span><span class="nt">background</span> <span class="o">=</span> <span class="s1">&#39;#ccc&#39;</span><span class="o">)</span>
-  <span class="nt">background-color</span> <span class="nt">background</span>
-    <span class="nt">a</span>
-      <span class="nt">color</span> <span class="nt">lightblue</span>
-    <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;</span><span class="nc">.visited</span>
-      <span class="nt">color</span> <span class="nt">navy</span></code></pre></div>
-
-<p>И конечно же, внутри миксинов можно использовать условия (впрочем, как и в любом другом месте кода на Stylus):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин создания grid на основе минимального\максимального значений и инкремента */</span>
-
-<span class="nt">generate-grid</span><span class="o">(</span><span class="nt">increment</span><span class="o">,</span><span class="nt">start</span><span class="o">,</span><span class="nt">end</span><span class="o">,</span><span class="nt">return-dimension</span><span class="o">=</span><span class="nt">false</span><span class="o">)</span>
-  <span class="nt">total</span> <span class="o">=</span> <span class="nt">start</span>
-<span class="nt">for</span> <span class="nt">n</span><span class="o">,</span> <span class="nt">x</span> <span class="nt">in</span> <span class="nt">0</span><span class="o">..((</span><span class="nt">end</span> <span class="nt">-</span> <span class="nt">start</span><span class="o">)</span> <span class="o">/</span> <span class="nt">increment</span><span class="o">)</span>
-  <span class="nt">if</span> <span class="nt">return-dimension</span>
-    <span class="nt">if</span> <span class="nt">x</span><span class="o">+</span><span class="nt">1</span> <span class="nt">is</span> <span class="nt">return-dimension</span>
-      <span class="nt">return</span> <span class="nt">total</span>
-        <span class="nt">else</span>
-	  <span class="nc">.column-</span><span class="p">{</span><span class="n">x</span><span class="o">+</span><span class="m">1</span><span class="p">}</span>
-	     <span class="nt">width</span> <span class="nt">total</span>
-	<span class="nt">total</span> <span class="o">=</span> <span class="nt">total</span> <span class="o">+</span> <span class="nt">increment</span></code></pre></div>
-
-<p>Представленный выше миксин генерирует grid на основе минимального значения (минимальной ширины столбца), максимального значения (максимальной ширины столбца) и количества столбцов (которое изменяется с помощью инкремента). Последний аргумент return-dimension служит для указания того, будет ли миксин просто возвращать полученное значение, не создавая CSS-классов.</p>
-
-<h2 id="stylus-2">Полезные миксины Stylus</h2>
-
-<p>При работе над проектом MDN мне потребовалось большое количество полезных миксинов под Stylus, например таких, как поддержка RTL, поддержка локализации, а также поддержка большого числа браузеров. Ниже я представлю некоторые из этих миксинов - возможно, они пригодятся на практике некоторым из читателей.</p>
-
-<h3 id="last-child">Обнуление last child</h3>
-
-<p>Данный миксин был создан для обнуления пустого пространства у последнего элемента блока-родителя. Как правило, такими пространствами в CSS являются <code>padding-bottom</code> и <code>margin-bottom</code>.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Удаление пустого пространства у элемента, если он является последним у своего родителя */</span>
-
-<span class="nt">prevent-last-child-spacing</span><span class="o">(</span><span class="nt">element</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="o">,</span> <span class="nt">property</span><span class="o">=</span><span class="s2">&quot;padding-bottom&quot;</span><span class="o">)</span>
-  <span class="nt">if</span> <span class="nt">element</span> <span class="nt">is</span> <span class="s2">&quot;*&quot;</span>
-    <span class="nt">element</span> <span class="o">=</span> <span class="nt">unquote</span><span class="o">(</span><span class="nt">element</span><span class="o">)</span>
-      <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;</span> <span class="o">&gt;</span> <span class="p">{</span><span class="n">element</span><span class="p">}</span><span class="nd">:last-child</span>
-        <span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">0</span></code></pre></div>
-
-<p>С помощью этого миксина устанавливается <code>margin</code> или <code>padding</code> для блока-родителя. А затем просто убирается пустое пространство у последнего элемента этого блока.</p>
-
-<h3 id="placeholder">Стилизация placeholder</h3>
-
-<p>Стилизация placeholder является достаточно хитрой задачей из-за необходимости использования вендорных префиксов, поэтому использование миксина значительно упрощает эту задачу:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">set-placeholder-style</span><span class="o">(</span><span class="nt">prop</span><span class="o">,</span> <span class="nt">value</span><span class="o">)</span>
-   <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;:</span><span class="nd">:-webkit-input-placeholder</span>
-     <span class="p">{</span><span class="n">prop</span><span class="p">}</span> <span class="nt">value</span>
-   <span class="o">&amp;</span><span class="nf">#038</span><span class="o">;:</span><span class="nd">:-moz-input-placeholder</span>
-     <span class="p">{</span><span class="n">prop</span><span class="p">}</span> <span class="nt">value</span></code></pre></div>
-
-<h2 id="section-1">Заключение</h2>
-
-<p>На этом перевод закончен.</p>
-
-<p>От себя могу добавить.</p>
-
-<ol>
-  <li>Под Sublime Text 3 имеется плагин <a href="https://sublime.wbond.net/packages/Stylus" title="Stylus">Stylus</a> для подсветки синтаксиса и автоматической табуляции. Если планируется дальнейшая работа в Stylus, то данный плагин обязателен к установке - без него просто тяжело и долго кодить.</li>
-</ol>
-<figure>
-    <img src="../images/uploads/2014/12/sublime_stylus.png" alt="stylus-sublime-text-3" />
-  </figure>
-<ol>
-  <li>Плагин Emmet имеет поддержку синтаксиса Stylus (<em>меня Emmet не перестает радовать</em>). Все <a href="http://docs.emmet.io/cheat-sheet/" title="Emmet CheatSheet">горячие клавиши Emmet</a> остались неизменными и под Stylus, как если бы я кодил в старом добром CSS</li>
-  <li>На моем любимом YouTube-канале Level Up Tuts недавно вышла небольшая серия видео-обзоров по Stylus - <a href="http://youtu.be/eJahtnmywMI" title="Stylus Tutorials">Stylus Tutorials</a></li>
-</ol>
 
 <p>На этом все.</p>
 
@@ -1594,6 +1621,12 @@ add_action(<span class="string"><span class="delimiter">'</span><span class="con
       <li>
         
           <a href="http://zencoder.ru/page41">41</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page42">42</a>
         
       </li>
     
