@@ -63,7 +63,7 @@ Labels - это хороший способ объединить несколь�
 
 ## Notifications, @mentions и References
 
-
+... перевод следует продолжения ...
 
 
 
@@ -80,5 +80,4 @@ Labels - это хороший способ объединить несколь�
 
 
 [1]: https://github.com/twbs/bootstrap/issues "Issue Bootstrap"
-
-https://guides.github.com/features/issues/
+[2]: https://guides.github.com/features/issues/ "Original"
