@@ -1,5 +1,5 @@
 ---
-title: "Rankmirrors - выбор быстрых репозиториев в ArchLinuxLinux"
+title: "Rankmirrors - выбор быстрых репозиториев в ArchLinux"
 layout: post
 categories: linux
 tags: [rankmirrors, linux]
