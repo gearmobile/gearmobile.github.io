@@ -144,7 +144,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-07-15T00:00:00+04:00"><a href="/%d0%b2%d0%b7%d0%bb%d0%be%d0%bc-linux-%d1%87%d0%b5%d1%80%d0%b5%d0%b7-grub/">July 15, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-07-13T00:00:00+04:00"><a href="/css/coding-hacking/">July 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -154,91 +154,41 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="/%d0%b2%d0%b7%d0%bb%d0%be%d0%bc-linux-%d1%87%d0%b5%d1%80%d0%b5%d0%b7-grub/" rel="bookmark" title="Взлом Linux через GRUB" itemprop="url">Взлом Linux через GRUB</a></h1>
+      <h1 class="entry-title"><a href="/css/coding-hacking/" rel="bookmark" title="Верстка - маленькая хитрость при выборе цвета на макете" itemprop="url">Верстка - маленькая хитрость при выборе цвета на макете</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Очень простой способ получить полный доступ (права root‘а) к системе Linux, используя загрузчик GRUB (даже LiveCD не нужен). Что для этого нужно? Только руки… Просто грузим систему и ждем появления меню GRUB‘а со списком установленных в системе операционных систем. Список может быть примерно такой:</p>
+    <blockquote>
+  <p>Маленькая заметка о хитрости верстки.</p>
+</blockquote>
 
-<pre>Gentoo Linux 2.6.31-r6
-  ArchLinux 2.6.31
-  Ubuntu Karmic Koala 9.10
-  Sabayon Linux r5.1 KDE</pre>
+<p>Не знаю, вряд-ли можно назвать ее серьезной и тянущей на более-менее основательную статью. При верстке psd-макета часто встречаются градиенты (gradient). В последнее время использование градиентов очень популярно, особенно это касается таких элементов страницы, как фон или различные кнопки.</p>
 
-<ol>
-  <li>Выбираем систему (стрелочками вверх-вниз), к которой хотим получить доступ. И нажимаем буковку ‘e‘ на клавиатуре (‘e‘ – от ‘edit‘). Например, нам нужно «попасть» в Archlinux. Выбираем пункт Archlinux 2.6.31, нажимаем ‘e‘ и нам открывается для редактирования запись, соответствующая записи в конфигурационном файле GRUB menu.lst (для Debian-подобных систем, или grub.cfg – для Gentoo):</li>
-</ol>
+<p>С появлением стандарта CSS3 цветовые переходы можно передать в коде легко и быстро. Поэтому, закодировать градиент - это не вопрос. Главное - быть внимательным и не пропустить (заметить) его.</p>
 
-<pre>title Archlinux 2.6.31
-  root (hd0,5)
-  kernel /boot/vmlinuz26 root=/dev/sda6 ro vga=0?318
-  initrd /boot/kernel26.img</pre>
+<p>Ведь встречаются такие элементы страницы, где “на глаз” сложно определить, есть ли там цветовой переход или нет его. Особенно, если он сделан в еле заметных оттенках серого цвета. По-серьезному, это нужно выделять слой с элементом, который содержит в себе градиент.</p>
 
-<ol>
-  <li>Удаляем с строке kernel (в данном случае – третья по счету) все, кроме пути к ядру (/boot/vmlinuz26) и пути к разделу root (root=/dev/sda6). То есть, у нас получится запись такого вида:</li>
-</ol>
+<p>И затем в палитре слоев “Layers” смотреть, какой цветовой переход дизайнер заложил в данном случае. Но вот, чтобы просто узнать, присутствует ли в элементе градиент или нет (<em>и стоит ли с ним “повозиться” впоследствии для передачи в коде</em>), можно поступить следующим образом.</p>
 
-<pre>kernel /boot/vmlinuz26 root=/dev/sda6</pre>
+<p>Допустим, есть страница 404 от известной web-студии TemplateMonster.com с фоновой заливкой определенного цвета:</p>
 
-<ol>
-  <li>Дописываем в конец этой строки это: rw init=/bin/bash. В итоге запись будет выглядеть так:</li>
-</ol>
+<p><img src="/images/uploads/2013/11/eyedropper_404.png" alt="Страница с фоном в Photoshop" /></p>
 
-<pre>kernel /boot/vmlinuz26 root=/dev/sda6 rw init=/bin/bash</pre>
+<p>Мне нужно по-быстрому узнать, есть ли на ней градиентный переход по-вертикали. Выбираю инструмент Photoshop под названием “Пипетка” (Eyedropper). Можно активировать его на панели инструментов, или же проще и быстрее воспользоваться “горячей клавишей” I (<em>заглавная буковка <code>I</code> в английской раскладке</em>). И “забираю” цвет в верхней четверти фона страницы:</p>
 
-<ol>
-  <li>Сохраняем результаты нашего «непосильного» труда – нажимаем ‘Enter‘ и затем грузим Archlinux с исправленными нами параметрами, нажав ‘b‘ (‘b’ – от ‘boot‘). В итоге у нас загружается консоль с правами root‘а. Что и требовалось. Дальше – только дело фантазии и умения…</li>
-</ol>
+<p><img src="/images/uploads/2013/11/eyedropper_01.png" alt="Цвет в верхней половине фона в Photoshop" /></p>
 
-<p>Оцените статью:<br />
-<span id="post-ratings-536" class="post-ratings" data-nonce="984e93fa21"><img id="rating_536_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(536, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(536, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(536, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(536, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_536_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(536, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_536_text"></span></span><span id="post-ratings-536-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+<p>Не закрываю окно “Пипетки”. “Забираю” цвет во-второй четверти фоновой заливки и проверяю, не изменился ли цвет. И так далее - третья четверть, четвертая четверть. И каждый раз смотрю, поменялся цвет или нет:</p>
 
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
+<p><img src="/images/uploads/2013/11/eyedropper_02.png" alt="Цвет в нижней половине фона в Photoshop" /></p>
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-07-13T00:00:00+04:00"><a href="/%d0%b2%d0%b5%d1%80%d1%81%d1%82%d0%ba%d0%b0-%d0%bc%d0%b0%d0%bb%d0%b5%d0%bd%d1%8c%d0%ba%d0%b0%d1%8f-%d1%85%d0%b8%d1%82%d1%80%d0%be%d1%81%d1%82%d1%8c-%d0%bf%d1%80%d0%b8-%d0%b2%d1%8b%d0%b1%d0%be%d1%80/">July 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/%d0%b2%d0%b5%d1%80%d1%81%d1%82%d0%ba%d0%b0-%d0%bc%d0%b0%d0%bb%d0%b5%d0%bd%d1%8c%d0%ba%d0%b0%d1%8f-%d1%85%d0%b8%d1%82%d1%80%d0%be%d1%81%d1%82%d1%8c-%d0%bf%d1%80%d0%b8-%d0%b2%d1%8b%d0%b1%d0%be%d1%80/" rel="bookmark" title="Верстка &#8211; маленькая хитрость при выборе цвета на макете" itemprop="url">Верстка &#8211; маленькая хитрость при выборе цвета на макете</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Маленькая заметка о хитрости верстки. Не знаю, вряд-ли можно назвать ее серьезной и тянущей на более-менее основательную статью. При верстке psd-макета часто встречаются градиенты (gradient). В последнее время использование градиентов очень популярно, особенно это касается таких элементов страницы, как фон или различные кнопки. С появлением стандарта CSS3 цветовые переходы можно передать в коде легко и быстро. Поэтому, закодировать градиент – это не вопрос. Главное – быть внимательным и не пропустить (заметить) его.</p>
+<p>Другими словами, я “пробежался” по-вертикали с помощью пипетки и выяснил, что в конкретном случае, который представлен здесь, цвет везде одинаков - <code>#140100</code>. Итог - фоновая заливка страницы 404 выполнена дизайнером с использованием одного цвета. Поэтому в CSS-правилах можно указать коротко:</p>
 
-<p>Ведь встречаются такие элементы страницы, где “на глаз” сложно определить, есть ли там цветовой переход или нет его. Особенно, если он сделан в еле заметных оттенках серого цвета. По-серьезному, это нужно выделять слой с элементом, который содержит в себе градиент. И затем в палитре слоев (Layers) смотреть, какой цветовой переход дизайнер заложил в данном случае. Но вот, чтобы просто узнать, присутствует ли в элементе градиент или нет (и стоит ли с ним “повозиться” впоследствии для передачи в коде), можно поступить следующим образом.</p>
-
-<p>Допустим, есть страница 404 от известной web-студии TemplateMonster.com с фоновой заливкой определенного цвета:<figure id="attachment_419" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_404.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_404-600x420.png" alt="Страница с фоном в Photoshop" width="600" height="420" class="size-medium wp-image-419" /></a>&lt;figcaption class="wp-caption-text"&gt;Страница с фоном в Photoshop&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Мне нужно по-быстрому узнать, есть ли на ней градиентный переход по-вертикали. Выбираю инструмент Photoshop под названием “Пипетка” (Eyedropper). Можно активировать его на панели инструментов, или же проще и быстрее воспользоваться “горячей клавишей” I (<em>заглавная буковка i в английской раскладке</em>). И “забираю” цвет в верхней четверти фона страницы:<figure id="attachment_420" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_01.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_01-600x399.png" alt="Цвет в верхней половине фона в Photoshop" width="600" height="399" class="size-medium wp-image-420" /></a>&lt;figcaption class="wp-caption-text"&gt;Цвет в верхней половине фона в Photoshop&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Не закрываю окно “Пипетки”. “Забираю” цвет во-второй четверти фоновой заливки и проверяю, не изменился ли цвет. И так далее – третья четверть, четвертая четверть. И каждый раз смотрю, поменялся цвет или нет:<figure id="attachment_421" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_02.png"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/eyedropper_02-600x399.png" alt="Цвет в нижней половине фона в Photoshop" width="600" height="399" class="size-medium wp-image-421" /></a>&lt;figcaption class="wp-caption-text"&gt;Цвет в нижней половине фона в Photoshop&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Другими словами, я “пробежался” по-вертикали с помощью пипетки и выяснил, что в конкретном случае, который представлен здесь, цвет везде одинаков – <code>#140100</code>. Итог – фоновая заливка страницы 404 выполнена дизайнером с использованием одного цвета. Поэтому в CSS-правилах можно указать коротко:</p>
-
-<pre>background: #140100</pre>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">background</span><span class="o">:</span> <span class="nf">#140100</span></code></pre></div>
 
 <p>Все. Просто и со вкусом.</p>
 
-<p>Оцените статью:<br />
-<span id="post-ratings-418" class="post-ratings" data-nonce="9ee5e0858b"><img id="rating_418_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(418, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(418, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(418, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(418, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_418_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(418, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_418_text"></span></span><span id="post-ratings-418-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
+<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -568,6 +518,151 @@ $ sudo ifconfig -a
 <p>Сканирование портов Windows XP:</p>
 
 <p><img src="/images/uploads/2013/06/Port-Scan-Windows-Network-Tools.png" alt="Port Scan Windows - Network Tools" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-06-14T00:00:00+04:00"><a href="/css/css-box-shadow/">June 14, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/css/css-box-shadow/" rel="bookmark" title="CSS box shadow - создаем тени для блоков" itemprop="url">CSS box shadow - создаем тени для блоков</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Свойство <code>box-shadow</code> позволяет web-дизайнерам создавать очень интересные эффекты для элементов страницы. А именно - с помощью него можно задавать тень для блочных элементов, например таких, как <code>div</code>.</p>
+</blockquote>
+
+<p>Создаваемая тень имеет несколько параметров, комбинация которых позволяет придать оригинальный и неповторимый вид элементу. Можно установить смещение тени по горизонтали, по вертикали, задать цвет, степень размытия краев, размер. В CSS3 имеется возможность создать для элемента сразу несколько теней, с разным цветом и размерами.</p>
+
+<p>Можно также создать тень, которая будет размещена не снаружи элемента, а внутри него.</p>
+
+<h2 id="box-shadow">Синтаксис свойства <code>box-shadow</code>:</h2>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">h-shadow</span> <span class="nt">v-shadow</span> <span class="nt">blur</span> <span class="nt">spread</span> <span class="nt">color</span> <span class="nt">inset</span><span class="o">;</span></code></pre></div>
+
+<p>где:</p>
+
+<ul>
+  <li><code>h-shadow</code> - смещение тени по горизонтали;</li>
+  <li><code>v-shadow</code> - смещение тени по вертикали;</li>
+  <li><code>blur</code> - размытие границ тени;</li>
+  <li><code>spread</code> - размер тени;</li>
+  <li><code>color</code> - цвет тени;</li>
+  <li><code>inset</code> - создать тень внутри элемента.</li>
+</ul>
+
+<p>Порядок следования значений свойства <code>box-shadow</code> необязательный, то есть, можно расположить их в любой последовательности.</p>
+
+<p>Простой пример использования <code>box-shadow</code>:</p>
+
+<p>Браузеры Firefox, Chrome, Opera и IE9 отобразят серую тень под этим блоком.</p>
+
+<p>Код, выводящий данный результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span></code></pre></div>
+
+<p>Однако, приведенный пример будет не совсем работоспособным. Для браузеров Firefox и Chrome более ранних версий может понадобиться добавление префиксов. Тогда полная версия кода будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span>
+<span class="nt">-moz-box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span>
+<span class="nt">-webkit-box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span></code></pre></div>
+
+<p>Как говорилось выше, порядок следования значений свойства необязателен. Более того, из всех шести значений обязательными являются только два первых - смещение по горизонтали и по вертикали. Все остальные можно опустить, если в них нет необходимости.</p>
+
+<h2 id="section">Примеры использования кода:</h2>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span><span class="o">;</span>
+<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span><span class="o">;</span>
+<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span>
+<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nt">3px</span> <span class="nf">#888</span><span class="o">;</span>
+<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nt">3px</span> <span class="nf">#888</span> <span class="nt">inset</span><span class="o">;</span>
+<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">,</span> <span class="nt">-5px</span> <span class="nt">-5px</span> <span class="nf">#f4f4f4</span><span class="o">,</span> <span class="nt">1px</span> <span class="nt">1px</span> <span class="nt">2px</span> <span class="nf">#cc6600</span><span class="o">;</span></code></pre></div>
+
+<p>Последняя строка наиболее интересна, поэтому разберем ее подробнее.</p>
+
+<p>Смещения по горизонтали и вертикали могут принимать как положительные, так и отрицательные значения. В последнем случае тень будет перемещаться не вправо, а влево. Размытие тени blur и размер тени spread могут иметь только положительные значения или 0. Несколько теней для одного элемента можно задавать последовательно, через запятую. В нашем примере было задано три тени с разными цветами и смещением.</p>
+
+<h2 id="box-shadow-1">Теория <code>box-shadow</code></h2>
+
+<p>По умолчанию, для элемента создается внешняя тень.</p>
+
+<p>Тень создается как минимум с посощью двух обязательных параметров - горизонтального и вертикального смещения.</p>
+
+<p>Горизонтальное смещение определяет смещение тени относительно элемента по горизонтали. Может принимать положительное или отрицательное значение. При положительном значении тень смещается вправо от элемента. При отрицательном - влево от элемента.</p>
+
+<p>Вертикальное смещение задает смещение тени по вертикали относительно элемента. Может рпинимать положительное или отрицательное значение. При положительном значении тень смещается относительно элемента вниз по вертикали. При отрицательном значении смещение происходит вверх по вертикали.</p>
+
+<p>Третье и необязательное значение свойства box-shadow, это размытие <code>blur</code>. По умолчанию оно равно 0 и граница тени четкая. Размытие может принимать только положительные значения. Чем больше число, тем сильнее происходит размытие. В спецификации не разъясняется точного алгоритма, по которому происходит усиления размытия при увеличении его значения.</p>
+
+<p>Размер тени spread также явлется необязательным параметром и может принимать как положительные, так и отрицательные значения. При положительном значении тень увеличивается по всем направлениям. При отрицательном наоборот уменьшается.</p>
+
+<h2 id="section-1">Несколько примеров теней</h2>
+
+<p>Ниже приведены несколько небольших примеров создания теней с разными смещениями, размытием и размером.</p>
+
+<p>В примере A смещение тени происходит влево и вверх на 5 пикселей.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_A</span> <span class="p">{</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">#888</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В примере B точно также происходит смещение на пять пикселей вверх и влево, но при этом добавлено размытие тени величиной в 5 пикселей. Хорошо видно, что тень имеет нечеткие границы.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_B</span> <span class="p">{</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В примере С таже самая тень имеет размер в 5 пикселей.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_C</span> <span class="p">{</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">0</span> <span class="m">5px#888</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Пример D показывает тень, имеющую размытие в 5 пикселей и размер в 5 пикселей.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_D</span> <span class="p">{</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">5px#888</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В примере E показана тень, которая не имеет смещения по горизонтали и вертикали, но у нее задано размытие в 5 пикселей.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_E</span> <span class="p">{</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px#888</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В примере F тень также не имеет смещения, но имеет размытие и размер в 5 пикселей.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_F</span> <span class="p">{</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px#888</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
 <p>На этом все.</p>
 
