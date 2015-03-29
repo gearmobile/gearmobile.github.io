@@ -32,286 +32,106 @@ share: true
     <td>50%</td>
   </tr>
   <tr>
-    <td>
-      7pt
-    </td>
-    <td>
-      9px
-    </td>
-    <td>
-      0.55em
-    </td>
-    <td>
-      55%
-    </td>
+    <td>7pt</td>
+    <td>9px</td>
+    <td>0.55em</td>
+    <td>55%</td>
   </tr>
   <tr>
-    <td>
-      7.5pt
-    </td>
-    <td>
-      10px
-    </td>
-    <td>
-      0.625em
-    </td>
-    <td>
-      62.5%
-    </td>
+    <td>7.5pt</td>
+    <td>10px</td>
+    <td>0.625em</td>
+    <td>62.5%</td>
   </tr>
   <tr>
-    <td>
-      8pt
-    </td>
-    <td>
-      11px
-    </td>
-    <td>
-      0.7em
-    </td>
-    
-    <td>
-      70%
-    </td>
+    <td>8pt</td>
+    <td>11px</td>
+    <td>0.7em</td>
+    <td>70%</td>
   </tr>
   <tr>
-    <td>
-      9pt
-    </td>
-    <td>
-      12px
-    </td>
-    <td>
-      0.75em
-    </td>
-    <td>
-      75%
-    </td>
+    <td>9pt</td>
+    <td>12px</td>
+    <td>0.75em</td>
+    <td>75%</td>
   </tr>
   <tr>
-    <td>
-      10pt
-    </td>
-    <td>
-      13px
-    </td>
-    <td>
-      0.8em
-    </td>
-    <td>
-      80%
-    </td>
+    <td>10pt</td>
+    <td>13px</td>
+    <td>0.8em</td>
+    <td>80%</td>
   </tr>
   <tr>
-    <td>
-      10.5pt
-    </td>
-    <td>
-      14px
-    </td>
-    <td>
-      0.875em
-    </td>
-    <td>
-      87.5%
-    </td>
+    <td>10.5pt</td>
+    <td>14px</td>
+    <td>0.875em</td>
+    <td>87.5%</td>
   </tr>
   <tr>
-    <td>
-      11pt
-    </td>
-    
-    <td>
-      15px
-    </td>
-    
-    <td>
-      0.95em
-    </td>
-    
-    <td>
-      95%
-    </td>
+    <td>11pt</td>
+    <td>15px</td>
+    <td>0.95em</td>
+    <td>95%</td>
   </tr>
-  
   <tr>
-    <td>
-      12pt
-    </td>
-    
-    <td>
-      16px
-    </td>
-    
-    <td>
-      1em
-    </td>
-    
-    <td>
-      100%
-    </td>
+    <td>12pt</td>
+    <td>16px</td>
+    <td>1em</td>
+    <td>100%</td>
   </tr>
-  
   <tr>
-    <td>
-      13pt
-    </td>
-    
-    <td>
-      17px
-    </td>
-    
-    <td>
-      1.05em
-    </td>
-    
-    <td>
-      105%
-    </td>
+    <td>13pt</td>
+    <td>17px</td>
+    <td>1.05em</td>
+    <td>105%</td>
   </tr>
-  
   <tr>
-    <td>
-      13.5pt
-    </td>
-    
-    <td>
-      18px
-    </td>
-    
-    <td>
-      1.125em
-    </td>
-    
-    <td>
-      112.5%
-    </td>
+    <td>13.5pt</td>
+    <td>18px</td>
+    <td>1.125em</td>
+    <td>112.5%</td>
   </tr>
-  
   <tr>
-    <td>
-      14pt
-    </td>
-    
-    <td>
-      19px
-    </td>
-    
-    <td>
-      1.2em
-    </td>
-    
-    <td>
-      120%
-    </td>
+    <td>14pt</td>
+    <td>19px</td>
+    <td>1.2em</td>
+    <td>120%</td>
   </tr>
-  
   <tr>
-    <td>
-      14.5pt
-    </td>
-    
-    <td>
-      20px
-    </td>
-    
-    <td>
-      1.25em
-    </td>
-    
-    <td>
-      125%
-    </td>
+    <td>14.5pt</td>
+    <td>20px</td>
+    <td>1.25em</td>
+    <td>125%</td>
   </tr>
-  
   <tr>
-    <td>
-      15pt
-    </td>
-    
-    <td>
-      21px
-    </td>
-    
-    <td>
-      1.3em
-    </td>
-    
-    <td>
-      130%
-    </td>
+    <td>15pt</td>
+    <td>21px</td>
+    <td>1.3em</td>
+    <td>130%</td>
   </tr>
-  
   <tr>
-    <td>
-      16pt
-    </td>
-    
-    <td>
-      22px
-    </td>
-    
-    <td>
-      1.4em
-    </td>
-    
-    <td>
-      140%
-    </td>
+    <td>16pt</td>
+    <td>22px</td>
+    <td>1.4em</td>
+    <td>140%</td>
   </tr>
-  
   <tr>
-    <td>
-      17pt
-    </td>
-    
-    <td>
-      23px
-    </td>
-    
-    <td>
-      1.45em
-    </td>
-    
-    <td>
-      145%
-    </td>
+    <td>17pt</td>
+    <td>23px</td>
+    <td>1.45em</td>
+    <td>145%</td>
   </tr>
-  
   <tr>
-    <td>
-      18pt
-    </td>
-    
-    <td>
-      24px
-    </td>
-    
-    <td>
-      1.5em
-    </td>
-    
-    <td>
-      150%
-    </td>
+    <td>18pt</td>
+    <td>24px</td>
+    <td>1.5em</td>
+    <td>150%</td>
   </tr>
-  
   <tr>
-    <td>
-      20pt
-    </td>
-    
-    <td>
-      26px
-    </td>
-    
-    <td>
-      1.6em
-    </td>
-    
-    <td>
-      160%
-    </td>
+    <td>20pt</td>
+    <td>26px</td>
+    <td>1.6em</td>
+    <td>160%</td>
   </tr>
   <tr>
     <td>22pt</td>
@@ -383,7 +203,7 @@ share: true
 
 ![Конвертировать px в em]({{site.url}}/images/uploads/2013/05/px_to_em.jpg)
 
-Помимо удобного способа конвертации одних единиц измерения в другие сервис предоставляет возможность получить готовый файл `normalize.css`, отредактированный службой `http://pxtoem.com/` под выбранное значение базового шрифта. Плюс к этому, в данный файл включены готовые стили для правильного вертикального ритма под выбранный размер шрифта. Супер! ))
+Помимо удобного способа конвертации одних единиц измерения в другие сервис предоставляет возможность получить готовый файл `normalize.css`, отредактированный службой `http://pxtoem.com/` под выбранное значение базового шрифта. Плюс к этому, в данный файл включены готовые стили для правильного вертикального ритма под выбранный размер шрифта. Супер!
 
 На этом все.
 
