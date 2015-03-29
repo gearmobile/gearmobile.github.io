@@ -144,6 +144,192 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-09T00:00:00+04:00"><a href="/how-to-use-modernizr/">December 09, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/how-to-use-modernizr/" rel="bookmark" title="Как использовать Modernizr" itemprop="url">Как использовать Modernizr</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Инструмент, который призван сделать жизнь прогрессивных веб-дизайнеров немного легче, это Modernizr. Короткий мануал, задача которого показать, каким образом можно применять этот полезный скрипт с максимальным эффектом для своих рабочих проектов.</p>
+
+<h3 id="section">Обзор</h3>
+
+<p>Несмотря на то, что возможности CSS3 используются веб-дизайнерами все больше и больше, поддержка этих возможностей браузерами значительно отстает.</p>
+
+<p>В последнее время я использую Modernizr практически постоянно для того, чтобы выделить те браузеры, которые не поддерживают специфические свойства стандарта CSS3.</p>
+
+<h3 id="modernizr">Как работает Modernizr</h3>
+
+<p>Для того, чтобы установить Modernizr, сначала скачайте его с этой страницы – http://www.modernizr.com/. Затем внутри тега <code>head</code> html-страницы подключите распакованный из архива файл <code>modernizr-1.0.min.js</code>:</p>
+
+<pre></pre>
+
+<p>Вторым шагом будет подключение класса <code>no-js</code> для корневого элемента html:</p>
+
+<pre>
+</pre>
+
+<p>
+  <strong>Для чего необходимо подключать класс <code>no-js</code> к элементу html?</strong><br />
+  Потому что элемент html с классом <code>no-js</code> будет <strong>состоянием страницы по-умолчанию</strong>. Если JavaScript (<code>js</code>) на странице отключен, то скрипт Modernizr также не будет работать (совместно со всеми остальными функциями страницы, завязанными на этом языке), поэтому было бы хорошо, если у нас будет возможность отката (fallback) для этого случая.
+</p>
+
+<blockquote>
+  <p>
+    Прим. переводчика: попробую от себя объяснить в двух словах, но иначе (если вдруг непонятно) что хотела сказать прекрасная девушка, автор статьи. Если на сайте отключена поддержка JavaScript, то класс <code>no-js</code> для элемента html &#8211; это та &#8220;зацепка&#8221;, на которую можно повесить все CSS-fallback&#8217;и для этого случая.
+  </p>
+  
+</blockquote>
+
+<p>
+  Если же поддержка JavaScript в браузере включена, то <strong>произойдет динамическая подмена класса <code>no-js</code> для элемента html на целую группу других классов</strong>. В результате исходный код страницы может выглядеть примерно так:
+</p>
+
+<pre>
+  
+</pre>
+
+<p>
+  Впечатляет, не правда ли? Но что означают все эти классы? Давайте разберемся.
+</p>
+
+<p>
+  В данном случае, страница была открыта в браузере Firefox 3.5. Этот браузер (к сожалению) не поддерживает множественные фоны на CSS, CSS-градиенты и CSS-трансформации. Скрипт Modernizr умеет автоматически определять возможности браузера, в котором открыта текущая веб-страница. Для каждого из CSS-свойств в скрипте Modernizr имеются свои собственные классы для их обозначения. Например, множественные фоны на CSS &#8220;обозначены&#8221; как <code>multipebgs</code>, CSS-градиенты как <code>cssgradients</code>, CSS-трансформации как <code>csstransforms</code> и так далее.
+</p>
+
+<p>
+  Когда Modernizr определит, какие CSS-свойства данный браузер поддерживает, а какие нет, он создаст своеобразный отчет &#8211; список классов, по которому можно точно узнать, что браузер &#8220;умеет&#8221;, а что &#8211; нет. Если браузер поддерживает CSS-свойство трансформации, то на элемент html скрипт Modernizr &#8220;подцепит&#8221; класс <code>csstransforms</code>. А если браузер не поддерживает это свойство, то Modernizr добавит для имени класса <code>csstransforms</code> префикс <code>no-</code> и также &#8220;повесит&#8221; этот класс на элемент html, но в виде <code>no-csstransforms</code>. И так далее&#8230;
+</p>
+
+<p>
+  Пример такого списка-отчета и был показан выше.
+</p>
+
+<h3>
+  Что мне даст эта (ценная) информация?
+</h3>
+
+<p>
+  Логичный вопрос &#8211; &#8220;а что мы можем делать с этой информацией?&#8221;. Хорошо, давайте рассмотрим простой пример.
+</p>
+
+<h4>
+  Множественные фоны на CSS
+</h4>
+
+<p>
+  Фон вашего сайта тщательным образом отстроен и вы используете множественные фоны для того, чтобы сделать его более простым и быстрым с помощью CSS-кода.
+</p>
+
+<p>
+  Ваш CSS выглядит следующим образом:
+</p>
+
+<pre>
+  #nice {
+    background: url(background-one.png) top left repeat-x,
+    url(background-two.png) bottom left repeat-x;
+  }
+</pre>
+
+<p>
+  И браузер генерирует этот прекрасный (ведь не даром же идентификатор имеет имя nice )) ) фон так:
+</p>
+<figure id="attachment_778" style="width: 241px;" class="wp-caption aligncenter">
+
+<a href="http://localhost:7788/third/wp-content/uploads/2013/12/modernizr-safari.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/12/modernizr-safari.jpg" alt="Множественные фоны" width="241" height="342" class="size-full wp-image-778" /></a><figcaption class="wp-caption-text">Множественные фоны</figcaption></figure>
+
+<p>
+  При использовании библиотеки Modernizr ваш код CSS должен быть преобразован в такой вид:
+</p>
+
+<pre>
+  #nice {
+    background: url(background-one.png) top left repeat-x;
+  }
+  .multiplebgs #nice {
+    background: url(background-one.png) top left repeat-x,
+    url(background-two.png) bottom left repeat-x;
+  }
+</pre>
+
+<p>
+  И вот что увидят посетители сайта в зависимости от того, каким браузером (<em>понимает он множественный фон или нет</em>) они пользуются:
+</p>
+<figure id="attachment_778" style="width: 241px;" class="wp-caption aligncenter">
+
+<a href="http://localhost:7788/third/wp-content/uploads/2013/12/modernizr-safari.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/12/modernizr-safari.jpg" alt="Множественный фон с Modernizr в Safari" width="241" height="342" class="size-full wp-image-778" /></a><figcaption class="wp-caption-text">Множественный фон с Modernizr в Safari</figcaption></figure>
+<figure id="attachment_780" style="width: 241px;" class="wp-caption aligncenter"><a href="http://localhost:7788/third/wp-content/uploads/2013/12/modernizr-opera.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/12/modernizr-opera.jpg" alt="Множественный фон с Modernizr в Opera" width="241" height="342" class="size-full wp-image-780" /></a><figcaption class="wp-caption-text">Множественный фон с Modernizr в Opera</figcaption></figure>
+
+<p>
+  Это очень простой пример использования скрипта Modernizr, но он должен послужит образцом того, что можно сделать с помощью данной библиотеки.
+</p>
+
+<h4>
+  HTML5
+</h4>
+
+<p>
+  Библиотека Modernizr также позволяет использовать новые элементы, доступные в HTML5 &#8211; header, footer, section, hgroup, video и так далее и стилизовать их.
+</p>
+
+<p>
+  Однако, это не означает,  что все эти элементы можно использовать также в браузере IE. Но вы можете стилизовать эти элементы и тогда IE &#8220;поймет&#8221; их и не сможет игнорировать.
+</p>
+
+<blockquote>
+  <p>
+    Прим. переводчика: загадочная фраза, которая лично мне ни о чем не говорит. Требует дальнейшего изучения &#8230; ))
+  </p>
+  
+</blockquote>
+
+<h4>
+  JavaScript
+</h4>
+
+<p>
+  Вы также можете анализировать в вашем собственном JavaScript возможности, которые поддерживает Modernizr, используя пример следующего синтаксиса:
+</p>
+
+<pre>
+  if (Modernizr.geolocation) {
+  }
+</pre>
+
+<h4>
+  Заключение
+</h4>
+
+<p>
+  Надеюсь, мне удалось объяснить, для чего нужен Modernizr и насколько он полезен в повседневной работе. Так как мы не можем полностью полагаться на тот факт, что браузеры поддерживают все свойства, которые мы хотим использовать, то библиотека Modernizr является лучшим средством для того, чтобы объединить два мира &#8211; один, где все возможно, и другой, где все возможно лишь частично.
+</p>
+
+<p>
+  Оригинал статьи &#8211; &#8220;How to use Modernizr&#8221; (http://webdesignernotebook.com/css/how-to-use-modernizr/)
+</p>
+
+<p>
+  Оцените статью:<br />
+  <span id="post-ratings-777" class="post-ratings" data-nonce="60cd3820b0"><img id="rating_777_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(777, 1, '1 Star');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_777_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(777, 2, '2 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_777_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(777, 3, '3 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_777_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(777, 4, '4 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_777_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(777, 5, '5 Stars');" onmouseout="ratings_off(4.4, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>10</strong> votes, average: <strong>4,40</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_777_text"></span></span><span id="post-ratings-777-loading" class="post-ratings-loading">
+  			<img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading...</span>
+</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-12-08T00:00:00+04:00"><a href="/wonderful-function-calc/">December 08, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1316,104 +1502,6 @@ body {
 <p>Я доволен тем, что познакомился с языком Markdown. С ним действительно создавать статьи под сайт гораздо легче, быстрее и удобнее. Писать статьи или обзоры с помощью Markdown – одно удовольствие.</p>
 
 <p>Редактором-победителем для меня стала программа MarkdownPad – быстрая, удобная и надежная. Тот момент, что она отказалась установиться на моем ноуте под Windows 7 роли не играет, как мне кажется.</p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-23T00:00:00+04:00"><a href="/%d0%bd%d0%b0%d1%87%d0%b0%d0%bb%d0%be-%d1%81-bootstrap-%d1%87%d0%b0%d1%81%d1%82%d1%8c-1/">November 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/%d0%bd%d0%b0%d1%87%d0%b0%d0%bb%d0%be-%d1%81-bootstrap-%d1%87%d0%b0%d1%81%d1%82%d1%8c-1/" rel="bookmark" title="Начало с Bootstrap Twitter &#8211; Часть 1" itemprop="url">Начало с Bootstrap Twitter &#8211; Часть 1</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Приступаем к изучению Bootstrap Twitter. Лично мое мнение, что любой веб-мастер, какого-бы он класса и квалификации он не был, обязан иметь о нем представление. И должен уметь создавать проекты с помощью этого продукта.</p>
-
-<p>Итак, Bootstrap Twitter. Прежде всего – почему двойное название и почему Twitter? На оба вопроса одно объяснение – этот фреймворк создала команда, которая ранее создала еще один проект – Twitter. Хорошо, тогда еще один вопрос – а что такое фреймворк? Как говорит всезнающая Википедия, фреймворк, это:</p>
-
-<blockquote>
-  <p>… программное обеспечение, облегчающее разработку и объединение разных компонентов большого программного проекта. </p>
-</blockquote>
-
-<p>Если сказать простым языком, то фреймворк – фундамент, минимальная база, которая может одинаково успешно применяться для создания любого сайта или веб-приложения. Как это часто бывает, в любой работе можно найти часть рутинного процесса, который выполняется снова и снова, без изменений. Так вот, чтобы не повторять написание одинакового кода опять и снова, были созданы такие базовые наборы, которые можно взять за основу и потом наращивать и видоизменять. В этом суть фреймворков, но есть один момент.</p>
-
-<p>C английского языка фреймворк переводиться как каркас. И этим уже можно все сказать, в принципе. Но, еще раз внимательно почитаем Википедию:</p>
-
-<blockquote>
-  <p>… каркас диктует правила построения архитектуры приложения, задавая на начальном этапе разработки поведение по умолчанию, каркас, который нужно будет расширять и изменять согласно указанным требованиям. </p>
-</blockquote>
-
-<p>Вот почему некоторые веб-дизайнеры не любят этот фреймворк, но это дела не меняет. Продолжим знакомиться с Bootstrap. На момент написания статьи имелось две версии этого фреймворка – v3.0.2 и v2.3.2. Здесь мы начнем изучение с версии v2.3.2 (http://getbootstrap.com/2.3.2/), а потом плавно (я надеюсь) перейдем к более свежей и современной v3.0.2 (http://getbootstrap.com/getting-started/). Кстати, сразу стоит упомянуть, что в Сети есть несколько русскоязычных ресурсов, посвященных Bootstrap. Но, насколько я понял, оба они являются локализованными (с разной степенью кривизны) версиями одного сайта-первоисточника – http://getbootstrap.com/. Видно, авторы этих проектов сильно торопились со своими детищами )) Я рекомендую пользоваться оригиналом и в данной статье мы так и будем поступать, по мере сил.</p>
-
-<p>Скачать готовый фреймворк Bootstrap можно со страницы домашнего проекта (откуда же еще?) в виде архива. Если распаковать скачанный архив на локальном компьютере, то увидим, что он состоит из трех папок: css, js, img. Первые две папки обязательны при создании любого нового проекта на Bootstrap.</p>
-
-<p>Содержимое папки CSS:</p>
-
-<pre>bootstrap.css
-    bootstrap.min.css
-    bootstrap-responsive.css
-    bootstrap-responsive.min.css
-  </pre>
-
-<p>Здесь расположены четыре CSS-файла, но на самом деле их два. Различия между <code>bootstrap.css</code> и <code>bootstrap.min.css</code>, <code>bootstrap-responsive.css</code> и <code>bootstrap-responsive.min.css</code> только в том, что первый вариант – это development-версия файла, которая предназначена для внесения в нее изменений при соответствующей квалификации программиста. А второй вариант – это production-версия файла, в которую изменений вносить не планируется и практически этого невозможно сделать, так как в этом файле убраны все комментарии, отступы, табуляции и тому подобное, что делает этот файл трудночитаемым для человека. Зато размер данного файла намного меньше, чем у development-версии, поэтому главная цель этого файла – просто подключить его к проекту для дальнейшей работы.</p>
-
-<p>Кстати, стоит упомянуть, что в фреймворке Bootstrap вместо сброса стилей через файл Reset.css от Эрика Мейера используется приведение всех браузеров к одному общему знаменателю с помощью файла Normalize.css. Помимо этого, используются компоненты известного <a href="http://html5boilerplate.com/" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
-
-<p>Файл bootstrap.css – это главный файл стилевых правил CSS для фреймворка Bootstrap, без него этот фреймворк – просто не фреймворк. В этом файле находится коллекция готовых CSS-классов, которые подключаются к элементам HTML-документа по мере необходимости и тем самым форматируют HTML-страницу.</p>
-
-<p>Файл bootstrap-responsive.css – единственная задача данного файла сделать HTML-страницу, к которой подключается этот файл, адаптивной (responsive). Что такое адаптивный дизайн, вы можете легко найти в Интернете, на сегодняшний день это тема №1 в веб-дизайне.</p>
-
-<p>Содержимое папки JS:</p>
-
-<pre>bootstrap.js
-    bootstrap.min.js
-  </pre>
-
-<p>Также, как и в случае со стилевыми правилами, в этой папке присутствует только один файл – <code>bootstrap.js</code>, тогда как <code>bootstrap.min.js</code> – это его минимизированная production-версия. Файл <code>bootstrap.js</code> – это набор готовых js-сценариев, задача которых является вспомогательной в деле создания HTML-компонентов. Дело в том, что фреймворк Bootstrap это не только набор CSS-правил, но и компонентов. Готовая панель навигации (html+css+js), форма поиска с кнопкой внутри (html+css+js), рабочая панель вкладок (html+css+js) и так далее – это все HTML-компоненты. И как уже должно быть понятно, роль js-сценариев здесь – помочь сделать эти компоненты полностью готовыми к работе.</p>
-
-<p>Содержимое папки IMG:</p>
-
-<pre>glyphicons-halflings.png
-    glyphicons-halflings-white.png
-  </pre>
-
-<p>Единственная папка с изображениями в проекте Bootstrap. Если вы ее откроете (предпочтительно в Adobe Photoshop), то увидите, что это обычный спрайт, набор готовых стилизованных иконок. Первый файл <code>glyphicons-halflings.png</code> – там иконки черные, а второй файл <code>glyphicons-halflings-white.png</code> – там иконки точно такие же, но только белого цвета (контраст). Что такое CSS-спрайт, я тоже объяснять не буду – в Интернете есть подробная информация по этой технологии. Хотя, когда я впервые с ней познакомился, у меня было желание ее описать у себя – это интересно. Но потом время ушло, для меня все стало просто и обыденно в этом плане типа “да чего там писать – и так все просто и понятно.” ))</p>
-
-<p>C содержимым архива и проекта Bootstrap Twitter познакомились. Теперь рассмотрим, как подключать данный фреймворк к своему рабочему проекту и пользоваться всеми его “вкусностями”. Создаем папку с новым проектом и туда распаковываем архив с Bootstrap. Первое – нам необходим HTML-шаблон с обязательным условием – DOCTYPE HTML 5, то есть, так:</p>
-
-<pre>
-    
-      
-      
-        ...
-        
-      
-    
-  </pre>
-
-<p>К нему подключаем CSS и JS-файлы из распакованного архива и сохраняем в ту же папку с будущим проектом:</p>
-
-<pre>...
-    
-    ...
-  </pre>
-
-<p>В принципе, все готово для дальнейшей работы…</p>
-
-<p>Оцените статью:<br />
-<span id="post-ratings-712" class="post-ratings" data-nonce="75bd749fcd"><img id="rating_712_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(712, 1, '1 Star');" onmouseout="ratings_off(3.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_712_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(712, 2, '2 Stars');" onmouseout="ratings_off(3.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_712_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(712, 3, '3 Stars');" onmouseout="ratings_off(3.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_712_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(712, 4, '4 Stars');" onmouseout="ratings_off(3.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_712_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(712, 5, '5 Stars');" onmouseout="ratings_off(3.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>7</strong> votes, average: <strong>3,14</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_712_text"></span></span><span id="post-ratings-712-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
 
 
   </div><!-- /.entry-content -->

@@ -144,6 +144,220 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-04-30T00:00:00+04:00"><a href="/typography-compass/">April 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/typography-compass/" rel="bookmark" title="Типографика с помощью Compass" itemprop="url">Типографика с помощью Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Отличный момент познакомиться с еще одной безграничной возможностью библиотеки Compass – это поработать с типографикой. Для этого дела в Compass имеется достаточно большой набор готовых миксинов. И хотя принцип большинства из них прост, суть дела от этого не меняется.</p>
+
+<h3 id="compass">Убрать подчеркивание у ссылок в Compass</h3>
+
+<p>Начнем с простого и попробуем настроить вид и поведение ссылок с помощью Compass. Для этого необходимо подключить модуль в текущий проект в виде строки:</p>
+
+<pre>@import "compass/typography/links";</pre>
+
+<p>Затем создадим в HTML-файле пару параграфов с ссылками:</p>
+
+<pre><p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, eos, dolorum, eum blanditiis laudantium placeat aspernatur esse dolorem <a href="#">optio molestiae provident</a> nobis sint architecto dolores repudiandae magnam iste assumenda minima.
+</p>
+
+
+<p>
+  <p>
+    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi, nobis, maiores, quasi molestias dignissimos repellendus quis nemo quibusdam <a href="#">accusamus culpa numquam</a> voluptas sunt dolor inventore pariatur cumque a unde ut.
+  </p>
+  
+  
+  <p>
+    &#8230; и применим к ссылкам миксин <code>hover-link</code>:
+  </p>
+  
+  
+  <pre>p{
+    margin-bottom: 20px;
+    a{
+      @include hover-link;
+    }
+  }</pre>
+  
+  
+  <p>
+    Если теперь посмотрим на скомпилированный вывод в CSS-файле, то увидим две до удивления простые строчки:
+  </p>
+  
+  
+  <pre>p a {
+  text-decoration: none;
+}
+p a:hover {
+  text-decoration: underline;
+}</pre>
+  
+  
+  <p>
+    То есть, суть миксина <code>hover-link</code> в убирании подчеркивания у ссылки в ее обычном состоянии; и добавлении подчеркивания при состоянии hover. Попробуйте ввести показанный выше код в своем HTML-редакторе и посмотреть результат.
+  </p>
+  
+  
+  <h3>
+    Изменение цвета ссылок в Compass
+  </h3>
+  
+  
+  <p>
+    В Compass имеется миксин <code>link-colors</code> для управления цветом ссылок. То есть, с помощью этого миксина можно изменять стандартные цвета ссылки при ее различных состояниях.
+  </p>
+  
+  
+  <p>
+    Синтаксис миксина достаточно устрашающий, с первого взгляда:
+  </p>
+  
+  
+  <pre>link-colors($normal, $hover, $active, $visited, $focus)</pre>
+  
+  
+  <p>
+    Однако здесь нет ничего сложного. Пять переменных миксина принимают в качестве аргументов цвета для ссылки в пяти ее состояниях:
+  </p>
+  
+  
+  <ul>
+    <li>
+      $normal &#8211; цвет обычного состояния ссылки
+    </li>
+    
+    
+    <li>
+      $hover &#8211; цвет ссылки при наведенном на нее курсоре мыши
+    </li>
+    
+    
+    <li>
+      $active &#8211; цвет ссылки в момент нажатия на нее
+    </li>
+    
+    
+    <li>
+      $visited &#8211; цвет посещенной ссылки
+    </li>
+    
+    
+    <li>
+      $focus &#8211; цвет ссылки, получившей фокус с клавиатуры
+    </li>
+    
+  </ul>
+  
+  
+  <p>
+    При этом только один из параметров миксина <code>link-colors</code> является обязательным &#8211; <code>$normal</code>. Остальные можно опустить и тогда будут использоваться цвета по умолчанию.
+  </p>
+  
+  
+  <p>
+    Давайте поэскпериментируем и немного изменим цвета для ссылок в нашем примере. Перед этим не забудем подключить соответствующий модуль строкой:
+  </p>
+  
+  
+  <pre>@import "compass/typography/links/link-colors"</pre>
+  
+  
+  <p>
+    Откроем таблицу цветов, расположенную по адресу <a href="http://www.w3schools.com/html/html_colors.asp">w3schools &#8211; html_colors</a> и наугад возмем оттуда пять цветов в HEX-формате, которые передадим миксину в качестве аргументов:
+  </p>
+  
+  
+  <pre>a{
+    @include link-colors(#CC0000,#CC3300,#CC6600,#CC9900,#CCCC00);
+}</pre>
+  
+  
+  <p>
+    В скомпилированном CSS-файле появиться несколько строчек такого вида:
+  </p>
+  
+  
+  <pre>p a:visited {
+  color: #cc9900;
+}
+p a:focus {
+  color: #cccc00;
+}
+p a:hover {
+  color: #cc3300;
+}
+p a:active {
+  color: #cc6600;
+}</pre>
+  
+  
+  <p>
+    Введите показанный здесь код у себя и посмотрите на результат.
+  </p>
+  
+  
+  <h3>
+    Сброс всех стилей для ссылок в Compass
+  </h3>
+  
+  
+  <p>
+    Последний миксин из данного раздела позволяет производить сброс всех стилей для ссылок и превращении их в обычный текст, внутри которого находятся данные ссылки. Например, имеется параграф с классом <code>.woo</code>, внутри которого расположена ссылка. Применим к ней миксин <code>unstyled-link</code> для сброса всех стилей, предварительно подключив модуль:
+  </p>
+  
+  
+  <pre>@import "compass/typography/links/unstyled-link";</pre>
+  
+  
+  <pre>p.woo a{
+    @include unstyled-link;
+}</pre>
+  
+  
+  <p>
+    Посмотрим на результат компиляции кода в CSS и увидим такую картину:
+  </p>
+  
+  
+  <pre>p.woo a {
+  color: inherit;
+  text-decoration: inherit;
+  cursor: inherit;
+}
+p.woo a:active, .wrap p.woo a:focus {
+  outline: none;
+}</pre>
+  
+  
+  <p>
+    Ссылка наследует от параграфа (<em>то есть &#8211; текста, входящего в этот параграф</em>) свойства цвета, подчеркивание и вид курсора; а также убирается рамка <code>outline</code> при получении ссылкой фокуса или щелчка мыши по ней. То есть, другими словами, ссылка становиться полностью похожей внешне и по поведению на <strong>весь остальной текст</strong>, который ее окружает.
+  </p>
+  
+  
+  <p>
+    Попробуйте у себя вышеприведенный код, чтобы увидеть результат.
+  </p>
+</p></pre>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-04-30T00:00:00+04:00"><a href="/framework-blueprint/">April 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1502,260 +1716,6 @@ http://localhost:7788/third/%category%/%postname%/
 <span class="p">}</span></code></pre></div>
 
 <p>Вот и все. Объемной получилась статейка!</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-31T00:00:00+04:00"><a href="/javascript/modernizr/">March 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/javascript/modernizr/" rel="bookmark" title="Что такое библиотека Modernizr" itemprop="url">Что такое библиотека Modernizr</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Добрался до такой достаточно интересной темы, как JavaScript-библиотека Modernizr. Что это за библиотека и для чего она предназначена?</p>
-</blockquote>
-
-<p>Немного отвлекусь - на этом сайтике уже есть статья, посвященная библиотеке Modernizr - <a href="http://localhost:7788/third/how-to-use-modernizr/" title="Как использовать Modernizr">Как использовать Modernizr</a>. Но эта статья является переводом чужой статьи. Кроме того, тема библиотеки Modernizr отдаленно схожа с предыдущей темой, посвященной условным комментариям - <a href="http://goo.gl/FGdZyl" title="Что такое условные комментарии">Что такое условные комментарии</a>. В ней также упоминается способ выборки возможностей браузера, но условные комментарии “нацелены” на один конкретный браузер - IE; в то время как библиотека Modernizr более универсальная и с широким возможностями.</p>
-
-<p>Начнем с предназначения - тут все предельно просто. Modernizr служит для автоматизации определения возможностей конкретного браузера. Другими словами, заходит посетитель на страницу <code>http://localhost:7788/third/</code> с помощью браузера Chrome версии 32, а Modernizr, установленный на этой странице, сразу же определяет: “<em>ага, этот браузер и этой версии поддерживает CSS-свойства <code>box-shadow</code>, <code>text-shadow</code>, <code>box-sizing</code>, <code>flexbox</code>, <code>rgba</code>, <code>hsla</code>, <code>background-size</code> и многое другое</em>”. Поэтому для этого браузера можно создавать на странице эффекты с помощью этих свойств - пользователь их увидит и оценит (может быть оценит). А вот технологию <code>touch</code> этот браузер не поддерживает, поэтому создавать на странице поддержку этой технологии и для этого браузера бесполезно - все равно работать не будет.</p>
-
-<p>А вот если посетитель зайдет на эту же страницу с помощью браузера Firefox версии 22, то Modernizr обнаружит факт, что данный браузер не поддерживает модель <code>flexbox</code>, поэтому бесполезно (<em>и даже нельзя</em>) создавать страницу с помощью этой технологии для данного браузера.</p>
-
-<p>Если же мы попробуем (ради эксперимента) зайти на эту страницу с помощью браузера IE7, то картина будет еще более печальной - там целая куча CSS-свойств не будет поддерживаться.</p>
-
-<p>Надеюсь, мы разобрались тем, для чего предназначена библиотека Modernizr. Следовательно, ответили и на первый вопрос - что это за библиотека. Плавно переходим к вопросу - как воспользоваться этой библиотекой.</p>
-
-<h2 id="modernizr">Подключение библиотеки Modernizr</h2>
-
-<p>Чтобы подключить библиотеку Modernizr к HTML-странице и воспользоваться ее возможностями, необходимо сначала скачать файл библиотеки с официального сайта проекта - <a href="http://modernizr.com/" title="Modernizr">Modernizr</a>. При попытке скачивания на сайте откроется конструктор, с помощью которого можно выбрать CSS3 или HTML5 свойства, поддержка которых требуется в проекте. Преимущество такого подхода в минимизации самой библиотеки - зачем загружать и использовать Modernizr, если из всех его возможностей используется только одна или две?</p>
-
-<p>После получения файла библиотеки Modernizr подключаем его к HTML-странице, как самый обычный файл JavaScript. При этом обратите внимание, что для элемента <code>html</code> дописан класс <code>"no-js"</code> - он необходим для работы самой библиотеки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span></code></pre></div>
-
-<h2 id="modernizr-1">Пример библиотеки Modernizr</h2>
-
-<p>После подключения библиотеки Modernizr открываем HTML-страницу в браузере и запускаем инспектор кода. И наблюдаем следующие “картины”:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    браузер Google Chrome v32:
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;pre&gt;</span>
-    <span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;/pre&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    браузер Mozilla Firefox v22:
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;pre&gt;</span>
-    <span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;/pre&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;p&gt;</span></code></pre></div>
-
-<p>Первое, что бросается в глаза - класс <code>"no-js"</code> поменялся на <code>"js"</code>! Это сделала библиотека Modernizr. А дальше идут совсем непонятные слова, отдаленно похожие на названия CSS3-свойств или HTML5-свойств. Ничего сложного в этих служебных словах нет - это собственные классы библиотеки Modernizr, с помощью которых она отмечает, что поддерживается конкретным браузером, а что - нет.</p>
-
-<p>К примеру, если браузер поддерживает CSS-свойство <code>box-shadow</code>, то это отмечается собственным классом библиотечки - <code>boxshadow</code>. А вот если CSS-свойство (<code>flexbox</code>) не поддерживается, то библиотека Modernizr “прикрепляет” к названию своего класса префикс <code>"no-"</code> и получается <code>no-flexbox</code>. Поэтому, смотрим на вывод в инспекторе кода и сразу видим, что браузер Firefox v.22 (например) поддерживает очень много HTML5 и CSS3-свойств, но вот модель <code>flexbox</code>, сенсорный экран, базы данных в веб или же CSS-reflections - этого данный браузер выполнить не может: <code>no-flexbox</code>, <code>no-touch</code>, <code>no-websqldatabase</code>, <code>no-cssreflections</code>.</p>
-
-<h2 id="modernizr-2">Пример работы Modernizr</h2>
-
-<p>Все хорошо, скажете вы - определили возможности конкретного браузера. Но что нам это даст в практическом плане, при верстке страницы? Давайте рассмотрим небольшой пример. На странице в порядке эксперимента создан квадрат с фоновой заливкой зеленого (<code>hsl(120,100%,50%)</code>) цвета:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="/images/uploads/2014/03/modernizr_simple_page.jpg" alt="Пример обычного квадрата на CSS" /></p>
-
-<p>Допустим, мы хотим, чтобы для браузеров, в которых отсутствует поддержка сенсорного экрана, фоновая заливка этого квадрата была не зеленым (<code>hsl(120,100%,50%)</code>) цветом, а синим (<code>hsl(240,100%,50%)</code>). Для этого мы немного переделаем код, представленный выше и посмотрим на результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.no-touch</span> <span class="nt">p</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="/images/uploads/2014/03/modernizr_class_no-touch.jpg" alt="Стилизованный с помощью библиотеки Modernizr" /></p>
-
-<p>Фантастика! А что-же произошло, что наш квадрат стал из зеленого синим? Все просто - это обыкновенная CSS-специфичность. Библиотека Modernizr автоматически “прицепила” к элементу <code>html</code> класс <code>no-touch</code> (в числе многих других - стоит отметить). И вот получается, что наш браузер не поддерживает сенсорный экран, у родителя (<code>html</code>) ВСЕХ элементов страницы появляется класс <code>no-touch</code>, который по правилам CSS-специфичности (10+1=11 явно больше, чем 1) переопределяет значение правила <code>background-color</code> для элемента <code>p</code> с <code>hsl(120,100%,50%)</code> на <code>hsl(240,100%,50%)</code>. Вот и вся “хитрость” работы библиотеки Modernizr! ))</p>
-
-<p>Теперь, зная принцип работы Modernizr, можно легко создавать CSS-правила под определенные возможности браузера. К примеру, зная, что IE6 не умеет работать с градиентами через CSS, можно прописать два правила:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.goo</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
-  <span class="k">background-image</span><span class="o">:</span>   <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">background-image</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
-  <span class="k">background-image</span><span class="o">:</span>     <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="k">background-image</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
-  <span class="k">background-image</span><span class="o">:</span>                         <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.no-cssgradients</span> <span class="nc">.goo</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/bg.jpg)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="modernizr-3">Загрузчик библиотеки Modernizr</h2>
-
-<p>Отлично! Но писать по два условия на одно правило - это утомительно и не рационально (представьте, насколько раздуется код!). Поэтому в библиотеке Modernizr придумали специальный механизм для тестирования CSS-свойств и применения соответствующих CSS-правил. Заключается оно в следующем - при рендеринге HTML-страницы создается один большой JavaScript-объект с именем Modernizr.</p>
-
-<p>У этого объекта есть свойства:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      Modernizr.flexbox
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      Modernizr.canvas
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      Modernizr.backgroundsize
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      <span class="ni">&amp;#8230;</span>
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      Modernizr.boxshadow
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      Modernizr.borderradius
-    <span class="nt">&lt;/li&gt;</span>
-
-  <span class="nt">&lt;/ul&gt;</span>
-
-
-  <span class="nt">&lt;p&gt;</span>
-    <span class="ni">&amp;#8230;</span> и так далее. В библиотеке Modernizr встроен загрузчик, который загружает указанное в условии проверки свойство и применяет к нему правила в зависимости от того, `true` или `false` получится в результате проверки.
-  <span class="nt">&lt;/p&gt;</span>
-
-
-  <span class="nt">&lt;p&gt;</span>
-    Например, давайте сделает так, чтобы наш квадрат имел фоновую заливку голубого (cyan) цвета, если браузер <span class="nt">&lt;strong&gt;</span>поддерживает<span class="nt">&lt;/strong&gt;</span> модель `flexbox`, и фиолетового (magenta) цвета, если <span class="nt">&lt;strong&gt;</span>не поддерживает<span class="nt">&lt;/strong&gt;</span> модель `flexbox`. Для этого создадим два разных CSS-файла:
-  <span class="nt">&lt;/p&gt;</span>
-
-
-  <span class="nt">&lt;ul&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      flexbox.css
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      no_flexbox.css
-    <span class="nt">&lt;/li&gt;</span>
-
-  <span class="nt">&lt;/ul&gt;</span>
-
-
-  <span class="nt">&lt;p&gt;</span>
-    <span class="ni">&amp;#8230;</span> в первом (`flexbox.css`) из которых пропишем:
-  <span class="nt">&lt;/p&gt;</span>
-
-
-  <span class="nt">&lt;pre&gt;</span>
-p{
-  background-color: hsl(180,100%,50%);
-}
-<span class="nt">&lt;/pre&gt;</span>
-
-
-  <span class="nt">&lt;p&gt;</span>
-    <span class="ni">&amp;#8230;</span> во втором (`no_flexbox.css`) пропишем:
-  <span class="nt">&lt;/p&gt;</span>
-
-
-  <span class="nt">&lt;pre&gt;</span>
-p{
-  background-color: hsl(300,100%,50%);
-}
-<span class="nt">&lt;/pre&gt;</span>
-
-
-  <span class="nt">&lt;p&gt;</span>
-    <span class="ni">&amp;#8230;</span> и затем создадим еще один JavaScript-файл `check.js` (подключается к HTML-странице как обычно, тегом `script`), в котором запишем следующее:
-  <span class="nt">&lt;/p&gt;</span>
-
-
-  <span class="nt">&lt;pre&gt;</span>
-Modernizr.load({
-  test: Modernizr.flexbox,
-  yep:  &#39;css/flexbox.css&#39;,
-  nope: &#39;css/no_flexbox.css&#39;
-});
-<span class="nt">&lt;/pre&gt;</span>
-
-
-  <span class="nt">&lt;p&gt;</span>
-    Здесь:
-  <span class="nt">&lt;/p&gt;</span>
-
-
-  <span class="nt">&lt;ul&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      строка `Modernizr.load` - это загрузчик библиотеки Modernizr;
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      строка `test: Modernizr.flexbox`    - условие проверки (какое свойство объекта Modernizr проверяем);
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      строка `yep: &#39;css/flexbox.css&#39;`     - загрузить файл `flexbox.css`, если условие выполняется (<span class="nt">&lt;em&gt;</span>yep - да<span class="nt">&lt;/em&gt;</span>);
-    <span class="nt">&lt;/li&gt;</span>
-
-
-    <span class="nt">&lt;li&gt;</span>
-      строка `nope: &#39;css/no_flexbox.css&#39;` - загрузить файл `no_flexbox.css`, если условие не выполняется (<span class="nt">&lt;em&gt;</span>nope - нет<span class="nt">&lt;/em&gt;</span>).
-    <span class="nt">&lt;/li&gt;</span>
-
-  <span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Результат работы вышеприведенного кода в браузере Chrome (поддерживает модель <code>flexbox</code>) и браузере Firefox (не поддерживает модель <code>flexbox</code>):</p>
-
-<p><img src="/images/uploads/2014/03/modernizr_yep_flexbox.jpg" alt="Modernizr - поддержка flexbox" /></p>
-
-<p><img src="/images/uploads/2014/03/modernizr_nope_flexbox.jpg" alt="Modernizr - отсутствие поддержки flexbox" /></p>
-
-<h2 id="section">Заключение</h2>
-
-<p>В пользу применения библиотеки Modernizr можно сказать еще то, что такой полезный файлик, как <code>html5shiv.js</code> уже автоматически включен в состав этой библиотеки. Поэтому, при подключении Modernizr можно смело переходить на doctype html5 и не заморачиваться поиском и подключением файла <code>html5shiv.js</code>.</p>
-
-<p>На этом краткий обзор библиотеки Modernizr можно закончить.</p>
 
 <hr />
 

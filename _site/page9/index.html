@@ -144,6 +144,143 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-28T00:00:00+04:00"><a href="/gitignore/">August 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/gitignore/" rel="bookmark" title="gitignore &#8211; игнорирование файлов в Git" itemprop="url">gitignore &#8211; игнорирование файлов в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>В системе Git можно настроить возможность автоматического <strong>игнорирования файлов</strong>. То есть, можно указать Git, что файлы определенного типа <strong>не нужно отслеживать</strong>. Выполняется такая настройка с помощью специального файла <code>.gitignore</code>. Подобная возможность отключения отслеживания файлов в системе Git может понадобиться в случае, когда автоматически генерируются <strong>служебные файлы</strong>.</p>
+
+<p>К примеру, если развертывать в проекте Compass, то будет создан каталог <code>.sass</code>, в который данный фреймворк помещает свой кэш, генерируемый автоматически при каждом изменении любого из файлов проекта.</p>
+
+<p>Давайте на практике разберемся, каким образом можно настроить <strong>игнорирование файлов</strong> в Git с помощью <code>.gitignore</code>.</p>
+
+<h3 id="section">Создание нового проекта</h3>
+
+<p>Создаю новый проект с именем <code>git_ignore</code>, в котором помещаю несколько файлов разного типа:</p>
+
+<pre>
+  $ mkdir git_ignore
+  $ cd git_ignore/
+  $ touch index.html style.css
+</pre>
+
+<p>Инициализирую репозиторий Git в директории <code>.git_ignore</code>, индексирую созданные файлы и фиксирую их:</p>
+
+<pre>$ git init
+    Initialized empty Git repository in /home/aaron/Projects/git_ignore/.git/
+    $ git add .
+    $ git commit -m 'First Commit'
+  </pre>
+
+<p>Вывод команды <code>git status</code> показывает, что все чисто:</p>
+
+<pre>$ git status
+    On branch master
+    nothing to commit, working directory clean
+  </pre>
+
+<h3 id="gitignore">Настройка игнорирования в .gitignore</h3>
+
+<p>Для настройки игнорирования определенных типов файлов в системе Git необходимо первоначально создать файл <code>.gitignore</code>:</p>
+
+<pre>$ touch .gitignore
+  </pre>
+
+<p>Откроем созданный файл <code>.gitignore</code> в любом редакторе:</p>
+
+<pre>$ nano -w .gitignore
+  </pre>
+
+<p>… и пропишем в нем следующие строки:</p>
+
+<pre>*.txt
+    *.md
+  </pre>
+
+<p>Тем самым мы говорим Git, что нужно игнорировать все файлы с расширением <code>.txt</code> и <code>.md</code> внутри директории <code>git_ignore</code>. То есть, система контроля не будет отслеживать изменения во всех файлах этих типов.</p>
+
+<p>Проиндексируем и зафиксируем изменения (создание файла настроек <code>.gitignore</code>), а затем проверим данный факт. Для этого в рабочей директории <code>git_ignore</code> создаю еще несколько типов файлов:</p>
+
+<pre>$ touch main.css readme.txt humans.md
+  </pre>
+
+<p>Затем выполняю индексацию всех файлов, которые были добавлены или изменены в рабочем каталоге:</p>
+
+<pre>$ git add .
+  </pre>
+
+<p>И смотрю, что мне показывает команда <code>git status</code>:</p>
+
+<pre>$ git status
+    On branch master
+    Changes to be committed:
+      (use "git reset HEAD &lt;file&gt;..." to unstage)
+
+      new file:   main.css
+
+  </pre>
+
+<p>Система Git увидела только новый файл <code>main.css</code>. Два других файла – <code>readme.txt</code> и <code>humans.md</code> – проигнорированы системой. Отлично! Зафиксирую изменения.</p>
+
+<p>Можно создать еще пару файлов в разных директориях и посмотреть на вывод команды <code>git status</code> в консоли:<figure id="attachment_1720" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gitignore.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gitignore-600x304.png" alt="Результат настройки файла .gitignore" width="600" height="304" class="size-medium wp-image-1720" /></a>&lt;figcaption class="wp-caption-text"&gt;Результат настройки файла .gitignore&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<h3 id="gitignore-1">Усложнить задачу игнорирования в .gitignore</h3>
+
+<p>Можно усложнить задачу игнорирования в Git, добавив в файл <code>.gitignore</code> директорию, содержимое которой также должно игнорироваться. Пускай это будет обычная директория <code>ignore</code> и скрытая директория <code>.ignore</code> (с точкой перед именем):</p>
+
+<p>Добавлю в файл <code>.gitignore</code> пару строк таким образом:</p>
+
+<pre>$ cat .gitignore
+    *.txt
+    *.md
+    ignore/
+    .ignore/
+  </pre>
+
+<p>Проиндексирую изменения, а затем выполню операции по созданию директорий и файлов внутри них:</p>
+
+<pre>$ mkdir ignore
+    $ mkdir .ignore
+    $ touch ignore/reset.css
+    $ touch .ignore/normilize.css
+  </pre>
+
+<p>Вновь ввожу команду просмотра состояния репозитория Git:</p>
+
+<pre>$ git status
+    On branch master
+    nothing to commit, working directory clean
+  </pre>
+
+<p>Все сработало – Git не захотел видеть директории <code>ignore</code>, <code>.ignore</code>, а также их содержимое. Отлично!</p>
+
+<h3 id="gitignore-2">Шаблоны в файле .gitignore</h3>
+
+<p>Для файла <code>.gitignore</code> доступны шаблоны, с помощью которых можно задать маски для выборки необходимых типой файлов. Однако, обширная тема шаблонов выходит за рамки данной статьи. При желании можно почитать по теме шаблонов в книге “<a href="http://git-scm.com/book/ru" title="Pro Git - профессиональный контроль версий">Pro Git – профессиональный контроль версий</a>“.</p>
+
+<p>Оцените статью:<br />
+<span id="post-ratings-1716" class="post-ratings" data-nonce="c024202154"><img id="rating_1716_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1716, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1716, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1716, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1716, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1716, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1716_text"></span></span><span id="post-ratings-1716-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -749,109 +886,6 @@ gulp-imagemin: Minified 6 images (saved 83.02 kB - 7.2%)
 </pre>
 
 <p>Отлично! Мы изучили вопрос создания задачи мониторинга в Gulp с помощью функции <code>gulp.watch</code>!</p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-22T00:00:00+04:00"><a href="/gulp-named-task/">August 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/gulp-named-task/" rel="bookmark" title="Gulp &#8211; именованная задача (named task)" itemprop="url">Gulp &#8211; именованная задача (named task)</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>В предыдущей статье <a href="http://localhost:7788/third/?p=1603" title="Gulp - установка и запуск плагина gulp-uglify">Gulp – установка и запуск плагина gulp-uglify</a>, где мы учились устанавливать и запускать плагины под Gulp, мы создавали задачу под этот плагин. Сами не зная того, тогда мы создали <strong>именованную задачу</strong> (named task). Как вы помните из вводной статьи <a href="http://localhost:7788/third/?p=1588" title="Gulp - знакомство и первый запуск">Gulp – знакомство и первый запуск</a>, в этом менеджере имеется два типа задач – <strong>задача по умолчанию</strong> (default) и <strong>именованная задача</strong> (named task).</p>
-
-<p>В этом разделе мы углубимся в вопрос задач в Gulp и рассмотрим детально, каким образом создается именованная задача (named task) или несколько именованных задач (named tasks), как можно объединять именованные задачи (named tasks) в последовательности, как можно вызывать выполнение одной задачи из другой задачи.</p>
-
-<h3 id="named-task--gulp">Создание named task в Gulp</h3>
-
-<p>В менеджере Gulp может существовать тысячи задач, каждая из которых нацелена на получение конкретного результата. Давайте создадим отдельную задачу для конкатенации файлов. Для этой цели существует плагин <code>gulp-concat</code>. На странице документации этого плагина описан процесс установки и настройки – <a href="https://www.npmjs.org/package/gulp-concat" title="gulp-concat">gulp-concat</a>.</p>
-
-<p>Установим плагин <code>gulp-concat</code> в проект:</p>
-
-<pre>$ sudo npm install --save-dev gulp-concat
-</pre>
-
-<p>И создадим в файле <code>gulpfile.js</code> отдельную задачу для этого плагина:</p>
-
-<pre>// Concat Task
-  gulp.task('concat', function() {
-    gulp.src('css/*.css')
-    .pipe(concat('one.css'))
-    .pipe(gulp.dest('build/css'))
-  })
-</pre>
-
-<p>… а также создадим отдельную переменную для этого плагина:</p>
-
-<pre>var concat = require('gulp-concat');
-</pre>
-
-<p>Кстати, если вы еще не задались вопросом, а что это за странные строки – <code>gulp.src</code>, <code>gulp.dest</code>, <code>gulp.task</code>, то могу вкратце сказать, что это встроенные функции Gulp, каждая из которых выполняет свою задачу.</p>
-
-<p>Осталось запустить в консоли именованную задачу (named task) <code>concat</code>, которая произведет слияние в один файл всех файлов с расширением .css, расположенных в директории css:</p>
-
-<pre>$ gulp concat
-  [09:53:28] Using gulpfile ~/Projects/gulp_test/gulpfile.js
-  [09:53:28] Starting 'concat'...
-  [09:53:28] Finished 'concat' after 9.91 ms
-</pre>
-
-<p>Отлично – мы создали named task!</p>
-
-<h3 id="named-tasks--gulp">Создание последовательности named tasks в Gulp</h3>
-
-<p>В Gulp можно создавать <strong>последовательность задач</strong>, в которой выполнение всех задач будет производиться в том порядке, в котором они помещены в очередь. Для этого несколько отдельных именованных задач (named tasks) помещают внутрь задачи по умолчанию (default). Вместо callback-функции разместим массив, состоящий из списка имен тех именованных задач (named tasks), которые мы хотим поместить в очередь. Фактически, в данном случае выполнение одной задачи будет производиться через вызов другой задачи.</p>
-
-<p>Допустим, у нас имеются две именованные задачи (named tasks):</p>
-
-<pre>// Uglify Task
-  gulp.task('uglify', function(){
-    gulp.src('js/*.js')
-    .pipe(uglify())
-    .pipe(gulp.dest('build/js'))
-  });
-
-  // Concat Task
-  gulp.task('concat', function() {
-    gulp.src('css/*.css')
-    .pipe(concat('one.css'))
-    .pipe(gulp.dest('build/css'))
-  });
-</pre>
-
-<p>Поместим их в задачу по умолчанию:</p>
-
-<pre>// Default Task
-  gulp.task('default', ['concat', 'uglify']);
-</pre>
-
-<p>Теперь в консоли достаточно запустить одну команду <code>gulp</code> на выполнение задачи по умолчанию (default). Тем самым мы запустим выполнение последовательности нескольких отдельных команд – <code>'concat', 'uglify'</code>:</p>
-
-<pre>$ gulp
-  [10:05:36] Using gulpfile ~/Projects/gulp_test/gulpfile.js
-  [10:05:36] Starting 'concat'...
-  [10:05:36] Finished 'concat' after 7.17 ms
-  [10:05:36] Starting 'uglify'...
-  [10:05:36] Finished 'uglify' after 2.64 ms
-  [10:05:36] Starting 'default'...
-  [10:05:36] Finished 'default' after 7.04 μs
-</pre>
-
-<p>В выводе консоли видим, что сначала запустилась задача <code>concat</code> и выполнилась за 7.17 миллисекунд, затем запустилась задача <code>uglify</code> и на ее выполнение ушло 2.64 милисекунды. И затем запустилась задача по умолчанию <code>default</code>, которая выполнилась за 7.04 миллисекунд. Все прошло успешно.</p>
 
 
   </div><!-- /.entry-content -->

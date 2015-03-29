@@ -144,6 +144,260 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-31T00:00:00+04:00"><a href="/javascript/modernizr/">March 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/javascript/modernizr/" rel="bookmark" title="Что такое библиотека Modernizr" itemprop="url">Что такое библиотека Modernizr</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Добрался до такой достаточно интересной темы, как JavaScript-библиотека Modernizr. Что это за библиотека и для чего она предназначена?</p>
+</blockquote>
+
+<p>Немного отвлекусь - на этом сайтике уже есть статья, посвященная библиотеке Modernizr - <a href="http://localhost:7788/third/how-to-use-modernizr/" title="Как использовать Modernizr">Как использовать Modernizr</a>. Но эта статья является переводом чужой статьи. Кроме того, тема библиотеки Modernizr отдаленно схожа с предыдущей темой, посвященной условным комментариям - <a href="http://goo.gl/FGdZyl" title="Что такое условные комментарии">Что такое условные комментарии</a>. В ней также упоминается способ выборки возможностей браузера, но условные комментарии “нацелены” на один конкретный браузер - IE; в то время как библиотека Modernizr более универсальная и с широким возможностями.</p>
+
+<p>Начнем с предназначения - тут все предельно просто. Modernizr служит для автоматизации определения возможностей конкретного браузера. Другими словами, заходит посетитель на страницу <code>http://localhost:7788/third/</code> с помощью браузера Chrome версии 32, а Modernizr, установленный на этой странице, сразу же определяет: “<em>ага, этот браузер и этой версии поддерживает CSS-свойства <code>box-shadow</code>, <code>text-shadow</code>, <code>box-sizing</code>, <code>flexbox</code>, <code>rgba</code>, <code>hsla</code>, <code>background-size</code> и многое другое</em>”. Поэтому для этого браузера можно создавать на странице эффекты с помощью этих свойств - пользователь их увидит и оценит (может быть оценит). А вот технологию <code>touch</code> этот браузер не поддерживает, поэтому создавать на странице поддержку этой технологии и для этого браузера бесполезно - все равно работать не будет.</p>
+
+<p>А вот если посетитель зайдет на эту же страницу с помощью браузера Firefox версии 22, то Modernizr обнаружит факт, что данный браузер не поддерживает модель <code>flexbox</code>, поэтому бесполезно (<em>и даже нельзя</em>) создавать страницу с помощью этой технологии для данного браузера.</p>
+
+<p>Если же мы попробуем (ради эксперимента) зайти на эту страницу с помощью браузера IE7, то картина будет еще более печальной - там целая куча CSS-свойств не будет поддерживаться.</p>
+
+<p>Надеюсь, мы разобрались тем, для чего предназначена библиотека Modernizr. Следовательно, ответили и на первый вопрос - что это за библиотека. Плавно переходим к вопросу - как воспользоваться этой библиотекой.</p>
+
+<h2 id="modernizr">Подключение библиотеки Modernizr</h2>
+
+<p>Чтобы подключить библиотеку Modernizr к HTML-странице и воспользоваться ее возможностями, необходимо сначала скачать файл библиотеки с официального сайта проекта - <a href="http://modernizr.com/" title="Modernizr">Modernizr</a>. При попытке скачивания на сайте откроется конструктор, с помощью которого можно выбрать CSS3 или HTML5 свойства, поддержка которых требуется в проекте. Преимущество такого подхода в минимизации самой библиотеки - зачем загружать и использовать Modernizr, если из всех его возможностей используется только одна или две?</p>
+
+<p>После получения файла библиотеки Modernizr подключаем его к HTML-странице, как самый обычный файл JavaScript. При этом обратите внимание, что для элемента <code>html</code> дописан класс <code>"no-js"</code> - он необходим для работы самой библиотеки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span></code></pre></div>
+
+<h2 id="modernizr-1">Пример библиотеки Modernizr</h2>
+
+<p>После подключения библиотеки Modernizr открываем HTML-страницу в браузере и запускаем инспектор кода. И наблюдаем следующие “картины”:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    браузер Google Chrome v32:
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;pre&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/pre&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    браузер Mozilla Firefox v22:
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;pre&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;/pre&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;p&gt;</span></code></pre></div>
+
+<p>Первое, что бросается в глаза - класс <code>"no-js"</code> поменялся на <code>"js"</code>! Это сделала библиотека Modernizr. А дальше идут совсем непонятные слова, отдаленно похожие на названия CSS3-свойств или HTML5-свойств. Ничего сложного в этих служебных словах нет - это собственные классы библиотеки Modernizr, с помощью которых она отмечает, что поддерживается конкретным браузером, а что - нет.</p>
+
+<p>К примеру, если браузер поддерживает CSS-свойство <code>box-shadow</code>, то это отмечается собственным классом библиотечки - <code>boxshadow</code>. А вот если CSS-свойство (<code>flexbox</code>) не поддерживается, то библиотека Modernizr “прикрепляет” к названию своего класса префикс <code>"no-"</code> и получается <code>no-flexbox</code>. Поэтому, смотрим на вывод в инспекторе кода и сразу видим, что браузер Firefox v.22 (например) поддерживает очень много HTML5 и CSS3-свойств, но вот модель <code>flexbox</code>, сенсорный экран, базы данных в веб или же CSS-reflections - этого данный браузер выполнить не может: <code>no-flexbox</code>, <code>no-touch</code>, <code>no-websqldatabase</code>, <code>no-cssreflections</code>.</p>
+
+<h2 id="modernizr-2">Пример работы Modernizr</h2>
+
+<p>Все хорошо, скажете вы - определили возможности конкретного браузера. Но что нам это даст в практическом плане, при верстке страницы? Давайте рассмотрим небольшой пример. На странице в порядке эксперимента создан квадрат с фоновой заливкой зеленого (<code>hsl(120,100%,50%)</code>) цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="/images/uploads/2014/03/modernizr_simple_page.jpg" alt="Пример обычного квадрата на CSS" /></p>
+
+<p>Допустим, мы хотим, чтобы для браузеров, в которых отсутствует поддержка сенсорного экрана, фоновая заливка этого квадрата была не зеленым (<code>hsl(120,100%,50%)</code>) цветом, а синим (<code>hsl(240,100%,50%)</code>). Для этого мы немного переделаем код, представленный выше и посмотрим на результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.no-touch</span> <span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="/images/uploads/2014/03/modernizr_class_no-touch.jpg" alt="Стилизованный с помощью библиотеки Modernizr" /></p>
+
+<p>Фантастика! А что-же произошло, что наш квадрат стал из зеленого синим? Все просто - это обыкновенная CSS-специфичность. Библиотека Modernizr автоматически “прицепила” к элементу <code>html</code> класс <code>no-touch</code> (в числе многих других - стоит отметить). И вот получается, что наш браузер не поддерживает сенсорный экран, у родителя (<code>html</code>) ВСЕХ элементов страницы появляется класс <code>no-touch</code>, который по правилам CSS-специфичности (10+1=11 явно больше, чем 1) переопределяет значение правила <code>background-color</code> для элемента <code>p</code> с <code>hsl(120,100%,50%)</code> на <code>hsl(240,100%,50%)</code>. Вот и вся “хитрость” работы библиотеки Modernizr! ))</p>
+
+<p>Теперь, зная принцип работы Modernizr, можно легко создавать CSS-правила под определенные возможности браузера. К примеру, зная, что IE6 не умеет работать с градиентами через CSS, можно прописать два правила:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.goo</span> <span class="p">{</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
+  <span class="k">background-image</span><span class="o">:</span>   <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">background-image</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
+  <span class="k">background-image</span><span class="o">:</span>     <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="k">background-image</span><span class="o">-</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
+  <span class="k">background-image</span><span class="o">:</span>                         <span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="k">bottom</span><span class="o">,</span><span class="m">#000</span><span class="o">,</span><span class="m">#fff</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.no-cssgradients</span> <span class="nc">.goo</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/bg.jpg)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="modernizr-3">Загрузчик библиотеки Modernizr</h2>
+
+<p>Отлично! Но писать по два условия на одно правило - это утомительно и не рационально (представьте, насколько раздуется код!). Поэтому в библиотеке Modernizr придумали специальный механизм для тестирования CSS-свойств и применения соответствующих CSS-правил. Заключается оно в следующем - при рендеринге HTML-страницы создается один большой JavaScript-объект с именем Modernizr.</p>
+
+<p>У этого объекта есть свойства:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      Modernizr.flexbox
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      Modernizr.canvas
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      Modernizr.backgroundsize
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      <span class="ni">&amp;#8230;</span>
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      Modernizr.boxshadow
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      Modernizr.borderradius
+    <span class="nt">&lt;/li&gt;</span>
+
+  <span class="nt">&lt;/ul&gt;</span>
+
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="ni">&amp;#8230;</span> и так далее. В библиотеке Modernizr встроен загрузчик, который загружает указанное в условии проверки свойство и применяет к нему правила в зависимости от того, `true` или `false` получится в результате проверки.
+  <span class="nt">&lt;/p&gt;</span>
+
+
+  <span class="nt">&lt;p&gt;</span>
+    Например, давайте сделает так, чтобы наш квадрат имел фоновую заливку голубого (cyan) цвета, если браузер <span class="nt">&lt;strong&gt;</span>поддерживает<span class="nt">&lt;/strong&gt;</span> модель `flexbox`, и фиолетового (magenta) цвета, если <span class="nt">&lt;strong&gt;</span>не поддерживает<span class="nt">&lt;/strong&gt;</span> модель `flexbox`. Для этого создадим два разных CSS-файла:
+  <span class="nt">&lt;/p&gt;</span>
+
+
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      flexbox.css
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      no_flexbox.css
+    <span class="nt">&lt;/li&gt;</span>
+
+  <span class="nt">&lt;/ul&gt;</span>
+
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="ni">&amp;#8230;</span> в первом (`flexbox.css`) из которых пропишем:
+  <span class="nt">&lt;/p&gt;</span>
+
+
+  <span class="nt">&lt;pre&gt;</span>
+p{
+  background-color: hsl(180,100%,50%);
+}
+<span class="nt">&lt;/pre&gt;</span>
+
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="ni">&amp;#8230;</span> во втором (`no_flexbox.css`) пропишем:
+  <span class="nt">&lt;/p&gt;</span>
+
+
+  <span class="nt">&lt;pre&gt;</span>
+p{
+  background-color: hsl(300,100%,50%);
+}
+<span class="nt">&lt;/pre&gt;</span>
+
+
+  <span class="nt">&lt;p&gt;</span>
+    <span class="ni">&amp;#8230;</span> и затем создадим еще один JavaScript-файл `check.js` (подключается к HTML-странице как обычно, тегом `script`), в котором запишем следующее:
+  <span class="nt">&lt;/p&gt;</span>
+
+
+  <span class="nt">&lt;pre&gt;</span>
+Modernizr.load({
+  test: Modernizr.flexbox,
+  yep:  &#39;css/flexbox.css&#39;,
+  nope: &#39;css/no_flexbox.css&#39;
+});
+<span class="nt">&lt;/pre&gt;</span>
+
+
+  <span class="nt">&lt;p&gt;</span>
+    Здесь:
+  <span class="nt">&lt;/p&gt;</span>
+
+
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      строка `Modernizr.load` - это загрузчик библиотеки Modernizr;
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      строка `test: Modernizr.flexbox`    - условие проверки (какое свойство объекта Modernizr проверяем);
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      строка `yep: &#39;css/flexbox.css&#39;`     - загрузить файл `flexbox.css`, если условие выполняется (<span class="nt">&lt;em&gt;</span>yep - да<span class="nt">&lt;/em&gt;</span>);
+    <span class="nt">&lt;/li&gt;</span>
+
+
+    <span class="nt">&lt;li&gt;</span>
+      строка `nope: &#39;css/no_flexbox.css&#39;` - загрузить файл `no_flexbox.css`, если условие не выполняется (<span class="nt">&lt;em&gt;</span>nope - нет<span class="nt">&lt;/em&gt;</span>).
+    <span class="nt">&lt;/li&gt;</span>
+
+  <span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Результат работы вышеприведенного кода в браузере Chrome (поддерживает модель <code>flexbox</code>) и браузере Firefox (не поддерживает модель <code>flexbox</code>):</p>
+
+<p><img src="/images/uploads/2014/03/modernizr_yep_flexbox.jpg" alt="Modernizr - поддержка flexbox" /></p>
+
+<p><img src="/images/uploads/2014/03/modernizr_nope_flexbox.jpg" alt="Modernizr - отсутствие поддержки flexbox" /></p>
+
+<h2 id="section">Заключение</h2>
+
+<p>В пользу применения библиотеки Modernizr можно сказать еще то, что такой полезный файлик, как <code>html5shiv.js</code> уже автоматически включен в состав этой библиотеки. Поэтому, при подключении Modernizr можно смело переходить на doctype html5 и не заморачиваться поиском и подключением файла <code>html5shiv.js</code>.</p>
+
+<p>На этом краткий обзор библиотеки Modernizr можно закончить.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-03-31T00:00:00+04:00"><a href="/conditional%20comments/">March 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -733,93 +987,6 @@
 <p><img src="/images/uploads/2014/03/windows-_resizer_chrome.png" alt="Расширение Windows Resizer под Chrome" /></p>
 
 <p>В дальнейших объяснениях работа с плагином не нуждается, как мне кажется.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-19T00:00:00+04:00"><a href="/css/wireframes/">March 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/css/wireframes/" rel="bookmark" title="Wireframes - визуальный эскиз HTML-разметки" itemprop="url">Wireframes - визуальный эскиз HTML-разметки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Перед созданием HTML-разметки часто бывает необходимым и полезным сделать визуальный набросок будущего макета сайта (<code>wireframes</code>).</p>
-</blockquote>
-
-<p>Особенно это необходимо для начинающих HTML-верстальщиков, так как такой эскиз помогает понять, какие блоки и каким образом должны располагаться внутри будущей HTML-разметки. Когда я только начинал самостоятельно изучать практику верстки, я просто не мог обойтись без того, чтобы не нарисовать схематичное расположение будущих блоков.</p>
-
-<p>Рисовал их где придется и как придется - в простом Paint или на листе бумаги карандашом или ручкой. Тут главное не до красоты - чтобы схема была доступной и понятной, это основное. Если схема не нарисована, то я элементарно не мог приставить себе “в голове”, как должна выглядеть блочная структура будущего сайта. А если я не мог представить, как должен выглядеть каркас здания, то о каком дальнейшем строительстве могла идти речь?</p>
-
-<p><img src="/images/uploads/2014/03/mockup_notepad.jpg" alt="Wireframe в Notepad" /></p>
-
-<p>Но вот когда блок-схема нарисована, то уже становится ясным, что делать дальше с точки зрения HTML-программирования. Я уже видел, что здесь нужно создать блок-обертку <code>div.wrap</code>, вверху поместить блок-шапку <code>div.header</code>, по центру должен располагаться большой блок <code>div.main</code> с основным контентом и внутренними блоками <code>div.sidebar</code> + <code>div.content</code>. Ну, а внизу должен находиться блок-подвал <code>div.footer</code>.</p>
-
-<p>Другими словами, я просто повторял свои действия, выполненные на бумаге; но уже на компьютере и с помощью программного кода, в HTML-редакторе. Конечно, когда опыта у меня появилось немного побольше, я смог чисто “на глаз” определять основную структуру будущей HTML-разметки. Открывал готовый PSD-макет в Photoshop, “пробегал” его глазами и сразу “вычленял” составные части; которые должны были становиться основными блоками будущей HTML-страницы.</p>
-
-<p>Но один я знаю, сколько времени у меня ушло на то, чтобы так “с лету” видеть структуру сайта. Я не хочу сказать, что это трудное дело. Совсем нет! Но в каждом деле нужен опыт и сноровка; а если ее нет, то дело движется тяжело и медленно (<em>сразу вспомнилась любимая книжка детства - Робинзон Крузо</em>).</p>
-
-<p>К тому же, речь идет только о дизайне сайтов с простой структурой. Если же это сложный и большой сайт, то тут и опыт не поможет, так как одновременно держать “в голове” структуру и “ваять” код будет затруднительно. Тут без предварительной блок-схемы, разработанной на чем угодно и где угодно, не обойтись. Например, оцените вот такой пример готового наброска, сделанный на сайте <a href="http://mockupbuilder.com/" title="Mockup Builder">Mockup Builder</a>:</p>
-
-<p><img src="/images/uploads/2014/03/mockup_silverlight.jpg" alt="Mockup Builder" /></p>
-
-<p>Чуть позже, по мере чтения статей и книг, посвященных верстке, я познакомился с <strong>тремя способами создания эскиза</strong> HTML-разметки.</p>
-
-<h2 id="section">Первый подход - аскетичный</h2>
-
-<p>Одни верстальщики идут по минималистичному пути и используют <strong>стандартный лист бумаги и карандаш</strong>. На бумаге делается набросок будущей схемы сайта, в котором расположены основные и дополнительные блоки HTML-страницы. Быстро, просто и со вкусом, что называется.</p>
-
-<h2 id="wireframes">Второй подход - wireframes</h2>
-
-<p>Другие верстальщики используют специальные программы для создания эскизов HTML-разметки. Такие программы относятся к классу <em>wireframes</em>. Они бывают разных типов: <strong>online-сервисы</strong> (<em>платные или бесплатные</em>) или <strong>desktop-приложения</strong> (<em>платные или бесплатные</em>). Мое личное предпочтение к использованию именно таких программ, ибо мне кажется смешным рисовать карандашом на бумаге, сидя перед компьютером.</p>
-
-<p>Вообще-то, существуют <strong>три класса программ для создания эскиза</strong> будущего сайта: <strong>wireframes</strong>, <strong>mockup</strong>, <strong>prototype</strong>. <strong>Wireframes</strong> - для создания простого эскиза дизайна, ничего больше. <strong>Mockup</strong> - это тот же wireframes, но в нем добавлены визуальные отрисовки для всех элементов управления (кнопки, картинки и т. д.). <strong>Prototype</strong> - это самый продвинутый тип; это mockup с возможностью программирования элементов интерфейса (кнопок) прямо в программе.</p>
-
-<p>Преимущество <em>wireframes</em> в том, что у них есть уже готовый набор инструментов для создания набросков HTML-разметки - блоки, кнопки, текстовые поля. Результат получается быстро, просто и красиво. Продвинутые программы этого класса используются разработчиками даже для создания набросков, которые можно предоставлять заказчику в качестве предварительно выполненной работы.</p>
-
-<h2 id="photoshop--illustrator">Третий подход - Photoshop или Illustrator</h2>
-
-<p>Промежуточным звеном между первыми и вторыми верстальщиками являются кодеры, которые умеют и любят использовать для создания визуального HTML-макета программы редактирования графики, такие как Adobe Photoshop, Adobe Illustrator или Adobe Firework. И они в чем-то правы - в этих программах есть все необходимое для создания эскиза сайта и ничего лишнего.</p>
-
-<h2 id="wireframes----">Wireframes - выбор инструмента</h2>
-
-<p>Что выбрать для работы - целиком зависит от предпочтений. Если в поисковой строке Google (Yandex) набрать <code>wireframes</code>, то результат превзойдет все ожидания - выбор просто огромен! На любой вкус и цвет - мощные программы для прототипирования (например, старейшая и известнейшая <a href="http://www.axure.com/" title="Axure">Axure</a>), популярный <a href="http://balsamiq.com/" title="Balsamiq">Balsamiq</a>, готовый PNG-набор под Photoshop под названием <a href="http://developer.yahoo.com/ypatterns/about/stencils/" title="Stencil Kit">Stencil Kit</a> от команды Yahoo. Этот список можно продолжать и продолжать.</p>
-
-<p><img src="/images/uploads/2014/03/axure_pr_prototype.jpg" alt="Axure PR - пример создания макета" /></p>
-
-<p><img src="/images/uploads/2014/03/balsamiq_mockup_web.jpg" alt="Официальный пример от Balsamiq" /></p>
-
-<p>Лично для меня интерес представляют программы класса <code>wireframes</code>, бесплатные online-версии с минималистичным интерфейсом и возможностями. Чтобы открыл ее, за пару минут разобрался, как работать и создавать. И только <code>wireframes</code>, ничего больше.</p>
-
-<p>Наверное, в этом плане можно упомянуть online-сервисы <a href="http://cacoo.com/" title="Cacoo">Cacoo</a> или <a href="http://www.mockflow.com/" title="MockFlow">MockFlow</a>. Очень нравиться Balsamiq, но он платный (хотя есть бесплатная online-demo версия - <a href="http://builds.balsamiq.com//b/mockups-web-demo/" title="Balsamiq Demo">Balsamiq Demo</a>).</p>
-
-<p><img src="/images/uploads/2014/03/cacoo.jpg" alt="Cacoo" /></p>
-
-<h2 id="section-1">Источники вдохновения</h2>
-
-<ul>
-  <li><a href="http://psd.fanextra.com/tutorials/wireframes/" title="Wireframes: A Beginner’s Guide">Wireframes: A Beginner’s Guide</a></li>
-  <li><a href="http://webdesign.tutsplus.com/articles/a-beginners-guide-to-wireframing--webdesign-7399" title="A Beginner's Guide to Wireframing">A Beginner’s Guide to Wireframing</a></li>
-</ul>
-
-<p>Вот такая получилась статья. На мой взгляд, не совсем информативная, наполовину - свои собственные мысли. Но может быть, кому и понадобиться, понравиться.</p>
 
 <p>На этом все.</p>
 

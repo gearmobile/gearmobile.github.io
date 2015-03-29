@@ -144,6 +144,246 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-13T00:00:00+04:00"><a href="/rem-%d0%bc%d0%b0%d1%81%d1%88%d1%82%d0%b0%d0%b1%d0%b8%d1%80%d1%83%d0%b5%d0%bc%d1%8b%d0%b5-%d0%b5%d0%b4%d0%b8%d0%bd%d0%b8%d1%86%d1%8b-%d0%b8%d0%b7%d0%bc%d0%b5%d1%80%d0%b5%d0%bd%d0%b8%d1%8f/">November 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/rem-%d0%bc%d0%b0%d1%81%d1%88%d1%82%d0%b0%d0%b1%d0%b8%d1%80%d1%83%d0%b5%d0%bc%d1%8b%d0%b5-%d0%b5%d0%b4%d0%b8%d0%bd%d0%b8%d1%86%d1%8b-%d0%b8%d0%b7%d0%bc%d0%b5%d1%80%d0%b5%d0%bd%d0%b8%d1%8f/" rel="bookmark" title="Rem &#8211; масштабируемые единицы измерения для текста в CSS" itemprop="url">Rem &#8211; масштабируемые единицы измерения для текста в CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p><em>Статья написана в далеком 2011 году одним товарищем по имени Jonathan Snook. Статейка мне понравилась и пришлась в пору – мне как раз нужно было ознакомиться с вопросом масштабируемого размера шрифта и возможности единообразного задания его размера для всего документа. Материальчик понравился и я решил, что я лучше не смогу его написать, чем как просто перевести. Вопрос хорошо освещен – кратко и по делу, с необходимыми примерами. Думаю, в следующих своих верстках я буду применять именно тот подход, который описан здесь. Ниже – мой вольный перевод статьи (http://snook.ca/s/997).</em></p>
+
+<h2 id="rem">Размер шрифта в rem</h2>
+
+<p>Определение единиц измерения текста всегда было темой горячих споров, даже в наши дни. К сожалению, на сегодняшний день все еще существуют многочисленные за и против для каждого из методов определения универсальной единицы измерения шрифта. Вопрос заключается в том, чтобы выбрать наиболее приемлемую из всех приемлемых.</p>
+
+<p>Наиболее популярны два метода определения размера шрифта:</p>
+
+<ul>
+  <li>размер шрифта в пикселях (px)</li>
+  <li>размер шрифта в em</li>
+</ul>
+
+<p>Давайте сделаем краткий обзор обоих методов, прежде чем я представлю еще один – волшебный третий способ.</p>
+
+<h3 id="px">Размер шрифта в px</h3>
+
+<p>С самого первого дня, когда зародился Интернет, мы (<em>веб-мастера</em>) использовали пиксели для задания размеров текста. Это надежный и понятный способ. К сожалению, пользователи Internet Explorer – даже IE9 – не имеют возможности изменять размер текста, используя для этого встроенную функцию браузера. Для веб-мастеров, которые озабочены такой возможностью, это большая проблема. Последние свежие версии браузера IE имеют встроенную функцию масштабирования, которая увеличивает размер ВСЕГО на странице – эта возможность присутствует во всех остальных браузерах, поддерживающих веб-стандарты. Это несколько сглаживает недостатки браузеров и данного метода, в частности.</p>
+
+<p>Исходя из своего личного опыта, могу сказать, что использование пикселей предоставляет для меня надежную структуру будущего сайта. Пользователи браузеров имеют достаточно средств, чтобы подстроить сайт под свои предпочтения. Но я отвлекся от темы. Что еще у нас есть в наличии?</p>
+
+<h3 id="em">Размер шрифта в em</h3>
+
+<p>Невозможность изменения размеров текста в браузере IE постоянно вызывало чувство разочарования у веб-разработчиков. Чтобы обойти эту проблему, можно использовать единицы измерения em. Впервые об этом способе написал в далеком 2004-м году Richard Rutter в своей статье “How to size text using ems” (http://clagnut.com/blog/348/).</p>
+
+<p>Этот способ основан на задании основного размера шрифта для body в процентах. В этом случае 1em равен 10px, вместо 16px по-умолчанию. Теперь, чтобы установить размер шрифта для элемента страницы в единицах, эквивалентных 14px, нужно установить его в 1.4em:</p>
+
+<pre>body { font-size: 62.5%; }
+      h1 { font-size: 2.4em; } /* =24px */
+      p  { font-size: 1.4em; } /* =14px */
+      li { font-size: 1.4em; } /* =14px? */
+    </pre>
+
+<p>Проблема с размерами шрифта в em заключается в том, что такая система достаточно сложна при применении ее на практике. В примере, приведенном выше, размер шрифта элемента li равен не 14px, а 20px. Если добавить еще один вложенный уровень, то размер шрифта будет 27px! Происходит это вследствие наследования свойств в CSS-таблицах. Чтобы избежать такого эффекта, нужно явно прописать для каждого дочернего элемента размер шрифта в 1em:</p>
+
+<pre>body { font-size:62.5%; }
+      h1 { font-size: 2.4em; } /* =24px */
+      p  { font-size: 1.4em; } /* =14px */
+      li { font-size: 1.4em; } /* =14px? */
+      li li, li p /* etc */ { font-size: 1em; }
+    </pre>
+
+<p>Проблема наследования при системе задания размеров шрифта в em достаточно неудобна. Что же можно еще предложить для решения проблемы?</p>
+
+<h3 id="rem-1">Размер шрифта в rem</h3>
+
+<p>Стандарт CSS3 вводит в обиход несколько новых единиц измерения, одной из которых является rem, что является сокращением от “root em”. Давайте немного разберемся, что из себя представляет эта единица измерения.</p>
+
+<p>Единица измерения em является относительной к размеру шрифта элемента родителя, что приводит к эффекту наследования. Единица измерения rem является относительной к основному корневому элементу, то есть к html. Это означает, что можно установить размер шрифта только один раз, для элемента html. Для всех остальных элементов, которые являются потомками этого элемента, достаточно установить размер шрифта в процентах (rem) относительно корневого элемента.</p>
+
+<pre>html { font-size: 62.5%; } 
+      body { font-size: 1.4rem; } /* =14px */
+      h1   { font-size: 2.4rem; } /* =24px */
+    </pre>
+
+<p>В примере, показанном выше, базовый размер шрифта установлен в процентах 62,5%, что очень похоже, как мы поступали с единицами em. Другими словами, единица измерения rem лишена недостатков em с ее каскадностью и наследованием правил.</p>
+
+<p>Но как насчет скудной поддержки этой единицы измерения в браузерах?</p>
+
+<p>Вы будете сильно удивлены, но поддержка rem в браузерах достойная: Safari 5, Chrome, Firefox 3.6+ и даже Internet Explorer 9. Хорошая новость заключается в том, что в IE9 поддерживается изменение размера текста, установленного в единицах измерения rem. Увы, бедная Opera (вплоть до версии 11.10, по крайней мере), не имеет поддержки единиц измерения rem.</p>
+
+<p>Как же нам поступить с браузерами, которые не поддерживают единицы измерения rem? Для них мы можем выполнить откат (fall-back) в виде пикселей (px). То есть, мы одновременно будем задавать размер шрифта в px и в rem:</p>
+
+<pre>html { font-size: 62.5%; } 
+      body { font-size: 14px; font-size: 1.4rem; } /* =14px */
+      h1   { font-size: 24px; font-size: 2.4rem; } /* =24px */
+    </pre>
+
+<p>И пожалуйста, теперь мы имеем прочную и предсказуемую структуру во всех браузерах.</p>
+
+<p>Декабрь 13 2011 – Opera 11.60 теперь поддерживает единицы измерения rem.</p>
+
+<p><em>Конец статьи и перевода. В дополнение я могу сказать, что на сайте CSS Tricks также есть интересный материал по поводу rem. В частности, на нем приведены удобные mixin’ы для SASS, с помощью которых можно быстро задать размер шрифта в rem (с fall-back в px):</em></p>
+
+<pre>html{
+        font-size: 62,5%;
+      }
+
+      @mixin font-size($sizeValue: 1.6) {
+        font-size: ($sizeValue * 10) + px;
+        font-size: $sizeValue + rem;
+      }
+    </pre>
+
+<p>Пример использования этого SASS-mixin’а:</p>
+
+<pre>p{
+        @include font-size(1.8);
+      }
+    </pre>
+
+<p>… что при компиляции в CSS будет выглядеть следующим образом:</p>
+
+<pre>p{
+        font-size: 18px;
+        font-size: 1.8rem;
+      }
+    </pre>
+
+<p>И еще несколько разновидностей SASS-mixin’ов, которые могут пригодиться. Подмешивания используются для задания размера шрифта и интерлиньяжа (высоты строки):</p>
+
+<pre>@mixin fontSize($sizeValue: 12 ){
+        font-size: $sizeValue + px; //fallback for old browsers
+        font-size: (0.125 * $sizeValue) + rem;
+      }
+
+      /* Как подключать
+      --------------------*/
+      p{
+        @mixin fontSize(20);
+      }
+
+      /* Результат компиляции в CSS
+      -------------------------------*/
+      p{
+        font-size: 20px;
+        font-size: 2.5rem;
+      }
+    </pre>
+
+<pre>@mixin lineHeight($heightValue: 12 ){
+        line-height: $heightValue + px; //fallback for old browsers
+        line-height: (0.125 * $heightValue) + rem;
+      }
+
+      /* Как подключить
+      -------------------*/
+      p{
+        @mixin lineHeight(18);
+      }
+
+      /* Результат компиляции в CSS
+      --------------------------------*/
+      p{
+        line-height: 18px;
+        line-height: 2.25rem;
+      }
+    </pre>
+
+<p>А здесь представлен “полный” mixin, с помощью которого можно одновременно задать кегль и line-height. Удобная штучка – можно задать только размер шрифта и получить на выходе интерлиньяж и кегль в пикселях (и rem’ах):</p>
+
+<pre>@mixin fontsize($size:1.6, $line: $size * 1.5){
+        font-size:   ($size * 10) + px;
+        line-height: ($line * 10) + px;
+        font-size:   $size + rem;
+        line-height: $line + rem;
+      }
+
+      /* Как подключить
+      -------------------*/
+      p{
+        @mixin fontsize(1.8);
+      }
+
+      /* Результат компиляции в CSS
+      -------------------------------*/
+      p{
+        font-size: 18px;
+        line-height: 27px;
+        font-size: 1.8rem;
+        line-height: 2.7rem;
+      }
+    </pre>
+
+<h3 id="ps">P.S.</h3>
+
+<p>Постепенно изучаю вопрос создания тем под WordPress. Скачал версию 3.7.1, установил под локальный сервер XAMPP и открыл файл <code>style.css</code> стандартной темы Twenty Twelve. И в заголовке этого файла сразу же наткнулся на следующие интересные строки:</p>
+
+<pre>/* =Notes
+--------------------------------------------------------------
+This stylesheet uses rem values with a pixel fallback. The rem
+values (and line heights) are calculated using two variables:
+
+$rembase:     14;
+$line-height: 24;
+
+---------- Examples
+
+* Use a pixel value with a rem fallback for font-size, padding, margins, etc.
+	padding: 5px 0;
+	padding: 0.357142857rem 0; (5 / $rembase)
+
+* Set a font-size and then set a line-height based on the font-size
+	font-size: 16px
+	font-size: 1.142857143rem; (16 / $rembase)
+	line-height: 1.5; ($line-height / 16)
+
+---------- Vertical spacing
+
+Vertical spacing between most elements should use 24px or 48px
+to maintain vertical rhythm:
+
+.my-new-div {
+	margin: 24px 0;
+	margin: 1.714285714rem 0; ( 24 / $rembase )
+}
+
+---------- Further reading
+
+http://snook.ca/archives/html_and_css/font-size-with-rem
+
+
+http://blog.typekit.com/2011/11/09/type-study-sizing-the-legible-letter/
+
+</pre>
+
+<p>То есть, что нам сообщают разработчики WordPress в этих строках? Что данный файл стилевых правил использует для построения дизайна сайта два значения в качестве переменных:</p>
+
+<pre>$rembase:     14;
+$line-height: 24;
+</pre>
+
+<p>… в единицах измерения rem с откатом (fallback) в пиксели (px). И далее приводятся примеры того, как применяются обе эти переменные для построения стилевых правил и как производится вычисление нужных величин, являющихся производными от этих переменных.</p>
+
+<p>В самом конце две ссылки по тематике <code>rem</code> для любознательных, первой из которых является вольный перевод, который вы читаете! Значит, я на правильном пути. ))</p>
+
+<p>На этом все. Оцените статью:<br />
+<span id="post-ratings-458" class="post-ratings" data-nonce="27efdcc5c2"><img id="rating_458_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(458, 1, '1 Star');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_458_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(458, 2, '2 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_458_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(458, 3, '3 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_458_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(458, 4, '4 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_458_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(458, 5, '5 Stars');" onmouseout="ratings_off(4.7, 5, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>45</strong> votes, average: <strong>4,71</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_458_text"></span></span><span id="post-ratings-458-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-11-12T00:00:00+04:00"><a href="/%d1%88%d1%80%d0%b8%d1%84%d1%82%d0%be%d0%b2%d1%8b%d0%b5-%d0%b8%d0%ba%d0%be%d0%bd%d0%ba%d0%b8-%d0%b8-%d1%81%d0%b5%d1%80%d0%b2%d0%b8%d1%81-icomoon/">November 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -734,135 +974,6 @@
 
 <p>Оцените статью:<br />
 <span id="post-ratings-151" class="post-ratings" data-nonce="9bbf63919b"><img id="rating_151_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(151, 1, '1 Star');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_151_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(151, 2, '2 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_151_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(151, 3, '3 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_151_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(151, 4, '4 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_151_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(151, 5, '5 Stars');" onmouseout="ratings_off(0, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (No Ratings Yet)<br /><span class="post-ratings-text" id="ratings_151_text"></span></span><span id="post-ratings-151-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-03T00:00:00+04:00"><a href="/boilerplate-%d0%b8%d0%bb%d0%b8-bootstrap-%d1%87%d1%82%d0%be-%d0%b2%d1%8b%d0%b1%d1%80%d0%b0%d1%82%d1%8c-%d0%bf%d1%80%d0%b8-%d1%81%d0%be%d0%b7%d0%b4%d0%b0%d0%bd%d0%b8%d0%b8-%d0%bf%d1%80%d0%be%d0%b5/">November 03, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/boilerplate-%d0%b8%d0%bb%d0%b8-bootstrap-%d1%87%d1%82%d0%be-%d0%b2%d1%8b%d0%b1%d1%80%d0%b0%d1%82%d1%8c-%d0%bf%d1%80%d0%b8-%d1%81%d0%be%d0%b7%d0%b4%d0%b0%d0%bd%d0%b8%d0%b8-%d0%bf%d1%80%d0%be%d0%b5/" rel="bookmark" title="Boilerplate или Bootstrap &#8211; что выбрать при создании проекта" itemprop="url">Boilerplate или Bootstrap &#8211; что выбрать при создании проекта</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p><em>Для меня, как новичка в изучении фреймворков данная тема интересна. В этой статье приводится краткое сравнение двух популярных продуктов – Boilerplate и Bootstrap. Далее – вольный перевод статьи, написанной автором Ivaylo Gerchev для известного среди веб-дизайнеров сайта SitePoint.com.</em></p>
-
-<p>Создание каждого нового проекта подразумевает под собой некоторую часть рутинной, повторяющейся работы. Это связано с тем, что большинство создаваемых проектов с начальной точки имеют в своей основе определенный набор стандартного кода и принципов его построения. Все мы знаем, что изобретение велосипеда каждый раз – это не только бесполезная, но и утомительная работа. Однако существуют инструменты, способные решить эту проблему.</p>
-
-<p>Boilerplate и Bootstrap – оба являются очень полезными инструментами для создания проектов. Но вопрос заключается в том: какой из них выбрать и какой лучше подойдет для меня и моего проекта? Вы не первый, кто задается таким вопросом (<em>если вообще задаетесь ))</em> ). Именно для цели прояснить ситуацию и принять правильное решение и была написана данная статья.</p>
-
-<p>Самый очевидный вопрос из всех – какой продукт лучше всего использовать? Ответ на него является слишком общим и расплывчатым, поэтому нам потребуется более детальное сравнение и объяснение каждого из них. В действительности, решений на данный вопрос не два, а четыре: можно использовать Boilerplate, можно использовать Bootstrap, можно использовать оба этих продукта совместно или не использовать никакой из них. Для того, чтобы решить, какой этих пунктов является лучшим, позвольте мне погрузиться в детали и рассказать о преимуществах и недостатках каждого из двух претендентов.</p>
-
-<h3 id="boilerplate">Использование Boilerplate</h3>
-
-<p>Boilerplate является шаблоном для быстрого старта при разработке fron-end’а, который содержит в себе наилучшие готовые образцы, взятые из практики веб-разработки. Данный шаблон предлагает готовую общую структуру папок и файлов будущего проекта, готовый HTML5-шаблон и основные конфигурации для взаимодействия с сервером. Он похож на план постройки для вашего дома, но у него отсутствуют строительные блоки. Другими словами, у вас есть общее представление, как построить дом и вы сделали все необходимые предварительные шаги для его постройки, но у вас нет под рукой необходимых строительных материалов, чтобы приступить к строительству. Но вы вольны добавить в Boilerplate любые “отсутствующие” HTML/CSS/Javascript-компоненты из любого места, включая и Bootstrap.</p>
-
-<p>На первый взгляд Boilerplate может показаться достаточно простым шаблоном. Но на самом деле он готов предоставить вам множество преимуществ, которые не заметны изначально. Давайте рассмотрим некоторые из них:</p>
-
-<ul>
-  <li>Готовый HTML5-шаблон совместно с базовой структурой файлов и папок под будущий проект;</li>
-  <li>Готовые к использованию, оптимизированные стили печати;</li>
-  <li>Кросс-браузерная совместимость;</li>
-  <li>Оптимизация под мобильные браузеры;</li>
-  <li>Прогрессивное улучшение (progressive enhancement) и постепенная деградация (graceful degradation);</li>
-  <li>Улучшенная конфигурация взаимодействия с сервером;</li>
-  <li>Правила для сжатия и оптимального кеширования;</li>
-  <li>Оптимизированный под Google Analytics сниппет сайта;</li>
-  <li>и многое другое …</li>
-</ul>
-
-<p>Вы получаете все эти прекрасные вещи сразу, не написав ни единой строчки кода. Ниже представлено содержимое распакованного архива Boilerplate:</p>
-
-<ul>
-  <li>css – директория, в которой содержатся файлы normalize.css, main.css с настройками Boilerplate по умолчанию, основные helpers, медиа-запросы и стили печати;</li>
-  <li>doc – директория с документацией по Boilerplate. Вы можете использовать эту директорию, чтобы хранить в ней документацию по своему собственному проекту;</li>
-  <li>img – пустая директория под изображения вашего будущего проекта;</li>
-  <li>js – директория, содержащая файл main.js для вашего собственного кода и файл plugin.js, содержащий код под плагины. Также здесь располагаются библиотеки Modernizr и jQuery, каждая в своей отдельной папке;</li>
-  <li>Настройки по умолчанию для сервера Apache. Для остальных серверов существует репозиторий настроек Server Configs (https://github.com/h5bp/server-configs);</li>
-  <li>404.html – очень обобщенный шаблон страницы ошибки 404;</li>
-  <li>apple touch icons – набор готовых иконок для Apple TouchScreen;</li>
-  <li>crossdomain.xml – шаблон для работы с кросс-доменными запросами</li>
-  <li>favicon.ico – файл фавикона;</li>
-  <li>humans.txt – файл со списков разработчиков проекта (вашего проекта);</li>
-  <li>index.html – готовый HTML5-шаблон, основа для всех страниц вашего проекта;</li>
-  <li>robots.txt – файл для включения в список всех страниц, которые вы хотите исключить поиска.<figure id="attachment_147" style="width: 600px;" class="wp-caption aligncenter"></figure></li>
-</ul>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/boilerplate-project.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/boilerplate-project-600x434.jpg" alt="Каталог Boilerplate-проекта" width="600" height="434" class="size-medium wp-image-147" /></a>&lt;figcaption class="wp-caption-text"&gt;Каталог Boilerplate-проекта&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>С этого момента вы можете приступать к созданию своего собственного сайта, просто добавляя код и компоненты, которые необходимо использовать.</p>
-
-<h3 id="bootstrap">Использование Bootstrap</h3>
-
-<p>Bootstrap является фреймворком для front-end разработки и набором инструментов веб-дизайнера для создания современных web-сайтов. С помощью фреймворка Bootstrap вы можете создать полностью функциональный web-сайт с нуля. То есть, он предоставляет вам не только стартовую точку, но и все строительные материалы, которые могут потребоваться при создании сайта. Скачиваемый архив Bootstrap содержит в себе только файлы для CSS и JS компонентов, плюс набор шрифтовых иконок. В дополнение к этому, вы можете скачать основной шаблон для начала создания сайта. Структуры файлов и папок для будущего проекта или конфигураций для взаимодействия с серверной частью сайта – не существует.</p>
-
-<p>Преимущества и основные характеристики:</p>
-
-<ul>
-  <li>Ориентированность в первую очередь на мобильные устройства;</li>
-  <li>Кросс-браузерная совместимость;</li>
-  <li>Легкость использования;</li>
-  <li>Система CSS-сетки;</li>
-  <li>Готовые к использованию компоненты и утилиты;</li>
-  <li>и многое другое …</li>
-</ul>
-
-<p>Список компонентов и утилит фреймворка Bootstrap представлен ниже:</p>
-
-<ul>
-  <li>Grid – утилита для создания разметки дизайна сайта;</li>
-  <li>Icons – набор иконок, отсортированных по размерам;</li>
-  <li>CSS classes – набор основных классов стилей для разработки сайта;</li>
-  <li>CSS components – стилизованные HTML-компоненты;</li>
-  <li>JS widgets – замечательный набор интерактивных компонентов на Javascript;</li>
-  <li>Шаблоны и примеры для начала работы.<figure id="attachment_148" style="width: 600px;" class="wp-caption aligncenter"></figure></li>
-</ul>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/bootstrap-project.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/bootstrap-project-600x434.jpg" alt="Каталог Bootstrap-проекта" width="600" height="434" class="size-medium wp-image-148" /></a>&lt;figcaption class="wp-caption-text"&gt;Каталог Bootstrap-проекта&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Как видите, фреймворк Bootstrap предоставляет полный набор компонентов, с помощью которых вы можете начать создание собственного сайта.</p>
-
-<h3 id="boilerplate--bootstrap">Использование Boilerplate плюс Bootstrap</h3>
-
-<p>Как насчет совместного использования обоих продуктов? Нет проблем! Это легко настроить с помощью проекта Initializr (http://www.initializr.com/), который автоматически интегрирует Boilerplate и Bootstrap друг с другом. Используя Initializr, можно создать настраиваемый архив, содержащий в себе все “вкусности” обоих пакетов. Вы можете воспользоваться данным ресурсом, если вам для работы необходимы лучшие части обоих миров.</p>
-
-<h3 id="boilerplate-1">Использование вашего собственного решения на базе Boilerplate</h3>
-
-<p>Некоторые разработчики не любят пользоваться таким продуктами, как Boilerplate или Bootstrap. Их самым главным аргументом в этом вопросе является тот факт, что подобные инструменты содержат в себе слишком много неиспользуемого в проекте кода (<em>грубо говоря – в Bootstrap имеется 100 CSS-классов, но в текущем проекте используется только 20 из них. Остальные получаются бесплезным балластом, который только нагружает каналы связи с сервером и сам браузер</em>). Если вы думаете точно также, то вы должны знать, что вы не ограничены рамками чьих-то сторонних разработок. Вы можете легко собрать для себя лучшие разработки в один собственный фреймворк. Такой способ поможет создать вам коллекцию только тех компонентов, которые вам необходимы.</p>
-
-<h3 id="section">Вердикт</h3>
-
-<p>Правильный выбор между этими продуктами зависит от двух вещей. Первое – вы должны знать, что вам необходимо для создания проекта и какие требования предъявляет сам проект. И второе – вы должны знать, что может предложить вам каждый из этих программных продуктов (Boilerplate &amp; Bootstrap), их достоинства и недостатки. Понятно, что с первым вопросом я не смогу помочь вам, а вот по второму вопросу могу дать краткий совет, состоящий из нескольких пунктов:</p>
-
-<ul>
-  <li>с помощью Boilerplate вы <em>не сможете создать цельный сайт</em> – это только отправная точка;</li>
-  <li>с помощью Bootstrap <em>можно создать с нуля полный сайт</em> благодаря компонентам и утилитам этого фреймворка;</li>
-  <li>Boilerplate является <em>серверно-ориентированным продуктом</em> – хороший шаблон для старта проекта, если вы работаете с серверными технологиями, как например PHP;</li>
-  <li>Bootstrap – <em>клиент-ориентированный продукт</em>, это полный набор инструментов для создания сайтов (front-end разработка);</li>
-  <li>Boilerplate – это <em>набор основного кода</em>, в который вы можете добавить любой компонент, который необходим;</li>
-  <li>Bootstrap – наоборот, это <em>полный набор готовых к использованию компонентов</em>, которые вы можете использовать “из коробки”;</li>
-  <li>Вы можете объединить вместе Boilerplate и Bootstrap, чтобы получить преимущества обоих продуктов;</li>
-  <li>Вы можете создать и использовать свой собственный настроенный шаблон, включающий только те компоненты, которые вам необходимы.</li>
-</ul>
-
-<p>Моим заключительным словом будет следующее. Оба продукта – и Boilerplate и Bootstrap являются прекрасными инструментами, которые вы можете использовать для своей работы. Все зависит о того, какие задачи перед вами стоят – тот инструмент вам и требуется выбрать для решения задачи.</p>
-
-<p><em>На этом перевод закончен, ибо закончена сама статья… ))</em></p>
-
-<p>Оцените статью:<br />
-<span id="post-ratings-144" class="post-ratings" data-nonce="eecc1c7ec0"><img id="rating_144_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(144, 1, '1 Star');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_144_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(144, 2, '2 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_144_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(144, 3, '3 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_144_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_half.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(144, 4, '4 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_144_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(144, 5, '5 Stars');" onmouseout="ratings_off(3.8, 4, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>10</strong> votes, average: <strong>3,80</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_144_text"></span></span><span id="post-ratings-144-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
 
 
   </div><!-- /.entry-content -->

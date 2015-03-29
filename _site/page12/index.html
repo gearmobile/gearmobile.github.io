@@ -144,6 +144,79 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-15T00:00:00+04:00"><a href="/%d0%ba%d1%80%d0%be%d1%81%d1%81-%d0%b1%d1%80%d0%b0%d1%83%d0%b7%d0%b5%d1%80%d0%bd%d1%8b%d0%b9-placeholder/">July 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/%d0%ba%d1%80%d0%be%d1%81%d1%81-%d0%b1%d1%80%d0%b0%d1%83%d0%b7%d0%b5%d1%80%d0%bd%d1%8b%d0%b9-placeholder/" rel="bookmark" title="Кросс-браузерный placeholder" itemprop="url">Кросс-браузерный placeholder</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Короткая статья, посвященная вопросу кросс-браузерности такого HTML5-атрибута для формы, как <code>placeholder</code>. Недавно столкнулся в подобным вопросом, решение не смог найти. Однако, в книге “Недостающее руководство по HTML5″ случайно столкнулся с подробным описанием решения этой маленькой проблемы. Проблема и вправду маленькая – вопрос поддержки или не поддержки браузерами данного атрибута на сегодняшний день – это мелочь. Ну правда, разве пострадает функциональность верстаемого сайта от того, что в поле поиска не будет отображаться подстановочный текст? Конечно, нет!</p>
+
+<p>Еще один момент – говоря о кросс-браузерной поддержке атрибута <code>placeholder</code>, почти всегда подразумевается на самом деле поддержка этого атрибута только одним браузером. Конечно, это многострадальный Internet Explorer версии 7 или 8. О версии Internet Explorer 6 можно уже забыть. Остальные браузеры нормально справляются со своей задачей и понимают, что такое <code>placeholder</code>.</p>
+
+<p>Автор статьи обладает некоторой долей перфекционизма – для него и такая мелочь является принципиальной мелочью, камнем преткновения. И вот, этот камень можно отодвинуть в сторону.</p>
+
+<h3 id="html5">Кросс-браузерные заплатки для HTML5</h3>
+
+<p>Начну с того, что решение вопроса кросс-браузерного <code>placeholder</code> было <strong>создано уже давно</strong>. Это для меня данный факт был открытием! Более того, существует большое количество способов, решающих данную проблему. Все они <strong>собраны воедино по одному адресу на GitHub</strong> – <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills" title="HTML5 Cross Browser Polyfills ">HTML5 Cross Browser Polyfills </a>. Вся эта коллекция называется “Кросс-браузерные заплатки для HTML5″, но в нашем случае нужен только один раздел этой коллекции – <a href="https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-browser-Polyfills#web-forms--input-placeholder" title="Web Forms : input placeholder">Web Forms : input placeholder</a>.</p>
+
+<p>Ого – там не одно решение, а <strong>целых одиннадцать</strong>! Причем, все они реализованы на JavaScript, поэтому и кросс-браузерные. Выбирать можно любой, какой понравиться – принцип работы и способ подключения к HTML-странице у них всех почти одинаков. Я возьму для себя способ <a href="https://github.com/serby/jquery.placeholder.js" title="jquery.placeholder.js">jquery.placeholder.js</a>, просто потому, что название понравилось.</p>
+
+<p>Плагин <code>jquery.placeholder.js</code> может реализовать поддержку атрибута <code>placeholder</code> как в Internet Explorer 7 или 8, так и в Internet Explorer 6. Ну, Internet Explorer 6 – это уже слишком! На момент написания статьи многие верстальщики (конечно, не все) имеют тенденцию “забывать” о существовании даже Internet Explorer 8.</p>
+
+<h3 id="jqueryplaceholderjs">Подключение плагина jquery.placeholder.js</h3>
+
+<p>Подключение плагина <code>jquery.placeholder.js</code> абсолютно стандартное для такого рода скриптов. Ниже привожу пример такого подключения в HTML-коде:</p>
+
+<pre><!--  SCRIPTS  -->
+  
+  
+  ...
+  </pre>
+
+<p>Затем идет скрипт инициализации для данного плагина. Общая картина будет выглядеть таким образом:</p>
+
+<pre><!--  SCRIPTS  -->
+  
+  
+  
+  </pre>
+
+<p>Плагин <code>jquery.placeholder.js</code> делает в HTML-документе выборку по двум HTML-элементам – <code>input</code> и <code>textarea</code>. А затем применяет к ним метод <code>placeholder()</code> – все просто.</p>
+
+<h3 id="html---placeholder">HTML-форма с placeholder</h3>
+
+<p>Ниже привожу пример HTML5-формы, в которой применен атрибут <code>placeholder</code> в полях ввода, реализованных через элемент <code>input</code>. А также в элементе <code>textarea</code>.</p>
+
+<pre></pre>
+
+<h3 id="placeholder--ie8">Проверка поддержки placeholder в IE8</h3>
+
+<p>JS-скрипты подключены и создана HTML-разметка. Для тестирования работы плагина <code>jquery.placeholder.js</code> воспользуюсь браузером, в котором <strong>заведомо не реализована поддержка</strong> атрибута <code>placeholder</code> – это Internet Explorer 8. Открываю созданную HTML-страничку в этом браузере (связка Windows XP + IE8) и вижу результат:<figure id="attachment_1503" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+
+<p><a href="http://localhost:7788/third/wp-content/uploads/2014/07/placeholder.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/07/placeholder-600x433.jpg" alt="Placeholder в Internet Explorer 8" width="600" height="433" class="size-medium wp-image-1503" /></a>&lt;figcaption class="wp-caption-text"&gt;Placeholder в Internet Explorer 8&lt;/figcaption&gt;&lt;/figure&gt; </p>
+
+<p>Галочками отмечены поля, в которых сработал плагин <code>jquery.placeholder.js</code> – если бы не он, там было бы пусто. Отлично – плагин работает и его можно применять в деле, на готовом проекте!</p>
+
+<p>Оцените статью:<br />
+<span id="post-ratings-1501" class="post-ratings" data-nonce="afce56b63a"><img id="rating_1501_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1501, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1501_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1501, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1501_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1501, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1501_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1501, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1501_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1501, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>2</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1501_text"></span></span><span id="post-ratings-1501-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-07-11T00:00:00+04:00"><a href="/bourbon-%d0%ba%d1%80%d0%b0%d1%82%d0%ba%d0%be%d0%b5-%d0%b7%d0%bd%d0%b0%d0%ba%d0%be%d0%bc%d1%81%d1%82%d0%b2%d0%be/">July 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1494,95 +1567,6 @@
 
 <p>Оцените статью:<br />
 <span id="post-ratings-1450" class="post-ratings" data-nonce="d757691b91"><img id="rating_1450_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1450, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1450_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1450, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1450_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1450, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1450_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1450, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1450_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1450, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>4</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1450_text"></span></span><span id="post-ratings-1450-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-03T00:00:00+04:00"><a href="/jquery-mask-plugin/">July 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/jquery-mask-plugin/" rel="bookmark" title="Плагин jQuery Mask Plugin" itemprop="url">Плагин jQuery Mask Plugin</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Краткий обзор плагина jQuery Mask Plugin, упоминание о котором я нашел на Google+. Этот плагин понравился мне простотой установки и настройки. Работа плагина jQuery Mask Plugin заключается в том, чтобы форматировать вводимые пользователем в полях данных и приводить их к виду, заданному соответствующей маской в коде. Помимо этого, плагин jQuery Mask Plugin производит фильтрацию данных и не позволяет пользователю вводить недопустимое количество данных и данных другого формата.</p>
-
-<p>В общем, весьма полезный и удобный плагин, который можно положить в копилку веб-разработчика “на всякий случай”. Наверняка такой может пригодиться при случае. Поэтому приступаю к установке и настройке плагина jQuery Mask Plugin.</p>
-
-<h3 id="jquery-mask-plugin">Подключение jQuery Mask Plugin</h3>
-
-<p>Плагин jQuery Mask Plugin “живет” по этому адресу – <a href="http://igorescobar.github.io/jQuery-Mask-Plugin/" title="jQuery Mask Plugin">jQuery Mask Plugin</a>, где дано подробное описание работы этого скрипта. На этой странице дано краткое описание установки и настройки плагина “от автора” Igor Escobar – <a href="http://www.igorescobar.com/blog/2012/05/06/masks-with-jquery-mask-plugin/" title="Masks With Jquery Mask Plugin">Masks With Jquery Mask Plugin</a>.</p>
-
-<p>Подключение скрипта в рабочем проекте производится стандартно для всех плагинов, созданных под библиотеку jQuery. Сначала производится подключение самой библиотеки jQuery, а затем скрипта jQuery Mask Plugin:</p>
-
-<pre></pre>
-
-<p>Плагин совместим со всеми версиями библиотеки jQuery. Более того, в архиве с исходниками находятся тестовые HTML-странички, с помощью которых можно проверить все возможности работы скрипта под конкретную библиотеку jQuery, конкретный браузер и конкретную ОС:<figure id="attachment_1434" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/07/jquerymask_test.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/07/jquerymask_test-600x450.jpg" alt="Тестовые страницы для плагина jQuery Mask Plugin" width="600" height="450" class="size-medium wp-image-1434" /></a>&lt;figcaption class="wp-caption-text"&gt;Тестовые страницы для плагина jQuery Mask Plugin&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<h3 id="jquery-mask-plugin-1">Создание разметки под jQuery Mask Plugin</h3>
-
-<p>Для примера работы с плагином jQuery Mask Plugin создаю тестовую разметку с несколькими полями ввода:</p>
-
-<pre><div class="wrapper">
-  <h1>
-    jQuery Mask Plugin
-  </h1>
-  
-      
-  
-    
-</div>
-  </pre>
-
-<p>Как видно из примера выше, каждое поле предназначено для ввода определенной информации пользователем, будь то дата, время, проценты, номер телефона или денежная сумма. В принципе, больше ничего сказать по поводу HTML нечего. Самое интересное будет в настройке скрипта.</p>
-
-<p>Расширенный пример с возможными вариантами масок можно посмотреть на странице примера – <a href="http://igorescobar.github.io/jQuery-Mask-Plugin/" title="Basic Usage Examples">Basic Usage Examples</a>. На ней также показаны примеры расширенной настройки плагина jQuery Mask Plugin.</p>
-
-<h3 id="jquery-mask-plugin-2">Инициализация плагина jQuery Mask Plugin</h3>
-
-<p>Создаю еще один js-файл, в котором будет производиться инициализация скрипта и заданы маски для каждого из полей ввода. Файл будет иметь произвольное имя <code>masks.js</code> и в нем будет такое содержимое:</p>
-
-<pre>$(document).ready(function(){
-    $('.date').mask('00/00/0000');
-    $('.time').mask('00:00:00');
-    $('.percent').mask('##0,00%');
-    $('.money').mask('000.000.000.000.000,00');
-    $('.phone').mask('0(000)-000-00-00');
-  });
-  </pre>
-
-<p>Видно, что из DOM-модели производится выборка элементов с указанными классами, к которым применяется функция <code>mask</code> с указанием в каждом конкретном случае маски. Ничего сложного в представленных масках нет, достаточно внимательно их изучить.</p>
-
-<p>Открываю в браузере созданный мною HTML-файл и вижу форму с полями ввода:<figure id="attachment_1436" style="width: 589px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/07/jquerymask.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/07/jquerymask-589x600.jpg" alt="Форма ввода с плагином jQuery Mask Plugin" width="589" height="600" class="size-medium wp-image-1436" /></a>&lt;figcaption class="wp-caption-text"&gt;Форма ввода с плагином jQuery Mask Plugin&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<h3 id="jquery-mask-plugin-3">Тестирование плагина jQuery Mask Plugin</h3>
-
-<p>Давайте попробуем ввести в созданные на примере поля данные. При вводе в каждом из полей хорошо видно, как данные приводятся именно к тому виду, который задан маской в js-коде. Более того, плагин не позволит ввести данные другого формата, то есть будет производиться фильтрация данных:<figure id="attachment_1437" style="width: 589px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/07/jquerymask_result.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2014/07/jquerymask_result-589x600.jpg" alt="Результат работы плагина jQuery Mask Plugin" width="589" height="600" class="size-medium wp-image-1437" /></a>&lt;figcaption class="wp-caption-text"&gt;Результат работы плагина jQuery Mask Plugin&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>В поле ввода номера телефона маска создана мною произвольно, буквально на лету. Этот факт говорит о том, что создание масок в плагине jQuery Mask Plugin – дело очень простое и легкое.</p>
-
-<p>На этом обзор плагина jQuery Mask Plugin можно завершить.</p>
-
-<p>Оцените статью:<br />
-<span id="post-ratings-1431" class="post-ratings" data-nonce="e52468e6b9"><img id="rating_1431_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1431, 1, '1 Star');" onmouseout="ratings_off(4.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1431_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1431, 2, '2 Stars');" onmouseout="ratings_off(4.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1431_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1431, 3, '3 Stars');" onmouseout="ratings_off(4.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1431_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1431, 4, '4 Stars');" onmouseout="ratings_off(4.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1431_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1431, 5, '5 Stars');" onmouseout="ratings_off(4.1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>14</strong> votes, average: <strong>4,07</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1431_text"></span></span><span id="post-ratings-1431-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
 
 
   </div><!-- /.entry-content -->
