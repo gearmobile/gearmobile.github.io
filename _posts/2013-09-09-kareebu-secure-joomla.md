@@ -1,11 +1,14 @@
 ---
-layout: post
 title: "Плагин Kareebu Secure - защищаем Joomla от злонамеренного доступа"
-author: gearmobile
+layout: post
+categories: joomla
 tags: [kareebu secure, joomla]
+share: true
 ---
 
-Узнать, на каком CMS работает тот или иной сайт можно различными способами. Это делается в автоматическом режиме с помощью плагинов или сервисов. Или в ручном режиме, просмотром исходного кода страницы. Помимо этого, существуют еще определенное количество уловок, специфичных для каждой CMS в отдельности.
+> Узнать, на каком CMS работает тот или иной сайт можно различными способами. Это делается в автоматическом режиме с помощью плагинов или сервисов.
+
+Или в ручном режиме, просмотром исходного кода страницы. Помимо этого, существуют еще определенное количество уловок, специфичных для каждой CMS в отдельности.
 
 Чем грозит для владельца сайта утечка такой информации? Потенциальный злоумышленник, зная движок, на котором работает данный сайт, также в курсе обо всех уязвимых местах CMS, на которой он работает. Это позволит ему предпринять попытки взломать сайт со всеми вытекающими последствиями для его владельца.
 
@@ -17,17 +20,11 @@ tags: [kareebu secure, joomla]
 
 Установка плагина kareebu Secure выполняется стандартным способом, через менеджер расширений Joomla. После успешной установки необходимо перейти в раздел Менеджер плагинов и включить "kareebu Secure'. Выполняется это в поле "Состояние". На изображении приведено изначальное состояние плагина, когда он еще не включен:
 
-<figure id="attachment_363" style="width: 600px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/kareebu-Secure-plugin-600x242.png" alt="Плагин kareebu-Secure" width="600" height="242" class="size-medium wp-image-363" />][1]
-	<figcaption class="wp-caption-text">Плагин kareebu-Secure</figcaption>
-</figure>
+![Плагин kareebu-Secure]({{site.url}}/images/uploads/2013/11/kareebu-Secure-plugin.png)
 
 Затем переходим к настройкам kareebu Secure. Они очень просты, запутаться тут невозможно:
 
-<figure id="attachment_364" style="width: 494px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/kareebu-Secure-settings.png" alt="Настройки плагина kareebu Secure" width="494" height="172" class="size-full wp-image-364" />][2]
-	<figcaption class="wp-caption-text">Настройки плагина kareebu Secure</figcaption>
-</figure>
+![Настройки плагина kareebu Secure]({{site.url}}/images/uploads/2013/11/kareebu-Secure-settings.png)
 
 Первое поле "Enable" включает или выключает настройки плагина. Понятно, что если настройки введены, но отключены, то плагин работать не будет.
 
@@ -36,7 +33,7 @@ tags: [kareebu secure, joomla]
 Третье поле "Mode" позволяет выбрать два режима авторизации на сайте с помощью плагина kareebu Secure. Первый (устаревший) режим "HTTP Authentication" работает следующим образом. В адресной строке браузера для входа в административную панель Joomla вводится:
 
 {% highlight html %}
-	http://localhost:7788/third/administartor?password
+http://localhost:7788/third/administartor?password
 {% endhighlight %}
 
 где `password` - это тот самый пароль, который был задан во втором поле. Браузер переадресовывается в back-end сайта и открывается стандартное окно Joomla для входа в административную часть. Необходимо ввести только пароль в соответствующем поле.
@@ -46,16 +43,17 @@ tags: [kareebu secure, joomla]
 Кстати, если вы обратили внимание, стандартная строка:
 
 {% highlight html %}
-	http://localhost:7788/third/administrator
+http://localhost:7788/third/administrator
 {% endhighlight %}
 
-для входа в административную часть Joomla после установки плагина kareebu Secure изменилась и теперь представляет из себя:
+... для входа в административную часть Joomla после установки плагина kareebu Secure изменилась и теперь представляет из себя:
 
 {% highlight html %}
-	http://localhost:7788/third/administartor?password
+http://localhost:7788/third/administartor?password
 {% endhighlight %}
 
 Об этом не стоит забывать. Теперь не зная секретного пароля, невозможно получить доступ к back-end Joomla и войти в нее. На этом обзор плагина kareebu Secure можно закончить.
 
- [1]: http://localhost:7788/third/wp-content/uploads/2013/11/kareebu-Secure-plugin.png
- [2]: http://localhost:7788/third/wp-content/uploads/2013/11/kareebu-Secure-settings.png
+На этом все.
+
+---
