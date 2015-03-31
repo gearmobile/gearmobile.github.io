@@ -144,115 +144,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-26T00:00:00+04:00"><a href="/%d0%bd%d0%b0%d0%b2%d0%b8%d0%b3%d0%b0%d1%86%d0%b8%d1%8f-breadcrumbs-%d0%bd%d0%b0-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%b5-%d0%b8%d0%b7%d0%be%d0%b1%d1%80%d0%b0%d0%b6%d0%b5%d0%bd%d0%b8%d0%b9/">October 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/%d0%bd%d0%b0%d0%b2%d0%b8%d0%b3%d0%b0%d1%86%d0%b8%d1%8f-breadcrumbs-%d0%bd%d0%b0-%d0%be%d1%81%d0%bd%d0%be%d0%b2%d0%b5-%d0%b8%d0%b7%d0%be%d0%b1%d1%80%d0%b0%d0%b6%d0%b5%d0%bd%d0%b8%d0%b9/" rel="bookmark" title="Навигация breadcrumbs на основе изображений" itemprop="url">Навигация breadcrumbs на основе изображений</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>В предыдущей статье “<a href="http://localhost:7788/third/?p=91" title="Навигация breadcrumbs с помощью треугольников на CSS">Навигация breadcrumbs с помощью треугольников на CSS</a>” описывался способ создания меню с помощью чистого CSS, без использования графики. Метод всем хорош, за исключением одного – поддержка такого меню в старых браузерах сомнительна. Но при переводе этой статьи упоминалась ссылка на способ создания навигации с помощью графики. Статья написана достаточно давно, но метод абсолютно рабочий. Автор статьи Veerle Pieters, а сам пост называется “Simple scalable CSS based breadcrumbs”. Ниже привожу даже не вольный его перевод, а вольный пересказ.</p>
-
-<p>Несколько дней назад у меня стояла задача создать навигационное меню в стиле “хлебные крошки” (breadcrumbs) для сайта, над которым я работал. Я не думаю, что такое меню необходимо для каждого сайта, но в некоторых случаях оно очень полезно и практично. Это послужило поводом для меня написать статью для своего блога. Тот пример, которым я хочу поделиться с вами, является очень простым, при его создании применяется только один графический файл. Остальная часть навигации создается с помощью CSS-кода. Однако этот пример является как бы основой, которую можно расширять и применять на практике. Меню будет создаваться при помощи обычного маркированного списка ul.</p>
-
-<p>Но сначала посмотрим на образец, с которым будем работать:<figure id="attachment_101" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/breadcrumbs-images.gif"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/breadcrumbs-images-600x41.gif" alt="Навигационное меню хлебные крошки" width="600" height="41" class="size-medium wp-image-101" /></a>&lt;figcaption class="wp-caption-text"&gt;Навигационное меню хлебные крошки&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>Меню достаточно простое, как и код, с помощью которого мы будем его создавать.</p>
-
-<h3 id="html--8211---ul">HTML код – маркированный список ul</h3>
-
-<pre>&lt;ul class="crumbs"&gt;
-    &lt;li&gt;&lt;a href="#"&gt;Home&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#"&gt;Main section&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#"&gt;Sub section&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;&lt;a href="#"&gt;Sub sub section&lt;/a&gt;&lt;/li&gt;
-    &lt;li&gt;The page you are on right now&lt;/li&gt;
-  &lt;/ul&gt;</pre>
-
-<p>Все пункты меню имеют ссылки, кроме последнего – “The page you are on right now” (Страница, на которой вы сейчас находитесь). При работе над меню я задавался вопросом – является ли список наиболее подходящей структурой для создания меню? Я полагаю, что применение списка в этом случае не является строгим правилом, но мне кажется – это наиболее семантичный и правильный вариант.</p>
-
-<h3 id="css--8211----">CSS код – создаем стили для меню</h3>
-
-<p>Задаем общие стили для меню – убираем маркеры и обнуляем отступы в браузерах Firefox, IE:</p>
-
-<pre>ul, li {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-  }</pre>
-
-<p>Далее для меню задаем класс с именем crumbs, устанавливаем границу толщиной в 1px и фиксированную ширину 30px:</p>
-
-<pre>.crumbs {
-    border: 1px solid #dedede;
-    height: 30px;
-  }</pre>
-
-<p>Все “крошки” должны располагаться горизонтально, в одну линию, поэтому элементы li делаем плавающими через свойство float:left. Текст меню должен быть отцентрирован точно по вертикали, для этого устанавливаем для него значение свойства line-height равное высоте всего меню – 30px. Помещаем слева каждого пункта небольшое пространство для отступа с помощью padding-left:10px. И задаем цвет текста #777:</p>
-
-<pre>.crumbs li {
-    float: left;
-    line-height: 30px;
-    padding-left: 10px;
-    color: #777;
-  }</pre>
-
-<p>Нам необходимо, чтобы вся область пункта меню была кликабельной, поэтому делаем ее блочным элементом display:block. Далее помещаем для ссылки фоновое изображение, вырезанное из макета. Для этого нужно вырезать только саму “стрелку”:<figure id="attachment_102" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/breadcrumbs-images_cut.gif"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/breadcrumbs-images_cut-600x41.gif" alt="Вырезание стрелки из навигации" width="600" height="41" class="size-medium wp-image-102" /></a>&lt;figcaption class="wp-caption-text"&gt;Вырезание стрелки из навигации&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p>… которую “задвигаем” вправо (100%) и размещаем точно по вертикали (50%). Также делаем у ссылки отступ справа padding-left:15px, в котором будет как раз и находиться фоновое изображение (вырезанная стрелка):</p>
-
-<pre>.crumbs li a {
-    display: block;
-    padding: 0 15px 0 0;
-    background: url(img/crumbs.gif) 100% 50% no-repeat;
-  }</pre>
-
-<p>Уже практически все сделано. Осталось задать стили для текста ссылок. Уберем стандартное подчеркивание и изменим ее цвет:</p>
-
-<pre>.crumbs li a:link, .crumbs li a:visited {
-    text-decoration: none;
-    color: #777;
-  }</pre>
-
-<p>Придадим ссылкам небольшую анимацию с помощью псевдо-класса :hover и :focus. При наведении курсора мыши или получения фокуса с клавиатуры цвет текста ссылки будет меняться:</p>
-
-<pre>.crumbs li a:hover, .crumbs li a:focus {
-    color: #dd2c0d;
-  }</pre>
-
-<p>Результат нашей работы представлен здесь:<figure id="attachment_103" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
-
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/breadcrumbs-images_result.gif"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/breadcrumbs-images_result-600x67.gif" alt="Готовая навигация хлебные крошки" width="600" height="67" class="size-medium wp-image-103" /></a>&lt;figcaption class="wp-caption-text"&gt;Готовая навигация хлебные крошки&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<p><em>Примечание переводчика:</em></p>
-
-<blockquote>
-  <p>Автор статьи максимально упростил пример и сам код соответственно, насколько я понимаю. Дело в том, что на примере хорошо виден линейный горизонтальный градиент для каждого из пунктов меню. Однако в коде это никак отображено не было. Ну, не беда – разве это проблема создать линейный градиент на CSS3? Сама задача ведь выполнена!</p>
-</blockquote>
-
-<p>Оцените статью:<br />
-<span id="post-ratings-100" class="post-ratings" data-nonce="289db54d78"><img id="rating_100_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(100, 1, '1 Star');" onmouseout="ratings_off(1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_100_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(100, 2, '2 Stars');" onmouseout="ratings_off(1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_100_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(100, 3, '3 Stars');" onmouseout="ratings_off(1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_100_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(100, 4, '4 Stars');" onmouseout="ratings_off(1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_100_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(100, 5, '5 Stars');" onmouseout="ratings_off(1, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>1</strong> votes, average: <strong>1,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_100_text"></span></span><span id="post-ratings-100-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-25T00:00:00+04:00"><a href="/breadcrumbs-css/">October 25, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-10-25T00:00:00+04:00"><a href="/css/breadcrumbs-css/">October 25, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -262,24 +154,29 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs с помощью треугольников на CSS" itemprop="url">Навигация breadcrumbs с помощью треугольников на CSS</a></h1>
+      <h1 class="entry-title"><a href="/css/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs с помощью треугольников на CSS" itemprop="url">Навигация breadcrumbs с помощью треугольников на CSS</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Интересная статья по созданию навигации в виде “хлебных крошек” (breadcrumbs). Такая навигация удобна и полезна для сайтов с большим количеством рубрик. Благодаря такой навигации пользователь сайта может не запутаться в содержимом, точно знать, где он находиться и легко перейти в то место, куда ему нужно. Видов такой навигации может быть множество, все зависит от дизайна. Но принцип построения на CSS стандартный - с помощью списков <code>ul</code>.</p>
+    <blockquote>
+  <p>Интересная статья по созданию навигации в виде “хлебных крошек” (breadcrumbs).</p>
+</blockquote>
+
+<p>Такая навигация удобна и полезна для сайтов с большим количеством рубрик. Благодаря такой навигации пользователь сайта может не запутаться в содержимом, точно знать, где он находиться и легко перейти в то место, куда ему нужно.</p>
+
+<p>Видов такой навигации может быть множество, все зависит от дизайна. Но принцип построения на CSS стандартный - с помощью списков <code>ul</code>.</p>
 
 <p>Статья была опубликована на одном из моих любимых сайтов CSS-Tricks. Ниже привожу вольный перевод ее автора (Chris Coyier):</p>
 
 <p>Вы уже знаете, как создавать треугольники на чистом CSS? Для этого просто генерируется блочный элемент с нулевой шириной и высотой, у которого имеется одна граница с цветом, а две смежные границы имеют прозрачный цвет. Такие треугольники применяются в самых разнообразных местах дизайна - например, для указателей в навигации.</p>
 
-<p>Другое место их применения - невинные украшательства дизайна, не нарушающие его общую разметку. В счастью, это возможно благодаря псевдо-элементам, которые часто используются при их создании. Применяя <code>:before</code>, <code>:after</code> или оба сразу можно сгенерировать блочные элементы и с их помощью создать треугольники. А вот последние можно применять для создания навигации в стиле “хлебные крошки”. Как выглядит одна из таких навигаций (<em>чтобы иметь представление, что это такое</em>), показано на рисунке ниже:</p>
+<p>Другое место их применения - невинные украшательства дизайна, не нарушающие его общую разметку. В счастью, это возможно благодаря псевдо-элементам, которые часто используются при их создании. Применяя <code>:before</code>, <code>:after</code> или оба сразу можно сгенерировать блочные элементы и с их помощью создать треугольники.</p>
 
-<figure id="attachment_93" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/10/trianglebreadcrumbs-600x53.png" alt="Один из видов навигации хлебные крошки" width="600" height="53" class="size-medium wp-image-93" />][1]
-  <figcaption class="wp-caption-text">Один из видов навигации хлебные крошки</figcaption>
-</figure>
+<p>А вот последние можно применять для создания навигации в стиле “хлебные крошки”. Как выглядит одна из таких навигаций (<em>чтобы иметь представление, что это такое</em>), показано на рисунке ниже:</p>
 
-<h3 id="html-">HTML разметка</h3>
+<p><img src="/images/uploads/2013/10/trianglebreadcrumbs.png" alt="Один из видов навигации хлебные крошки" /></p>
+
+<h2 id="html-">HTML разметка</h2>
 
 <p>Начнем создание такого меню с HTML-разметки, которая максимально проста и представляет собой обычный неупорядоченный список с классом breadcrumb:</p>
 
@@ -301,7 +198,7 @@
   <span class="nt">&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
-<h3 id="css-">CSS код</h3>
+<h2 id="css-">CSS код</h2>
 
 <p>В первую очередь убедимся, что наш список не выглядит, как обычный неупорядоченный список. Для этого уберем у него маркеры, сделаем его пункты плавающими влево и зададим самые общие стилевые правила для ссылок внутри этого списка. Обратите внимание на свойство <code>overflow</code> для всего списка в целом - он применяется здесь по двум причинам.</p>
 
@@ -327,11 +224,13 @@
   <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span> <span class="m">85%</span><span class="o">,</span> <span class="m">35%</span><span class="o">,</span> <span class="m">1</span><span class="p">);</span>
 <span class="p">}</span></code></pre></div>
 
-<p>Для создания треугольника мы воспользуемся псевдо-элементом :after. Для него установим высоту и ширину, равную нулю; и абсолютно спозиционируем его на 100% влево, что означает - он будет располагаться у правого края своего блока родителя. Затем сместим треугольник вниз на 50% и “вернем” назад на -50px для точного позиционирования по центру (это классический прием - перевод здесь). Есть только один момент, на который нужно обратить внимание.</p>
+<p>Для создания треугольника мы воспользуемся псевдо-элементом <code>:after</code>. Для него установим высоту и ширину, равную нулю; и абсолютно спозиционируем его на 100% влево, что означает - он будет располагаться у правого края своего блока родителя.</p>
+
+<p>Затем сместим треугольник вниз на 50% и “вернем” назад на -50px для точного позиционирования по центру (это классический прием - перевод здесь). Есть только один момент, на который нужно обратить внимание.</p>
 
 <p>Граница, которую мы создаем сверху, равна 50px, нижняя граница также равна 50px, а ширина левой границы равна 30px. Это сделано для того, чтобы треугольник получился более “плоским”, с не такой острой вершиной. Если мы сделаем левую границу равной остальным сторонам в 50px, угол треугольника будет слишком острый.</p>
 
-<p>Так как верхняя и нижняя границы равны по 50px, то общая высота треугольника получается в 100px. Это гораздо больше, чем высота нашего меню, в котором высота шрифта 18px и padding-top: 10px, padding-bottom: 10px. Однако, это хорошо, что треугольник больше высоты меню. Это означает, что у нас остается достаточно свободного пространства, чтобы “поиграться” с размером шрифта:</p>
+<p>Так как верхняя и нижняя границы равны по 50px, то общая высота треугольника получается в 100px. Это гораздо больше, чем высота нашего меню, в котором высота шрифта <code>18px</code> и <code>padding-top: 10px</code>, <code>padding-bottom: 10px</code>. Однако, это хорошо, что треугольник больше высоты меню. Это означает, что у нас остается достаточно свободного пространства, чтобы “поиграться” с размером шрифта:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span>
   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -350,7 +249,9 @@
 
 <p>Все хорошо. Но на примере, который нужно воссоздать в коде, есть тонкая полоска шириной в 1px, идущая по краю треугольника. Чтобы “нарисовать” ее в CSS-коде, нам потребуется еще “поколдовать”, так как напрямую создать границу для треугольника не получиться. Ведь треугольник как раз сам и является границей!</p>
 
-<p>Поэтому мы поступим по другому - создадим еще один треугольник, который поместим позади нашего первого и зададим для него белый фоновый цвет. По своим свойствам второй треугольник будет практически одинаков с первым, но создаваться будет с помощью псевдо-элемента <code>:before</code>. Обратите внимание на важную вещь - <code>z-index</code>. С помощью этого свойства можно “тасовать” элементы <code>:before</code> и <code>:after</code> (точнее - созданные ими треугольники) в нужном порядке - какой треугольник над каким должен располагаться:</p>
+<p>Поэтому мы поступим по другому - создадим еще один треугольник, который поместим позади нашего первого и зададим для него белый фоновый цвет. По своим свойствам второй треугольник будет практически одинаков с первым, но создаваться будет с помощью псевдо-элемента <code>:before</code>.</p>
+
+<p>Обратите внимание на важную вещь - <code>z-index</code>. С помощью этого свойства можно “тасовать” элементы <code>:before</code> и <code>:after</code> (точнее - созданные ими треугольники) в нужном порядке - какой треугольник над каким должен располагаться:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:before</span> <span class="p">{</span>
   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
@@ -367,7 +268,7 @@
   <span class="k">border-bottom</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<p><em>Примечание переводчика:</em></p>
+<p>Примечание переводчика:</p>
 
 <blockquote>
   <p>Изменения минимальны. Цвет границы задан белым <code>#fff</code> и добавлено смещение треугольника влево на 1px <code>margin-left: 1px</code>, чтобы разделительная черта была более заметна.</p>
@@ -393,7 +294,7 @@
 <span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">75%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
 <span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:last-child</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span> <span class="cp">!important</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span> <span class="k">pointer</span><span class="o">-</span><span class="n">events</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="k">cursor</span><span class="o">:</span> <span class="k">default</span><span class="p">;}</span></code></pre></div>
 
-<p><em>Примечание переводчика:</em></p>
+<p>Примечание переводчика:</p>
 
 <blockquote>
   <p>Нумерация в <code>nth-child</code> начинается с единицы, а не с нуля, как принято в языках программирования.</p>
@@ -404,24 +305,21 @@
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">25%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
 <span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">25%</span><span class="o">,</span><span class="m">1</span><span class="p">)</span> <span class="cp">!important</span><span class="p">;}</span></code></pre></div>
 
-<h3 id="section">Совместимость с браузерами</h3>
+<h2 id="section">Совместимость с браузерами</h2>
 
 <p>Назовите меня ленивым, но я не занимался вопросом проверки данного кода на кросс-браузерную совместимость. Я был слишком захвачен самой идеей создания меню “хлебные крошки” на чистом CSS, чтобы думать его практическом использовании. Но если вас волнует мысль о его поддержке более старыми версиями браузеров, то стоит обратить внимание на следующие вещи:</p>
 
 <ul>
   <li>используйте для передачи цвета HEX-код вместо HSLa;</li>
-  <li>для каждого из пунктов меню li создайте свои классы, вместо использования nth-child;</li>
-  <li>для браузеров, не поддерживающих псевдо-классы :after/:before используйте схему создания навигационного меню, основанную на изображениях;</li>
+  <li>для каждого из пунктов меню <code>li</code> создайте свои классы, вместо использования <code>nth-child</code>;</li>
+  <li>для браузеров, не поддерживающих псевдо-классы <code>:after</code>/<code>:before</code> используйте схему создания навигационного меню, основанную на изображениях;</li>
   <li>применяйте библиотеку Modernizr для определения поддержки браузерами тех или иных свойств (например, HSLa);</li>
   <li>используйте дополнительные стилевые правила для IE.</li>
 </ul>
 
 <p>Результат, созданный с помощью приведенного выше кода, показан ниже:</p>
 
-<figure id="attachment_95" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/10/breadcrumb-result-600x129.jpg" alt="Меню хлебные крошки с помощью CSS-треугольников" width="600" height="129" class="size-medium wp-image-95" />][2]
-  <figcaption class="wp-caption-text">Меню хлебные крошки с помощью CSS-треугольников</figcaption>
-</figure>
+<p><img src="/images/uploads/2013/10/breadcrumb-result.jpg" alt="Меню хлебные крошки с помощью CSS-треугольников" /></p>
 
 <p>Эффект при наведении курсора мыши на один из пунктов меню:</p>
 
@@ -430,8 +328,11 @@
   <figcaption class="wp-caption-text">Эффект при наведении курсора мыши на меню навигации</figcaption>
 </figure>
 
+<p><img src="/images/uploads/2013/10/breadcrumb-result-hover.jpg" alt="Эффект при наведении курсора мыши на меню навигации" /></p>
+
 <p>На этом все и перевод закончен.</p>
 
+<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -440,7 +341,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-24T00:00:00+04:00"><a href="/css-lifted-shadows/">October 24, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-10-24T00:00:00+04:00"><a href="/css/css-lifted-shadows/">October 24, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -450,28 +351,34 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="/css-lifted-shadows/" rel="bookmark" title="Создание приподнятых теней с помощью CSS" itemprop="url">Создание приподнятых теней с помощью CSS</a></h1>
+      <h1 class="entry-title"><a href="/css/css-lifted-shadows/" rel="bookmark" title="Создание приподнятых теней с помощью CSS" itemprop="url">Создание приподнятых теней с помощью CSS</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Создание приподнятых теней (lifted shadow) с помощью CSS. Такие тени создаются с помощью двух псевдо-элементов <code>:before</code> и <code>:after</code>. Дополнительной HTML-разметки при этом не требуется. Оба псевдо-элемента применяются только к одному элементу, который должен быть блочным. Ниже показана последовательность действий, которая совсем несложная. Статья написана по мотивам известного блога Николаса Галлахера, где показаны самые разнообразные виды таких сложных теней.</p>
+    <blockquote>
+  <p>Создание приподнятых теней (<code>lifted shadow</code>) с помощью CSS.</p>
+</blockquote>
+
+<p>Такие тени создаются с помощью двух псевдо-элементов <code>:before</code> и <code>:after</code>. Дополнительной HTML-разметки при этом не требуется. Оба псевдо-элемента применяются только к одному элементу, который должен быть блочным. Ниже показана последовательность действий, которая совсем несложная.</p>
+
+<p>Статья написана по мотивам известного блога Николаса Галлахера, где показаны самые разнообразные виды таких сложных теней.</p>
 
 <p>Приступаем к написанию кода. Создаем элемент <code>p</code> и для него прописываем правила (<em>чтобы смотрелся хорошо</em>):</p>
 
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;lifted&quot;</span><span class="nt">&gt;</span>
-    Lifted Corners
-  <span class="nt">&lt;/p&gt;</span></code></pre></div>
+  Lifted Corners
+<span class="nt">&lt;/p&gt;</span></code></pre></div>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-    <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-    <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-    <span class="k">line-height</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
-    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">40px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">3</span><span class="p">)</span> <span class="k">inset</span><span class="p">;</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">40px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">3</span><span class="p">)</span> <span class="k">inset</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Здесь все несложно. Задаем ширину и высоту блока, а также косметическую красоту типа выравнивания по центру и придания тени для блока. Не забываем сделать блок относительно позиционированным, так как в последующих шагах нам потребуются псевдо-элементы, которые нужно будет позиционировать относительно блока-родителя.</p>
 
@@ -480,63 +387,64 @@
 <p>Необходимо получить две тени, одна из которых располагается под левым углом блока, а другая - под правым. Поэтому нам потребуются два псевдо-элемента - <code>:before</code> и <code>:after</code>. Создаем правила, общие для обоих псевдо-элементов:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:before</span><span class="o">,</span> <span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-    <span class="k">bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-    <span class="k">left</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-    <span class="k">z-index</span><span class="o">:</span> <span class="m">-1</span><span class="p">;</span>
-    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-       <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-         <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-            <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
+  <span class="k">bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">-1</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+          <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Немного “расшифруем” показанный выше код. Устанавливаем для обоих псевдо-элементов абсолютное позиционирование и координаты: от нижней границы 15px (<code>bottom: 15px</code>) и от левой границы 4px (<code>left: 4px;</code>). Ширину элемента устанавливаем в половину от ширины элемента-родителя (<code>width: 50%;</code>), высоту - 10% от ширины этого же элемента. Один интересный момент, про который не нужно забыть - “подсовываем” тени под блок-родитель с помощью свойства <code>z-index: -1</code>. Ну и создаем сами тени правилом <code>box-shadow: 0 15px 10px rgba(0,0,0,0.6)</code>, указав браузерные префиксы.</p>
 
 <p>Теперь у нас есть обе тени, но выглядят они как одна, так как первая накладывается на другую, ибо их координаты одинаковы. Поэтому нужно “разнести” их по разным углам, установив для псевдо-элемента <code>:after</code> иное позиционирование по оси X:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
-    <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-    <span class="k">right</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Почти все готово. Осталось только сделать для обеих теней “косину”, то есть развернуть их на определенное количество градусов. Левую тень развернем против часовой стрелки, чтобы ее внутренний угол оказался под блоком-родителем. Правую развернем точно также, только по часовой стрелке, чтобы ее внутренний угол также “спрятался” под блоком. Разворачивание будем выполнять с помощью правила <code>transform: rotate</code> для псевдо-элемента <code>:before</code> -</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-     <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-       <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-          <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span></code></pre></div>
+   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
+     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
+        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span></code></pre></div>
 
 <p>и для псевдо-элемента <code>:after</code> -</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-     <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-       <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-          <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span></code></pre></div>
+   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
+     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
+        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span></code></pre></div>
 
 <p>Результат нашей работы можно посмотреть ниже. Красиво!</p>
 
-<figure id="attachment_106" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/11/drop-down-shadows-600x281.jpg" alt="Блок с тенями под углами" width="600" height="281" class="size-medium wp-image-106" />][1]
-  <figcaption class="wp-caption-text">Блок с тенями под углами</figcaption>
-</figure>
+<p><img src="/images/uploads/2013/11/drop-down-shadows.jpg" alt="Блок с тенями под углами" /></p>
 
-<p>Можно немного усложнить задачу и сделать нижние уголки блока визуально приподнятыми. Создастся иллюзия того, что у блока завернутые вверх уголки, как у листочка бумаги. Для этого нужно вспомнить о том, что у свойства <code>border-radius</code> есть два параметра, а не одно. То есть, для одного угла можно задать два радиуса скругления, и тогда само скругление получиться не таким “правильным”, но более реалистичным. Первый радиус делаем большого размера, а второй немного меньше. В результате угол получается не скругленным, а немного скошенным. В нашем примере для блока-родителя задаем радиусы скругления нижних углов следующим образом:</p>
+<p>Можно немного усложнить задачу и сделать нижние уголки блока визуально приподнятыми. Создастся иллюзия того, что у блока завернутые вверх уголки, как у листочка бумаги. Для этого нужно вспомнить о том, что у свойства <code>border-radius</code> есть два параметра, а не одно.</p>
+
+<p>То есть, для одного угла можно задать два радиуса скругления, и тогда само скругление получиться не таким “правильным”, но более реалистичным. Первый радиус делаем большого размера, а второй немного меньше.</p>
+
+<p>В результате угол получается не скругленным, а немного скошенным. В нашем примере для блока-родителя задаем радиусы скругления нижних углов следующим образом:</p>
 
 <div class="highlight"><pre><code class="language-html" data-lang="html">border-bottom-left-radius: 40px 12px;
-  border-bottom-right-radius: 40px 12px;</code></pre></div>
+border-bottom-right-radius: 40px 12px;</code></pre></div>
 
 <p>Итогом получается картинка листочка бумаги с завернутыми уголками:</p>
 
-<figure id="attachment_107" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/11/curved-corners-600x281.jpg" alt="Завернутые уголки на чистом CSS" width="600" height="281" class="size-medium wp-image-107" />][2]
-  <figcaption class="wp-caption-text">Завернутые уголки на чистом CSS</figcaption>
-</figure>
+<p><img src="/images/uploads/2013/11/curved-corners.jpg" alt="Завернутые уголки на чистом CSS" /></p>
 
 <p>На сайте Николаса Галлахера есть множество других примеров создания теней, которые по-настоящему впечатляют. В этой статье приведен только один из них, самый распространенный. Как видите, ничего сложного в его создании нет. Но вот на кросс-браузерность такой пример мною не рассматривался, ибо мне был важен сам результат.</p>
 
+<p>На этом все.</p>
+
+<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -550,7 +458,7 @@
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~8 minutes
+        Reading time ~7 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
@@ -559,11 +467,15 @@
     
   </header>
   <div class="entry-content">
-    <p>В предыдущей статье “<a href="http://localhost:7788/third/?p=109" title="Создаем вертикальное меню на CSS">Создаем вертикальное меню на CSS</a>” был освещен вопрос построения вертикального меню с подменю. В этой статье будет логическое продолжение этого вопроса и мы научимся делать горизонтальное меню с выпадающим подменю. Принцип построение и функционирования такой навигации очень похож на вертикальное меню, с той лишь разницей, что она будет располагаться горизонтально. В основе заложен тот же самый принцип - свойство <code>display</code> со значениями <code>none</code> и <code>block</code>.</p>
+    <blockquote>
+  <p>В предыдущей статье “Создаем вертикальное меню на CSS” был освещен вопрос построения вертикального меню с подменю.</p>
+</blockquote>
+
+<p>В этой статье будет логическое продолжение этого вопроса и мы научимся делать горизонтальное меню с выпадающим подменю. Принцип построение и функционирования такой навигации очень похож на вертикальное меню, с той лишь разницей, что она будет располагаться горизонтально. В основе заложен тот же самый принцип - свойство <code>display</code> со значениями <code>none</code> и <code>block</code>.</p>
 
 <p>При построении горизонтального меню нужно быть внимательным с принципом специфичности CSS, то есть - с вложенностью и каскадностью правил. Хорошим подспорьем в этом вопросе является SASS (SCSS), благодаря которому исключаются ошибки при соблюдении каскадности и наследовании свойств.</p>
 
-<p>Код, написанный на SASS (SCSS) короче и логически читается проще, чем CSS. Поэтому, рекомендую изучить этот вопрос в статьях “<a href="http://localhost:7788/third/?p=32" title="SASS (SCSS) в картинках - Часть 1">SASS (SCSS) в картинках - Часть 1</a>”, “<a href="http://localhost:7788/third/?p=44" title="SASS (SCSS) в картинках - Часть 2">SASS (SCSS) в картинках - Часть 2</a>”.</p>
+<p>Код, написанный на SASS (SCSS) короче и логически читается проще, чем CSS. Поэтому, рекомендую изучить этот вопрос в статьях “SASS (SCSS) в картинках - Часть 1”, “SASS (SCSS) в картинках - Часть 2”.</p>
 
 <p>Мы же приступим к созданию горизонтального меню с подменю “на коленках”. Почему говорю так? Дело в том, что существует масса готовых примеров и кода, а также генераторов различных меню. Но они неинтересны - нам нужно разобраться в принципе построения и возможности самому написать такую навигацию. Как обычно, начинаем с каркаса меню, выполненного на HTML:</p>
 
@@ -627,25 +539,31 @@
   <span class="nt">&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
-<p>Структура подобного меню абсолютно одинакова со структурой вертикального меню. Также имеется внешний маркированный список с пунктами в виде ссылок, перед некоторыми из которых добавлены дополнительные подменю, выполненные также в виде маркированного списка. Различие между внешним и внутренним меню в классах, с помощью которых они будут видоизменяться. Помимо этого вы можете заметить, что у некоторых ссылок есть класс <code>arrow</code>, но о нем мы поговорим позже.</p>
+<p>Структура подобного меню абсолютно одинакова со структурой вертикального меню. Также имеется внешний маркированный список с пунктами в виде ссылок, перед некоторыми из которых добавлены дополнительные подменю, выполненные также в виде маркированного списка.</p>
+
+<p>Различие между внешним и внутренним меню в классах, с помощью которых они будут видоизменяться. Помимо этого вы можете заметить, что у некоторых ссылок есть класс <code>arrow</code>, но о нем мы поговорим позже.</p>
 
 <p>Приступим к оформлению нашего меню с помощью CSS. Сразу оговорюсь, что примеры кода, представленного здесь, написаны на SASS (SCSS). Начнем с того, что расположим навигацию горизонтально:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hormenu</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="n">li</span><span class="err">{</span>
-      <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-      <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-      <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
-        <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-      <span class="p">}</span></code></pre></div>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="n">li</span><span class="err">{</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
+      <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="p">}</span></code></pre></div>
 
-<p>Думаю, ничего загадочного в этой части кода нет. Делаем отступ для меню и располагаем элементы <code>li</code> внутри него горизонтально с помощью свойства <code>float: left</code>. Предотвращаем схлопывание (<code>collapse</code>) блока-родителя <code>ul</code>, прописав для него <code>overflow: hidden</code>. Чтобы пункты меню были легко различимы, сделаем промежуток между ними с помощью левого <code>margin</code> в 1px. И для аккуратности уберем левый <code>margin</code> у первого элемента <code>li</code>.</p>
+<p>Думаю, ничего загадочного в этой части кода нет. Делаем отступ для меню и располагаем элементы <code>li</code> внутри него горизонтально с помощью свойства <code>float: left</code>. Предотвращаем схлопывание (<code>collapse</code>) блока-родителя <code>ul</code>, прописав для него <code>overflow: hidden</code>.</p>
+
+<p>Чтобы пункты меню были легко различимы, сделаем промежуток между ними с помощью левого <code>margin</code> в 1px. И для аккуратности уберем левый <code>margin</code> у первого элемента <code>li</code>.</p>
 
 <p>Далее оформляем ссылки внутри пунктов <code>li</code>. Делаем ссылки блочными, чтобы кликабельной была вся область пункта навигации и задаем для нее высоту. Также указываем интерлиньяж, чтобы выровнять текст по вертикали и <code>text-align</code> для выравнивания по горизонтали. Цвет фона и цвет текста - как обычно.</p>
 
-<p>Помимо этого, делаем ссылки с относительным позиционированием - оно нам пригодиться позже, когда будем отрисовывать треугольники. В этом коде стоит обратить внимание только на один момент - ширина элемента задается жестко. Это делается для того, чтобы основное меню не дергалось вправо-влево. Возможна ситуация, когда пункт подменю по ширине будет больше, чем пункт основного меню, и тогда ребенок “растянет” своего родителя.</p>
+<p>Помимо этого, делаем ссылки с относительным позиционированием - оно нам пригодиться позже, когда будем отрисовывать треугольники. В этом коде стоит обратить внимание только на один момент - ширина элемента задается жестко. Это делается для того, чтобы основное меню не дергалось вправо-влево.</p>
+
+<p>Возможна ситуация, когда пункт подменю по ширине будет больше, чем пункт основного меню, и тогда ребенок “растянет” своего родителя.</p>
 
 <p>При скрытии же подменю пункты основного меню будут “сжиматься”, уменьшая ширину до своей собственной. Вот для этой цели и применяется явное задание ширины элемента <code>a</code>:</p>
 
@@ -769,16 +687,13 @@
 
 <p>… и то, как оно выглядит:</p>
 
-<figure id="attachment_114" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/11/css-horizontal-menu-600x254.jpg" alt="Горизонтальное меню на CSS" width="600" height="254" class="size-medium wp-image-114" />][4]
-  <figcaption class="wp-caption-text">Горизонтальное меню на CSS</figcaption>
-</figure>
+<p><img src="/images/uploads/2013/11/css-horizontal-menu.jpg" alt="Горизонтальное меню на CSS" /></p>
 
-<figure id="attachment_115" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/11/css-horizontal-menu-with-dropdown-submenu-600x254.jpg" alt="Горизонтальное меню с выпадающим подменю" width="600" height="254" class="size-medium wp-image-115" />][5]
-  <figcaption class="wp-caption-text">Горизонтальное меню с выпадающим подменю</figcaption>
-</figure>
+<p><img src="/images/uploads/2013/11/css-horizontal-menu-with-dropdown-submenu.jpg" alt="Горизонтальное меню с выпадающим подменю" /></p>
 
+<p>На этом все.</p>
+
+<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -787,258 +702,338 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-22T00:00:00+04:00"><a href="/css-vertical-dropdown-menu/">October 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-10-22T00:00:00+04:00"><a href="/css/css-vertical-dropdown-menu/">October 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~5 minutes
+        Reading time ~6 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="/css-vertical-dropdown-menu/" rel="bookmark" title="Создаем вертикальное меню на CSS" itemprop="url">Создаем вертикальное меню на CSS</a></h1>
+      <h1 class="entry-title"><a href="/css/css-vertical-dropdown-menu/" rel="bookmark" title="Создаем вертикальное меню на CSS" itemprop="url">Создаем вертикальное меню на CSS</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Продолжаем изучение CSS и сегодня приступим к построению вертикального меню. Такие меню очень популярны и без них не обходится каждый второй сайт. Статей по созданию подобной навигации написано немало, но меня данный факт волнует мало. Моя задача – разобраться в принципе построения подобного меню и возможность сделать его самому, на коленках за пару минут. В действительности все просто, даже очень просто.</p>
+    <blockquote>
+  <p>Продолжаем изучение CSS и сегодня приступим к построению вертикального меню.</p>
+</blockquote>
 
-<p>Созданное в этой статье вертикальное меню будет далеко по своим внешним эстетическим данным от совершенства. Но это и неважно – важен сам принцип, механизм построения и функционирования подобной навигации. А всякие фантики-бантики можно навесить всегда, было бы желание. Механизм действия и построения такого меню основан на одном единственном CSS-свойстве – <code>display</code>, а точнее на его значениях – <code>display: block</code> и <code>display: none</code>.</p>
+<p>Такие меню очень популярны и без них не обходится каждый второй сайт. Статей по созданию подобной навигации написано немало, но меня данный факт волнует мало. Моя задача - разобраться в принципе построения подобного меню и возможность сделать его самому, на коленках за пару минут. В действительности все просто, даже очень просто.</p>
 
-<p>В этой статье будет создаваться простое вертикальное меню, в котором подменю размещается сбоку от основного меню. Существует более сложный вариант вертикального меню, в котором подменю размещается внутри основного. Такая навигация называется <code>меню-аккордеон</code> и принцип его создания будет рассмотрен позже.</p>
+<p>Созданное в этой статье вертикальное меню будет далеко по своим внешним эстетическим данным от совершенства. Но это и неважно - важен сам принцип, механизм построения и функционирования подобной навигации. А всякие фантики-бантики можно навесить всегда, было бы желание.</p>
+
+<p>Механизм действия и построения такого меню основан на одном единственном CSS-свойстве - <code>display</code>, а точнее на его значениях - <code>display: block</code> и <code>display: none</code>.</p>
+
+<p>В этой статье будет создаваться простое вертикальное меню, в котором подменю размещается сбоку от основного меню. Существует более сложный вариант вертикального меню, в котором подменю размещается внутри основного.</p>
+
+<p>Такая навигация называется <code>меню-аккордеон</code> и принцип его создания будет рассмотрен позже.</p>
 
 <p>C чего же мы начнем? С построения обычного маркированного списка, пунктами которого будут ссылки. Списку зададим класс с именем <code>menu</code>, так как он нам понадобиться в дальнейшем:</p>
 
-<pre><ul class="menu">
-  <li>
-    <a href="#">Punkt 1</a>
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 2</a>
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 3</a>
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 4</a>
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 5</a>
-  </li>
-    
-</ul>
-</pre>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
-<p>Созданное только что меню будет внешним, а внутри него (точнее внутри его пунктов) мы поместим еще одно меню. Получиться одно меню, вложенное в другое (помните уроки HTML?). То есть, у нас есть пять пунктов внешнего меню – вот мы и вложим в каждый из них еще одно меню, перед ссылкой. Ссылка будет исполнять роль переключателя, который будет переводить значение свойства <code>display</code> из none в <code>block</code> и наоборот. В итоге получиться пять подменю, для каждого из которых мы пропишем один класс – <code>sub-menu</code>. Этот класс нам также потребуется в дальнейшем:</p>
+<p>Созданное только что меню будет внешним, а внутри него (<em>точнее внутри его пунктов</em>) мы поместим еще одно меню. Получиться одно меню, вложенное в другое (помните уроки HTML?).</p>
 
-<pre><ul class="menu">
-  <li>
-    <a href="#">Punkt 1</a>
-          <ul class="sub-menu">
-      <li>
-        <a href="#">Punkt 1-1</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 1-2</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 1-3</a>
-      </li>
-            
-    </ul>
-        
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 2</a>
-          <ul class="sub-menu">
-      <li>
-        <a href="#">Punkt 2-1</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 2-2</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 2-3</a>
-      </li>
-            
-    </ul>
-        
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 3</a>
-          <ul class="sub-menu">
-      <li>
-        <a href="#">Punkt 3-1</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 3-2</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 3-3</a>
-      </li>
-            
-    </ul>
-        
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 4</a>
-          <ul class="sub-menu">
-      <li>
-        <a href="#">Punkt 4-1</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 4-2</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 4-3</a>
-      </li>
-            
-    </ul>
-        
-  </li>
-      
-  
-  <li>
-    <a href="#">Punkt 5</a>
-          <ul class="sub-menu">
-      <li>
-        <a href="#">Punkt 5-1</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 5-2</a>
-      </li>
-              
-      
-      <li>
-        <a href="#">Punkt 5-3</a>
-      </li>
-            
-    </ul>
-        
-  </li>
-    
-</ul>
-</pre>
+<p>То есть, у нас есть пять пунктов внешнего меню - вот мы и вложим в каждый из них еще одно меню, перед ссылкой. Ссылка будет исполнять роль переключателя, который будет переводить значение свойства <code>display</code> из none в <code>block</code> и наоборот.</p>
 
-<p>Все – каркас будущего вертикального меню готов и больше мы его трогать не будем. Остальные действия будем выполнять только с помощью CSS. Для начала создадим базовые стили, чтобы придать нашему меню хоть какой-то вид:</p>
+<p>В итоге получиться пять подменю, для каждого из которых мы пропишем один класс - <code>sub-menu</code>. Этот класс нам также потребуется в дальнейшем:</p>
 
-<pre>*{
-    margin: 0;
-    padding: 0;
-  }
-  a{
-    text-decoration: none;
-  }
-  ul{
-    list-style-type: none;
-  }
-  .menu{
-    margin: 30px 0 0 30px;
-    width: 100px;
-  }
-</pre>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
-<p>Здесь мы обнуляем <code>margin</code> и <code>padding</code> для всех элементов, в том числе и <code>ul</code>; убираем маркер у пунктов меню; убираем подчеркивание у ссылок. Для внешнего списка с классом menu задаем отступ сверху и слева, чтобы не прилипал к границам окна браузера и устанавливаем фиксированную ширину в 100px.</p>
+<p>Все - каркас будущего вертикального меню готов и больше мы его трогать не будем. Остальные действия будем выполнять только с помощью CSS. Для начала создадим базовые стили, чтобы придать нашему меню хоть какой-то вид:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">*</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">a</span><span class="p">{</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">ul</span><span class="p">{</span>
+  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.menu</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">30px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Здесь мы обнуляем <code>margin</code> и <code>padding</code> для всех элементов, в том числе и <code>ul</code>; убираем маркер у пунктов меню; убираем подчеркивание у ссылок.</p>
+
+<p>Для внешнего списка с классом menu задаем отступ сверху и слева, чтобы не прилипал к границам окна браузера и устанавливаем фиксированную ширину в <code>100px</code>.</p>
 
 <p>Дальше форматируем пункты меню:</p>
 
-<pre>.menu li{
-    position: relative;
-    line-height: 20px;
-    background-color: #ccc;
-    margin-bottom: 1px;
-  }
-</pre>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span><span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
 
-<p>Ставим высоту каждого элемента li равной 20px и выравниваем текст внутри него по центру вертикали; задаем фоновый цвет для них же, чтобы можно было различать каждый из пунктов на фоне окна браузера; делаем нижний <code>margin</code> в 1px, чтобы элементы li не сливались между собой и были похожи на пункты меню. Последний шаг – устанавливаем для li относительное позиционирование, так как в дальнейшем будем размещать подменю относительно этого элемента.</p>
+<p>Ставим высоту каждого элемента <code>li</code> равной 20px и выравниваем текст внутри него по центру вертикали; задаем фоновый цвет для них же, чтобы можно было различать каждый из пунктов на фоне окна браузера; делаем нижний <code>margin</code> в 1px, чтобы элементы <code>li</code> не сливались между собой и были похожи на пункты меню.</p>
 
-<p>Далее чисто косметические правила для ссылок, находящихся внутри внешнего меню – размер шрифта (кегль) и цвет текста:</p>
+<p>Последний шаг - устанавливаем для <code>li</code> относительное позиционирование, так как в дальнейшем будем размещать подменю относительно этого элемента.</p>
 
-<pre>.menu li a{
-    font-size: 16px;
-    color: #000;
-  }
-</pre>
+<p>Далее чисто косметические правила для ссылок, находящихся внутри внешнего меню - размер шрифта (кегль) и цвет текста:</p>
 
-<p>Теперь приступаем к самому интересному – стилизации подменю. Для начала зададим его ширину (пусть будет чуть меньше ширины внешнего списка):</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
-<pre>.sub-menu{
-    width: 90px;
-  }
-</pre>
+<p>Теперь приступаем к самому интересному - стилизации подменю. Для начала зададим его ширину (пусть будет чуть меньше ширины внешнего списка):</p>
 
-<p>Затем установим для подменю абсолютное позиционирование для того, чтобы сместить его вправо на значение, равное ширине внешнего списка, и “прилепить” кверху каждого из элементов li. И самое главное – скроем его отображение в браузере через правило <code>display: none</code>. В результате код будет выглядеть следующим образом:</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">90px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
-<pre>.sub-menu{
-    width: 90px;
-    position: absolute;
-    left: 100px;
-    top: 0;
-    display: none;
-  }
-</pre>
+<p>Затем установим для подменю абсолютное позиционирование для того, чтобы сместить его вправо на значение, равное ширине внешнего списка и “прилепить” кверху каждого из элементов <code>li</code>.</p>
+
+<p>И самое главное - скроем его отображение в браузере через правило <code>display: none</code>. В результате код будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">90px</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Немного стилизуем пункты меню и ссылки в подменю. Для каждого пункта подменю устанавливаем цвет фона, чтобы отличать подменю от основного меню. И цвет ссылок по той же причине:</p>
 
-<pre>.sub-menu li{
-    background-color: #aaa;
-  }
-    .sub-menu li a{
-      color: #fff;
-    }
-</pre>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span> <span class="nt">li</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#aaa</span><span class="p">;</span>
+<span class="p">}</span>
+  <span class="nc">.sub-menu</span> <span class="nt">li</span> <span class="nt">a</span><span class="p">{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
 
 <p>Заключительный код, который заставляет наше меню работать именно так, как задумано. То есть, этим мы говорим браузеру присвоить свойству <code>display</code> значение <code>block</code> при наведении мыши на ссылку во внешнем списке:</p>
 
-<pre>.menu li:hover .sub-menu{
-    display: block;
-  }
-</pre>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span><span class="nd">:hover</span> <span class="nc">.sub-menu</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
-<p>В результате подменю отобразиться (браузер сгенерирует его). Изначально в коде было прописано для него display: none. То есть, для браузера такого подменю не существовало и в DOM-модели документа элемент ul с классом <code>sub-menu</code> отсутствовал. Так как этому подменю задано абсолютное позиционирование со смещением вправо на 100px и вверх на 0px, то оно поместиться точно справа вверху от своего родителя – пункта меню внешнего списка.</p>
+<p>В результате подменю отобразиться (браузер сгенерирует его). Изначально в коде было прописано для него <code>display: none</code>. То есть, для браузера такого подменю не существовало и в DOM-модели документа элемент <code>ul</code> с классом <code>sub-menu</code> отсутствовал.</p>
 
-<p>В принципе, на этом уже все сказано. Основной принцип вертикального меню показан и создан. Остальное – уже дело техники, если нужно придать ему нужный вид. На закуску пример нашего меню в обычном состоянии:<figure id="attachment_110" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Так как этому подменю задано абсолютное позиционирование со смещением вправо на <code>100px</code> и вверх на <code>0px</code>, то оно поместиться точно справа вверху от своего родителя - пункта меню внешнего списка.</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/css-vertical-menu.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/css-vertical-menu-600x316.jpg" alt="Вертикальное меню на CSS" width="600" height="316" class="size-medium wp-image-110" /></a>&lt;figcaption class="wp-caption-text"&gt;Вертикальное меню на CSS&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>В принципе, на этом уже все сказано. Основной принцип вертикального меню показан и создан. Остальное - уже дело техники, если нужно придать ему нужный вид. На закуску пример нашего меню в обычном состоянии:</p>
 
-<p>И меню, когда наведена мышка на один из пунктов меню и справа появляется подменю, соответствующее этому пункту:<figure id="attachment_111" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="/images/uploads/2013/11/css-vertical-menu.jpg" alt="Вертикальное меню на CSS" /></p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2013/11/css-vertical-menu-expand.jpg"><img src="http://localhost:7788/third/wp-content/uploads/2013/11/css-vertical-menu-expand-600x316.jpg" alt="Вертикальное меню на CSS с подменю" width="600" height="316" class="size-medium wp-image-111" /></a>&lt;figcaption class="wp-caption-text"&gt;Вертикальное меню на CSS с подменю&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>И меню, когда наведена мышка на один из пунктов меню и справа появляется подменю, соответствующее этому пункту:</p>
 
-<p>Оцените статью:<br />
-<span id="post-ratings-109" class="post-ratings" data-nonce="c186724080"><img id="rating_109_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(109, 1, '1 Star');" onmouseout="ratings_off(2, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_109_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(109, 2, '2 Stars');" onmouseout="ratings_off(2, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_109_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(109, 3, '3 Stars');" onmouseout="ratings_off(2, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_109_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(109, 4, '4 Stars');" onmouseout="ratings_off(2, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_109_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_off.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(109, 5, '5 Stars');" onmouseout="ratings_off(2, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>2,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_109_text"></span></span><span id="post-ratings-109-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+<p><img src="/images/uploads/2013/11/css-vertical-menu-expand.jpg" alt="Вертикальное меню на CSS с подменю" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-21T00:00:00+04:00"><a href="/css/css-side-lined-headline/">October 21, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/css/css-side-lined-headline/" rel="bookmark" title="Создать зачеркнутый заголовок на CSS" itemprop="url">Создать зачеркнутый заголовок на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Создать заголовок с эффектом зачеркивания. Создается с помощью псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+</blockquote>
+
+<p>Оба псевдо-элемента применяются только к одному элементу - заголовку определенного уровня и дополнительной разметки не требуется, все семантично. Линии подчеркивания имеют фиксированную ширину с обеих сторон, что упрощает задачу. Положение линий по вертикали - точно по центру.</p>
+
+<p>Создание такого эффекта выполняется простым кодом. Первоначально задаем HTML-разметку с использованием заголовка первого уровня <code>h1</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
+  about me
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<p>И прописываем для него CSS-правила, чтобы привести его к тому виду, который нам необходим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Выравнивание по центру, размер шрифта (кегль) и высота блока через интерлиньяж <code>line-height</code>, делаем все буквы заглавными - все стандартно. Но не забываем о позиционировании, которое устанавливаем относительным, ибо оно потребуется нам для псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+
+<p>Теперь создаем общие правила для обоих псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Единственным примечательным моментом в этом коде является свойство <code>top: 50%</code>, которое размещает линию точно по центру вертикали блочного элемента. В нашем случае таким блочным элементом является заголовок первого уровня <code>h1</code>. Кроме того, нужно установить еще одно правило - <code>margin-top: -2px</code>.</p>
+
+<p>Этим правилом мы поднимаем сгенерированные линии вверх на половину их высоты. Почему это нужно делать, можно догадаться и так.</p>
+
+<p>Так как правила мы прописали для обоих элементов, то следуют переписать некоторые из них для элемента <code>:after</code>. Точнее - нам нужно только правило <code>right</code>, чтобы “сдвинуть” его вправо:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результат работы кода показан на рисунке ниже. Граница для заголовка задана мною для наглядности:</p>
+
+<p><img src="/images/uploads/2013/10/header-stroke.jpg" alt="Зачеркнутый заголовок на CSS" /></p>
+
+<p>Полностью весь код для создания такого эффекта приведен ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="upd-19012014">UPD 19\01\2014</h2>
+
+<p>Для быстроты, удобства и краткости можно воспользоваться готовым миксином из библиотеки Scut - <a href="http://davidtheclark.github.io/scut/side-lined.html" title="Scut Side Line">Side-Lined</a>.</p>
+
+<p>На этом все.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->

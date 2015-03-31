@@ -144,117 +144,6 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-04-25T00:00:00+04:00"><a href="/linux/rankmirrors-select-mirrors-archlinux/">April 25, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="/linux/rankmirrors-select-mirrors-archlinux/" rel="bookmark" title="Rankmirrors - выбор быстрых репозиториев в ArchLinux" itemprop="url">Rankmirrors - выбор быстрых репозиториев в ArchLinux</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В ArchLinux имеется скрипт для настройки конфигурационного файла <code>/etc/pacman.d/mirrorlist</code> – <code>rankmirrors</code>.</p>
-</blockquote>
-
-<p>Что он делает? <code>rankmirrors</code> берет список IP-адресов зеркал репозиториев ArchLinuxlinux из заранее созданного файла и проверяет их на скорость доступа. А затем формирует список самых быстрых зеркал на основе этой проверки.</p>
-
-<p>Что это дает? В результате работы <code>rankmirrors</code> в <code>/etc/pacman.d/mirrorlist</code> мы имеем сервера с самым быстрым (исходяя из местоположения нашей машины) доступом. При обновлении системы или установки какой-либо программы скорость инсталляции существенно возрастает (из чего складывается инсталляция? Из скачивания пакета с сервера и уже затем его установки). <code>rankmirrors</code> является python-скриптом. man-страницы не имеет, но есть опция <code>-help</code> с небольшим выбором команд.</p>
-
-<p>Похожими утилитами являются <code>netselect</code> и особенно – <code>mirrorselect</code> (для Gentoo). Итак, приступим к настройке нашего списка зеркал с помощью <code>rankmirrors</code>.</p>
-
-<ol>
-  <li>Так как <code>rankmirrors</code> является python-скриптом, для его работы необходим установленный Python в системе. Устанавливаем, если его нет в системе:</li>
-</ol>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">pacman</span> <span class="n">-Sy</span> <span class="n">python</span></code></pre></div>
-
-<ol>
-  <li>Переходим в директорию со списком зеркал pacman’а:</li>
-</ol>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cd</span> <span class="p">/</span><span class="n">etc</span><span class="p">/</span><span class="n">pacman</span><span class="p">.</span><span class="n">d</span><span class="p">/</span></code></pre></div>
-
-<ol>
-  <li>Делаем копию существующего списка зеркал <code>mirrorlist</code>:</li>
-</ol>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">cp</span> <span class="n">mirrorlist</span> <span class="n">mirrorlist</span><span class="p">.</span><span class="n">backup</span></code></pre></div>
-
-<ol>
-  <li>Открываем копию списка зеркал в своем любимом редакторе и раскомментируем все строки с адресами серверов, географически наиболее близко расположенных к нам (по идее, это и будут сервера с самым быстрым доступом):</li>
-</ol>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">nano</span> <span class="n">-w</span> <span class="n">mirrorlist</span><span class="p">.</span><span class="n">backup</span></code></pre></div>
-
-<ol>
-  <li>Сохраняем изменения в файле и выходим из него. Запускаем скрипт <code>rankmirrors</code> для выбора зеркал из указанного нами списка (для запуска <code>rankmirrors</code> потребуется войти в учетную запись <code>root</code>‘а. Под <code>sudo</code> у меня скрипт отказался работать, ругаясь на отсутствие прав доступа к файлу <code>mirrorlist</code>).</li>
-</ol>
-
-<p>Переходим в учетную запись <code>root</code>‘а:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">su</span> <span class="p">-</span></code></pre></div>
-
-<p>Запускаем <code>rankmirrors</code> под <code>root</code>‘ом:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c"># rankmirrors -n 6 mirrorlist.backup &gt; mirrorlist</span></code></pre></div>
-
-<p>где:</p>
-
-<ul>
-  <li><code>-n 6</code> – вывести (в нашем случае – записать) 6 сервером с самым маленьким временем отклика</li>
-  <li><code>mirrorlist.backup</code> – список серверов для теста на время отклика</li>
-  <li><code>mirrorlist</code> – файл, куда записываются адреса серверов скриптом <code>rankmirros</code></li>
-</ul>
-
-<p>В результате <code>rankmirrors</code> удалит все раскомментированные строки в <code>mirrorlist</code> и снесет адреса шести самых “быстрых” зеркал. Получится что-то вроде этого:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c"># Result</span>
-  <span class="n">Server</span> <span class="p">=</span> <span class="n">ftp</span><span class="err">:</span><span class="p">//</span><span class="n">ftp</span><span class="p">.</span><span class="n">nluug</span><span class="p">.</span><span class="n">nl</span><span class="p">/</span><span class="n">pub</span><span class="p">/</span><span class="n">metalab</span><span class="p">/</span><span class="n">distributions</span><span class="p">/</span><span class="n">ArchLinuxlinux</span><span class="p">/</span><span class="nv">$repo</span><span class="p">/</span><span class="n">os</span><span class="p">/</span><span class="n">i686</span>
-  <span class="n">Server</span> <span class="p">=</span> <span class="n">ftp</span><span class="err">:</span><span class="p">//</span><span class="n">ftp</span><span class="p">.</span><span class="n">free</span><span class="p">.</span><span class="n">fr</span><span class="p">/</span><span class="n">mirrors</span><span class="p">/</span><span class="n">ftp</span><span class="p">.</span><span class="n">ArchLinuxlinux</span><span class="p">.</span><span class="n">org</span><span class="p">/</span><span class="nv">$repo</span><span class="p">/</span><span class="n">os</span><span class="p">/</span><span class="n">i686</span>
-  <span class="n">Server</span> <span class="p">=</span> <span class="n">ftp</span><span class="err">:</span><span class="p">//</span><span class="n">ftp</span><span class="p">.</span><span class="n">mfa</span><span class="p">.</span><span class="n">kfki</span><span class="p">.</span><span class="n">hu</span><span class="p">/</span><span class="n">pub</span><span class="p">/</span><span class="n">mirrors</span><span class="p">/</span><span class="n">ftp</span><span class="p">.</span><span class="n">ArchLinuxlinux</span><span class="p">.</span><span class="n">org</span><span class="p">/</span><span class="nv">$repo</span><span class="p">/</span><span class="n">os</span><span class="p">/</span><span class="n">i686</span>
-  <span class="n">Server</span> <span class="p">=</span> <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">gd</span><span class="p">.</span><span class="n">tuwien</span><span class="p">.</span><span class="n">ac</span><span class="p">.</span><span class="n">at</span><span class="p">/</span><span class="n">opsys</span><span class="p">/</span><span class="n">linux</span><span class="p">/</span><span class="n">ArchLinuxlinux</span><span class="p">/</span><span class="nv">$repo</span><span class="p">/</span><span class="n">os</span><span class="p">/</span><span class="n">i686</span>
-  <span class="n">Server</span> <span class="p">=</span> <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">ftp</span><span class="p">.</span><span class="n">gigabit</span><span class="p">.</span><span class="n">nu</span><span class="p">/</span><span class="nv">$repo</span><span class="p">/</span><span class="n">os</span><span class="p">/</span><span class="n">i686</span>
-  <span class="n">Server</span> <span class="p">=</span> <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">mirror</span><span class="p">.</span><span class="n">svk</span><span class="p">.</span><span class="n">su</span><span class="p">/</span><span class="n">ArchLinuxlinux</span><span class="p">/</span><span class="nv">$repo</span><span class="p">/</span><span class="n">os</span><span class="p">/</span><span class="n">i686</span></code></pre></div>
-
-<p>Здесь я раскомментировал все зеркала, географически расположенные в Европе и получил 6 из них.</p>
-
-<ol>
-  <li>Теперь осталось последнее – заставить <code>pacman</code> перечитать список зеркал и обновить список пакетов.</li>
-</ol>
-
-<p>Делаем:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="c"># pacman -Syy</span></code></pre></div>
-
-<p>Результат:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">::</span> <span class="err">Синхронизируются</span> <span class="err">базы</span> <span class="err">данных</span> <span class="err">пакетов…</span>
-  <span class="n">core</span> <span class="n">35</span><span class="p">,</span><span class="n">8K</span>
-  <span class="n">65</span><span class="p">,</span><span class="n">8K</span><span class="p">/</span><span class="n">s</span> <span class="n">00</span><span class="err">:</span><span class="n">00</span><span class="err">:</span><span class="n">01</span> <span class="p">[</span><span class="c">######################] 100%</span>
-  <span class="n">extra</span> <span class="n">443</span><span class="p">,</span><span class="n">7K</span> <span class="n">15</span><span class="p">,</span><span class="n">4K</span><span class="p">/</span><span class="n">s</span> <span class="n">00</span><span class="err">:</span><span class="n">00</span><span class="err">:</span><span class="n">29</span> <span class="p">[</span><span class="c">#########################] 100%</span>
-  <span class="n">community</span> <span class="n">367</span><span class="p">,</span><span class="n">8K</span>
-  <span class="n">18</span><span class="p">,</span><span class="n">1K</span><span class="p">/</span><span class="n">s</span> <span class="n">00</span><span class="err">:</span><span class="n">00</span><span class="err">:</span><span class="n">20</span> <span class="p">[</span><span class="c">###########################] 100%</span>
-  <span class="n">ArchLinuxlinuxfr</span> <span class="n">24</span><span class="p">,</span><span class="n">7K</span> <span class="n">5</span><span class="p">,</span><span class="n">7K</span><span class="p">/</span><span class="n">s</span> <span class="n">00</span><span class="err">:</span><span class="n">00</span><span class="err">:</span><span class="n">04</span> <span class="p">[</span><span class="c">############################] 100%</span></code></pre></div>
-
-<p>Данная статья является вольным переводом (опробованным для своих нужд) из Википедии ArchLinuxlinux.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-04-23T00:00:00+04:00"><a href="/linux/pclinuxos-livecd-grub/">April 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -840,6 +729,51 @@
 <p><img src="/images/uploads/2013/04/wp_results_notes.png" alt="Восстановленные записи" /></p>
 
 <p>Любую запись можно открыть, отредактировать или сохранить в другом месте компьютера. Или перенести на действующий сайт. На этом поставленную задачу считаю выполненной.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-04-10T00:00:00+04:00"><a href="/photoshop/photoshop-rotate-image/">April 10, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="/photoshop/photoshop-rotate-image/" rel="bookmark" title="Photoshop - как повернуть изображение по часовой стрелке" itemprop="url">Photoshop - как повернуть изображение по часовой стрелке</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Иногда при верстке макета возникает задача повернуть какой-либо объект на 90 или 180 градусов. В программе Photoshop это выполняется с помощью инструмента “Image Rotation”.</p>
+</blockquote>
+
+<p>Допустим, у нас имеется такое изображение:</p>
+
+<p><img src="/images/uploads/2013/11/origin.png" alt="Пример изображения-оригинала" /></p>
+
+<p>Необходимо повернуть его на 180 градусов против часовой стрелки.</p>
+
+<p>Для этого переходим в меню “Image - Image Rotation” и выбираем нужный угол и направление поворота:</p>
+
+<p><img src="/images/uploads/2013/11/image_rotation.png" alt="Поворот изображения по часовой стрелке" /></p>
+
+<p>В результате получаем:</p>
+
+<p><img src="/images/uploads/2013/11/rotated.png" alt="Изображение, повернутое на 180 градусов" /></p>
+
+<p>Изображение было развернуто на 180 градусов против часовой стрелки.</p>
 
 <p>На этом все.</p>
 
