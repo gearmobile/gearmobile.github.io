@@ -144,172 +144,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-15T00:00:00+04:00"><a href="http://zencoder.ru/stylus/excel-select-cell-by-color/">December 15, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/stylus/excel-select-cell-by-color/" rel="bookmark" title="Excel - выборка ячеек по цвету заливки" itemprop="url">Excel - выборка ячеек по цвету заливки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>На работе столкнулся с такой задачей - имеется таблица в Excel, в которой ведется табель выходов рабочих в цеху. В таблице подсчитывается количество часов, фактически отработанных; часов переработки и часов сверх нормы. Так вот, необходимо сделать так, чтобы производилась автоматическая выборка ячеек таблицы по цвету заливки последних. То есть, нужно отобрать все ячейки с заливкой определенного цвета, подсчитать их количество; а затем применить к полученному значению определенные формулы.</p>
-
-<p>Чтобы было понятнее, приведу изображение подобной таблицы. В ней необходимо произвести подсчет ячеек с заливкой зеленого цвета:</p>
-
-<figure>
-  <img src="images/uploads/2013/12/tabel.jpg" alt="Табель выходов с зелеными ячейками" />
-  <figcaption>Табель выходов с зелеными ячейками</figcaption>
-</figure>
-
-<p>В Excel нет встроенных (<em>готовых</em>) инструментов для выборки подобного рода; можно отбирать ячейки только по одному условию - по значению, находящемуся в них. Поэтому решение задачи получалось только одно - через VBA (<em>пользовательские функции</em>).</p>
-
-<p>Прекрасное и готовое решение моей задачи я нашел на сайте http://www.excel-vba.ru/<a href="http://www.excel-vba.ru/">1</a>. Даже не одно, а целых два решения, под разные условия. Ниже привожу последовательность шагов, которые привели меня к успеху )) Сразу скажу, что изображения были сделаны в Excel 2007. В Excel 2010 все несколько по другому, но запутаться невозможно, если что.</p>
-
-<h3 id="excel">Режим “Разработчик” в Excel</h3>
-
-<p>Первое, что нужно сделать - заставить Excel работать с пользовательскими функциями. Фактически, мы будем писать сценарий на языке VBA в Excel, но такая возможность по умолчанию отключена в этой программе. Включить ее можно следующим образом.</p>
-
-<p>Переходим в “Пуск - Параметры Excel” и находим в левом списке пункт “Надстройки”:</p>
-
-<figure>
-  <img src="images/uploads/2013/12/excel-надстройка-vba.jpg" alt="Excel - надстройка VBA" />
-  <figcaption>Excel - надстройка VBA</figcaption>
-</figure>
-
-<p>Выбираем в основном окне строчку “Пакет анализа - VBA” и жмем кнопочку “Перейти” в самом низу окна. Откроется еще одно окошко со списком доступных под Excel расширений (<em>надстроек</em>). Снова выбираем в этом списке “Пакет анализа - VBA” и соглашаемся, что хотим установить его, нажав кнопку “ОК”:</p>
-
-<figure>
-  <img src="images/uploads/2013/12/excel-пакет-анализа-vba.jpg" alt="Excel - Пакет анализа VBA" />
-  <figcaption>Excel - Пакет анализа VBA</figcaption>
-</figure>
-
-<p>Потребуется установочный диск с Microsoft Office на нем (<em>или же подключение к Интернет</em>) чтобы программа получила необходимые пакеты для инсталляции. Если установка прошла успешно, то в “Ленте” появиться пункт “Разработчик” (Excel 2010). Можно перейти в него через эту панель или же с помощью сочетания клавиш <kbd>Alt + F11</kbd>.</p>
-
-<p>Появиться окно, в котором выполняется написание кода на языке VBA, то есть фактически создаются пользовательские функции. Я писать их не буду, так как языка VBA не знаю и знать особого желания нет (<em>все знать невозможно</em>).</p>
-
-<h3 id="excel-vba">Вставка готовых функций в Excel VBA</h3>
-
-<p>Но есть готовые решения, которые я вставлю в виде кода с помощью меню “Insert - Module”. Просто берем отсюда код функций и вставляем в свой Excel. Затем сохраняем файл Excel с поддержкой VBA (<em>макросов</em>) и все готово для дальнейшей работы.</p>
-
-<p>Вставленные функции появятся в списке формул таблицы:</p>
-
-<figure>
-  <img src="images/uploads/2013/12/excel-пользовательские-функции.jpg" alt="Excel - пользовательские функции" />
-  <figcaption>Excel - пользовательские функции</figcaption>
-</figure>
-
-<p>Ниже представлен готовый код двух функций на VBA, написанных их автором Дмитрием Щербаковым. Первая функция с именем <strong>CountByInteriorColor</strong> выполняет <em>подсчет количества ячеек по цвету заливки</em>. Вторая функция с именем <strong>SumByInteriorColor</strong> выполняет <em>выборку ячеек по цвету заливки и суммирует все значения в этих ячейках</em>.</p>
-
-<p>Обе функции имеют одинаковый синтаксис и принимают <strong>три входных аргумента</strong>, первые два из которых <strong>обязательные</strong>, а третий - <strong>необязательный</strong>:</p>
-
-<ul>
-  <li><strong>rRange</strong> - диапазон с ячейками для подсчета;</li>
-  <li><strong>rColorCell</strong> - ячейка-образец с цветом заливки;</li>
-  <li><strong>bSumHide</strong> - ИСТИНА или 1 учитывает скрытые ячейки; ЛОЖЬ, 0 или опущен(по умолчанию) - скрытые ячейки не подсчитываются.</li>
-</ul>
-
-<h4 id="section">Функция подсчета количества ячеек</h4>
-
-<pre><code>'---------------------------------------------------------------------------------------
-' Procedure : CountByInteriorColor
-' Author    : The_Prist(Щербаков Дмитрий)
-'             http://www.excel-vba.ru
-' Purpose   : Функция подсчета ячеек на основе цвета заливки.
-' Аргументы:
-'             rRange     - диапазон с ячейками для подсчета.
-'             rColorCell - ячейка-образец с цветом заливки.
-'             bSumHide   - ИСТИНА или 1 учитывает скрытые ячейки.
-'                          ЛОЖЬ, 0 или опущен(по умолчанию) - скрытые ячейки не подсчитываются.
-'---------------------------------------------------------------------------------------
-Function CountByInteriorColor(rRange As Range, rColorCell As Range, Optional bSumHide As Boolean = False)
-  Dim lColor As Long, rCell As Range, lCnt As Long, vVal
-  lColor = rColorCell.Interior.Color
-  For Each rCell In rRange
-      If rCell.Interior.Color = lColor Then
-          If rCell.EntireRow.Hidden Or rCell.EntireColumn.Hidden Then
-              If bSumHide Then lCnt = lCnt + 1
-          Else
-              lCnt = lCnt + 1
-          End If
-      End If
-  Next rCell
-  CountByInteriorColor = lCnt
-End Function
-</code></pre>
-
-<p>Синтаксис этой функции прост:</p>
-
-<pre><code>=CountByInteriorColor(D8:AG8;$E$65)
-</code></pre>
-
-<h4 id="section-1">Функция подсчета суммы ячеек</h4>
-
-<pre><code>'---------------------------------------------------------------------------------------
-' Procedure : SumByInteriorColor
-' Author    : The_Prist(Щербаков Дмитрий)
-'             http://www.excel-vba.ru
-' Purpose   : Функция суммирования ячеек на основе цвета заливки.
-' Аргументы:
-'             rRange     - диапазон с ячейками для суммирования.
-'             rColorCell - ячейка-образец с цветом заливки.
-'             bSumHide   - ИСТИНА или 1 учитывает скрытые ячейки.
-'                          ЛОЖЬ, 0 или опущен(по умолчанию) - скрытые ячейки не суммируются.
-'---------------------------------------------------------------------------------------
-Function SumByInteriorColor(rRange As Range, rColorCell As Range, Optional bSumHide As Boolean = False)
-  Dim lColor As Long, rCell As Range, dblSum As Double, vVal
-  lColor = rColorCell.Interior.Color
-  For Each rCell In rRange
-      If rCell.Interior.Color = lColor Then
-          vVal = rCell.Value
-          If IsNumeric(vVal) Then
-              If rCell.EntireRow.Hidden Or rCell.EntireColumn.Hidden Then
-                  If bSumHide Then dblSum = dblSum + vVal
-              Else
-                  dblSum = dblSum + vVal
-              End If
-          End If
-      End If
-  Next rCell
-  SumByInteriorColor = dblSum
-End Function
-</code></pre>
-
-<p>Синтаксис этой функции следующий:</p>
-
-<pre><code>=SumByInteriorColor(D8:AG37;E63)
-</code></pre>
-
-<p>При вставке пользовательской функции <strong>CountByInteriorColor</strong> и <strong>SumByInteriorColor</strong> можно воспользоваться либо “Мастером функций”, либо произвести указание диапазона ячеек и ячейку-критерий <strong>вручную</strong>.</p>
-
-<h3 id="section-2">Описание рабочей формулы</h3>
-
-<p>Готовый пример работы функции <strong>CountByInteriorColor</strong> можно посмотреть на рисунке “Табель выходов с зелеными ячейками”. В нем подсчет отработанного времени производится по следующей формуле:</p>
-
-<pre><code>=((Сумма фактически отработанных часов) - (Норма часов выхода за месяц)) + ((Кол-во дней с переработкой)*4)
-</code></pre>
-
-<p>Фактически эта формула получается такой (<em>смотри строку №13 на рисунке</em>):</p>
-
-<pre><code>=(AH13-AI13) + (CountByInteriorColor(D13:AG13;$E$65)*4)
-</code></pre>
-
-<p>Думаю, что больше сказать по поводу создания (<em>точнее - вставки готового решения</em>) пользовательских функций и способа выборки ячеек в таблице по цвету их заливки мне нечего.</p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-13T00:00:00+04:00"><a href="http://zencoder.ru/stih-css3/">December 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-12-15T00:00:00+04:00"><a href="http://zencoder.ru/excel/excel-select-cell-by-color/">December 15, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -319,11 +154,174 @@ End Function
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/stih-css3/" rel="bookmark" title="Стилизация стихотворения с помощью CSS3-селекторов" itemprop="url">Стилизация стихотворения с помощью CSS3-селекторов</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/excel/excel-select-cell-by-color/" rel="bookmark" title="Excel - выборка ячеек по цвету заливки" itemprop="url">Excel - выборка ячеек по цвету заливки</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Селекторы стандарта CSS3 имеют поистине безграничные возможности для выделения HTML-элементов без создания дополнительной разметки (которая практически всегда применялась в предыдущих версиях CSS). В этой статье я собираюсь менее чем за 5 минут выполнить стилизацию популярного детского стихотворения “Мерцай, звездочка, мерцай!”, используя CSS3-селекторы.</p>
+    <blockquote>
+  <p>На работе столкнулся с такой задачей - имеется таблица в Excel, в которой ведется табель выходов рабочих в цеху.</p>
+</blockquote>
+
+<p>В таблице подсчитывается количество часов, фактически отработанных; часов переработки и часов сверх нормы. Так вот, необходимо сделать так, чтобы производилась автоматическая выборка ячеек таблицы по цвету заливки последних.</p>
+
+<p>То есть, нужно отобрать все ячейки с заливкой определенного цвета, подсчитать их количество; а затем применить к полученному значению определенные формулы.</p>
+
+<p>Чтобы было понятнее, приведу изображение подобной таблицы. В ней необходимо произвести подсчет ячеек с заливкой зеленого цвета:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/tabel.jpg" alt="Табель выходов с зелеными ячейками" class="center-image" /></p>
+
+<p>В Excel нет встроенных (готовых) инструментов для выборки подобного рода; можно отбирать ячейки только по одному условию - по значению, находящемуся в них. Поэтому решение задачи получалось только одно - через VBA (пользовательские функции).</p>
+
+<p>Прекрасное и готовое решение моей задачи я нашел на сайте <a href="http://www.excel-vba.ru/" title="Excel VBA">http://www.excel-vba.ru/</a>. Даже не одно, а целых два решения, под разные условия. Ниже привожу последовательность шагов, которые привели меня к успеху.</p>
+
+<p>Сразу скажу, что изображения были сделаны в Excel 2007. В Excel 2010 все несколько по другому, но запутаться невозможно, если что.</p>
+
+<h2 id="excel">Режим “Разработчик” в Excel</h2>
+
+<p>Первое, что нужно сделать - заставить Excel работать с пользовательскими функциями. Фактически, мы будем писать сценарий на языке VBA в Excel, но такая возможность по умолчанию отключена в этой программе. Включить ее можно следующим образом.</p>
+
+<p>Переходим в “Пуск - Параметры Excel” и находим в левом списке пункт “Надстройки”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/excel-надстройка-vba.jpg" alt="Excel - надстройка VBA" class="center-image" /></p>
+
+<p>Выбираем в основном окне строчку “Пакет анализа - VBA” и жмем кнопочку “Перейти” в самом низу окна. Откроется еще одно окошко со списком доступных под Excel расширений (надстроек). Снова выбираем в этом списке “Пакет анализа - VBA” и соглашаемся, что хотим установить его, нажав кнопку “ОК”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/excel-пакет-анализа-vba.jpg" alt="Excel - Пакет анализа VBA" class="center-image" /></p>
+
+<p>Потребуется установочный диск с Microsoft Office на нем (<em>или же подключение к Интернет</em>) чтобы программа получила необходимые пакеты для инсталляции. Если установка прошла успешно, то в “Ленте” появиться пункт “Разработчик” (Excel 2010). Можно перейти в него через эту панель или же с помощью сочетания клавиш <kbd>Alt + F11</kbd>.</p>
+
+<p>Появиться окно, в котором выполняется написание кода на языке VBA, то есть фактически создаются пользовательские функции. Я писать их не буду, так как языка VBA не знаю и знать особого желания нет (<em>все знать невозможно</em>).</p>
+
+<h2 id="excel-vba">Вставка готовых функций в Excel VBA</h2>
+
+<p>Но есть готовые решения, которые я вставлю в виде кода с помощью меню “Insert - Module”. Просто берем отсюда код функций и вставляем в свой Excel. Затем сохраняем файл Excel с поддержкой VBA (<em>макросов</em>) и все готово для дальнейшей работы.</p>
+
+<p>Вставленные функции появятся в списке формул таблицы:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/excel-пользовательские-функции.jpg" alt="Excel - пользовательские функции" class="center-image" /></p>
+
+<p>Ниже представлен готовый код двух функций на VBA, написанных их автором Дмитрием Щербаковым. Первая функция с именем “CountByInteriorColor” выполняет подсчет количества ячеек по цвету заливки.</p>
+
+<p>Вторая функция с именем “SumByInteriorColor” выполняет выборку ячеек по цвету заливки и суммирует все значения в этих ячейках.</p>
+
+<p>Обе функции имеют одинаковый синтаксис и принимают три входных аргумента, первые два из которых обязательные, а третий - необязательный:</p>
+
+<ul>
+  <li><code>rRange</code> - диапазон с ячейками для подсчета</li>
+  <li><code>rColorCell</code> - ячейка-образец с цветом заливки</li>
+  <li><code>bSumHide</code> - <code>ИСТИНА</code> или <code>1</code> учитывает скрытые ячейки; <code>ЛОЖЬ</code>, <code>0</code> или опущен(по умолчанию) - скрытые ячейки не подсчитываются.</li>
+</ul>
+
+<h3 id="section">Функция подсчета количества ячеек</h3>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="s1">&#39;---------------------------------------------------------------------------------------</span>
+<span class="s1">&#39;</span> <span class="n">Procedure</span> <span class="err">:</span> <span class="n">CountByInteriorColor</span>
+<span class="s1">&#39; Author    : The_Prist(Щербаков Дмитрий)</span>
+<span class="s1">&#39;</span>             <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">www</span><span class="p">.</span><span class="n">excel-vba</span><span class="p">.</span><span class="n">ru</span>
+<span class="s1">&#39; Purpose   : Функция подсчета ячеек на основе цвета заливки.</span>
+<span class="s1">&#39;</span> <span class="err">Аргументы:</span>
+<span class="s1">&#39;             rRange     - диапазон с ячейками для подсчета.</span>
+<span class="s1">&#39;</span>             <span class="n">rColorCell</span> <span class="p">-</span> <span class="err">ячейка</span><span class="p">-</span><span class="err">образец</span> <span class="err">с</span> <span class="err">цветом</span> <span class="err">заливки</span><span class="p">.</span>
+<span class="s1">&#39;             bSumHide   - ИСТИНА или 1 учитывает скрытые ячейки.</span>
+<span class="s1">&#39;</span>                          <span class="err">ЛОЖЬ</span><span class="p">,</span> <span class="n">0</span> <span class="err">или</span> <span class="err">опущен</span><span class="p">(</span><span class="err">по</span> <span class="err">умолчанию</span><span class="p">)</span> <span class="p">-</span> <span class="err">скрытые</span> <span class="err">ячейки</span> <span class="err">не</span> <span class="err">подсчитываются</span><span class="p">.</span>
+<span class="err">&#39;</span><span class="p">---------------------------------------------------------------------------------------</span>
+<span class="k">Function</span> <span class="n">CountByInteriorColor</span><span class="p">(</span><span class="n">rRange</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">rColorCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Optional</span> <span class="n">bSumHide</span> <span class="n">As</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="n">False</span><span class="p">)</span>
+  <span class="n">Dim</span> <span class="n">lColor</span> <span class="n">As</span> <span class="n">Long</span><span class="p">,</span> <span class="n">rCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">lCnt</span> <span class="n">As</span> <span class="n">Long</span><span class="p">,</span> <span class="n">vVal</span>
+  <span class="n">lColor</span> <span class="p">=</span> <span class="n">rColorCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span>
+  <span class="k">For</span> <span class="n">Each</span> <span class="n">rCell</span> <span class="k">In</span> <span class="n">rRange</span>
+      <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span> <span class="p">=</span> <span class="n">lColor</span> <span class="n">Then</span>
+          <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireRow</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Or</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireColumn</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Then</span>
+              <span class="k">If</span> <span class="n">bSumHide</span> <span class="n">Then</span> <span class="n">lCnt</span> <span class="p">=</span> <span class="n">lCnt</span> <span class="p">+</span> <span class="n">1</span>
+          <span class="k">Else</span>
+              <span class="n">lCnt</span> <span class="p">=</span> <span class="n">lCnt</span> <span class="p">+</span> <span class="n">1</span>
+          <span class="k">End</span> <span class="k">If</span>
+      <span class="k">End</span> <span class="k">If</span>
+  <span class="n">Next</span> <span class="n">rCell</span>
+  <span class="n">CountByInteriorColor</span> <span class="p">=</span> <span class="n">lCnt</span>
+<span class="k">End</span> <span class="k">Function</span></code></pre></div>
+
+<p>Синтаксис этой функции прост:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">CountByInteriorColor</span><span class="p">(</span><span class="n">D8</span><span class="err">:</span><span class="n">AG8</span><span class="p">;</span><span class="nv">$E$65</span><span class="p">)</span></code></pre></div>
+
+<h3 id="section-1">Функция подсчета суммы ячеек</h3>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="s1">&#39;---------------------------------------------------------------------------------------</span>
+<span class="s1">&#39;</span> <span class="n">Procedure</span> <span class="err">:</span> <span class="n">SumByInteriorColor</span>
+<span class="s1">&#39; Author    : The_Prist(Щербаков Дмитрий)</span>
+<span class="s1">&#39;</span>             <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">www</span><span class="p">.</span><span class="n">excel-vba</span><span class="p">.</span><span class="n">ru</span>
+<span class="s1">&#39; Purpose   : Функция суммирования ячеек на основе цвета заливки.</span>
+<span class="s1">&#39;</span> <span class="err">Аргументы:</span>
+<span class="s1">&#39;             rRange     - диапазон с ячейками для суммирования.</span>
+<span class="s1">&#39;</span>             <span class="n">rColorCell</span> <span class="p">-</span> <span class="err">ячейка</span><span class="p">-</span><span class="err">образец</span> <span class="err">с</span> <span class="err">цветом</span> <span class="err">заливки</span><span class="p">.</span>
+<span class="s1">&#39;             bSumHide   - ИСТИНА или 1 учитывает скрытые ячейки.</span>
+<span class="s1">&#39;</span>                          <span class="err">ЛОЖЬ</span><span class="p">,</span> <span class="n">0</span> <span class="err">или</span> <span class="err">опущен</span><span class="p">(</span><span class="err">по</span> <span class="err">умолчанию</span><span class="p">)</span> <span class="p">-</span> <span class="err">скрытые</span> <span class="err">ячейки</span> <span class="err">не</span> <span class="err">суммируются</span><span class="p">.</span>
+<span class="err">&#39;</span><span class="p">---------------------------------------------------------------------------------------</span>
+<span class="k">Function</span> <span class="n">SumByInteriorColor</span><span class="p">(</span><span class="n">rRange</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">rColorCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Optional</span> <span class="n">bSumHide</span> <span class="n">As</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="n">False</span><span class="p">)</span>
+  <span class="n">Dim</span> <span class="n">lColor</span> <span class="n">As</span> <span class="n">Long</span><span class="p">,</span> <span class="n">rCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">dblSum</span> <span class="n">As</span> <span class="n">Double</span><span class="p">,</span> <span class="n">vVal</span>
+  <span class="n">lColor</span> <span class="p">=</span> <span class="n">rColorCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span>
+  <span class="k">For</span> <span class="n">Each</span> <span class="n">rCell</span> <span class="k">In</span> <span class="n">rRange</span>
+      <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span> <span class="p">=</span> <span class="n">lColor</span> <span class="n">Then</span>
+          <span class="n">vVal</span> <span class="p">=</span> <span class="n">rCell</span><span class="p">.</span><span class="n">Value</span>
+          <span class="k">If</span> <span class="n">IsNumeric</span><span class="p">(</span><span class="n">vVal</span><span class="p">)</span> <span class="n">Then</span>
+              <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireRow</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Or</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireColumn</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Then</span>
+                  <span class="k">If</span> <span class="n">bSumHide</span> <span class="n">Then</span> <span class="n">dblSum</span> <span class="p">=</span> <span class="n">dblSum</span> <span class="p">+</span> <span class="n">vVal</span>
+              <span class="k">Else</span>
+                  <span class="n">dblSum</span> <span class="p">=</span> <span class="n">dblSum</span> <span class="p">+</span> <span class="n">vVal</span>
+              <span class="k">End</span> <span class="k">If</span>
+          <span class="k">End</span> <span class="k">If</span>
+      <span class="k">End</span> <span class="k">If</span>
+  <span class="n">Next</span> <span class="n">rCell</span>
+  <span class="n">SumByInteriorColor</span> <span class="p">=</span> <span class="n">dblSum</span>
+<span class="k">End</span> <span class="k">Function</span></code></pre></div>
+
+<p>Синтаксис этой функции следующий:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">SumByInteriorColor</span><span class="p">(</span><span class="n">D8</span><span class="err">:</span><span class="n">AG37</span><span class="p">;</span><span class="n">E63</span><span class="p">)</span></code></pre></div>
+
+<p>При вставке пользовательской функции “CountByInteriorColor” и “SumByInteriorColor” можно воспользоваться либо “Мастером функций”, либо произвести указание диапазона ячеек и ячейку-критерий вручную.</p>
+
+<h2 id="section-2">Описание рабочей формулы</h2>
+
+<p>Готовый пример работы функции “CountByInteriorColor” можно посмотреть на рисунке “Табель выходов с зелеными ячейками”. В нем подсчет отработанного времени производится по следующей формуле:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=((</span><span class="err">Сумма</span> <span class="err">фактически</span> <span class="err">отработанных</span> <span class="err">часов</span><span class="p">)</span> <span class="p">-</span> <span class="p">(</span><span class="err">Норма</span> <span class="err">часов</span> <span class="err">выхода</span> <span class="err">за</span> <span class="err">месяц</span><span class="p">))</span> <span class="p">+</span> <span class="p">((</span><span class="err">Кол</span><span class="p">-</span><span class="err">во</span> <span class="err">дней</span> <span class="err">с</span> <span class="err">переработкой</span><span class="p">)*</span><span class="n">4</span><span class="p">)</span></code></pre></div>
+
+<p>Фактически эта формула получается такой (<em>смотри строку №13 на рисунке</em>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=(</span><span class="n">AH13-AI13</span><span class="p">)</span> <span class="p">+</span> <span class="p">(</span><span class="n">CountByInteriorColor</span><span class="p">(</span><span class="n">D13</span><span class="err">:</span><span class="n">AG13</span><span class="p">;</span><span class="nv">$E$65</span><span class="p">)*</span><span class="n">4</span><span class="p">)</span></code></pre></div>
+
+<p>Думаю, что больше сказать по поводу создания (точнее - вставки готового решения) пользовательских функций и способа выборки ячеек в таблице по цвету их заливки мне нечего.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-13T00:00:00+04:00"><a href="http://zencoder.ru/css/stih-css3/">December 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/stih-css3/" rel="bookmark" title="Стилизация стихотворения с помощью CSS3-селекторов" itemprop="url">Стилизация стихотворения с помощью CSS3-селекторов</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Селекторы стандарта CSS3 имеют поистине безграничные возможности для выделения HTML-элементов без создания дополнительной разметки (которая практически всегда применялась в предыдущих версиях CSS).</p>
+</blockquote>
+
+<p>В этой статье я собираюсь менее чем за 5 минут выполнить стилизацию популярного детского стихотворения “Мерцай, звездочка, мерцай!”, используя CSS3-селекторы.</p>
 
 <h2 id="section">Кодируем стихотворение</h2>
 
@@ -331,14 +329,14 @@ End Function
 
 <p>Некоторые возлагают надежды на грядущие элементы стандарта HTML5, предназначенные специально для форматирования стихотворений, такие как <code>&lt;poem&gt;</code>, <code>&lt;stanza&gt;</code> и <code>&lt;line&gt;</code>. Однако маловероятно, что это будущее наступит в скором времени (<em>если вообще наступит</em>).</p>
 
-<h3 id="section-1">Разметка</h3>
+<h2 id="section-1">Разметка</h2>
 
 <p>В будущей разметке имеются три основных элемента:</p>
 
 <ul>
-  <li><em>заголовок</em>;</li>
-  <li><em>подзаголовок с информацией об авторе</em>;</li>
-  <li><em>само стихотворение, собственно</em>.</li>
+  <li>заголовок;</li>
+  <li>подзаголовок с информацией об авторе;</li>
+  <li>само стихотворение, собственно.</li>
 </ul>
 
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
@@ -378,7 +376,7 @@ End Function
       Twinkle, twinkle, little star.
 <span class="nt">&lt;/p&gt;</span></code></pre></div>
 
-<h3 id="section-2">Стилизация заголовков</h3>
+<h2 id="section-2">Стилизация заголовков</h2>
 
 <p>Прежде чем приступать к стилизации элементов страницы, необходимо добавить базовый сброс стилей и некоторые значения по умолчанию в таблицу стилей:</p>
 
@@ -427,7 +425,7 @@ End Function
   <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<h3 id="section-3">Стихотворение</h3>
+<h2 id="section-3">Стихотворение</h2>
 
 <p>Для основного текста стихотворения добавим интерлиньяж <code>line-height</code> достаточно большого размера для того, чтобы расстояние между строками было большое и такой текст было удобно читать. Также для каждого стиха добавим <code>margin-bottom</code>, чтобы визуально отделить их друг от друга:</p>
 
@@ -436,7 +434,7 @@ End Function
   <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<h3 id="section-4">Волшебные селекторы</h3>
+<h2 id="section-4">Волшебные селекторы</h2>
 
 <p>А вот теперь начнем развлекаться! Первое - добавим декоративный элемент в начале и в конце информации об авторе. Для этого воспользуемся псевдо-элементами <code>:before</code> и <code>:after</code> в сочетании с CSS-свойством <code>content</code>:</p>
 
@@ -448,7 +446,11 @@ End Function
   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39; —&#39;</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<p>Теперь увеличим первую букву стихотворения - так называемая <em>буквица</em> (<code>drop cap</code>). Для этого воспользуемся смежным селектором (<code>+</code>) и псевдо-элементом (<code>:first-child</code>). Смежный селектор позволяет выбрать селекторы, которые следуют сразу выбранным нами селектором внутри одного и того же элемента-родителя (например, внутри одного и того же блока <code>div</code>). Мы выделим первую букву каждого параграфа, который следует сразу за заголовком второго уровня h2, который в нашем примере только один:</p>
+<p>Теперь увеличим первую букву стихотворения - так называемая <em>буквица</em> (<code>drop cap</code>). Для этого воспользуемся смежным селектором (<code>+</code>) и псевдо-элементом (<code>:first-child</code>).</p>
+
+<p>Смежный селектор позволяет выбрать селекторы, которые следуют сразу выбранным нами селектором внутри одного и того же элемента-родителя (например, внутри одного и того же блока <code>div</code>).</p>
+
+<p>Мы выделим первую букву каждого параграфа, который следует сразу за заголовком второго уровня <code>h2</code>, который в нашем примере только один:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">h2</span> <span class="o">+</span> <span class="nt">p</span><span class="nd">:first-letter</span> <span class="p">{</span>
   <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
@@ -475,21 +477,23 @@ End Function
 
 <p>Вот стилизация стихотворения и закончена!</p>
 
-<h3 id="section-5">Некоторые заметки о поддержке браузерами</h3>
+<h2 id="section-5">Некоторые заметки о поддержке браузерами</h2>
 
 <p>Не стоит ожидать, что весь созданный CSS-код будет одинаково работать во всех основных браузерах. Последние версии Safari, Firefox и Opera поддерживают все представленные здесь селекторы. Но Internet Explorer 8 не поддерживает псевдо-элемент <code>:last-child</code>; Internet Explorer 7 не поддерживает псевдо-элементы <code>:last-child</code>, <code>:before</code> и <code>:after</code>; Internet Explorer 6 также не поддерживает псевдо-элемент <code>:first-child</code>, помимо всего прочего.</p>
 
-<h3 id="section-6">Заключение</h3>
+<h2 id="section-6">Заключение</h2>
 
 <p>Эта статья является очень общим и кратким руководством, как использовать селекторы CSS3-стандарта для стилизации HTML-элементов без дополнительных классов, идентификаторов или чрезмерно раздутого кода. Селекторы CSS3 не работают в более старых версиях браузеров, таких как Internet Explorer 6, в которых генерируются только основные CSS-свойства (за редким исключением).</p>
 
 <p>Но это не означает, что текст в окне браузера делается нечитаемым - просто CSS3-селекторы добавляют дополнительное оформление в современных браузерах, которыми пользуются на сегодняшний день только небольшое количество людей.</p>
 
-<h4 id="section-7">Примечание переводчика</h4>
-
-<p>Статья была написано довольно давно - в 2009 году. Что касается поддержки браузерами CSS3-селекторов, то на сегодняшний день изменений не так уже и много. Исключением является факт, что <strong>о браузере IE6 можно забыть</strong>.</p>
+<blockquote>
+  <p>Примечание переводчика: статья была написано довольно давно - в 2009 году. Что касается поддержки браузерами CSS3-селекторов, то на сегодняшний день изменений не так уже и много. Исключением является факт, что о браузере IE6 можно забыть.</p>
+</blockquote>
 
 <p>Оригинал статьи - “<a href="http://webdesignernotebook.com/css/styling-a-poem-with-advanced-css-selectors/" title="Styling a Poem with Advanced CSS Selectors">Styling a Poem with Advanced CSS Selectors</a>”.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -522,10 +526,10 @@ End Function
 <p>Вот краткое описание, взятое из спецификации W3C:</p>
 
 <blockquote>
-  <p>Псевдо-класс :empty относится к элементу, у которого нет потомков.</p>
+  <p>Псевдо-класс <code>:empty</code> относится к элементу, у которого нет потомков.</p>
 </blockquote>
 
-<p>Звучит просто и понятно, не правда ли? Потому что это действительно так – псевдо-класс <code>:empty</code> применяется к элементам, которые полностью пустые; например, для пустого параграфа:</p>
+<p>Звучит просто и понятно, не правда ли? Потому что это действительно так - псевдо-класс <code>:empty</code> применяется к элементам, которые полностью пустые; например, для пустого параграфа:</p>
 
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
 
@@ -554,108 +558,49 @@ End Function
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
   <span class="nt">&lt;caption&gt;</span>A simple table<span class="nt">&lt;/caption&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">rowspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>
-      Some headings
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">&gt;</span>
-      More headings
-    <span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">rowspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>Some headings<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">&gt;</span>More headings<span class="nt">&lt;/th&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>
-      Great
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>
-      Brilliant
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>
-      Genius
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>
-      Good
-    <span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Great<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Brilliant<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Genius<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Good<span class="nt">&lt;/th&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-      Interesting totals
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      155
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      165
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      70
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      140
-    <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Interesting totals<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>155<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>165<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>70<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>140<span class="nt">&lt;/td&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-      Curious
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      5
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      35
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      50
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      15
-    <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Curious<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>35<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>50<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>15<span class="nt">&lt;/td&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-      Awesome
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      75
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      90
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      5
-    <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Awesome<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>75<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>90<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-      Fabulous
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      30
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      20
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      80
-    <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Fabulous<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>30<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>20<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>80<span class="nt">&lt;/td&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
   <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-      Nice
-    <span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      45
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      40
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-    <span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>
-      40
-    <span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Nice<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>45<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
   <span class="nt">&lt;/tr&gt;</span>
 <span class="nt">&lt;/table&gt;</span></code></pre></div>
 
@@ -669,6 +614,7 @@ End Function
 
 <p>Если вас этот селектор заинтересовал, то скажу, что он поддерживается всеми последними версиями браузеров Firefox, Safari, Chrome и Opera. И возможно, он работает в браузере Internet Explorer 9, наравне с остальными селекторами стандарта CSS3.</p>
 
+<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -677,7 +623,7 @@ End Function
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-11T00:00:00+04:00"><a href="http://zencoder.ru/css-frameworks-evil/">December 11, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-12-11T00:00:00+04:00"><a href="http://zencoder.ru/css/css-frameworks-evil/">December 11, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -687,11 +633,17 @@ End Function
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/css-frameworks-evil/" rel="bookmark" title="CSS-фреймворки - это зло?" itemprop="url">CSS-фреймворки - это зло?</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-frameworks-evil/" rel="bookmark" title="CSS-фреймворки - это зло?" itemprop="url">CSS-фреймворки - это зло?</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>У CSS-фреймворков есть одна общая черта - они не признаются многими веб-дизайнерами. Чрезмерно раздутый программный код и несемантические имена классов - обычно это два главных аргумента, высказываемых против их использования. Даже не имея опыта работы хотя бы с одним из CSS-фреймворков, я была точно такого же мнения о них. Но, выполняя недавно одно небольшое исследование, я столкнулась с некоторыми из фреймворков и изменила свое мнение об этих продуктах.</p>
+    <blockquote>
+  <p>У CSS-фреймворков есть одна общая черта - они не признаются многими веб-дизайнерами.</p>
+</blockquote>
+
+<p>Чрезмерно раздутый программный код и несемантические имена классов - обычно это два главных аргумента, высказываемых против их использования. Даже не имея опыта работы хотя бы с одним из CSS-фреймворков, я была точно такого же мнения о них.</p>
+
+<p>Но, выполняя недавно одно небольшое исследование, я столкнулась с некоторыми из фреймворков и изменила свое мнение об этих продуктах.</p>
 
 <h2 id="section">Существующие фреймворки</h2>
 
@@ -719,10 +671,7 @@ End Function
 
 <p>Фреймворк CSS Blueprint был создан в 2007 году автором Olav Bjørkøy. Этот фреймворк считается <strong>наиболее всесторонним</strong>, так как в нем уделено внимание не только созданию разметки на основе модульной сетки, но и продуманной системе типографики, учитывающей такой важный момент веб-дизайна, как <em>вертикальный ритм</em>. Во фреймворк также включена таблица сброса стилей (reset) и таблица стилей для вывода на печать (print), а также основные стили для веб-форм:</p>
 
-<figure id="attachment_808" style="width: 500px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/blueprint.jpg" alt="Blueprint CSS" width="500" height="472" class="size-full wp-image-808" />][4]
-  <figcaption class="wp-caption-text">Blueprint CSS</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/blueprint.jpg" alt="Blueprint CSS" class="center-image" /></p>
 
 <p>Этот фреймворк использует 24-колоночную сетку (каждая колонка шириной 30 пикселей и у каждой колонки есть правый <code>margin</code> в 10 пикселей). Но вы можете создать свою собственную разметку с помощью встроенного конструктора.</p>
 
@@ -757,23 +706,17 @@ End Function
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.b</span> <span class="p">{</span> <span class="k">background</span><span class="o">:</span><span class="m">#d4d4d4</span><span class="p">;</span> <span class="k">margin-bottom</span><span class="o">:</span><span class="m">10px</span><span class="p">;</span> <span class="p">}</span></code></pre></div>
 
-<p>Ниже показана картинка уже готового каркаса, созданного во фреймворке CSS Blueprint:</p>
+<p>Ниже показана картинка уже готового каркаса, созданного во фреймворке “CSS Blueprint”:</p>
 
-<figure id="attachment_807" style="width: 500px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/wireblueprint.jpg" alt="Каркас, созданный в фреймворке CSS Blueprint" width="500" height="346" class="size-full wp-image-807" />][5]
-  <figcaption class="wp-caption-text">Каркас, созданный в фреймворке CSS Blueprint</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/wireblueprint.jpg" alt="Каркас, созданный в фреймворке CSS Blueprint" class="center-image" /></p>
 
 <p>Создание этого фреймворка заняло у меня меньше 10 минут (я знаю, что каркас получился очень простым), включая быстрое чтение “Руководства пользователя”.</p>
 
 <h3 id="gs">960gs</h3>
 
-<p>Фреймворк 960 Grid System был создан в марте 2008 года автором Nathan Smith. При его разработке особое внимание уделялось модульной сетке; несмотря на то, что этот фреймворк также предоставляет поддержку основных типографских стилей, основная его задача - создание кросс-браузерного каркаса страницы (имеющего полную поддержку браузерами и идентификатор A-Grade <a href="http://developer.yahoo.com/yui/articles/gbs/">по классификации Yahoo</a>). А также самых разных модификаций, основанных на общем шаблоне модульной сетки.</p>
+<p>Фреймворк 960 Grid System был создан в марте 2008 года автором Nathan Smith. При его разработке особое внимание уделялось модульной сетке; несмотря на то, что этот фреймворк также предоставляет поддержку основных типографских стилей, основная его задача - создание кросс-браузерного каркаса страницы (имеющего полную поддержку браузерами и идентификатор A-Grade [по классификации Yahoo][6]). А также самых разных модификаций, основанных на общем шаблоне модульной сетки.</p>
 
-<figure id="attachment_806" style="width: 500px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/960gs.jpg" alt="Фреймворк 960 Grid System" width="500" height="472" class="size-full wp-image-806" />][7]
-  <figcaption class="wp-caption-text">Фреймворк 960 Grid System</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/960gs.jpg" alt="Фреймворк 960 Grid System" class="center-image" /></p>
 
 <p>В этой статье для фреймворка 960gs был создан еще более проста разметка, так как основная идея была показать разницу между именованием классов и вложенностью между различными фреймворками.</p>
 
@@ -798,21 +741,15 @@ End Function
 
 <p>И вот как будет выглядеть эта разметка в окне браузера:</p>
 
-<figure id="attachment_805" style="width: 500px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/wire960gs.jpg" alt="Каркас, созданный во фреймворке 960 Grid System" width="500" height="346" class="size-full wp-image-805" />][8]
-  <figcaption class="wp-caption-text">Каркас, созданный во фреймворке 960 Grid System</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/wire960gs.jpg" alt="Каркас, созданный во фреймворке 960 Grid System" class="center-image" /></p>
 
-<p>Также, как и с Blueprint, для фреймворка 960 Grid System существует несколько online-сервисов для дополнительной настройки этого фреймворка. Сервис <a href="http://www.designinfluences.com/fluid960gs/">Fluid 960 Grid System</a> основан на оригинальном 960gs, но позволяет создавать как фиксированные, так и резиновые макеты; а также включает в себя основные стили для таких элементов, как навигация, таблицы, формы, статьи и типографику.</p>
+<p>Также, как и с Blueprint, для фреймворка 960 Grid System существует несколько online-сервисов для дополнительной настройки этого фреймворка. Сервис [Fluid 960 Grid System][9] основан на оригинальном 960gs, но позволяет создавать как фиксированные, так и резиновые макеты; а также включает в себя основные стили для таких элементов, как навигация, таблицы, формы, статьи и типографику.</p>
 
 <h3 id="yui-3-grids">YUI 3 Grids</h3>
 
 <p>Фреймворк YUI 3 Grids является частью библиотеки Yahoo! User Interface (YUI). В состав библиотеки, помимо CSS, входят скрипты на JavaScript. Этот фреймворк работает точно также, как и все остальные рассмотренные в этой статье фреймворки, но с одной лишь разницей: в нем нет контейнера-обертки с предустановленной шириной; есть только предустановленные “единицы”, в которых измеряется ширина контейнера и которые наследуют все остальные контейнеры, в него вложенные.</p>
 
-<figure id="attachment_804" style="width: 500px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/yui.jpg" alt="Фреймворк YUI 3 Grids" width="500" height="472" class="size-full wp-image-804" />][10]
-  <figcaption class="wp-caption-text">Фреймворк YUI 3 Grids</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/yui.jpg" alt="Фреймворк YUI 3 Grids" class="center-image" /></p>
 
 <p>В этом случае, чтобы задать ширину для контейнера модульной сетки, эту ширину устанавливают для элемента <code>body</code>:</p>
 
@@ -821,7 +758,9 @@ End Function
   <span class="k">width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<p>Свойство <code>margin: auto</code> размещает контейнер по центру страницы. Затем, также как и в остальных фреймворках, мы должны добавить контейнер-обертку с классом <code>yui3-g</code>. Контейнеры должны принимать имена классов, основанных на процентах от ширины, которую они должны занимать. Например, если боковая панель занимает треть от общей ширины всей страницы, имя ее класса должно быть <code>yui3-u-1-3</code>; если основной контейнер должен занимать две трети от всей ширины страницы, имя класса для нее должно быть следующим - <code>yui3-u-2-3</code>. YUI имеет список предустановленных классов единиц (этот список представлен на домашней странице фреймворка).</p>
+<p>Свойство <code>margin: auto</code> размещает контейнер по центру страницы. Затем, также как и в остальных фреймворках, мы должны добавить контейнер-обертку с классом <code>yui3-g</code>. Контейнеры должны принимать имена классов, основанных на процентах от ширины, которую они должны занимать.</p>
+
+<p>Например, если боковая панель занимает треть от общей ширины всей страницы, имя ее класса должно быть <code>yui3-u-1-3</code>; если основной контейнер должен занимать две трети от всей ширины страницы, имя класса для нее должно быть следующим - <code>yui3-u-2-3</code>. YUI имеет список предустановленных классов единиц (этот список представлен на домашней странице фреймворка).</p>
 
 <p>Окончательная HTML-разметка имеет вид:</p>
 
@@ -842,14 +781,11 @@ End Function
 
 <p>И готовый вид будет таким:</p>
 
-<figure id="attachment_803" style="width: 500px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/wireyui.jpg" alt="Каркас, созданный во фреймворке YUI 3 Grids" width="500" height="346" class="size-full wp-image-803" />][11]
-  <figcaption class="wp-caption-text">Каркас, созданный во фреймворке YUI 3 Grids</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/wireyui.jpg" alt="Каркас, созданный во фреймворке YUI 3 Grids" class="center-image" /></p>
 
 <p>Обратите внимание, что <strong>фреймворк YUI 3 Grids не имеет промежутков (<em>gutter</em>) между колонками</strong> - я считаю это недостатком.</p>
 
-<h3 id="section-3">Вывод статьи</h3>
+<h2 id="section-3">Вывод статьи</h2>
 
 <p>Из трех рассмотренных в этой статье фреймворков для меня однозначным победителем является <strong>CSS Blueprint</strong>. Руководство пользователя по этому фреймворку размещено на главной странице сайта (не нужно искать); оно написано простым и ясным языком, со множеством примеров. А тот факт, что в него включена хорошая поддержка типографики, добавляет этому фреймворку большой плюс.</p>
 
@@ -859,24 +795,25 @@ End Function
 
 <p>Большинство людей, с которыми я общалась во время своих экспериментов с фреймворками, сказали, что они вообще не пользуются ими. Но те, которые говорили, что пользуются, упоминали именно фреймворк 960gs. Поэтому, возможно, я в его изучении зашла “не с той стороны”. Существует множество красивых сайтов, построенных на этом фреймворке (<em>для этого просто посмотрите на домашнюю страницу проекта</em>) наподобие великолепного Black Estate Vineyard:</p>
 
-<figure id="attachment_802" style="width: 489px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/12/blackestate-489x600.jpg" alt="Black Estate Vineyard на 960gs" width="489" height="600" class="size-medium wp-image-802" />][13]
-  <figcaption class="wp-caption-text">Black Estate Vineyard на 960gs</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/blackestate.jpg" alt="Black Estate Vineyard на 960gs" class="center-image" /></p>
 
 <p>Тот факт, что фреймворк YUI является подстраиваемым под любую ширину - это большой плюс. Но уменьшенное количество комбинаций с “единицами” делает использование этого фреймворка несколько неудобным; мне показалось немного неправильным, что существуют какие-то ограничения при работе с разметкой страницы. Если мое утверждение неверное, прошу меня исправить, так как я не нашла объяснения данного момента в руководстве пользователя.</p>
 
-<h3 id="section-4">Заключение</h3>
+<h2 id="section-4">Заключение</h2>
 
 <blockquote>
-  <p>Прим. переводчика: схалтурил - заключение мною переведено только частично; ну любит девушка многословные выводы … )))</p>
+  <p>Прим. переводчика: схалтурил - заключение мною переведено только частично; ну любит девушка многословные выводы …</p>
 </blockquote>
 
 <p>Как уже упоминалось мною раньше, я считаю CSS-фреймворки “быстрым решением”. И я все еще считаю, что так оно и есть; но в то же время мне они не кажутся плохой штукой. Зачем тратить часы на создание прекрасного, но созданного вручную CSS-макета, когда существуют великолепные готовые решения, уже созданные за нас? Жизнь - это не только кодинг (<em>это действительно так</em>) и существуют более прекрасные вещи, которые я могу сделать за то время, которое я бы потратила на решение проблем, уже решенных за меня.</p>
 
-<p>Однако, это не означает, что я призываю всех и всегда использовать какой-либо из фреймворков при создании проектов. В идеале вам следует работать со <strong>своим собственным фреймворком</strong> или шаблоном, адаптированным под собственные нужды. Это означает, что не следует относиться к фреймворкам так, что будто это нечто ни на что негодное; а как к инструменту, который полезен в некоторых случаях. Готовые фреймворки могут послужить основой или вдохновением для создания своего собственного фреймворка. И я, конечно, не осуждаю тех дизайнеров или дизайнерские агентства, которые используют “решения из коробки” наподобие Blueprint, так как выгоды использования превосходят такие незначительные минусы, как слишком раздутый код или несемантичные имена классов.</p>
+<p>Однако, это не означает, что я призываю всех и всегда использовать какой-либо из фреймворков при создании проектов. В идеале вам следует работать со <strong>своим собственным фреймворком</strong> или шаблоном, адаптированным под собственные нужды.</p>
 
-<p><em>Мой вердикт: нет, фреймворки - это не зло.</em></p>
+<p>Это означает, что не следует относиться к фреймворкам так, что будто это нечто ни на что негодное; а как к инструменту, который полезен в некоторых случаях. Готовые фреймворки могут послужить основой или вдохновением для создания своего собственного фреймворка.</p>
+
+<p>И я, конечно, не осуждаю тех дизайнеров или дизайнерские агентства, которые используют “решения из коробки” наподобие Blueprint, так как выгоды использования превосходят такие незначительные минусы, как слишком раздутый код или несемантичные имена классов.</p>
+
+<p>Мой вердикт: нет, фреймворки - это не зло.</p>
 
 <p>Оригинал статьи - <a href="http://webdesignernotebook.com/css/are-css-frameworks-evil/" title="Are CSS-Frameworks Evil?">Are CSS Frameworks Evil?</a></p>
 
@@ -888,7 +825,7 @@ End Function
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-10T00:00:00+04:00"><a href="http://zencoder.ru/unknown-font-size-adjust/">December 10, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-12-10T00:00:00+04:00"><a href="http://zencoder.ru/css/unknown-font-size-adjust/">December 10, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -898,30 +835,31 @@ End Function
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/unknown-font-size-adjust/" rel="bookmark" title="Неизвестное свойство font-size-adjust" itemprop="url">Неизвестное свойство font-size-adjust</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/unknown-font-size-adjust/" rel="bookmark" title="Неизвестное свойство font-size-adjust" itemprop="url">Неизвестное свойство font-size-adjust</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>При создании CSS-правил сталкивались ли вы с ситуацией, когда при откате (fallback) шрифта у последнего менялась пропорциональность и текст начинал выглядеть больше или меньше оригинального? Возможно, новое замечательное свойство <code>font-size-adjust</code> из стандарта CSS3 поможет нам исправить ситуацию?</p>
+    <blockquote>
+  <p>При создании CSS-правил сталкивались ли вы с ситуацией, когда при откате (fallback) шрифта у последнего менялась пропорциональность и текст начинал выглядеть больше или меньше оригинального?</p>
+</blockquote>
 
-<h3 id="font-size-adjust">Что делает свойство font-size-adjust</h3>
+<p>Возможно, новое замечательное свойство <code>font-size-adjust</code> из стандарта CSS3 поможет нам исправить ситуацию?</p>
+
+<h2 id="font-size-adjust">Что делает свойство font-size-adjust</h2>
 
 <p>Первое, что нужно сделать - это использовать браузер Firefox для того, чтобы страница с примером отображалась правильно. Да, не Safari, а только Firefox!</p>
 
-<p>Свойство <code>font-size-adjust</code> позволяет установить оптимальный коэффициент пропорциональности при использовании отката шрифта; если шрифт-заменитель имеет коэффициент пропорциональности, отличающийся от такого же коэффициента у главного шрифта, высота текста <code>x-height</code> (которая приблизительно равна размеру буквы <code>х</code> этого шрифта в нижнем регистре) останется неизменной.</p>
+<p>Свойство <code>font-size-adjust</code> позволяет установить <em>оптимальный коэффициент пропорциональности</em> при использовании отката шрифта; если шрифт-заменитель имеет коэффициент пропорциональности, отличающийся от такого же коэффициента у главного шрифта, высота текста <code>x-height</code> (которая приблизительно равна размеру буквы <code>х</code> этого шрифта в нижнем регистре) останется неизменной.</p>
 
 <p>Давайте рассмотрим рисунок ниже:</p>
 
-<figure id="attachment_791" style="width: 390px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2013/12/fontsizeadjust-compare.png" alt="Сравнение двух шрифтов" width="390" height="279" class="size-full wp-image-791" />][1]
-	<figcaption class="wp-caption-text">Сравнение двух шрифтов</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/fontsizeadjust-compare.png" alt="Сравнение двух шрифтов" class="center-image" /></p>
 
-<p>Как видим на рисунке, шрифт Baskerville и Georgia имеют разный <strong>коэффициент пропорциональности</strong>. Если произойдет замещение шрифта (с учетом того, что шрифт Baskerville является главным), то в реальности размер шрифта визуально будет больше, при одинаковой величине.</p>
+<p>Как видим на рисунке, шрифт Baskerville и Georgia имеют разный <em>коэффициент пропорциональности</em>. Если произойдет замещение шрифта (с учетом того, что шрифт Baskerville является главным), то в реальности размер шрифта визуально будет больше, при одинаковой величине.</p>
 
-<h4 id="section">Прим. переводчика</h4>
-
-<p><strong>Еще раз своими словами</strong>. На картинке видно, что одинаковые буквы <strong>А</strong> размером 320 пикселей у шрифта Baskerville и у шрифта Georgia на самом деле <strong>не одинаковые</strong>. Пропорции (о которых говорит Inyaili) букв у этих шрифтов разные! Теперь вспомним, как задается обычно шрифт в CSS-правилах.</p>
+<blockquote>
+  <p>Прим. переводчика. Еще раз - своими словами. На картинке видно, что одинаковые буквы <strong>А</strong> размером 320 пикселей у шрифта Baskerville и у шрифта Georgia на самом деле не одинаковые. Пропорции (о которых говорит Inyaili) букв у этих шрифтов разные! Теперь вспомним, как задается обычно шрифт в CSS-правилах.</p>
+</blockquote>
 
 <p>К примеру, так:</p>
 
@@ -941,25 +879,25 @@ End Function
 
 <p>Не путайте свойство <code>font-size-adjust</code> со свойством <code>-webkit-text-size-adjust</code>, которое используется для подстройки размера текста на iPhone.</p>
 
-<h3 id="font-size-adjust-1">Как определить значение свойства font-size-adjust</h3>
+<h2 id="font-size-adjust-1">Как определить значение свойства font-size-adjust</h2>
 
 <p>Отрывок из спецификации W3C однозначен:</p>
 
 <blockquote>
-  <p>Коэффициент пропорциональности для выбранных шрифтов может быть высчитан путем сравнения одного и того же текста, но с разным значением <code>font-size-adjust</code>. Если значение свойства <code>font-size-adjust</code> подобрано верно, то при одинаковом размере шрифта текст останется неизменным для всех используемых на странице шрифтов. </p>
+  <p>Коэффициент пропорциональности для выбранных шрифтов может быть высчитан путем сравнения одного и того же текста, но с разным значением <code>font-size-adjust</code>. Если значение свойства <code>font-size-adjust</code> подобрано верно, то при одинаковом размере шрифта текст останется неизменным для всех используемых на странице шрифтов.</p>
 </blockquote>
 
 <p>Ниже я собираюсь на примере повторить вышесказанное. Давайте посмотрим на следующий код, в котором имеется параграф с двумя <code>span</code>.</p>
-
-<p>CSS-код:</p>
 
 <div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
 	<span class="k">font-family</span><span class="o">:</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">;</span>
 	<span class="k">font-size</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
 <span class="p">}</span>
+
 <span class="nt">span</span><span class="p">{</span>
 	<span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
 <span class="p">}</span>
+
 <span class="nc">.adjust</span><span class="p">{</span>
 	<span class="k">font-size</span><span class="o">-</span><span class="n">adjust</span><span class="o">:</span> <span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
@@ -971,9 +909,9 @@ End Function
 
 <p>Оба элемента <code>span</code> наследуют свойство <code>font-family</code> от своего родителя (элемента <code>p</code>), но второй элемент <code>span</code> также имеет еще и свойство <code>font-size-adjust</code>, заданное через класс <code>adjust</code>, значение которого выбрано наугад - <code>0.5</code>.</p>
 
-<p>Если вы откроете страницу примера (http://webdesignernotebook.com/examples/font-size-adjust-test.html), то взгляните на образец слева: высота красных квадратов не совпадает - значение свойства <code>font-size-adjust</code> подобрано неверно.</p>
+<p>Если вы откроете <a href="http://webdesignernotebook.com/examples/font-size-adjust-test.html" title="Example Font Size Adjust">страницу примера</a>, то взгляните на образец слева: высота красных квадратов не совпадает - значение свойства <code>font-size-adjust</code> подобрано неверно.</p>
 
-<p><em>[У вас все квадраты на странице примера имеют одинаковую высоту? Что я говорила? Firefox …]</em></p>
+<p><em>У вас все квадраты на странице примера имеют одинаковую высоту? Что я говорила?</em></p>
 
 <p>После нескольких экспериментов я выбрала значение <code>0.455</code>. И CSS-код, создающий второй пример (расположенный на странице справа).</p>
 
@@ -981,34 +919,30 @@ End Function
 	<span class="k">font-family</span><span class="o">:</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">;</span>
 	<span class="k">font-size</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
 <span class="p">}</span>
+
 <span class="nt">span</span><span class="p">{</span>
 	<span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#00ff00</span><span class="p">;</span>
 <span class="p">}</span>
+
 <span class="nc">.adjust</span><span class="p">{</span>
 	<span class="k">font-size</span><span class="o">-</span><span class="n">adjust</span><span class="o">:</span> <span class="m">0</span><span class="o">.</span><span class="m">455</span><span class="p">;</span>
 <span class="p">}</span></code></pre></div>
 
-<p>Если вы снова перейдете на страницу примера (http://webdesignernotebook.com/examples/font-size-adjust-test.html), то обнаружите, что квадраты с зелеными границами имеют одинаковую высоту (<em>прим. переводчика - у меня они имели не совсем одинаковую высоту</em>) - то есть теперь у нас величина свойства <code>font-size-adjust</code> для выбранных шрифтов установлена верно.</p>
+<p>Если вы снова перейдете на <a href="http://webdesignernotebook.com/examples/font-size-adjust-test.html" title="Example Font Size Adjust">страницу примера</a>, то обнаружите, что квадраты с зелеными границами имеют одинаковую высоту (<em>прим. переводчика - у меня они имели не совсем одинаковую высоту</em>) - то есть теперь у нас величина свойства <code>font-size-adjust</code> для выбранных шрифтов установлена верно.</p>
 
-<h3 id="font-size-adjust-2">Пример работы свойства font-size-adjust</h3>
+<h2 id="font-size-adjust-2">Пример работы свойства font-size-adjust</h2>
 
-<p>Для того чтобы показать, как в действительности работает свойство <code>font-size-adjust</code> для текста, мною был создан следующий пример - http://webdesignernotebook.com/examples/font-size-adjust.html.</p>
+<p>Для того чтобы показать, как в действительности работает свойство <code>font-size-adjust</code> для текста, мною был создан <a href="http://webdesignernotebook.com/examples/font-size-adjust-test.html" title="Example Font Size Adjust">следующий пример</a>.</p>
 
-<p>На этой странице font stack состоит из следующих шрифтов: Calibri, Lucida Sans и Verdana (именно в этом порядке шрифты должны отображаться на странице в окне браузера).</p>
+<p>На этой странице <code>font stack</code> состоит из следующих шрифтов: Calibri, Lucida Sans и Verdana (именно в этом порядке шрифты должны отображаться на странице в окне браузера).</p>
 
 <p>Браузер Safari генерирует эту страницу следующим образом:</p>
 
-<figure id="attachment_793" style="width: 597px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2013/12/font-size-adjust-safari.png" alt="Страница с правилом font-size-adjust в браузере Safari" width="597" height="361" class="size-full wp-image-793" />][2]
-	<figcaption class="wp-caption-text">Страница с правилом font-size-adjust в браузере Safari</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/font-size-adjust-safari.png" alt="Страница с правилом font-size-adjust в браузере Safari" class="center-image" /></p>
 
 <p>А вот так генерирует эту страницу браузер Firefox:</p>
 
-<figure id="attachment_794" style="width: 597px;" class="wp-caption aligncenter">
-	[<img src="http://localhost:7788/third/wp-content/uploads/2013/12/font-size-adjust-ff.png" alt="Страница с правилом font-size-adjust в браузере Firefox" width="597" height="357" class="size-full wp-image-794" />][3]
-	<figcaption class="wp-caption-text">Страница с правилом font-size-adjust в браузере Firefox</figcaption>
-</figure>
+<p><img src="http://zencoder.ru/images/uploads/2013/12/font-size-adjust-ff.png" alt="Страница с правилом font-size-adjust в браузере Firefox" class="center-image" /></p>
 
 <p>Как видите, браузер Firefox поддерживает одинаковую x-высоту (<code>x-height</code>) букв в зависимости от того, какой шрифт используется.</p>
 
@@ -1016,20 +950,21 @@ End Function
 
 <p>Кроме того, даже не смотря на то, что первый блок <code>div</code> имеет корректный font stack, мне пришлось вручную прописывать в правилах шрифты Lucida Sans и Verdana для остальных блоков <code>div</code>. Так что вы (и я) можете заметить разницу несмотря на то, что установлены все три шрифта.</p>
 
-<h3 id="section-1">Заключение</h3>
+<h2 id="section">Заключение</h2>
 
-<p>Догадываюсь, что использование свойства <code>font-size-adjust</code> в конечном счете имеет только негативное применение. Но этот вопрос может быть заголовком уже другой статьи, цель же этой - просто пример использования достаточно малоизвестного CSS3-свойства, которое может быть полезным в некоторых случаях. </p>
+<p>Догадываюсь, что использование свойства <code>font-size-adjust</code> в конечном счете имеет только негативное применение. Но этот вопрос может быть заголовком уже другой статьи, цель же этой - просто пример использования достаточно малоизвестного CSS3-свойства, которое может быть полезным в некоторых случаях.</p>
 
-<p>Признаюсь, что я не тестировала свойство <code>font-size-adjust</code> в реальных условиях, поэтому была бы рада услышать ваши отзывы по этому поводу.<br />
-Данное свойство на сегодняшний день поддерживается только браузером Firefox версии от 1.0 до 3.0.</p>
+<p>Признаюсь, что я не тестировала свойство <code>font-size-adjust</code> в реальных условиях, поэтому была бы рада услышать ваши отзывы по этому поводу. Данное свойство на сегодняшний день поддерживается только браузером Firefox версии от 1.0 до 3.0.</p>
 
-<p>У Inyaili de Leon есть еще одна интересная статья, которую планируется мною прочитать - “Будущее CSS типографики” (The Future Of CSS Typography) на малоизвестном ресурсе для дизайнеров Smashing Magazine ))</p>
+<p>У Inyaili de Leon есть еще одна интересная статья, которую планируется мною прочитать - “Будущее CSS типографики” (The Future Of CSS Typography) на малоизвестном ресурсе для дизайнеров Smashing Magazine.</p>
 
-<h4 id="ps-">P.S. переводчика</h4>
-
-<p>Интересная, как и всегда, у девушки получилась статья. Для меня свойство <code>font-size-adjust</code> вообще было открытием. Помимо этого, есть масса других статей (<em>в том числе русскоязычных</em>) на тему <code>font-size-adjust</code>, но эта мне показалась самой лучшей, так как автор не лениться пробовать на практике те вопросы, которые описывает в статье. Сделал перевод в меру своих сил, поэтому могут быть неточности, конечно.</p>
+<blockquote>
+  <p>Примечание переводчика: интересная, как и всегда, у девушки получилась статья. Для меня свойство <code>font-size-adjust</code> вообще было открытием. Помимо этого, есть масса других статей (<em>в том числе русскоязычных</em>) на тему <code>font-size-adjust</code>, но эта мне показалась самой лучшей, так как автор не лениться пробовать на практике те вопросы, которые описывает в статье. Сделал перевод в меру своих сил, поэтому могут быть неточности, конечно.</p>
+</blockquote>
 
 <p>Оригинал статьи расположен по адресу - “<a href="http://webdesignernotebook.com/css/the-little-known-font-size-adjust-css3-property/" title="The Little Known font-size-adjust CSS3 Property">The Little Known font-size-adjust CSS3 Property</a>”.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
