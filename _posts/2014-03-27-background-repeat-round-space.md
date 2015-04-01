@@ -31,7 +31,7 @@ share: true
 }
 {% endhighlight %}
 
-![Свойство background-repeat: repeat]({{site.url}}/images/uploads/2014/03/background-repeat_repeat.jpg)
+![Свойство background-repeat: repeat]({{site.url}}/images/uploads/2014/03/background-repeat_repeat.jpg){:.center-image}
 
 Видим, как браузер аккуратно сделал все, что мы от него требовали - размножил фоновое изображение по горизонтали и по вертикали. Что не вместилось в блок, то было обрезано. Получилось несколько некрасиво; но зато - что требовали.
 
@@ -55,7 +55,7 @@ share: true
 }
 {% endhighlight %}
 
-![Свойство background-repeat: round]({{site.url}}/images/uploads/2014/03/background-repeat_round.jpg)
+![Свойство background-repeat: round]({{site.url}}/images/uploads/2014/03/background-repeat_round.jpg){:.center-image}
 
 Результат получился не слишком красивый, конечно. Но зачет - попытка сделана. А если быть более точным и без всякого "юмора", то такой способ хорошо подойдет для фоновых изображений небольшого размера.
 
@@ -79,7 +79,7 @@ share: true
 }
 {% endhighlight %}
 
-![Свойство background-repeat: space]({{site.url}}/images/uploads/2014/03/background-repeat_space.jpg)
+![Свойство background-repeat: space]({{site.url}}/images/uploads/2014/03/background-repeat_space.jpg){:.center-image}
 
 Мною намеренно были изменены размер блока, для которого "прописывалось" фоновое изображение; и размер самого изображения также. Все было сделано с целью более наглядного представления, как работает значение `space` для свойства `background-repeat`.
 

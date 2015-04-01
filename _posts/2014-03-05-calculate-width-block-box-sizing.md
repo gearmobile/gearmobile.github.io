@@ -2,8 +2,8 @@
 title: "Вычисление ширины блока через box-sizing"
 layout: post
 categories: css
-share: true
 tags: [box-sizing, css]
+share: true
 ---
 
 > В CSS3 появилось свойство `box-sizing`, смысл которого в способе вычисления ширины HTML-блока браузером. Но, прежде чем переходить к его рассмотрению, сначала давайте вспомним, как обычно браузер производит расчет ширины блока элемента в HTML-разметке?
@@ -16,7 +16,7 @@ tags: [box-sizing, css]
 200px + 25px*2 + 10px*2 + 15px*2 = 300px
 {% endhighlight %}
 
-![Модель расчета ширины блока в браузере по умолчанию]({{site.url}}/images/uploads/2014/03/content-box.jpg)
+![Модель расчета ширины блока в браузере по умолчанию]({{site.url}}/images/uploads/2014/03/content-box.jpg){:.center-image}
 
 Однако, были времена, когда не все браузеры вычисляли размеры блока элемента подобным образом. Существовал Internet Explorer версии 5/6, который ширину блока считал несколько иначе: **из заданной ширины блока вычитались padding и border, получалась результирующая ширина области content**. В те времена веб-разработчики "показывали пальцем" на этот браузер и говорили, что это ошибка и недочет разработчиков IE5/6.
 
@@ -36,7 +36,7 @@ box-sizing: content-box
 
 Ширина блока равна сумме: `Width = Width (Content) + Padding + Border + Margin`
 
-![Свойство box-sizing со значением content-box]({{site.url}}/images/uploads/2014/03/content-box.jpg)
+![Свойство box-sizing со значением content-box]({{site.url}}/images/uploads/2014/03/content-box.jpg){:.center-image}
 
 ## Свойство box-sizing: padding-box
 
@@ -48,7 +48,7 @@ box-sizing: padding-box
 
 Ширина блока равна сумме: `Width = Width (Content + Padding) + Border + Margin`
 
-![Свойство box-sizing со значением padding-box]({{site.url}}/images/uploads/2014/03/padding-box.jpg)
+![Свойство box-sizing со значением padding-box]({{site.url}}/images/uploads/2014/03/padding-box.jpg){:.center-image}
 
 ## Свойство box-sizing: border-box
 
@@ -60,7 +60,7 @@ box-sizing: border-box
 
 Ширина блока равна сумме: `Width = Width (Content + Padding + Border) + Margin`
 
-![Свойство box-sizing со значением border-box]({{site.url}}/images/uploads/2014/03/border-box.jpg)
+![Свойство box-sizing со значением border-box]({{site.url}}/images/uploads/2014/03/border-box.jpg){:.center-image}
 
 ## Практический пример свойства box-sizing
 
@@ -118,7 +118,7 @@ body {
 }
 {% endhighlight %}
 
-![Свойство box-sizing со значением content-box]({{site.url}}/images/uploads/2014/03/box-sizing_default.jpg)
+![Свойство box-sizing со значением content-box]({{site.url}}/images/uploads/2014/03/box-sizing_default.jpg){:.center-image}
 
 Блоки-потомки четко вписываются в блок-родитель, так как у них нет `border`, `padding` и `margin`; ширина блоков-потомков точно равна половине ширине блока-родителя.
 
@@ -138,7 +138,7 @@ body {
 
 Картина будет заранее предсказуемая - один из блоков-потомков опуститься вниз из-за добавления `padding: 5px` к обоим блокам:
 
-![Свойство box-sizing со значением content-box и padding: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding.jpg)
+![Свойство box-sizing со значением content-box и padding: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding.jpg){:.center-image}
 
 Настало время применить свойство `box-sizing` со значением `border-box`. Браузер сразу же **пересчитает ширину обоих блоков** и картина, как по волшебству, изменится:
 
@@ -154,7 +154,7 @@ body {
 }
 {% endhighlight %}
 
-![Свойство box-sizing со значением border-box и padding: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border-box.jpg)
+![Свойство box-sizing со значением border-box и padding: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border-box.jpg){:.center-image}
 
 Даже если добавить к блокам-потомкам границу `border`, то картинка останется прежней:
 
@@ -170,7 +170,7 @@ body {
 }
 {% endhighlight %}
 
-![Свойство box-sizing со значением border-box и border: 6px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border_border-box.jpg)
+![Свойство box-sizing со значением border-box и border: 6px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border_border-box.jpg){:.center-image}
 
 Но если прибавить к блокам `div class="left"` и `div class="right"` правило `margin`, то наша разметка снова "сломается":
 
@@ -189,7 +189,7 @@ body {
 
 Это происходит потому, что в модель вычисления `border-box` поля `margin` не входят. Поле `margin-left` размером 5px прибавляется к ширине блока-потомка. Суммарная ширина обоих блоков-потомков превышает ширину блока-родителя и один из них выходит из его, опускаясь (*снова*) вниз:
 
-![Свойство box-sizing со значением border-box и margin-left: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border_margin_border-box.jpg)
+![Свойство box-sizing со значением border-box и margin-left: 5px]({{site.url}}/images/uploads/2014/03/box-sizing_padding_border_margin_border-box.jpg){:.center-image}
 
 В этом примере мы не применили к свойству `box-sizing` значения `padding-box`, потому что [браузеры не понимают этого значения][1] и свойство `box-sizing` работать не будет в этом случае.
 
@@ -198,5 +198,7 @@ body {
 Вот и все, что можно сказать о свойстве `box-sizing`. Понимание этого свойства понадобиться еще, когда придет время изучать адаптивный (*responsive*) дизайн.
 
 Основой для данной статьи послужила замечательная "Большая книга CSS3 Д. Макфарланд (*3-е издание*).
+
+---
 
 [1]: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing "MDN | CSS - box-sizing"

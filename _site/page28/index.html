@@ -144,118 +144,6 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-24T00:00:00+04:00"><a href="http://zencoder.ru/css/css-lifted-shadows/">October 24, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-lifted-shadows/" rel="bookmark" title="Создание приподнятых теней с помощью CSS" itemprop="url">Создание приподнятых теней с помощью CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Создание приподнятых теней (<code>lifted shadow</code>) с помощью CSS.</p>
-</blockquote>
-
-<p>Такие тени создаются с помощью двух псевдо-элементов <code>:before</code> и <code>:after</code>. Дополнительной HTML-разметки при этом не требуется. Оба псевдо-элемента применяются только к одному элементу, который должен быть блочным. Ниже показана последовательность действий, которая совсем несложная.</p>
-
-<p>Статья написана по мотивам известного блога Николаса Галлахера, где показаны самые разнообразные виды таких сложных теней.</p>
-
-<p>Приступаем к написанию кода. Создаем элемент <code>p</code> и для него прописываем правила (<em>чтобы смотрелся хорошо</em>):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;lifted&quot;</span><span class="nt">&gt;</span>
-  Lifted Corners
-<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">40px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">3</span><span class="p">)</span> <span class="k">inset</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Здесь все несложно. Задаем ширину и высоту блока, а также косметическую красоту типа выравнивания по центру и придания тени для блока. Не забываем сделать блок относительно позиционированным, так как в последующих шагах нам потребуются псевдо-элементы, которые нужно будет позиционировать относительно блока-родителя.</p>
-
-<p>Такой интересный момент в этом коде - нужно обязательно явно установить фоновый цвет для блока <code>background-color: #fff</code>. Иначе он будет прозрачным по умолчанию и сквозь него будут проступать наши тени.</p>
-
-<p>Необходимо получить две тени, одна из которых располагается под левым углом блока, а другая - под правым. Поэтому нам потребуются два псевдо-элемента - <code>:before</code> и <code>:after</code>. Создаем правила, общие для обоих псевдо-элементов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:before</span><span class="o">,</span> <span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">-1</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-          <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Немного “расшифруем” показанный выше код. Устанавливаем для обоих псевдо-элементов абсолютное позиционирование и координаты: от нижней границы 15px (<code>bottom: 15px</code>) и от левой границы 4px (<code>left: 4px;</code>). Ширину элемента устанавливаем в половину от ширины элемента-родителя (<code>width: 50%;</code>), высоту - 10% от ширины этого же элемента. Один интересный момент, про который не нужно забыть - “подсовываем” тени под блок-родитель с помощью свойства <code>z-index: -1</code>. Ну и создаем сами тени правилом <code>box-shadow: 0 15px 10px rgba(0,0,0,0.6)</code>, указав браузерные префиксы.</p>
-
-<p>Теперь у нас есть обе тени, но выглядят они как одна, так как первая накладывается на другую, ибо их координаты одинаковы. Поэтому нужно “разнести” их по разным углам, установив для псевдо-элемента <code>:after</code> иное позиционирование по оси X:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Почти все готово. Осталось только сделать для обеих теней “косину”, то есть развернуть их на определенное количество градусов. Левую тень развернем против часовой стрелки, чтобы ее внутренний угол оказался под блоком-родителем. Правую развернем точно также, только по часовой стрелке, чтобы ее внутренний угол также “спрятался” под блоком. Разворачивание будем выполнять с помощью правила <code>transform: rotate</code> для псевдо-элемента <code>:before</code> -</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span></code></pre></div>
-
-<p>и для псевдо-элемента <code>:after</code> -</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span></code></pre></div>
-
-<p>Результат нашей работы можно посмотреть ниже. Красиво!</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/drop-down-shadows.jpg" alt="Блок с тенями под углами" /></p>
-
-<p>Можно немного усложнить задачу и сделать нижние уголки блока визуально приподнятыми. Создастся иллюзия того, что у блока завернутые вверх уголки, как у листочка бумаги. Для этого нужно вспомнить о том, что у свойства <code>border-radius</code> есть два параметра, а не одно.</p>
-
-<p>То есть, для одного угла можно задать два радиуса скругления, и тогда само скругление получиться не таким “правильным”, но более реалистичным. Первый радиус делаем большого размера, а второй немного меньше.</p>
-
-<p>В результате угол получается не скругленным, а немного скошенным. В нашем примере для блока-родителя задаем радиусы скругления нижних углов следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">border-bottom-left-radius: 40px 12px;
-border-bottom-right-radius: 40px 12px;</code></pre></div>
-
-<p>Итогом получается картинка листочка бумаги с завернутыми уголками:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/curved-corners.jpg" alt="Завернутые уголки на чистом CSS" /></p>
-
-<p>На сайте Николаса Галлахера есть множество других примеров создания теней, которые по-настоящему впечатляют. В этой статье приведен только один из них, самый распространенный. Как видите, ничего сложного в его создании нет. Но вот на кросс-браузерность такой пример мною не рассматривался, ибо мне был важен сам результат.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-23T00:00:00+04:00"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/">October 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -902,6 +790,106 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
 <p>На этом все.</p>
 
 <hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-19T00:00:00+04:00"><a href="http://zencoder.ru/sport/calculate-weight-of-disks/">October 19, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/sport/calculate-weight-of-disks/" rel="bookmark" title="Расчет веса блинов для самодельных гантелей" itemprop="url">Расчет веса блинов для самодельных гантелей</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Стоит задача рассчитать по формуле вес блинов, исходя из заданных размеров. Ими являются внутренний диаметр блина - это посадочное место на гриф гантели.</p>
+</blockquote>
+
+<p>Как правило, диаметр грифа гантели равен 25мм. С учетом допуска (<em>чтобы диск свободно надевался на гриф</em>), внутренний диаметр блина будет равен 26мм. То есть, делаем допуск в 1мм.</p>
+
+<p>Вторая величина - это толщина блина, так как блины будут изготавливаться из стального листового материала стандартной толщины. Листовой материал имеет толщину 4мм, 6мм, 8мм, 10мм, 12мм и так далее, с шагом в 2мм. В зависимости от получаемого размера блина будет подбираться толщина листа, из которого он будет изготавливаться, с тем, чтобы блин получался не слишком большой.</p>
+
+<p>Третья величина - это плотность стали. Она постоянна и равна 7800кг/м<sup>3</sup>.</p>
+
+<p>И так, имеем только три заранее известные величины - диаметр посадочного места, толщина блина и плотность стали, из которой будут изготавливаться диски. Необходимо рассчитать внешний диаметр диска, чтобы получить в результате блины весом 0,75кг, 1,5кг, 2,5кг, 5кг и 10кг.</p>
+
+<p>Стоит оговориться. Из-за чего весь этот сыр-бор нужен? Нужен для того, чтобы иметь дома нормальные гантели и по разумной цене. Кто не заходил в спортивные магазины и не видел цены на те же гантели или блины к ним, тот не представляет, насколько они космические и далекие от реальности. К примеру, одна наборная гантеля весом 15кг стоит 4500руб. Это уму непостижимо - откуда такая стоимость куска железа?!</p>
+
+<p>Но достаточно договориться со знакомым слесарем или токарем и они сделают набор почти такого же качества, но по разумной цене.</p>
+
+<h2 id="section">Приступаем к задаче. Как будем ее решать?</h2>
+
+<p>Немного отклонимся от темы и представим себе, что такое диск гантели с геометрической точки зрения? Это не что иное, как цилиндр. Только очень “широкий и “низкий”. Объем цилиндра вычисляется по коротенькой формуле: площадь основания цилиндра умножается на высоту цилиндра.</p>
+
+<p>Площадь основания цилиндра равна:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">S</span><span class="p">=</span><span class="err">ПИ</span><span class="p">*</span><span class="n">R</span><span class="p">&lt;</span><span class="n">sup</span><span class="p">&gt;</span><span class="n">2</span><span class="p">&lt;/</span><span class="n">sup</span><span class="p">&gt;</span></code></pre></div>
+
+<p>то есть, число ПИ умножается на радиус основания, возведенного в степень 2.</p>
+
+<p>Тогда объем цилиндра равен:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">V</span><span class="p">=</span><span class="n">S</span><span class="p">*</span><span class="n">h</span></code></pre></div>
+
+<p>где <code>h</code> - высота цилиндра. В нашем случае высота <code>h</code> - это толщина листового материала, равная 4мм, 6мм, 8мм и так далее.</p>
+
+<p>Но, диск гантели не является полным цилиндром. Внутри диска есть посадочное отверстие известного диаметра, которое с точки зрения геометрии также является цилиндром. Поэтому, объем диска гантели будет равен полному объему цилиндра по внешнему радиусу минус объем цилиндра по внутреннему радиусу (внутренний посадочный диаметр).</p>
+
+<p>То есть:</p>
+
+<ul>
+  <li><code>V&lt;sub&gt;1&lt;/sub&gt; = ПИ*R&lt;sup&gt;2&lt;/sup&gt;*h</code> - объем цилиндра по внешнему радиусу R</li>
+  <li><code>V&lt;sub&gt;2&lt;/sub&gt; = ПИ*r&lt;sup&gt;2&lt;/sup&gt;*h</code> - объем цилиндра по внутреннему радиусу r</li>
+  <li><code>V = V&lt;sub&gt;1&lt;/sub&gt; - V&lt;sub&gt;2&lt;/sub&gt;</code></li>
+</ul>
+
+<p>Все, объем блина гантели рассчитали. Теперь осталось высчитать вес этого объема.</p>
+
+<p>Тут еще проще - достаточно умножить полученный объем на удельную плотность стали. При этом нужно соблюдать единицы измерения, чтобы они совпадали. То есть, если объем рассчитывался в кубических мм, то и объем также должен быть в граммах на кубический мм.</p>
+
+<p>Результатом будет формула:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">M</span> <span class="p">=</span> <span class="p">(</span><span class="n">V</span><span class="p">*</span><span class="n">p</span><span class="p">)/</span><span class="n">10</span><span class="p">&lt;</span><span class="n">sup</span><span class="p">&gt;</span><span class="n">6</span><span class="p">&lt;/</span><span class="n">sup</span><span class="p">&gt;</span></code></pre></div>
+
+<p>где <code>p</code> - плотность стали, равная 7800кг/м<sup>3</sup>; 10<sup>6</sup> - переводим из г/мм<sup>3</sup> в кг/м<sup>3</sup>.</p>
+
+<p>С теоретическими расчетами закончено. Так как являюсь поклонником программы Excel, то преобразовал ее в небольшую табличку, с помощью которой можно быстро и легко подобрать нужные веса блинов гантели:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/table.png" alt="Таблица расчета весов в Excel" /></p>
+
+<p>Табличка доступна для скачивания всем желающим. Архив находится здесь - <a href="https://db.tt/LCvf5pgf" title="Таблица расчета блинов для гантели">Таблица расчета блинов для гантели</a>. Пользуясь ею, можно подобрать толщину листа, чтобы на выходе получить массу и внешний диаметр блина гантели.</p>
+
+<p>Ну, а нарисовать эскиз блина с указанием внутреннего и внешнего диаметров, толщины и фаски (по возможности) не составит труда в том же AutoCAD.</p>
+
+<p>Данная таблица будет еще мою дорабатываться, но незначительно, так как основная работа была сделана.</p>
+
+<h2 id="ps">P.S.</h2>
+
+<p>Как результат вычислений по данной таблице, привожу ниже фотографии готовых гантелей. Обе получились весом по 20кг в полном сборе. Работа токаря по вытачиванию грифов (отдельная благодарность ему за накатку), обтачиванию самих блинов, бесплатное изготовление зажимов к гантелям - все это обошлось мне в 800 рублей.</p>
+
+<p>Вес почти всех блинов получился меньше расчитанного на 100г, что является результатом токарной обработки. Вырезание блинов из листового материала производилось на обычной газорезке, а не на плазме.</p>
+
+<p>Поэтому края получились грубыми, пришлось основательно их обрабатывать на токарном станке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/gantel01.jpg" alt="Гантель" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/gantel02.jpg" alt="Гантель" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

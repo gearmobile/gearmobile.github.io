@@ -18,9 +18,9 @@ share: true
 
 Запустите установленный Chrome, откройте в нем страницу, которую хотите протестировать и откройте **Developer Tools** (**Menu - Tools - Developer Tools**, <kbd>Cmd+Opt+I</kbd> на Mac или <kbd>F12/Ctrl+Shift+I</kbd> под Windows и Linux). Кликните мышью на значке-шестеренке **Settings** в правом верхнем углу окна браузера, затем откройте раздел **Overrides** для того, чтобы включить показ эмуляции в браузере - **Show Emulation view in console drawer** (*в версии 33 эта возможность активирована по умолчанию*):
 
-![Режим Settings в браузере Chrome]({{site.url}}/images/uploads/2014/03/settings.png)
+![Режим Settings в браузере Chrome]({{site.url}}/images/uploads/2014/03/settings.png){:.center-image}
 
-![Show Emulation view in console drawer]({{site.url}}/images/uploads/2014/03/emulation_show.png)
+![Show Emulation view in console drawer]({{site.url}}/images/uploads/2014/03/emulation_show.png){:.center-image}
 
 Закрываем окно **Settings** и открываем "Console Drawer" (это не тоже самое, что общая "Console") - для этого кликаем мышью на иконке (расположенной слева от иконки **Settings**) или нажав клавишу <kbd>Esc</kbd>. У вас должна открыться вкладка **Emulate** в "Console Drawer" (если этого не произошло, перезапустите браузер Chrome):
 
@@ -30,11 +30,11 @@ share: true
 
 Выбираем из списка нужное устройство и жмем кнопочку "Emulate" внизу этого списка:
 
-![Выбор эмулируемого устройства]({{site.url}}/images/uploads/2014/03/emulation_device.png)
+![Выбор эмулируемого устройства]({{site.url}}/images/uploads/2014/03/emulation_device.png){:.center-image}
 
 > Обратите внимание! Инструкция, представленная выше, описывает включение режима эмуляции в стабильной версии v.32 браузера Chrome. Если вы используете последнюю версию браузера Chrome Canary, эта опция будет располагаться в разделе "Settings" во вкладке "General" под вкладкой "Appearance". (*прим. переводчика: кто не знает, браузер Chrome Canary - это самая свежая и нестабильная версия браузера Chrome.*)
 
-![Режим эмуляции в Chrome Canary]({{site.url}}/images/uploads/2014/03/emulation_chrome_canary.png)
+![Режим эмуляции в Chrome Canary]({{site.url}}/images/uploads/2014/03/emulation_chrome_canary.png){:.center-image}
 
 ## Режим эмуляции - раздел Screen
 
@@ -44,23 +44,23 @@ share: true
   * **Device pixel ratio** - то есть для дисплеев Retina от Apple нужно ставит 2, чтобы производилось удваивание размера объектов в области просмотра
   * font-scaling factor (*прим. переводчика: неизвестный для меня параметр*)
 
-![Настройка экрана в режиме эмуляции]({{site.url}}/images/uploads/2014/03/emulation_screen.png)
+![Настройка экрана в режиме эмуляции]({{site.url}}/images/uploads/2014/03/emulation_screen.png){:.center-image}
 
 ## Режим эмуляции - раздел User Agent
 
 В этом разделе настраивается режим агента пользователя. То есть, устанавливается модель взаимодействия между эмулируемыми клиентом и сервером:
 
-![Эмуляция агента пользователя]({{site.url}}/images/uploads/2014/03/emulation_user_agent.png)
+![Эмуляция агента пользователя]({{site.url}}/images/uploads/2014/03/emulation_user_agent.png){:.center-image}
 
 ## Режим эмуляции - раздел Sensors
 
 В этом разделе настраивается режим эмуляции сенсорного экрана:
 
-![Эмуляция сенсорного экрана устройства]({{site.url}}/images/uploads/2014/03/emulation_touch_screen.png)
+![Эмуляция сенсорного экрана устройства]({{site.url}}/images/uploads/2014/03/emulation_touch_screen.png){:.center-image}
 
 В режиме эмуляции сенсорного экрана курсор мыши приобретает вид отпечатка пальца на экране устройства:
 
-![Эмуляция отпечатка пальца на экране устройства]({{site.url}}/images/uploads/2014/03/emulation_touch_screen_finger.png)
+![Эмуляция отпечатка пальца на экране устройства]({{site.url}}/images/uploads/2014/03/emulation_touch_screen_finger.png){:.center-image}
 
 Эмуляция multi-touch может быть выполнена при помощи зажатой клавиши <kbd>Shift</kbd> и движения мыши в нужную сторону. Этот режим задействует соответствующие JavaScript-события, такие как `touchstart`, `touchend`, `touchmove`. Также делается попытка полностью соответствовать мобильным браузерам благодаря реализации JavaScript-события `mouseover`, но это событие возникает только тогда, когда будет произведено "нажатие" на элемент интерфейса. Эмулятор корректно игнорирует событие `mouseover`, возникающее, когда курсор сенсорного устройства просто движется поверх элемента интерфейса.
 
@@ -92,7 +92,7 @@ share: true
 
 Например, после установки и активизации расширения **Windows Resizer** под Chrome при щелчке мыши на иконке появиться окно с предустановленными размерами экранов устройств:
 
-![Расширение Windows Resizer под Chrome]({{site.url}}/images/uploads/2014/03/windows-_resizer_chrome.png)
+![Расширение Windows Resizer под Chrome]({{site.url}}/images/uploads/2014/03/windows-_resizer_chrome.png){:.center-image}
 
 В дальнейших объяснениях работа с плагином не нуждается, как мне кажется.
 

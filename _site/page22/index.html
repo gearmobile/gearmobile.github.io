@@ -144,165 +144,6 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-15T00:00:00+04:00"><a href="http://zencoder.ru/excel/excel-select-cell-by-color/">December 15, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/excel/excel-select-cell-by-color/" rel="bookmark" title="Excel - выборка ячеек по цвету заливки" itemprop="url">Excel - выборка ячеек по цвету заливки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>На работе столкнулся с такой задачей - имеется таблица в Excel, в которой ведется табель выходов рабочих в цеху.</p>
-</blockquote>
-
-<p>В таблице подсчитывается количество часов, фактически отработанных; часов переработки и часов сверх нормы. Так вот, необходимо сделать так, чтобы производилась автоматическая выборка ячеек таблицы по цвету заливки последних.</p>
-
-<p>То есть, нужно отобрать все ячейки с заливкой определенного цвета, подсчитать их количество; а затем применить к полученному значению определенные формулы.</p>
-
-<p>Чтобы было понятнее, приведу изображение подобной таблицы. В ней необходимо произвести подсчет ячеек с заливкой зеленого цвета:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/12/tabel.jpg" alt="Табель выходов с зелеными ячейками" class="center-image" /></p>
-
-<p>В Excel нет встроенных (готовых) инструментов для выборки подобного рода; можно отбирать ячейки только по одному условию - по значению, находящемуся в них. Поэтому решение задачи получалось только одно - через VBA (пользовательские функции).</p>
-
-<p>Прекрасное и готовое решение моей задачи я нашел на сайте <a href="http://www.excel-vba.ru/" title="Excel VBA">http://www.excel-vba.ru/</a>. Даже не одно, а целых два решения, под разные условия. Ниже привожу последовательность шагов, которые привели меня к успеху.</p>
-
-<p>Сразу скажу, что изображения были сделаны в Excel 2007. В Excel 2010 все несколько по другому, но запутаться невозможно, если что.</p>
-
-<h2 id="excel">Режим “Разработчик” в Excel</h2>
-
-<p>Первое, что нужно сделать - заставить Excel работать с пользовательскими функциями. Фактически, мы будем писать сценарий на языке VBA в Excel, но такая возможность по умолчанию отключена в этой программе. Включить ее можно следующим образом.</p>
-
-<p>Переходим в “Пуск - Параметры Excel” и находим в левом списке пункт “Надстройки”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/12/excel-надстройка-vba.jpg" alt="Excel - надстройка VBA" class="center-image" /></p>
-
-<p>Выбираем в основном окне строчку “Пакет анализа - VBA” и жмем кнопочку “Перейти” в самом низу окна. Откроется еще одно окошко со списком доступных под Excel расширений (надстроек). Снова выбираем в этом списке “Пакет анализа - VBA” и соглашаемся, что хотим установить его, нажав кнопку “ОК”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/12/excel-пакет-анализа-vba.jpg" alt="Excel - Пакет анализа VBA" class="center-image" /></p>
-
-<p>Потребуется установочный диск с Microsoft Office на нем (<em>или же подключение к Интернет</em>) чтобы программа получила необходимые пакеты для инсталляции. Если установка прошла успешно, то в “Ленте” появиться пункт “Разработчик” (Excel 2010). Можно перейти в него через эту панель или же с помощью сочетания клавиш <kbd>Alt + F11</kbd>.</p>
-
-<p>Появиться окно, в котором выполняется написание кода на языке VBA, то есть фактически создаются пользовательские функции. Я писать их не буду, так как языка VBA не знаю и знать особого желания нет (<em>все знать невозможно</em>).</p>
-
-<h2 id="excel-vba">Вставка готовых функций в Excel VBA</h2>
-
-<p>Но есть готовые решения, которые я вставлю в виде кода с помощью меню “Insert - Module”. Просто берем отсюда код функций и вставляем в свой Excel. Затем сохраняем файл Excel с поддержкой VBA (<em>макросов</em>) и все готово для дальнейшей работы.</p>
-
-<p>Вставленные функции появятся в списке формул таблицы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/12/excel-пользовательские-функции.jpg" alt="Excel - пользовательские функции" class="center-image" /></p>
-
-<p>Ниже представлен готовый код двух функций на VBA, написанных их автором Дмитрием Щербаковым. Первая функция с именем “CountByInteriorColor” выполняет подсчет количества ячеек по цвету заливки.</p>
-
-<p>Вторая функция с именем “SumByInteriorColor” выполняет выборку ячеек по цвету заливки и суммирует все значения в этих ячейках.</p>
-
-<p>Обе функции имеют одинаковый синтаксис и принимают три входных аргумента, первые два из которых обязательные, а третий - необязательный:</p>
-
-<ul>
-  <li><code>rRange</code> - диапазон с ячейками для подсчета</li>
-  <li><code>rColorCell</code> - ячейка-образец с цветом заливки</li>
-  <li><code>bSumHide</code> - <code>ИСТИНА</code> или <code>1</code> учитывает скрытые ячейки; <code>ЛОЖЬ</code>, <code>0</code> или опущен(по умолчанию) - скрытые ячейки не подсчитываются.</li>
-</ul>
-
-<h3 id="section">Функция подсчета количества ячеек</h3>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="s1">&#39;---------------------------------------------------------------------------------------</span>
-<span class="s1">&#39;</span> <span class="n">Procedure</span> <span class="err">:</span> <span class="n">CountByInteriorColor</span>
-<span class="s1">&#39; Author    : The_Prist(Щербаков Дмитрий)</span>
-<span class="s1">&#39;</span>             <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">www</span><span class="p">.</span><span class="n">excel-vba</span><span class="p">.</span><span class="n">ru</span>
-<span class="s1">&#39; Purpose   : Функция подсчета ячеек на основе цвета заливки.</span>
-<span class="s1">&#39;</span> <span class="err">Аргументы:</span>
-<span class="s1">&#39;             rRange     - диапазон с ячейками для подсчета.</span>
-<span class="s1">&#39;</span>             <span class="n">rColorCell</span> <span class="p">-</span> <span class="err">ячейка</span><span class="p">-</span><span class="err">образец</span> <span class="err">с</span> <span class="err">цветом</span> <span class="err">заливки</span><span class="p">.</span>
-<span class="s1">&#39;             bSumHide   - ИСТИНА или 1 учитывает скрытые ячейки.</span>
-<span class="s1">&#39;</span>                          <span class="err">ЛОЖЬ</span><span class="p">,</span> <span class="n">0</span> <span class="err">или</span> <span class="err">опущен</span><span class="p">(</span><span class="err">по</span> <span class="err">умолчанию</span><span class="p">)</span> <span class="p">-</span> <span class="err">скрытые</span> <span class="err">ячейки</span> <span class="err">не</span> <span class="err">подсчитываются</span><span class="p">.</span>
-<span class="err">&#39;</span><span class="p">---------------------------------------------------------------------------------------</span>
-<span class="k">Function</span> <span class="n">CountByInteriorColor</span><span class="p">(</span><span class="n">rRange</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">rColorCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Optional</span> <span class="n">bSumHide</span> <span class="n">As</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="n">False</span><span class="p">)</span>
-  <span class="n">Dim</span> <span class="n">lColor</span> <span class="n">As</span> <span class="n">Long</span><span class="p">,</span> <span class="n">rCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">lCnt</span> <span class="n">As</span> <span class="n">Long</span><span class="p">,</span> <span class="n">vVal</span>
-  <span class="n">lColor</span> <span class="p">=</span> <span class="n">rColorCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span>
-  <span class="k">For</span> <span class="n">Each</span> <span class="n">rCell</span> <span class="k">In</span> <span class="n">rRange</span>
-      <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span> <span class="p">=</span> <span class="n">lColor</span> <span class="n">Then</span>
-          <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireRow</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Or</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireColumn</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Then</span>
-              <span class="k">If</span> <span class="n">bSumHide</span> <span class="n">Then</span> <span class="n">lCnt</span> <span class="p">=</span> <span class="n">lCnt</span> <span class="p">+</span> <span class="n">1</span>
-          <span class="k">Else</span>
-              <span class="n">lCnt</span> <span class="p">=</span> <span class="n">lCnt</span> <span class="p">+</span> <span class="n">1</span>
-          <span class="k">End</span> <span class="k">If</span>
-      <span class="k">End</span> <span class="k">If</span>
-  <span class="n">Next</span> <span class="n">rCell</span>
-  <span class="n">CountByInteriorColor</span> <span class="p">=</span> <span class="n">lCnt</span>
-<span class="k">End</span> <span class="k">Function</span></code></pre></div>
-
-<p>Синтаксис этой функции прост:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">CountByInteriorColor</span><span class="p">(</span><span class="n">D8</span><span class="err">:</span><span class="n">AG8</span><span class="p">;</span><span class="nv">$E$65</span><span class="p">)</span></code></pre></div>
-
-<h3 id="section-1">Функция подсчета суммы ячеек</h3>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="s1">&#39;---------------------------------------------------------------------------------------</span>
-<span class="s1">&#39;</span> <span class="n">Procedure</span> <span class="err">:</span> <span class="n">SumByInteriorColor</span>
-<span class="s1">&#39; Author    : The_Prist(Щербаков Дмитрий)</span>
-<span class="s1">&#39;</span>             <span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">www</span><span class="p">.</span><span class="n">excel-vba</span><span class="p">.</span><span class="n">ru</span>
-<span class="s1">&#39; Purpose   : Функция суммирования ячеек на основе цвета заливки.</span>
-<span class="s1">&#39;</span> <span class="err">Аргументы:</span>
-<span class="s1">&#39;             rRange     - диапазон с ячейками для суммирования.</span>
-<span class="s1">&#39;</span>             <span class="n">rColorCell</span> <span class="p">-</span> <span class="err">ячейка</span><span class="p">-</span><span class="err">образец</span> <span class="err">с</span> <span class="err">цветом</span> <span class="err">заливки</span><span class="p">.</span>
-<span class="s1">&#39;             bSumHide   - ИСТИНА или 1 учитывает скрытые ячейки.</span>
-<span class="s1">&#39;</span>                          <span class="err">ЛОЖЬ</span><span class="p">,</span> <span class="n">0</span> <span class="err">или</span> <span class="err">опущен</span><span class="p">(</span><span class="err">по</span> <span class="err">умолчанию</span><span class="p">)</span> <span class="p">-</span> <span class="err">скрытые</span> <span class="err">ячейки</span> <span class="err">не</span> <span class="err">суммируются</span><span class="p">.</span>
-<span class="err">&#39;</span><span class="p">---------------------------------------------------------------------------------------</span>
-<span class="k">Function</span> <span class="n">SumByInteriorColor</span><span class="p">(</span><span class="n">rRange</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">rColorCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">Optional</span> <span class="n">bSumHide</span> <span class="n">As</span> <span class="n">Boolean</span> <span class="p">=</span> <span class="n">False</span><span class="p">)</span>
-  <span class="n">Dim</span> <span class="n">lColor</span> <span class="n">As</span> <span class="n">Long</span><span class="p">,</span> <span class="n">rCell</span> <span class="n">As</span> <span class="n">Range</span><span class="p">,</span> <span class="n">dblSum</span> <span class="n">As</span> <span class="n">Double</span><span class="p">,</span> <span class="n">vVal</span>
-  <span class="n">lColor</span> <span class="p">=</span> <span class="n">rColorCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span>
-  <span class="k">For</span> <span class="n">Each</span> <span class="n">rCell</span> <span class="k">In</span> <span class="n">rRange</span>
-      <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">Interior</span><span class="p">.</span><span class="n">Color</span> <span class="p">=</span> <span class="n">lColor</span> <span class="n">Then</span>
-          <span class="n">vVal</span> <span class="p">=</span> <span class="n">rCell</span><span class="p">.</span><span class="n">Value</span>
-          <span class="k">If</span> <span class="n">IsNumeric</span><span class="p">(</span><span class="n">vVal</span><span class="p">)</span> <span class="n">Then</span>
-              <span class="k">If</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireRow</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Or</span> <span class="n">rCell</span><span class="p">.</span><span class="n">EntireColumn</span><span class="p">.</span><span class="n">Hidden</span> <span class="n">Then</span>
-                  <span class="k">If</span> <span class="n">bSumHide</span> <span class="n">Then</span> <span class="n">dblSum</span> <span class="p">=</span> <span class="n">dblSum</span> <span class="p">+</span> <span class="n">vVal</span>
-              <span class="k">Else</span>
-                  <span class="n">dblSum</span> <span class="p">=</span> <span class="n">dblSum</span> <span class="p">+</span> <span class="n">vVal</span>
-              <span class="k">End</span> <span class="k">If</span>
-          <span class="k">End</span> <span class="k">If</span>
-      <span class="k">End</span> <span class="k">If</span>
-  <span class="n">Next</span> <span class="n">rCell</span>
-  <span class="n">SumByInteriorColor</span> <span class="p">=</span> <span class="n">dblSum</span>
-<span class="k">End</span> <span class="k">Function</span></code></pre></div>
-
-<p>Синтаксис этой функции следующий:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">SumByInteriorColor</span><span class="p">(</span><span class="n">D8</span><span class="err">:</span><span class="n">AG37</span><span class="p">;</span><span class="n">E63</span><span class="p">)</span></code></pre></div>
-
-<p>При вставке пользовательской функции “CountByInteriorColor” и “SumByInteriorColor” можно воспользоваться либо “Мастером функций”, либо произвести указание диапазона ячеек и ячейку-критерий вручную.</p>
-
-<h2 id="section-2">Описание рабочей формулы</h2>
-
-<p>Готовый пример работы функции “CountByInteriorColor” можно посмотреть на рисунке “Табель выходов с зелеными ячейками”. В нем подсчет отработанного времени производится по следующей формуле:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=((</span><span class="err">Сумма</span> <span class="err">фактически</span> <span class="err">отработанных</span> <span class="err">часов</span><span class="p">)</span> <span class="p">-</span> <span class="p">(</span><span class="err">Норма</span> <span class="err">часов</span> <span class="err">выхода</span> <span class="err">за</span> <span class="err">месяц</span><span class="p">))</span> <span class="p">+</span> <span class="p">((</span><span class="err">Кол</span><span class="p">-</span><span class="err">во</span> <span class="err">дней</span> <span class="err">с</span> <span class="err">переработкой</span><span class="p">)*</span><span class="n">4</span><span class="p">)</span></code></pre></div>
-
-<p>Фактически эта формула получается такой (<em>смотри строку №13 на рисунке</em>):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=(</span><span class="n">AH13-AI13</span><span class="p">)</span> <span class="p">+</span> <span class="p">(</span><span class="n">CountByInteriorColor</span><span class="p">(</span><span class="n">D13</span><span class="err">:</span><span class="n">AG13</span><span class="p">;</span><span class="nv">$E$65</span><span class="p">)*</span><span class="n">4</span><span class="p">)</span></code></pre></div>
-
-<p>Думаю, что больше сказать по поводу создания (точнее - вставки готового решения) пользовательских функций и способа выборки ячеек в таблице по цвету их заливки мне нечего.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-12-13T00:00:00+04:00"><a href="http://zencoder.ru/css/stih-css3/">December 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -963,6 +804,139 @@
 </blockquote>
 
 <p>Оригинал статьи расположен по адресу - “<a href="http://webdesignernotebook.com/css/the-little-known-font-size-adjust-css3-property/" title="The Little Known font-size-adjust CSS3 Property">The Little Known font-size-adjust CSS3 Property</a>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-09T00:00:00+04:00"><a href="http://zencoder.ru/modernizr/how-to-use-modernizr/">December 09, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/modernizr/how-to-use-modernizr/" rel="bookmark" title="Как использовать Modernizr" itemprop="url">Как использовать Modernizr</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Инструмент, который призван сделать жизнь прогрессивных веб-дизайнеров немного легче, это Modernizr.</p>
+</blockquote>
+
+<p>Короткий мануал, задача которого показать, каким образом можно применять этот полезный скрипт с максимальным эффектом для своих рабочих проектов.</p>
+
+<h2 id="modernizr">Обзор Modernizr</h2>
+
+<p>Несмотря на то, что возможности CSS3 используются веб-дизайнерами все больше и больше, поддержка этих возможностей браузерами значительно отстает.</p>
+
+<p>В последнее время я использую Modernizr практически постоянно для того, чтобы выделить те браузеры, которые не поддерживают специфические свойства стандарта CSS3.</p>
+
+<h2 id="modernizr-1">Как работает Modernizr</h2>
+
+<p>Для того, чтобы установить Modernizr, сначала скачайте его с этой страницы - <a href="http://www.modernizr.com/" title="Modernizr">http://www.modernizr.com/</a>. Затем внутри тега <code>head</code> html-страницы подключите распакованный из архива файл <code>modernizr-1.0.min.js</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/modernizr-1.0.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>Вторым шагом будет подключение класса <code>no-js</code> для корневого элемента <code>html</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">&quot;no-js&quot;</span><span class="nt">&gt;</span></code></pre></div>
+
+<p>Для чего необходимо подключать класс <code>no-js</code> к элементу <code>html</code>?</p>
+
+<p>Потому что элемент <code>html</code> с классом <code>no-js</code> будет состоянием страницы по-умолчанию. Если JavaScript (<code>js</code>) на странице отключен, то скрипт Modernizr также не будет работать (совместно со всеми остальными функциями страницы, завязанными на этом языке), поэтому было бы хорошо, если у нас будет возможность отката (fallback) для этого случая.</p>
+
+<blockquote>
+  <p>Прим. переводчика: попробую от себя объяснить в двух словах, но иначе (если вдруг непонятно) что хотела сказать прекрасная девушка, автор статьи. Если на сайте отключена поддержка JavaScript, то класс <code>no-js</code> для элемента html - это та “зацепка”, на которую можно повесить все CSS-fallback’и для этого случая.</p>
+</blockquote>
+
+<p>Если же поддержка JavaScript в браузере включена, то произойдет динамическая подмена класса <code>no-js</code> для элемента html на целую группу других классов. В результате исходный код страницы может выглядеть примерно так:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">&quot;js canvas canvastext geolocation rgba hsla no-multiplebgs borderimage borderradius boxshadow opacity no-cssanimations csscolumns no-cssgradients no-cssreflections csstransforms no-csstransforms3d no-csstransitions  video audio cufon-active fontface cufon-ready&quot;</span><span class="nt">&gt;</span></code></pre></div>
+
+<p>Впечатляет, не правда ли? Но что означают все эти классы? Давайте разберемся.</p>
+
+<p>В данном случае, страница была открыта в браузере Firefox 3.5. Этот браузер (к сожалению) не поддерживает множественные фоны на CSS, CSS-градиенты и CSS-трансформации.</p>
+
+<p>Скрипт Modernizr умеет автоматически определять возможности браузера, в котором открыта текущая веб-страница. Для каждого из CSS-свойств в скрипте Modernizr имеются свои собственные классы для их обозначения.</p>
+
+<p>Например, множественные фоны на CSS “обозначены” как <code>multipebgs</code>, CSS-градиенты как <code>cssgradients</code>, CSS-трансформации как <code>csstransforms</code> и так далее.</p>
+
+<p>Когда Modernizr определит, какие CSS-свойства данный браузер поддерживает, а какие нет, он создаст своеобразный отчет - список классов, по которому можно точно узнать, что браузер “умеет”, а что - нет.</p>
+
+<p>Если браузер поддерживает CSS-свойство трансформации, то на элемент html скрипт Modernizr “подцепит” класс <code>csstransforms</code>. А если браузер не поддерживает это свойство, то Modernizr добавит для имени класса <code>csstransforms</code> префикс <code>no-</code> и также “повесит” этот класс на элемент <code>html</code>, но в виде <code>no-csstransforms</code>. И так далее …</p>
+
+<p>Пример такого списка-отчета и был показан выше.</p>
+
+<h2 id="section">Что мне даст эта (ценная) информация?</h2>
+
+<p>Логичный вопрос - “а что мы можем делать с этой информацией?”. Хорошо, давайте рассмотрим простой пример.</p>
+
+<h2 id="css">Множественные фоны на CSS</h2>
+
+<p>Фон вашего сайта тщательным образом отстроен и вы используете множественные фоны для того, чтобы сделать его более простым и быстрым с помощью CSS-кода.</p>
+
+<p>Ваш CSS выглядит следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#nice</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(background-one.png)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="o">,</span>
+  <span class="sx">url(background-two.png)</span> <span class="k">bottom</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>И браузер генерирует этот прекрасный (ведь не даром же идентификатор имеет имя <code>nice</code>) фон так:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/modernizr-safari.jpg" alt="Множественные фоны" /></p>
+
+<p>При использовании библиотеки Modernizr ваш код CSS должен быть преобразован в такой вид:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#nice</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(background-one.png)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.multiplebgs</span> <span class="nf">#nice</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(background-one.png)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="o">,</span>
+  <span class="sx">url(background-two.png)</span> <span class="k">bottom</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>И вот что увидят посетители сайта в зависимости от того, каким браузером (понимает он множественный фон или нет) они пользуются:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/modernizr-safari.jpg" alt="Множественный фон с Modernizr в Safari" class="center-image" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/modernizr-opera.jpg" alt="Множественный фон с Modernizr в Opera" class="center-image" /></p>
+
+<p>Это очень простой пример использования скрипта Modernizr, но он должен послужит образцом того, что можно сделать с помощью данной библиотеки.</p>
+
+<h2 id="html5">HTML5</h2>
+
+<p>Библиотека Modernizr также позволяет использовать новые элементы, доступные в HTML5 - <code>header</code>, <code>footer</code>, <code>section</code>, <code>hgroup</code>, <code>video</code> и так далее и стилизовать их.</p>
+
+<p>Однако, это не означает, что все эти элементы можно использовать также в браузере IE. Но вы можете стилизовать эти элементы и тогда IE “поймет” их и не сможет игнорировать.</p>
+
+<blockquote>
+  <p>Прим. переводчика: загадочная фраза, которая лично мне ни о чем не говорит. Требует дальнейшего изучения.</p>
+</blockquote>
+
+<h2 id="javascript">JavaScript</h2>
+
+<p>Вы также можете анализировать в вашем собственном JavaScript возможности, которые поддерживает Modernizr, используя пример следующего синтаксиса:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">Modernizr</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-1">Заключение</h2>
+
+<p>Надеюсь, мне удалось объяснить, для чего нужен Modernizr и насколько он полезен в повседневной работе. Так как мы не можем полностью полагаться на тот факт, что браузеры поддерживают все свойства, которые мы хотим использовать, то библиотека Modernizr является лучшим средством для того, чтобы объединить два мира - один, где все возможно, и другой, где все возможно лишь частично.</p>
+
+<p>Оригинал статьи - <a href="http://webdesignernotebook.com/css/how-to-use-modernizr/" title="How To Use Modernizr">How to use Modernizr</a></p>
 
 <hr />
 

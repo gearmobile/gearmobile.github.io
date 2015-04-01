@@ -144,106 +144,6 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-05-21T00:00:00+04:00"><a href="http://zencoder.ru/linux/pdfimages-pdf-linux/">May 21, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/linux/pdfimages-pdf-linux/" rel="bookmark" title="Pdfimages - извлечь картинки из pdf-файлов в Linux" itemprop="url">Pdfimages - извлечь картинки из pdf-файлов в Linux</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>С недавнего времени, всерьез занявшись написанием статей, столкнулся в небольшой трудностью. Заключается она в следующем: имеется материал в формате pdf, перевод которого необходимо выполнить. Естественно, в любой более-менее серьезной и качественной статье есть скриншоты, хотя бы один или два.</p>
-</blockquote>
-
-<p>Что делать, если хочется создать точный - и самое главное - хороший перевод? Нужно, чтобы в этом переводе тоже присутствовали соответствующие теме скрины. И как поступить? Создавать свои собственные? Это довольно трудоемкий и длительный процесс. Конечно, речь не идет о какой-либо программе - в репозиториях Linux достаточно одной команды, чтобы ее поставить. А вот если дело касается дистрибутива? И если он “весит” около 2Gb? “Тянуть” и ставить его только ради скриншотов?</p>
-
-<p>Вывод однозначен - надо “забрать” картинки из самого pdf-файла. Под OS Windows ответ напрашивается сам собой - Adobe Acrobat. Но если под Linux? Тоже выход есть! И даже еще аккуратнее - не надо мучиться с установкой гиганта Acrobat только для извлечения картинок с помощью последнего (например, у меня версия Adobe Acrobat 9.4 Pro “весит” 631Mb! Уму непостижимо - ведь это всего лишь одна программа!).</p>
-
-<p>Итак, решаем проблему под Linux.</p>
-
-<h2 id="section">Первый шаг</h2>
-
-<p>Устанавливаем пакет xpdf. Программа стара, как мир и имеется в репозитории любого уважающего себя дистрибутива Linux. А об Ubuntu/Debian и говорить не приходиться. Там как в Греции - все есть!</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">aptitude</span> <span class="n">install</span> <span class="n">xpdf</span></code></pre></div>
-
-<h2 id="section-1">Шаг второй</h2>
-
-<p>Сама по себе “смотрелка” pdf-файлов xpdf нам в принципе не нужна. Интерфейс у нее убогий и не тянет на сравнение с тем же Okular. Но это и не важно. Мы ее не затем ставили. А ставили ради маленькой программы pdfimages, которая входит в состав этого пакета. Лишний раз проверим, так ли это. Посмотрим, есть ли она в системе после установки xpdf:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">whereis</span> <span class="n">pdfimages</span>
-<span class="n">pdfimages</span><span class="err">:</span> <span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">pdfimages</span> <span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">share</span><span class="p">/</span><span class="n">man</span><span class="p">/</span><span class="n">man1</span><span class="p">/</span><span class="n">pdfimages</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">gz</span></code></pre></div>
-
-<p>Есть. Все ОК.</p>
-
-<h2 id="section-2">Шаг третий</h2>
-
-<p>Теперь, собственно, и приступаем к самому процессу извлечения. Переходим в директорию, в которой лежит наш “пациент” - jul2011.pdf:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cd</span> <span class="p">/</span><span class="n">media</span><span class="p">/</span><span class="n">disk</span><span class="p">-</span><span class="n">2</span><span class="p">/</span><span class="n">works</span><span class="p">/</span><span class="n">journals</span><span class="p">/</span><span class="n">indian_hacker</span>
-<span class="p">$</span> <span class="n">ls</span>
-<span class="n">apr2011</span><span class="p">.</span><span class="n">pdf</span> <span class="n">jul2011</span><span class="p">.</span><span class="n">pdf</span> <span class="n">jun2011</span><span class="p">.</span><span class="n">pdf</span> <span class="n">mar2011</span><span class="p">.</span><span class="n">pdf</span> <span class="n">may2011</span><span class="p">.</span><span class="n">pdf</span></code></pre></div>
-
-<p>И “напускаем” на него нашу “крошку” pdfimages:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">pdfimages</span> <span class="o">-f</span> <span class="n">3</span> <span class="n">-l</span> <span class="n">9</span> <span class="n">-j</span> <span class="n">jul2011</span><span class="p">.</span><span class="n">pdf</span> <span class="n">nessus</span></code></pre></div>
-
-<p>Опции команды описывать не буду - они, прямо скажем, примитивны и легко узнаются по стандартной команде -help. Здесь я применил только некоторые из них (и если честно сказать - почти все):</p>
-
-<ul>
-  <li><code>-f</code> - номер первой страницы pdf-файла, из которого будут извлекаться картинки;</li>
-  <li><code>-l</code> - аналогично - номер последней страницы pdf-файла (то есть, опциями <code>f</code> и <code>l</code> мы задаем диапазон в pdf-файле, откуда будем извлекать картинки; это в том случае, когда не хотим получить ВСЕ картинки из ВСЕГО pdf-файла);</li>
-  <li><code>-j</code> - конвертировать извлеченные картинки в формат jpg</li>
-</ul>
-
-<p>Единственное, о чем стоит упомянуть - это следующее. У меня вызвано легкий ступор, ибо является неочевидным фактом: имя nessus в конце команды. Это имя может быть любым другим, на ваш выбор, но оно должно быть! Это своеобразная маска, по которой программа <code>pdfimages</code> создает имена графических файлов. За примером далеко ходить не надо. Смотрим на результат работы малютки - и все сразу станет понятно:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">nessus</span><span class="p">-</span><span class="n">003</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">007</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">011</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">015</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">019</span><span class="p">.</span><span class="n">ppm</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">023</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">027</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">000</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">004</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">008</span><span class="p">.</span><span class="n">ppm</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">012</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">016</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">020</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">024</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">001</span><span class="p">.</span><span class="n">ppm</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">005</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">009</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">013</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">017</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">021</span><span class="p">.</span><span class="n">jpg</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">025</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">002</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">006</span><span class="p">.</span><span class="n">ppm</span> <span class="n">nessus</span><span class="p">-</span><span class="n">010</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">014</span><span class="p">.</span><span class="n">jpg</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">018</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">022</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">026</span><span class="p">.</span><span class="n">jpg</span></code></pre></div>
-
-<p>Программка <code>pdfimages</code> даже оказалась слишком старательной - она вытянула все, что смогла. И что смогла - переконвертировала в формат <code>jpg</code>, как мы ей и сказали опцией <code>-j</code>. А что не смогла - оставила в формате ppm. Об этом же говориться и в man’е программы: <cite>“Normally, all images are written as PBM (for monochrome images) or PPM (for non-monochrome images) files. With this option, images in DCT format are saved as JPEG files. All non-DCT images are saved in PBM/PPM format as usual.”</cite></p>
-
-<p>Ну, нам ее излишняя старательность ни к чему (все, что она сохранила в формате ppm, является несущественным в данном случае), поэтому выполняем легким движением руки (точнее - пальцев):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="p">*.</span><span class="n">ppm</span></code></pre></div>
-
-<p>И опять смотрим:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">nessus</span><span class="p">-</span><span class="n">003</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">010</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">014</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">018</span><span class="p">.</span><span class="n">jpg</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">022</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">026</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">002</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">009</span><span class="p">.</span><span class="n">jpg</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">013</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">017</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">021</span><span class="p">.</span><span class="n">jpg</span> <span class="n">nessus</span><span class="p">-</span><span class="n">023</span><span class="p">.</span><span class="n">jpg</span>
-<span class="n">nessus</span><span class="p">-</span><span class="n">027</span><span class="p">.</span><span class="n">jpg</span></code></pre></div>
-
-<p>Совсем другое дело! Как раз то, что нам нужно! Можно сказать, дело в шляпе. Посмотрим результат. Ведь интересно же - действительно ли все получилось? Пусть это будет nessus-027.jpg:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/nessus-027.jpg" alt="Пример работы утилиты pdfimages в Linux" /></p>
-
-<h2 id="section-3">Резюме</h2>
-
-<p>Как вам такое решение “проблемы”? Для меня, так очень даже ничего! Изящно, красиво и быстро. И самое главное - результат! И тогда зачем возиться с программами под Windows, такими как например, специализированная утилита PDF Image Extraction Wizard. Да, имеет она красивый интерфейс. Но ведь фактически нужно платить только за него. Я уже не говорю о стоимости “монстра” Adobe Acrobat!</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-05-12T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/convert-points-to-pixels-to-em/">May 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -751,6 +651,79 @@
 <p>Описанный здесь способ восстановления Grub с помощью PCLinuxOS LiveCD подходит не только для этой операционной системы. Для любого случая, когда в качестве загрузчика используется Grub (но не Grub2), данное описание поможет с высокой долей вероятности.</p>
 
 <p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-04-22T00:00:00+04:00"><a href="http://zencoder.ru/notepad/notepad-macros/">April 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/notepad/notepad-macros/" rel="bookmark" title="Notepad++ - запись и использование макросов" itemprop="url">Notepad++ - запись и использование макросов</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Одной из полезных возможностей программы Notepad++ является создание и использование макросов.</p>
+</blockquote>
+
+<p>Пользователям, которые знакомы с популярным офисным пакетом MS Office (и Microsoft Excel в частности) должно быть знакомо понятие макросов. Если не знакомо, то вкратце поясню.</p>
+
+<p>Макрос - это последовательность действий пользователя в программе, записанная и сохраненная этой программой. То есть, если в своей повседневной работе вы выполняете постоянно какие либо действия, то их можно записать с тем, чтобы не повторять снова. В последствии такую последовательность действий можно запустить на выполнение одним щелчком мыши или сочетанием горячих клавиш.</p>
+
+<p>Сам процесс записи очень похож на то, как если бы действия в программе записывались на видеокамеру. Только в качестве пленки в этом случае выступает программный код. Точнее, язык программирования, в который переводится все манипуляции, которые пользователь выполняет в программе. Язык программирования может быть разным и целиком зависеть от конкретной программы. Например, в Microsoft Excel таким языком является VBA (Visual Basic for Applications). Для обычного пользователя знать как язык программирования, на котором кодируется действия, совсем необязательно. Ему достаточно уметь записывать макросы и запускать их на выполнение.</p>
+
+<p>Вернемся к программному блокноту Notepad++. Чем могут быть полезны макросы в этом случае. Да тем же самым. Допустим, при написании кода существуют какие-либо его участки (куски), которые повторяются постоянно. Кстати, такие повторяющиеся куски кода называются сниппетами.</p>
+
+<p>Так вот, такие сниппеты приходится вводить вручную снова и снова. Чтобы ускорить работу и облегчить ее, можно записать такие программные куски в качестве последовательности действий. А затем вставлять в текст одним нажатием горячих клавиш.</p>
+
+<p>Давайте на примере разберем, каким образом можно записать и использовать макросы в Notepad++. Первое, что необходимо узнать, это какие кнопки отвечают за работу макросов. Посмотрите на панель инструментов Notepad++. Ближе к концу этой панели располагаются в ряд пять кнопок, каждая из которых отвечает за определенное действие:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/04/buttons_set_for_macros_notepad.png" alt="Набор кнопок для работы с макросами в Notepad++" /></p>
+
+<p>Назначение каждой из них по порядку:</p>
+
+<ol>
+  <li>Старт записи макроса</li>
+  <li>Остановка записи макроса</li>
+  <li>Воспроизведение записанного макроса</li>
+  <li>Многократное воспроизведение записанного макроса</li>
+  <li>Сохранение записанного макроса</li>
+</ol>
+
+<p>Набор совсем несложный и разобраться в нем легко. Теперь давайте приступим к записи какого-либо макроса, чтобы увидеть воочию, как это делается. Предположим, что в качестве часто повторяемого кода (сниппета) у нас будет выступать строка <code>document.write();</code>, которую довольно часто применяют в коде javascript-программисты.</p>
+
+<p>Нажимаем кнопку “Старт записи макроса”. При этом кнопка из красной превратиться в серую, что означает - запись пошла. Без ошибок, аккуратно вводим в основном окне Notepad++ вышеуказанную строку:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/04/start_record_macros_notepad.png" alt="Запись макроса в Notepad++" /></p>
+
+<p>Когда строка введена, нажимаем кнопку “Остановка записи макроса”. Программа Notepad++ записала наши действия. В данном случае - это строка кода, которую мы ввели. Чтобы проверить, что запись была произведена верно, нажмем кнопку “Воспроизведение записанного макроса”. Notepad++ в точности воспроизведет указанную строку, если все было выполнено нами верно. Если нужно воспроизвести записанный макрос несколько раз, можно нажать кнопку “Многократное воспроизведение записанного макроса”.</p>
+
+<p>Теперь необходимо сохранить записанный нами макрос, так как он хранится в оперативной памяти программы Notepad++ только до момента ее закрытия. Как только мы ее закроем, макрос пропадет. Для сохранения нажимаем кнопку “Сохранение записанного макроса”. Появится окно, в котором предлагается задать сочетание “горячих клавиш” для сохраняемого макроса и его имя для сохранения. выбираем любое понравившееся сочетание, а также задаем имя для макроса:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/04/saving_macros_in_notepad.png" alt="Сохранение макроса в Notepad++" /></p>
+
+<p>Проверить, произошло ли сохранение макроса, можно двумя способами. Первый - это перейти в меню “Макросы”. В выпадающей списке, наряду с общесистемными командами Notepad++ должен находиться и наш макрос <code>document.write();</code>. Второй способ - это открыть список всех сохраненных в программе макросов. Делается это через меню “Макросы - Изменить гор.клавишу/Удалить макрос”. Откроется окно редактирования, в котором должен быть представлен наш макрос:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/04/saved_macros_notepad.png" alt="Список сохраненных макросов Notepad++" /></p>
+
+<p>В этом окне можно удалить сохраненный макрос кнопкой “Delete”. Или же изменить сочетание горячих клавиш для этого макроса кнопкой “Modify”.</p>
+
+<p>Как вы уже догадались, с помощью макроса можно сохранять абсолютно любой код. Это может не обязательно javascript-сниппет, но и часть HTML или CSS-кода, если вы занимаетесь версткой в программе Notepad++.</p>
+
+<p>На этом обзор макросов в Notepad++ закончен.</p>
 
 <hr />
 
