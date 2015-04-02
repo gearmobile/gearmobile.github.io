@@ -144,154 +144,6 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-06-18T00:00:00+04:00"><a href="http://zencoder.ru/linux/wifi-adhoc-ubuntu-linux-windowsxp/">June 18, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/linux/wifi-adhoc-ubuntu-linux-windowsxp/" rel="bookmark" title="Соединение точка-точка (ad-hoc) по WiFi между Ubuntu Linux и Windows XP" itemprop="url">Соединение точка-точка (ad-hoc) по WiFi между Ubuntu Linux и Windows XP</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Рассмотрим случай, когда на одной машине (desktop) стоит все та же Ubuntu, а на другой машине (notebook) стоит Windows XP.</p>
-</blockquote>
-
-<p>Необходимо соединить оба компьютера по <code>ad-hoc</code> wifi. Требуется создать локальную домашнюю сеть, которая называется одноранговой. Другими словами, у нас нет в наличии таких сетевых устройств, как концентратор, коммутатор или маршрутизатор. Соединение между двумя (в нашем случае) компьютерами будет установлено напрямую, <code>точка-точка</code>. В первом шаге настроим сеть на десктопе в Ubuntu. Затем повторим настройку на ноутбуке в Windows XP.</p>
-
-<p>И в заключение, протестируем созданную нами сеть.</p>
-
-<h2 id="ad-hoc-wifi--ubuntu-karmic">Шаг Первый - настройка ad-hoc wifi в Ubuntu Karmic</h2>
-
-<p>Открываем NetworkManager правым щелчком мыши на значке в Панели Gnome и выбираем “Edit connections”. Появляется окно “Network Connections”.</p>
-
-<p>Переходим на вкладку “Wireless” (Беспроводные):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Start-Network-Connections.png" alt="Start Network Connections" /></p>
-
-<p>Нажимаем Add (Добавить). Появляется окно из четырех вкладок (tabs) для создания нового соединения. В первой вкладке вводим общую информацию о создаваемой нами сети:</p>
-
-<ul>
-  <li><code>Connection name</code> (имя сети) - это имя сети, которое будет отображаться на компьютере и в списке сетей NetworkManager;</li>
-  <li><code>SSID</code> - реальное имя сети. Каждая сеть Wi-Fi имеет свое имя, по которому сетевые устройства распознают их и подключаются к ним;</li>
-  <li><code>Mode</code> - режим сети. В выпадающем списке выбираем режим сети Ad-hoc;</li>
-  <li>остальные три поля - <code>BSSID</code>, <code>MAC address</code> и <code>MTU</code> оставляем пустыми.</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Ubuntu-Editing-Windows_XP.png" alt="Ubuntu Editing Windows XP" /></p>
-
-<p>Переходим на вкладку “Wireless Security”. Оставляем поле “Security” пустым (None):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Security-Editing-Windows_XP.png" alt="Security Editing Windows_XP" /></p>
-
-<p>Далее, переходим на вкладку “IPv4 Settings”. Здесь мы выбираем метод получения IP-адреса компьютером в сети. В нашем случае мы задаем его вручную.</p>
-
-<p>Для этого в выпадающем списке “Method” выбираем “Manual” (Ручной). Затем, в поле “Addresses” (Адреса) нажимаем кнопку <kbd>Add</kbd> (Добавить) и последовательно задаем IP-адрес <code>192.168.0.30</code>, маску сети “Netmask” <code>255.255.255.0</code> и шлюз сети “Gateway” <code>1.1.1.1</code>. Поля “DNS servers” и “Search domains” оставляем пустыми:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/IPv4-Settings-Editing-Windows_XP.png" alt="IPv4 Settings-Editing Windows_XP" /></p>
-
-<p>Вкладку “IPv6 Settings” оставляем как есть, ничего не конфигурируя (Method - Ignore):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/IPv6-Settings-Editing-Windows_XP.png" alt="IPv6 Settings-Editing Windows_XP" /></p>
-
-<p>Нажимаем кнопочку <kbd>Apply</kbd> (Применить) и видим конечный результат работы - список сетей в “NetworkManager” и нашу Windows_XP среди них:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Finish-Network-Connections.png" alt="Finish Network Connections" /></p>
-
-<p>Закрываем окно. Вновь нажимаем, теперь уже левой кнопкой мыши, на значке “NetworkManager” в Панели Gnome. Выбираем в выпавшем списке “Connect to hidden wireless network” (Подключиться к скрытой беспроводной сети).</p>
-
-<p>В списке “Connection” выбираем нашу Windows XP и нажимаем <kbd>Connect</kbd> (Соединить):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Connect-to-Hidden-Wireless-Network1.png" alt="Connect to hidden wireless network" /></p>
-
-<p>В эмуляторе терминала набираем команду:</p>
-
-<pre>
-$ sudo ifconfig -a
-</pre>
-
-<p>и видим, что сетевой интерфейс поднят и сеть запущена:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/ubuntu-desktop.png" alt="Ubuntu Desktop" /></p>
-
-<h2 id="ad-hoc-wifi--windows-xp">Шаг Второй - Настройка <code>ad-hoc</code> wifi в Windows XP</h2>
-
-<p>Открываем в “Панели управления” - “Сетевые подключения”:</p>
-
-<p><img src="http://zencoder.ru/uploads/2013/06/Network-Connections-Windows-XP.png" alt="Network Connections Windows XP" /></p>
-
-<p>Кликаем правой кнопкой мыши на значке “Беспроводное сетевое соединение” и в контекстном меню - “Properties” (Свойства). В окне “Свойств” находим в самом низу строку “Протокол Интернета (TCP/IP)”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/TCP_IP_Windows_XP.png" alt="TCP IP Windows XP" /></p>
-
-<p>Нажимаем “Свойства”. Открывается окно настроек TCP/IP. Здесь мы задаем IP-адрес, маску сети и шлюз сети так же, как и в NetworkManager, за исключением того, что IP-адрес у нас будет несколько иной - <code>192.168.0.31</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Properties-TCP_IP-Windows-XP.png" alt="Properties TCP IP Windows XP" /></p>
-
-<p>Нажимаем <kbd>OK</kbd>. Далее кликаем левой кнопкой мыши на значке “Беспроводное сетевое соединение” в “Сетевые подключения” “Панели управления”. Открывается окно со списком беспроводных сетей, находящихся в зоне доступа компьютера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Start-Wireless-Networks-Windows-XP.png" alt="Start Wireless Networks Windows XP" /></p>
-
-<p>Выбираем “Установить беспроводную сеть” для создания сети <code>ad-hoc</code>. Запускается “Мастер беспроводной сети”, пошагово проведущий по несложной настройке новой сети windows:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step1.png" alt="Step1 Windows XP" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step2.png" alt="Step2 Windows XP" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step3.png" alt="Step3 Windows XP" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step4.png" alt="Step4 Windows XP" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step5.png" alt="Step5 Windows XP" /></p>
-
-<p>Нажимаем “Готово”. Вновь открывается окно со списков доступных беспроводных сетей. В этом списке появилась и наша windows:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step6-Windows-XP.png" alt="Step6 Windows XP" /></p>
-
-<p>Выбираем сеть windows и нажимаем “Подключить”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step7-Windows-Xp.png" alt="Step7 Windows XP" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step8-Windows-XP.png" alt="Step8 Windows XP" /></p>
-
-<p>В итоге получаем подключение к сети windows:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Step9-Windows-XP.png" alt="Step9 Windows XP" /></p>
-
-<h2 id="ubuntu">Шаг Третий - тестирование сети из Ubuntu</h2>
-
-<p>Ping самих себя:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Ping-Self-Network-Tools.png" alt="Ping Self - Network Tools" /></p>
-
-<p>Ping Windows XP:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Ping-Windows-Network-Tools.png" alt="Ping Windows - Network Tools" /></p>
-
-<p>Трассировка Windows XP:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Traceroute-Windows-Network-Tools.png" alt="Traceroute Windows - Network Tools" /></p>
-
-<p>Сканирование портов Windows XP:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/06/Port-Scan-Windows-Network-Tools.png" alt="Port Scan Windows - Network Tools" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-06-14T00:00:00+04:00"><a href="http://zencoder.ru/css/css-box-shadow/">June 14, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -721,6 +573,232 @@ $ sudo ifconfig -a
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-05-12T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/convert-points-to-pixels-to-em/">May 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/convert-points-to-pixels-to-em/" rel="bookmark" title="Преобразование points в pixels, em и проценты" itemprop="url">Преобразование points в pixels, em и проценты</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>На практике часто бывает необходимо преобразовать одни единицы измерения в другие.</p>
+</blockquote>
+
+<p>Наиболее часто это происходит при работе со шрифтами. Допустим, имеется ситуация, когда в Photoshop размер шрифта показывается в <code>points</code>. А при верстке макета в CSS правилах необходимо прописать размер шрифта в пикселях или процентах.</p>
+
+<p>Как быть в данной ситуации? Если дело касается Photoshop, то можно установить в настройках этой программы, чтобы она выдавала размер шрифта в пикселях. Данный метод дает приближенное значение размера шрифта в пикселях, так как многое зависит от того, в каком разрешении был создан макет в Photoshop.</p>
+
+<p>Другим способом, который может быть даже предпочтительнее, является ручной перевод из одних единиц измерения в другие. Чтобы не производить каждый раз такие преобразования, ниже представлена таблица, к которой даны наиболее распространенные размеры шрифтов в различных единицах измерения.</p>
+
+<p>Пользуясь этой таблицей, можно быстро перевести один размер в другой. В ней представлены единицы измерения <code>point</code>, <code>pixel</code>, <code>em</code> и проценты. То есть, четыре самых распространенных типа, три из которых наиболее часто применяются при создании CSS-правил.</p>
+
+<h2 id="points--pixels-ems--">Таблица преобразования points в pixels, ems или проценты</h2>
+
+<table style="width: 500px;" border="1">
+  <tr>
+    <th scope="col" width="83">Points</th>
+    <th scope="col" width="81">Pixels</th>
+    <th scope="col" width="60">Ems</th>
+    <th scope="col" width="105">Проценты</th>
+  </tr>
+  <tr>
+    <td>6pt</td>
+    <td>8px</td>
+    <td>0.5em</td>
+    <td>50%</td>
+  </tr>
+  <tr>
+    <td>7pt</td>
+    <td>9px</td>
+    <td>0.55em</td>
+    <td>55%</td>
+  </tr>
+  <tr>
+    <td>7.5pt</td>
+    <td>10px</td>
+    <td>0.625em</td>
+    <td>62.5%</td>
+  </tr>
+  <tr>
+    <td>8pt</td>
+    <td>11px</td>
+    <td>0.7em</td>
+    <td>70%</td>
+  </tr>
+  <tr>
+    <td>9pt</td>
+    <td>12px</td>
+    <td>0.75em</td>
+    <td>75%</td>
+  </tr>
+  <tr>
+    <td>10pt</td>
+    <td>13px</td>
+    <td>0.8em</td>
+    <td>80%</td>
+  </tr>
+  <tr>
+    <td>10.5pt</td>
+    <td>14px</td>
+    <td>0.875em</td>
+    <td>87.5%</td>
+  </tr>
+  <tr>
+    <td>11pt</td>
+    <td>15px</td>
+    <td>0.95em</td>
+    <td>95%</td>
+  </tr>
+  <tr>
+    <td>12pt</td>
+    <td>16px</td>
+    <td>1em</td>
+    <td>100%</td>
+  </tr>
+  <tr>
+    <td>13pt</td>
+    <td>17px</td>
+    <td>1.05em</td>
+    <td>105%</td>
+  </tr>
+  <tr>
+    <td>13.5pt</td>
+    <td>18px</td>
+    <td>1.125em</td>
+    <td>112.5%</td>
+  </tr>
+  <tr>
+    <td>14pt</td>
+    <td>19px</td>
+    <td>1.2em</td>
+    <td>120%</td>
+  </tr>
+  <tr>
+    <td>14.5pt</td>
+    <td>20px</td>
+    <td>1.25em</td>
+    <td>125%</td>
+  </tr>
+  <tr>
+    <td>15pt</td>
+    <td>21px</td>
+    <td>1.3em</td>
+    <td>130%</td>
+  </tr>
+  <tr>
+    <td>16pt</td>
+    <td>22px</td>
+    <td>1.4em</td>
+    <td>140%</td>
+  </tr>
+  <tr>
+    <td>17pt</td>
+    <td>23px</td>
+    <td>1.45em</td>
+    <td>145%</td>
+  </tr>
+  <tr>
+    <td>18pt</td>
+    <td>24px</td>
+    <td>1.5em</td>
+    <td>150%</td>
+  </tr>
+  <tr>
+    <td>20pt</td>
+    <td>26px</td>
+    <td>1.6em</td>
+    <td>160%</td>
+  </tr>
+  <tr>
+    <td>22pt</td>
+    <td>29px</td>
+    <td>1.8em</td>
+    <td>180%</td>
+  </tr>
+  <tr>
+    <td>24pt</td>
+    <td>32px</td>
+    <td>2em</td>
+    <td>200%</td>
+  </tr>
+  <tr>
+    <td>26pt</td>
+    <td>35px</td>
+    <td>2.2em</td>
+    <td>220%</td>
+  </tr>
+  <tr>
+    <td>27pt</td>
+    <td>36px</td>
+    <td>2.25em</td>
+    <td>225%</td>
+  </tr>
+  <tr>
+    <td>28pt</td>
+    <td>37px</td>
+    <td>2.3em</td>
+    <td>230%</td>
+  </tr>
+  <tr>
+    <td>29pt</td>
+    <td>38px</td>
+    <td>2.35em</td>
+    <td>235%</td>
+  </tr>
+  <tr>
+    <td>30pt</td>
+    <td>40px</td>
+    <td>2.45em</td>
+    <td>245%</td>
+  </tr>
+  <tr>
+    <td>32pt</td>
+    <td>42px</td>
+    <td>2.55em</td>
+    <td>255%</td>
+  </tr>
+  <tr>
+    <td>34pt</td>
+    <td>45px</td>
+    <td>2.75em</td>
+    <td>275%</td>
+  </tr>
+  <tr>
+    <td>36pt</td>
+    <td>48px</td>
+    <td>3em</td>
+    <td>300%</td>
+  </tr>
+</table>
+
+<p>Отдельно стоит сказать, что не стоит путать <code>point</code> и <code>punct</code> (<code>pt</code>). Это разные единицы измерения.</p>
+
+<h2 id="ps">P.S.</h2>
+
+<p>В процессе изучения CSS-типографии столкнулся с очень интересным ресурсом по преобразованию одних единиц измерения в другие - пиксели в <code>em</code>, проценты и пункты (<code>pt</code>) - <code>http://pxtoem.com/</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/05/px_to_em.jpg" alt="Конвертировать px в em" /></p>
+
+<p>Помимо удобного способа конвертации одних единиц измерения в другие сервис предоставляет возможность получить готовый файл <code>normalize.css</code>, отредактированный службой <code>http://pxtoem.com/</code> под выбранное значение базового шрифта. Плюс к этому, в данный файл включены готовые стили для правильного вертикального ритма под выбранный размер шрифта. Супер!</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
 
 <div class="pagination">
   
@@ -966,12 +1044,6 @@ $ sudo ifconfig -a
       <li>
         
           <a href="http://zencoder.ru/page40">40</a>
-        
-      </li>
-    
-      <li>
-        
-          <a href="http://zencoder.ru/page41">41</a>
         
       </li>
     
