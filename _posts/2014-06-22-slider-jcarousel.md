@@ -47,7 +47,14 @@ share: true
 
 Создаем набросок HTML-страницы и производим подключение плагина jCarousel. Для чистоты и наглядности буду применять подход модульности плагина. Как и любой другой плагин подобного рода, его управление производится через отдельный js-файл произвольного имени, в котором прописываются параметры скрипта. Я создал для этой цели js-файл `simple.js` и выполнил подключение таким образом:
 
-<pre></pre>
+{% highlight html %}
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/jquery.jcarousel-core.min.js"></script>
+  <script src="js/simple.js"></script>
+ </head>
+{% endhighlight %}
 
 Шкурка `style.css` служит для стилизации слайдера jCarousel на HTML-странице, то есть в этом файле будут писаться CSS-стили для всех элементов слайдера jCarousel.
 
@@ -77,8 +84,7 @@ share: true
       <img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" />
     </li>
   </ul>
-</div>
-<!--  end jcarousel  -->
+</div><!--  end jcarousel  -->
 {% endhighlight %}
 
 То есть, должен присутствовать блок-обертка с классом `class="jcarousel"` (имя класса может быть произвольным), внутри которого должен находиться еще один блок-обертка. И затем только идут элементы с картинками. HTML-структура, надо сказать, несколько громоздкая по стандартам сегодняшнего времени.
@@ -89,11 +95,11 @@ share: true
 .jcarousel {
   position: relative;
   overflow: hidden;
-  
+
   ul{
     width: 20000em;
     position: relative;
-    
+
     li{
       float: left;
     }
@@ -149,13 +155,11 @@ $(function() {
         <img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" />
       </li>
     </ul>
-  </div>
-  <!--  end jcarousel  -->
+  </div><!--  end jcarousel  -->
   <!--  CONTROLS  -->
   <a class="jcarousel-prev" href="#">Prev</a>
   <a class="jcarousel-next" href="#">Next</a>
-</div>
-<!--  end wrap_jcarousel  -->
+</div><!--  end wrap_jcarousel  -->
 {% endhighlight %}
 
 Блок слайдера, элементы прокрутки (и другие будущие элементы управления слайдером) я поместил внутрь одного общего блока-обертки `class="wrap_jcarousel"`, которому придал несложные CSS-стили:
@@ -169,7 +173,15 @@ $(function() {
 
 Кнопки перемотки внутри HTML-разметки созданы, однако необходимо прикрутить к ним действия с помощью js-скрипта. Для этого сначала подключаю модуль прокрутки `jquery.jcarousel-control.min.js` в HTML-документе:
 
-<pre></pre>
+{% highlight html %}
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/jquery.jcarousel-core.min.js"></script>
+  <script src="js/jquery.jcarousel-control.min.js"></script>
+  <script src="js/simple.js"></script>
+  </head>
+{% endhighlight %}
 
 ... а затем в файле настроек `simple.js` активирую возможность прокрутки слайдера, добавив базовые js-строки:
 
@@ -204,39 +216,34 @@ $(function() {
 <div class="wrap_jcarousel">
   <div class="jcarousel">
     <ul>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" />
-      </li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" /></li>
     </ul>
-  </div>
-  <!--  end jcarousel  -->
+  </div><!--  end jcarousel  -->
   <!--  CONTROLS  -->
   <a class="jcarousel-prev" href="#">Prev</a>
   <a class="jcarousel-next" href="#">Next</a>
   <!--  PAGINATION  -->
   <p class="jcarousel-pagination"></p>
-</div>
-<!--  end wrap_jcarousel  -->
+</div><!--  end wrap_jcarousel  -->
 {% endhighlight %}
 
-Больше ничего в него добавлять не нужно - плагин сам сгенерирует (*наконец-то сам что создаст!*) его содержимое. Нам только необходимо подключить соответствующий модуль `jquery.jcarousel-pagination.min.js` для пагинации в слайдере:
+Больше ничего в него добавлять не нужно - плагин сам сгенерирует его содержимое. Нам только необходимо подключить соответствующий модуль `jquery.jcarousel-pagination.min.js` для пагинации в слайдере:
 
-<pre></pre>
+{% highlight html %}
+<head>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/jquery.jcarousel-core.min.js"></script>
+  <script src="js/jquery.jcarousel-control.min.js"></script>
+  <script src="js/jquery.jcarousel-pagination.min.js"></script>
+  <script src="js/simple.js"></script>
+</head>
+{% endhighlight %}
 
 ... а затем активировать его в файле настроек `simple.js`:
 
@@ -279,7 +286,19 @@ $(function() {
 
 Первое - подключить модуль автопрокрутки `jquery.jcarousel-autoscroll.min.js`:
 
-<pre></pre>
+{% highlight html %}
+<head>
+  <meta charset="utf-8">
+  <title>Слайдер jCarousel</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/jquery-1.11.1.min.js"></script>
+  <script src="js/jquery.jcarousel-core.min.js"></script>
+  <script src="js/jquery.jcarousel-control.min.js"></script>
+  <script src="js/jquery.jcarousel-pagination.min.js"></script>
+  <script src="js/jquery.jcarousel-autoscroll.min.js"></script>
+  <script src="js/simple.js"></script>
+</head>
+{% endhighlight %}
 
 Второе - активировать автопрокрутку в файле настроек `simple.js`:
 
@@ -418,7 +437,7 @@ $(function() {
 
 ## Заключение jCarousel
 
-В заключение можно сказать, что на странице примеров [Examples][7] есть богатый материал для дополнительных экспериментов. В частности, интерес представляет адаптивная Responsive Carousel, которая изменяет количество картинок внутри блока в зависимости от ширины окна браузера.
+В заключение можно сказать, что на странице примеров [Examples][5] есть богатый материал для дополнительных экспериментов. В частности, интерес представляет адаптивная Responsive Carousel, которая изменяет количество картинок внутри блока в зависимости от ширины окна браузера.
 
 Полный код рассмотренного в данной статье примера создания слайдера приведен ниже.
 
@@ -426,34 +445,20 @@ $(function() {
 <div class="wrap_jcarousel">
   <div class="jcarousel">
     <ul>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" />
-      </li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" /></li>
     </ul>
-  </div>
-  <!--  end jcarousel  -->
+  </div><!--  end jcarousel  -->
   <!--  CONTROLS  -->
   <a class="jcarousel-prev" href="#">Prev</a>
   <a class="jcarousel-next" href="#">Next</a>
       <!--  PAGINATION  -->
   <p class="jcarousel-pagination"></p>
-</div>
-<!--  end wrap_jcarousel  -->
+</div><!--  end wrap_jcarousel  -->
 {% endhighlight %}
 
 {% highlight css %}
@@ -547,14 +552,12 @@ $nav_height: $nav_width;
 }
 {% endhighlight %}
 
-
-
 {% highlight javascript %}
 $(function() {
 
 // Инициализация слайдера
 $('.jcarousel').jcarousel({
-    // Базовые настройки скрипта пишутся здесь
+  // Базовые настройки скрипта пишутся здесь
 });
 
 // Прокрутка слайдера
@@ -564,15 +567,15 @@ $('.jcarousel-prev')
 
 // Триггер класса inactive
 .on('jcarouselcontrol:active', function() {
-    $(this).removeClass('inactive');
+  $(this).removeClass('inactive');
 })
 .on('jcarouselcontrol:inactive', function() {
-    $(this).addClass('inactive');
+  $(this).addClass('inactive');
 })
 
 // Инициализация кнопки PREV
 .jcarouselControl({
-    target: '-=1'
+  target: '-=1'
 });
 
 // Кнопка NEXT
@@ -580,15 +583,15 @@ $('.jcarousel-next')
 
 // Триггер класса inactive
 .on('jcarouselcontrol:active', function() {
-    $(this).removeClass('inactive');
+  $(this).removeClass('inactive');
 })
 .on('jcarouselcontrol:inactive', function() {
-    $(this).addClass('inactive');
+  $(this).addClass('inactive');
 })
 
 // Инициализация кнопки NEXT
 .jcarouselControl({
-    target: '+=1'
+  target: '+=1'
 });
 
 // Пагинация слайдера
@@ -596,17 +599,17 @@ $('.jcarousel-pagination')
 
 // Триггер класса active
 .on('jcarouselpagination:active', 'a', function() {
-    $(this).addClass('active');
+  $(this).addClass('active');
 })
 .on('jcarouselpagination:inactive', 'a', function() {
-    $(this).removeClass('active');
+  $(this).removeClass('active');
 })
 
 // Инициализация пагинации
 .jcarouselPagination({
-    item: function(page) {
-        return '<a href="#' + page + '">' + page + '</a>';
-    }
+  item: function(page) {
+    return '<a href="#' + page + '">' + page + '</a>';
+  }
 });
 
 // Автопрокрутка слайдера
@@ -627,6 +630,4 @@ $('.jcarousel').jcarouselAutoscroll({
  [2]: http://plugins.jquery.com/tag/carousel/ "jQuery Plugins"
  [3]: http://sorgalla.com/jcarousel/dist/ "jCarousel Dist"
  [4]: http://placehold.it "Placehold.it"
- [5]: http://localhost:7788/third/wp-content/uploads/2014/06/jCarousel_prev-next.jpg
- [6]: http://localhost:7788/third/wp-content/uploads/2014/06/jCarousel_pagination.jpg
- [7]: http://sorgalla.com/jcarousel/examples/ "Examples"
+ [5]: http://sorgalla.com/jcarousel/examples/ "Examples"

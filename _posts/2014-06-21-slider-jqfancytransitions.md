@@ -21,7 +21,10 @@ share: true
 * подключить библиотеку jQuery
 * подключить плагин jqFancyTransitions
 
-<pre></pre>
+{% highlight html %}
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/jqFancyTransitions.1.8.min.js"></script>
+{% endhighlight %}
 
 В данной статье проверялась совместная работа плагина jqFancyTransitions с библиотекой jQuery версии 1.10.1. Другие версии jQuery не "испытывались", поэтому о их работоспособности с этим плагином ничего сказать не могу.
 
@@ -71,7 +74,11 @@ links: false // показ картинок как ссылок
 
 В моем случае я создал js-файл с именем script:
 
-<pre></pre>
+{% highlight html %}
+<script src="js/jquery-1.10.1.min.js"></script>
+<script src="js/jqFancyTransitions.1.8.min.js"></script>
+<script src="js/script.js"></script>
+{% endhighlight %}
 
 ... и наполнил его первоначальным содержимым:
 
