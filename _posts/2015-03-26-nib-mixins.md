@@ -1,9 +1,7 @@
 ---
-layout: post
-categories: stylus
 title: "Миксины библиотеки Nib"
-description: "Lorem ipsum dolor est"
-excerpt: "Lorem ipsum dolor est"
+layout: post
+categories: css
 tags: [nib, stylus]
 share: true
 ---
@@ -24,120 +22,120 @@ share: true
 
 Миксин для задания размеров элементам `display: block` или `display: inline-block`. Преимущество у данного миксина - в краткости его написания. Не нужно писать - `width: 20px; height: 20px;`, достаточно написать одну строчку:
 
-~~~ css
+{% highlight css %}
 .block
   size 20px 30px
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   width: 20px;
   height: 30px;
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   size 20px
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   width: 20px;
   height: 20px;
-~~~
+{% endhighlight %}
 
 ### Миксин Overflow
 
 Миксин для задания свойства `text-overflow: ellipsis`. Полезный миксин, которые реально может помочь в написании одной строки стилей вместо трех правил:
 
-~~~ css
+{% highlight css %}
 .block
   overflow ellipsis
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-~~~
+{% endhighlight %}
 
 ### Миксин Absolute/Fixed/Relative
 
 Миксин для генерирования CSS-свойства `position: absolute`, `position: fixed` или `position: relative`. Этот миксин очень похож на миксин `size` - все преимущество его использования только в краткости записи:
 
-~~~ css
+{% highlight css %}
 .block
   absolute top left
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 position: absolute;
 top: 0;
 left: 0;
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   absolute top 20px left 30px
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   position: absolute;
   top: 20px;
   left: 30px;
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   absolute bottom 20px right 30px
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   position: absolute;
   bottom: 20px;
   right: 30px;
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   relative top 10px left 20px
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   position: relative;
   top: 10px;
   left: 20px;
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   fixed top 10px left 2%
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   position: fixed;
   top: 10px;
   left: 20px;
-~~~
+{% endhighlight %}
 
 ### Миксин Border
 
 Миксин для генерирования CSS `border: 1px solid color`. Достаточно бесполезный миксин, так как проще и быстрее воспользоваться shortcut'ом `bd+` из Emmet.
 
-~~~ css
+{% highlight css %}
 .block
   border #800
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   border: 1px solid #800
-~~~
+{% endhighlight %}
 
 ### Миксин Clearfix()
 
@@ -147,48 +145,48 @@ left: 0;
 
 Если быть точным, функция `rgba()` не относится к миксинам библиотеки Nib. Это функция препроцессора Stylus. И задача ее - преобразование значения цвета в формате HEX в формат RGBA(). Достаточно бесполезная функция, если только кодер не привык писать значения цветов в RGBA-формате:
 
-~~~ css
+{% highlight css %}
 .block
   color rgba(#ff0000, .8)
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block
   color: rgba(255, 0, 0, 0.9);
-~~~
+{% endhighlight %}
 
 ### Миксин Background
 
 Вот этот миксин является действительно полезным - благодаря краткости записи и результату генерации этого миксина. Как уже можно догадаться, этот миксин генерирует *линейный градиент*. Направление градиента управляется служебным словом, стоящим вначале миксина - `top`, `left`, `right`, `bottom`:
 
-~~~ css
+{% highlight css %}
 .block
   background linear-gradient(top,#f00,#0f0)
-~~~
+{% endhighlight %}
 
 Миксин для генерации радиального градиента - очень похож на линейный градиент. Разница только в некоторых моментах:
 
-~~~ css
+{% highlight css %}
 .block
   background radial-gradient(center,#f00 30%, #fff 31%)
-~~~
+{% endhighlight %}
 
 ### Миксин Box-sizing
 
 Еще один полезный миксин - для генерации CSS-свойства `box-sizing: border-box`. Что это за свойство, говорить не приходиться:
 
-~~~ css
+{% highlight css %}
 .block
   box-sizing: border-box
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
 }
-~~~
+{% endhighlight %}
 
 ### Миксин Image
 
@@ -196,12 +194,12 @@ left: 0;
 
 Первое изображение - *нормального размера* для нормального разрешения. Второе изображение - *увеличенная вдвое* версия нормального изображения, для Retina-экранов (это версия `@2x`):
 
-~~~ css
+{% highlight css %}
 .block
   image 'images/background.jpg'
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 .block {
   background-image: url("images/background.jpg");
 }
@@ -212,7 +210,7 @@ left: 0;
     background-size: auto auto;
   }
 }
-~~~
+{% endhighlight %}
 
 На этом все.
 
