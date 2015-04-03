@@ -8,7 +8,7 @@ tags: [stylus, css]
 
 > Настало время познакомиться с препроцессором Stylus. Ниже привожу перевод статьи от David Walsh, посвященную малоизвестному, но крайне полезному препроцессору Stylus. Оригинал статьи размещен здесь - [Getting Started with Stylus][2]
 
-![Stylus]({{site.url}}/images/uploads/2014/12/stylus-logo.png)
+![Stylus]({{site.url}}/images/uploads/2014/12/stylus-logo.png){:.center-image}
 
 В среде web-разработчиков можно часто и постоянно слышать только о двух препроцессорах: [Sass][3] и [LESS][4]. Однако, существует еще один препроцессор, о котором слышно совсем не так часто - это [Stylus][5]. При редизайне Mozilla Developer Network мною был выбран Stylus по нескольким причинам:
 
@@ -66,7 +66,7 @@ nav
       list-style-type none
         > li
           display inline-block
-          &#038;.current
+          &.current
             background-color lightblue
 
 /* Использование вычисляемых значений */
@@ -132,7 +132,7 @@ vendorize(property, value)
 /* Миксин создания треугольника на CSS */
 
 generate-arrow(arrow-width = 10px)
-  &#038;:before, &#038;:after
+  &:before, &:after
     content ''
     height 0
     width 0
@@ -149,7 +149,7 @@ special-homestyles(background = '#ccc')
   background-color background
     a
       color lightblue
-    &#038;.visited
+    &.visited
       color navy
 {% endhighlight %}
 
@@ -186,7 +186,7 @@ for n, x in 0..((end - start) / increment)
 prevent-last-child-spacing(element="*", property="padding-bottom")
   if element is "*"
     element = unquote(element)
-      &#038; > {element}:last-child
+      & > {element}:last-child
         {property} 0
 {% endhighlight %}
 
@@ -198,9 +198,9 @@ prevent-last-child-spacing(element="*", property="padding-bottom")
 
 {% highlight css %}
   set-placeholder-style(prop, value)
-   &#038;::-webkit-input-placeholder
+   &::-webkit-input-placeholder
      {prop} value
-   &#038;::-moz-input-placeholder
+   &::-moz-input-placeholder
      {prop} value
 {% endhighlight %}
 
@@ -210,12 +210,13 @@ prevent-last-child-spacing(element="*", property="padding-bottom")
 
 От себя могу добавить.
 
-  1. Под Sublime Text 3 имеется плагин [Stylus][10] для подсветки синтаксиса и автоматической табуляции. Если планируется дальнейшая работа в Stylus, то данный плагин обязателен к установке - без него просто тяжело и долго кодить.
-  <figure>
-    <img src="../images/uploads/2014/12/sublime_stylus.png" alt="stylus-sublime-text-3">
-  </figure>
-  2. Плагин Emmet имеет поддержку синтаксиса Stylus (*меня Emmet не перестает радовать*). Все [горячие клавиши Emmet][12] остались неизменными и под Stylus, как если бы я кодил в старом добром CSS
-  3. На моем любимом YouTube-канале Level Up Tuts недавно вышла небольшая серия видео-обзоров по Stylus - [Stylus Tutorials][13]
+Под Sublime Text 3 имеется плагин [Stylus][10] для подсветки синтаксиса и автоматической табуляции. Если планируется дальнейшая работа в Stylus, то данный плагин обязателен к установке - без него просто тяжело и долго кодить.
+
+![Stylus Sublime Text]({{site.url}}/images/uploads/2014/12/sublime_stylus.png)
+
+Плагин Emmet имеет поддержку синтаксиса Stylus (*меня Emmet не перестает радовать*). Все [горячие клавиши Emmet][11] остались неизменными и под Stylus, как если бы я кодил в старом добром CSS.
+
+На моем любимом YouTube-канале Level Up Tuts недавно вышла небольшая серия видео-обзоров по Stylus - [Stylus Tutorials][12]
 
 На этом все.
 
@@ -231,6 +232,5 @@ prevent-last-child-spacing(element="*", property="padding-bottom")
  [8]: https://github.com/visionmedia/nib "Nib"
  [9]: https://github.com/LearnBoost/stylus/blob/master/docs/executable.md "Executable"
  [10]: https://sublime.wbond.net/packages/Stylus "Stylus"
- [11]: http://localhost:7788/third/wp-content/uploads/2014/12/sublime_stylus.png
- [12]: http://docs.emmet.io/cheat-sheet/ "Emmet CheatSheet"
- [13]: http://youtu.be/eJahtnmywMI "Stylus Tutorials"
+ [11]: http://docs.emmet.io/cheat-sheet/ "Emmet CheatSheet"
+ [12]: http://youtu.be/eJahtnmywMI "Stylus Tutorials"
