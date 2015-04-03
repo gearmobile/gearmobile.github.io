@@ -144,7 +144,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-28T00:00:00+04:00"><a href="http://zencoder.ru/gitignore/">August 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-28T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gitignore/">August 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -154,124 +154,113 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/gitignore/" rel="bookmark" title="gitignore &#8211; игнорирование файлов в Git" itemprop="url">gitignore &#8211; игнорирование файлов в Git</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gitignore/" rel="bookmark" title="gitignore - игнорирование файлов в Git" itemprop="url">gitignore - игнорирование файлов в Git</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>В системе Git можно настроить возможность автоматического <strong>игнорирования файлов</strong>. То есть, можно указать Git, что файлы определенного типа <strong>не нужно отслеживать</strong>. Выполняется такая настройка с помощью специального файла <code>.gitignore</code>. Подобная возможность отключения отслеживания файлов в системе Git может понадобиться в случае, когда автоматически генерируются <strong>служебные файлы</strong>.</p>
+    <blockquote>
+  <p>В системе Git можно настроить возможность автоматического игнорирования файлов.</p>
+</blockquote>
+
+<p>То есть, можно указать Git, что файлы определенного типа не нужно отслеживать. Выполняется такая настройка с помощью специального файла <code>.gitignore</code>. Подобная возможность отключения отслеживания файлов в системе Git может понадобиться в случае, когда автоматически генерируются служебные файлы.</p>
 
 <p>К примеру, если развертывать в проекте Compass, то будет создан каталог <code>.sass</code>, в который данный фреймворк помещает свой кэш, генерируемый автоматически при каждом изменении любого из файлов проекта.</p>
 
-<p>Давайте на практике разберемся, каким образом можно настроить <strong>игнорирование файлов</strong> в Git с помощью <code>.gitignore</code>.</p>
+<p>Давайте на практике разберемся, каким образом можно настроить игнорирование файлов в Git с помощью <code>.gitignore</code>.</p>
 
-<h3 id="section">Создание нового проекта</h3>
+<h2 id="section">Создание нового проекта</h2>
 
 <p>Создаю новый проект с именем <code>git_ignore</code>, в котором помещаю несколько файлов разного типа:</p>
 
-<pre>
-  $ mkdir git_ignore
-  $ cd git_ignore/
-  $ touch index.html style.css
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">git_ignore</span>
+<span class="p">$</span> <span class="n">cd</span> <span class="n">git_ignore</span><span class="p">/</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
 
 <p>Инициализирую репозиторий Git в директории <code>.git_ignore</code>, индексирую созданные файлы и фиксирую их:</p>
 
-<pre>$ git init
-    Initialized empty Git repository in /home/aaron/Projects/git_ignore/.git/
-    $ git add .
-    $ git commit -m 'First Commit'
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">init</span>
+<span class="n">Initialized</span> <span class="n">empty</span> <span class="n">Git</span> <span class="n">repository</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/</span><span class="n">Projects</span><span class="p">/</span><span class="n">git_ignore</span><span class="p">/.</span><span class="n">git</span><span class="p">/</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;First Commit&#39;</span></code></pre></div>
 
 <p>Вывод команды <code>git status</code> показывает, что все чисто:</p>
 
-<pre>$ git status
-    On branch master
-    nothing to commit, working directory clean
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span></code></pre></div>
 
-<h3 id="gitignore">Настройка игнорирования в .gitignore</h3>
+<h2 id="gitignore">Настройка игнорирования в .gitignore</h2>
 
 <p>Для настройки игнорирования определенных типов файлов в системе Git необходимо первоначально создать файл <code>.gitignore</code>:</p>
 
-<pre>$ touch .gitignore
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="p">.</span><span class="n">gitignore</span></code></pre></div>
 
 <p>Откроем созданный файл <code>.gitignore</code> в любом редакторе:</p>
 
-<pre>$ nano -w .gitignore
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">nano</span> <span class="n">-w</span> <span class="p">.</span><span class="n">gitignore</span></code></pre></div>
 
 <p>… и пропишем в нем следующие строки:</p>
 
-<pre>*.txt
-    *.md
-  </pre>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">*.txt</span>
+<span class="err">*.md</span></code></pre></div>
 
 <p>Тем самым мы говорим Git, что нужно игнорировать все файлы с расширением <code>.txt</code> и <code>.md</code> внутри директории <code>git_ignore</code>. То есть, система контроля не будет отслеживать изменения во всех файлах этих типов.</p>
 
 <p>Проиндексируем и зафиксируем изменения (создание файла настроек <code>.gitignore</code>), а затем проверим данный факт. Для этого в рабочей директории <code>git_ignore</code> создаю еще несколько типов файлов:</p>
 
-<pre>$ touch main.css readme.txt humans.md
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span> <span class="n">readme</span><span class="p">.</span><span class="n">txt</span> <span class="n">humans</span><span class="p">.</span><span class="n">md</span></code></pre></div>
 
 <p>Затем выполняю индексацию всех файлов, которые были добавлены или изменены в рабочем каталоге:</p>
 
-<pre>$ git add .
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span></code></pre></div>
 
 <p>И смотрю, что мне показывает команда <code>git status</code>:</p>
 
-<pre>$ git status
-    On branch master
-    Changes to be committed:
-      (use "git reset HEAD &lt;file&gt;..." to unstage)
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+  <span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+  <span class="n">Changes</span> <span class="n">to</span> <span class="n">be</span> <span class="n">committed</span><span class="err">:</span>
+    <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git reset HEAD &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">unstage</span><span class="p">)</span>
 
-      new file:   main.css
+    <span class="n">new</span> <span class="n">file</span><span class="err">:</span>   <span class="n">main</span><span class="p">.</span><span class="n">css</span></code></pre></div>
 
-  </pre>
+<p>Система Git увидела только новый файл <code>main.css</code>. Два других файла - <code>readme.txt</code> и <code>humans.md</code> - проигнорированы системой. Отлично! Зафиксирую изменения.</p>
 
-<p>Система Git увидела только новый файл <code>main.css</code>. Два других файла – <code>readme.txt</code> и <code>humans.md</code> – проигнорированы системой. Отлично! Зафиксирую изменения.</p>
+<p>Можно создать еще пару файлов в разных директориях и посмотреть на вывод команды <code>git status</code> в консоли:</p>
 
-<p>Можно создать еще пару файлов в разных директориях и посмотреть на вывод команды <code>git status</code> в консоли:<figure id="attachment_1720" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gitignore.png" alt="Результат настройки файла .gitignore" /></p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gitignore.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gitignore-600x304.png" alt="Результат настройки файла .gitignore" width="600" height="304" class="size-medium wp-image-1720" /></a>&lt;figcaption class="wp-caption-text"&gt;Результат настройки файла .gitignore&lt;/figcaption&gt;&lt;/figure&gt; </p>
-
-<h3 id="gitignore-1">Усложнить задачу игнорирования в .gitignore</h3>
+<h2 id="gitignore-1">Усложнить задачу игнорирования в .gitignore</h2>
 
 <p>Можно усложнить задачу игнорирования в Git, добавив в файл <code>.gitignore</code> директорию, содержимое которой также должно игнорироваться. Пускай это будет обычная директория <code>ignore</code> и скрытая директория <code>.ignore</code> (с точкой перед именем):</p>
 
 <p>Добавлю в файл <code>.gitignore</code> пару строк таким образом:</p>
 
-<pre>$ cat .gitignore
-    *.txt
-    *.md
-    ignore/
-    .ignore/
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">gitignore</span>
+<span class="p">*.</span><span class="n">txt</span>
+<span class="p">*.</span><span class="n">md</span>
+<span class="n">ignore</span><span class="p">/</span>
+<span class="p">.</span><span class="n">ignore</span><span class="p">/</span></code></pre></div>
 
 <p>Проиндексирую изменения, а затем выполню операции по созданию директорий и файлов внутри них:</p>
 
-<pre>$ mkdir ignore
-    $ mkdir .ignore
-    $ touch ignore/reset.css
-    $ touch .ignore/normilize.css
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">ignore</span>
+<span class="p">$</span> <span class="n">mkdir</span> <span class="p">.</span><span class="n">ignore</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="n">ignore</span><span class="p">/</span><span class="n">reset</span><span class="p">.</span><span class="n">css</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="p">.</span><span class="n">ignore</span><span class="p">/</span><span class="n">normilize</span><span class="p">.</span><span class="n">css</span></code></pre></div>
 
 <p>Вновь ввожу команду просмотра состояния репозитория Git:</p>
 
-<pre>$ git status
-    On branch master
-    nothing to commit, working directory clean
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+  <span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+  <span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span></code></pre></div>
 
-<p>Все сработало – Git не захотел видеть директории <code>ignore</code>, <code>.ignore</code>, а также их содержимое. Отлично!</p>
+<p>Все сработало - Git не захотел видеть директории <code>ignore</code>, <code>.ignore</code>, а также их содержимое. Отлично!</p>
 
-<h3 id="gitignore-2">Шаблоны в файле .gitignore</h3>
+<h2 id="gitignore-2">Шаблоны в файле .gitignore</h2>
 
-<p>Для файла <code>.gitignore</code> доступны шаблоны, с помощью которых можно задать маски для выборки необходимых типой файлов. Однако, обширная тема шаблонов выходит за рамки данной статьи. При желании можно почитать по теме шаблонов в книге “<a href="http://git-scm.com/book/ru" title="Pro Git - профессиональный контроль версий">Pro Git – профессиональный контроль версий</a>“.</p>
+<p>Для файла <code>.gitignore</code> доступны шаблоны, с помощью которых можно задать маски для выборки необходимых типой файлов. Однако, обширная тема шаблонов выходит за рамки данной статьи. При желании можно почитать по теме шаблонов в книге “<a href="http://git-scm.com/book/ru" title="Pro Git - профессиональный контроль версий">Pro Git - профессиональный контроль версий</a>”.</p>
 
-<p>Оцените статью:<br />
-<span id="post-ratings-1716" class="post-ratings" data-nonce="c024202154"><img id="rating_1716_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1716, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1716, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1716, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1716, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1716_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1716, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1716_text"></span></span><span id="post-ratings-1716-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -281,185 +270,180 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~4 minutes
+        Reading time ~6 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp-livereload/" rel="bookmark" title="Gulp &#8211; плагин gulp-livereload" itemprop="url">Gulp &#8211; плагин gulp-livereload</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-livereload/" rel="bookmark" title="Gulp - плагин gulp-livereload" itemprop="url">Gulp - плагин gulp-livereload</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке. </p>
+    <blockquote>
+  <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке.</p>
+</blockquote>
 
-<p>Суть плагина <code>gulp-livereload</code> в <strong>автоматизации обновления страниц в окне браузера</strong>. Это тоже самое, что и связка – плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка – плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
+<p>Суть плагина <code>gulp-livereload</code> в автоматизации обновления страниц в окне браузера. Это тоже самое, что и связка - плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка - плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
 
-<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье – <a href="http://localhost:7788/third/?p=431" title="Установка LiveReload в Sublime Text 2">Установка LiveReload в Sublime Text 2</a> меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда – почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
+<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье - “Установка LiveReload в Sublime Text 2” меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда - почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
 
-<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер <strong>работает стабильно</strong>. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
+<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер работает стабильно. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
 
-<h3 id="gulp-livereload">Установка плагина gulp-livereload</h3>
+<h2 id="gulp-livereload">Установка плагина gulp-livereload</h2>
 
-<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу – <a href="https://www.npmjs.org/package/gulp-livereload" title="gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
+<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу - <a href="https://www.npmjs.org/package/gulp-livereload" title="Gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
 
-<pre>$ npm install --save-dev gulp-livereload
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-livereload</span></code></pre></div>
 
 <p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
 
-<pre>{
- "name": "test",
- "version": "0.0.1",
- "devDependencies": {
-  "gulp": "~3.8.7",
-  "gulp-livereload": "~2.1.1"
- }
-}
-</pre>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
+ <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;gulp-livereload&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.1.1&quot;</span>
+ <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 
 <p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
 
-<pre>var gulp = require('gulp'),
-    livereload = require('gulp-livereload');
-</pre>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span></code></pre></div>
 
-<h3 id="livereload--">Установка плагина LiveReload под браузер</h3>
+<h2 id="livereload--">Установка плагина LiveReload под браузер</h2>
 
-<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера – Google Chrome и Safari.</p>
+<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера - Google Chrome и Safari.</p>
 
-<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla – <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится <strong>устаревшая версия плагина</strong>, которая наверняка не подойдет для вашего браузера.</p>
+<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla - <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится устаревшая версия плагина, которая наверняка не подойдет для вашего браузера.</p>
 
-<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров – <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
+<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров - <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
 
-<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин – он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
+<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин - он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
 
-<h3 id="gulp-livereload-1">Создание задачи под gulp-livereload</h3>
+<h2 id="gulp-livereload-1">Создание задачи под gulp-livereload</h2>
 
-<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него – это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас – устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
+<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него - это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас - устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
 
-<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:<figure id="attachment_1686" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_error_start_server.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_error_start_server-600x402.png" alt="Ошибка запуска сервера LiveReload" width="600" height="402" class="size-medium wp-image-1686" /></a>&lt;figcaption class="wp-caption-text"&gt;Ошибка запуска сервера LiveReload&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_error_start_server.png" alt="Ошибка запуска сервера LiveReload" /></p>
 
 <p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
 
-<pre>// Watch Task
- gulp.task('watch', function(){
-  livereload.listen();
-  gulp.watch('sass/*.scss', ['sass']).on('change', livereload.changed);
-});
-</pre>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
 
-<p>Все – мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
+<p>Все - мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
 
-<pre>// Sass Complie Task
- gulp.task('sass', function(){
- gulp.src('sass/*.scss')
-  .pipe(sassSCSS())
-  .pipe(gulp.dest('build/css'));
-});
-</pre>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Complie Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
 
 <p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
 
-<pre>var gulp = require('gulp'),
-    sassSCSS = require('gulp-sass'),
-    minifyHTML = require('gulp-minify-html'),
-    rename = require('gulp-rename'),
-    livereload = require('gulp-livereload');
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">sassSCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
+    <span class="nx">minifyHTML</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-html&#39;</span><span class="p">),</span>
+    <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span>
 
-// Default Task
-gulp.task('default', ['sass', 'watch']);
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
 
-// Watch Task
- gulp.task('watch', function(){
-  livereload.listen();
-  gulp.watch('sass/*.scss', ['sass']).on('change', livereload.changed);
-});
+<span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span>
 
-// Sass Complie Task
-gulp.task('sass', function(){ 
- gulp.src('sass/*.scss')
-  .pipe(sassSCSS())
-  .pipe(gulp.dest('build/css'));
-});
-</pre>
+<span class="c1">// Sass Complie Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
 
 <p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
 
-<h3 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h3>
+<h2 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h2>
 
-<p>Осталось выполнить две маленькие вещи. Первая – включаю плагин LiveReload в браузере. Вторая – запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
+<p>Осталось выполнить две маленькие вещи. Первая - включаю плагин LiveReload в браузере. Вторая - запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
 
-<pre>$ gulp
-Using gulpfile ~/Projects/gulp_test/gulpfile.js
-Starting 'sass'...
-Finished 'sass' after 11 ms
-Starting 'watch'...
-Finished 'watch' after 17 ms
-Starting 'default'...
-Finished 'default' after 19 μs
-Live reload server listening on: 35729
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">17</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">19</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span></code></pre></div>
 
-<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию – 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
+<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию - 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
 
-<pre>figure{
-  border: 1px solid #000;
-  padding: 5px;
- }
-</pre>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">figure</span><span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+ <span class="p">}</span></code></pre></div>
 
 <p>… и смотрю на вывод в консоли:</p>
 
-<pre>$ gulp
-Using gulpfile ~/Projects/gulp_test/gulpfile.js
-Starting 'sass'...
-Finished 'sass' after 10 ms
-Starting 'watch'...
-Finished 'watch' after 15 ms
-Starting 'default'...
-Finished 'default' after 11 μs
-Live reload server listening on: 35729
-style.scss was reloaded.
-Starting 'sass'...
-Finished 'sass' after 3.58 ms
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span></code></pre></div>
 
-<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> – он тоже подхватил изменения? Смотрим:<figure id="attachment_1687" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> - он тоже подхватил изменения?</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_01.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_01-600x402.png" alt="Изменения в gulp-livereload" width="600" height="402" class="size-medium wp-image-1687" /></a>&lt;figcaption class="wp-caption-text"&gt;Изменения в gulp-livereload&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>Смотрим:</p>
 
-<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> – “картинка” в окне браузера изменилась <strong>без перезагрузки</strong> последнего.</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_01.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> - “картинка” в окне браузера изменилась без перезагрузки последнего.</p>
 
 <p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
 
-<pre>$ gulp
-Using gulpfile ~/Projects/gulp_test/gulpfile.js
-Starting 'sass'...
-Finished 'sass' after 10 ms
-Starting 'watch'...
-Finished 'watch' after 15 ms
-Starting 'default'...
-Finished 'default' after 11 μs
-Live reload server listening on: 35729
-style.scss was reloaded.
-Starting 'sass'...
-Finished 'sass' after 3.58 ms
-style.scss was reloaded.
-Starting 'sass'...
-Finished 'sass' after 1.97 ms
-</pre>
-<figure id="attachment_1688" style="width: 600px;" class="wp-caption aligncenter">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">97</span> <span class="n">ms</span></code></pre></div>
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp-livereload_02-600x402.png" alt="Изменения в gulp-livereload" width="600" height="402" class="size-medium wp-image-1688" />][7]<figcaption class="wp-caption-text">Изменения в gulp-livereload</figcaption></figure>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_02.png" alt="Изменения в gulp-livereload" /></p>
 
-<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp – использование плагина <code>gulp-livereload</code>.</p>
+<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp - использование плагина <code>gulp-livereload</code>.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -489,7 +473,7 @@ Finished 'sass' after 1.97 ms
 
 <p>Для этой цели существует много разных инструментов, начиная с RIOT и заканчивая утилитами Linux. Но гораздо более удобной возможностью является автоматизация процесса сжатия картинок с помощью плагина под Gulp.</p>
 
-<p>Таким плагином является <a href="https://www.npmjs.org/package/gulp-imagemin" title="gulp-imagemin">gulp-imagemin</a>. Он умеет сжимать картинки форматов PNG, JPEG, GIF и SVG. Все остальные (не поддерживаемые) форматы графических файлов просто игнорируются плагином <code>gulp-imagemin</code>.</p>
+<p>Таким плагином является <a href="https://www.npmjs.org/package/gulp-imagemin" title="Gulp-imagemin">gulp-imagemin</a>. Он умеет сжимать картинки форматов PNG, JPEG, GIF и SVG. Все остальные (не поддерживаемые) форматы графических файлов просто игнорируются плагином <code>gulp-imagemin</code>.</p>
 
 <h2 id="gulp-imagemin">Установка gulp-imagemin</h2>
 
@@ -638,39 +622,43 @@ Finished 'sass' after 1.97 ms
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-24T00:00:00+04:00"><a href="http://zencoder.ru/gulp-plumber/">August 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-24T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-plumber/">August 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~3 minutes
+        Reading time ~2 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp-plumber/" rel="bookmark" title="Gulp-plumber &#8211; отслеживание ошибок в Gulp" itemprop="url">Gulp-plumber &#8211; отслеживание ошибок в Gulp</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-plumber/" rel="bookmark" title="Gulp-plumber - отслеживание ошибок в Gulp" itemprop="url">Gulp-plumber - отслеживание ошибок в Gulp</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Кто не знаком с тем, что при написании кода очень часто возникают ошибки или банальные опечатки? И даже если установлены такие палочки-выручалочки, как Emmet, это не всегда спасает из ситуации. А если представить, что вы пишете большой проект и в нем закралась ошибка, то нелегко будет ее найти в куче кода.</p>
+    <blockquote>
+  <p>Кто не знаком с тем, что при написании кода очень часто возникают ошибки или банальные опечатки?</p>
+</blockquote>
 
-<p>При использовании Gulp, который автоматически отслеживает события и выполняет соотвествующие задачи, ситуация несколько “облегчается” тем, что при возникновении ошибки можно увидеть тот момент, когда она произошла. Например, Gulp настроен на автоматическое фиксирование изменений через <code>gulp.watch</code>. Если возникла ошибка, то выполнение мониторинга в Gulp прерывается:</p>
+<p>И даже если установлены такие палочки-выручалочки, как Emmet, это не всегда спасает из ситуации. А если представить, что вы пишете большой проект и в нем закралась ошибка, то нелегко будет ее найти в куче кода.</p>
 
-<figure id="attachment_1645" style="width: 600px;" class="wp-caption aligncenter">
+<p>При использовании Gulp, который автоматически отслеживает события и выполняет соотвествующие задачи, ситуация несколько “облегчается” тем, что при возникновении ошибки можно увидеть тот момент, когда она произошла.</p>
 
-[<img class="size-medium wp-image-1645" src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp_error-600x304.png" alt="Прерванная работа Gulp" width="600" height="304" />][1]<figcaption class="wp-caption-text">Прерванная работа Gulp</figcaption></figure>
+<p>Например, Gulp настроен на автоматическое фиксирование изменений через <code>gulp.watch</code>. Если возникла ошибка, то выполнение мониторинга в Gulp прерывается:</p>
 
-<p>Но даже в этом случае <strong>довольно трудно разобраться, где именно закралась ошибка</strong>. В этой ситуации может помочь плагин <a href="https://www.npmjs.org/package/gulp-plumber" title="gulp-plumber">gulp-plumber</a>, который формирует вывод об ошибке. Но при этом <strong>работа Gulp не прерывается</strong>.</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_error.png" alt="Прерванная работа Gulp" /></p>
+
+<p>Но даже в этом случае довольно трудно разобраться, где именно закралась ошибка. В этой ситуации может помочь плагин <a href="https://www.npmjs.org/package/gulp-plumber" title="Gulp-plumber">gulp-plumber</a>, который формирует вывод об ошибке. Но при этом работа Gulp не прерывается.</p>
 
 <p>Давайте установим и попробуем в работе плагин <code>gulp-plumber</code>.</p>
 
-<h3 id="gulp-plumber">Установка плагина gulp-plumber</h3>
+<h2 id="gulp-plumber">Установка плагина gulp-plumber</h2>
 
 <p>Установка плагина <code>gulp-plumber</code> стандартная, через менеджер пакетов <code>npm</code> с ключом <code>--save-dev</code>:</p>
 
 <div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-plumber</span></code></pre></div>
 
-<h3 id="gulp-plumber-1">Использование плагина gulp-plumber</h3>
+<h2 id="gulp-plumber-1">Использование плагина gulp-plumber</h2>
 
 <p>Для применения плагина <code>gulp-plumber</code> в проекте необходимо создать переменную <code>plumber</code>:</p>
 
@@ -679,36 +667,36 @@ Finished 'sass' after 1.97 ms
 <p>А затем дописать строку <code>.pipe(plumber())</code> в ту задачу, в которой необходимо включить возможность отслеживания ошибок. Например, пусть это будет задача минификации всех js-файлов проекта <code>uglify</code>. Тогда в ней сразу после строки <code>gulp.src('js/*.js')</code> добавляем строку <code>.pipe(plumber())</code>, чтобы отслеживались возможные ошибки во всех нижеследующих задачах, таких как <code>.pipe(uglify())</code> или <code>.pipe(gulp.dest('build/js'))</code>:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span> <span class="c1">// plumber</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
-  <span class="p">});</span></code></pre></div>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span> <span class="c1">// plumber</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
 
 <p>Точно также можно поступить, если необходим контроль ошибок в другой задаче, к примеру конкатенации CSS-файлов:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concatCSS</span><span class="p">(</span><span class="s1">&#39;concatenate.css&#39;</span><span class="p">))</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minifyCSS</span><span class="p">())</span>
-      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-  <span class="p">});</span></code></pre></div>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concatCSS</span><span class="p">(</span><span class="s1">&#39;concatenate.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minifyCSS</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
 
-<h3 id="gulp-plumber-2">Запуск мониторинга ошибок gulp-plumber</h3>
+<h2 id="gulp-plumber-2">Запуск мониторинга ошибок gulp-plumber</h2>
 
 <p>Для удобства проверки работы плагина <code>gulp-plumber</code> создам задачу <code>gulp.watch</code> и помещу ее в задачу по умолчанию <code>default</code>:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
-  <span class="p">});</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
+<span class="p">});</span>
 
-  <span class="c1">// Default Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
 
 <p>Запускаю в консоли процесс мониторинга в Gulp командой:</p>
 
@@ -716,23 +704,21 @@ Finished 'sass' after 1.97 ms
 
 <p>… и смотрю на вывод в консоли:</p>
 
-<figure id="attachment_1647" style="width: 600px;" class="wp-caption aligncenter">
-
-[<img class="size-medium wp-image-1647" src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp_watch-600x304.png" alt="Gulp в фоновом режиме" width="600" height="304" />][3]<figcaption class="wp-caption-text">Gulp в фоновом режиме</figcaption></figure>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_watch.png" alt="Gulp в фоновом режиме" /></p>
 
 <p>Теперь намеренно вношу ошибку в файл <code>jquery-1.11.1.js</code> и снова перевожу взгзляд на консоль:</p>
 
-<figure id="attachment_1648" style="width: 600px;" class="wp-caption aligncenter">
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-error.png" alt="Плагин gulp-plumber отследил ошибку" /></p>
 
-[<img class="size-medium wp-image-1648" src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp_plumber-error-600x304.png" alt="Плагин gulp-plumber отследил ошибку" width="600" height="304" />][4]<figcaption class="wp-caption-text">Плагин gulp-plumber отследил ошибку</figcaption></figure>
+<p>Отлично! Плагин <code>gulp-plumber</code> выполнил свою задачу - сформировал ясный и четкий отчет об ошибке. И при этом не прервал работу самого Gulp.</p>
 
-<p>Отлично! Плагин <code>gulp-plumber</code> выполнил свою задачу – сформировал ясный и четкий отчет об ошибке. И при этом не прервал работу самого Gulp.</p>
+<p>Возвратим все назад и исправим ошибку, допущенную ранее. Снова взглянем на консоль:</p>
 
-<p>Возвратим все назад и исправим ошибку, допущенную ранее. Снова взглянем на консоль:<figure id="attachment_1650" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-success.png" alt="Плагин gulp-plumber - ошибка исправлена" /></p>
 
-<p>[<img class="size-medium wp-image-1650" src="http://localhost:7788/third/wp-content/uploads/2014/08/gulp_plumber-success-600x304.png" alt="Плагин gulp-plumber - ошибка исправлена" width="600" height="304" />][5]&lt;figcaption class="wp-caption-text"&gt;Плагин gulp-plumber – ошибка исправлена&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>Плагин <code>gulp-plumber</code> снова справился со своей задачей - ошибка нами исправлена и он прилежно ее зафиксировал.</p>
 
-<p>Плагин <code>gulp-plumber</code> снова справился со своей задачей – ошибка нами исправлена и он прилежно ее зафиксировал.</p>
+<hr />
 
 
   </div><!-- /.entry-content -->

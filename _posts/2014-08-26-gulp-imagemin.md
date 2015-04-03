@@ -175,4 +175,4 @@ gulp-imagemin: Minified 8 images (saved 103.77 kB - 8%)
 
 ---
 
-[1]: https://www.npmjs.org/package/gulp-imagemin "gulp-imagemin"
+[1]: https://www.npmjs.org/package/gulp-imagemin "Gulp-imagemin"

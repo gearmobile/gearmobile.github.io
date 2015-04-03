@@ -144,59 +144,62 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-04T00:00:00+04:00"><a href="http://zencoder.ru/git-branch/">September 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-09-04T00:00:00+04:00"><a href="http://zencoder.ru/git/git-branch/">September 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~7 minutes
+        Reading time ~9 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/git-branch/" rel="bookmark" title="Git &#8211; создание ветвей (branch)" itemprop="url">Git &#8211; создание ветвей (branch)</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-branch/" rel="bookmark" title="Git - создание ветвей (branch)" itemprop="url">Git - создание ветвей (branch)</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Продолжаю совместно с вами постепенно изучать магию Git\GitHub. Слово магия здесь применено не случайно – не иначе, как магией возможности Git\GitHub не назовешь. По крайней мере, я впечатлен этими возможностями. Другое дело, что процесс изучения Git у меня лично идет как-то тяжеловато. Ну, это не страшно – главное, не останавливаться!</p>
+    <blockquote>
+  <p>Продолжаю совместно с вами постепенно изучать магию Git\GitHub.</p>
+</blockquote>
 
-<p>В этом разделе я попытаюсь осветить для себя (и возможно, для вас, уважаемый читатель) вопрос создания ветвей (branches) в Git, перемещение между ветвями (branches), слияние (merge) ветвей. Этот вопрос очень подробно и хорошо описан на странице официальной документации – <a href="http://git-scm.com/book/en/Git-Branching-Basic-Branching-and-Merging" title="Git Branching - Basic Branching and Merging">Git Branching – Basic Branching and Merging</a>. Здесь я попробую самостоятельно описать данный вопрос.</p>
+<p>Слово магия здесь применено не случайно - не иначе, как магией возможности Git\GitHub не назовешь. По крайней мере, я впечатлен этими возможностями. Другое дело, что процесс изучения Git у меня лично идет как-то тяжеловато. Ну, это не страшно - главное, не останавливаться!</p>
 
-<h3 id="git-">Инициализация Git-репозитория</h3>
+<p>В этом разделе я попытаюсь осветить для себя (и возможно, для вас, уважаемый читатель) вопрос создания ветвей (branches) в Git, перемещение между ветвями (branches), слияние (merge) ветвей. Этот вопрос очень подробно и хорошо описан на странице официальной документации - “Git Branching - Basic Branching and Merging”. Здесь я попробую самостоятельно описать данный вопрос.</p>
 
-<p>Создаю тестовую директорию <code>git_branches</code>, в которой будут производиться эксперименты по созданию ветвей в Git. Внутри этой директории создаю два файла – индексный файл и файл таблиц стилей. А затем инициализирую Git-репозиторий, добавляю созданные файлы под версионный контроль Git:</p>
+<h2 id="git-">Инициализация Git-репозитория</h2>
 
-<pre>$ mkdir git_branches
-    $ cd git_branches
-    $ touch index.html
-    $ touch style.css
+<p>Создаю тестовую директорию <code>git_branches</code>, в которой будут производиться эксперименты по созданию ветвей в Git. Внутри этой директории создаю два файла - индексный файл и файл таблиц стилей. А затем инициализирую Git-репозиторий, добавляю созданные файлы под версионный контроль Git:</p>
 
-    $ git init
-    Initialized empty Git repository in /home/username/Desktop/projects/git_branches/.git/
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">git_branches</span>
+<span class="p">$</span> <span class="n">cd</span> <span class="n">git_branches</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span>
 
-    $ git add .
-    $ git commit -m 'first launch'
-    [master (root-commit) eeb12ca] first launch
-     2 files changed, 0 insertions(+), 0 deletions(-)
-     create mode 100644 index.html
-     create mode 100644 style.css
+<span class="p">$</span> <span class="n">git</span> <span class="n">init</span>
+<span class="n">Initialized</span> <span class="n">empty</span> <span class="n">Git</span> <span class="n">repository</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">username</span><span class="p">/</span><span class="n">Desktop</span><span class="p">/</span><span class="n">projects</span><span class="p">/</span><span class="n">git_branches</span><span class="p">/.</span><span class="n">git</span><span class="p">/</span>
 
-    $ git status
-    On branch master
-    nothing to commit, working directory clean
-  </pre>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;first launch&#39;</span>
+<span class="p">[</span><span class="n">master</span> <span class="p">(</span><span class="n">root-commit</span><span class="p">)</span> <span class="n">eeb12ca</span><span class="p">]</span> <span class="n">first</span> <span class="n">launch</span>
+ <span class="n">2</span> <span class="n">files</span> <span class="n">changed</span><span class="p">,</span> <span class="n">0</span> <span class="n">insertions</span><span class="p">(+),</span> <span class="n">0</span> <span class="n">deletions</span><span class="p">(-)</span>
+ <span class="n">create</span> <span class="n">mode</span> <span class="n">100644</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+ <span class="n">create</span> <span class="n">mode</span> <span class="n">100644</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span>
 
-<p>Обратите на строку <code>On branch master</code> в выводе команды <code>git status</code>. Это не пустой набор служебной информации – здесь говориться о том, что в ветви <code>master</code> нечего фиксировать и рабочая директория чистая.</p>
+<span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span></code></pre></div>
 
-<p>Итак, мы уже кое-что узнали. А именно – при инициализации Git-репозитория была автоматически создана ветвь (branch) по имени <code>master</code>. И на данный момент мы находимся в этой ветви.</p>
+<p>Обратите на строку <code>On branch master</code> в выводе команды <code>git status</code>. Это не пустой набор служебной информации - здесь говориться о том, что в ветви <code>master</code> нечего фиксировать и рабочая директория чистая.</p>
+
+<p>Итак, мы уже кое-что узнали. А именно - при инициализации Git-репозитория была автоматически создана ветвь (branch) по имени <code>master</code>. И на данный момент мы находимся в этой ветви.</p>
 
 <p>Конечно, на самом деле это пока мало о чем говорит, так как не с чем сравнивать. Поэтому давайте я немного отредактирую оба файла <code>index.html</code> и <code>style.css</code>, проиндексирую\зафиксирую их.</p>
 
-<p>В браузере примерный вид странички будет выглядеть таким образом:<figure id="attachment_1769" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>В браузере примерный вид странички будет выглядеть таким образом:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git_master_branch.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_master_branch-600x501.png" alt="Git - ветвь (branch) master" width="600" height="501" class="size-medium wp-image-1769" /></a>&lt;figcaption class="wp-caption-text"&gt;Git – ветвь (branch) master&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_master_branch.png" alt="Git - ветвь (branch) master" /></p>
 
-<h3 id="git-8211----branch">Git – создание новой ветви (branch)</h3>
+<h2 id="git------branch">Git - создание новой ветви (branch)</h2>
 
 <p>В системе Git (как уже упоминалось ранее) имеется механизм ветвления (branches). Попробую на словах объяснить, что он из себя представляет.</p>
 
@@ -204,145 +207,138 @@
 
 <p>Давайте я на практике осуществлю вышесказанные действия. Для этого создаю новую ветвь с произвольным именем <code>second</code>, которая на этом этапе будет точной копией ветви <code>master</code>:</p>
 
-<pre>$ git checkout -b second
-    Switched to a new branch 'second'
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">-b</span> <span class="n">second</span>
+  <span class="n">Switched</span> <span class="n">to</span> <span class="n">a</span> <span class="n">new</span> <span class="n">branch</span> <span class="s1">&#39;second&#39;</span></code></pre></div>
 
 <p>Строка <code>Switched to a new branch 'second'</code> услужливо информирует, что меня автоматически “перебросило” во вновь ветвь <code>second</code>. Можно проверить себя, набрав в консоли:</p>
 
-<pre>$ git status
-    On branch second
-    nothing to commit, working directory clean
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+  <span class="n">On</span> <span class="n">branch</span> <span class="n">second</span>
+  <span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span></code></pre></div>
 
 <p>Строка <code>On branch second</code> говорит сама за себя.</p>
 
 <p>Отлично! Теперь давайте я внесу некоторые изменения в файлы <code>index.html</code> и <code>style.css</code> и мы вместе посмотрим на результат в окне браузера. Изменения будут касаться добавления блока-обертки, еще нескольких параграфов и другой легкой стилизации.</p>
 
-<p>Не забуду также проиндексировать и зафиксировать внесенные изменения. Обратите внимание на вид команды – <code>git commit -a</code>. Эта команда является сокращенным вариантом двух команд: <code>git add</code> и <code>git commit -m</code>. Применяется, когда нужно “проскочить” этап индексирования и сразу зафиксировать изменения.</p>
+<p>Не забуду также проиндексировать и зафиксировать внесенные изменения. Обратите внимание на вид команды - <code>git commit -a</code>. Эта команда является сокращенным вариантом двух команд: <code>git add</code> и <code>git commit -m</code>. Применяется, когда нужно “проскочить” этап индексирования и сразу зафиксировать изменения.</p>
 
-<pre>$ git commit -a -m 'Modify Brach Second'
-    [second e4b5d5d] Modify Brach Second
-     2 files changed, 24 insertions(+), 14 deletions(-)
-     rewrite index.html (72%)
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-a</span> <span class="n">-m</span> <span class="s1">&#39;Modify Brach Second&#39;</span>
+  <span class="no">[second e4b5d5d]</span> <span class="n">Modify</span> <span class="n">Brach</span> <span class="n">Second</span>
+  <span class="n">2</span> <span class="n">files</span> <span class="n">changed</span><span class="p">,</span> <span class="n">24</span> <span class="n">insertions</span><span class="p">(+),</span> <span class="n">14</span> <span class="n">deletions</span><span class="p">(-)</span>
+  <span class="n">rewrite</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">(</span><span class="n">72</span><span class="p">%)</span></code></pre></div>
 
-<p>Смотрим, что у нас получилось в окне браузера – то, что и ожидалось:<figure id="attachment_1770" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Смотрим, что у нас получилось в окне браузера - то, что и ожидалось:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git_second_branch.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_second_branch-600x501.png" alt="Git - ветвь (branch) second" width="600" height="501" class="size-medium wp-image-1770" /></a>&lt;figcaption class="wp-caption-text"&gt;Git – ветвь (branch) second&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_second_branch.png" alt="Git - ветвь (branch) second" /></p>
 
-<h3 id="git-8211----branches">Git – переключение между ветвями (branches)</h3>
+<h2 id="git------branches">Git - переключение между ветвями (branches)</h2>
 
 <p>А теперь настал самый интересный момент. Как вы помните, мы сейчас находимся в ветви <code>second</code>. Давайте я переключусь в ветвь <code>master</code> и мы снова посмотрим в окно браузера:</p>
 
-<pre>$ git checkout master
-  Switched to branch 'master'
-  </pre>
-<figure id="attachment_1769" style="width: 600px;" class="wp-caption aligncenter">
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+  <span class="n">Switched</span> <span class="n">to</span> <span class="n">branch</span> <span class="s1">&#39;master&#39;</span></code></pre></div>
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_master_branch-600x501.png" alt="Git - ветвь (branch) master" width="600" height="501" class="size-medium wp-image-1769" />][2]<figcaption class="wp-caption-text">Git &#8211; ветвь (branch) master</figcaption></figure>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_master_branch.png" alt="Git - ветвь (branch) master" /></p>
 
-<p>Оп! Мы видим старую картину – Git “запечатлел” тот момент, когда мы совершили переход из ветви <code>master</code> в ветвь <code>second</code>. Другими словами, мы вернулись в последнее зафиксированное состояние ветви <code>master</code>:</p>
+<p>Оп! Мы видим старую картину - Git “запечатлел” тот момент, когда мы совершили переход из ветви <code>master</code> в ветвь <code>second</code>. Другими словами, мы вернулись в последнее зафиксированное состояние ветви <code>master</code>:</p>
 
-<pre>$ git log --pretty=oneline
-    b7105dab98d2f3798b5456c35695a4e906a80e92 Master Branch
-    eeb12ca79f224af90cd31cf470143998a6312249 first launch
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">log</span> <span class="p">-</span><span class="n">-pretty</span><span class="p">=</span><span class="n">oneline</span>
+  <span class="n">b7105dab98d2f3798b5456c35695a4e906a80e92</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="n">eeb12ca79f224af90cd31cf470143998a6312249</span> <span class="n">first</span> <span class="n">launch</span></code></pre></div>
 
 <p>Если я снова вернусь в ветку <code>second</code> и запущу команду просмотра логов Git, то коммитов окажется больше:</p>
 
-<pre>$ git checkout second
-    Switched to branch 'second'
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">second</span>
+  <span class="n">Switched</span> <span class="n">to</span> <span class="n">branch</span> <span class="s1">&#39;second&#39;</span>
 
-    $ git log --pretty=oneline
-    e4b5d5df7a4b9a3ee56a7298726bdab4691a5a58 Modify Brach Second
-    b7105dab98d2f3798b5456c35695a4e906a80e92 Master Branch
-    eeb12ca79f224af90cd31cf470143998a6312249 first launch
-  </pre>
+  <span class="p">$</span> <span class="n">git</span> <span class="n">log</span> <span class="p">-</span><span class="n">-pretty</span><span class="p">=</span><span class="n">oneline</span>
+  <span class="n">e4b5d5df7a4b9a3ee56a7298726bdab4691a5a58</span> <span class="n">Modify</span> <span class="n">Brach</span> <span class="n">Second</span>
+  <span class="n">b7105dab98d2f3798b5456c35695a4e906a80e92</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="n">eeb12ca79f224af90cd31cf470143998a6312249</span> <span class="n">first</span> <span class="n">launch</span></code></pre></div>
 
 <p>Мне кажется, уже сейчас должно быть понятно, что такое ветви (branches) в Git и для чего они предназначены. На самом деле это действительно очень просто.</p>
 
-<h3 id="git-8211---branches">Git – слияние ветвей (branches)</h3>
+<h2 id="git-----branches">Git - слияние ветвей (branches)</h2>
 
 <p>В предыдущем шаге я создал ветвь <code>second</code>, в которую внес “рискованные” изменения, чтобы проверить, “оправдают” ли они себя. Изменениями я доволен и хотел бы добавить их в первоначальную ветку <code>master</code>, чтобы потом продолжить развитие проекта уже с этого места.</p>
 
-<p>Фактически, я хочу сделать слияние двух веток – <code>master</code> и <code>second</code>. Это сделать очень просто – для этого я перехожу в ветку <code>master</code>. То есть, я должен находиться в той ветке, <strong>в которую</strong> я вношу изменения из другой ветки. А затем произвожу само слияние:</p>
+<p>Фактически, я хочу сделать слияние двух веток - <code>master</code> и <code>second</code>. Это сделать очень просто - для этого я перехожу в ветку <code>master</code>. То есть, я должен находиться в той ветке, <strong>в которую</strong> я вношу изменения из другой ветки. А затем произвожу само слияние:</p>
 
-<pre>$ git checkout master
-    Switched to branch 'master'
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">checkout</span> <span class="n">master</span>
+  <span class="n">Switched</span> <span class="n">to</span> <span class="n">branch</span> <span class="s1">&#39;master&#39;</span>
 
-    $ git merge second
-    Updating b7105da..e4b5d5d
-    Fast-forward
-     index.html | 8 ++++++--
-     style.css  | 6 ++++++
-     2 files changed, 12 insertions(+), 2 deletions(-)
-  </pre>
+  <span class="p">$</span> <span class="n">git</span> <span class="n">merge</span> <span class="n">second</span>
+  <span class="n">Updating</span> <span class="n">b7105da</span><span class="p">..</span><span class="n">e4b5d5d</span>
+  <span class="n">Fast-forward</span>
+   <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">|</span> <span class="n">8</span> <span class="p">++++++--</span>
+   <span class="n">style</span><span class="p">.</span><span class="n">css</span>  <span class="p">|</span> <span class="n">6</span> <span class="p">++++++</span>
+   <span class="n">2</span> <span class="n">files</span> <span class="n">changed</span><span class="p">,</span> <span class="n">12</span> <span class="n">insertions</span><span class="p">(+),</span> <span class="n">2</span> <span class="n">deletions</span><span class="p">(-)</span></code></pre></div>
 
-<p>Команда слияния проста – я просто указываю имя той ветки (branch), которую хочу слить (merge) с текущей, в которой я нахожусь на данный момент.</p>
+<p>Команда слияния проста - я просто указываю имя той ветки (branch), которую хочу слить (merge) с текущей, в которой я нахожусь на данный момент.</p>
 
 <p>При слиянии ветвей зачастую может возникнуть ситуация, когда происходит <strong>конфликт</strong> между двумя ветвями. Рассмотрение вопроса решения конфликтов при слиянии не рассматривается мною, так как на данный момент еще не освоил этот вопрос до конца.</p>
 
-<p>Давайте снова “заглянем” в окно браузера – что он нам интересного покажет?<figure id="attachment_1770" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Давайте снова “заглянем” в окно браузера - что он нам интересного покажет?</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git_second_branch.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_second_branch-600x501.png" alt="Git - результат слияния двух ветвей master и second" width="600" height="501" class="size-medium wp-image-1770" /></a>&lt;figcaption class="wp-caption-text"&gt;Git – результат слияния двух ветвей master и second&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_second_branch.png" alt="Git - результат слияния двух ветвей master и second" /></p>
 
-<p>Показал он то, что и следовало показать – результат объединения двух ветвей <code>master</code> и <code>second</code>.</p>
+<p>Показал он то, что и следовало показать - результат объединения двух ветвей <code>master</code> и <code>second</code>.</p>
 
-<h3 id="git-8211----branches-1">Git – графическое представление ветвей (branches)</h3>
+<h2 id="git------branches-1">Git - графическое представление ветвей (branches)</h2>
 
 <p>Система Git имеет в своем составе возможность <strong>графического представления ветвления</strong> в репозитории. Причем, такое представление можно сделать даже в консоли, с помощью псевдографики.</p>
 
 <p>Это можно сделать, набрав в консоли команду:</p>
 
-<pre>$ git log --oneline --abbrev-commit --all --graph
-  </pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">log</span> <span class="p">-</span><span class="n">-oneline</span> <span class="p">-</span><span class="n">-abbrev-commit</span> <span class="p">-</span><span class="n">-all</span> <span class="p">-</span><span class="n">-graph</span></code></pre></div>
 
-<p>На Stack Overflow я нашел примеры красивых изображений консоли с псевдографическим выводом команды <code>git log</code>:<figure id="attachment_1771" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>На Stack Overflow я нашел примеры красивых изображений консоли с псевдографическим выводом команды <code>git log</code>:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git_branches.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_branches.png" alt="Красивая псевдографика команды git log" width="600" height="500" class="size-full wp-image-1771" /></a>&lt;figcaption class="wp-caption-text"&gt;Красивая псевдографика команды git log&lt;/figcaption&gt;&lt;/figure&gt; <figure id="attachment_1772" style="width: 600px;" class="wp-caption aligncenter"><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git_branches_pretty.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_branches_pretty.png" alt="Красивая псевдографика команды git log" width="600" height="500" class="size-full wp-image-1772" /></a>&lt;figcaption class="wp-caption-text"&gt;Красивая псевдографика команды git log&lt;/figcaption&gt;</figure> </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_branches.png" alt="Красивая псевдографика команды git log" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_branches_pretty.png" alt="Красивая псевдографика команды git log" /></p>
 
 <p>На самом деле вариантов использования команды <code>git log</code> с ключом <code>--graph</code> бесчисленное множество. Поэтому нужно выбирать именно то, что нужно и нравиться именно вам.</p>
 
-<p>Помимо псевдографики, ветви в Git можно визуализировать с помощью настоящего графического приложения. Под Mac OS X и Linux имеется достаточно большое количество таких приложений. Например, под Mac OS X это GitX, под Linux – Gitk или Gitg:<figure id="attachment_1773" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Помимо псевдографики, ветви в Git можно визуализировать с помощью настоящего графического приложения. Под Mac OS X и Linux имеется достаточно большое количество таких приложений. Например, под Mac OS X это GitX, под Linux - Gitk или Gitg:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git_branches-gitg.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git_branches-gitg-600x582.png" alt="Приложение Gitg под Linux" width="600" height="582" class="size-medium wp-image-1773" /></a>&lt;figcaption class="wp-caption-text"&gt;Приложение Gitg под Linux&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git_branches-gitg.png" alt="Приложение Gitg под Linux" /></p>
 
-<h3 id="git-8211---branch">Git – удаление ветви (branch)</h3>
+<h2 id="git-----branch">Git - удаление ветви (branch)</h2>
 
-<p>В разделе слияния ветвей в Git я научился процессу объединения двух ветвей в одну. Такой процесс в Git имеет название <code>merge</code> (слияние). Теперь ветвь <code>master</code> имеет в себе все, что есть и в ветви <code>second</code>. Поэтому ветвь <code>second</code> можно удалить. Выполняется это командой:</p>
+<p>В разделе слияния ветвей в Git я научился процессу объединения двух ветвей в одну. Такой процесс в Git имеет название <code>merge</code> (слияние). Теперь ветвь <code>master</code> имеет в себе все, что есть и в ветви <code>second</code>. Поэтому ветвь <code>second</code> можно удалить.</p>
 
-<pre>
-$ git branch -d second
-  Deleted branch second (was 19a8328).
-</pre>
+<p>Выполняется это командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">branch</span> <span class="n">-d</span> <span class="n">second</span>
+  <span class="n">Deleted</span> <span class="n">branch</span> <span class="n">second</span> <span class="p">(</span><span class="n">was</span> <span class="n">19a8328</span><span class="p">).</span></code></pre></div>
 
 <p>Посмотрим на вывод команды <code>git hist</code>:</p>
 
-<pre>
-$ git hist
-  * fa8b252 2014-09-03 | Last Commit in Master Branch (HEAD, master)
-  *   22a9487 2014-09-03 | Merge Second Branch in Master Branch (origin/master, origin/HEAD)
-  |\
-  | * 19a8328 2014-09-03 | Six Commit in Second Branch
-  | * e273e6c 2014-09-03 | Fifth Commit in Second Branch
-  | * 8e2fe40 2014-09-03 | Fourth Commit in Second Branch
-  | * 3290a23 2014-09-03 | Third Commit in Second Branch
-  | * 0584a1c 2014-09-03 | Second Commit in Second Branch
-  | * 38fab33 2014-09-03 | First Commit in Second Branch
-  * | 8543256 2014-09-03 | Seventh Commit in Master Branch
-  * | e852688 2014-09-03 | Six Commit in Master Branch
-  * | d6ccde3 2014-09-03 | Fifth Commit in Master Branch
-  * | c0d8e2f 2014-09-03 | Fourth Commit in Master Branch
-  * | 7d2377a 2014-09-03 | Third Commit in Master Branch
-  |/
-  * b3e0f1f 2014-09-03 | Second Commit in Master Branch
-  * be4e1f0 2014-09-03 | First Commit in Master Branch
-  * ac2961a 2014-09-03 | Added git_branches
-  * db9e01b 2014-09-03 | Initial commit
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">hist</span>
+  <span class="p">*</span> <span class="n">fa8b252</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Last</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span> <span class="p">(</span><span class="n">HEAD</span><span class="p">,</span> <span class="n">master</span><span class="p">)</span>
+  <span class="p">*</span>   <span class="n">22a9487</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Merge</span> <span class="n">Second</span> <span class="n">Branch</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span> <span class="p">(</span><span class="n">origin</span><span class="p">/</span><span class="n">master</span><span class="p">,</span> <span class="n">origin</span><span class="p">/</span><span class="n">HEAD</span><span class="p">)</span>
+  <span class="p">|\</span>
+  <span class="p">|</span> <span class="p">*</span> <span class="n">19a8328</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Six</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Second</span> <span class="n">Branch</span>
+  <span class="p">|</span> <span class="p">*</span> <span class="n">e273e6c</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Fifth</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Second</span> <span class="n">Branch</span>
+  <span class="p">|</span> <span class="p">*</span> <span class="n">8e2fe40</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Fourth</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Second</span> <span class="n">Branch</span>
+  <span class="p">|</span> <span class="p">*</span> <span class="n">3290a23</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Third</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Second</span> <span class="n">Branch</span>
+  <span class="p">|</span> <span class="p">*</span> <span class="n">0584a1c</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Second</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Second</span> <span class="n">Branch</span>
+  <span class="p">|</span> <span class="p">*</span> <span class="n">38fab33</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">First</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Second</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="p">|</span> <span class="n">8543256</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Seventh</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="p">|</span> <span class="n">e852688</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Six</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="p">|</span> <span class="n">d6ccde3</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Fifth</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="p">|</span> <span class="n">c0d8e2f</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Fourth</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="p">|</span> <span class="n">7d2377a</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Third</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">|/</span>
+  <span class="p">*</span> <span class="n">b3e0f1f</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Second</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="n">be4e1f0</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">First</span> <span class="n">Commit</span> <span class="k">in</span> <span class="n">Master</span> <span class="n">Branch</span>
+  <span class="p">*</span> <span class="n">ac2961a</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Added</span> <span class="n">git_branches</span>
+  <span class="p">*</span> <span class="n">db9e01b</span> <span class="n">2014</span><span class="p">-</span><span class="n">09</span><span class="p">-</span><span class="n">03</span> <span class="p">|</span> <span class="n">Initial</span> <span class="n">commit</span></code></pre></div>
 
-<p>У меня осталась одна ветвь – <code>master</code>.</p>
+<p>У меня осталась одна ветвь - <code>master</code>.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -352,92 +348,101 @@ $ git hist
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-02T00:00:00+04:00"><a href="http://zencoder.ru/git-rm-and-git-mv/">September 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-09-02T00:00:00+04:00"><a href="http://zencoder.ru/git/git-rm-and-git-mv/">September 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~4 minutes
+        Reading time ~3 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/git-rm-and-git-mv/" rel="bookmark" title="git rm и git mv &#8211; удаление и переименование в Git" itemprop="url">git rm и git mv &#8211; удаление и переименование в Git</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-rm-and-git-mv/" rel="bookmark" title="git rm и git mv - удаление и переименование в Git" itemprop="url">git rm и git mv - удаление и переименование в Git</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Еще один важный практический вопрос при работе с Git – это операции с файлами. В частности, это операции удаления и переименования файлов. В системе <a href="http://git-scm.com/" title="Git">Git</a> имеются специальные команды, которые очень похожи на консольные команды <code>rm</code> и <code>mv</code> в Linux/Mac OS. Но для Git они выглядят несколько иначе: <code>git rm</code> – для удаления файлов и <code>git mv</code> – для переименования файлов. Ниже я рассмотрю обе эти комадны более подробно.</p>
+    <blockquote>
+  <p>Еще один важный практический вопрос при работе с Git - это операции с файлами.</p>
+</blockquote>
 
-<h3 id="git-rm">Команда git rm</h3>
+<p>В частности, это операции удаления и переименования файлов. В системе <a href="http://git-scm.com/" title="Git">Git</a> имеются специальные команды, которые очень похожи на консольные команды <code>rm</code> и <code>mv</code> в Linux/Mac OS. Но для Git они выглядят несколько иначе: <code>git rm</code> - для удаления файлов и <code>git mv</code> - для переименования файлов. Ниже я рассмотрю обе эти комадны более подробно.</p>
+
+<h2 id="git-rm">Команда git rm</h2>
 
 <p>Для удаления файлов в системе Git, как уже упоминалось выше, имеется специальная команда <code>git rm</code>. Ее отличие от обычной консольной команды <code>rm</code> (в том же Linux) заключается в особенности самой системы Git.</p>
 
-<p>Как хорошо известно, в системе Git файл может одновременно существовать в трех ипостасях: в области Working Directory, в области Staging Area, в области Repository. Удаление файла из области Working Directory не приведет к его удалению из областей Staging Area и Repository.</p>
+<p>Как хорошо известно, в системе Git файл может одновременно существовать в трех ипостасях: в области “Working Directory”, в области “Staging Area”, в области “Repository”. Удаление файла из области “Working Directory” не приведет к его удалению из областей “Staging Area” и “Repository”.</p>
 
-<p>Поэтому, чтобы удалить файл, нужно (в идеале) выполнить три команды подряд для удаления файла из Рабочей области (Working Directory), затем из области индекса (Staging Area) и потом из области репозитория (Repository):</p>
+<p>Поэтому, чтобы удалить файл, нужно (в идеале) выполнить три команды подряд для удаления файла из Рабочей области “Working Directory”, затем из области индекса “Staging Area” и потом из области репозитория “Repository”:</p>
 
-<pre>$ rm index.html
-  $ git add .
-  $ git commit -m 'Delete file index.html'
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Delete file index.html&#39;</span></code></pre></div>
 
 <p>Команда <code>git rm</code> является ни чем иным, как “вшитым” в Git сокращением двух первых команд:</p>
 
-<pre>$ rm index.html
-  $ git add .
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span></code></pre></div>
 
-<p>Сделано это всего лишь для удобства пользования системой Git. Давайте на примере посмотрим работу команды <code>git rm</code>. Предположим, что имеется файл index.html, который проиндексирован и зафиксирован. Удалим его командой <code>git rm</code>:<figure id="attachment_1753" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Сделано это всего лишь для удобства пользования системой Git. Давайте на примере посмотрим работу команды <code>git rm</code>. Предположим, что имеется файл <code>index.html</code>, который проиндексирован и зафиксирован.</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm-600x304.png" alt="Команда git rm - удаление файлов в Git" width="600" height="304" class="size-medium wp-image-1753" /></a>&lt;figcaption class="wp-caption-text"&gt;Команда git rm – удаление файлов в Git&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>Удалим его командой <code>git rm</code>:</p>
 
-<p>Видим, что файл index.html был сразу удален из двух областей: рабочего каталога Working Directory и области индексации Staging Area. Но в репозитории файл все же остался, о чем говорит вывод команды <code>git status</code>. Любой последующий commit зафиксирует удаление этого файла:<figure id="attachment_1754" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm.png" alt="Команда git rm - удаление файлов в Git" /></p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_commit_deletion.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_commit_deletion-600x304.png" alt="Фиксация удаления файла командой git rm" width="600" height="304" class="size-medium wp-image-1754" /></a>&lt;figcaption class="wp-caption-text"&gt;Фиксация удаления файла командой git rm&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>Видим, что файл <code>index.html</code> был сразу удален из двух областей: рабочего каталога “Working Directory” и области индексации “Staging Area”. Но в репозитории файл все же остался, о чем говорит вывод команды <code>git status</code>.</p>
 
-<h4 id="git-rm-8211cached">Команда git rm –cached</h4>
+<p>Любой последующий commit зафиксирует удаление этого файла:</p>
 
-<p>У команды <code>git rm</code> имеется пара полезных ключей, одним из которых является ключ <code>--cached</code>. Задача этого ключа – позволить команде <code>git rm</code> удалить файл из области индексирования (Staging Area), но при этом оставить его в области рабочего проекта (Working Directory). Давайте рассмотрим пример, когда создан файл <code>second.html</code> и произведена его индексация (но не фиксация):<figure id="attachment_1755" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_commit_deletion.png" alt="Фиксация удаления файла командой git rm" /></p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_second-html.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_second-html-600x304.png" alt="Созданный файл second.html" width="600" height="304" class="size-medium wp-image-1755" /></a>&lt;figcaption class="wp-caption-text"&gt;Созданный файл second.html&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<h2 id="git-rm--cached">Команда git rm -cached</h2>
 
-<p>Удалим его командой <code>git rm --cached</code>:<figure id="attachment_1756" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>У команды <code>git rm</code> имеется пара полезных ключей, одним из которых является ключ <code>--cached</code>. Задача этого ключа - позволить команде <code>git rm</code> удалить файл из области индексирования “Staging Area”, но при этом оставить его в области рабочего проекта “Working Directory”. Давайте рассмотрим пример, когда создан файл <code>second.html</code> и произведена его индексация (но не фиксация):</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_cached.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_cached-600x304.png" alt="Команда git rm --cached" width="600" height="304" class="size-medium wp-image-1756" /></a>&lt;figcaption class="wp-caption-text"&gt;Команда git rm –cached&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_second-html.png" alt="Созданный файл second.html" /></p>
 
-<p>Отлично! Видим, что произошло удаление файла <code>second.html</code>. Кроме того, команда <code>git status</code> показывает, что в рабочей области Working Directory имеется неотслеживаемый (untracked) файл по имени <code>second.html</code>.</p>
+<p>Удалим его командой <code>git rm --cached</code>:</p>
 
-<h4 id="git-rm--f">Команда git rm -f</h4>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_cached.png" alt="Команда git rm -cached" /></p>
 
-<p>В предыдущем разделе я рассмотрел вариант, когда созданный и проиндексированный файл удаляется из области индексирования (Staging Area), но остается в области Working Directory. Выполняется это с помощью команды <code>git rm --cached</code>.</p>
+<p>Отлично! Видим, что произошло удаление файла <code>second.html</code>. Кроме того, команда <code>git status</code> показывает, что в рабочей области “Working Directory” имеется неотслеживаемый (untracked) файл по имени <code>second.html</code>.</p>
 
-<p>Логическим продолжением этой команды является та же самая команда <code>git rm</code>, но с ключом <code>-f</code> – <code>git rm -f</code>. Такая команда удаляет проиндексированный (но еще не зафиксированный) файл как из области Staging Area, так и из области Working Directory.</p>
+<h2 id="git-rm--f">Команда git rm -f</h2>
 
-<p>Давайте рассмотрим на примере созданного и проиндексированного файла <code>third.html</code> его удаление с помощью команды <code>git rm -f</code>:<figure id="attachment_1757" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>В предыдущем разделе я рассмотрел вариант, когда созданный и проиндексированный файл удаляется из области индексирования “Staging Area”, но остается в области “Working Directory”. Выполняется это с помощью команды <code>git rm --cached</code>.</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_third-html.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_third-html-600x304.png" alt="Созданный файл third.html" width="600" height="304" class="size-medium wp-image-1757" /></a>&lt;figcaption class="wp-caption-text"&gt;Созданный файл third.html&lt;/figcaption&gt;&lt;/figure&gt; <figure id="attachment_1758" style="width: 600px;" class="wp-caption aligncenter"><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_f.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-rm_f-600x304.png" alt="Команда git rm -f" width="600" height="304" class="size-medium wp-image-1758" /></a>&lt;figcaption class="wp-caption-text"&gt;Команда git rm -f&lt;/figcaption&gt;</figure> </p>
+<p>Логическим продолжением этой команды является та же самая команда <code>git rm</code>, но с ключом <code>-f</code> - <code>git rm -f</code>. Такая команда удаляет проиндексированный (но еще не зафиксированный) файл как из области “Staging Area”, так и из области “Working Directory”.</p>
 
-<p>Файл <code>third.html</code> удален как из области Staging Area, так и из области Working Directory. В итоге можно сказать, что между командой <code>git rm -f</code> и командой <code>git rm</code> практически нет никакой разницы.</p>
+<p>Давайте рассмотрим на примере созданного и проиндексированного файла <code>third.html</code> его удаление с помощью команды <code>git rm -f</code>:</p>
 
-<h3 id="git-mv-8211----">Команда git mv – перемещение или переименование файлов</h3>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_third-html.png" alt="Созданный файл third.html" /></p>
 
-<p>В системе Git имеется “своя” команда для перемещения или переименования файлов. Слово “своя” здесь не даром взято в кавычки – аналогия с командой <code>git rm</code> полная. Команда <code>git mv</code> перемещает или переименовывает файлы, автоматически “уведомляя” об этих событиях область Staging Area:<figure id="attachment_1759" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_f.png" alt="Команда git rm -f" /></p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-mv.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-mv-600x304.png" alt="Команда git mv - перемещение файла в Git" width="600" height="304" class="size-medium wp-image-1759" /></a>&lt;figcaption class="wp-caption-text"&gt;Команда git mv – перемещение файла в Git&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>Файл <code>third.html</code> удален как из области “Staging Area”, так и из области “Working Directory”. В итоге можно сказать, что между командой <code>git rm -f</code> и командой <code>git rm</code> практически нет никакой разницы.</p>
+
+<h2 id="git-mv------">Команда git mv - перемещение или переименование файлов</h2>
+
+<p>В системе Git имеется “своя” команда для перемещения или переименования файлов. Слово “своя” здесь не даром взято в кавычки - аналогия с командой <code>git rm</code> полная. Команда <code>git mv</code> перемещает или переименовывает файлы, автоматически “уведомляя” об этих событиях область “Staging Area”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv.png" alt="Команда git mv - перемещение файла в Git" /></p>
 
 <p>Остается только зафиксировать эти изменения любым коммитом:</p>
 
-<pre>$ git commit -m 'Move index.html to papka'
-  [master 868d428] Move index.html to papka
-   1 file changed, 0 insertions(+), 0 deletions(-)
-   rename index.html =&gt; papka/index.html (100%)
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Move index.html to papka&#39;</span>
+  <span class="no">[master 868d428]</span> <span class="n">Move</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="n">to</span> <span class="n">papka</span>
+   <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">0</span> <span class="n">insertions</span><span class="p">(+),</span> <span class="n">0</span> <span class="n">deletions</span><span class="p">(-)</span>
+   <span class="n">rename</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">=&gt;</span> <span class="n">papka</span><span class="p">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span></code></pre></div>
 
-<p>Переименуем файл <code>index.html</code> с помощью команды <code>git mv</code>:<figure id="attachment_1760" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Переименуем файл <code>index.html</code> с помощью команды <code>git mv</code>:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/09/git-mv_index.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/09/git-mv_index-600x304.png" alt="Команда git mv - переименование файла в Git" width="600" height="304" class="size-medium wp-image-1760" /></a>&lt;figcaption class="wp-caption-text"&gt;Команда git mv – переименование файла в Git&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv_index.png" alt="Команда git mv - переименование файла в Git" /></p>
 
 <p>Вот и все несложные операции по перемещению\переименованию или удалению файлов с помощью команд <code>git rm</code> и <code>git mv</code>, под всевидящим оком Git.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -447,7 +452,7 @@ $ git hist
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-01T00:00:00+04:00"><a href="http://zencoder.ru/github-push-and-pull/">September 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-09-01T00:00:00+04:00"><a href="http://zencoder.ru/git/github-push-and-pull/">September 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -457,92 +462,96 @@ $ git hist
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/github-push-and-pull/" rel="bookmark" title="GitHub &#8211; команды push и pull" itemprop="url">GitHub &#8211; команды push и pull</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-push-and-pull/" rel="bookmark" title="GitHub - команды push и pull" itemprop="url">GitHub - команды push и pull</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Продолжаю открывать для себя возможности системы Git и сервиса GitHub. Уже сейчас, обладая минимальными базовыми знаниями Git и владея учетной записью на сервере GitHub, я не представляю, как я мог жить раньше без обоих этих вещей. Это действительно удобно и надежно! Благодаря им я знаю, что у меня никогда и ничто не потеряется; и все, что нужно – у меня всегда под рукой. На работе поработал над чем-либо – отправил на GitHub; домой пришел – “стянул” наработки с GitHub и продолжил работу с прерванного места.</p>
+    <blockquote>
+  <p>Продолжаю открывать для себя возможности системы Git и сервиса GitHub.</p>
+</blockquote>
 
-<p>Вот на последнем я хотел бы остановиться подробнее. Конечно, веб-разработчик, давно и хорошо знакомый с Git и GitHub, может только улыбнуться насчет того, чем я собираюсь поделиться. Настолько все это просто и понятно. Но это просто и понятно для него, опытного web-разработчика. А для начинающего веб-программиста – это новое и неизведанное. Впрочем, достаточно лирики – переходим к практике.</p>
+<p>Уже сейчас, обладая минимальными базовыми знаниями Git и владея учетной записью на сервере GitHub, я не представляю, как я мог жить раньше без обоих этих вещей. Это действительно удобно и надежно!</p>
 
-<h3 id="github-8211--push">GitHub – команда push</h3>
+<p>Благодаря им я знаю, что у меня никогда и ничто не потеряется; и все, что нужно - у меня всегда под рукой. На работе поработал над чем-либо - отправил на GitHub; домой пришел - “стянул” наработки с GitHub и продолжил работу с прерванного места.</p>
 
-<p>В предыдущей статье я познакомился с возможностью создания репозитория на сервисе GitHub. И возможностью клонирования этого репозитория на локальную машину – “<a href="http://localhost:7788/third/?p=1730" title="GitHub и Git - создание и работа с репозиторием">GitHub и Git – создание и работа с репозиторием</a>“.</p>
+<p>Вот на последнем я хотел бы остановиться подробнее. Конечно, веб-разработчик, давно и хорошо знакомый с Git и GitHub, может только улыбнуться насчет того, чем я собираюсь поделиться. Настолько все это просто и понятно. Но это просто и понятно для него, опытного web-разработчика. А для начинающего веб-программиста - это новое и неизведанное. Впрочем, достаточно лирики - переходим к практике.</p>
 
-<p>Напомню, что в том примере было произведено <strong>клонирование</strong> репозитория с помощью команды:</p>
+<h2 id="github----push">GitHub - команда push</h2>
 
-<pre>$ git clone git@github.com:gearmobile/arbeit.git
-</pre>
+<p>В предыдущей статье я познакомился с возможностью создания репозитория на сервисе GitHub. И возможностью клонирования этого репозитория на локальную машину - “GitHub и Git - создание и работа с репозиторием”.</p>
 
-<p>Другими словами, было произведено <strong>копирование</strong> существующего репозитория с удаленного сервера на локальную машину. Причем, копирование <strong>как есть</strong> – полностью весь репозиторий, со всеми его файлами, коммитами, индексами и тому подобным.</p>
+<p>Напомню, что в том примере было произведено клонирование репозитория с помощью команды:</p>
 
-<p>После внесений изменений в локальный репозиторий – индексации и фиксации – необходимо было отправить произведенные изменения на удаленный сервер, на GitHub.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">arbeit</span><span class="p">.</span><span class="n">git</span></code></pre></div>
+
+<p>Другими словами, было произведено копирование существующего репозитория с удаленного сервера на локальную машину. Причем, копирование как есть - полностью весь репозиторий, со всеми его файлами, коммитами, индексами и тому подобным.</p>
+
+<p>После внесений изменений в локальный репозиторий - индексации и фиксации - необходимо было отправить произведенные изменения на удаленный сервер, на GitHub.</p>
 
 <p>Для этой цели существует (и я ею воспользовался) команда <code>push</code> (отправить). К примеру, давайте я внесу еще кое-какие изменения в локальном репозитории, затем проиндексирую и зафиксирую их, а затем отправлю на GitHub:</p>
 
-<pre>$ git add .
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
 
-  $ git commit -m 'Continue write article about push and pull in GitHub'
-  [master 5af3abc] Continue write article about push and pull in GitHub
-   1 file changed, 18 insertions(+)
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Continue write article about push and pull in GitHub&#39;</span>
+<span class="no">[master 5af3abc]</span> <span class="k">Continue</span> <span class="n">write</span> <span class="n">article</span> <span class="n">about</span> <span class="n">push</span> <span class="n">and</span> <span class="n">pull</span> <span class="k">in</span> <span class="n">GitHub</span>
+ <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">18</span> <span class="n">insertions</span><span class="p">(+)</span>
 
-  $ git status
-  On branch master
-  Your branch is ahead of 'origin/master' by 1 commit.
-    (use "git push" to publish your local commits)
-  nothing to commit, working directory clean
+<span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+<span class="n">Your</span> <span class="n">branch</span> <span class="n">is</span> <span class="n">ahead</span> <span class="n">of</span> <span class="s1">&#39;origin/master&#39;</span> <span class="n">by</span> <span class="n">1</span> <span class="n">commit</span><span class="p">.</span>
+  <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git push&quot;</span> <span class="n">to</span> <span class="n">publish</span> <span class="n">your</span> <span class="n">local</span> <span class="n">commits</span><span class="p">)</span>
+<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span>
 
-  $ git push
-  ...
-  Counting objects: 7, done.
-  Delta compression using up to 4 threads.
-  Compressing objects: 100% (4/4), done.
-  Writing objects: 100% (4/4), 1.65 KiB | 0 bytes/s, done.
-  Total 4 (delta 1), reused 0 (delta 0)
-  To git@github.com:semenencko/articles
-     022b756..5af3abc  master -&gt; master
-</pre>
+<span class="p">$</span> <span class="n">git</span> <span class="n">push</span>
+<span class="p">...</span>
+<span class="n">Counting</span> <span class="n">objects</span><span class="err">:</span> <span class="n">7</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+<span class="n">Delta</span> <span class="n">compression</span> <span class="n">using</span> <span class="n">up</span> <span class="n">to</span> <span class="n">4</span> <span class="n">threads</span><span class="p">.</span>
+<span class="n">Compressing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+<span class="n">Writing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">1</span><span class="p">.</span><span class="n">65</span> <span class="n">KiB</span> <span class="p">|</span> <span class="n">0</span> <span class="n">bytes</span><span class="p">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+<span class="n">Total</span> <span class="n">4</span> <span class="p">(</span><span class="n">delta</span> <span class="n">1</span><span class="p">),</span> <span class="n">reused</span> <span class="n">0</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">)</span>
+<span class="n">To</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">semenencko</span><span class="p">/</span><span class="n">articles</span>
+   <span class="n">022b756</span><span class="p">..</span><span class="n">5af3abc</span>  <span class="n">master</span> <span class="p">-&gt;</span> <span class="n">master</span></code></pre></div>
 
-<p>Вот – все наработки, которые я сделал на домашнем компьютере, оказались с считанные секунды помещенными на сервере GitHub, под бдительным оком Git.</p>
+<p>Вот - все наработки, которые я сделал на домашнем компьютере, оказались с считанные секунды помещенными на сервере GitHub, под бдительным оком Git.</p>
 
-<h3 id="github-8211--pull">GitHub – команда pull</h3>
+<h2 id="github----pull">GitHub - команда pull</h2>
 
-<p>Продолжим логическую картину моего рабочего процесса (workflow). На следующий день я прихожу на работу и у меня есть время и возможность поработать над своим проектом. Естественно, я хочу продолжить с того места, на котором остановился дома. Для этого я воспользуюсь командой <code>pull</code>, чтобы “стянуть” с GitHub <strong>последние изменения</strong>.</p>
+<p>Продолжим логическую картину моего рабочего процесса (workflow). На следующий день я прихожу на работу и у меня есть время и возможность поработать над своим проектом. Естественно, я хочу продолжить с того места, на котором остановился дома. Для этого я воспользуюсь командой <code>pull</code>, чтобы “стянуть” с GitHub последние изменения.</p>
 
-<p>В данном случае команда <code>pull</code> будет выглядеть так:<figure id="attachment_1748" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>В данном случае команда <code>pull</code> будет выглядеть так:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github-pull.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github-pull-600x304.png" alt="GitHub - команда pull" width="600" height="304" class="size-medium wp-image-1748" /></a>&lt;figcaption class="wp-caption-text"&gt;GitHub – команда pull&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-pull.png" alt="GitHub - команда pull" class="center-image" /></p>
 
 <p>В выводе консоли (на картинке) видно, что было произведено добавление одного измененного файла по имени README.md, в котором были добавлены две строки.</p>
 
-<p>Обратите внимание на <strong>разницу</strong> между командами <code>clone</code> и <code>pull</code> в данном случае. Команда <code>clone</code> <strong>копирует весь репозиторий</strong> целиком, как есть – со всеми его файлами. Команда <code>pull</code> <strong>копирует разницу</strong> между удаленным и локальным репозиторием. Эту разницу можно назвать <strong>дельта</strong> или <strong>patch</strong>.</p>
+<p>Обратите внимание на разницу между командами <code>clone</code> и <code>pull</code> в данном случае. Команда <code>clone</code> копирует весь репозиторий целиком, как есть - со всеми его файлами. Команда <code>pull</code> копирует разницу между удаленным и локальным репозиторием. Эту разницу можно назвать дельта или patch.</p>
 
 <p>В результате вышеприведенной команды в считанные секунды я получаю на рабочем компьютере точную копию того проекта, над которым работал дома. И могу продолжать с того места, на котором остановился.</p>
 
-<h3 id="github-8211--fetch">GitHub – команда fetch</h3>
+<h2 id="github----fetch">GitHub - команда fetch</h2>
 
-<p>Существует разновидность команды <code>pull</code> – это команда <code>fetch</code>. И одна, и вторая команда выполняют одинаковые задачи – получение patch удаленного репозитория. Но делают они это по разному.</p>
+<p>Существует разновидность команды <code>pull</code> - это команда <code>fetch</code>. И одна, и вторая команда выполняют одинаковые задачи - получение patch удаленного репозитория. Но делают они это по разному.</p>
 
 <p>Команда <code>pull</code> получает patch репозитория и автоматически производит слияние удаленной и локальной ветвей репозитория. Если произойдет конфликт слияния, то только в этом случае слияния не произойдет и решать конфликт придется вручную.</p>
 
-<p>Команда <code>fetch</code> также производит получение patch удаленного репозитория. Но при этом автоматического слияния ветвей удаленного и локального репозиториев не происходит:<figure id="attachment_1749" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Команда <code>fetch</code> также производит получение patch удаленного репозитория. Но при этом автоматического слияния ветвей удаленного и локального репозиториев не происходит:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github-fetch.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github-fetch-600x304.png" alt="GitHub - команда fetch" width="600" height="304" class="size-medium wp-image-1749" /></a>&lt;figcaption class="wp-caption-text"&gt;GitHub – команда fetch&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-fetch.png" alt="GitHub - команда fetch" class="center-image" /></p>
 
 <p>На картинке выше показано, что была выполнена команда <code>git fetch</code> после того, как на стороне сервиса GitHub было произведено редактирование файла README.md. Однако, последующая команда <code>git status</code> показала, что изменения есть, но они не слиты с локальной ветвью репозитория. И порекомендовала выполнить команду <code>git pull</code>, чтобы произвести такое слияние.</p>
 
-<p>Помимо этого, имеются изменения в локальном репозитории, которые не проиндексированы и не зафиксированы. Что же, исправляю ситуацию – последовательно ввожу команды:</p>
+<p>Помимо этого, имеются изменения в локальном репозитории, которые не проиндексированы и не зафиксированы. Что же, исправляю ситуацию - последовательно ввожу команды:</p>
 
-<pre>$ git pull
-  $ git add .
-  $ git commit -m 'Added fetch image'
-  $ git push
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">pull</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Added fetch image&#39;</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
 
 <p>Производить слияние и разрешение конфликтов при слиянии я еще не умею, поэтому вопрос, как произвести слияние ветвей после команды <code>git fetch</code> я опущу в данной статье.</p>
 
-<p>Вернувшись к вышесказанному, можно сделать вывод, что команда <code>pull</code> <strong>более универсальная</strong>, нежели команда <code>fetch</code>. Именно команду <code>pull</code> имеет смысл применять в практической работе.</p>
+<p>Вернувшись к вышесказанному, можно сделать вывод, что команда <code>pull</code> более универсальная, нежели команда <code>fetch</code>. Именно команду <code>pull</code> имеет смысл применять в практической работе.</p>
 
+<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -551,7 +560,7 @@ $ git hist
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-31T00:00:00+04:00"><a href="http://zencoder.ru/github-how-to-delete-repository/">August 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-31T00:00:00+04:00"><a href="http://zencoder.ru/git/github-how-to-delete-repository/">August 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -561,37 +570,43 @@ $ git hist
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/github-how-to-delete-repository/" rel="bookmark" title="Как удалить репозиторий на GitHub" itemprop="url">Как удалить репозиторий на GitHub</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-how-to-delete-repository/" rel="bookmark" title="Как удалить репозиторий на GitHub" itemprop="url">Как удалить репозиторий на GitHub</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Как новичок в работе с системой <a href="https://github.com/" title="GitHub">GitHub</a>, столкнулся с вопросом – <strong>как удалить созданный на GitHub репозиторий</strong>? Оказалось, что ничего сложного в этом нет. Однако, задача эта и не такая простая, как может показаться. По крайней мере, чисто интуитивно у меня не получилось ее выполнить – пришлось искать ответ в Сети.</p>
+    <blockquote>
+  <p>Как новичок в работе с системой <a href="https://github.com/" title="GitHub">GitHub</a>, столкнулся с вопросом - как удалить созданный на GitHub репозиторий?</p>
+</blockquote>
+
+<p>Оказалось, что ничего сложного в этом нет. Однако, задача эта и не такая простая, как может показаться. По крайней мере, чисто интуитивно у меня не получилось ее выполнить - пришлось искать ответ в Сети.</p>
 
 <p>Итак, у меня есть учетная запись на GitHub, под которой создана пара репозиториев. Один из этих репозиториев был создан в учебных целях, поэтому для моей дальнейшей работы он мне не пригодиться и его можно удалить.</p>
 
-<h3 id="github">Список репозиториев на GitHub</h3>
+<h2 id="github">Список репозиториев на GitHub</h2>
 
-<p>Для начала открою свою страничку на GitHub и посмотрю, какие репозитории у меня уже есть:<figure id="attachment_1739" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Для начала открою свою страничку на GitHub и посмотрю, какие репозитории у меня уже есть:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github-list_of_repos.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github-list_of_repos-600x464.png" alt="Список репозиториев на GitHub" width="600" height="464" class="size-medium wp-image-1739" /></a>&lt;figcaption class="wp-caption-text"&gt;Список репозиториев на GitHub&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-list_of_repos.png" alt="Список репозиториев на GitHub" /></p>
 
-<p>Один из репозиторев – <code>arbeit</code> – можно удалить.</p>
+<p>Один из репозиторев - <code>arbeit</code> - можно удалить.</p>
 
-<p>Для этой цели нужно просто зайти в него по ссылке:<figure id="attachment_1740" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Для этой цели нужно просто зайти в него по ссылке:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github-repo_arbeit.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github-repo_arbeit-600x464.png" alt="Репозиторий arbeit на GitHub" width="600" height="464" class="size-medium wp-image-1740" /></a>&lt;figcaption class="wp-caption-text"&gt;Репозиторий arbeit на GitHub&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit.png" alt="Репозиторий arbeit на GitHub" /></p>
 
-<p>В правом нижнем углу окна браузера, в списке, имеется строка <code>Settings</code>. Открываем ее, сразу же копируем имя репозитория в поле <code>Repository name</code> (оно нам понадобиться еще здесь) и <strong>прокручиваем страницу вниз</strong>, пока не находим <strong>раздел с устрашающим названием</strong> <code>Danger Zone</code>. В этой опасной зоне находим подраздел <code>Delete this repository</code> с одноименной кнопкой <code>Delete this repository</code>.</p>
+<p>В правом нижнем углу окна браузера, в списке, имеется строка <code>Settings</code>. Открываем ее, сразу же копируем имя репозитория в поле <code>Repository name</code> (оно нам понадобиться еще здесь) и прокручиваем страницу вниз, пока не находим раздел с устрашающим названием <code>Danger Zone</code>. В этой опасной зоне находим подраздел <code>Delete this repository</code> с одноименной кнопкой <code>Delete this repository</code>.</p>
 
-<p>Жмем на эту кнопку и получаем в результате <strong>окно с предупреждением об удаленни репозитория</strong>. В окне запроса имени удаляемого репозитория вводим (или вставляем из буфера обмена) – <code>arbeit</code>:<figure id="attachment_1741" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Жмем на эту кнопку и получаем в результате окно с предупреждением об удаленни репозитория. В окне запроса имени удаляемого репозитория вводим (или вставляем из буфера обмена) - <code>arbeit</code>:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github-delete_repo_arbeit.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github-delete_repo_arbeit-600x464.png" alt="Запрос имени удаляемого репозитория" width="600" height="464" class="size-medium wp-image-1741" /></a>&lt;figcaption class="wp-caption-text"&gt;Запрос имени удаляемого репозитория&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-delete_repo_arbeit.png" alt="Запрос имени удаляемого репозитория" /></p>
 
-<p>Снова жму на кнопку, на этот раз с еще более страшным напоминанием о последствиях совершаемого мною шага. И все! Репозиторий <code>arbeit</code> удален:<figure id="attachment_1742" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Снова жму на кнопку, на этот раз с еще более страшным напоминанием о последствиях совершаемого мною шага. И все! Репозиторий <code>arbeit</code> удален:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github-repo_arbeit_deleted.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github-repo_arbeit_deleted-600x464.png" alt="Удаленный репозиторий на GitHub" width="600" height="464" class="size-medium wp-image-1742" /></a>&lt;figcaption class="wp-caption-text"&gt;Удаленный репозиторий на GitHub&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit_deleted.png" alt="Удаленный репозиторий на GitHub" /></p>
 
 <p>Ничего сложного, но так сразу и не догадаешься, что нужно делать. Разработчики GitHub постарались и обезопасили пользователей от случайного удаления репозиториев с данными.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -601,178 +616,172 @@ $ git hist
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-30T00:00:00+04:00"><a href="http://zencoder.ru/github-and-git/">August 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-30T00:00:00+04:00"><a href="http://zencoder.ru/git/github-and-git/">August 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~6 minutes
+        Reading time ~9 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/github-and-git/" rel="bookmark" title="GitHub и Git &#8211; создание и работа с репозиторием" itemprop="url">GitHub и Git &#8211; создание и работа с репозиторием</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-and-git/" rel="bookmark" title="GitHub и Git - создание и работа с репозиторием" itemprop="url">GitHub и Git - создание и работа с репозиторием</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>Данная статья является попыткой осмыслить (<em>в первую очередь для себя, конечно</em>) такой вопрос, как создание git-репозитория на GitHub, клонирование этого репозитория на локальный компьютер, внесение изменений в клонированный репозиторий, отправка изменений обратно на GitHub.</p>
+    <blockquote>
+  <p>Данная статья является попыткой осмыслить (<em>в первую очередь для себя, конечно</em>) такой вопрос, как создание git-репозитория на GitHub, клонирование этого репозитория на локальный компьютер, внесение изменений в клонированный репозиторий, отправка изменений обратно на GitHub.</p>
+</blockquote>
 
-<p>Вот такие получаются шаги, которые нужно осветить. Profit у всех этих сложностей, описанных мною выше, один – но большой! Заключается он в том, что проект, над которым вы работаете (<em>даже в гордом одиночестве</em>) находится на удаленном сервере, к которому можно подключиться из любого места и с любой машины. Так как он находиться на remote server, то с ним ничего не случиться, даже если ваша машина упадет\утонет\разобьется.</p>
+<p>Вот такие получаются шаги, которые нужно осветить. Profit у всех этих сложностей, описанных мною выше, один - но большой! Заключается он в том, что проект, над которым вы работаете (<em>даже в гордом одиночестве</em>) находится на удаленном сервере, к которому можно подключиться из любого места и с любой машины. Так как он находиться на remote server, то с ним ничего не случиться, даже если ваша машина упадет\утонет\разобьется.</p>
 
-<p>В статье большая часть времени будет посвящена автоматизации процесса авторизации на сервисе GitHub с помощью такой вещи, как ssh-ключи. Такие ключи предназначены как раз для возможности авторизации пользователя на каком-либо сервисе, без необходимости каждый раз вводить логин\пароль. Естественно, на стороне сервиса должна быть настроена такая возможность – на GitHub она настроена и даже является почти обязательным условием настройки аккаунта.</p>
+<p>В статье большая часть времени будет посвящена автоматизации процесса авторизации на сервисе GitHub с помощью такой вещи, как ssh-ключи. Такие ключи предназначены как раз для возможности авторизации пользователя на каком-либо сервисе, без необходимости каждый раз вводить логин\пароль. Естественно, на стороне сервиса должна быть настроена такая возможность - на GitHub она настроена и даже является почти обязательным условием настройки аккаунта.</p>
 
 <p>Все действия, описанные в этой статье, будут производиться под операционной системой Linux Mint 17 Cinnamon, в консоли. Поэтому пользователи Mac OS X найдут для себя почти все идентичным. Система Windows остается в стороне.</p>
 
-<h3 id="ssh---linux">Создание SSH-ключей под Linux</h3>
+<h2 id="ssh---linux">Создание SSH-ключей под Linux</h2>
 
 <p>Первоначально необходимо создать (<em>если их еще нет</em>) ssh-ключи, которые будем использоваться для авторизации на GitHub. В системе Linux такие ключи расположены в домашней директории пользователя и выглядят примерно так:</p>
 
-<pre>$ ls ~/.ssh
-  id_rsa id_rsa.pub known_hosts
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="p">~/.</span><span class="n">ssh</span>
+  <span class="n">id_rsa</span> <span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span> <span class="n">known_hosts</span></code></pre></div>
 
-<p>Один из этих ключей <code>id_rsa</code> – это приватный ключ, который должен храниться только у пользователя. Другой ключ <code>id_rsa.pub</code> – это публичный ключ, который предоставляется всем и который я отправлю на GitHub. Представленные выше имена ключей являются создаваемыми по умолчанию, но можно указать и свои собственные.</p>
+<p>Один из этих ключей <code>id_rsa</code> - это приватный ключ, который должен храниться только у пользователя. Другой ключ <code>id_rsa.pub</code> - это публичный ключ, который предоставляется всем и который я отправлю на GitHub. Представленные выше имена ключей являются создаваемыми по умолчанию, но можно указать и свои собственные.</p>
 
 <p>Если показанная выше команда “скажет” вам, что директории <code>.ssh</code> не существует, то это означает, что у вас с системе установлен пакет SSH, отвечающий за создание и обработку ssh-ключей.</p>
 
-<h4 id="ssh">Установка пакета SSH</h4>
+<h2 id="ssh">Установка пакета SSH</h2>
 
 <p>Под Linux Mint его нужно установить командой:</p>
 
-<pre>$ sudo apt-get install ssh
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">ssh</span></code></pre></div>
 
-<h4 id="ssh-">Создание пары ssh-ключей</h4>
+<h2 id="ssh-">Создание пары ssh-ключей</h2>
 
 <p>Теперь можно приступать к созданию пары ssh-ключей. Выполняется это командой:</p>
 
-<pre>$ ssh-keygen -t rsa -C "g***e@gmail.com"
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span></code></pre></div>
 
-<p>Чтобы было немного понятно, что это я сделал в данной команде, немного расшифрую ее. Утилита <code>ssh-keygen</code> входит в комплект пакета <code>ssh</code> и предназначена для одной цели – создания ssh-ключей. Часть команды – <code>-t rsa</code> – указывает, что необходимо создать ssh-ключи типа <code>rsa</code>. Обязательный параметр <code>"g***e@gmail.com"</code> – электронный адрес, к которому “привязывается” создаваемый ssh-ключ; данный email будет также использоваться мною для регистрации на GitHub.</p>
+<p>Чтобы было немного понятно, что это я сделал в данной команде, немного расшифрую ее. Утилита <code>ssh-keygen</code> входит в комплект пакета <code>ssh</code> и предназначена для одной цели - создания ssh-ключей. Часть команды - <code>-t rsa</code> - указывает, что необходимо создать ssh-ключи типа <code>rsa</code>.</p>
 
-<p>Как только будет введена представленная выше команда, утилита <code>ssh-keygen</code> запросит имя файла и местоположение для создаваемых ssh-ключей. Можно ничего не вводить, а просто нажать Enter. В этом случае программулька создаст и положит их по пути по умолчанию (который показан ею в скобочках):</p>
+<p>Обязательный параметр <code>"g***e@gmail.com"</code> - электронный адрес, к которому “привязывается” создаваемый ssh-ключ; данный email будет также использоваться мною для регистрации на GitHub.</p>
 
-<pre>$ ssh-keygen -t rsa -C "g***e@gmail.com"
-  Generating public/private rsa key pair.
-  Enter file in which to save the key (/home/aaron/.ssh/id_rsa):
-</pre>
+<p>Как только будет введена представленная выше команда, утилита <code>ssh-keygen</code> запросит имя файла и местоположение для создаваемых ssh-ключей. Можно ничего не вводить, а просто нажать <kbd>Enter</kbd>. В этом случае программулька создаст и положит их по пути по умолчанию (который показан ею в скобочках):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span>
+  <span class="n">Generating</span> <span class="n">public</span><span class="p">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="p">.</span>
+  <span class="n">Enter</span> <span class="n">file</span> <span class="k">in</span> <span class="n">which</span> <span class="n">to</span> <span class="n">save</span> <span class="n">the</span> <span class="n">key</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span><span class="err">:</span></code></pre></div>
 
 <p>Утилита задаст еще один вопрос, который крайне не рекомендуется игнорировать:</p>
 
-<pre>$ ssh-keygen -t rsa -C "g***e@gmail.com"
-  Generating public/private rsa key pair.
-  Enter file in which to save the key (/home/aaron/.ssh/id_rsa):
-  Enter passphrase (empty for no passphrase):
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span>
+  <span class="n">Generating</span> <span class="n">public</span><span class="p">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="p">.</span>
+  <span class="n">Enter</span> <span class="n">file</span> <span class="k">in</span> <span class="n">which</span> <span class="n">to</span> <span class="n">save</span> <span class="n">the</span> <span class="n">key</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span><span class="err">:</span>
+  <span class="n">Enter</span> <span class="n">passphrase</span> <span class="p">(</span><span class="n">empty</span> <span class="k">for</span> <span class="n">no</span> <span class="n">passphrase</span><span class="p">)</span><span class="err">:</span></code></pre></div>
 
-<p>Здесь <code>passphrase</code> – это пароль к создаваемым ssh-ключам. Каждый раз, когда придется использовать эти ключи, нужно вводить данный пароль. Это обезопасит их в случае кражи. В качестве пароля можно использовать любую текстовую строку.</p>
+<p>Здесь <code>passphrase</code> - это пароль к создаваемым ssh-ключам. Каждый раз, когда придется использовать эти ключи, нужно вводить данный пароль. Это обезопасит их в случае кражи. В качестве пароля можно использовать любую текстовую строку.</p>
 
 <p>После успешного ввода <code>passphrase</code> ssh-ключи будут созданы:</p>
 
-<pre>$ ssh-keygen -t rsa -C "g***e@gmail.com"
-  Generating public/private rsa key pair.
-  Enter file in which to save the key (/home/aaron/.ssh/id_rsa):
-  Enter passphrase (empty for no passphrase):
-  Enter same passphrase again:
-  Your identification has been saved in /home/aaron/.ssh/id_rsa.
-  Your public key has been saved in /home/aaron/.ssh/id_rsa.pub.
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span>
+  <span class="n">Generating</span> <span class="n">public</span><span class="p">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="p">.</span>
+  <span class="n">Enter</span> <span class="n">file</span> <span class="k">in</span> <span class="n">which</span> <span class="n">to</span> <span class="n">save</span> <span class="n">the</span> <span class="n">key</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span><span class="err">:</span>
+  <span class="n">Enter</span> <span class="n">passphrase</span> <span class="p">(</span><span class="n">empty</span> <span class="k">for</span> <span class="n">no</span> <span class="n">passphrase</span><span class="p">)</span><span class="err">:</span>
+  <span class="n">Enter</span> <span class="n">same</span> <span class="n">passphrase</span> <span class="n">again</span><span class="err">:</span>
+  <span class="n">Your</span> <span class="n">identification</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">.</span>
+  <span class="n">Your</span> <span class="n">public</span> <span class="n">key</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span><span class="p">.</span></code></pre></div>
 
 <p>В состав пакета <code>ssh</code> входит утилита <code>ssh-agent</code>, задача которой в управлении созданными ssh-ключами. Передадим ей в пользование только созданные мною ssh-ключи:</p>
 
-<pre>$ eval "$(ssh-agent -s)"
-  Agent pid 17461
-  $ ssh-add ~/.ssh/id_rsa
-  Enter passphrase for /home/aaron/.ssh/id_rsa:
-  Identity added: /home/aaron/.ssh/id_rsa (/home/aaron/.ssh/id_rsa)
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">eval</span> <span class="s2">&quot;</span><span class="p">$(</span><span class="n">ssh-agent</span> <span class="n">-s</span><span class="p">)</span><span class="s2">&quot;</span>
+  <span class="n">Agent</span> <span class="n">pid</span> <span class="n">17461</span>
+  <span class="p">$</span> <span class="n">ssh-add</span> <span class="p">~/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span>
+  <span class="n">Enter</span> <span class="n">passphrase</span> <span class="k">for</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="err">:</span>
+  <span class="n">Identity</span> <span class="n">added</span><span class="err">:</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span></code></pre></div>
 
 <p>Можно посмотреть, что утилита <code>shh-add</code> “подхватила” и распознала предоставленные ею ssh-ключи:</p>
 
-<pre>$ ssh-add -l
-  2048 e4:4d:fe:73:cb:b9:bb:ee:26:32:6b:f5:f1:6a:db:38 /home/aaron/.ssh/id_rsa (RSA)
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-add</span> <span class="n">-l</span>
+  <span class="n">2048</span> <span class="n">e4</span><span class="err">:</span><span class="n">4d</span><span class="err">:</span><span class="n">fe</span><span class="err">:</span><span class="n">73</span><span class="err">:</span><span class="n">cb</span><span class="err">:</span><span class="n">b9</span><span class="err">:</span><span class="n">bb</span><span class="err">:</span><span class="n">ee</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">32</span><span class="err">:</span><span class="n">6b</span><span class="err">:</span><span class="n">f5</span><span class="err">:</span><span class="n">f1</span><span class="err">:</span><span class="n">6a</span><span class="err">:</span><span class="n">db</span><span class="err">:</span><span class="n">38</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span> <span class="p">(</span><span class="n">RSA</span><span class="p">)</span></code></pre></div>
 
 <p>Под операционную систему Linux имеется консольная утилита <code>xclip</code>, которая умеет получать содержимое любого файла и отправлять это содержимое в буфер обмена, и все это в консоли. По умолчанию такой утилиты нет в системе (<em>в том числе и у меня</em>), поэтому первоначально установлю ее:</p>
 
-<pre>$ sudo apt-get install xclip
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">xclip</span></code></pre></div>
 
 <p>… а затем передам ей на вход содержимое публичного ключа <code>id_rsa.pub</code>, который буду применять на сервисе GitHub:</p>
 
-<pre>$ xclip -sel clip &lt; ~/.ssh/id_rsa.pub
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">xclip</span> <span class="n">-sel</span> <span class="n">clip</span> <span class="p">&lt;</span> <span class="p">~/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span></code></pre></div>
 
 <p>Если вам, уважаемый читатель, такой путь покажется слишком сложным, то можно открыть файл <code>id_rsa.pub</code> в любом редакторе кода и скопировать его содержимое в буфер обмена.</p>
 
-<h3 id="ssh---github">Добавление ssh-ключа на GitHub</h3>
+<h2 id="ssh---github">Добавление ssh-ключа на GitHub</h2>
 
 <p>Переходим на сервис GitHub и создаем на нем новую учетную запись. Описывать процесс создания такой записи на GitHub не буду, так как там все просто. Более интересный момент - это добавление ssh-ключа в профиль пользователя GitHub.</p>
 
-<p>Для этого нажимаю на значок шестеренки в правом верхнем углу окна браузера - настройки профиля пользователя. В открывшемся окне (в его левой части) находим строку <code>SSH key</code> и нажимаем ее:<figure id="attachment_1735" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Для этого нажимаю на значок шестеренки в правом верхнем углу окна браузера - настройки профиля пользователя. В открывшемся окне (в его левой части) находим строку <code>SSH key</code> и нажимаем ее:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github_ssh_keys.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github_ssh_keys-600x464.png" alt="SSH ключи на GitHub" width="600" height="464" class="size-medium wp-image-1735" /></a>&lt;figcaption class="wp-caption-text"&gt;SSH ключи на GitHub&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_ssh_keys.png" alt="SSH ключи на GitHub" /></p>
 
-<p>Откроется окно для добавления новых ssh-ключей в учетную запись пользователя на GitHub. Здесь все элементарно просто - нажимаем кнопку <code>Add SSH key</code>. В поле <code>Title</code> вводим название (произвольное) для импортируемого ssh-ключа. В поле <code>Key</code> просто нажимаем Ctrl+V - содержимое буфера обмена (которое я получил ранее с помощью утилиты <code>xclip</code>) вставиться в это поле:<figure id="attachment_1734" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Откроется окно для добавления новых ssh-ключей в учетную запись пользователя на GitHub. Здесь все элементарно просто - нажимаем кнопку <code>Add SSH key</code>. В поле <code>Title</code> вводим название (произвольное) для импортируемого ssh-ключа.</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github_add_ssh_keys.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github_add_ssh_keys-600x464.png" alt="Добавление ssh-ключа на GitHub" width="600" height="464" class="size-medium wp-image-1734" /></a>&lt;figcaption class="wp-caption-text"&gt;Добавление ssh-ключа на GitHub&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>В поле <code>Key</code> просто нажимаем <kbd>Ctrl+V</kbd> - содержимое буфера обмена (которое я получил ранее с помощью утилиты <code>xclip</code>) вставиться в это поле:</p>
 
-<p>Жму на зеленую кнопку <code>Add key</code> внизу окна. Ключ добавлен на GitHub и появиться в списке SSH-ключей:<figure id="attachment_1733" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_add_ssh_keys.png" alt="Добавление ssh-ключа на GitHub" /></p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github_added_ssh_keys.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github_added_ssh_keys-600x464.png" alt="Добавленный на GitHub ssh-ключ" width="600" height="464" class="size-medium wp-image-1733" /></a>&lt;figcaption class="wp-caption-text"&gt;Добавленный на GitHub ssh-ключ&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p>Жму на зеленую кнопку <code>Add key</code> внизу окна. Ключ добавлен на GitHub и появиться в списке SSH-ключей:</p>
 
-<h3 id="ssh---github-1">Проверка SSH-соединения с GitHub</h3>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_added_ssh_keys.png" alt="Добавленный на GitHub ssh-ключ" /></p>
+
+<h2 id="ssh---github-1">Проверка SSH-соединения с GitHub</h2>
 
 <p>В предыдущих шагах мною были созданы пара ssh-ключей, а также учетная запись на GitHub. В эту учетную запись был импортирован публичный ssh-ключ. Теперь неплохо было бы проверить, что все шаги пройдены мною успешно и ssh-связь с сервисом GitHub устанавливается. Проще сказать - что сервис GitHub авторизует меня у себя с помощью ssh-ключей.</p>
 
 <p>Для этой цели ввожу команду:</p>
 
-<pre>$ ssh -T git@github.com
-  The authenticity of host 'github.com (192.30.252.131)' can't be established.
-  RSA key fingerprint is 16:27:ac:a5:76:28:2d:36:63:1b:56:4d:eb:df:a6:48.
-  Are you sure you want to continue connecting (yes/no)? yes
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh</span> <span class="n">-T</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span>
+  <span class="n">The</span> <span class="n">authenticity</span> <span class="n">of</span> <span class="n">host</span> <span class="s1">&#39;github.com (192.30.252.131)&#39;</span> <span class="n">can</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">be</span> <span class="n">established</span><span class="p">.</span>
+  <span class="n">RSA</span> <span class="n">key</span> <span class="n">fingerprint</span> <span class="n">is</span> <span class="n">16</span><span class="err">:</span><span class="n">27</span><span class="err">:</span><span class="n">ac</span><span class="err">:</span><span class="n">a5</span><span class="err">:</span><span class="n">76</span><span class="err">:</span><span class="n">28</span><span class="err">:</span><span class="n">2d</span><span class="err">:</span><span class="n">36</span><span class="err">:</span><span class="n">63</span><span class="err">:</span><span class="n">1b</span><span class="err">:</span><span class="n">56</span><span class="err">:</span><span class="n">4d</span><span class="err">:</span><span class="n">eb</span><span class="err">:</span><span class="n">df</span><span class="err">:</span><span class="n">a6</span><span class="err">:</span><span class="n">48</span><span class="p">.</span>
+  <span class="n">Are</span> <span class="n">you</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="k">continue</span> <span class="n">connecting</span> <span class="p">(</span><span class="n">yes</span><span class="p">/</span><span class="n">no</span><span class="p">)?</span> <span class="n">yes</span></code></pre></div>
 
 <p>На ошибку в строке <code>The authenticity of host 'github.com (192.30.252.131)' can't be established.</code> не стоит обращать внимание. В запросе командной строки печатаем <code>yes</code> и получаем:</p>
 
-<pre>Warning: Permanently added 'github.com,192.30.252.131' (RSA) to the list of known hosts.
-  Hi gearmobile! You've successfully authenticated, but GitHub does not provide shell access.
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Warning</span><span class="err">:</span> <span class="n">Permanently</span> <span class="n">added</span> <span class="s1">&#39;github.com,192.30.252.131&#39;</span> <span class="p">(</span><span class="n">RSA</span><span class="p">)</span> <span class="n">to</span> <span class="n">the</span> <span class="n">list</span> <span class="n">of</span> <span class="n">known</span> <span class="n">hosts</span><span class="p">.</span>
+<span class="n">Hi</span> <span class="n">gearmobile</span><span class="p">!</span> <span class="n">You</span><span class="err">&#39;</span><span class="n">ve</span> <span class="n">successfully</span> <span class="n">authenticated</span><span class="p">,</span> <span class="n">but</span> <span class="n">GitHub</span> <span class="n">does</span> <span class="n">not</span> <span class="n">provide</span> <span class="n">shell</span> <span class="n">access</span><span class="p">.</span></code></pre></div>
 
 <p>Отлично! GitHub “узнал” меня и поприветствовал в строке <code>Hi gearmobile! You've successfully authenticated, but GitHub does not provide shell access.</code>. Это говорит о том, что ssh-соединение моей машины с GitHub установлено успешно и GitHub авторизует меня.</p>
 
 <p>Однако, при настройке ssh-соединения возможны и ошибки. В этом случае может помочь статья - <a href="https://help.github.com/articles/error-permission-denied-publickey" title="Error: Permission denied (publickey)">Error: Permission denied (publickey)</a>.</p>
 
-<h3 id="github">Создание нового репозитория на GitHub</h3>
+<h2 id="github">Создание нового репозитория на GitHub</h2>
 
-<p>Создаем новый репозиторий на GitHub. Ввожу новое уникальное имя для репозитория, краткое его описание и включаю галочку “Initialize this repository with a README”:<figure id="attachment_1732" style="width: 600px;" class="wp-caption aligncenter"></figure></p>
+<p>Создаем новый репозиторий на GitHub. Ввожу новое уникальное имя для репозитория, краткое его описание и включаю галочку “Initialize this repository with a README”:</p>
 
-<p><a href="http://localhost:7788/third/wp-content/uploads/2014/08/github_create_new_repo.png"><img src="http://localhost:7788/third/wp-content/uploads/2014/08/github_create_new_repo-600x464.png" alt="Создание нового репозитория на GitHub" width="600" height="464" class="size-medium wp-image-1732" /></a>&lt;figcaption class="wp-caption-text"&gt;Создание нового репозитория на GitHub&lt;/figcaption&gt;&lt;/figure&gt; </p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_create_new_repo.png" alt="Создание нового репозитория на GitHub" /></p>
 
 <p>Отлично! На GitHub я только что создал новый репозиторий <code>arbeit</code>. Теперь можно скопировать (склонировать) его на свою локальную машину командами:</p>
 
-<pre>$ mkdir arbeit
-  $ git clone git@github.com:gearmobile/arbeit.git
-  Cloning into 'arbeit'...
-  Warning: Permanently added the RSA host key for IP address '192.30.252.130' to the list of known hosts.
-  remote: Counting objects: 3, done.
-  remote: Compressing objects: 100% (2/2), done.
-  remote: Total 3 (delta 0), reused 0 (delta 0)
-  Receiving objects: 100% (3/3), done.
-  Checking connectivity... done
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">arbeit</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">arbeit</span><span class="p">.</span><span class="n">git</span>
+  <span class="n">Cloning</span> <span class="n">into</span> <span class="s1">&#39;arbeit&#39;</span><span class="p">...</span>
+  <span class="n">Warning</span><span class="err">:</span> <span class="n">Permanently</span> <span class="n">added</span> <span class="n">the</span> <span class="n">RSA</span> <span class="n">host</span> <span class="n">key</span> <span class="k">for</span> <span class="n">IP</span> <span class="n">address</span> <span class="s1">&#39;192.30.252.130&#39;</span> <span class="n">to</span> <span class="n">the</span> <span class="n">list</span> <span class="n">of</span> <span class="n">known</span> <span class="n">hosts</span><span class="p">.</span>
+  <span class="n">remote</span><span class="err">:</span> <span class="n">Counting</span> <span class="n">objects</span><span class="err">:</span> <span class="n">3</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+  <span class="n">remote</span><span class="err">:</span> <span class="n">Compressing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">2</span><span class="p">/</span><span class="n">2</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+  <span class="n">remote</span><span class="err">:</span> <span class="n">Total</span> <span class="n">3</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">),</span> <span class="n">reused</span> <span class="n">0</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">)</span>
+  <span class="n">Receiving</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">3</span><span class="p">/</span><span class="n">3</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+  <span class="n">Checking</span> <span class="n">connectivity</span><span class="p">...</span> <span class="n">done</span></code></pre></div>
 
 <p>Переходим в локальную копию репозитория <code>arbeit</code>. Вношу изменения, а затем последовательно:</p>
 
-<pre>$ git add .
-  $ git commit -m 'Added changes'
-  $ git push
-</pre>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Added changes&#39;</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
 
 <p>Команда <code>git commit -m 'Added changes'</code> фиксирует изменения в локальном репозитории. Команда <code>git push</code> отправляет внесенные и зафиксированные изменения в локальном репозитории на удаленный репозиторий.</p>
 
 <p>Вот, таким образом я наладил Git-работу своей машины с GitHub.</p>
+
+<hr />
 
 
   </div><!-- /.entry-content -->
