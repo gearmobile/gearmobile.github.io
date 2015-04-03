@@ -1,26 +1,31 @@
 ---
-title: Gulp-autoprefixer, gulp-rename, gulp-notify
-author: gearmobile
+title: "Gulp-autoprefixer, gulp-rename, gulp-notify"
 layout: post
+categories: gulp
+tags: [gulp, gulp-rename, gulp-notify, gulp-autoprefixer]
+share: true
 ---
-> В статье рассмотрены три модуля для работы под Gulp &#8211; `gulp-rename`, `gulp-notify`, `gulp-autoprefixer`. Все три модуля слишком маленькие и слишком простые, чтобы их рассматривать в отдельности. Все приведенные в статье примеры являются **базовыми** и служат задаче показать **принцип работы** каждого из модулей.
 
-### Подготовка проекта
+> В статье рассмотрены три модуля для работы под Gulp - `gulp-rename`, `gulp-notify`, `gulp-autoprefixer`.
+
+Все три модуля слишком маленькие и слишком простые, чтобы их рассматривать в отдельности. Все приведенные в статье примеры являются базовыми и служат задаче показать принцип работы каждого из модулей.
+
+## Подготовка проекта
 
 Подготовим проект, создав его базовую основу. Первым файлом создадим файл `package.json` и наполним его таким содержимым:
 
-<pre>
+{% highlight powershell %}
 $ touch package.json
   $ cat package.json
   {
     "name" : "three_modules",
     "version" : "0.0.1"
   }
-</pre>
+{% endhighlight %}
 
-Затем установим *локально* Gulp.js и укажем npm, чтобы он внес этот пакет в качестве зависимостей в файл `package.json`:
+Затем установим *локально* Gulp.js и укажем `npm`, чтобы он внес этот пакет в качестве зависимостей в файл `package.json`:
 
-<pre>
+{% highlight powershell %}
 $ sudo npm install --save-dev gulp
   $ cat package.json
   {
@@ -30,11 +35,11 @@ $ sudo npm install --save-dev gulp
       "gulp": "~3.8.8"
     }
   }
-</pre>
+{% endhighlight %}
 
 Создаем js-файл, в котором будем прописывать задачи для Gulp:
 
-<pre>
+{% highlight powershell %}
 $ touch gulpfile.js
   $ cat gulpfile.js
   var gulp = require('gulp');
@@ -43,15 +48,15 @@ $ touch gulpfile.js
   gulp.task('default', function(){
     // body...
   });
-</pre>
+{% endhighlight %}
 
 Основа для тестирования отдельных модулей готова.
 
-### Gulp-rename &#8211; переименование файлов
+## Gulp-rename - переименование файлов
 
-Задача модуля `gulp-rename` предназначена для одной маленькой цели &#8211; *переименования файлов*. Установим модуль с указанием зависимостей:
+Задача модуля `gulp-rename` предназначена для одной маленькой цели - *переименования файлов*. Установим модуль с указанием зависимостей:
 
-<pre>
+{% highlight powershell %}
 $ sudo npm install --save-dev gulp-rename
   $ cat package.json
   {
@@ -62,11 +67,11 @@ $ sudo npm install --save-dev gulp-rename
       "gulp-rename": "~1.2.0"
     }
   }
-</pre>
+{% endhighlight %}
 
 И создадим задачу в файле `gulpfile.js` для установленного модуля `gulp-rename`:
 
-<pre>
+{% highlight powershell %}
 $ cat gulpfile.js
   var gulp = require('gulp'),
       rename = require('gulp-rename');
@@ -77,35 +82,35 @@ $ cat gulpfile.js
     .pipe(rename('pretty_styles.css'))
     .pipe(gulp.dest('build/css/'));
   });
-</pre>
+{% endhighlight %}
 
-В задаче под именем `rename` для Gulp &ldquo;говориться&rdquo; следующее: найти файл `style.css` &#8211; `gulp.src('css/style.css')`; переименовать его в имя `pretty_styles` &#8211; `.pipe(rename('pretty_styles.css'))`; переименованный файл положить в папку по пути `build/css/` &#8211; `.pipe(gulp.dest('build/css/'))`.
+В задаче под именем `rename` для Gulp "говориться" следующее: найти файл `style.css` - `gulp.src('css/style.css')`; переименовать его в имя `pretty_styles` - `.pipe(rename('pretty_styles.css'))`; переименованный файл положить в папку по пути `build/css/` - `.pipe(gulp.dest('build/css/'))`.
 
 Запускаю задачу `rename` в консоли и вижу, что процесс прошел успешно:
 
-<pre>
+{% highlight powershell %}
 $ gulp rename
   Using gulpfile /media/aaron/application/develop/training/gulp_connect/gulpfile.js
   Starting 'rename'...
   Finished 'rename' after 11 ms
-</pre>
+{% endhighlight %}
 
-Проверяю, &ldquo;положил&rdquo; ли Gulp переименованный файл `pretty_styles.css` по пути `build/css/`:
+Проверяю, "положил" ли Gulp переименованный файл `pretty_styles.css` по пути `build/css/`:
 
-<pre>
+{% highlight powershell %}
 $ ls build/css/
   pretty_styles.css
-</pre>
+{% endhighlight %}
 
 Да, все верно, файл `pretty_styles.css` находиться там, где он и должен находиться.
 
-Рассмотренный выше пример очень прост. Более сложные и интересные возможности модуля `gulp-rename` показаны на его официальной странице &#8211; [gulp-rename][1]. А именно &#8211; возможности переименования с помощью *функций* или с помощью *префиксов\суффиксов*.
+Рассмотренный выше пример очень прост. Более сложные и интересные возможности модуля `gulp-rename` показаны на его официальной странице - [gulp-rename][1]. А именно - возможности переименования с помощью *функций* или с помощью *префиксов\суффиксов*.
 
-### Gulp-notify &#8211; уведомление о событиях
+## Gulp-notify - уведомление о событиях
 
 Установка модуля `gulp-notify` выполняется как обычно:
 
-<pre>
+{% highlight powershell %}
 $ sudo npm install --save-dev gulp-notify
   $ cat package.json
   {
@@ -117,11 +122,13 @@ $ sudo npm install --save-dev gulp-notify
       "gulp-notify": "~1.6.0"
     }
   }
-</pre>
+{% endhighlight %}
 
-Затем создаю задачу `notify`, которая будет отслеживать все изменения в файле `css/style.css`. Задача информирования об изменениях подразумевает ее использование в *фоновом режиме*. Поэтому, создаю еще одну задачу для мониторинга &#8211; `watch`, которую помещаю в дефолтную задачу `default`. В общем случае файл `gulpgile.js` будет выглядеть следующим образом:
+Затем создаю задачу `notify`, которая будет отслеживать все изменения в файле `css/style.css`. Задача информирования об изменениях подразумевает ее использование в *фоновом режиме*.
 
-<pre>
+Поэтому, создаю еще одну задачу для мониторинга - `watch`, которую помещаю в дефолтную задачу `default`. В общем случае файл `gulpgile.js` будет выглядеть следующим образом:
+
+{% highlight javascript %}
 var gulp = require('gulp'),
   rename = require('gulp-rename'),
   notify = require('gulp-notify');
@@ -139,51 +146,52 @@ var gulp = require('gulp'),
   gulp.task('watch', function(){
     gulp.watch('css/style.css', ['notify']);
   });
-</pre>
+{% endhighlight %}
 
 В консоли запускаю Gulp с дефолтной задачей `default`:
 
-<pre>
+{% highlight powershell %}
 $ gulp
   Using gulpfile /media/aaron/application/develop/training/gulp_connect/gulpfile.js
   Starting 'watch'...
   Finished 'watch' after 8.79 ms
   Starting 'default'...
   Finished 'default' after 7.97 μs
-</pre>
+{% endhighlight %}
 
 Теперь вношу в файл `css/style.css` изменения и сохраняю их. На Рабочем столе мгновенно появляется всплывающее окно с уведомлением о внесенных в файл `css/style.css` изменениях. Не знаю, как в других системах, но на Linux Mint 17 Cinnamon это окошко выглядит очень симпатично.
 
 На [странице GitHub][2] автора модуля представлены *более интересные примеры* создания и использования `gulp-notify`.
 
-### Gulp-autoprefixer &#8211; браузерные префиксы
+## Gulp-autoprefixer - браузерные префиксы
 
-Интересный модуль `gulp-autoprefixer` для управления *браузерными префиксами* в проекте. Задача у него &#8211; не просто устанавливать префиксы для тех CSS3-свойств, которые нуждаюся в этом на данный момент (*другими словами &#8211; для включения их поддержки в браузерах*).
+Интересный модуль `gulp-autoprefixer` для управления *браузерными префиксами* в проекте. Задача у него - не просто устанавливать префиксы для тех CSS3-свойств, которые нуждаюся в этом на данный момент (*другими словами - для включения их поддержки в браузерах*).
 
-С помощью `gulp-autoprefixer` можно управлять &ldquo;глубиной&rdquo; версий браузеров, которые должны поддерживать работу конкретного проекта. Другими словами, можно указать модулю `gulp-autoprefixer`, что необходимо отслеживать поддержку префиксов только в двух последних версиях каждого (*из всех существующих*) браузера &#8211; `last 2 versions` (*кстати, это значение по умолчанию для данного модуля*).
+С помощью `gulp-autoprefixer` можно управлять "глубиной" версий браузеров, которые должны поддерживать работу конкретного проекта. Другими словами, можно указать модулю `gulp-autoprefixer`, что необходимо отслеживать поддержку префиксов только в двух последних версиях каждого (*из всех существующих*) браузера - `last 2 versions` (*кстати, это значение по умолчанию для данного модуля*).
 
-Или же **учитывать только две последние версии** браузера Google Chrome &#8211; `last 2 Chrome versions`. При задании префиксов можно **учитывать глобальную статистику использования** браузера &#8211; `> 5%` (если брузер используют больше 5% населения Интернет).
+Или же учитывать только две последние версии браузера Google Chrome - `last 2 Chrome versions`. При задании префиксов можно учитывать глобальную статистику использования браузера - `> 5%` (если брузер используют больше 5% населения Интернет).
 
 Модуль `gulp-autoprefixer` использует собственные имена для браузеров при задании параматров работы своей работы. С полным списком еще более интересных возможностей для задания выборки браузеров можно (*и нужно*) ознакомиться на [странице GitHub][3].
 
-Работа модуля `gulp-autoprefixer` основана на известном ресурсе [Can I Use][4]. Именно оттуда он берет инормацию о поддержке браузерами того или иного CSS3-свойства на данный момент. Кстати, известный фреймворк Compass также основывается на [Can I Use][4] при работе со своими миксинами (mixin).<figure id="attachment_1811" style="width: 600px;" class="wp-caption aligncenter">
+Работа модуля `gulp-autoprefixer` основана на известном ресурсе [Can I Use][4]. Именно оттуда он берет инормацию о поддержке браузерами того или иного CSS3-свойства на данный момент. Кстати, известный фреймворк Compass также основывается на [Can I Use][4] при работе со своими миксинами (mixin).
 
-[<img src="http://localhost:7788/third/wp-content/uploads/2014/09/gulp-autoprefixer_caniuse-600x459.png" alt="Плагин Gulp-autoprefixer и сервис Can I Use" width="600" height="459" class="size-medium wp-image-1811" />][5]<figcaption class="wp-caption-text">Сервис Can I Use</figcaption></figure> 
+![Сервис Can I Use]({{site.url}}/images/uploads/2014/09/gulp-autoprefixer_caniuse.png)
 
-Помимо этого, модуль `gulp-autoprefixer` умеет **красиво форматировать** CSS-свойства с браузерными префиксами в виде [визульного каскада][6]:
+Помимо этого, модуль `gulp-autoprefixer` умеет красиво форматировать CSS-свойства с браузерными префиксами в виде [визульного каскада][5]:
 
-<pre>a {
-  -webkit-box-sizing: border-box;
-     -moz-box-sizing: border-box;
-          box-sizing: border-box;
-  }
-</pre>
+{% highlight css %}
+a {
+-webkit-box-sizing: border-box;
+   -moz-box-sizing: border-box;
+        box-sizing: border-box;
+}
+{% endhighlight %}
 
 За такую возможность отвечает параметр `cascade`, который включен по умолчанию в данном модуле. Вообще, по умолчанию модуль `gulp-autoprefixer` имеет такие параметры в виде массива (array): `> 1%, last 2 versions, Firefox ESR, Opera 12.1`.
 
-Вступление было достаточно долгим и подробным &#8211; это потому, что модуль `gulp-autoprefixer` интересный и нужный. Приступаю к его установке:
+Вступление было достаточно долгим и подробным - это потому, что модуль `gulp-autoprefixer` интересный и нужный. Приступаю к его установке:
 
-<pre>
+{% highlight powershell %}
 $ sudo npm install --save-dev gulp-autoprefixer
   $ cat package.json
   {
@@ -196,11 +204,11 @@ $ sudo npm install --save-dev gulp-autoprefixer
       "gulp-autoprefixer": "~1.0.0"
     }
   }
-</pre>
+{% endhighlight %}
 
 Создаю задачу `autoprefixer` с описанием того, что нужно отслеживать изменения в файле `css/style.css` и при добавлении в него CSS3-свойств преобразовывать их в свойства с браузерными префиксами. При этом учитывать только две последние версии браузеров и результат помещать по пути `build/css/`.
 
-<pre>
+{% highlight javascript %}
 var gulp = require('gulp'),
   autoprefixer = require('gulp-autoprefixer');
 
@@ -212,22 +220,22 @@ var gulp = require('gulp'),
     }))
     .pipe(gulp.dest('build/css/'));
   });
-</pre>
+{% endhighlight %}
 
-Внесу в файл `css/style.css` CSS3-свойство `transform`, которое заведомо нужно использовать с префиксами (для этого я заранее &ldquo;[подглядел][7]&rdquo; его на &ldquo;Can I Use&rdquo;):
+Внесу в файл `css/style.css` CSS3-свойство `transform`, которое заведомо нужно использовать с префиксами (для этого я заранее "[подглядел][6]" его на "Can I Use"):
 
-<pre>
+{% highlight css %}
 .block {
   width: 100px;
   height: 100px;
   background-color: #778899;
   transform: rotate(7deg);
   }
-</pre>
+{% endhighlight %}
 
 Запускаю задачу `autoprefixer` и смотрю результат:
 
-<pre>
+{% highlight css %}
 .block {
   width: 100px;
   height: 100px;
@@ -235,13 +243,13 @@ var gulp = require('gulp'),
   -webkit-transform: rotate(7deg);
           transform: rotate(7deg);
   }
-</pre>
+{% endhighlight %}
 
-Все четко &#8211; под условие &ldquo;не ниже второй версии&rdquo; попали только браузеры на движке Webkit &#8211; можно свериться [здесь][7].
+Все четко - под условие "не ниже второй версии" попали только браузеры на движке Webkit - можно свериться [здесь][6].
 
-Можно немного &ldquo;углубить&rdquo; условие и &ldquo;опуститься&rdquo; до третьей версии всех браузеров:
+Можно немного "углубить" условие и "опуститься" до третьей версии всех браузеров:
 
-<pre>
+{% highlight javascript %}
 // Autoprefixer Task
   gulp.task('autoprefixer', function(){
     gulp.src('css/style.css')
@@ -250,11 +258,11 @@ var gulp = require('gulp'),
     }))
     .pipe(gulp.dest('build/css/'));
   });
-</pre>
+{% endhighlight %}
 
-&hellip; и посмотреть результат:
+... и посмотреть результат:
 
-<pre>
+{% highlight css %}
 .block {
   width: 100px;
   height: 100px;
@@ -263,14 +271,15 @@ var gulp = require('gulp'),
       -ms-transform: rotate(7deg);
           transform: rotate(7deg);
   }
-</pre>
+{% endhighlight %}
 
 Вывод в `build/css/style.css` красивый благодаря `cascade`, который можно и отключить, установив `cascade: false`.
 
- [1]: https://www.npmjs.org/package/gulp-rename "gulp-rename"
- [2]: https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js "gulp-notify"
- [3]: https://github.com/postcss/autoprefixer#browsers "gulp-autoprefixer - Browsers"
- [4]: http://caniuse.com/ "Can I Use"
- [5]: http://localhost:7788/third/wp-content/uploads/2014/09/gulp-autoprefixer_caniuse.png
- [6]: https://github.com/postcss/autoprefixer#visual-cascade "Visual Cascade"
- [7]: http://caniuse.com/#feat=transforms2d "CSS3 Transforms"
+---
+
+[1]: https://www.npmjs.org/package/gulp-rename "gulp-rename"
+[2]: https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js "gulp-notify"
+[3]: https://github.com/postcss/autoprefixer#browsers "gulp-autoprefixer - Browsers"
+[4]: http://caniuse.com/ "Can I Use"
+[5]: https://github.com/postcss/autoprefixer#visual-cascade "Visual Cascade"
+[6]: http://caniuse.com/#feat=transforms2d "CSS3 Transforms"
