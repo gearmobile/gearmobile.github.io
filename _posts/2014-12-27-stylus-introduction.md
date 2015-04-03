@@ -8,7 +8,7 @@ tags: [stylus, css]
 
 > Настало время познакомиться с препроцессором Stylus. Ниже привожу перевод статьи от David Walsh, посвященную малоизвестному, но крайне полезному препроцессору Stylus. Оригинал статьи размещен здесь - [Getting Started with Stylus][2]
 
-![Stylus]({{site.url}}/images/uploads/2014/12/stylus-logo.png){:.center-image}
+![Stylus]({{site.url}}/images/uploads/2014/12/stylus-logo.png){: .center-image }
 
 В среде web-разработчиков можно часто и постоянно слышать только о двух препроцессорах: [Sass][3] и [LESS][4]. Однако, существует еще один препроцессор, о котором слышно совсем не так часто - это [Stylus][5]. При редизайне Mozilla Developer Network мною был выбран Stylus по нескольким причинам:
 
