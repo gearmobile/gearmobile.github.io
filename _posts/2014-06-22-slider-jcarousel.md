@@ -65,24 +65,12 @@ share: true
 {% highlight html %}
 <div class="jcarousel">
   <ul>
-    <li>
-      <img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" />
-    </li>
-    <li>
-      <img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" />
-    </li>
-    <li>
-      <img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" />
-    </li>
-    <li>
-      <img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" />
-    </li>
-    <li>
-      <img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" />
-    </li>
-    <li>
-      <img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" />
-    </li>
+    <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" /></li>
+    <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" /></li>
+    <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" /></li>
+    <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" /></li>
+    <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" /></li>
+    <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" /></li>
   </ul>
 </div><!--  end jcarousel  -->
 {% endhighlight %}
@@ -136,24 +124,12 @@ $(function() {
 <div class="wrap_jcarousel">
   <div class="jcarousel">
     <ul>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" />
-      </li>
-      <li>
-        <img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" />
-      </li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 1" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 2" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 3" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 4" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 5" alt="" /></li>
+      <li><img src="http://placehold.it/600x400/778899/fff&text=Slide 6" alt="" /></li>
     </ul>
   </div><!--  end jcarousel  -->
   <!--  CONTROLS  -->
