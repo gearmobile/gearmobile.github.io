@@ -17,7 +17,7 @@ share: true
 
 Показанный ниже пример является кодом, в котором используются **презентационные атрибуты** для стилизации границы `"border" (stroke)` и фоновой заливки `"background color" (fill)` многоугольника в виде пятиконечной звезды:
 
-~~~ raw
+{% highlight powershell %}
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" width="300px" height="300px" viewBox="0 0 300 300">
   <polygon
     fill = "#FF931E"
@@ -25,7 +25,7 @@ share: true
     stroke-width = "5"
     points = "279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 "/>
 </svg>
-~~~
+{% endhighlight %}
 
 ![Star SVG]({{site.url}}/images/uploads/2014/11/star.png)
 
@@ -37,13 +37,13 @@ share: true
 
 Другим способом стилизации SVG-элементов является использование для этой цели CSS-свойств. Точно также, как и в случае в HTML-элементами, CSS-свойства могут быть заданы с помощью inline-стиля:
 
-~~~ raw
+{% highlight powershell %}
 <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="width: 300px; height: 300px;" viewBox="0 0 300 300">
   <polygon
     style = "fill: #FF931E; stroke: #ED1C24; stroke-width: 5;"
     points = "279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 "/>
 </svg>
-~~~
+{% endhighlight %}
 
 ## Каскады стилей SVG
 
@@ -57,9 +57,9 @@ share: true
 
 Например, представленный ниже образец кода является кругом, написанным на SVG. Цвет заливки круга в виде атрибута `fill="blue"` будет переопределен цветом `deep pink` с помощью правила `style="fill:deepPink;"`:
 
-~~~ raw
+{% highlight powershell %}
 <circle cx="100" cy="100" r="75" fill="blue" style="fill:deepPink;" />
-~~~
+{% endhighlight %}
 
 ## Селекторы SVG
 
@@ -83,7 +83,6 @@ share: true
 
 [1]: http://www.w3.org/TR/SVG/propidx.html "Перечень SVG-атрибутов"
 [2]: http://www.w3.org/TR/SVG2/styling.html#SVGStylingProperties "SVG2 спецификация"
-[3]: http://localhost:7788/third/wp-content/uploads/2014/11/diagram.jpg
 [4]: http://www.w3.org/TR/2008/REC-CSS2-20080411/selector.html#dynamic-pseudo-classes "CSS2 dynamic pseudo-classes"
 [5]: http://www.w3.org/TR/2008/REC-CSS2-20080411/selector.html#q15 "pseudo-classes"
 [6]: https://useiconic.com/ "Iconic"

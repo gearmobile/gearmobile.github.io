@@ -40,9 +40,9 @@ tags: [jade, html]
 
 Инсталляция утилиты производиться банально:
 
-~~~ raw
+{% highlight powershell %}
 $ sudo npm install -g jade
-~~~
+{% endhighlight %}
 
 Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации - [Jade - Command Line][4].
 
@@ -55,31 +55,31 @@ $ sudo npm install -g jade
 
 Использование утилиты также является простым делом. К примеру, можно указать ей производить компиляцию всех файлов в директории `templates`:
 
-~~~ raw
+{% highlight powershell %}
 $ jade templates
-~~~
+{% endhighlight %}
 
 Утилита может сама создавать jade-файлы:
 
-~~~ raw
+{% highlight powershell %}
 $ jade {foo,bar}.jade
-~~~
+{% endhighlight %}
 
 Или же можно реализовать **два способа вывода**:
 
-~~~ raw
+{% highlight powershell %}
 $ jade > my.jade > my.html
-~~~
+{% endhighlight %}
 
-~~~ raw
+{% highlight powershell %}
 $ echo "h1 Jade!" | jade
-~~~
+{% endhighlight %}
 
 Или же осуществить рендеринг двух директорий `foo` и `bar` в директорию `tmp`:
 
-~~~ raw
+{% highlight powershell %}
 $ jade foo bar --out /tmp
-~~~
+{% endhighlight %}
 
 ## Gulp-jade - компиляция под Gulp
 
@@ -87,13 +87,13 @@ $ jade foo bar --out /tmp
 
 Установка плагина стандартная:
 
-~~~ raw
+{% highlight powershell %}
 $ npm install --save-dev gulp-jade
-~~~
+{% endhighlight %}
 
 Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:
 
-~~~ javascript
+{% highlight javascript %}
 var gulp = require('gulp'),
 jade = require('gulp-jade');
 
@@ -108,13 +108,13 @@ gulp.task('jade', function(){
 gulp.task('watch', function(){
  gulp.watch('./template/*.jade',['jade']);
 });
-~~~
+{% endhighlight %}
 
 В Сети есть еще один интересный Gulp-task. Работоспособность его **не проверял**, взял как есть, для - "чтобы было".
 
 Как говориться на [странице-оригинале][6], эта задача производит компиляцию файлов из директории `app/` в директорию `_public/`:
 
-~~~ coffeescript
+{% highlight coffeescript %}
 jade = require 'gulp-jade'
 
 gulp.task 'jade', ->
@@ -122,7 +122,7 @@ gulp.task 'jade', ->
   .pipe jade pretty: true
   .pipe gulp.dest parameters.web_path
   .on 'error', gutil.log
-~~~
+{% endhighlight %}
 
 ## Заключение
 
