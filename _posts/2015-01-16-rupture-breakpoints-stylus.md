@@ -2,8 +2,7 @@
 title: "Rupture - система breakpoint под Stylus"
 layout: post
 categories: css
-description: ""
-excerpt: ""
+tags: [rupture, stylus]
 share: true
 ---
 
@@ -24,9 +23,9 @@ Rupture был создан на примере плагина [Breakpoint Slice
 
 Ниже представлена `scale` по умолчанию (*но которую можно легко изменить при необходимости*):
 
-~~~ raw
+{% highlight powershell %}
 scale = 0 400px 600px 800px 1050px 1800px
-~~~
+{% endhighlight %}
 
 Количество этих значений - `0, 400px, 600px 800px, 1050px` - может быть необязательно равно 5 (пяти). Их может быть неограниченное количество - столько, сколько нужно.
 
@@ -36,15 +35,15 @@ scale = 0 400px 600px 800px 1050px 1800px
 
 Подключать библиотеку Rupture в проект **нет необходимости**. Достаточно установить библиотеку командой:
 
-~~~ raw
+{% highlight powershell %}
 $ sudo npm install rupture --global
-~~~
+{% endhighlight %}
 
 После этого Rupture готова к использованию. Можно запустить компиляцию из командной строки (*не рекомендуется*):
 
-~~~ raw
+{% highlight powershell %}
 $ stylus -u rupture -c example.styl
-~~~
+{% endhighlight %}
 
 Здесь `-c` - это сокращение от `--compress`, то есть - минифицировать CSS-код на выходе. Почему не рекомендуется использовать командную строку? Просто для этих целей лучше (*и целесообразнее*) использовать Gulp.
 
@@ -59,7 +58,7 @@ $ stylus -u rupture -c example.styl
 
 В этом кратком обзоре я буду рассматривать только "практические" миксины. Более сложные - нет, ибо "не зачем".
 
-### Набор практических миксинов Rupture
+## Набор практических миксинов Rupture
 
 Первые три миксина - **наиболее применимые** и удобные на практике.
 
@@ -111,30 +110,30 @@ $ stylus -u rupture -c example.styl
 
 Поэтому, такой пример иллюстрирует **включение автоматической конвертации** из `px` в `em`; и задание базового размера шрифта в 18px (*базовый размер шрифта равен 16px*):
 
-~~~ css
+{% highlight css %}
 rupture.enable-em-breakpoints = true
 base-font-size = 18px
-~~~
+{% endhighlight %}
 
 **rupture.scale** - одна из **важнейших переменных** Rupture. В этой переменной можно в виде массива переопределить значения breakpoints.
 
 Например, таким образом:
 
-~~~ raw
+{% highlight powershell %}
 rupture.scale = 0 380px 768px 1200px
-~~~
+{% endhighlight %}
 
 ## Пример работы Rupture
 
 Перейдем от теории к практике и рассмотрим маленький рабочий пример - как будет *отрабатывать* Rupture:
 
-~~~ html
+{% highlight html %}
 div.wrapper
   div.left
   div.right
-~~~
+{% endhighlight %}
 
-~~~ css
+{% highlight css %}
 @import 'nib'
 @import 'jeet'
 
@@ -166,7 +165,7 @@ rupture.enable-em-breakpoints = true
     background-color lighten($color,30%)
   +below(400px)
     stack()
-~~~
+{% endhighlight %}
 
 Комментировать вышеприведенный код мне как-то не особого желания. Он очень простой и наглядный - слова тут излишни.
 
@@ -174,7 +173,7 @@ rupture.enable-em-breakpoints = true
 
 Но ничто не мешает использовать любые **произвольные переменные**, в которые можно "загружать" нужные значения. К примеру, код выше можно преобразовать таким образом:
 
-~~~ css
+{% highlight css %}
 @import 'nib'
 @import 'jeet'
 
@@ -210,7 +209,7 @@ rupture.enable-em-breakpoints = true
     background-color lighten($color,30%)
   +below($bp2)
     stack()
-~~~
+{% endhighlight %}
 
 ## Заключение о Rupture
 
