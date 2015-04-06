@@ -27,13 +27,26 @@ share: true
 
 В HTML-файле перед закрывающим тегом body произвожу подключение скриптов в таком порядке:
 
-<pre></pre>
+{% highlight html %}
+...
+<!--  SCRIPTS  -->
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery.bxslider.min.js"></script>
+<script src="js/bxslider.js"></script>
+{% endhighlight %}
 
 Файл `jquery.bxslider.min.js` беру из скачанного архива, файл `bxslider.js` - произвольного имени, для настроек плагина bxSlider.
 
 В `head` HTML-документа, помимо этого, производится подключение таблицы стилей для плагина bxSlider, которую также беру из скачанного архива. Данный шаг выполнять совершенно необязательно - можно обойтись без файла `jquery.bxslider.css` и тогда получим "чистый" слайдер, который можно видоизменять по своему с помощью CSS:
 
-<pre></pre>
+{% highlight html %}
+<head>
+  <meta charset="utf-8">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/jquery.bxslider.css">
+  ...
+ </head>
+{% endhighlight %}
 
 Плагин bxSlider подключен и готов к работе. Осталось создать HTML-разметку для него.
 

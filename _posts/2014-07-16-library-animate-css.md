@@ -18,7 +18,14 @@ share: true
 
 Для подключения библиотеки Animate.css в готовый HTML-проект, достаточно подключить в "шапке" документа скачанный CSS-файл `animate.css`:
 
-{% highlight html %}{% endhighlight %}
+{% highlight html %}
+<head>
+  <meta charset="utf-8">
+  <title>Animate CSS</title>
+  <link rel="stylesheet" href="css/animate.css">
+  ...
+</head>
+{% endhighlight %}
 
 И это все! Больше никаких действий не потребуется - все остальные манипуляции нужно выполнять в HTML-коде, **добавляя необходимые CSS-классы** из библиотеки Animate.css к нужным HTML-элементам.
 

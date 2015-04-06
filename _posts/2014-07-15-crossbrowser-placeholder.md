@@ -26,19 +26,76 @@ share: true
 
 Подключение плагина `jquery.placeholder.js` абсолютно стандартное для такого рода скриптов. Ниже привожу пример такого подключения в HTML-коде:
 
-<pre><!--  SCRIPTS  --></pre>
+{% highlight html %}
+<!--  SCRIPTS  -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/jquery.placeholder.js"></script>
+...
+{% endhighlight %}
 
 Затем идет скрипт инициализации для данного плагина. Общая картина будет выглядеть таким образом:
 
-<pre><!--  SCRIPTS  --></pre>
+{% highlight html %}
+<!--  SCRIPTS  -->
+<script src="js/jquery-1.10.2.min.js"></script>
+<script src="js/jquery.placeholder.js"></script>
+<script>
+  $('input, textarea').placeholder();
+</script>
+{% endhighlight %}
 
 Плагин `jquery.placeholder.js` делает в HTML-документе выборку по двум HTML-элементам - `input` и `textarea`. А затем применяет к ним метод `placeholder()` - все просто.
 
 ## HTML-форма с placeholder
 
-Ниже привожу пример HTML5-формы, в которой применен атрибут `placeholder` в полях ввода, реализованных через элемент `input`. А также в элементе `textarea`.
+Ниже привожу пример HTML5-формы, в которой применен атрибут `placeholder` в полях ввода, реализованных через элемент `input`. А также в элементе `textarea`:
 
-<pre></pre>
+{% highlight html %}
+<form action="#">
+  <h1>zoo keeper application form</h1>
+  <p>Please complete the form. Mandatory fields are marked as a <span>*</span></p>
+
+  <!-- CONTACT DETAILS  -->
+  <fieldset>
+    <legend>contact details</legend>
+    <label for="name">name <span>*</span></label>
+    <input type="text" name="name" title="Your full name here" placeholder="John Resig" autofocus required><br>
+    <label for="telephone">telephone <span>*</span></label>
+    <input type="tel" name="telephone" title="Input your phone number here" placeholder="9(989)600-30-20" required><br>
+    <label for="email">email <span>*</span></label>
+    <input type="email" name="email" title="Your email required" placeholder="test@mail.ru" required>
+  </fieldset>
+
+  <!-- PERSONAL INFORMATION  -->
+  <fieldset>
+    <legend>personal information</legend>
+    <label for="age">age <span>*</span></label>
+    <input type="number" title="Your real age, please" name="age" min="10" max="90" value="29" step="1" required><br>
+    <label for="gender">gender</label>
+    <select name="gender" id="gender" size="1">
+      <option value="female">female</option>
+      <option value="female">male</option>
+    </select><br>
+    <label for="message">When did you first know you wanted to be a zoo-keeper?</label>
+    <textarea name="message" id="message" cols="30" rows="10" placeholder="I have a dream ..."></textarea>
+  </fieldset>
+
+  <!-- FAVORITES ANIMALS  -->
+  <fieldset>
+    <legend>pick your favorite animals</legend>
+    <label for="zebra"><input type="checkbox" value="zebra">zebra</label>
+    <label for="elephant"><input type="checkbox" value="elephant">elephant</label>
+    <label for="cat"><input type="checkbox" value="cat">cat</label>
+    <label for="wildebeest"><input type="checkbox" value="wildebeest">wildebeest</label>
+    <label for="anaconda"><input type="checkbox" value="anaconda">anaconda</label>
+    <label for="pingeon"><input type="checkbox" value="pingeon">pingeon</label>
+    <label for="human"><input type="checkbox" value="human" checked="checked">human</label>
+    <label for="crab"><input type="checkbox" value="crab">crab</label>
+  </fieldset>
+
+  <input type="submit" value="send">
+</form>
+{% endhighlight %}
 
 ## Проверка поддержки placeholder в IE8
 

@@ -55,7 +55,11 @@ HTML-разметка под плагин slick семантична и прос
 
 В теле HTML-документа перед закрывающим тегом `</body>` вставляем три строки с js-скриптами:
 
-<pre></pre>
+{% highlight html %}
+<script type="text/javascript" src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+<script type="text/javascript" src="slick/slick.min.js"></script>
+{% endhighlight %}
 
 Как видим, в первых двух строках производится скачивание библиотеки jQuery-1.11.0 и плагина jQuery Migrate 1.2.1 через CDN. Третий плагин `slick.min.js` - сам скрипт slick, который подключается локально, из распакованной и перемещенной в проект папки **slick**.
 
@@ -101,7 +105,10 @@ $(document).ready(function(){
 
 Разбираться, почему не удалось браузеру подгрузить оба этих файла через CDN, у меня нет ни желания, ни времени. Поэтому я просто скачаю оба этих файла "вручную" и подключу локально:
 
-<pre></pre>
+{% highlight html %}
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/jquery-migrate-1.2.1.min.js"></script>
+{% endhighlight %}
 
 Снова запускаю индексную страницу index.html в браузере Google Chrome и ... о Чудо! Плагин slick работает:
 
