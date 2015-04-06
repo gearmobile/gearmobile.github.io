@@ -1,706 +1,442 @@
-<!doctype html>
-<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang="en"> <![endif]-->
-<!--[if (IE 7)&!(IEMobile)]><html class="no-js lt-ie9 lt-ie8" lang="en"><![endif]-->
-<!--[if (IE 8)&!(IEMobile)]><html class="no-js lt-ie9" lang="en"><![endif]-->
-<!--[if gt IE 8]><!--> <html class="no-js" lang="en"><!--<![endif]-->
-<head>
-<meta charset="utf-8">
-<title>Плагин Smooth Scroll &#8211; Zencoder</title>
-<meta name="description" content="Заметки верстальщика">
-<meta name="keywords" content="smooth scroll">
+---
+title: "Плагин Smooth Scroll"
+layout: post
+categories: javascript
+tags: [smooth scroll, javascript]
+---
 
-<!-- Twitter Cards -->
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="http://zencoder.ru/images/">
-<meta name="twitter:title" content="Плагин Smooth Scroll">
-<meta name="twitter:description" content="Заметки верстальщика">
-<meta name="twitter:creator" content="@gearmobile">
+> Обзор краткий такого же небольшого плагина Smooth Scroll, написанного под библиотеку jQuery.
 
-<!-- Open Graph -->
-<meta property="og:locale" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Плагин Smooth Scroll">
-<meta property="og:description" content="Заметки верстальщика">
-<meta property="og:url" content="http://zencoder.ru/%d0%bf%d0%bb%d0%b0%d0%b3%d0%b8%d0%bd-smooth-scroll/">
-<meta property="og:site_name" content="Zencoder">
+Этот скрипт предназначен только для одной цели - плавного скроллинга (*прокрутки*) страницы. Благодаря этому улучшается юзабилити страницы и сайта в целом, так как нет резких скачков при переходе по ссылкам.
 
+## Подключение плагина Smooth Scroll
 
+Подключение Smooth Scroll к HTML-странице производится как обычно:
 
+<pre><!--  SCRIPTS  --></pre>
 
+... где первая строка - это библиотека jQuery, вторая строка - плагин Smooth Scroll, третья строка - файл инициализации плагина Smooth Scroll.
 
-<link rel="canonical" href="http://zencoder.ru/%d0%bf%d0%bb%d0%b0%d0%b3%d0%b8%d0%bd-smooth-scroll/">
-<link href="http://zencoder.ru/feed.xml" type="application/atom+xml" rel="alternate" title="Zencoder Feed">
+## Инициализация Smooth Scroll
 
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- For all browsers -->
-<link rel="stylesheet" href="http://zencoder.ru/assets/css/main.css">
-<!-- Webfonts -->
-<link href="//fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic" rel="stylesheet" type="text/css">
-
-<meta http-equiv="cleartype" content="on">
-
-<!-- Load Modernizr -->
-<script src="http://zencoder.ru/assets/js/vendor/modernizr-2.6.2.custom.min.js"></script>
-
-<!-- Icons -->
-<!-- 16x16 -->
-<link rel="shortcut icon" href="http://zencoder.ru/favicon.ico">
-<!-- 32x32 -->
-<link rel="shortcut icon" href="http://zencoder.ru/favicon.png">
-<!-- 57x57 (precomposed) for iPhone 3GS, pre-2011 iPod Touch and older Android devices -->
-<link rel="apple-touch-icon-precomposed" href="http://zencoder.ru/images/apple-touch-icon-precomposed.png">
-<!-- 72x72 (precomposed) for 1st generation iPad, iPad 2 and iPad mini -->
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="http://zencoder.ru/images/apple-touch-icon-72x72-precomposed.png">
-<!-- 114x114 (precomposed) for iPhone 4, 4S, 5 and post-2011 iPod Touch -->
-<link rel="apple-touch-icon-precomposed" sizes="114x114" href="http://zencoder.ru/images/apple-touch-icon-114x114-precomposed.png">
-<!-- 144x144 (precomposed) for iPad 3rd and 4th generation -->
-<link rel="apple-touch-icon-precomposed" sizes="144x144" href="http://zencoder.ru/images/apple-touch-icon-144x144-precomposed.png">
-
-
-
-</head>
-
-<body id="post" >
-
-<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
-<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
-	<button class="dl-trigger">Open Menu</button>
-	<ul class="dl-menu">
-		<li><a href="http://zencoder.ru/">Home</a></li>
-		<li>
-			<a href="#">About</a>
-			<ul class="dl-submenu">
-				<li>
-					<img src="http://zencoder.ru/images/avatar.jpg" alt="zencoder photo" class="author-photo">
-					<h4>zencoder</h4>
-					<p>Frond-end Developer</p>
-				</li>
-				<li><a href="http://zencoder.ru/about/"><span class="btn btn-inverse">Learn More</span></a></li>
-				<li>
-					<a href="mailto:gearmobile@gmail.com"><i class="fa fa-fw fa-envelope"></i> Email</a>
-				</li>
-				<li>
-					<a href="http://twitter.com/gearmobile"><i class="fa fa-fw fa-twitter"></i> Twitter</a>
-				</li>
-				
-				<li>
-					<a href="https://google.com/+gearmobile"><i class="fa fa-fw fa-google-plus"></i> Google+</a>
-				</li>
-				
-				<li>
-					<a href="http://github.com/gearmobile"><i class="fa fa-fw fa-github"></i> GitHub</a>
-				</li>
-				
-				
-				
-				
-			</ul><!-- /.dl-submenu -->
-		</li>
-		<li>
-			<a href="#">Posts</a>
-			<ul class="dl-submenu">
-				<li><a href="http://zencoder.ru/posts/">All Posts</a></li>
-				<li><a href="http://zencoder.ru/tags/">All Tags</a></li>
-			</ul>
-		</li>
-		
-	    
-	        
-	    
-	    <li><a href="http://zencoder.ru/theme-setup/" >Theme Setup</a></li>
-	  
-	    
-	        
-	    
-	    <li><a href="http://zencoder.ru" >External Link</a></li>
-	  
-	</ul><!-- /.dl-menu -->
-</nav><!-- /.dl-menuwrapper -->
-
-
-
-
-<div id="main" role="main">
-  <article class="hentry">
-    <header class="header-title">
-      <div class="header-title-wrap">
-        
-          <h1 class="entry-title"><a href="http://zencoder.ru/%d0%bf%d0%bb%d0%b0%d0%b3%d0%b8%d0%bd-smooth-scroll/" rel="bookmark" title="Плагин Smooth Scroll">Плагин Smooth Scroll</a></h1>
-        
-        <h2><span class="entry-date date published"><time datetime="2014-07-17T00:00:00+04:00">July 17, 2014</time></span></h2>
-        
-        <p class="entry-reading-time">
-          <i class="fa fa-clock-o"></i>
-          
-          Reading time ~13 minutes
-        </p><!-- /.entry-reading-time -->
-        
-      </div><!-- /.header-title-wrap -->
-    </header>
-    <div class="entry-content">
-      <p>Обзор краткий такого же небольшого плагина Smooth Scroll, написанного под библиотеку jQuery. Этот скрипт предназначен только для одной цели – плавного скроллинга (<em>прокрутки</em>) страницы. Благодаря этому <strong>улучшается юзабилити</strong> страницы и сайта в целом, так как нет резких скачков при переходе по ссылкам.</p>
-
-<h3 id="smooth-scroll">Подключение плагина Smooth Scroll</h3>
-
-<p>Подключение Smooth Scroll к HTML-странице производится как обычно:</p>
-
-<pre><!--  SCRIPTS  -->
-  
-  
-  
-  ...
-  </pre>
-
-<p>… где <strong>первая строка</strong> – это библиотека jQuery, <strong>вторая строка</strong> – плагин Smooth Scroll, <strong>третья строка</strong> – файл инициализации плагина Smooth Scroll.</p>
-
-<h3 id="smooth-scroll-1">Инициализация Smooth Scroll</h3>
-
-<p>Для того, чтобы заработал плагин Smooth Scroll и на странице появилась плавная прокрутка, нужно в js-файле скрипта прописать строки:</p>
-
-<pre>$(document).ready(function(){
-    $('a').smoothScroll();
-  });
-  </pre>
-
-<p>… то есть – всем ссылкам страницы присвоить метод <code>smoothScroll()</code>, что дает <strong>плавный скроллинг</strong>. В принципе, этого достаточно – больше ничего и не надо.</p>
-
-<h3 id="smooth-scroll-2">Варианты выборки в Smooth Scroll</h3>
-
-<p>Помимо показанной выше строчки, скрипт Smooth Scroll имеет несколько других вариантов режима работы. Другими словами, эти режимы работы – все навсего усложненный первый вариант, вариации на тему выборки HTML-элемента в библиотеке jQuery.</p>
-
-<p>Примеры выборок взяты мною из файла <code>readme.md</code>, переводить их мне совсем не хочется; да и нет в этом необходимости – все понятно даже по коду:</p>
-
-<ul>
-  <li>Allows for easy implementation of smooth scrolling for same-page links.</li>
-  <li>Works like this: <code>$('a').smoothScroll();</code></li>
-  <li>Specify a containing element if you want: <code>$('#container a').smoothScroll();</code></li>
-  <li>Exclude links if they are within a containing element: <code>$('#container a').smoothScroll({excludeWithin: ['.container2']});</code></li>
-  <li>Exclude links if they match certain conditions: <code>$('a').smoothScroll({exclude: ['.rough','#chunky']});</code></li>
-  <li>Adjust where the scrolling stops: <code>$('.backtotop').smoothScroll({offset: -100});</code></li>
-  <li>Add a callback function that is triggered before the scroll starts: `$(‘a’).smoothScroll({beforeScroll: function() { alert(‘ready to go!’); }});</li>
-  <li>Add a callback function that is triggered after the scroll is complete: <code>$('a').smoothScroll({afterScroll: function() { alert('we made it!'); }});</code></li>
-</ul>
-
-<h3 id="smooth-scroll-3">Пример работы Smooth Scroll</h3>
-
-<p>Ниже привожу пример HTML, SCSS и JS-кода, на котором проходил “испытание” плагин Smooth Scroll у меня, в моей “лаборатории”.</p>
-
-<p>HTML-код:</p>
+Для того, чтобы заработал плагин Smooth Scroll и на странице появилась плавная прокрутка, нужно в js-файле скрипта прописать строки:
 
 <pre>
+$(document).ready(function(){
+  $('a').smoothScroll();
+});
+</pre>
 
-    
+... то есть - всем ссылкам страницы присвоить метод `smoothScroll()`, что дает плавный скроллинг. В принципе, этого достаточно - больше ничего и не надо.
 
-<h1 class="head">
-  smooth scroll plugin
-</h1>
+## Варианты выборки в Smooth Scroll
 
-    
+Помимо показанной выше строчки, скрипт Smooth Scroll имеет несколько других вариантов режима работы. Другими словами, эти режимы работы - все навсего усложненный первый вариант, вариации на тему выборки HTML-элемента в библиотеке jQuery.
 
+Примеры выборок взяты мною из файла `readme.md`, переводить их мне совсем не хочется; да и нет в этом необходимости - все понятно даже по коду:
+
+  * Allows for easy implementation of smooth scrolling for same-page links.
+  * Works like this: `$('a').smoothScroll();`
+  * Specify a containing element if you want: `$('#container a').smoothScroll();`
+  * Exclude links if they are within a containing element: `$('#container a').smoothScroll({excludeWithin: ['.container2']});`
+  * Exclude links if they match certain conditions: `$('a').smoothScroll({exclude: ['.rough','#chunky']});`
+  * Adjust where the scrolling stops: `$('.backtotop').smoothScroll({offset: -100});`
+  * Add a callback function that is triggered before the scroll starts: `$(&#8216;a&#8217;).smoothScroll({beforeScroll: function() { alert(&#8216;ready to go!&#8217;); }});
+  * Add a callback function that is triggered after the scroll is complete: `$('a').smoothScroll({afterScroll: function() { alert('we made it!'); }});`
+
+## Пример работы Smooth Scroll
+
+Ниже привожу пример HTML, SCSS и JS-кода, на котором проходил "испытание" плагин Smooth Scroll у меня, в моей "лаборатории".
+
+HTML-код:
+
+<pre>
+<h1 class="head">smooth scroll plugin</h1>
 <ul class="scroll">
   <li>
     <a href="#h1">header 1</a>
   </li>
-        
-  
   <li>
     <a href="#h2">header 2</a>
   </li>
-        
-  
   <li>
     <a href="#h3">header 3</a>
   </li>
-        
-  
   <li>
     <a href="#h4">header 4</a>
   </li>
-        
-  
   <li>
     <a href="#h5">header 5</a>
   </li>
-      
 </ul>
-
-    
-
 <h1>
   header 1
 </h1>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h2>
   header 2
 </h2>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h3 id="h3">
   header 3
 </h3>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h4>
   header 4
 </h4>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h5 id="h5">
   header 5
 </h5>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h5>
   header 6
 </h5>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h5>
   header 7
 </h5>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h1>
   header 1
 </h1>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h2 id="h2">
   header 2
 </h2>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h3>
   header 3
 </h3>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
-
-    
-
 <h4>
   header 4
 </h4>
-
-    
-
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h5>
   header 5
 </h5>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h5>
   header 6
 </h5>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h5>
   header 7
 </h5>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h1 id="h1">
   header 1
 </h1>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h2>
   header 2
 </h2>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h3>
   header 3
 </h3>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h4 id="h4">
   header 4
 </h4>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h5>
   header 5
 </h5>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h5>
   header 6
 </h5>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <h5>
   header 7
 </h5>
 
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.
 </p>
-    
+
 
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?
 </p>
 
-    
+
 
 <!--  SCRIPTS  -->
-    
-    
-    
 
-  
+
+
+
+
   </pre>
 
-<p>SCSS-код:</p>
+SCSS-код:
 
 <pre>$color: #778899;
 
@@ -762,91 +498,10 @@
   }
   </pre>
 
-<p>JS-код:</p>
+JS-код:
 
 <pre>$(document).ready(function(){
     $('a').smoothScroll();
   });
   </pre>
 
-<p>Оцените статью:<br />
-<span id="post-ratings-1527" class="post-ratings" data-nonce="eb6aced7cb"><img id="rating_1527_1" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="1 Star" title="1 Star" onmouseover="current_rating(1527, 1, '1 Star');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1527_2" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="2 Stars" title="2 Stars" onmouseover="current_rating(1527, 2, '2 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1527_3" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="3 Stars" title="3 Stars" onmouseover="current_rating(1527, 3, '3 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1527_4" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="4 Stars" title="4 Stars" onmouseover="current_rating(1527, 4, '4 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /><img id="rating_1527_5" src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/stars_crystal/rating_on.gif" alt="5 Stars" title="5 Stars" onmouseover="current_rating(1527, 5, '5 Stars');" onmouseout="ratings_off(5, 0, 0);" onclick="rate_post();" onkeypress="rate_post();" style="cursor: pointer; border: 0px;" /> (<strong>3</strong> votes, average: <strong>5,00</strong> out of 5)<br /><span class="post-ratings-text" id="ratings_1527_text"></span></span><span id="post-ratings-1527-loading" class="post-ratings-loading"> <img src="http://localhost:7788/third/wp-content/plugins/wp-postratings/images/loading.gif" width="16" height="16" alt="Loading..." title="Loading..." class="post-ratings-image" />Loading…</span></p>
-
-      <footer class="entry-meta">
-        <span class="entry-tags"><a href="http://zencoder.ru/tags/#smooth scroll" title="Pages tagged smooth scroll" class="tag"><span class="term">smooth scroll</span></a></span>
-        
-        <div class="social-share">
-  <ul class="socialcount socialcount-small inline-list">
-    <li class="facebook"><a href="https://www.facebook.com/sharer/sharer.php?u=http://zencoder.ru/%d0%bf%d0%bb%d0%b0%d0%b3%d0%b8%d0%bd-smooth-scroll/" title="Share on Facebook"><span class="count"><i class="fa fa-facebook-square"></i> Like</span></a></li>
-    <li class="twitter"><a href="https://twitter.com/intent/tweet?text=http://zencoder.ru/%d0%bf%d0%bb%d0%b0%d0%b3%d0%b8%d0%bd-smooth-scroll/" title="Share on Twitter"><span class="count"><i class="fa fa-twitter-square"></i> Tweet</span></a></li>
-    <li class="googleplus"><a href="https://plus.google.com/share?url=http://zencoder.ru/%d0%bf%d0%bb%d0%b0%d0%b3%d0%b8%d0%bd-smooth-scroll/" title="Share on Google Plus"><span class="count"><i class="fa fa-google-plus-square"></i> +1</span></a></li>
-  </ul>
-</div><!-- /.social-share -->
-      </footer>
-    </div><!-- /.entry-content -->
-    <section id="disqus_thread"></section><!-- /#disqus_thread -->
-    <div class="read-more">
-  
-    <div class="read-more-header">
-      <a href="http://zencoder.ru/slider-flexslider/" class="read-more-btn">Read More</a>
-    </div><!-- /.read-more-header -->
-    <div class="read-more-content">
-      <h3><a href="http://zencoder.ru/linux/easytag-several-operations/" title="EasyTAG - работаем с программой">EasyTAG - работаем с программой</a></h3>
-      <p>> Как оказалось, работа в программе EasyTAG - это нетривиальная задача. Интерфейс программы не является интуитивно понятным (по крайней м...&hellip; <a href="http://zencoder.ru/linux/easytag-several-operations/">Continue reading</a></p>
-    </div><!-- /.read-more-content -->
-  
-  <div class="read-more-list">
-    
-      <div class="list-item">
-        <h4><a href="http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8/" title="EasyTag - из Windows-1251 в UTF-8">EasyTag - из Windows-1251 в UTF-8</a></h4>
-        <span>Published on March 29, 2015</span>
-      </div><!-- /.list-item -->
-    
-      <div class="list-item">
-        <h4><a href="http://zencoder.ru/css/nib-mixins/" title="Миксины библиотеки Nib">Миксины библиотеки Nib</a></h4>
-        <span>Published on March 26, 2015</span>
-      </div><!-- /.list-item -->
-    
-  </div><!-- /.read-more-list -->
-</div><!-- /.read-more -->
-  </article>
-</div><!-- /#main -->
-
-<div class="footer-wrapper">
-  <footer role="contentinfo">
-    <span>&copy; 2015 zencoder. Powered by <a href="http://jekyllrb.com" rel="nofollow">Jekyll</a> using the <a href="http://mademistakes.com/hpstr/" rel="notfollow">HPSTR Theme</a>.</span>
-  </footer>
-</div><!-- /.footer-wrapper -->
-
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="http://zencoder.ru/assets/js/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="http://zencoder.ru/assets/js/scripts.min.js"></script>
-
-
-
-
-    <script type="text/javascript">
-        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
-        var disqus_shortname = 'gearmobile'; // required: replace example with your forum shortname
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function() {
-            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
-        })();
-
-        /* * * DON'T EDIT BELOW THIS LINE * * */
-        (function () {
-            var s = document.createElement('script'); s.async = true;
-            s.type = 'text/javascript';
-            s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-            (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-        }());
-    </script>
-    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
-    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
-	        
-
-</body>
-</html>
