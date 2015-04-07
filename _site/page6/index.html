@@ -144,6 +144,106 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-08T00:00:00+03:00"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/">November 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/" rel="bookmark" title="ExFAT - файловая система для Mac OS X и Linux" itemprop="url">ExFAT - файловая система для Mac OS X и Linux</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Тема достаточно освещенная, но для меня, как новичка в мире Mac OS X - очередное маленькое открытие. Вопрос связан с одной небольшой проблемой - выбором файловой системы для флешек.</p>
+</blockquote>
+
+<p>Для пары Windows + Linux обычным решением является файловая система NTFS. Обе операционные системы с ней прекрасно работают - чтение+запись.</p>
+
+<p>Для пары Mac OS X + Linux такой выбор не подойдет, так как NTFS в Mac OS X имеет поддержку только чтения. Для записи нужно ставить сторонний софт, типа Paragon. Это не является решением - нужна нативная поддержка в обеих системах.</p>
+
+<p>Решением является файловая система ExFAT. В Mac OS X у нее есть поддержка “из коробки”. В Linux поддержки “из коробки” нет - но проблема решается установкой дополнительных пакетов (как почти всегда).</p>
+
+<p>Более того, в Сети <a href="http://en.wikipedia.org/wiki/ExFAT">пишут о системе ExFAT</a> как изначально созданной для флеш-накопителей. Что она умеет бережно относится к флешкам и поддерживает размер более 4Gb.</p>
+
+<p>Все отлично - ставлю ее на обе свои флешки: Apacer 8Gb и Transcend 16Gb. Начну с более сложного - с системы Linux.</p>
+
+<h2 id="exfat-----linux">ExFAT - установка в Linux</h2>
+
+<p>Для включения поддержки файловой системы в Linux нужно установить пару пакетов - <code>exfat-fuse</code> и <code>exfat-utils</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">exfat-fuse</span> <span class="n">exfat-utils</span></code></pre></div>
+
+<p>Скажу, что приведенная выше команда на моей системе Linux Mint 17 Cinnamon оказалась действенной - все пакеты установились без проблем и поддержка ExFAT в системе появилась сразу же.</p>
+
+<p>В Интернете почти на всех ресурсах приведена другая команда для установки пакетов <code>exfat-fuse</code> и <code>exfat-utils</code> (причем - один в один, перепечатывают друг у друга вслепую):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="nb">add-apt</span><span class="n">-repository</span> <span class="n">ppa</span><span class="err">:</span><span class="n">relan</span><span class="p">/</span><span class="n">exfat</span>
+<span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">update</span>
+<span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">fuse</span> <span class="n">fuse-exfat</span> <span class="n">exfat-utils</span></code></pre></div>
+
+<p>Однако, эта команда на моей системе не запустилась - выдала ошибку ключа при подключении репозитория <code>ppa:relan/exfat</code>. Именно этот факт и послужил для меня поводом написать этот краткий обзор.</p>
+
+<p>Все - дело сделано. Теперь отформатирую флешку под файловую систему ExFAT в Linux.</p>
+
+<p>Для этого сначала нахожу, где она расположена в файловой системе (в моем случае это устройство <code>/dev/sdb1</code>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">fdisk</span> <span class="n">-l</span></code></pre></div>
+
+<p>… и затем произвожу форматирование флешки командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">mkfs</span><span class="p">.</span><span class="n">exfat</span> <span class="n">-n</span> <span class="n">large_flash</span> <span class="p">/</span><span class="n">dev</span><span class="p">/</span><span class="n">sdb1</span></code></pre></div>
+
+<p>где ключ <code>-n</code> - это задание для флешки имени как устройства.</p>
+
+<p>Форматирование происходит буквально за пару секунд, ждать не придется. Первая флешка готова и операция форматирования выполнена под Linux.</p>
+
+<h2 id="exfat-----mac-os-x">ExFAT - форматирование под Mac OS X</h2>
+
+<p>Как уже говорилось мною выше, система Mac OS X имеет нативную поддержку файловой системы ExFAT. То есть, ничего дополнительно ставить не придется - все готово “из коробки”.</p>
+
+<p>Операции по форматированию накопителей и другим действиям с жесткими дисками производится в стандартной утилите “Disk Utility”.</p>
+
+<p>Вставляю вторую флешку и запускаю “Disk Utility”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/small_flash_exfat.png" alt="Создание ExFAT в дисковой утилите Disk Utility" class="center-image responsive-image" /></p>
+
+<p>Разобраться с работой этой утилиты нетрудно, но вкратце опишу.</p>
+
+<p>Слева находиться окно со всеми подключенными дисками, которые утилита сумела обнаружить.</p>
+
+<p>Справа на вкладке “Erase” производиться настройка и выполнение форматирования (в терминологии Mac OS X форматирование называется “Erase”). В списке “Format” выбирается нужная файловая система (кстати, выбор небогатый).</p>
+
+<p>В списке “Name” выбирается диск, который будет форматироваться. Там же находиться одноименная кнопка “Erase” для запуска форматирования.</p>
+
+<p>Ниже располагается информативное (я был приятно впечатлен объемом и качеством подачи информации в нем) окно, в котором можно увидеть всю информацию по подключенному диску. Внимательный читатель заметит, что флешка у меня уже отформатирована в ExFAT - обзор делал “по горячим следам”.</p>
+
+<p>В принципе - и все. Осталось нажать кнопку “Erase” и моя флешка отформатируется под систему ExFAT.</p>
+
+<p>Если ее открыть в Finder, то теперь мне будут доступны как чтение с нее, так и запись на нее.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Вот так “неожиданно” я решил проблему совместимости флешки под Mac OS X и Linux. Более того, данная система ExFAT является разработкой Microsoft, поэтому с ее поддержкой в Windows вообще нет проблем.</p>
+
+<p>А если учитывать обещанный создателями ExFAT бережный способ обращения с флеш-накопителями, то этому решению вообще цены нет.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-11-04T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/">November 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -700,133 +800,6 @@
 <p>Но для верстальщика нет необходимости создавать большие и сложные операции. Поэтому этого уже достаточно для ускорения и облегчения своей работы. Попробуйте - оно того стоит!</p>
 
 <p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-10-01T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop/">October 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/pattern-photoshop/" rel="bookmark" title="Pattern в качестве фонового изображения" itemprop="url">Pattern в качестве фонового изображения</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Недавно познакомился с тремя способами вырезания фонового изображения на макете. До недавнего времени знал о существовании только одного способа, с которым познакомился еще на сайте htmlbook.ru.</p>
-</blockquote>
-
-<p>Чтобы было яснее, рассмотрим пример psd-макета страницы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/background_page.png" alt="Страница с фоновым изображением" /></p>
-
-<p>Видим, что на странице имеются множественные фоновые изображения. И как вы думаете, каким образом нужно вырезать такое изображение? Чтоб потом замостить им фон страницы или фон блока-контейнера?</p>
-
-<p>До недавнего времени я бы сделал так. Попытался визуально отыскать повторяющиеся фрагменты в фоне, одном и втором.</p>
-
-<p>Если бы удалось обнаружить таковой фрагмент, то вырезал бы его с помощью инструмента “Crop”. Если бы фрагмент не обнаружил, то просто бы вырезал кусок фона размером побольше (что называется “на глазок”), опять-таки, с помощью инструмента “Crop”.</p>
-
-<p>Немного позже я узнал, что существует три подхода к вырезанию фоновой картинки для будущего HTML-шаблона. Первые два способа простые и неточные. Третий способ - более медленный, но точный.</p>
-
-<p>Ниже последовательно рассмотрим все три способа, начиная с самого простого и заканчивая самым трудоемким.</p>
-
-<p>Описание выполняемых действий приведено в локализованной версии Photoshop.</p>
-
-<h2 id="section">Простое вырезание фона</h2>
-
-<p>Фон страницы на psd-макете представляет из себя растровое изображение, у которого имеется всего один слой. И при этом визуально не получается выделить повторяющиеся фрагменты в этом фоне.</p>
-
-<p>В этом случае нужно поступить только одним способом.</p>
-
-<p>Свести воедино все видимые слои с помощью сочетания клавиш <kbd>Shift+Ctrl+E</kbd>.</p>
-
-<p>Инструментом “Crop” с зажатой клавишей <kbd>Shift</kbd> (чтобы получился квадрат) выделяем на фоне psd-макета квадрат побольше, размера <code>50x50px</code> или <code>100x100px</code>. Размер должен быть побольше именно для того, чтобы гарантировать бесшовность такого рисунка в фоне.</p>
-
-<p>Затем экспортируем его в Web и используем в CSS для установки в качестве фонового изображения.</p>
-
-<h2 id="section-1">Вырезание фрагмента фона</h2>
-
-<p>Второй способ отличается от первого лишь только тем, что на этот раз удалось обнаружить в рисунке фона макета повторяющиеся фрагменты. При этом фон макета все также является растровым изображением.</p>
-
-<p>Инструментом “Crop” вырезаем из фона обнаруженный фрагмент, сохраняем его для Web и используем по назначению в CSS.</p>
-
-<h2 id="pattern--photoshop">Pattern в Photoshop</h2>
-
-<p>Третий способ основан на понятии <code>pattern</code> в Photoshop. Этот способ самый точный и надежный. В нем мы как-бы “опираемся” на силы самого Photoshop, который должен “помочь” нам обнаружить <code>pattern</code> в нарисованном дизайнером psd-макете.</p>
-
-<p>Я не дизайнер (и никогда им не буду), поэтому могу сказать по поводу того, что такое <code>pattern</code> в двух словах.</p>
-
-<p>Это <em>образец узора</em> какого-то определенного размера (который может быть любым) - <code>102x102px</code>, <code>20x20px</code> или же <code>5x5px</code>. Этот образец узора может быть любого рисунка (завитушки, полосочки, цветочки и т. д.).</p>
-
-<p>Вся задача pattern’а - служить образчиком, которым дизайнер выполняет заливку слоя. То есть, ситуация получается в точности такая, как у верстальщика. Имеется маленький кусочек рисунка, которым дизайнер “мостит” весь слой.</p>
-
-<p>Задача верстальщика при нарезке psd-макета - выделить этот <code>pattern</code> из psd-макета в отдельное изображение. Чтобы увидеть, что в данном слое используется <code>pattern</code>, достаточно открыть палитру “Слои” и активировать нужный слой. В качестве примененных к слою эффектов должно стоять “Наложение узора”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/bakground_layer_with_pattern.png" alt="Фоновый слой с pattern" /></p>
-
-<p>Все! Наша задача наполовину выполнена - мы знаем, что для этого слоя дизайнер применил <code>pattern</code> в качестве заливки каким-то там рисунком.</p>
-
-<p>Осталось только найти этот <code>pattern</code>, что является задачей чисто технической. И нам в этом поможет сам Photoshop.</p>
-
-<p>Дважды кликаем мышкой по выбранному слою с фоновым рисунком. Откроется окно “Стиль слоя”, в котором активируем пункт - “Наложение узора”. В правой части окна будет показан конкретный <code>pattern</code>, с помощью которого дизайнер выполнял заливку данного слоя.</p>
-
-<p>То есть, Photoshop показал, какой <code>pattern</code> использовал дизайнер в анализируемом нами слое. Нам осталось “вычленить” этот <code>pattern</code> и в этом нам снова поможет Photoshop:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/background_pattern.png" alt="Pattern для выбранного слоя" /></p>
-
-<p>В этом же окне нужно навести курсор мыши на окошко с <code>pattern</code>‘ом (окно “Узор”) и немного подождать, пока рядом с курсором мыши не появиться всплывающий tooltip, в котором будут показаны размеры данного <code>pattern</code>‘а.</p>
-
-<p>Запоминаем (или записываем на листике бумаги) эти размеры - они нам понадобятся в дальнейшем.</p>
-
-<p>Щелчком мыши на маленькой стрелочке справа от окна с образцом <code>pattern</code>‘а открываем палитру паттернов (<code>patterns</code>):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/panel_patterns.png" alt="Палитра паттернов (patterns)" /></p>
-
-<p>В этой палитре нам необходимо добавить выбранный нами <code>pattern</code> в свою коллекцию паттернов. Это нужно для того, чтобы потом использовать этот <code>pattern</code> в своих “коварных” целях. Для этой цели кликаем на круглой кнопочке со стрелкой - далее можно разобраться, что и как добавлять.</p>
-
-<p>Закрываем окно “Стиль слоя” и создаем новый документ <kbd>Ctrl+N</kbd> с размерами, как у нашего <code>pattern</code>‘а:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_image.png" alt="Новое изображение с размерами pattern'а" /></p>
-
-<p>Здесь самое главное - правильно указать размеры будущего документа (как правило, все <code>pattern</code>‘ы имеют форму квадрата), все остальное для нас неважно.</p>
-
-<p>Создаем новый документ. Затем в меню Photoshop переходим по пути “Слои” - “Новый слой-заливка” - “Узор”. И в открывшемся окошке “Новый слой” просто кликаем по кнопке <kbd>ОК</kbd>, все остальное для нас опять неважно:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_layer_pattern.png" alt="Заливка нового слоя с помощью pattern'а" /></p>
-
-<p>Откроется еще одно окошко, в котором выбираем нужный нам <code>pattern</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/select_pattern_for_layer.png" alt="Выбор pattern'а для заливки слоя" /></p>
-
-<p>Как результат получаем новый документ с заливкой слоя выбранным нами <code>pattern</code>‘ом. Это хорошо заметно чисто визуально, в основном окне. В палитре “Слои” также видно, что к слою была применена заливка узором:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_image_background_ready.png" alt="Готовое изображение для фоновой заливки" /></p>
-
-<p>Картинка для фоновой заливки готова! Осталось только экспортировать ее для Web и применить на странице силами CSS.</p>
-
-<p>Например, таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">background-position</span><span class="o">:</span> <span class="nt">0</span> <span class="nt">0</span><span class="o">;</span>
-<span class="nt">background-repeat</span><span class="o">:</span> <span class="nt">repeat</span><span class="o">;</span>
-<span class="nt">background-image</span><span class="o">:</span> <span class="nt">url</span><span class="o">(../</span><span class="nt">images</span><span class="o">/</span><span class="nt">bg_body</span><span class="nc">.png</span><span class="o">);</span></code></pre></div>
-
-<p>Все - задача выполнена!</p>
-
-<h2 id="section-2">Заключение</h2>
-
-<p>Вот мы и познакомились с тремя способами вырезания фонового изображения из psd-макета.</p>
 
 <hr />
 

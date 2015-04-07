@@ -144,6 +144,105 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-03-14T00:00:00+04:00"><a href="http://zencoder.ru/excel/excel-calculate-not-empty-cells/">March 14, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/excel/excel-calculate-not-empty-cells/" rel="bookmark" title="Excel - как подсчитать количество непустых строк" itemprop="url">Excel - как подсчитать количество непустых строк</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Стоит задача - подсчитать количество непустых строк в таблице Excel.</p>
+</blockquote>
+
+<p>Собственно, таблица представляет из себя полуавтоматическую программу по составлению раскроя металлопрофиля. На “плечи” таблицы возложено вычисление остатков (отходов) при раскрое с учетом допусков-припусков, углов пила и ширины пила.</p>
+
+<p>В таблице каждая строка символически представляет собой одну заготовку исходной длины. Ячейки, входящие в состав одной строки представляют собой детали требуемой длины. Так вот, при составлении раскроя половина процесса автоматизирована. Но потребовалось еще улучшить работу таблицы, а именно - автоматически подсчитывать количество непустых строк. Если в строке хотя бы одна ячейка непустая, то есть в ней присутствует значение, то такая строка считается непустой. Если же в строке все строки пустые (не имеют значения), то и строка считается пустой.</p>
+
+<p>Первоначально пробовал решить задачу с помощью стандартной функции Excel - <code>СЧЕТЗ()</code>. В конечном счете эта функция помогла в решении, но само решение получилось несколько корявым. А вот второе решение получилось красивым и компактным.</p>
+
+<h2 id="section">Первое решение</h2>
+
+<p>В этом способе применяется функция <code>СЧЕТЗ()</code>. Для этого создаем дополнительный столбец, в каждую ячейку которого вставляем формулу:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">1</span><span class="p">*(</span><span class="n">COUNTA</span><span class="p">(</span><span class="n">B2</span><span class="err">:</span><span class="n">N2</span><span class="p">)&gt;</span><span class="n">0</span><span class="p">)</span></code></pre></div>
+
+<p>Ячейки <code>B2</code> и <code>N2</code> являются величинами переменными, которые изменяются в зависимости от строки. Функция <code>COUNTA()</code> - это английское название функции <code>СЧЕТЗ()</code>.</p>
+
+<p>Результат работы этой формулы таков. Если хотя бы в одной ячейке строки имеется значение, то строка считается непустой и в соответствующей ячейке дополнительного столбца помещается единица (1). Если же ни в одной ячейке строки нет значения, то строка считается пустой и в ячейке дополнительного столбца помещается значение нуль (0).</p>
+
+<p>Осталось самое простое - подсчитать значения дополнительного столбца, сумма которого и будет числом непустых строк в таблице.</p>
+
+<p>Результат работы представлен ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/03/additionalcolumn2.png" alt="Таблица с дополнительным столбцом в Excel" /></p>
+
+<p>Вроде бы и ничего результат. Все работает. Но выглядит как-то криво. Дополнительный столбец выполняет только одну единственную задачу - определение строки и мешается, занимая место. Конечно, можно скрыть его. Для этого нажимаем правой кнопкой мыши на заголовке дополнительного столбца (О) и в контекстном меню выбираем “Скрыть”. Но конечный результат меня не устраивал. Поэтому было найдено второе решение.</p>
+
+<h2 id="section-1">Второе решение</h2>
+
+<p>В этом способе была использована пользовательская функция, написанная на VBA. Решение получилось очень компактным и красивым. Код макроса представлен ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/03/code.png" alt="Код макроса Excel" /></p>
+
+<p>Этот код нужно вставить в Excel. Для этого открываем редактор макросов, нажав комбинацию клавиш <kbd>Alt+F11</kbd>. Откроется окно, в котором в меню выбираем команды “Insert - Module”. Сохраняем макрос под именем <code>CountRows</code>.</p>
+
+<p>Теперь достаточно вставить в нужную ячейку таблицы формулу:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">CountRows</span><span class="p">(</span><span class="n">2</span><span class="err">:</span><span class="n">55</span><span class="p">)</span></code></pre></div>
+
+<p>В этой формуле диапазон <code>2:55</code> представляет из себя адрес начальной и конечной строки. Конечно, его можно и нужно изменить, в зависимости от потребностей. Например, так:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">CountRows</span><span class="p">(</span><span class="n">10</span><span class="err">:</span><span class="n">255</span><span class="p">)</span></code></pre></div>
+
+<p>Результат работы макроса приводить не буду, так как он очевиден. Единственное, что нужно сделать в завершении - это сохранить таблицу в формате Excel с поддержкой макросов.</p>
+
+<h2 id="section-2">Дополнение</h2>
+
+<p>В заключение поставил перед собой задачу отформатировать вывод ячейки с только что созданным макросом. Дело в том, что в окончательном документе-раскрое присутствует запись вида:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">10</span> <span class="n">x</span> <span class="n">12000</span></code></pre></div>
+
+<p>где <code>10</code> - это количество использованных заготовок исходной длины, <code>12000</code> - длина одной заготовки в мм. В моей таблице раскроя имеется ячейка со значением исходной длины заготовки, которая используется при раскрое. И глупо было бы не использовать эту ячейку при форматировании.</p>
+
+<p>Для форматирования воспользуемся функцией <code>СЦЕПИТЬ (CONCATENATE)</code>. Те, кто знаком хотя бы с языком программирования JavaScript, сразу узнают в названии этой функции операцию конкатенации. Принцип действия и использование функции <code>СЦЕПИТЬ()</code> предельно прост, поэтому не буду объяснять, как ее применить. Для тех, кто все же не знает - Google в помощь.</p>
+
+<p>Я воспользовался заменителем функции <code>СЦЕПИТЬ()</code> - символом амперсанда <code>&amp;</code>. Вид формулы будет таким:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">=</span><span class="n">O21</span><span class="p">&amp;</span><span class="s2">&quot; x &quot;</span><span class="p">&amp;</span><span class="n">A1</span></code></pre></div>
+
+<p>В этой формуле значение ячейки <code>O21</code> - количество использованных заготовок, вычисленное макросом <code>CountRows</code>, значение ячейки <code>A1</code> - исходная длина заготовки. В результате вывод получается в требуемом формате:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">12</span> <span class="n">x</span> <span class="n">12000</span></code></pre></div>
+
+<h2 id="ps">P.S.</h2>
+
+<p>В приведенной статье была использована программа Apache OpenOffice 3, хотя в описании упоминался Excel. На самом деле разницы в этом нет никакой, так как в обеих программах используется примерно одинаковые стандартные функции электронной таблицы. Единственное, что необходимо учитывать - это применять английские названия функций в OpenOffice:</p>
+
+<ul>
+  <li>COUNTA() - СЧЕТЗ()</li>
+  <li>CONCATENATE() - СЦЕПИТЬ()</li>
+  <li>SUMM() - СУММ()</li>
+</ul>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-03-09T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-example-cutting-mockup/">March 09, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -513,61 +612,6 @@
 <h2 id="section-1">Заключение</h2>
 
 <p>Применение плагина LiveReload мне кажется более удобным, нежели расширения, рассмотренные в предыдущей статье. Хотя бы тем, что изменения автоматически вступают в силу, не нужно ждать даже 1 секунды. Главное, не забыть нажать сочетание клавиш <kbd>Ctrl + S</kbd>. Вот если бы и этого не нужно было делать, было бы совсем замечательно!.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-02-03T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-guideline/">February 03, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-guideline/" rel="bookmark" title="Photoshop - точное позиционирование направляющей" itemprop="url">Photoshop - точное позиционирование направляющей</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Иногда бывает необходимо задать точное расположение направляющей на макете в программе Photoshop.</p>
-</blockquote>
-
-<p>Позиционировать ее с помощью мыши неблагодарное занятие. Это практически невозможно сделать. Да и зачем? В Photoshop есть для этого случая способ, предназначенный именно для этой цели.</p>
-
-<h2 id="section">Задачу можно выполнить двумя способами.</h2>
-
-<p><strong>Первый способ</strong> - с помощью меню. Для переходим в меню “View - New Guide Line”. Появится небольшое плавающее окно, в котором можно выбрать расположение (“Orientation”) создаваемой направляющей - горизонтальное или вертикальное.</p>
-
-<p>И задать расстояние в пикселах (“Position”):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/02/photoshop-new_guideline.png" alt="Photoshop New Guideline" /></p>
-
-<p>Нажимаем ОК и видим результат:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/02/newguideline_result.jpg" alt="New Guideline Result" /></p>
-
-<p><strong>Второй способ</strong> - не такой точный. В настройках Photoshop, относящихся к сетке, направляющим и слайсам (“Edit - Preferences - Guides, Grid &amp; Slices”) нужно установить шаг сетки в пикселах (“Gridline Every”):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/02/guideline_pref.png" alt="Guideline Preferencies" /></p>
-
-<p>Затем выполнить привязку направляющей к сетке (“View - Snap To”):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/02/snap_to_guideline.png" alt="Snap To Guideline" /></p>
-
-<p>И теперь можно с большей (<em>или меньшей</em>) точностью выставлять направляющие guidelines:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/02/snap_to_grid.png" alt="Snap To Grid" /></p>
 
 <p>На этом все.</p>
 
