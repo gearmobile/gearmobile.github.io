@@ -144,6 +144,318 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-27T00:00:00+04:00"><a href="http://zencoder.ru/css/jquery-ui-accordion-css/">October 27, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~11 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/jquery-ui-accordion-css/" rel="bookmark" title="Создаем меню-аккордеон на jQuery UI" itemprop="url">Создаем меню-аккордеон на jQuery UI</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В этой статье будем создавать меню-аккордеон с помощью jQuery UI.</p>
+</blockquote>
+
+<p>Что такое jQuery, знают все - это библиотека Javascript. То есть, это собрание готовых модулей для самых разнообразный действий на сайте, таких как применение анимации, динамического изменения свойств HTML-элементов и многое другое. С помощью jQuery подобные действия можно “прикрутить” к страничке легко и быстро.</p>
+
+<p>jQuery UI - это библиотека для библиотеки jQuery. Другими словами, если jQuery - это надстройка над Javascript, то jQuery UI - это надстройка над jQuery. Пирамида получается в некотором смысле этого слова.</p>
+
+<p>Предназначение jQuery UI - создание интерфейсов пользователя на HTML-странице. UI - это аббревиатура User Interface (Интерфейс Пользователя), а именно - это меню навигации, вкладки, полоса прогресса, календарь, автопроверка вводимых данных и другое.</p>
+
+<p>Меню-аккордеон можно сделать на чистом CSS, но сегодня рассмотрим самый простой и надежный способ - на Javascript, так как он заведомо будет работать во всех браузерах, если в них не отключена поддержка этого языка.</p>
+
+<p>Первое, что нужно сделать - это набросать каркас HTML-страницы, то есть <code>doctype</code>, кодировку, <code>head</code>, <code>body</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+      <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<p>Затем подключаем библиотеку jQuery и ее надстройку jQuery UI, причем делать это нужно в указанном порядке: сначала основная библиотека, затем ее надстройка. Так как мы будем делать меню со своими собственными стилями, то необходимо выполнить следующие шаги.</p>
+
+<p>Переходим на <a href="http://jqueryui.com/download/" title="Download">страницу загрузки</a> и здесь выполним компиляцию ядра и только необходимых нам модулей (возможностей) jQuery UI. Что это значит? Полный комплект библиотеки jQuery UI содержит в себе возможность создания самых различный интерфейсов - вкладок, ползунков, календарей, полос прогресса, автозаполнения и так далее. Нам же необходима только одна из них - меню-аккордеон. Зачем скачивать и использовать библиотеку целиком, когда можно применять в работе только малую ее часть? Выигрыш в загрузке страницы в окне браузера очевиден.</p>
+
+<p>Другая, менее очевидная причина такого выбора заключается в том, что во время работы движок jQuery UI создает свои собственные классы стилизации для меню, в частности. Эти классы напрямую соотносятся с файлом стилизации, таким как <code>smoothness/jquery-ui.css</code>. Когда мы будем создавать правила CSS для нашего аккордеона, мы будет прописывать свои собственные классы. В итоге те классы, которые “вмонтированы” в связку “jQuery UI + Theme” будут только ненужным балластом и мусором.</p>
+
+<p>Итогом всех вышеперечисленных умозаключений является следующая последовательность шагов. Заходим, как было уже сказано, на <a href="http://jqueryui.com/download/" title="Download">страницу</a> и видим там три больших раздела: “Version”, “Components”, “Theme”. В первом разделе “Version” выбирается версия библиотеки jQuery. На момент написания статьи это <code>v.1.10.3</code>. Это нас устраивает, поэтому оставляем все как есть.</p>
+
+<p>Переходим во второй раздел “Components”. Здесь из длинного списка модулей выберем только то, что нам необходимо. Но сначала снимаем галочку со всех выбранных по умолчанию опций - “Toggle All”. Пролистываем список вниз и находим нужную нам строчку - “Accordion”, ставим против нее галочку. Обращаем внимание, что автоматически активировались еще две галочки в подразделе “UI Core” - “Core” и “Widget”. Это два основных компонента ядра “jQuery UI”, без которых не будет работать ни один модуль.</p>
+
+<p>Опускаемся вниз страницы в раздел “Theme”. Здесь по умолчанию выбрана тема “UI lightness”, это набор CSS-стилей для оформления меню-аккордеон, созданный командой разработчиков jQuery UI. Список готовых тем не ограничивается только этим файлом, на самом деле таких тем около 24, из которых можно выбрать понравившуюся. Помимо этого, можно воспользоваться визуальным конструктором “ThemeRoller”, перейдя по ссылке “Design a custom theme”. Но нас оба эти выбора не интересуют, так как мы будем создавать свои собственные стили. Поэтому в выпадающем списке тем данного раздела выбираем “No Theme”.</p>
+
+<p>Осталось нажать кнопку “Download”, чтобы скачать скомпилированную библиотеку, которая будет носить имя jquery-ui-1.10.3.custom.zip и весить 461 Kb. Сравните - полная версия jQuery UI весит 2.37 Mb, разница ощутимая! Теперь распаковываем архив и вытаскиваем из него необходимые нам файлы, которые распихиваем в соответствующие им папки: <code>jquery-1.9.1.js</code> и <code>jquery-ui-1.10.3.custom.js</code> в папку javascripts (я буду создавать меню с помощью SASS/Compass). В папке css скачанного архива есть подпапка no-theme с CSS-файлом <code>jquery-ui-1.10.3.custom.css</code>. Пролистав го, я сделал вывод, что данный файл служит для подключения иконок и другого вспомогательного оформления будущего меню. Рискну оставить его в архиве и не использовать.</p>
+
+<p>Подключаю полученные файлы библиотеки jQuery UI в <code>head</code> HTML-документа. Напоминаю, что я буду создавать меню-аккордеон с помощью SASS/Compass, поэтому название папок и синтаксис кода будет отличаться от “общепринятого”.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+      <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;title&gt;</span>Accordion jQuery UI<span class="nt">&lt;/title&gt;</span>
+      <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-1.9.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+      <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-ui-1.10.3.custom.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+      <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;stylesheets/screen.css&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>Создаем HTML-разметку для будущего меню аккордеон. Для чистоты эксперимента просто скопируем ее с сайта проекта jQuery UI, со страницы примера <a href="http://api.jqueryui.com/accordion/" title="Accordion">Accordion</a>. Как написано на этой странице, разметка выполнена в виде заголовков третьего уровня <code>h3</code> и блоков <code>div</code> для того, чтобы контент был доступен на странице даже при отключенной поддержке Javascript в браузере пользователей.</p>
+
+<p>Ниже приведена точная копия оригинальной разметки от разработчиков jQuery. Видим, что роль пунктов меню выполняют заголовки, а контент меню обернут в блоки <code>div</code>, внутри которых может располагаться все что угодно - текст, список, картинки. Принцип создания меню на основе h3 и div немного не стандарный, так как обычно такие меню строятся на основе маркированных списков ul.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;accordion&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 1<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+        ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+        amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+        odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+        <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 2<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+        velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+        suscipit faucibus urna.
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 3<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+        Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+        ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+        lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+      <span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;</span>List item one<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>List item two<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>List item three<span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 4<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+        faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+        mauris vel est.
+      <span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+        inceptos himenaeos.
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Все готово для написания своих собственных стилей для нашего меню. Сброс стилей (reset) мне выполнять не нужно, так как Compass автоматически подключил его к моему проекту:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Устанавливаем самые общие правила для контейнера #accordion:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#accordion</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Создаем правила для заголовков <code>h3</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">...
+  h3 {
+    font: 18px/30px Georgia, serif;
+    background-color: #778899;
+    text-indent: 10px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    <span class="err">&amp;</span>:hover{
+    background-color: lighten(#778899, 10%);
+  }
+    <span class="err">&amp;</span>:focus {
+    outline: none;
+  }</code></pre></div>
+
+<p>… и для контента в меню:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">...
+  div{
+  padding: 10px 20px;
+  background-color: lighten(#778899, 20%);
+  margin-bottom: 1px;
+  font: 14px/20px &#39;PT Sans&#39;, sans-serif;
+  text-indent: 1em;
+}</code></pre></div>
+
+<p>Теперь прикрутим скрипт в head нашего HTML-документа, чтобы меню-аккордеон заработало:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#accordion&#39;</span><span class="p">).</span><span class="nx">accordion</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span></code></pre></div>
+
+<p>Вуаля - все готово! Меню работает на скрытие и раскрытие. Можно немного приукрасить навигацию, сделав заголовки активными - при щелчке мыши на нем содержимое будет сворачивается. При повторном щелчке на этом же заголовке содержимое меню будет вновь разворачивается. Выполняется это передачей нашему скрипту параметра <code>collapsible</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#accordion&#39;</span><span class="p">).</span><span class="nx">accordion</span><span class="p">({</span>
+      <span class="nx">collapsible</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span></code></pre></div>
+
+<p>Все хорошо, но есть один небольшой недочет - по умолчанию скрипт задает для блоков <code>div</code> высоту <code>120px</code>. В третьем блоке у нас имеются два элемента - параграф <code>p</code> и список <code>ul</code>. При раскрытии этого пункта контент не вмещается по высоте и “налазит” на четвертый пункт. Аналогичная ситуация и с контентом четвертого пункта меню. Решение напрашивается само собой - нужно отрегулировать высоту для контента нашего меню.</p>
+
+<p>Для этого нужно перейти по ссылке <a href="http://api.jqueryui.com/accordion/" title="Accordion">API documentation</a>, где представлен список опций, методов и событий для меню аккордеон на jQuery UI. Нас интересует одна из опций - heightStyle, которая может принимать три значения:</p>
+
+<ul>
+  <li><code>fill</code> - высота всех блоков с контентом будет высчитана, исходя из высоты всей панели навигации (то бишь - меню-аккордеон). Для тех блоков, содержимое которых не вмещается, добавиться вертикальная полоса прокрутки;</li>
+  <li><code>auto</code> - непонятно, как оно работает. В документации сказано, что при установке данного значения высота для каждого блока содержимого панели будет высчитываться, исходя из высоты самого высокого блока. Однако, работа навигации с этим значением параметра <code>heightStyle</code> аналогична той, когда его вообще нет;</li>
+  <li><code>content</code> - высота каждого из блоков с контентом вычисляется в зависимости от величины его содержимого, то есть - подстраивается под контент.</li>
+</ul>
+
+<p>Ниже представлены скриншоты меню аккордеон с вариантами значений <code>fill</code> и <code>content</code> для опции <code>heightStyle</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/jquery-ui_heightStyle-fill.jpg" alt="Меню аккордеон с опцией heightStyle: fill" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/jquery-ui_heightStyle-content.jpg" alt="Меню аккордеон с опцией heightStyle: content" /></p>
+
+<p>Есть еще несколько интересных опций для меню на jQuery UI.</p>
+
+<p>Опция <code>active</code> - какой пункт меню будет открыт по умолчанию в браузере. Номер пункта устанавливается через целое число, отсчет ведется с нуля.</p>
+
+<p>Например, код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">active</span><span class="o">:</span> <span class="mi">2</span></code></pre></div>
+
+<p>… заставит браузер раскрыть третий по счету пункт меню.</p>
+
+<p>Событие event назначит, при каком условии будет происходить переключение между пунктами меню. По умолчанию таковым является событие <code>click</code>, то есть щелчок мыши на пункте. Можно изменить событие на <code>mouseover</code>, что заставит скрипт открывать вкладку при наведении курсора мыши на пункт меню.</p>
+
+<p>Можно сказать, что задача выполнена. Меню аккордеон на jQuery UI имеет еще достаточно опций и способов настройки, но здесь представлен самый простой и общий результат. Ниже приведен полный код созданного нами меню.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Accordion jQuery UI<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-1.9.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-ui-1.10.3.custom.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&#39;http://fonts.googleapis.com/css?family=PT+Sans&#39;</span> <span class="na">rel=</span><span class="s">&#39;stylesheet&#39;</span> <span class="na">type=</span><span class="s">&#39;text/css&#39;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;stylesheets/screen.css&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#accordion&#39;</span><span class="p">).</span><span class="nx">accordion</span><span class="p">({</span>
+          <span class="nx">collapsible</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="nx">heightStyle</span><span class="o">:</span> <span class="s2">&quot;content&quot;</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;accordion&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 1<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+            ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+            amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+            odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+          <span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 2<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+            purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+            velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+            suscipit faucibus urna.
+          <span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 3<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+            Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+            ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+            lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+          <span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;ul&gt;</span>
+            <span class="nt">&lt;li&gt;</span>List item one<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>List item two<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>List item three<span class="nt">&lt;/li&gt;</span>
+          <span class="nt">&lt;/ul&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 4<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+            et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+            faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+            mauris vel est.
+          <span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+            inceptos himenaeos.
+          <span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+  <span class="nf">#accordion</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="n">h3</span><span class="err">{</span>
+      <span class="k">font</span><span class="o">:</span> <span class="m">18px</span><span class="o">/</span><span class="m">30px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+      <span class="k">text-indent</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+      <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
+      <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#778899</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nd">:focus</span><span class="p">{</span>
+     <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+    <span class="nt">div</span><span class="p">{</span>
+      <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">20px</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#778899</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
+      <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+      <span class="k">font</span><span class="o">:</span> <span class="m">14px</span><span class="o">/</span><span class="m">20px</span> <span class="s1">&#39;PT Sans&#39;</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+      <span class="k">text-indent</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="err">}</span></code></pre></div>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-26T00:00:00+04:00"><a href="http://zencoder.ru/css/inline-block-remove-padding-bottom/">October 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -677,255 +989,6 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-23T00:00:00+04:00"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/">October 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/" rel="bookmark" title="Создаем горизонтальное выпадающее меню на CSS" itemprop="url">Создаем горизонтальное выпадающее меню на CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Создаем вертикальное меню на CSS” был освещен вопрос построения вертикального меню с подменю.</p>
-</blockquote>
-
-<p>В этой статье будет логическое продолжение этого вопроса и мы научимся делать горизонтальное меню с выпадающим подменю. Принцип построение и функционирования такой навигации очень похож на вертикальное меню, с той лишь разницей, что она будет располагаться горизонтально. В основе заложен тот же самый принцип - свойство <code>display</code> со значениями <code>none</code> и <code>block</code>.</p>
-
-<p>При построении горизонтального меню нужно быть внимательным с принципом специфичности CSS, то есть - с вложенностью и каскадностью правил. Хорошим подспорьем в этом вопросе является SASS (SCSS), благодаря которому исключаются ошибки при соблюдении каскадности и наследовании свойств.</p>
-
-<p>Код, написанный на SASS (SCSS) короче и логически читается проще, чем CSS. Поэтому, рекомендую изучить этот вопрос в статьях “SASS (SCSS) в картинках - Часть 1”, “SASS (SCSS) в картинках - Часть 2”.</p>
-
-<p>Мы же приступим к созданию горизонтального меню с подменю “на коленках”. Почему говорю так? Дело в том, что существует масса готовых примеров и кода, а также генераторов различных меню. Но они неинтересны - нам нужно разобраться в принципе построения и возможности самому написать такую навигацию. Как обычно, начинаем с каркаса меню, выполненного на HTML:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;hormenu&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-4<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_2<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_4<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-4<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-5<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Структура подобного меню абсолютно одинакова со структурой вертикального меню. Также имеется внешний маркированный список с пунктами в виде ссылок, перед некоторыми из которых добавлены дополнительные подменю, выполненные также в виде маркированного списка.</p>
-
-<p>Различие между внешним и внутренним меню в классах, с помощью которых они будут видоизменяться. Помимо этого вы можете заметить, что у некоторых ссылок есть класс <code>arrow</code>, но о нем мы поговорим позже.</p>
-
-<p>Приступим к оформлению нашего меню с помощью CSS. Сразу оговорюсь, что примеры кода, представленного здесь, написаны на SASS (SCSS). Начнем с того, что расположим навигацию горизонтально:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hormenu</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="n">li</span><span class="err">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-    <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
-      <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="p">}</span></code></pre></div>
-
-<p>Думаю, ничего загадочного в этой части кода нет. Делаем отступ для меню и располагаем элементы <code>li</code> внутри него горизонтально с помощью свойства <code>float: left</code>. Предотвращаем схлопывание (<code>collapse</code>) блока-родителя <code>ul</code>, прописав для него <code>overflow: hidden</code>.</p>
-
-<p>Чтобы пункты меню были легко различимы, сделаем промежуток между ними с помощью левого <code>margin</code> в 1px. И для аккуратности уберем левый <code>margin</code> у первого элемента <code>li</code>.</p>
-
-<p>Далее оформляем ссылки внутри пунктов <code>li</code>. Делаем ссылки блочными, чтобы кликабельной была вся область пункта навигации и задаем для нее высоту. Также указываем интерлиньяж, чтобы выровнять текст по вертикали и <code>text-align</code> для выравнивания по горизонтали. Цвет фона и цвет текста - как обычно.</p>
-
-<p>Помимо этого, делаем ссылки с относительным позиционированием - оно нам пригодиться позже, когда будем отрисовывать треугольники. В этом коде стоит обратить внимание только на один момент - ширина элемента задается жестко. Это делается для того, чтобы основное меню не дергалось вправо-влево.</p>
-
-<p>Возможна ситуация, когда пункт подменю по ширине будет больше, чем пункт основного меню, и тогда ребенок “растянет” своего родителя.</p>
-
-<p>При скрытии же подменю пункты основного меню будут “сжиматься”, уменьшая ширину до своей собственной. Вот для этой цели и применяется явное задание ширины элемента <code>a</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">130px</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#555</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Продолжим стилизацию нашей навигации и займемся подменю, а точнее - его подпунктами <code>li</code>. Уберем у этих элементов плавание влево <code>float</code> и левый <code>margin</code>, чтобы они не наследовали эти свойства. Убираем плавание, чтобы элементы <code>li</code> расположились вертикально, а левый <code>margin</code> - убрать “лесенку”:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span><span class="p">;</span></code></pre></div>
-
-<p>Стилизуем ссылки пунктов подменю. Делаем фоновую заливку чуть светлее, чтобы отличалась от основного меню, а текст - чуть темнее по той же причине. Ну и анимация пунктов при наведении курсора мыши:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#111</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#222</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Теперь самое главное - сделаем подпункты меню выпадающими. Для этого сначала спрячем его, убрав из DOM-модели HTML-документа с помощью значения свойства <code>dislay: none</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-hormenu</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span></code></pre></div>
-
-<p>… а затем будем показывать его только при наведении курсора мыши на пункт меню. Код здесь может показаться немного непонятным, но знак амперсанда означает тоже, что и класс <code>hormenu</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&amp;</span><span class="nd">:hover</span> <span class="nc">.sub-hormenu</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Все - наше меню создано и работает. Давайте немного приукрасив его, придав функциональности. А именно - на данный момент визуально невозможно различить, у какого пункта основного меню есть подменю, а у какого - нет. Для этого “продрисуем” к нужным пунктам небольшой треугольник с помощью псевдо-класса <code>:after</code>.</p>
-
-<p>Как раз здесь нам и понадобиться относительное позиционирование для ссылок, о котором говорилось ранее. Создание стрелки “поручим” отдельному классу <code>arrow</code>, который будем “вешать” только на нужные нам ссылки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.arrow</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">666</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот, в принципе, и все. Основная задача выполнена и горизонтальное меню с выпадающим подменю у нас работает. Конечно, можно озадачиться целью “окрасить” активный пункт основного меню в тот же цвет, что и у подменю. Но эта проблема не входит в рассмотрение поставленной нами задачи. Ниже представлен полный код правил CSS (SCSS) для нашего меню:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
- <span class="nt">a</span><span class="p">{</span>
-   <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="nc">.arrow</span><span class="nd">:after</span><span class="p">{</span>
-   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-   <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-   <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-   <span class="k">left</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-   <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-   <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-   <span class="k">border-top</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">666</span><span class="p">;</span>
-   <span class="k">border-left</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-   <span class="k">border-right</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-   <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="nc">.hormenu</span><span class="p">{</span>
-   <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
-   <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-   <span class="n">li</span><span class="err">{</span>
-     <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-     <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-     <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
-       <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-     <span class="p">}</span>
-     <span class="o">&amp;</span><span class="nd">:hover</span> <span class="nc">.sub-hormenu</span><span class="p">{</span>
-       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-     <span class="p">}</span>
-     <span class="nc">.sub-hormenu</span><span class="p">{</span>
-       <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-       <span class="n">li</span><span class="err">{</span>
-         <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-         <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span><span class="p">;</span>
-         <span class="n">a</span><span class="err">{</span>
-           <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#111</span><span class="p">;</span>
-           <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#333</span><span class="p">;</span>
-           <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-             <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#222</span><span class="p">;</span>
-           <span class="p">}</span>
-           <span class="o">&amp;</span><span class="nd">:after</span><span class="p">{</span>
-             <span class="k">content</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-           <span class="p">}</span>
-         <span class="err">}</span>
-       <span class="err">}</span>
-     <span class="err">}</span>
-     <span class="nt">a</span><span class="p">{</span>
-       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-       <span class="k">line-height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-       <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-       <span class="k">width</span><span class="o">:</span> <span class="m">130px</span><span class="p">;</span>
-       <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-       <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
-       <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#555</span><span class="p">;</span>
-       <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-     <span class="p">}</span>
-   <span class="err">}</span>
- <span class="err">}</span></code></pre></div>
-
-<p>… и то, как оно выглядит:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-horizontal-menu.jpg" alt="Горизонтальное меню на CSS" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-horizontal-menu-with-dropdown-submenu.jpg" alt="Горизонтальное меню с выпадающим подменю" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1171,6 +1234,12 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
       <li>
         
           <a href="http://zencoder.ru/page40">40</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page41">41</a>
         
       </li>
     

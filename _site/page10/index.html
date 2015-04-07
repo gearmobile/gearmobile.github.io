@@ -144,6 +144,171 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-watch/">August 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-watch/" rel="bookmark" title="Gulp - мониторинг изменений gulp.watch" itemprop="url">Gulp - мониторинг изменений gulp.watch</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В Gulp имеется встроенная функция <code>gulp.watch</code> для отслеживания изменений в любом из файлов проекта.</p>
+</blockquote>
+
+<p>Это очень удобно в работе, так как отпадает необходимость вручную запускать определенную задачу каждый раз, когда нужно зафиксировать эти изменения. В предыдущих статьях мы так и делали - запускали вручную на выполнение задачи по умолчанию или же определенную именованную задачу.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp.png" alt="Gulp watch" class="center-image" /></p>
+
+<p>Сейчас давайте рассмотрим возможность запуска автоматического мониторинга в Gulp с помощью встроенной функции <code>gulp.watch</code>. Допустим, у нас имеются две именованные задачи, одна из которых выполняет минификацию js-файлов <code>gulp-uglify</code>, а вторая - конкатенацию css-файлов <code>gulp-concat</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span>
+
+<span class="c1">// Concat Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Нам нужно сделать так, чтобы Gulp запускал их каждый раз самостоятельно, когда мы внесем изменения в любой из js-файлов или css-файлов, а затем сохраним эти изменения.</p>
+
+<p>Для этого создадим еще одну именованную задачу <code>watch</code>, цель которой - отслеживание изменений в указанных файлах. Создаем все как обычно (или - почти как обычно):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Создаем задачу по имени <code>watch</code>, а внутри тела функции поместим встроенную функцию <code>gulp.watch</code>. В качестве аргументов этой функции мы передаем ей два параметра.</p>
+
+<p><strong>Первый параметр</strong> - что и где Gulp должен отслеживать; <code>js/*.js</code> говорит о том, что необходимо отслеживать изменения всех файлов с расширением <code>.js</code>, помещенных в директории <code>js</code>.</p>
+
+<p><strong>Второй параметр</strong> - что должен делать Gulp, если обнаружит изменения в указанном месте. В данном случае мы говорим ему, что необходимо запустить задачу по имени <code>uglify</code>.</p>
+
+<p>Как видим, имя задачи передается функции <code>gulp.watch</code> в виде массива; отсюда можно сделать вывод, что задач может быть не одна, а несколько - в виде последовательности.</p>
+
+<p>Перейдем от слов к делу и запустим в консоли выполнение мониторинга с помощью функции <code>gulp.watch</code>. Команда для мониторинга в Gulp выглядит таким образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">06</span> <span class="n">ms</span></code></pre></div>
+
+<p>Видим, что задача по имени <code>watch</code> запустилась и вроде как закончилась (<code>Finished 'watch' after 7.06 ms</code>). Но на самом деле Gulp находиться в фоновом режиме и отслеживает изменения js-файлов.</p>
+
+<p>Чтобы проверить это, отредактируем и сохраним js-файл (в моем случае это <code>jquery.js</code>):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span> <span class="nx">gulp</span> <span class="nx">watch</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Using</span> <span class="nx">gulpfile</span> <span class="o">~</span><span class="err">/Projects/gulp_test/gulpfile.js</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="nx">after</span> <span class="mf">7.06</span> <span class="nx">ms</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="p">]</span> <span class="nx">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="p">]</span> <span class="nx">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="nx">after</span> <span class="mf">8.96</span> <span class="nx">ms</span></code></pre></div>
+
+<p>Вау! Видим, что в консоли появились две строчки - это отработала задача <code>uglify</code>. То есть, Gulp “увидел”, что я внес изменение в файле <code>jquery.js</code> и мгновенно запустил задачу <code>uglify</code>, чтобы зафиксировать это изменение. Мониторинг с помощью функции <code>gulp.watch</code> работает!</p>
+
+<p>Давайте немного усложним задачу и добавим мониторинг <code>gulp.watch</code> в директории <code>css</code>. При любом изменении файлов в этой папке должна запускаться задача <code>concat</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Снова запустим Gulp для мониторинга изменений в проекте.</p>
+
+<blockquote>
+  <p>Кстати, а вы знаете, как останавливать Gulp, запущенный в фоновом режиме? Если нет, то это просто - в консоли Linux это выполняется сочетанием клавиш <kbd>Ctrl+C</kbd>.</p>
+</blockquote>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">24</span> <span class="n">ms</span></code></pre></div>
+
+<p>Внесем и сохраним изменения в файле <code>normalize.css</code>, размещенном в директории <code>css</code>. Вернемся в консоль:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">24</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">04</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">04</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">12</span> <span class="n">ms</span></code></pre></div>
+
+<p>О! Видим, что <code>gulp.watch</code> “подхватил” изменение в файле <code>normalize.css</code> и запустил соответствующую этому изменению задачу <code>concat</code>. Отлично - все работает!</p>
+
+<p>Мониторинг <code>gulp.watch</code> можно добавить в задачу по умолчанию (<code>default</code>). Давайте создадим такую конструкцию:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
+
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>Теперь, если запустить задачу <code>default</code> в консоли, то увидим следующее:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">18</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">65</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">96</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">23</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
+
+<p>Задачи запустились и выполнились именно в той последовательности, в какой они прописаны в массиве. Сперва выполнились две задачи на конкатенацию <code>concat</code> и минификацию <code>uglify</code>, а затем запустилась задача на мониторинг <code>watch</code>.</p>
+
+<p>Gulp “повис” в фоновом режиме и отслеживает изменения с помощью функции <code>gulp.watch</code> в указанных директориях. Проверим это и внесем легкое изменение в любом из файлов (пусть это будут снова <code>normalize.css</code> и <code>jquery.js</code>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">18</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">65</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">96</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">23</span> <span class="err">μ</span><span class="n">s</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">37</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">49</span> <span class="n">ms</span></code></pre></div>
+
+<p>Функция <code>gulp.watch</code> прилежно отследила оба эти изменения и запустила соотвествующие им задачи:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">...</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">37</span> <span class="n">ms</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">49</span> <span class="n">ms</span></code></pre></div>
+
+<p>Отлично! Мы изучили вопрос создания задачи мониторинга в Gulp с помощью функции <code>gulp.watch</code>!</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-22T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-named-task/">August 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -650,119 +815,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-01T00:00:00+04:00"><a href="http://zencoder.ru/javascript/owl-carousel/">August 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/owl-carousel/" rel="bookmark" title="Слайдер Owl Carousel" itemprop="url">Слайдер Owl Carousel</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Встретил на Google+ упоминание о плагине под jQuery для создания карусели - OWL Carousel.</p>
-</blockquote>
-
-<p>Попробовал с ним разобраться и посмотреть примеры создания слайдеров на официальной странице. Могу сказать, что я впечатлен данным скриптом и его возможностями. Слайдер адаптивный, имеет множество настроек, обладает хорошими эффектами “из коробки”. Мое личное мнение - отличный выбор для применения на практике!</p>
-
-<p>Официальная страница проекта располагается здесь - <a href="http://owlgraphic.com/owlcarousel/" title="OWL Carousel">OWL Carousel</a>. Стабильная версия скрипта на данный момент - <code>v1.3.2</code>, но на странице упоминается о версии <code>2.0.0-beta</code>. Для своей работы плагин требует библиотеки jQuery версии не ниже <code>1.7</code>.</p>
-
-<p>Ниже я попробую создать простой вариант карусели с помощью плагина OWL Carousel. Более интересные и продвинутые варианты, я думаю, показывать не имеет смысла. По той простой причине, что разобравшись с базовым вариантом, всегда можно его улучшить. И для этой цели как ничто лучше подойдут примеры на официальной странице - <a href="http://owlgraphic.com/owlcarousel/#demo" title="Demo">Demo</a> и <a href="http://owlgraphic.com/owlcarousel/#more-demos" title="More Demo">More Demo</a>. Стоит сказать, что для себя я увидел там готовые решения практически на все случаи жизни.</p>
-
-<h2 id="owl-carousel">Подключение OWL Carousel</h2>
-
-<p>Для подключения плагина OWL Carousel к готовому проекту необходимо получить архив плагина с официальной страницы - <a href="http://owlgraphic.com/owlcarousel/" title="OWL Carousel">OWL Carousel</a> или с GitHub - <a href="https://github.com/OwlFonk/OwlCarousel" title="OwlCarousel">OwlCarousel</a>. В архиве имеется все, что необходимо - библиотека jQuery, плагин <code>owl.carousel.min.js</code>, готовые CSS-стили для карусели. Ничего сложного или необычного в подключении плагина OWL Carousel нет - все стандартно.</p>
-
-<p>HTML-разметка и подключение скрипта будут выглядеть следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;carousel&quot;</span> <span class="na">class=</span><span class="s">&quot;owl-carousel carousel&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl1.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_1&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl2.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_2&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl3.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_3&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl4.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_4&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl5.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_5&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl6.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_6&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl7.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_7&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl8.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_8&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span>
-<span class="c">&lt;!--  SCRIPTS  --&gt;</span></code></pre></div>
-
-<p>В <code>head</code> подключаются две готовых CSS-таблицы из архива - <code>owl.carousel.css</code> и <code>owl.theme.css</code>. Таблица <code>style.css</code> - опциональная, для настройки плагина под конкретные условия.</p>
-
-<p>Тип HTML-элементов для создания разметки слайдера, по большому счету, не имеет особого значения, так как скрипт OWL Carousel умеет работать со всеми типами. Главное, чтобы у блока-обертки имелся обязательный класс <code>owl-carousel</code>, к которому будет производиться привязка стилей из файла <code>owl.carousel.css</code>.</p>
-
-<p>В конце тела <code>body</code> документа подключаются библиотека jQuery, скрипт плагина OWL Carousel и файл настроек данного скрипта.</p>
-
-<p>Базовая конфигурация js-файла <code>settings.js</code> выглядит следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#carousel&quot;</span><span class="p">).</span><span class="nx">owlCarousel</span><span class="p">();</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Все, можно смотреть на готовый (<em>слегка подредактированный</em>) результат:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/owl_carousel-base.jpg" alt="Базовый вариант слайдера OWL Carousel" /></p>
-
-<h2 id="owl-carousel-1">Настройка плагина OWL Carousel</h2>
-
-<p>Скрипт OWL Carousel имеет большое количество настроек, которые добавляются или убираются в файле настроек. Ссылка на страницу с полным списком настроек располагается здесь - <a href="http://owlgraphic.com/owlcarousel/#customizing" title="Customizing OWL Carousel">Customizing OWL Carousel</a>.</p>
-
-<p>К примеру, переменная <code>items</code> задает количество одновременно показываемых в слайдере изображений:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">items</span><span class="o">:</span> <span class="mi">5</span></code></pre></div>
-
-<p>Переменные <code>itemsDesktopSmall</code>, <code>itemsTablet</code>, <code>itemsTabletSmall</code>, <code>itemsMobile</code> устанавливают количество одновременно отображаемых изображений в зависимости от размера окна браузера. Например, запись вида <code>itemsDesktop: [1199,4]</code> “говорит” браузеру, что при размере окна <strong>меньше или равному</strong> 1199px следует отображать одновременно только четыре изображения:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">itemsDesktop</span><span class="o">:</span> <span class="p">[</span><span class="mi">1199</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span></code></pre></div>
-
-<p>Переменная <code>singleItem</code> устанавливает, отображать ли только одно изображение в слайдере или несколько:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">singleItem</span><span class="o">:</span> <span class="kc">false</span></code></pre></div>
-
-<p>Переменные <code>navigation</code> и <code>pagination</code> управляют возможностью включения или выключения навигации\пагинации у слайдера:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">navigation</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="nx">pagination</span><span class="o">:</span> <span class="kc">true</span></code></pre></div>
-
-<p>Автоматическая прокрутка изображений в слайдере включается с помощью переменной <code>autoPlay</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">autoPlay</span><span class="o">:</span> <span class="kc">true</span></code></pre></div>
-
-<p>Имеются множество других настроек плагина OWL Carousel, с которыми можно легко разобраться на официальной странице. Все перечислять здесь я не буду.</p>
-
-<h2 id="owl-carousel-2">Варианты слайдера OWL Carousel</h2>
-
-<p>Стоит “побродить” по странице с демонстрационными примерами работы плагина OWL Carousel. Там есть на что посмотреть и что подобрать для себя.</p>
-
-<p>Мне понравились примеры создания слайдеров - <a href="http://owlgraphic.com/owlcarousel/demos/lazyLoad.html" title="Lazy Load">Lazy Load</a> и <a href="file:///media/aaron/small_flash/source/owl.carousel/demos/autoHeight.html" title="Auto Height">Auto Height</a>.</p>
-
-<p>Наиболее интересные (<em>для меня</em>) примеры расположены в списке со ссылками.</p>
-
-<p>К примеру, по ссылке <a href="file:///media/aaron/small_flash/source/owl.carousel/demos/transitions.html" title="CSS3 Transitions">CSS3 Transitions</a> располагается образец слайдера с эффектом перехода, основанном на CSS3-свойстве transition. Более того, из выпадающего списка можно прямо на странице подобрать себе подходящий эффект - своеобразный конструктор получается:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/owl_carousel-transitions.jpg" alt="Слайдер OWL Carousel с эффектом transition" /></p>
-
-<p>Или пример создания слайдера с расположенной вверху полосой progress bar - <a href="http://owlgraphic.com/owlcarousel/demos/progressBar.html" title="Progress Bar">Progress Bar</a>.</p>
-
-<h2 id="section">Заключение</h2>
-
-<p>Плагин OWL Carousel мне понравился и я буду стараться применять его на практике, при верстке страниц.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1008,6 +1060,12 @@
       <li>
         
           <a href="http://zencoder.ru/page40">40</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page41">41</a>
         
       </li>
     

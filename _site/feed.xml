@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://zencoder.ru/feed.xml" />
 <link rel="alternate" type="text/html" href="http://zencoder.ru" />
-<updated>2015-04-07T14:52:23+04:00</updated>
+<updated>2015-04-07T20:53:01+03:00</updated>
 <id>http://zencoder.ru/</id>
 <author>
   <name>zencoder</name>
@@ -14,11 +14,112 @@
 
 
 <entry>
+  <title type="html"><![CDATA[Откат коммитов на GitHub]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/git/github-fallback-commit/" />
+  <id>http://zencoder.ru/git/github-fallback-commit</id>
+  <published>2015-04-07T00:00:00+03:00</published>
+  <updated>2015-04-07T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;blockquote&gt;
+  &lt;p&gt;Небольшая статья, посвященная вопросу отката коммитов в GitHub.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;В чем заключается вопрос, собственно? В том, что имеется определенный репозиторий, размещенный на сервере GitHub. У этого удаленного репозитория есть локальная синхронизированная версия на рабочей машине автора. Этот репозиторий изменяется с большей или меньшей периодичностью; все изменения фиксируются соответствующими коммитами.&lt;/p&gt;
+
+&lt;p&gt;И вот в один прекрасный момент в репозиторий было внесено изменение, которое затем было закоммичено и отправлено на GitHub. Однако, от этого изменения нужно избавиться - оно ошибочное.&lt;/p&gt;
+
+&lt;p&gt;Но как это сделать, если коммит уже находится на GitHub? В интерфейсе сервиса GitHub я не нашел нужной кнопки, чтобы удалять конкретный коммит и тем самым возвращать репозиторий до нужного состояния.&lt;/p&gt;
+
+&lt;p&gt;Это потому, что управление коммитами на GitHub производится через локальный репозиторий. Ниже приведу три несложных шага для того, чтобы показать, каким образом это выполняется.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;Шаг первый&lt;/h2&gt;
+
+&lt;p&gt;Первое - необходимо получить список hash-сумм последних коммитов репозитория. Это и понятно - нужно иметь перед собой дерево коммитов, чтобы видеть - куда двигаться. В дереве коммитов hash-суммы являются опорными точками, идентификационными номерами каждого из коммитов:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;log&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ниже показан краткий вывод команды &lt;code&gt;git log&lt;/code&gt; - четыре самых поздних коммита репозитория:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;ee3a2ae6888fb87d5013786f6cf3b18da63f7bbb&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Author&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@gmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;Mon&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Apr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;17&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;48&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;08&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2015&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;0300&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;End&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;6d92268e42eace0c78a5150144645333b769623d&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Author&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@gmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;Mon&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Apr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;17&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;06&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;35&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2015&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;0400&lt;/span&gt;
+
+    &lt;span class=&quot;n&quot;&gt;Close&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;to&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;855404bf39b5fabd45ba0c6f5702e7a28949a02e&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Author&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@gmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;Mon&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Apr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;15&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;24&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;04&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2015&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;0400&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;End&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2014&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;07&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;16&lt;/span&gt;
+
+&lt;span class=&quot;n&quot;&gt;commit&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;3eb55145a79f9f8f732338a0e80bd71b2325b6da&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Author&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;lt;&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;gearmobile&lt;/span&gt;&lt;span class=&quot;nv&quot;&gt;@gmail&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;com&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;Date&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;   &lt;span class=&quot;n&quot;&gt;Mon&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Apr&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;12&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;48&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;:&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;17&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;2015&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;0400&lt;/span&gt;
+
+    &lt;span class=&quot;k&quot;&gt;End&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Мне нужно вернуть репозиторий из состояния, описанного в коммите &lt;code&gt;ee3a2ae6888fb87d&lt;/code&gt;, в состояние, зафиксированное в коммите &lt;code&gt;6d92268e42eace0c&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;Шаг второй&lt;/h2&gt;
+
+&lt;p&gt;Для этого я воспользуюсь командой &lt;code&gt;reset&lt;/code&gt;, с ключом &lt;code&gt;--hard&lt;/code&gt;. Эта команда мне подходит потому, что я не собираюсь сохранять изменения, зафиксированные в коммите &lt;code&gt;ee3a2ae6888fb87d&lt;/code&gt;, так как они полностью ошибочны.&lt;/p&gt;
+
+&lt;p&gt;Как подробно описывается в статье &lt;a href=&quot;/git/git-undoing-changes/&quot;&gt;Отмена изменений в Git&lt;/a&gt;, такую задачу можно выполнить командой:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;reset&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;-hard&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;6d92268e42eace0c&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;где &lt;code&gt;6d92268e42eace0c&lt;/code&gt; - начальные 16 символов hash-суммы коммита, на который я хочу “перепрыгнуть”. Полный вид hash-суммы в 40 символов можно не использовать - достаточно 16 символов для надежной идентификации конкретного коммита.&lt;/p&gt;
+
+&lt;p&gt;После выполнения этой команды локальный репозиторий будет сброшен к состоянию, зафиксированному в коммите &lt;code&gt;6d92268e42eace0c&lt;/code&gt;. Другими словами, я избавился от последних ошибочных изменений и вернул репозиторий в предыдущее его состояние.&lt;/p&gt;
+
+&lt;p&gt;Однако, это всего лишь половина дела, так как откат коснулся только локального репозитория. В этой статье речь идет прежде всего об удаленном репозитории, размещенном на GitHub. Как добиться внесения аналогичных изменений на GitHub?&lt;/p&gt;
+
+&lt;p&gt;Казалось бы - просто! Достаточно выполнить команду:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;push&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Но, на самом деле это не получится сделать - Git не позволит это выполнить. По той причине, что на данный момент состояние локального репозитория имеет более раннюю версию, нежели состояние удаленного репозитория.&lt;/p&gt;
+
+&lt;p&gt;Вместо этого Git предложит выполнить комнаду &lt;code&gt;git pull&lt;/code&gt;, чтобы привести локальный репозиторий к удаленному.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;Шаг третий&lt;/h2&gt;
+
+&lt;p&gt;Чтобы заставить Git выполнить обратную задачу - привести удаленный репозиторий к локальному, необходимо использовать ключ &lt;code&gt;-f&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;То есть, форсировать внесение изменений и тем самым “сказать” Git - синхронизировать удаленный репозиторий с локальным репозиторием несмотря на то, что последний имеет более ранюю версию:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;git&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;push&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;-f&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;Заключение&lt;/h2&gt;
+
+&lt;p&gt;Теперь, если проверить состояние удаленного репозитория на сервере GitHub, то увидим, что оно идентично состоянию локального репозитория. Но самое главное - удален последний ошибочный коммит, чего я и добивался.&lt;/p&gt;
+
+&lt;p&gt;На этом все,&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/github-fallback-commit/&quot;&gt;Откат коммитов на GitHub&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on April 07, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
   <title type="html"><![CDATA[EasyTAG - работаем с программой]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/linux/easytag-several-operations/" />
   <id>http://zencoder.ru/linux/easytag-several-operations</id>
-  <published>2015-04-02T00:00:00+04:00</published>
-  <updated>2015-04-02T00:00:00+04:00</updated>
+  <published>2015-04-02T00:00:00+03:00</published>
+  <updated>2015-04-02T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -99,8 +200,8 @@
   <title type="html"><![CDATA[EasyTag - из Windows-1251 в UTF-8]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8/" />
   <id>http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8</id>
-  <published>2015-03-29T00:00:00+04:00</published>
-  <updated>2015-03-29T00:00:00+04:00</updated>
+  <published>2015-03-29T00:00:00+03:00</published>
+  <updated>2015-03-29T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -178,8 +279,8 @@
   <title type="html"><![CDATA[Миксины библиотеки Nib]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/nib-mixins/" />
   <id>http://zencoder.ru/css/nib-mixins</id>
-  <published>2015-03-26T00:00:00+04:00</published>
-  <updated>2015-03-26T00:00:00+04:00</updated>
+  <published>2015-03-26T00:00:00+03:00</published>
+  <updated>2015-03-26T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -355,8 +456,8 @@
   <title type="html"><![CDATA[HTML5 Form Validation]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/html/html5-form-validation/" />
   <id>http://zencoder.ru/html/html5-form-validation</id>
-  <published>2015-03-07T00:00:00+04:00</published>
-  <updated>2015-03-07T00:00:00+04:00</updated>
+  <published>2015-03-07T00:00:00+03:00</published>
+  <updated>2015-03-07T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -464,8 +565,8 @@
   <title type="html"><![CDATA[Отмена изменений в Git]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/git/git-undoing-changes/" />
   <id>http://zencoder.ru/git/git-undoing-changes</id>
-  <published>2015-01-28T00:00:00+04:00</published>
-  <updated>2015-01-28T00:00:00+04:00</updated>
+  <published>2015-01-28T00:00:00+03:00</published>
+  <updated>2015-01-28T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -605,8 +706,8 @@
   <title type="html"><![CDATA[Игнорирование файлов в Git]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/git/git-gitignoring-files/" />
   <id>http://zencoder.ru/git/git-gitignoring-files</id>
-  <published>2015-01-28T00:00:00+04:00</published>
-  <updated>2015-01-28T00:00:00+04:00</updated>
+  <published>2015-01-28T00:00:00+03:00</published>
+  <updated>2015-01-28T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -722,8 +823,8 @@
   <title type="html"><![CDATA[Rupture - система breakpoint под Stylus]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/rupture-breakpoints-stylus/" />
   <id>http://zencoder.ru/css/rupture-breakpoints-stylus</id>
-  <published>2015-01-16T00:00:00+04:00</published>
-  <updated>2015-01-16T00:00:00+04:00</updated>
+  <published>2015-01-16T00:00:00+03:00</published>
+  <updated>2015-01-16T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -940,8 +1041,8 @@
   <title type="html"><![CDATA[Jeet.gs - первое знакомство]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/jeet-gs-first-introduction/" />
   <id>http://zencoder.ru/css/jeet-gs-first-introduction</id>
-  <published>2015-01-15T00:00:00+04:00</published>
-  <updated>2015-01-15T00:00:00+04:00</updated>
+  <published>2015-01-15T00:00:00+03:00</published>
+  <updated>2015-01-15T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -1135,14 +1236,14 @@
 
 &lt;h2 id=&quot;jeetgs-1&quot;&gt;Настройки Jeet.gs&lt;/h2&gt;
 
-&lt;p&gt;Настройки системы jeet.gs очень просты. Первоначально необходимо создать файл &lt;code&gt;_settings.styl&lt;/code&gt;, который нужно подключить в файл стилей директивой &lt;code&gt;@import '_settings'&lt;/code&gt;. При этом необходимо, чтобы строка &lt;code&gt;@import '_settings'&lt;/code&gt; размещалась сразу после строки &lt;code&gt;@import 'jeet'&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Настройки системы jeet.gs очень просты. Первоначально необходимо создать файл &lt;code&gt;_settings.styl&lt;/code&gt;, который нужно подключить в файл стилей директивой &lt;code&gt;@import &#39;_settings&#39;&lt;/code&gt;. При этом необходимо, чтобы строка &lt;code&gt;@import &#39;_settings&#39;&lt;/code&gt; размещалась сразу после строки &lt;code&gt;@import &#39;jeet&#39;&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;Содержимое файла настроек &lt;code&gt;_settings.styl&lt;/code&gt; - это несколько переменных:&lt;/p&gt;
 
 &lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;jeet[&amp;amp;#8216;gutter'] = 3&lt;/code&gt; - размер ширины gutter в процентах, от общей ширины страницы&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;jeet[&amp;amp;#8216;parent-first'] = false&lt;/code&gt; - если сказать коротко, каким образом будет производиться вычисление ширины блока; относительно конкретного блока-родителя; или же относительно корневого блока-родителя&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;jeet[&amp;amp;#8216;layout-direction'] = LTR&lt;/code&gt; - направление текста внутри разметки&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;jeet[&amp;amp;#8216;gutter&#39;] = 3&lt;/code&gt; - размер ширины gutter в процентах, от общей ширины страницы&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;jeet[&amp;amp;#8216;parent-first&#39;] = false&lt;/code&gt; - если сказать коротко, каким образом будет производиться вычисление ширины блока; относительно конкретного блока-родителя; или же относительно корневого блока-родителя&lt;/li&gt;
+  &lt;li&gt;&lt;code&gt;jeet[&amp;amp;#8216;layout-direction&#39;] = LTR&lt;/code&gt; - направление текста внутри разметки&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&quot;jeetgs-2&quot;&gt;Заключение по Jeet.gs&lt;/h2&gt;
@@ -1176,8 +1277,8 @@
   <title type="html"><![CDATA[Теги шаблона WordPress]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/tags-wordpress/" />
   <id>http://zencoder.ru/tags-wordpress</id>
-  <published>2015-01-07T00:00:00+04:00</published>
-  <updated>2015-01-07T00:00:00+04:00</updated>
+  <published>2015-01-07T00:00:00+03:00</published>
+  <updated>2015-01-07T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -1422,8 +1523,8 @@
   <title type="html"><![CDATA[Nib - библиотека миксинов под Stylus]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/nib-stylus/" />
   <id>http://zencoder.ru/css/nib-stylus</id>
-  <published>2014-12-29T00:00:00+04:00</published>
-  <updated>2014-12-29T00:00:00+04:00</updated>
+  <published>2014-12-29T00:00:00+03:00</published>
+  <updated>2014-12-29T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -1564,8 +1665,8 @@
   <title type="html"><![CDATA[Модальное окно на Easy FancyBox]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/wordpress/modal-window-easy-fancybox/" />
   <id>http://zencoder.ru/wordpress/modal-window-easy-fancybox</id>
-  <published>2014-12-29T00:00:00+04:00</published>
-  <updated>2014-12-29T00:00:00+04:00</updated>
+  <published>2014-12-29T00:00:00+03:00</published>
+  <updated>2014-12-29T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -1603,7 +1704,7 @@
 &lt;span class=&quot;x&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
 &lt;span class=&quot;x&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Обратите внимание на конструкцию &lt;code&gt;&amp;lt;?php echo do_shortcode(''); ?&amp;gt;&lt;/code&gt;, в которую вставлен &lt;code&gt;shortcode&lt;/code&gt;, созданный в плагине Contact Form 7.&lt;/p&gt;
+&lt;p&gt;Обратите внимание на конструкцию &lt;code&gt;&amp;lt;?php echo do_shortcode(&#39;&#39;); ?&amp;gt;&lt;/code&gt;, в которую вставлен &lt;code&gt;shortcode&lt;/code&gt;, созданный в плагине Contact Form 7.&lt;/p&gt;
 
 &lt;h2 id=&quot;easy-fancybox---1&quot;&gt;Код формы Easy FancyBox на страницу&lt;/h2&gt;
 
@@ -1669,8 +1770,8 @@
   <title type="html"><![CDATA[Stylus - знакомство с препроцессором]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/stylus-introduction/" />
   <id>http://zencoder.ru/css/stylus-introduction</id>
-  <published>2014-12-27T00:00:00+04:00</published>
-  <updated>2014-12-27T00:00:00+04:00</updated>
+  <published>2014-12-27T00:00:00+03:00</published>
+  <updated>2014-12-27T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -1890,7 +1991,7 @@
  <link rel="alternate" type="text/html" href="http://zencoder.ru/svg/svg-css-part-2/" />
   <id>http://zencoder.ru/svg/svg-css-part-2</id>
   <updated>2015-03-26T00:00:00-00:00</updated>
-  <published>2014-11-30T00:00:00+04:00</published>
+  <published>2014-11-30T00:00:00+03:00</published>
   
   <author>
     <name>zencoder</name>
@@ -1978,8 +2079,8 @@
   <title type="html"><![CDATA[Плагин Sass CSS Importer]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/sass-css-importer/" />
   <id>http://zencoder.ru/css/sass-css-importer</id>
-  <published>2014-11-26T00:00:00+04:00</published>
-  <updated>2014-11-26T00:00:00+04:00</updated>
+  <published>2014-11-26T00:00:00+03:00</published>
+  <updated>2014-11-26T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -2062,8 +2163,8 @@
   <title type="html"><![CDATA[Знакомимся с 'тихими' placeholder]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/css/sass-selector-placeholder/" />
   <id>http://zencoder.ru/css/sass-selector-placeholder</id>
-  <published>2014-11-21T00:00:00+04:00</published>
-  <updated>2014-11-21T00:00:00+04:00</updated>
+  <published>2014-11-21T00:00:00+03:00</published>
+  <updated>2014-11-21T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -2304,7 +2405,7 @@
 &lt;hr /&gt;
 
 
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/css/sass-selector-placeholder/&quot;&gt;Знакомимся с 'тихими' placeholder&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 21, 2014.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/css/sass-selector-placeholder/&quot;&gt;Знакомимся с &#39;тихими&#39; placeholder&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 21, 2014.&lt;/p&gt;
   </content>
 </entry>
 
@@ -2313,8 +2414,8 @@
   <title type="html"><![CDATA[Jade - два способа компиляции в HTML]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/html/jade-to-html/" />
   <id>http://zencoder.ru/html/jade-to-html</id>
-  <published>2014-11-21T00:00:00+04:00</published>
-  <updated>2014-11-21T00:00:00+04:00</updated>
+  <published>2014-11-21T00:00:00+03:00</published>
+  <updated>2014-11-21T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -2442,8 +2543,8 @@
   <title type="html"><![CDATA[Parallax Scrolling с помощью Stellar.js]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/html/parallax-scrolling-stellar-js/" />
   <id>http://zencoder.ru/html/parallax-scrolling-stellar-js</id>
-  <published>2014-11-20T00:00:00+04:00</published>
-  <updated>2014-11-20T00:00:00+04:00</updated>
+  <published>2014-11-20T00:00:00+03:00</published>
+  <updated>2014-11-20T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -2617,8 +2718,8 @@
   <title type="html"><![CDATA[SVG fallback с помощью jQuery]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/svg/svg-fallback-with-jquery/" />
   <id>http://zencoder.ru/svg/svg-fallback-with-jquery</id>
-  <published>2014-11-15T00:00:00+04:00</published>
-  <updated>2014-11-15T00:00:00+04:00</updated>
+  <published>2014-11-15T00:00:00+03:00</published>
+  <updated>2014-11-15T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -2699,8 +2800,8 @@
   <title type="html"><![CDATA[SVG fallback с помощью PNG]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/svg/svg-fallback-png/" />
   <id>http://zencoder.ru/svg/svg-fallback-png</id>
-  <published>2014-11-15T00:00:00+04:00</published>
-  <updated>2014-11-15T00:00:00+04:00</updated>
+  <published>2014-11-15T00:00:00+03:00</published>
+  <updated>2014-11-15T00:00:00+03:00</updated>
   <author>
     <name>zencoder</name>
     <uri>http://zencoder.ru</uri>
@@ -2820,106 +2921,6 @@
 
 
     &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/svg/svg-fallback-png/&quot;&gt;SVG fallback с помощью PNG&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 15, 2014.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Стилизация SVG с помощью CSS - Часть 1]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/svg/svg-css-part-1/" />
-  <id>http://zencoder.ru/svg/svg-css-part-1</id>
-  <published>2014-11-13T00:00:00+04:00</published>
-  <updated>2014-11-13T00:00:00+04:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;blockquote&gt;
-  &lt;p&gt;От переводчика. Привожу вольный перевод великолепной статьи “&lt;a href=&quot;http://www.smashingmagazine.com/2014/11/03/styling-and-animating-svgs-with-css/&quot; title=&quot;Styling And Animating SVGs With CSS&quot;&gt;Styling And Animating SVGs With CSS&lt;/a&gt;” от &lt;a href=&quot;http://sarasoueidan.com/&quot; title=&quot;Sara Soueidan&quot;&gt;Sara Soueidan&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Данная статья является одной из пяти в серии, посвященной формату SVG. Больше мне сказать нечего - читайте Сару.&lt;/p&gt;
-
-&lt;p&gt;CSS может использоваться для стилизации и анимации векторной графики точно также, как для стилизации и анимации HTML-элементов. В этой статье, которая является производной от &lt;a href=&quot;https://www.youtube.com/watch?v=lf7L8X6ZBu8&quot;&gt;моего недавнего выступления&lt;/a&gt; на конференциях &lt;a href=&quot;http://2014.cssconf.eu/&quot; title=&quot;CSSconf EU&quot;&gt;CSSconf EU&lt;/a&gt; и &lt;a href=&quot;http://2014.fromthefront.it/&quot; title=&quot;From the Front&quot;&gt;From the Front&lt;/a&gt;, где я рассказывала о перспективах и приемах работы с форматом векторной графики SVG и возможностях ее стилизации при помощи CSS.&lt;/p&gt;
-
-&lt;p&gt;Я покажу, каким образом можно экспотировать и оптимизировать SVG-файлы, способы вставки этих файлов в web-документ, способы стилизации и анимации SVG-файлов, на практике применим стили и анимацию к SVG-файлам-примерам.&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;Введение&lt;/h2&gt;
-
-&lt;p&gt;Масштабируемая векторная графика (SVG) представляет из себя векторные изображение для двухмерной графики (2D), в основе которой лежит формат XML. Подобная графика имеет поддержку интерактивности и анимации. Другими словами, SVG-файлы представляют из себя XML-теги, которые генерируют фигуры и изображения; к этим фигурам и изображениям могут быть применены стили и эффекты с помощью CSS точно также, как это делается с обычными HTML-элементами.&lt;/p&gt;
-
-&lt;p&gt;Анимация или интерактивность в SVG-файлах могут быть достигнута двумя способами - с помощью CSS или с помощью Javascript. В этой статье будет рассмотрен первый способ - как это сделать с помощью CSS.&lt;/p&gt;
-
-&lt;p&gt;Существует много причин, почему нужно делать выбор в пользу SVG и почему нужно использовать этот формат сегодня:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;графика в формате SVG является масштабируемой и не зависящей от разрешения. Такая графика выглядит великолепно везде, будь то экраны с высоким разрешением Retina или же печатный вариант;&lt;/li&gt;
-  &lt;li&gt;изображения имеют &lt;a href=&quot;http://caniuse.com/#feat=svg&quot; title=&quot;Can I Use - SVG support&quot;&gt;отличную поддержку браузеров&lt;/a&gt;. Создать &lt;code&gt;fallbacks&lt;/code&gt; для браузеров, не имеющих поддержки, очень легко и в этой статье будет показано, как это сделать.&lt;/li&gt;
-  &lt;li&gt;поскольку файлы в своей основе являются текстом, то они хорошо поддаются архивации, что позволяет сделать их значительно меньше по размеру, чем файлы форматов JPEG или PNG.&lt;/li&gt;
-  &lt;li&gt;файлы стилизуются и анимируются с помощью CSS или Javascript&lt;/li&gt;
-  &lt;li&gt;файлы формата SVG имеют встроенную поддержку &lt;code&gt;clipping&lt;/code&gt;, &lt;code&gt;masking&lt;/code&gt;, &lt;code&gt;background blend modes&lt;/code&gt; и &lt;code&gt;filters&lt;/code&gt;. Эти возможности эквиваленты возможностям обычного графического редактора, такого как Photoshop.&lt;/li&gt;
-  &lt;li&gt;к файлам можно получить доступ. Другими словами, к ним можно получить легкий доступ через DOM API, что делает их прекрасным инструментом для инфографики и визуализации данных. Это дает ему преимущество перед HTML5 Canvas, поскольку контент последнего недоступен. С другой стороны, можно легко инспектировать каждый элемент файла с помощью инспектора элементов браузера точно также, как это делается с обычными HTML-элементами. Помимо этого, файлы доступны для экранных устройств чтения, если это необходимо. В последней части этой статье будет более подробно рассмотрен вопрос доступности файлов.&lt;/li&gt;
-  &lt;li&gt;существует достаточно инструментов для создания, редактирования и оптимизации файлов. Помимо этого, существуют инструменты для облегчения и ускорения работы с SVG-файлами, что позволяет значительно ускорить рабочий процесс. Эти инструменты также будут рассмотрены позже.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h2 id=&quot;svg------&quot;&gt;Экспортирование SVG из графических редакторов и их оптимизация&lt;/h2&gt;
-
-&lt;p&gt;Из всех редакторов векторной графики имеется три самых популярных:&lt;/p&gt;
-
-&lt;ol&gt;
-  &lt;li&gt;&lt;a href=&quot;http://www.adobe.com/mena_en/products/illustrator.html&quot; title=&quot;Adobe Illustrator&quot;&gt;Adobe Illustrator&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;https://inkscape.org/en/&quot; title=&quot;Inkscape&quot;&gt;Inkscape&lt;/a&gt;&lt;/li&gt;
-  &lt;li&gt;&lt;a href=&quot;http://bohemiancoding.com/sketch/&quot; title=&quot;Sketch&quot;&gt;Sketch&lt;/a&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;p&gt;Adobe Illustrator - платное приложение от Adobe. Очень популярный редактор с прекрасным интерфейсом и множеством возможностей, что делает его любимым инструментом многих дизайнеров.&lt;/p&gt;
-
-&lt;p&gt;Inkscape является бесплатной альтернативой. Несмотря на более скромный интерфейс, этот редактор имеет все необходимые возможности для работы с векторной графикой.&lt;/p&gt;
-
-&lt;p&gt;Sketch - это приложение только под Mac OS X. Оно также не бесплатное, но уже успело стать достаточно популярным и собрать свою группу поклонников. Обладает множеством инструментов и возможностей, что делает работу в этом редакторе быстрее и удобнее.&lt;/p&gt;
-
-&lt;p&gt;Для создания векторной графики можно выбрать любой из этих трех редакторов. После создания SVG-файлов перед их вставкой на web-страницу нужно выполнить две операции: экспортирование из редактора и очистка этих файлов от лишних данных.&lt;/p&gt;
-
-&lt;p&gt;В этой статье я буду показывать экспортирование и оптимизацию SVG-файлов на примере редактора Adobe Illustrator. Этот процесс практически ничем не отличается от подобного в других редакторах. За исключением некоторых специфических настроек самого Illustrator, о чем будет упоминаться по ходу этой статьи.&lt;/p&gt;
-
-&lt;p&gt;Для экспортирования графики в SVG-формат в Illustrator нужно перейти в меню по пути “File” - “Save as”, а затем выбрать формат &lt;code&gt;.svg&lt;/code&gt; из выпадающего списка форматов. Настройки в окне поменяются в соответствии с выбранным форматом &lt;code&gt;.svg&lt;/code&gt;. Например, можно будет выбрать версию SVG; встраивать изображения в виде графики или же сохранить их отдельно, с созданием внешней ссылки на них; выбрать способ стилизации (с помощью презентационных аттрибутов или же при помощи CSS-стилей в элементе &lt;code&gt;style&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;Ниже показано изображение с окном экспорта SVG, в котором представлен наилучший набор настроек для сохранения файлов SVG для web:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2014/11/ai-options-quick-preview.png&quot; alt=&quot;Окно настроек экспорта SVG в Adobe Illustrator&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Почему представленный выбор настроек является наилучшим, рассказано Michaël Chaize в прекрасной статье &lt;a href=&quot;http://creativedroplets.com/export-svg-for-the-web-with-illustrator-cc/&quot; title=&quot;Export SVG for the Web With Illustrator CC&quot;&gt;Export SVG for the Web With Illustrator CC&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Вне зависимости от того, какой графический редактор был выбран, в любом случае экспортируемый этим редактором SVG-файл не будет иметь чистого и оптимизированного кода. SVG-файлы, экспортированные из графических редакторов, как правило содержат много дополнительной информации, такой как метаданные самого редактора, комментарии, пустые группы, дефолтные значения, не оптимальные значения и другие подобные значения, которые можно безопасно удалить или конвертировать без оказания какого-либо эффекта на качество SVG-изображений. В случае, когда SVG-файлы созданы не вами, почти всегда они являются не оптимизированными; поэтому нужно в обязательном порядке использовать стороннее приложение для оптимизации SVG-графики.&lt;/p&gt;
-
-&lt;p&gt;Имеется несколько инструментов для оптимизации SVG-кода. Peter Collingridge создал online-инструмент &lt;a href=&quot;http://petercollingridge.appspot.com/svg-editor&quot; title=&quot;SVG Editor&quot;&gt;SVG Editor&lt;/a&gt;, в котором можно как вставлять напрямую, так и загружать свои собственные SVG-файлы. Инструмент обладает многими возможностями по оптимизации - удалением вспомогательного кода, комментариев, пустых групп и так далее. Одной из интересных настроек является управление числом знаков после запятой для координат точек:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2014/11/svg-editor-quick-preview.png&quot; alt=&quot;Окно настроек SVG Editor&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;SVG Editor обладает возможностью автоматически перемещать SVG-изображение в самую верхнюю часть документа. Приятной особенностью данного инструмента является возможность предварительного просмотра, что позволяет сразу решить, какие изменения оставить, а какие - нет. Некоторые настройки могут привести к нарушению кода SVG-файла.&lt;/p&gt;
-
-&lt;p&gt;Например, одного знака после запятой обычно хватает для оптимизации SVG-изображения. Но если вы работаете с SVG-файлом, который имеет много path, то при уменьшении числа знаков после запятой с четырех до одного может привести к нарушению SVG-изображения. Поэтому возможность предпросмотра является большим плюсом данного редактора.&lt;/p&gt;
-
-&lt;p&gt;Редактор SVG Editor является online-инструментом. Если вы предпочитаете offline инструмент, то попробуйте &lt;a href=&quot;https://github.com/svg/svgo&quot; title=&quot;SVGO&quot;&gt;SVGO&lt;/a&gt; (O - сокращение от “оптимизатор”). Этот инструмент основан на Node.js, имеет простой и понятный &lt;a href=&quot;https://github.com/svg/svgo-gui&quot; title=&quot;SVGO&quot;&gt;drag-and-drop интерфейс&lt;/a&gt;. Если вам не нравиться использовать online-инструменты, то SVGO будет хорошей альтернативой.&lt;/p&gt;
-
-&lt;p&gt;Ниже представлено простое изображение формата “до и после”, иллюстрирующее процесс оптимизации SVG-файла в online-редакторе SVG Editor. Красным цветом выделены paths и наглядно показано, насколько эффективен процесс оптимизации в данном случае:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2014/11/optimized-path.jpg&quot; alt=&quot;Оптимизация SVG в SVG Editor&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;Обратите внимание на размер исходного SVG-файла и размер его оптимизированной версии. Вне всяких сомнений, оптимизированная версия более удобочитаемая.&lt;/p&gt;
-
-&lt;p&gt;После оптимизации SVG-файлов они готовы для встраивания их на web-страницу, для дальнейшей стилизации и анимации с помощью CSS.&lt;/p&gt;
-
-&lt;h2 id=&quot;ps&quot;&gt;P.S.&lt;/h2&gt;
-
-&lt;p&gt;На практике воспользовался обоими инструментами оптимизации SVG - SVG Editor и SVGO. Могу сказать по личному опыту, что SVGO обладает значительно лучшим коэффициентом оптимизации. К слову сказать, это отечественная разработка команды Yandex.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/svg/svg-css-part-1/&quot;&gt;Стилизация SVG с помощью CSS - Часть 1&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 13, 2014.&lt;/p&gt;
   </content>
 </entry>
 

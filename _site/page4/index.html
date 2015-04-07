@@ -144,7 +144,262 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+04:00"><a href="http://zencoder.ru/html/jade-to-html/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+03:00"><a href="http://zencoder.ru/css/sass-selector-placeholder/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-selector-placeholder/" rel="bookmark" title="Знакомимся с 'тихими' placeholder" itemprop="url">Знакомимся с 'тихими' placeholder</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Статья посвящена вопросу “тихих” placeholder’ов в препроцессоре Sass. Что это такое и в чем преимущество их использования.</p>
+</blockquote>
+
+<p>Оригинал статьи размещен здесь - <a href="http://thesassway.com/intermediate/understanding-placeholder-selectors" title="Understanding placeholder selectors">Understanding placeholder selectors</a>.</p>
+
+<p>Препроцессор Sass предоставляет несколько способов создания одного фрагмента кода, который будет многократно использоваться внутри CSS-кода.</p>
+
+<p>Например, можно воспользоваться миксинами (<code>mixins</code>) для вставки группы CSS-свойств (или CSS-правил) в CSS-коде.</p>
+
+<p>Или же использовать директиву <code>@extend</code> для расширения набора CSS-свойств одного HTML-элемента за счет CSS-свойств другого HTML-элемента.</p>
+
+<p>В Sass версии 3.2 введена новая концепция под названием <code>placeholder</code>, которая делает использование директивы <code>@extend</code> еще более эффективным способом.</p>
+
+<p>Но прежде чем мы перейдем к рассмотрению этого нововведенния, давайте остановимся на моменте, каким образом работает расширение (<code>@extend</code>) CSS-свойств в Sass.</p>
+
+<h2 id="extend">Как работает @extend</h2>
+
+<p>Директива <code>@extend</code> в препроцессоре Sass позволяет CSS-селекторам с легкостью обмениваться между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">icon</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">icon</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.icon</span><span class="o">,</span> <span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Рассмотрим “механизм” показанного выше примера более детально. В нем директива <code>@extend</code> играет ключевую роль. С помощью нее селекторы <code>.error-icon</code> и <code>.info-icon</code> наследуют свойства селектора <code>.icon</code>. При изменении CSS-свойств селектора <code>.icon</code> автоматически будут меняться свойства селекторов <code>.error-icon</code> и <code>.info-icon</code>, так как они наследуют определенный набор CSS-свойств у селектора <code>.icon</code>. Довольно изящный подход, не правда ли?</p>
+
+<p>А вот теперь наступает интересный момент. Что, если элемент с классом <code>.icon</code> не планируется использовать и он даже не будет присутствовать в HTML-разметке? Но CSS-свойства этого элемента нам нужны для стилизации элементов <code>.error-icon</code> и <code>.info-icon</code>.</p>
+
+<p>Получается, что результирующий CSS-код будет неоправданно раздут из-за того, что в нем присутствует “лишний” элемент, который напрямую никогда не будет использован.</p>
+
+<p>И тут наступает момент для выхода на сцену героя этой статьи - селектора <code>placeholder</code> (его еще называют “тихим” <code>placeholder</code>‘ом):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/placeholder.jpg" alt="Тихий placeholder" /></p>
+
+<h2 id="placeholder">Знакомимся с селектором placeholder</h2>
+
+<p>Селекторы <code>placeholder</code> были введены в Sass как раз для того, чтобы решать вышеназванную проблему. Синтаксис <code>placeholder</code> очень похож на синтаксис обычных CSS-классов, только вместо точки (<code>.</code>) перед именем ставиться символ процента <code>%</code>.</p>
+
+<p>Селекторы <code>placeholder</code> имеют одну специфичную для них особенность - они никак не проявляют себя в скомпилированном CSS-коде. Можно сказать по другому - вы никогда не найдете селекторов <code>placeholder</code> в результирующем CSS-коде (поэтому они и носят такое название - “тихие” <code>placeholder</code>). В скомпилированном CSS-коде будут только селекторы, которые используют “тихие” <code>placeholder</code>‘ы, но никак не сами “тихие” <code>placeholder</code>‘ы.</p>
+
+<p>Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса <code>.icon</code> на имя “тихого” placeholder’а - <code>%icon</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате скомпилированный CSS-код будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Обратите внимание на важный момент - класс <code>.icon</code> теперь не присутствует в результирующем CSS-коде! Его там нет!</p>
+
+<h2 id="extend--include">@extend или @include</h2>
+
+<p>На первый взгляд может показаться, что “тихие” <code>placeholder</code> - это почти тоже самое, что и миксины (<code>mixin</code>). С функциональной точки зрения такое утверждение абсолютно верно - результат в браузере получается идентичным. А вот с точки зрения CSS разница очень существенная!</p>
+
+<p>Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином <code>@mixin icon</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">icon</span> <span class="p">{</span>
+  <span class="nt">transition</span><span class="o">:</span> <span class="nt">background-color</span> <span class="nt">ease</span> <span class="nc">.2s</span><span class="o">;</span>
+  <span class="nt">margin</span><span class="o">:</span> <span class="nt">0</span> <span class="nc">.5em</span><span class="o">;</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Посмотрим на сгенерированный CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>С точки зрения разработки данный пример ничем не хуже примера с использованием “тихого” <code>placeholder</code>‘а.</p>
+
+<p>Но обратите внимание на тот факт, что CSS-правила <code>transition: background-color ease .2s;</code> и <code>margin: 0 .5em;</code> дублируются между селекторами <code>.error-icon</code> и <code>.info-icon</code>, что приводит к неоправданному раздутию кода. В случае использования “тихого” <code>placeholder</code> этого не происходит.</p>
+
+<h2 id="section">Ограничения</h2>
+
+<p>Использование директивы <code>@extend</code> имеет одно ограничение, связанное с тем, что применение “тихих” <code>placeholder</code>‘ов никак не оправдывает себя в медиа-запросах <code>@media</code>.</p>
+
+<p>Рассмотрим такой пример:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
+  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
+
+  <span class="nc">.error-icon</span> <span class="p">{</span>
+    <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.info-icon</span> <span class="p">{</span>
+    <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
+  <span class="p">}</span>
+
+<span class="p">}</span></code></pre></div>
+
+<p>Видим, что в данном случае “тихий” <code>placeholder</code> добавлен для селекторов, находящихся внутри медиа-запроса <code>@media</code>.</p>
+
+<p>Однако, при попытке компиляции этого SCSS-кода в CSS-код получиться ошибка:</p>
+
+<blockquote>
+  <p>You may not @extend an outer selector from within @media. You may only @extend selectors within the same directive. From “@extend %icon” on line 8 of icons.scss</p>
+</blockquote>
+
+<p>Когда я первый раз увидел такую ошибку, то подумал, что это баг. Но по зрелом размышлении пришел к выводу, что в данном подходе все правильно.</p>
+
+<p>Механизм работы директивы <code>@extend</code> основан на добавлении одного селектора к другому селектору без необходимости дублировать CSS-свойства этих селекторов. Однако невозможно объединять селекторы, находящиеся в разных медиа-запросах <code>@media</code>.</p>
+
+<p>Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для “тихого” <code>placeholder</code>, распространяют свои свойства на селекторы, не размещенные внутри этого запроса.</p>
+
+<p>Выражение достаточно запутанное, поэтому лучше приведу пример:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
+  <span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
+    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Компиляция пройдет без ошибок и ее результатом будет CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
+  <span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
+    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-1">Заключение</h2>
+
+<p>Обе директивы <code>@extend</code> и <code>@include</code> являются очень полезными инструментами, между которыми существует тонкое различие. Если вопрос производительности генерируемого CSS-кода имеет для вас важное значение или же перед вами стоит проблема повторяемости кода, то решением будет являться директива <code>@extend</code>. В некоторых случая <code>@extend</code> значительно упрощает получаемый CSS-код и улучшает его производительность.</p>
+
+<p>Конечно же, ничто не мешает вам смешивать между собой директиву <code>@extend</code> и миксин <code>mixin</code> (<em>если этого требуют обстоятельства</em>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
+  <span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
+    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@mixin</span> <span class="nt">icon</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="o">$</span><span class="nt">url</span><span class="o">)</span> <span class="p">{</span>
+  <span class="k">@extend</span> <span class="o">%</span><span class="nt">icon</span><span class="p">;</span>
+  <span class="nt">background-color</span><span class="o">:</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
+  <span class="nt">background-url</span><span class="o">:</span> <span class="nt">url</span><span class="o">($</span><span class="nt">url</span><span class="o">);</span>
+<span class="p">}</span>
+
+<span class="nc">.error-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">(</span><span class="nb">red</span><span class="o">,</span> <span class="s1">&#39;/images/error.png&#39;</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.info-icon</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">(</span><span class="nb">blue</span><span class="o">,</span> <span class="s1">&#39;/images/info.png&#39;</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+03:00"><a href="http://zencoder.ru/html/jade-to-html/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -277,7 +532,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-20T00:00:00+04:00"><a href="http://zencoder.ru/html/parallax-scrolling-stellar-js/">November 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-20T00:00:00+03:00"><a href="http://zencoder.ru/html/parallax-scrolling-stellar-js/">November 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -456,7 +711,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-fallback-with-jquery/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+03:00"><a href="http://zencoder.ru/svg/svg-fallback-with-jquery/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -542,7 +797,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-fallback-png/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+03:00"><a href="http://zencoder.ru/svg/svg-fallback-png/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -664,110 +919,6 @@
 <p>Возможности SVG очень велики, поэтому смело запрыгивайте на платформу SVG-поезда и не бойтесь его использовать на практике! SVG дружелюбен и приятен в обращении.</p>
 
 <p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-13T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-css-part-1/">November 13, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/svg/svg-css-part-1/" rel="bookmark" title="Стилизация SVG с помощью CSS - Часть 1" itemprop="url">Стилизация SVG с помощью CSS - Часть 1</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>От переводчика. Привожу вольный перевод великолепной статьи “<a href="http://www.smashingmagazine.com/2014/11/03/styling-and-animating-svgs-with-css/" title="Styling And Animating SVGs With CSS">Styling And Animating SVGs With CSS</a>” от <a href="http://sarasoueidan.com/" title="Sara Soueidan">Sara Soueidan</a>.</p>
-</blockquote>
-
-<p>Данная статья является одной из пяти в серии, посвященной формату SVG. Больше мне сказать нечего - читайте Сару.</p>
-
-<p>CSS может использоваться для стилизации и анимации векторной графики точно также, как для стилизации и анимации HTML-элементов. В этой статье, которая является производной от <a href="https://www.youtube.com/watch?v=lf7L8X6ZBu8">моего недавнего выступления</a> на конференциях <a href="http://2014.cssconf.eu/" title="CSSconf EU">CSSconf EU</a> и <a href="http://2014.fromthefront.it/" title="From the Front">From the Front</a>, где я рассказывала о перспективах и приемах работы с форматом векторной графики SVG и возможностях ее стилизации при помощи CSS.</p>
-
-<p>Я покажу, каким образом можно экспотировать и оптимизировать SVG-файлы, способы вставки этих файлов в web-документ, способы стилизации и анимации SVG-файлов, на практике применим стили и анимацию к SVG-файлам-примерам.</p>
-
-<h2 id="section">Введение</h2>
-
-<p>Масштабируемая векторная графика (SVG) представляет из себя векторные изображение для двухмерной графики (2D), в основе которой лежит формат XML. Подобная графика имеет поддержку интерактивности и анимации. Другими словами, SVG-файлы представляют из себя XML-теги, которые генерируют фигуры и изображения; к этим фигурам и изображениям могут быть применены стили и эффекты с помощью CSS точно также, как это делается с обычными HTML-элементами.</p>
-
-<p>Анимация или интерактивность в SVG-файлах могут быть достигнута двумя способами - с помощью CSS или с помощью Javascript. В этой статье будет рассмотрен первый способ - как это сделать с помощью CSS.</p>
-
-<p>Существует много причин, почему нужно делать выбор в пользу SVG и почему нужно использовать этот формат сегодня:</p>
-
-<ul>
-  <li>графика в формате SVG является масштабируемой и не зависящей от разрешения. Такая графика выглядит великолепно везде, будь то экраны с высоким разрешением Retina или же печатный вариант;</li>
-  <li>изображения имеют <a href="http://caniuse.com/#feat=svg" title="Can I Use - SVG support">отличную поддержку браузеров</a>. Создать <code>fallbacks</code> для браузеров, не имеющих поддержки, очень легко и в этой статье будет показано, как это сделать.</li>
-  <li>поскольку файлы в своей основе являются текстом, то они хорошо поддаются архивации, что позволяет сделать их значительно меньше по размеру, чем файлы форматов JPEG или PNG.</li>
-  <li>файлы стилизуются и анимируются с помощью CSS или Javascript</li>
-  <li>файлы формата SVG имеют встроенную поддержку <code>clipping</code>, <code>masking</code>, <code>background blend modes</code> и <code>filters</code>. Эти возможности эквиваленты возможностям обычного графического редактора, такого как Photoshop.</li>
-  <li>к файлам можно получить доступ. Другими словами, к ним можно получить легкий доступ через DOM API, что делает их прекрасным инструментом для инфографики и визуализации данных. Это дает ему преимущество перед HTML5 Canvas, поскольку контент последнего недоступен. С другой стороны, можно легко инспектировать каждый элемент файла с помощью инспектора элементов браузера точно также, как это делается с обычными HTML-элементами. Помимо этого, файлы доступны для экранных устройств чтения, если это необходимо. В последней части этой статье будет более подробно рассмотрен вопрос доступности файлов.</li>
-  <li>существует достаточно инструментов для создания, редактирования и оптимизации файлов. Помимо этого, существуют инструменты для облегчения и ускорения работы с SVG-файлами, что позволяет значительно ускорить рабочий процесс. Эти инструменты также будут рассмотрены позже.</li>
-</ul>
-
-<h2 id="svg------">Экспортирование SVG из графических редакторов и их оптимизация</h2>
-
-<p>Из всех редакторов векторной графики имеется три самых популярных:</p>
-
-<ol>
-  <li><a href="http://www.adobe.com/mena_en/products/illustrator.html" title="Adobe Illustrator">Adobe Illustrator</a></li>
-  <li><a href="https://inkscape.org/en/" title="Inkscape">Inkscape</a></li>
-  <li><a href="http://bohemiancoding.com/sketch/" title="Sketch">Sketch</a></li>
-</ol>
-
-<p>Adobe Illustrator - платное приложение от Adobe. Очень популярный редактор с прекрасным интерфейсом и множеством возможностей, что делает его любимым инструментом многих дизайнеров.</p>
-
-<p>Inkscape является бесплатной альтернативой. Несмотря на более скромный интерфейс, этот редактор имеет все необходимые возможности для работы с векторной графикой.</p>
-
-<p>Sketch - это приложение только под Mac OS X. Оно также не бесплатное, но уже успело стать достаточно популярным и собрать свою группу поклонников. Обладает множеством инструментов и возможностей, что делает работу в этом редакторе быстрее и удобнее.</p>
-
-<p>Для создания векторной графики можно выбрать любой из этих трех редакторов. После создания SVG-файлов перед их вставкой на web-страницу нужно выполнить две операции: экспортирование из редактора и очистка этих файлов от лишних данных.</p>
-
-<p>В этой статье я буду показывать экспортирование и оптимизацию SVG-файлов на примере редактора Adobe Illustrator. Этот процесс практически ничем не отличается от подобного в других редакторах. За исключением некоторых специфических настроек самого Illustrator, о чем будет упоминаться по ходу этой статьи.</p>
-
-<p>Для экспортирования графики в SVG-формат в Illustrator нужно перейти в меню по пути “File” - “Save as”, а затем выбрать формат <code>.svg</code> из выпадающего списка форматов. Настройки в окне поменяются в соответствии с выбранным форматом <code>.svg</code>. Например, можно будет выбрать версию SVG; встраивать изображения в виде графики или же сохранить их отдельно, с созданием внешней ссылки на них; выбрать способ стилизации (с помощью презентационных аттрибутов или же при помощи CSS-стилей в элементе <code>style</code>).</p>
-
-<p>Ниже показано изображение с окном экспорта SVG, в котором представлен наилучший набор настроек для сохранения файлов SVG для web:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/ai-options-quick-preview.png" alt="Окно настроек экспорта SVG в Adobe Illustrator" /></p>
-
-<p>Почему представленный выбор настроек является наилучшим, рассказано Michaël Chaize в прекрасной статье <a href="http://creativedroplets.com/export-svg-for-the-web-with-illustrator-cc/" title="Export SVG for the Web With Illustrator CC">Export SVG for the Web With Illustrator CC</a>.</p>
-
-<p>Вне зависимости от того, какой графический редактор был выбран, в любом случае экспортируемый этим редактором SVG-файл не будет иметь чистого и оптимизированного кода. SVG-файлы, экспортированные из графических редакторов, как правило содержат много дополнительной информации, такой как метаданные самого редактора, комментарии, пустые группы, дефолтные значения, не оптимальные значения и другие подобные значения, которые можно безопасно удалить или конвертировать без оказания какого-либо эффекта на качество SVG-изображений. В случае, когда SVG-файлы созданы не вами, почти всегда они являются не оптимизированными; поэтому нужно в обязательном порядке использовать стороннее приложение для оптимизации SVG-графики.</p>
-
-<p>Имеется несколько инструментов для оптимизации SVG-кода. Peter Collingridge создал online-инструмент <a href="http://petercollingridge.appspot.com/svg-editor" title="SVG Editor">SVG Editor</a>, в котором можно как вставлять напрямую, так и загружать свои собственные SVG-файлы. Инструмент обладает многими возможностями по оптимизации - удалением вспомогательного кода, комментариев, пустых групп и так далее. Одной из интересных настроек является управление числом знаков после запятой для координат точек:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/svg-editor-quick-preview.png" alt="Окно настроек SVG Editor" /></p>
-
-<p>SVG Editor обладает возможностью автоматически перемещать SVG-изображение в самую верхнюю часть документа. Приятной особенностью данного инструмента является возможность предварительного просмотра, что позволяет сразу решить, какие изменения оставить, а какие - нет. Некоторые настройки могут привести к нарушению кода SVG-файла.</p>
-
-<p>Например, одного знака после запятой обычно хватает для оптимизации SVG-изображения. Но если вы работаете с SVG-файлом, который имеет много path, то при уменьшении числа знаков после запятой с четырех до одного может привести к нарушению SVG-изображения. Поэтому возможность предпросмотра является большим плюсом данного редактора.</p>
-
-<p>Редактор SVG Editor является online-инструментом. Если вы предпочитаете offline инструмент, то попробуйте <a href="https://github.com/svg/svgo" title="SVGO">SVGO</a> (O - сокращение от “оптимизатор”). Этот инструмент основан на Node.js, имеет простой и понятный <a href="https://github.com/svg/svgo-gui" title="SVGO">drag-and-drop интерфейс</a>. Если вам не нравиться использовать online-инструменты, то SVGO будет хорошей альтернативой.</p>
-
-<p>Ниже представлено простое изображение формата “до и после”, иллюстрирующее процесс оптимизации SVG-файла в online-редакторе SVG Editor. Красным цветом выделены paths и наглядно показано, насколько эффективен процесс оптимизации в данном случае:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/optimized-path.jpg" alt="Оптимизация SVG в SVG Editor" /></p>
-
-<p>Обратите внимание на размер исходного SVG-файла и размер его оптимизированной версии. Вне всяких сомнений, оптимизированная версия более удобочитаемая.</p>
-
-<p>После оптимизации SVG-файлов они готовы для встраивания их на web-страницу, для дальнейшей стилизации и анимации с помощью CSS.</p>
-
-<h2 id="ps">P.S.</h2>
-
-<p>На практике воспользовался обоими инструментами оптимизации SVG - SVG Editor и SVGO. Могу сказать по личному опыту, что SVGO обладает значительно лучшим коэффициентом оптимизации. К слову сказать, это отечественная разработка команды Yandex.</p>
 
 <hr />
 
@@ -1020,6 +1171,12 @@
       <li>
         
           <a href="http://zencoder.ru/page40">40</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page41">41</a>
         
       </li>
     
