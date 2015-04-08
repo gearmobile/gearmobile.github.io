@@ -12,7 +12,7 @@ share: true
 
 Репозиторий Template клонируется на локальную машину с именем разрабатываемого проекта, такой командой:
 
-{% highlight http %}
+{% highlight bash %}
 $ git clone https://github.com/gearmobile/template.git project
 {% endhighlight %}
 
@@ -104,13 +104,13 @@ $ git push -f
 
 Точно также создаю на локальной машине копию Another Project удаленного репозитория Template:
 
-{% highlight http %}
+{% highlight console %}
 $ git clone https://github.com/gearmobile/template.git another-project
 {% endhighlight %}
 
 Ссылка в новом репозитории Another-Project все также указывает на свой оригинал - репозиторий Template:
 
-{% highlight bash %}
+{% highlight console %}
 $ cat .git/config
 
 [core]
@@ -132,7 +132,7 @@ $ cat .git/config
 
 Создаю на GitHub новый репозиторий Another-Project, который будет удаленной копией локального (уже существующего) репозитория Another-Project. И изменяю ссылку на вновь созданный удаленный репозиторий Another-Project:
 
-{% highlight bash %}
+{% highlight console %}
 $ git remote set-url origin https://github.com/gearmobile/another-project.git
 {% endhighlight %}
 
