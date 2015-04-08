@@ -66,7 +66,7 @@ https://github.com/gearmobile/template.git
 https://github.com/gearmobile/project.git
 {% endhighlight %}
 
-где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.
+... где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.
 
 Теперь конфигурационный файл `config` для локального репозитория Project будет выглядеть таким образом (обратить внимание на переменную `url`):
 
@@ -104,13 +104,13 @@ $ git push -f
 
 Точно также создаю на локальной машине копию Another Project удаленного репозитория Template:
 
-{% highlight console %}
+{% highlight bash %}
 $ git clone https://github.com/gearmobile/template.git another-project
 {% endhighlight %}
 
 Ссылка в новом репозитории Another-Project все также указывает на свой оригинал - репозиторий Template:
 
-{% highlight console %}
+{% highlight bash %}
 $ cat .git/config
 
 [core]
@@ -132,7 +132,7 @@ $ cat .git/config
 
 Создаю на GitHub новый репозиторий Another-Project, который будет удаленной копией локального (уже существующего) репозитория Another-Project. И изменяю ссылку на вновь созданный удаленный репозиторий Another-Project:
 
-{% highlight console %}
+{% highlight bash %}
 $ git remote set-url origin https://github.com/gearmobile/another-project.git
 {% endhighlight %}
 
