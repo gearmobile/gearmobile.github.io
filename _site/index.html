@@ -144,12 +144,12 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-08T00:00:00+03:00"><a href="http://zencoder.ru/git/github-change-url/">April 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-08T00:00:00+04:00"><a href="http://zencoder.ru/git/github-change-url/">April 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~5 minutes
+        Reading time ~4 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
@@ -158,124 +158,141 @@
     
   </header>
   <div class="entry-content">
-    <p>Продолжаю изучение темы Git и GitHub. На повестке дня стоит вопрос - каким образом можно изменить ссылку существующего репозитория?</p>
+    <blockquote>
+  <p>Продолжаю изучение темы Git и GitHub. На повестке дня стоит вопрос - каким образом можно изменить ссылку существующего репозитория?</p>
+</blockquote>
 
 <p>Нет - не так! Попробую зайти с другой стороны и сказать иначе. Имеется готовый репозиторий Template, размещенный на сервере GitHub. Этот репозиторий является шаблоном (template starter) при создании разнообразных проектов. Нечто похожим на известный <a href="https://html5boilerplate.com/" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
 
 <p>Репозиторий Template клонируется на локальную машину с именем разрабатываемого проекта, такой командой:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">template</span><span class="p">.</span><span class="n">git</span> <span class="n">project</span></code></pre></div>
+<div class="highlight"><pre><code class="language-http" data-lang="http"><span class="err">$ git clone https://github.com/gearmobile/template.git project</span></code></pre></div>
 
-<p>Затем в созданном репозитории project разрабатывается требуемый проект.</p>
+<p>Затем в созданном репозитории Project разрабатывается требуемый проект.</p>
 
-<p>Но есть одно НО - необходимо преобразовать видоизмененный репозиторий project в отдельный, самостоятельный репозиторий. Дело в том, что по большому счету это уже и есть отдельный, самостоятельный репозиторий.</p>
+<p>Но есть одно НО - необходимо преобразовать видоизмененный репозиторий Project в отдельный, самостоятельный репозиторий. Конечно, по большому счету, это уже и есть отдельный, самостоятельный репозиторий.</p>
 
-<p>Но вот ссылка у репозитория project  указывает на оригинал - репозиторий Template. И если произвести push на GitHub, то произойдет обновление репозитория Template.</p>
+<p>Но вот ссылка у репозитория Project указывает на оригинал - репозиторий Template. И если произвести <code>push</code> на GitHub, то произойдет обновление репозитория Template.</p>
 
 <p>А этого крайне нежелательно допустить, так как этот репозиторий является стартовым, чистым листом для всех новых проектов!</p>
 
 <p>У меня же стоит такая задача - скопировать стартовый репозиторий  Template на локальную машину, преобразовать его в конкретный проект, вновь залить на GitHub уже как самостоятельный репозиторий с именем проекта в качестве имени репозитория. Как поступить?</p>
 
-<p>Можно решить вопрос несколькими способами. Ниже приведу пару из них - самых простых и доступных для моего понимания вечного newbie в Git\GitHub. Может быть, по мере освоения темы дополню статьи более универсальным и грамотным способом.</p>
+<p>Можно решить вопрос несколькими способами. Ниже приведу пару из них - самых простых и доступных для моего понимания вечного newbie в Git\GitHub. Может быть, по мере освоения темы дополню статью более универсальным и грамотным способом.</p>
 
 <h2 id="config">Правка config</h2>
 
 <p>У клонированного на локальную машину репозитория ссылка на его удаленный оригинал размещена в конфигурационном файле <code>config</code> по пути <code>.git/config</code>, в секции <code>[remote "origin"]</code>, в переменной с именем <code>url</code>:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">git</span><span class="p">/</span><span class="n">config</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
 
-<span class="no">[core]</span>
-	<span class="n">repositoryformatversion</span> <span class="p">=</span> <span class="n">0</span>
-	<span class="n">filemode</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">bare</span> <span class="p">=</span> <span class="n">false</span>
-	<span class="n">logallrefupdates</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">ignorecase</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">precomposeunicode</span> <span class="p">=</span> <span class="n">true</span>
-<span class="p">[</span><span class="n">remote</span> <span class="s2">&quot;origin&quot;</span><span class="p">]</span>
-	<span class="n">url</span> <span class="p">=</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">template</span><span class="p">.</span><span class="n">git</span>
-	<span class="n">fetch</span> <span class="p">=</span> <span class="p">+</span><span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/*</span><span class="err">:</span><span class="n">refs</span><span class="p">/</span><span class="n">remotes</span><span class="p">/</span><span class="n">origin</span><span class="p">/*</span>
-<span class="p">[</span><span class="n">branch</span> <span class="s2">&quot;master&quot;</span><span class="p">]</span>
-	<span class="n">remote</span> <span class="p">=</span> <span class="n">origin</span>
-	<span class="n">merge</span> <span class="p">=</span> <span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/</span><span class="n">master</span></code></pre></div>
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
 
-<p>Поэтому в локальном репозитории project можно просто изменить эту ссылку с помощью любого текстового редактора.</p>
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/template.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
 
-<p>Отредактирую файл <code>config</code> и изменю в нем ссылку с <code>https://github.com/gearmobile/template.git</code> на <code>https://github.com/gearmobile/project.git</code>, где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.</p>
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
 
-<p>Теперь конфигурационный файл <code>config</code> для локального репозитория  project будет выглядеть таким образом (обратить внимание на переменную <code>url</code>):</p>
+<p>Поэтому в локальном репозитории Project можно просто изменить эту ссылку с помощью любого текстового редактора.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">git</span><span class="p">/</span><span class="n">config</span>
+<p>Отредактирую файл <code>config</code> и изменю в нем ссылку с</p>
 
-<span class="no">[core]</span>
-	<span class="n">repositoryformatversion</span> <span class="p">=</span> <span class="n">0</span>
-	<span class="n">filemode</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">bare</span> <span class="p">=</span> <span class="n">false</span>
-	<span class="n">logallrefupdates</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">ignorecase</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">precomposeunicode</span> <span class="p">=</span> <span class="n">true</span>
-<span class="p">[</span><span class="n">remote</span> <span class="s2">&quot;origin&quot;</span><span class="p">]</span>
-	<span class="n">url</span> <span class="p">=</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">project</span><span class="p">.</span><span class="n">git</span>
-	<span class="n">fetch</span> <span class="p">=</span> <span class="p">+</span><span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/*</span><span class="err">:</span><span class="n">refs</span><span class="p">/</span><span class="n">remotes</span><span class="p">/</span><span class="n">origin</span><span class="p">/*</span>
-<span class="p">[</span><span class="n">branch</span> <span class="s2">&quot;master&quot;</span><span class="p">]</span>
-	<span class="n">remote</span> <span class="p">=</span> <span class="n">origin</span>
-	<span class="n">merge</span> <span class="p">=</span> <span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/</span><span class="n">master</span></code></pre></div>
+<div class="highlight"><pre><code class="language-http" data-lang="http"><span class="err">https://github.com/gearmobile/template.git</span></code></pre></div>
 
-<p>Все - теперь локальный репозиторий project является абсолютно самостоятельным и уникальным репозиторием, связанным ссылкой со своей удаленной копией на сервере GitHub.</p>
+<p>на</p>
 
-<p>Осталось только сделать push, чтобы залить на GitHub. Правда, здесь придется воспользоваться ключом <code>-f</code> (как в предыдущей статье “<a href="/git/github-fallback-commit/">Откат коммитов на GitHub</a>”):</p>
+<div class="highlight"><pre><code class="language-http" data-lang="http"><span class="err">https://github.com/gearmobile/project.git</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">push</span> <span class="o">-f</span></code></pre></div>
+<p>где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.</p>
+
+<p>Теперь конфигурационный файл <code>config</code> для локального репозитория Project будет выглядеть таким образом (обратить внимание на переменную <code>url</code>):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
+
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/project.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
+
+<p>Все - теперь локальный репозиторий Project является абсолютно самостоятельным и уникальным репозиторием, связанным ссылкой со своей удаленной копией на сервере GitHub.</p>
+
+<p>Осталось только сделать <code>push</code>, чтобы залить на GitHub. Правда, здесь придется воспользоваться ключом <code>-f</code> (как это описано в предыдущей статье <a href="/git/github-fallback-commit/">Откат коммитов на GitHub</a>):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git push -f</code></pre></div>
 
 <h2 id="set-url">Команда set-url</h2>
 
 <p>Второй способ практически идентичен предыдущему за тем лишь исключением, что он более правильный, так как для изменения url-адреса репозитория используется предназначенная для этого консольная команда Git - <code>set-url</code>.</p>
 
-<p>Точно также создаю на локальной машине копию <code>another-project</code>
- удаленного репозитория Template:</p>
+<p>Точно также создаю на локальной машине копию Another Project удаленного репозитория Template:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">template</span><span class="p">.</span><span class="n">git</span> <span class="n">another-project</span></code></pre></div>
+<div class="highlight"><pre><code class="language-http" data-lang="http"><span class="err">$ git clone https://github.com/gearmobile/template.git another-project</span></code></pre></div>
 
 <p>Ссылка в новом репозитории Another-Project все также указывает на свой оригинал - репозиторий Template:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">git</span><span class="p">/</span><span class="n">config</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
 
-<span class="no">[core]</span>
-	<span class="n">repositoryformatversion</span> <span class="p">=</span> <span class="n">0</span>
-	<span class="n">filemode</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">bare</span> <span class="p">=</span> <span class="n">false</span>
-	<span class="n">logallrefupdates</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">ignorecase</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">precomposeunicode</span> <span class="p">=</span> <span class="n">true</span>
-<span class="p">[</span><span class="n">remote</span> <span class="s2">&quot;origin&quot;</span><span class="p">]</span>
-	<span class="n">url</span> <span class="p">=</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">template</span><span class="p">.</span><span class="n">git</span>
-	<span class="n">fetch</span> <span class="p">=</span> <span class="p">+</span><span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/*</span><span class="err">:</span><span class="n">refs</span><span class="p">/</span><span class="n">remotes</span><span class="p">/</span><span class="n">origin</span><span class="p">/*</span>
-<span class="p">[</span><span class="n">branch</span> <span class="s2">&quot;master&quot;</span><span class="p">]</span>
-	<span class="n">remote</span> <span class="p">=</span> <span class="n">origin</span>
-	<span class="n">merge</span> <span class="p">=</span> <span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/</span><span class="n">master</span></code></pre></div>
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/template.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
 
 <p>Создаю на GitHub новый репозиторий Another-Project, который будет удаленной копией локального (уже существующего) репозитория Another-Project. И изменяю ссылку на вновь созданный удаленный репозиторий Another-Project:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">remote</span> <span class="nb">set-url</span> <span class="n">origin</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">another-project</span><span class="p">.</span><span class="n">git</span></code></pre></div>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git remote <span class="nb">set</span>-url origin https://github.com/gearmobile/another-project.git</code></pre></div>
 
 <p>Проверяю, изменилась ли ссылка в конфигурационном файле <code>config</code> (переменная <code>url</code>):</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">git</span><span class="p">/</span><span class="n">config</span>
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
 
-<span class="no">[core]</span>
-	<span class="n">repositoryformatversion</span> <span class="p">=</span> <span class="n">0</span>
-	<span class="n">filemode</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">bare</span> <span class="p">=</span> <span class="n">false</span>
-	<span class="n">logallrefupdates</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">ignorecase</span> <span class="p">=</span> <span class="n">true</span>
-	<span class="n">precomposeunicode</span> <span class="p">=</span> <span class="n">true</span>
-<span class="p">[</span><span class="n">remote</span> <span class="s2">&quot;origin&quot;</span><span class="p">]</span>
-	<span class="n">url</span> <span class="p">=</span> <span class="n">https</span><span class="err">:</span><span class="p">//</span><span class="n">github</span><span class="p">.</span><span class="n">com</span><span class="p">/</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">another-project</span><span class="p">.</span><span class="n">git</span>
-	<span class="n">fetch</span> <span class="p">=</span> <span class="p">+</span><span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/*</span><span class="err">:</span><span class="n">refs</span><span class="p">/</span><span class="n">remotes</span><span class="p">/</span><span class="n">origin</span><span class="p">/*</span>
-<span class="p">[</span><span class="n">branch</span> <span class="s2">&quot;master&quot;</span><span class="p">]</span>
-	<span class="n">remote</span> <span class="p">=</span> <span class="n">origin</span>
-	<span class="n">merge</span> <span class="p">=</span> <span class="n">refs</span><span class="p">/</span><span class="n">heads</span><span class="p">/</span><span class="n">master</span></code></pre></div>
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
 
-<p>Да, ссылка была успешно изменена на новый удаленный репозиторий Another-Project. Можно вносить изменения и выполнять push на GitHub.</p>
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/another-project.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
+
+<p>Да, ссылка была успешно изменена на новый удаленный репозиторий Another-Project. Можно вносить изменения и выполнять <code>push</code> на GitHub.</p>
 
 <h2 id="section">Небольшое заключение</h2>
 
@@ -283,7 +300,7 @@
 
 <p>На этом пока все.</p>
 
-<p>—–</p>
+<hr />
 
 
   </div><!-- /.entry-content -->
@@ -293,7 +310,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-07T00:00:00+03:00"><a href="http://zencoder.ru/git/github-fallback-commit/">April 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-07T00:00:00+04:00"><a href="http://zencoder.ru/git/github-fallback-commit/">April 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -398,7 +415,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-02T00:00:00+03:00"><a href="http://zencoder.ru/linux/easytag-several-operations/">April 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-02T00:00:00+04:00"><a href="http://zencoder.ru/linux/easytag-several-operations/">April 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -484,7 +501,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-03-29T00:00:00+03:00"><a href="http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8/">March 29, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-03-29T00:00:00+04:00"><a href="http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8/">March 29, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -567,7 +584,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-03-26T00:00:00+03:00"><a href="http://zencoder.ru/css/nib-mixins/">March 26, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-03-26T00:00:00+04:00"><a href="http://zencoder.ru/css/nib-mixins/">March 26, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>

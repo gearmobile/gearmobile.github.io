@@ -12,15 +12,15 @@ share: true
 
 Репозиторий Template клонируется на локальную машину с именем разрабатываемого проекта, такой командой:
 
-{% highlight powershell %}
+{% highlight http %}
 $ git clone https://github.com/gearmobile/template.git project
 {% endhighlight %}
 
 Затем в созданном репозитории Project разрабатывается требуемый проект.
 
-Но есть одно НО - необходимо преобразовать видоизмененный репозиторий Project в отдельный, самостоятельный репозиторий. Дело в том, что по большому счету это уже и есть отдельный, самостоятельный репозиторий.
+Но есть одно НО - необходимо преобразовать видоизмененный репозиторий Project в отдельный, самостоятельный репозиторий. Конечно, по большому счету, это уже и есть отдельный, самостоятельный репозиторий.
 
-Но вот ссылка у репозитория Project  указывает на оригинал - репозиторий Template. И если произвести `push` на GitHub, то произойдет обновление репозитория Template.
+Но вот ссылка у репозитория Project указывает на оригинал - репозиторий Template. И если произвести `push` на GitHub, то произойдет обновление репозитория Template.
 
 А этого крайне нежелательно допустить, так как этот репозиторий является стартовым, чистым листом для всех новых проектов!
 
@@ -32,7 +32,7 @@ $ git clone https://github.com/gearmobile/template.git project
 
 У клонированного на локальную машину репозитория ссылка на его удаленный оригинал размещена в конфигурационном файле `config` по пути `.git/config`, в секции `[remote "origin"]`, в переменной с именем `url`:
 
-{% highlight powershell %}
+{% highlight bash %}
 $ cat .git/config
 
 [core]
@@ -42,21 +42,35 @@ $ cat .git/config
   logallrefupdates = true
   ignorecase = true
   precomposeunicode = true
+
 [remote "origin"]
   url = https://github.com/gearmobile/template.git
   fetch = +refs/heads/*:refs/remotes/origin/*
+
 [branch "master"]
   remote = origin
   merge = refs/heads/master
 {% endhighlight %}
 
-Поэтому в локальном репозитории project можно просто изменить эту ссылку с помощью любого текстового редактора.
+Поэтому в локальном репозитории Project можно просто изменить эту ссылку с помощью любого текстового редактора.
 
-Отредактирую файл `config` и изменю в нем ссылку с `https://github.com/gearmobile/template.git` на `https://github.com/gearmobile/project.git`, где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.
+Отредактирую файл `config` и изменю в нем ссылку с
+
+{% highlight http %}
+https://github.com/gearmobile/template.git
+{% endhighlight %}
+
+на
+
+{% highlight http %}
+https://github.com/gearmobile/project.git
+{% endhighlight %}
+
+где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.
 
 Теперь конфигурационный файл `config` для локального репозитория Project будет выглядеть таким образом (обратить внимание на переменную `url`):
 
-{% highlight powershell %}
+{% highlight bash %}
 $ cat .git/config
 
 [core]
@@ -66,9 +80,11 @@ $ cat .git/config
   logallrefupdates = true
   ignorecase = true
   precomposeunicode = true
+
 [remote "origin"]
   url = https://github.com/gearmobile/project.git
   fetch = +refs/heads/*:refs/remotes/origin/*
+
 [branch "master"]
   remote = origin
   merge = refs/heads/master
@@ -76,9 +92,9 @@ $ cat .git/config
 
 Все - теперь локальный репозиторий Project является абсолютно самостоятельным и уникальным репозиторием, связанным ссылкой со своей удаленной копией на сервере GitHub.
 
-Осталось только сделать push, чтобы залить на GitHub. Правда, здесь придется воспользоваться ключом `-f` (как в предыдущей статье "[Откат коммитов на GitHub]({% post_url 2015-04-07-github-fallback-commit %})"):
+Осталось только сделать `push`, чтобы залить на GitHub. Правда, здесь придется воспользоваться ключом `-f` (как это описано в предыдущей статье [Откат коммитов на GitHub]({% post_url 2015-04-07-github-fallback-commit %})):
 
-{% highlight powershell %}
+{% highlight bash %}
 $ git push -f
 {% endhighlight %}
 
@@ -86,16 +102,15 @@ $ git push -f
 
 Второй способ практически идентичен предыдущему за тем лишь исключением, что он более правильный, так как для изменения url-адреса репозитория используется предназначенная для этого консольная команда Git - `set-url`.
 
-Точно также создаю на локальной машине копию `another-project`
- удаленного репозитория Template:
+Точно также создаю на локальной машине копию Another Project удаленного репозитория Template:
 
-{% highlight powershell %}
+{% highlight http %}
 $ git clone https://github.com/gearmobile/template.git another-project
 {% endhighlight %}
 
 Ссылка в новом репозитории Another-Project все также указывает на свой оригинал - репозиторий Template:
 
-{% highlight powershell %}
+{% highlight bash %}
 $ cat .git/config
 
 [core]
@@ -105,9 +120,11 @@ $ cat .git/config
   logallrefupdates = true
   ignorecase = true
   precomposeunicode = true
+
 [remote "origin"]
   url = https://github.com/gearmobile/template.git
   fetch = +refs/heads/*:refs/remotes/origin/*
+
 [branch "master"]
   remote = origin
   merge = refs/heads/master
@@ -115,13 +132,13 @@ $ cat .git/config
 
 Создаю на GitHub новый репозиторий Another-Project, который будет удаленной копией локального (уже существующего) репозитория Another-Project. И изменяю ссылку на вновь созданный удаленный репозиторий Another-Project:
 
-{% highlight powershell %}
+{% highlight bash %}
 $ git remote set-url origin https://github.com/gearmobile/another-project.git
 {% endhighlight %}
 
 Проверяю, изменилась ли ссылка в конфигурационном файле `config` (переменная `url`):
 
-{% highlight powershell %}
+{% highlight bash %}
 $ cat .git/config
 
 [core]
@@ -131,9 +148,11 @@ $ cat .git/config
   logallrefupdates = true
   ignorecase = true
   precomposeunicode = true
+
 [remote "origin"]
   url = https://github.com/gearmobile/another-project.git
   fetch = +refs/heads/*:refs/remotes/origin/*
+
 [branch "master"]
   remote = origin
   merge = refs/heads/master
