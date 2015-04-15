@@ -144,6 +144,112 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-22T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-named-task/">August 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-named-task/" rel="bookmark" title="Gulp - именованная задача (named task)" itemprop="url">Gulp - именованная задача (named task)</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье “Gulp - установка и запуск плагина gulp-uglify”, где мы учились устанавливать и запускать плагины под Gulp, мы создавали задачу под этот плагин.</p>
+</blockquote>
+
+<p>Сами не зная того, тогда мы создали именованную задачу (named task). Как вы помните из вводной статьи “Gulp - знакомство и первый запуск”, в этом менеджере имеется два типа задач - задача по умолчанию (default) и именованная задача (named task).</p>
+
+<p>В этом разделе мы углубимся в вопрос задач в Gulp и рассмотрим детально, каким образом создается именованная задача (named task) или несколько именованных задач (named tasks), как можно объединять именованные задачи (named tasks) в последовательности, как можно вызывать выполнение одной задачи из другой задачи.</p>
+
+<h2 id="named-task--gulp">Создание named task в Gulp</h2>
+
+<p>В менеджере Gulp может существовать тысячи задач, каждая из которых нацелена на получение конкретного результата. Давайте создадим отдельную задачу для конкатенации файлов. Для этой цели существует плагин <code>gulp-concat</code>. На странице документации этого плагина описан процесс установки и настройки - <a href="https://www.npmjs.org/package/gulp-concat" title="Gulp-concat">gulp-concat</a>.</p>
+
+<p>Установим плагин <code>gulp-concat</code> в проект:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-concat</span></code></pre></div>
+
+<p>И создадим в файле <code>gulpfile.js</code> отдельную задачу для этого плагина:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
+  <span class="p">})</span></code></pre></div>
+
+<p>… а также создадим отдельную переменную для этого плагина:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">concat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-concat&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>Кстати, если вы еще не задались вопросом, а что это за странные строки - <code>gulp.src</code>, <code>gulp.dest</code>, <code>gulp.task</code>, то могу вкратце сказать, что это встроенные функции Gulp, каждая из которых выполняет свою задачу.</p>
+
+<p>Осталось запустить в консоли именованную задачу (named task) <code>concat</code>, которая произведет слияние в один файл всех файлов с расширением .css, расположенных в директории css:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">concat</span>
+  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">91</span> <span class="n">ms</span></code></pre></div>
+
+<p>Отлично - мы создали named task!</p>
+
+<h2 id="named-tasks--gulp">Создание последовательности named tasks в Gulp</h2>
+
+<p>В Gulp можно создавать последовательность задач, в которой выполнение всех задач будет производиться в том порядке, в котором они помещены в очередь. Для этого несколько отдельных именованных задач (named tasks) помещают внутрь задачи по умолчанию (default).</p>
+
+<p>Вместо callback-функции разместим массив, состоящий из списка имен тех именованных задач (named tasks), которые мы хотим поместить в очередь. Фактически, в данном случае выполнение одной задачи будет производиться через вызов другой задачи.</p>
+
+<p>Допустим, у нас имеются две именованные задачи (named tasks):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span>
+
+<span class="c1">// Concat Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Поместим их в задачу по умолчанию:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>Теперь в консоли достаточно запустить одну команду <code>gulp</code> на выполнение задачи по умолчанию (default). Тем самым мы запустим выполнение последовательности нескольких отдельных команд - <code>'concat', 'uglify'</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">17</span> <span class="n">ms</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">64</span> <span class="n">ms</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">04</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
+
+<p>В выводе консоли видим, что сначала запустилась задача <code>concat</code> и выполнилась за 7.17 миллисекунд, затем запустилась задача <code>uglify</code> и на ее выполнение ушло 2.64 милисекунды. И затем запустилась задача по умолчанию <code>default</code>, которая выполнилась за 7.04 миллисекунд.</p>
+
+<p>Все прошло успешно.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-21T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/">August 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -650,435 +756,6 @@
 <h2 id="section">Заключение</h2>
 
 <p>Плагин OWL Carousel мне понравился и я буду стараться применять его на практике, при верстке страниц.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-19T00:00:00+04:00"><a href="http://zencoder.ru/css/hexagon-css/">July 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~12 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/hexagon-css/" rel="bookmark" title="Hexagon на CSS" itemprop="url">Hexagon на CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В этой статье будет детально рассмотрен вопрос создания фигуры шестиугольника (hexagon) на CSS.</p>
-</blockquote>
-
-<p>Материал целиком основан на замечательной статье <a href="http://jtauber.github.io/articles/css-hexagon.html" title="CSS Hexagon Tutorial">CSS Hexagon Tutorial</a>. В Сети имеется хорошая статья по примерам создания различных видов фигур на CSS, и располагается эта статья на блоге известного CSS-гуру Chris Coyier <a href="http://css-tricks.com/examples/ShapesOfCSS/" title="Shapes of CSS">Shapes of CSS</a>. Среди прочих фигур там есть и желанный шестиугольник <code>hexagon</code> с готовым CSS-кодом что называется, “бери и пользуйся”.</p>
-
-<p>Но ведь такой подход для нас не интересен, правда? Это потом, когда мы изучим вопрос создания шестиугольника, мы будем делать так - нашел готовый код, скопировал к себе, подредактировал и готово! А сейчас мы пошагово пройдем весь путь, от начала и до конца - это даст нам понимание процесса.</p>
-
-<h2 id="hexagon">Как будем строить hexagon</h2>
-
-<p>Фигура hexagon изначально кажется неприступной - не понятно, с какого боку к ней подойди, чтобы начать постороение шестиугольника на CSS. Однако, если внимательно присмотреться, то hexagon можно разделить на три простые фигуры:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_origin.jpg" alt="Три части фигуры hexagon" /></p>
-
-<p>Видно, что фигура состоит из двух одинаковых треугольников и одного прямоугольника. Построение треугольников на CSS выполняется очень просто - “CSS – почему треугольник это треугольник”, прямоугольника - вообще в два движения.</p>
-
-<p>Поэтому, построение шестиугольника hexagon на CSS сводится к двух задачам:</p>
-
-<ul>
-  <li>создать два треугольника</li>
-  <li>создать один прямоугольник</li>
-</ul>
-
-<h2 id="css">Построение треугольников на CSS</h2>
-
-<p>Задачу создания треугольников на CSS начнем с построения обычного квадрата со стороной в <code>100px</code> и широкой границей <code>30px</code> определенного цвета <code>#789</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon&quot;</span><span class="nt">&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="m">#789</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square.jpg" alt="Квадрат на CSS" /></p>
-
-<p>“Раскрасим” границы квадрата для того, чтобы можно было визуально отличать их друг от друга:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_colors</span><span class="p">{</span>
-  <span class="k">border-top-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">5%</span><span class="p">);</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
-  <span class="k">border-bottom-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
-  <span class="k">border-left-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">5%</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_colors.jpg" alt="Квадрат на CSS с границами разного цвета" /></p>
-
-<p>Затем обнулим высоту <code>height</code> и ширину <code>width</code> нашего квадрата. Он “схлопнется”, оставив для нас видимой только его широкую границу со всех четырех сторон:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_zero</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_zero.jpg" alt="Квадрат на CSS с нулевой высотой и шириной" /></p>
-
-<p>Теперь превратим полученную фигуру в настоящий треугольник. Для этого обнулим (уберем) у нее верхнюю границу <code>border-top</code>, а обе боковые границы <code>border-left</code>, <code>border-right</code> сделаем прозрачного <code>transparent</code> цвета:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_triangle_up</span><span class="p">{</span>
-  <span class="k">border-top-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-left-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_to_triangle.jpg" alt="Треугольник на CSS" /></p>
-
-<p>У получившегося треугольника все стороны равны - высота и ширина по 30px каждая. Нам же необходимо “растянуть” треугольник в ширину, чтобы он у него появился тупой угол. Для этого нужно увеличить ширину боковых границ <code>border-left</code>, <code>border-right</code> треугольника, а ширину нижней границы <code>border-bottom</code> оставить прежней:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_triangle_up_large</span><span class="p">{</span>
-  <span class="k">border-left-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_to_triangle_large.jpg" alt="Удлиненный треугольник на CSS" /></p>
-
-<p>Задача создания треугольника нами выполнена. Теперь необходимо получить точно такой треугольник, только “направленный” вниз. Это просто - достаточно поменять нулевое значение между верхней и нижней границей фигуры. Все остальные значения останутся неизменными. Чуть не забыл сказать, что для “повернутого” треугольника придется создать в HTML-коде новый блок:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.hexagon_triangle_down</span><span class="p">{</span>
-  <span class="k">border-bottom-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-left-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexagon_triangle_down_large</span><span class="p">{</span>
-  <span class="k">border-left-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_to_two_triangles.jpg" alt="Два треугольника на CSS" /></p>
-
-<p>Первый шаг по созданию шестиугольника hexagon на CSS выполнен - у нас есть два одинаковых разнонаправленных треугольника. Теперь нужно создать “тело” для шестиугольника - прямоугольник.</p>
-
-<h3 id="css-1">Построение прямоугольника на CSS</h3>
-
-<p>Для создания прямоугольника на CSS достаточно прописать для нового блока три величины - высоту, ширину и фоновый цвет. Новый блок я размещу между двумя блоками-треугольниками.</p>
-
-<p>А вот с размерами для прямоугольника нужно разобраться немного подробнее. У него ширина должна быть равна удвоенной ширине боковой границы треугольника:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-left-width</span><span class="o">:</span> <span class="nt">52px</span> <span class="o">+</span> <span class="nt">border-right-width</span><span class="o">:</span> <span class="nt">52px</span> <span class="o">=</span> <span class="nt">104px</span></code></pre></div>
-
-<p>А высота должна быть равна удвоенной высоте треугольника (или ширине верхней\нижней границы - кому как нравиться):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-top</span><span class="o">:</span> <span class="nt">30px</span> <span class="o">*</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">60px</span></code></pre></div>
-
-<p>В результате код будет следующим:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.inside</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">104px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#789</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon.jpg" alt="Hexagon на CSS" /></p>
-
-<p>Все - задача построения шестиугольника hexagon на CSS выполнена - все оказалось достаточно просто!</p>
-
-<h2 id="hexagon-1">Создание сетки из hexagon</h2>
-
-<p>Теперь можно усложнить задачу и создать из фигур hexagon своеобразную сетку, а-ля пчелиные соты. Задача тривиальная и весь вопрос сводиться к нескольким CSS-свойствам: <code>float</code>, <code>overflow</code>, <code>margin</code>, <code>padding</code>.</p>
-
-<p>Создаю первый ряд сетки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end row  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.inside</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">104px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexa</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">3px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.row</span><span class="p">{</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_first_row.jpg" alt="Первый ряд сетки из hexagons" /></p>
-
-<p>Второй ряд сетки строиться аналогично, за тем лишь исключением, что его необходимо сдвинуть влево и вверх:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!--  ROW  --&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row left_padding top_margin&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end row  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left_padding</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">53px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.top_margin</span><span class="p">{</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-28px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_first-second_rows.jpg" alt="Первый и второй ряды сетки из hexagons" /></p>
-
-<p>Дальше продолжать не имеет смысла - все остальные ряды строятся аналогично. Нужно только управлять ими с помощью соотвествующих классов, смещая влево или вверх:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_full_stack.jpg" alt="Несколько рядов сетки из hexagons" /></p>
-
-<p>Лучше перейдем к другому интересному вопросу - созданию такого же шестиугольника hexagon, но несколько иной формы, “повернутого”. У которого углы развернуты по-горизонтали, а не по-вертикали.</p>
-
-<h3 id="hexagon--css">Построение повернутого hexagon на CSS</h3>
-
-<p>Задача создания развернутого hexagon почти ничем не отличается от задачи построения обычного шестиугольника. Только потребуется несколько дополнительных строчек кода.</p>
-
-<p>Дело в том, что в этом случае нужны углы, которые будут располагаться горизонтально и “смотреть” влево или вправо. Помимо этого, понадобиться “плавание” влево <code>float: left;</code>.</p>
-
-<p>Для блока - “тела” hexagon нужно будет изменить значения высоты или ширины на прямопротивоположные.</p>
-
-<p>Но не буду голословным, а лучше создам один такой <code>hexagon</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end hexa  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  LEFT ARROW  */</span>
-
-<span class="nc">.hexagon_triangle_left</span><span class="p">{</span>
-  <span class="k">border-left-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-top-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-bottom-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexagon_triangle_left_large</span><span class="p">{</span>
-  <span class="k">border-top-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-bottom-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c">/*  RIGHT ARROW  */</span>
-
-<span class="nc">.hexagon_triangle_right</span><span class="p">{</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-top-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-bottom-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexagon_triangle_right_large</span><span class="p">{</span>
-  <span class="k">border-top-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-bottom-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.inside_rotate</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">104px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.left</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated.jpg" alt="Развернутый hexagon" /></p>
-
-<p>Добавлю несколько таких шестиугольников, чтобы получился полный ряд:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_row.jpg" alt="Несколько развернутых hexagons в ряд" /></p>
-
-<p>Отлично! Теперь нужно добавить еще один ряд - нижний. При этом опять придется немного модифицировать код, чтобы произвести смещение фигур влево и вверх:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!--  ROW  --&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row top_margin_double&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa left_padding_double_middle&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa left_padding_double&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa left_padding_double&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end row  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left_padding_double</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">64px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.left_padding_double_middle</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">94px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.top_margin_double</span><span class="p">{</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_several_rows.jpg" alt="Развернутые hexagons в два ряда" /></p>
-
-<p>Можно продолжать постороние рядов до бесконечности, получая сетку из hexagons все большего размера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_more_rows.jpg" alt="Развернутые hexagons в несколько рядов" /></p>
-
-<h3 id="d--hexagons">3D-проекция hexagons</h3>
-
-<p>Можно видоизменить внешний вид сетки из hexagons, воспользовавшись CSS3-свойством <code>transform</code>. Создаю отдельный класс, в котором прописываю такие свойстсва:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexa_transform</span><span class="p">{</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… и проверяю в окне браузера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_transform.jpg" alt="3D-проекция сетки из hexagons" /></p>
-
-<h2 id="hexagons----">Hexagons с помощью псевдо-классов</h2>
-
-<p>Рассмотренный выше способ создания hexagons хорош, но имеет один недостаток - слишком много дополнительных блоков, одними из которых являются блоки для создания треугольников.</p>
-
-<p>Можно (и нужно) значительно сократить код, воспользовавшись для этой цели псевдо-классами <code>:before</code> и <code>:after</code>. Давайте я так и поступлю, при этом возьму код из примера, не буду ничего выдумывать:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hex</span><span class="nd">:before</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="o">-</span> <span class="s2">&quot;;</span>
-<span class="s2">  width: 0; height: 0;</span>
-<span class="s2">  border-bottom: 30px solid #778899;</span>
-<span class="s2">  border-left: 52px solid transparent;</span>
-<span class="s2">  border-right: 52px solid transparent;</span>
-<span class="s2">  position: absolute;</span>
-<span class="s2">  top: -30px;</span>
-<span class="s2">}</span>
-
-<span class="s2">.hex {</span>
-<span class="s2">  margin-top: 30px;</span>
-<span class="s2">  width: 104px;</span>
-<span class="s2">  height: 60px;</span>
-<span class="s2">  background-color: #778899;</span>
-<span class="s2">  position: relative;</span>
-<span class="s2">  float: left;</span>
-<span class="s2">}</span>
-
-<span class="s2">.hex:after {</span>
-<span class="s2">  content: &quot;</span><span class="err">&quot;</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">-30px</span><span class="p">;</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">52px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">:</span> <span class="m">52px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_pseudo.jpg" alt="Hexagon на CSS с помощью псевдо-классов :before и :after" /></p>
-
-<h2 id="css-hexagon">CSS Hexagon</h2>
-
-<p>Рассмотренный выше способ неплох, причем оба его варианта. Но для практического применения оба они достаточно трудоемкие. В Сети, помимо многих других подобного рода, имеется online CSS-генератор для создания hexagon в считанные минуты.</p>
-
-<p>Адрес сервиса располагается здесь - <a href="http://csshexagon.com/" title="CSS Hexagon">CSS Hexagon</a>. Помимо создания самого hexagon, там можно “прикрутить” к фигуре тень и границу, что просто великолепно!</p>
-
-<p>Все - на этом обзор закончен.</p>
 
 <hr />
 

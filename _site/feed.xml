@@ -4,13 +4,78 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://zencoder.ru/feed.xml" />
 <link rel="alternate" type="text/html" href="http://zencoder.ru" />
-<updated>2015-04-15T15:06:59+04:00</updated>
+<updated>2015-04-15T16:53:35+04:00</updated>
 <id>http://zencoder.ru/</id>
 <author>
   <name>zencoder</name>
   <uri>http://zencoder.ru/</uri>
   <email>gearmobile@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Режим fast-forward в Git]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/git/fast-forward-git/" />
+  <id>http://zencoder.ru/git/fast-forward-git</id>
+  <published>2015-04-17T00:00:00+04:00</published>
+  <updated>2015-04-17T00:00:00+04:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;blockquote&gt;
+  &lt;p&gt;Перевод статьи, посвященной вопросу - что такое fast-forward в системе Git&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Оригинал данного вольного перевода размещен здесь - &lt;a href=&quot;http://ariya.ofilabs.com/2013/09/fast-forward-git-merge.html&quot; title=&quot;Fast-Forward Git Merge&quot;&gt;Fast-Forward Git Merge&lt;/a&gt;. Статья довольно свежая - от 20.09.2013. Почему перевод статьи? Потому что на русском ничего не нашел (окромя книги официальной).&lt;/p&gt;
+
+&lt;p&gt;Слияние (merge) ветвей является весьма распространенной и обыденной операцией, выполняемой в системе Git. Однако, в некоторых случаях Git выполняет слияние ветвей в режиме &lt;strong&gt;fast-forward&lt;/strong&gt;. Но что такое режим &lt;strong&gt;fast-forward&lt;/strong&gt; и чем он отличается от &lt;em&gt;обычного&lt;/em&gt; режима слияния ветвей.&lt;/p&gt;
+
+&lt;p&gt;Давайте разберем этот вопрос на конкретном примере. Допустим, при работе в репозитории мною была создана ветка &lt;code&gt;speedup&lt;/code&gt; из текущей ветки &lt;code&gt;master&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git checkout -b speedup&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Поработав некоторое время в этой ветке, я создал несколько &lt;code&gt;commit&lt;/code&gt;‘ов (три коммита, три белых кружка на рисунке):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/04/fast-forward_1.png&quot; alt=&quot;Ветка speedup&quot; title=&quot;Ветка Speedup&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;После этого я решил, что работа в ветке &lt;code&gt;speedup&lt;/code&gt; мною выполнена и я сделал &lt;code&gt;push&lt;/code&gt; этой ветки на свой удаленный репозиторий. Между тем, обратите внимание на тот важный факт, что в ветке &lt;code&gt;master&lt;/code&gt; не было внесено никаких изменений с того самого момента, когда я сделал ответвление от нее - ветку &lt;code&gt;speedup&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Когда менеджер проекта будет уведомлен о том, что разрабатываемая мною ветка готова для интеграции в проект, то им будет выполнены стандартные шаги по публикации моей работы - команды &lt;code&gt;git fetch&lt;/code&gt; и &lt;code&gt;git merge&lt;/code&gt;. Так как в ветке &lt;code&gt;master&lt;/code&gt; не было внесено изменений с того момента (серый кружок), как была создана ветка &lt;code&gt;speedup&lt;/code&gt;, то при слиянии система Git применит метод &lt;strong&gt;fast-forward&lt;/strong&gt;. В этом случае вся последовательность коммитов будет иметь &lt;em&gt;линейный&lt;/em&gt; вид (&lt;strong&gt;левая часть&lt;/strong&gt; рисунка):&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/04/fast-forward_2.png&quot; alt=&quot;Fast-Forward Git&quot; title=&quot;Fast-Forward Git&quot; /&gt;&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Примечание переводчика: другими словами, Git просто произведет перемещение указателя HEAD с серого кружка (последний коммит ветки &lt;code&gt;master&lt;/code&gt;) на последний белый кружок (последний коммит ветки &lt;code&gt;speedup&lt;/code&gt;). И будет считать, что все это - ветка &lt;code&gt;master&lt;/code&gt;. Получится своеобразный &lt;em&gt;проброс указателя&lt;/em&gt; HEAD вдоль последовательной линии коммитов. Именно поэтому автор упоминает термин &lt;em&gt;линейного&lt;/em&gt; вида.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Другим вариантом слияния веток в данном случае является использование флага &lt;code&gt;-no-ff&lt;/code&gt;, что представляет из себя сокращение от - &lt;strong&gt;no fast-forward&lt;/strong&gt;. В этом случае ситуация будет несколько иной - ее схематичное изображение на &lt;strong&gt;правой&lt;/strong&gt; части рисунка вверху.&lt;/p&gt;
+
+&lt;p&gt;При слиянии веток &lt;code&gt;master&lt;/code&gt; и &lt;code&gt;speedup&lt;/code&gt; системой Git создается коммит (кружок со штрихованной границей), задача которого - &lt;strong&gt;информировать о слиянии веток&lt;/strong&gt;. Другими словами - &lt;em&gt;цель&lt;/em&gt; и &lt;em&gt;задача&lt;/em&gt; этого коммита только в информировании о слиянии веток &lt;code&gt;master&lt;/code&gt; и &lt;code&gt;speedup&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;В ситуациях подобного рода система Git всегда старается применить режим &lt;strong&gt;fast-forward&lt;/strong&gt;, если это возможно. Однако, такое поведение Git можно &lt;a href=&quot;http://stackoverflow.com/questions/2500296/can-i-make-fast-forwarding-be-off-by-default-in-git&quot; title=&quot;Fast Forward Off By Default&quot;&gt;легко изменить&lt;/a&gt; на режим &lt;strong&gt;no fast-forward&lt;/strong&gt; и сделать его поведением системы по умолчанию.&lt;/p&gt;
+
+&lt;p&gt;…&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/04/fast-forward_3.png&quot; alt=&quot;GitHub Pull Request&quot; title=&quot;GitHub Pull Request&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;К сожалению, на сегодняшний день web-интерфейс GitHub выполняет операцию слияния (&lt;code&gt;merge&lt;/code&gt;) так, как если бы для этой команды был установлен флаг &lt;code&gt;-no-ff&lt;/code&gt;. Другими словами, даже если при слиянии веток ситуация позволяет использовать режим &lt;strong&gt;fast-forward&lt;/strong&gt;, GitHub не будет его использовать.&lt;/p&gt;
+
+&lt;p&gt;Одним из разумных объяснений такого поведения GitHub является тот факт, что каждая операция &lt;code&gt;pull request&lt;/code&gt; должна быть однозначно &lt;strong&gt;идентифицирована&lt;/strong&gt;. К примеру, несколько последних коммитов проекта (в качестве примера мною был взят проект &lt;a href=&quot;https://github.com/eslint/eslint&quot; title=&quot;ESLint&quot;&gt;ESLint&lt;/a&gt; - ничего личного) могут выглядеть таким образом:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/04/fast-forward_4.png&quot; alt=&quot;ESLint&quot; title=&quot;ESLint&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Внимательно посмотрите на приведенный выше рисунок. На нем хорошо видно, что некоторые слияния (&lt;code&gt;merge&lt;/code&gt;) веток могут быть выполнены в режиме &lt;strong&gt;fast-forward&lt;/strong&gt;. Но своеобразный подход GitHub к слиянию веток привел к тому, что линейная история коммитов была превращена в нечто похожее на рисунок железнодорожного пути.&lt;/p&gt;
+
+&lt;p&gt;…&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/fast-forward-git/&quot;&gt;Режим fast-forward в Git&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on April 17, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
 <entry>
@@ -2777,135 +2842,6 @@ index fff54a9..8fbea1c 100644
 
 
     &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/css/sass-selector-placeholder/&quot;&gt;Знакомимся с 'тихими' placeholder&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 21, 2014.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Jade - два способа компиляции в HTML]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/html/jade-to-html/" />
-  <id>http://zencoder.ru/html/jade-to-html</id>
-  <published>2014-11-21T00:00:00+04:00</published>
-  <updated>2014-11-21T00:00:00+04:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;blockquote&gt;
-  &lt;p&gt;В этом посте поделюсь своим опытом реализации задачи компиляции jade-файлов в HTML-формат.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Рассмотрю два способа реализации этой задачи. Первый - самый нативный, с помощью родной утилиты &lt;code&gt;jade&lt;/code&gt;. Второй - с помощью плагина &lt;code&gt;gulp-jade&lt;/code&gt; под Gulp.&lt;/p&gt;
-
-&lt;p&gt;Но способов компиляции Jade в HTML существует больше - есть плагин под Sublime Text, существует плагин под Grunt. Обладатели Mac OS X могут воспользоваться прекрасной программой CodeKit. И я уверен, что это только малая часть того, чем можно воспользоваться.&lt;/p&gt;
-
-&lt;p&gt;Кратко остановлюсь на вопросе, зачем мне понадобился &lt;a href=&quot;http://jade-lang.com/&quot; title=&quot;Jade&quot;&gt;Jade&lt;/a&gt;. Честно сказать, до недавнего момента я даже не подозревал о сущестовании такого шаблонизатора. Тихо-спокойно пользовался Sublime Text + Emmet и считал, что я на вершине современных требований к web-разработчику.&lt;/p&gt;
-
-&lt;p&gt;Однако это оказалось не совсем так. Мне посоветовали посмотреть в сторону Jade и разобраться с работой в нем. Хотя бы с синтаксисом, для начала.&lt;/p&gt;
-
-&lt;p&gt;И я скажу вам - мне понравилось! Даже простое использование синтаксиса. Первое впечатление и ощущение - использование этого шаблонизатора освобождает от рамок HTML при написании кода. Точнее - при создании кода сосредотачиваешься на содержимом, которое создаешь.&lt;/p&gt;
-
-&lt;p&gt;Но у Jade есть еще и миксины, с которыми мне предстоит познакомиться. Так что - лучшее только впереди!&lt;/p&gt;
-
-&lt;p&gt;Написание кода в этом шаблонизаторе чем-то похоже на написание текста в &lt;a href=&quot;http://localhost:7788/third/?p=717&quot; title=&quot;Язык Markdown - обзор редакторов для работы&quot;&gt;Markdown&lt;/a&gt;. Под Markdown имеются (и должны иметься) утилиты\программы для компиляции в HTML. Точно также для Jade должны иметься (и имеются) утилиты\программы для компиляции в HTML.&lt;/p&gt;
-
-&lt;h2 id=&quot;jade-----sublime-text&quot;&gt;Jade - синтаксис для Sublime Text&lt;/h2&gt;
-
-&lt;p&gt;Прежде чем писать код в редакторе, в моем случае необходимо настроить поддержку синтаксиса Jade. Я использую Sublime Text 3, который изначально не имеет таковой.&lt;/p&gt;
-
-&lt;p&gt;Исправить это легко - достаточно через &lt;code&gt;Package Control&lt;/code&gt; установить пакет &lt;code&gt;Jade&lt;/code&gt;. Помимо подсветки синтаксиса, появиться поддержка автоматической табуляции, что значительно упрощает процесс написания кода.&lt;/p&gt;
-
-&lt;p&gt;Пример подсветки синтаксиса Jade в Sublime Text:&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2014/11/jade.png&quot; alt=&quot;Пример подсветки синтаксиса Jade в Sublime Text&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;jade-----&quot;&gt;Jade - родная утилита шаблонизатора&lt;/h2&gt;
-
-&lt;p&gt;Разработчиками была создана &lt;strong&gt;родная утилита&lt;/strong&gt; для преобразования jade-файлов в HTML-файлы. Имя утилиты легко запомнить - это &lt;code&gt;jade&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Утилита является &lt;strong&gt;модулем под Node.js&lt;/strong&gt;, поэтому последний у вас должен быть заранее установлен (&lt;em&gt;если еще не установлен по какой-то необъяснимой причине&lt;/em&gt;).&lt;/p&gt;
-
-&lt;p&gt;Инсталляция утилиты производиться банально:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sudo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;-g&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации - &lt;a href=&quot;http://jade-lang.com/command-line/&quot; title=&quot;Jade - Command Line&quot;&gt;Jade - Command Line&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Но стоит обратить внимание на некоторые интересные параметры:&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;К примеру&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;-P, --pretty&lt;/code&gt; - создание “удобочитаемого” HTML-кода&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;-w, --watch&lt;/code&gt; - мониторинг изменений файлов&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Использование утилиты также является простым делом. К примеру, можно указать ей производить компиляцию всех файлов в директории &lt;code&gt;templates&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;templates&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Утилита может сама создавать jade-файлы:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;}.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Или же можно реализовать &lt;strong&gt;два способа вывода&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;my&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;html&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;echo&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;h1 Jade!&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Или же осуществить рендеринг двух директорий &lt;code&gt;foo&lt;/code&gt; и &lt;code&gt;bar&lt;/code&gt; в директорию &lt;code&gt;tmp&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;foo&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;bar&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;-out&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;/&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;tmp&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;gulp-jade-----gulp&quot;&gt;Gulp-jade - компиляция под Gulp&lt;/h2&gt;
-
-&lt;p&gt;Кто знаком с task-manager’ом Gulp, тот может воспользоваться соответствующим плагином &lt;code&gt;gulp-jade&lt;/code&gt; под него. Страничка плагина размещена здесь - &lt;a href=&quot;https://www.npmjs.org/package/gulp-jade&quot; title=&quot;gulp-jade&quot;&gt;gulp-jade&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Установка плагина стандартная:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;p&quot;&gt;$&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;npm&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;-&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;-save-dev&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;gulp-jade&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;gulp&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;),&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;gulp-jade&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Jade&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;jade&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./template/*.jade&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;jade&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;())&lt;/span&gt;
-    &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pipe&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dest&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./dist/&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;))&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;
-
-&lt;span class=&quot;c1&quot;&gt;// Watch&lt;/span&gt;
-&lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;watch&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(){&lt;/span&gt;
- &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;watch&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./template/*.jade&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;jade&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]);&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;В Сети есть еще один интересный Gulp-task. Работоспособность его &lt;strong&gt;не проверял&lt;/strong&gt;, взял как есть, для - “чтобы было”.&lt;/p&gt;
-
-&lt;p&gt;Как говориться на &lt;a href=&quot;http://david.nowinsky.net/gulp-book/example/jade.html&quot; title=&quot;Compiling Jade files&quot;&gt;странице-оригинале&lt;/a&gt;, эта задача производит компиляцию файлов из директории &lt;code&gt;app/&lt;/code&gt; в директорию &lt;code&gt;_public/&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-coffeescript&quot; data-lang=&quot;coffeescript&quot;&gt;&lt;span class=&quot;nv&quot;&gt;jade = &lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;gulp-jade&amp;#39;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;task&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;jade&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;-&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;src&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;app_path&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;/*.jade&amp;#39;&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pipe&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;jade&lt;/span&gt; &lt;span class=&quot;nv&quot;&gt;pretty: &lt;/span&gt;&lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pipe&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gulp&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;dest&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;parameters&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;web_path&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;on&lt;/span&gt; &lt;span class=&quot;s&quot;&gt;&amp;#39;error&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;gutil&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;Заключение&lt;/h2&gt;
-
-&lt;p&gt;Я запомнил (&lt;em&gt;записал для себя&lt;/em&gt;), а вы (&lt;em&gt;уважаемый читатель&lt;/em&gt;) познакомились (&lt;em&gt;если не знали&lt;/em&gt;) с двумя способами настройки компиляции jade-файлов в HTML-файлы.&lt;/p&gt;
-
-&lt;p&gt;На этом все.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/html/jade-to-html/&quot;&gt;Jade - два способа компиляции в HTML&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 21, 2014.&lt;/p&gt;
   </content>
 </entry>
 

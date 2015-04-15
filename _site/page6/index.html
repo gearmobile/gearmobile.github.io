@@ -144,6 +144,145 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-12T00:00:00+04:00"><a href="http://zencoder.ru/css/asymmetric-layout-susy/">November 12, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/asymmetric-layout-susy/" rel="bookmark" title="Создание Asymmetric Layout в Susy" itemprop="url">Создание Asymmetric Layout в Susy</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>От переводчика. Данная статья является вольным переводом поста <a href="http://www.zell-weekeat.com/asymmetric-layouts-with-susy/" title="Creating Asymmetric Layouts With Susy">Creating Asymmetric Layouts With Susy</a> автора Zell Liew.</p>
+</blockquote>
+
+<p>Цель статьи - на простом примере показать, каким образом можно создавать ассиметричную разметку (asymmetric layout) с помощью Susy 2. Обзор ни в коей мере не является каким-либо пособием - это просто очень краткий экскурс по возможностям Susy 2 в области (asymmetric layout). Далее - вольный перевод с разрешения автора.</p>
+
+<hr />
+
+<p>Когда я впервые услышал об ассиметричной разметке (asymmetric layout), на тот момент такую можно было сделать только с помощью фреймворка <a href="http://singularity.gs/" title="Singularity GS">Singularity GS</a>. Подобная разметка была чем-то невероятно крутым и я очень захотел сделать подобную же - с неравной шириной столбцов <code>columns</code>. Но на тот момент я был полностью доволен системой Susyone и мне очень не хотелось переключаться на другой инструмент.</p>
+
+<p>Можете представить мой восторг, когда вышла новая версия Susy 2, в которой была включена поддержка ассиметричной разметки (asymmetric layout).</p>
+
+<p>В этой статье я покажу, как просто можно создавать ассиметричную разметку (asymmetric layout) с помощью Susy 2.</p>
+
+<h2 id="section">Что мы будем делать</h2>
+
+<p>В этой статье мы будем создавать с помощью Susy простую fluid-разметку. В этой разметке есть две боковых панели и два вложенных блока-потомка внутри центрального блока с контентом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/asym-grid-1-basic-setup.png" alt="Asymmetric Layout Basic Setup" /></p>
+
+<h2 id="susy">Глобальные переменные Susy</h2>
+
+<p>Для того, чтобы использовать возможность создания ассиметричной разметки (asymmetric layout) в Susy, в ее глобальной переменной <code>$susy</code>нужно внести два параметра: <code>columns</code> и <code>output</code>. Параметр <code>columns</code> должен быть Sass-списком для того, чтобы можно было работать с ассиметричной разметкой (asymmetric layouts).</p>
+
+<p>Sass-список является строкой значений, разделенных пробелом и выглядит он примерно таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">list</span> <span class="o">:</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">2</span> <span class="nt">1</span><span class="o">;</span></code></pre></div>
+
+<p>Внутри данного списка <code>$list</code> располагаются пять значений: <code>1</code>, <code>2</code>, <code>3</code>, <code>2</code>, <code>1</code>. Если поместить этот список в качестве параметра в глобальную переменную <code>$susy</code>, то в результате получим ассиметричную разметку (asymmetric layout), состоящую из пяти столбцов.</p>
+
+<p>Также же необходимо добавить еще один параметр <code>output: isolate</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span> <span class="o">:</span> <span class="o">(</span>
+  <span class="nt">columns</span><span class="o">:</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">2</span> <span class="nt">1</span><span class="o">,</span>
+  <span class="nt">output</span><span class="o">:</span> <span class="nt">isolate</span>
+<span class="o">)</span></code></pre></div>
+
+<p>После установки этих параметров все готово для создания заметки с помощью Susy.</p>
+
+<h2 id="asymmetric-layout">Создание ассиметричной разметки (asymmetric layout)</h2>
+
+<p>Как правило, первым важным шагом является добавление миксина <code>container</code> для блока-обертки. Помимо этого, в данном примере для блока-обертки добавим еще высоту на 100% viewport, так как внутри блока нет содержимого и иначе мы его просто не увидим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrap</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100</span><span class="n">vh</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/asym-grid-1.png" alt="Asymmetric Layout" /></p>
+
+<p>Прежде чем продолжить создание разметки, необходимо разобраться с еще одним вопросом.</p>
+
+<p>Так как в глобальных настройках Susy используется параметр <code>output: isolate</code>, необходимо уточнить месторасположение каждой отдельной части разметки. Для этой цели нужно использовать параметр <code>$location</code>.</p>
+
+<p>Параметр <code>$location</code> указывает месторасположение каждого отдельного <code>span</code> и может принимать следующие значения:</p>
+
+<ul>
+  <li><code>first</code></li>
+  <li><code>last</code></li>
+  <li><code>at &lt;number&gt;</code></li>
+</ul>
+
+<p>Если какой-либо отдельный блок по разметке располагается первым, то для него необходимо использовать ключевое слово <code>first</code>. Если блок располагается последним, то для него нужно использовать слово <code>last</code>. Если же блок располагается в разметке, к примеру, начиная со 2-го столбца, то в миксине <code>span</code> нужно использовать ключевое слово <code>at 2</code>.</p>
+
+<p>Теперь, обладая всеми этими знаниями, можно создать разметку для трех блоков: <code>.sidebar-one</code>, <code>.content</code> и <code>.sidebar-two</code>.</p>
+
+<p>Блок <code>.sidebar-one</code> по нашей схеме располагается первым и занимает ширину в один столбец:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sidebar-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок <code>.sidebar-two</code> является последним в схеме разметки и также занимает ширину в один столбец:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sidebar-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок <code>.content</code> имеет ширину в три столбца и начинается со второго столбца:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">at</span> <span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь все три блока должны точно расположиться в создаваемой нами ассиметричной разметке (asymmetric layout). Два оставшися блока <code>.nest-one</code> и <code>.nest-two</code> временно опустим для более ясной картины:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/asym-grid-2.png" alt="Созданная Asymmetric Layout" /></p>
+
+<p>Создание разметки для вложенных блоков <code>.nest-one</code> и <code>.nest-two</code> немного сложнее, нежели для основных блоков разметки. Имеется ввиду, что при разметке блоков-потомков необходимо учитывать факт их вложенности.</p>
+
+<p>Оба наших блока расположены внутри блока <code>.content</code>, а мы знаем, что данный блок имеет структуру (2 3 2), которая также является ассиметричной разметкой (asymmetric layout).</p>
+
+<p>Поэтому, при создании разметки для вложенных элементов необходимо включить эти значения в качестве аргументов для миксина <code>span</code>.</p>
+
+<p>Блок с классом <code>.nest-one</code> является первым блоком в разметке и занимает ширину в один (1) столбец ассиметричной сетки (asymmetric layout). Блок с классом <code>.nest-two</code> является последним блоком в разметке и занимает ширину в два (2) столбца.</p>
+
+<p>Такая разметка создается с помощью следующего кода:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nest-one</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="p">(</span><span class="m">2</span> <span class="m">3</span> <span class="m">2</span><span class="p">)</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.nest-two</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="p">(</span><span class="m">2</span> <span class="m">3</span> <span class="m">2</span><span class="p">)</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Как видим по исходному коду, при создании разметки нет необходимости указывать точную ширину (px,%) каждого блока. Благодаря Susy создание ассиметричной разметки (asymmetric layout) выполняется просто, с применением той теории, о которой только что говорилось. Достаточно только указать число столбцов, которое должен занимать каждый блок.</p>
+
+<h2 id="section-1">Более сложный пример разметки</h2>
+
+<p>Пример ассиметричной разметки, представленный в этой статье, достаточно простой. Более сложным случаем является создание адаптивной ассиметричной разметки (asymmetric layout).</p>
+
+<p>В качестве примера могу привести <a href="https://gridsetapp.com/specs/typekit-demos/chaparral.html?gridset=show" title="Образец ассиметричной разметки">образец ассиметричной разметки</a>, созданной Nathan Ford с применением приложения <a href="https://gridsetapp.com/" title="GridsetApp">GridsetApp</a>. Этот образец является хорошим примером адаптивной страницы, которая дает представление о том, что может Susy.</p>
+
+<p>Примечание переводчика: на этом самое существенное и интересное в этой статье заканчивается. Дальше идет реклама книги автора. Собственно, данная статья для этого и писалась, конечно. Но ради даже такого простого примера ассиметричной разметки (asymmetric layout) на Susy стоило превести этот пост.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-11-11T00:00:00+04:00"><a href="http://zencoder.ru/css/gutter-susy/">November 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -760,162 +899,6 @@
 <p><img src="http://zencoder.ru/images/uploads/2014/11/ParallaxJX-_Scrolling.png" alt="Страница на Parallax.js с вертикальным скроллингом" /></p>
 
 <p>Отлично! Получился прямо таки совсем неплохой parallax с вертикальным скроллингом. Готовый пример со всеми исходниками можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs_scroll" title="Parallax.js Scrolling">Parallax.js Scrolling</a>.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-03T00:00:00+04:00"><a href="http://zencoder.ru/javascript/parallax-js/">November 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/parallax-js/" rel="bookmark" title="Parallax.js - создаем простой parallax" itemprop="url">Parallax.js - создаем простой parallax</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Небольшой обзор новой для меня темы - создание эффекта <code>parallax</code> на странице сайта. Вместе с вами буду учиться создавать такой эффект и начну с самого простого - Parallax.js.</p>
-</blockquote>
-
-<p>Чтобы посмотреть, что примерно мы должны в результате получить, посмотрим на домашнюю страницу этого проекта - <a href="http://matthew.wagerfield.com/parallax/" title="Parallax.js">Parallax.js</a>. Исходный код скрипта и документация расположена на GitHub - <a href="https://github.com/wagerfield/parallax" title="Parallax.js">Parallax.js</a></p>
-
-<h2 id="parallax">Кратко о parallax</h2>
-
-<p>Что такое <code>parallax</code> как эффект сам по себе, хорошо видно на самой страничке и расписывать его я не буду. В Интернет есть лучшее и более подробное описание эффекта <code>parallax</code>. Единственное, что можно сказать по поводу <code>parallax</code> - появился он в основном как необходимость, дань моде. Своим существованием практически полностью обязан популярным на сегодняшний день <code>landing page</code> и призван скрасить и разнообразить их относительную монотонность.</p>
-
-<p>Способов реализации <code>parallax</code> на сегодня сушествует множество. Но практически все они основаны на одном принципе - изменении скорости прокрутки фонового изображения на странице относительно других объектов на ней (<em>поправьте меня, если я неправ</em>).</p>
-
-<p>Одним из преимуществ метода на основе скрипта Parallax.js является то, что в этом случае не требуется библиотеки jQuery. Скрипт может работать и с ней, но ее присутствие совсем необязательно. Получается выгода в весе страницы и скорости ее загрузки в браузере.</p>
-
-<h2 id="parallaxjs----">Parallax.js - начальная разметка</h2>
-
-<p>HTML-разметка для нашего будущего <code>parallax</code> удивительно простая - это маркированный список <code>ul</code> с идентификатором (<em>имя его произвольное</em>) и элементами списка <code>li</code> (<em>имя класса обязательно и неизменно</em>).</p>
-
-<p>Еще одним обязательным атрибутом для элементов списка <code>li</code> является атрибут <code>data-depth</code>, у которого значение может меняться в диапазоне от 0 до 1. Чем выше значение в 1, тем выше скорость перемещения объекта на странице.</p>
-
-<p>Внутрь элементов списка помещается изображение, которое будет анимироваться с помощью эффекта <code>parallax</code>.</p>
-
-<p>Ниже приведен пример такой разметки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;scene&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.10&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/one.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/two.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.20&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/three.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/four.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h2 id="parallaxjs----parallax">Parallax.js - стилизация parallax</h2>
-
-<p>Произведем небольшую стилизацию нашего будущего <code>parallax</code> с помощью Sass/Compass. Для элемента <code>ul</code> добавим фоновое изображение, чтобы был лучше виден эффект parallax.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
-<span class="nf">#scene</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">95%</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">775px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../images/bg.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
-  <span class="n">img</span><span class="err">{</span>
-    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-    <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/one.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">200px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/two.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1000px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/three.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">500px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">700px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/four.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">600px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">300px</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<h2 id="parallaxjs----javascript">Parallax.js - добавляем javascript</h2>
-
-<p>Наш <code>parallax</code> почти готов - осталось “вдохнуть в него жизнь” с помощью Javascript.</p>
-
-<p>Тут все просто. Первой строкой подключается файл скрипта Parallax.js. Второй строкой сначала в теле документа отыскивается элемент с идентификатором <code>scene</code>, который помещается внутрь переменной <code>scene</code>. Затем создается новый экземпляр <code>parallax</code> объекта Parallax и ему передается в качестве аргумента эта переменная <code>scene</code>.</p>
-
-<p>Все - смотрим результат:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/ParallaxJS.png" alt="Готовый эффект на Parallax.js" /></p>
-
-<p>Достаточно подвигать мышью над фотографией красавчика на заднем плане, чтобы увидеть, как разноцветные кружки перемещаются с разной скоростью.</p>
-
-<p>Мы получили эффект parallax.</p>
-
-<p>Ниже приведен полный код HTML и CSS рассмотренного нами примера:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;scene&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.10&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/one.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/two.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.20&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/three.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/four.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/ul&gt;</span><span class="c">&lt;!-- scripts --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
-<span class="nt">scene</span><span class="p">{</span>
-<span class="k">width</span><span class="o">:</span> <span class="m">95%</span><span class="p">;</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
- <span class="k">min-height</span><span class="o">:</span> <span class="m">775px</span><span class="p">;</span>
- <span class="k">background</span><span class="o">:</span> <span class="sx">url(../images/bg.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
- <span class="n">img</span><span class="err">{</span>
- <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
- <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
- <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
- <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/one.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">200px</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/two.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1000px</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/three.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">500px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">700px</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/four.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">600px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">300px</span><span class="p">;</span>
- <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Полный исходный код примера можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs" title="Parallax.js">Parallax.js</a></p>
 
 <hr />
 
