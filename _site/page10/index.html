@@ -144,6 +144,175 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-26T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-imagemin/">August 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-imagemin/" rel="bookmark" title="Gulp-imagemin - оптимизация изображений в Gulp" itemprop="url">Gulp-imagemin - оптимизация изображений в Gulp</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Крайне необходимая задача, возникающая в работе каждого верстальщика - это оптимизация графики, нарезанной из psd-макета или используемой в HTML-шаблоне.</p>
+</blockquote>
+
+<p>Для этой цели существует много разных инструментов, начиная с RIOT и заканчивая утилитами Linux. Но гораздо более удобной возможностью является автоматизация процесса сжатия картинок с помощью плагина под Gulp.</p>
+
+<p>Таким плагином является <a href="https://www.npmjs.org/package/gulp-imagemin" title="Gulp-imagemin">gulp-imagemin</a>. Он умеет сжимать картинки форматов PNG, JPEG, GIF и SVG. Все остальные (не поддерживаемые) форматы графических файлов просто игнорируются плагином <code>gulp-imagemin</code>.</p>
+
+<h2 id="gulp-imagemin">Установка gulp-imagemin</h2>
+
+<p>Установка плагина <code>gulp-imagemin</code> стандартная и производиться командой <code>npm install</code> с ключом <code>--save-dev</code> для внесения пакета в список зависимостей проекта:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-imagemin</span></code></pre></div>
+
+<h2 id="gulp-imagemin-1">Создание задачи под gulp-imagemin</h2>
+
+<p>После установки плагина <code>gulp-imagemin</code> необходимо создать задачу сжатия картинок под этот плагин. Ничего необычного в этом нет и задача создается стандартно. Сначала создаем переменную <code>imagemin</code>, в которую помещаем сам плагин <code>gulp-imagemin</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-imagemin&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>А затем создаем задачу с произвольным именем <code>compress</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Compress Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/images&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Задачу <code>compress</code> можно запускать однократно вручную или автоматически, доверив это дело Gulp и поместив ее внутрь встроенной функции <code>gulp.watch</code>.</p>
+
+<p>Создаю в проекте <code>gulp_test</code> директорию <code>images</code> и размещаю в ней несколько изображений формата <code>.jpg</code>, но достаточно большого размера:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">images</span><span class="p">/</span>
+<span class="n">black</span> <span class="p">(</span><span class="n">22</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">23</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">28</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">31</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">36</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">41</span><span class="p">).</span><span class="n">jpg</span></code></pre></div>
+
+<p>Цель - проверить, действительно ли происходит сжатие графических файлов. Давайте опробуем работу плагина <code>gulp-imagemin</code> однократно, запустив в консоли команду <code>gulp compress</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">compress</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">56</span> <span class="n">ms</span>
+<span class="n">gulp-imagemin</span><span class="err">:</span> <span class="n">Minified</span> <span class="n">6</span> <span class="n">images</span> <span class="p">(</span><span class="n">saved</span> <span class="n">83</span><span class="p">.</span><span class="n">02</span> <span class="n">kB</span> <span class="p">-</span> <span class="n">7</span><span class="p">.</span><span class="n">2</span><span class="p">%)</span></code></pre></div>
+
+<p>Отлично! Задача <code>compress</code> запустилась и выполнилась за 8.56 миллисекунд. При этом было обработано 6 изображений, над которыми была произведена операция сжатия. Экономия размера в результате компресии составила <code>7.2%</code>.</p>
+
+<p>Давайте посмотрим на изображения в оригинале, расположенные в директории <code>images</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_origin_images.png" alt="Оригинальные изображения в проекте" /></p>
+
+<p>… запомним примерные размеры каждого из файлов. А затем взглянем на содержимое директории <code>build/images/</code>, в которой располагаются сжатые плагином <code>gulp-imagemin</code> изображения:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-imagemin_pictures.png" alt="Обработанные плагином gulp-imagemin изображения" /></p>
+
+<p>Видно при сравнении, что размер графических файлов, пускай и ненамного, но уменьшился.</p>
+
+<h2 id="gulp-imagemin----">Gulp-imagemin - автоматический мониторинг</h2>
+
+<p>Давайте доведем нашу задачу до логического завершения и настроим Gulp таким образом, чтобы он автоматически отслеживал добавление в директории <code>images</code> новых изображений.</p>
+
+<p>И как только они появляются там, то немедлено производил бы их сжатие при помощи плагина <code>gulp-imagemin</code>.</p>
+
+<p>Для этого создам задачу мониторинга <code>watch</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;compress&#39;</span><span class="p">]);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>… которую добавлю в очередь на выполнение для дефолтной задачи <code>default</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>Полностью листниг файла <code>gulpfile.js</code> для данного случая выглядит следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-imagemin&#39;</span><span class="p">);</span>
+
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+
+<span class="c1">// Watch Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;compress&#39;</span><span class="p">]);</span>
+<span class="p">});</span>
+
+<span class="c1">// Compress Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/images&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Запускаю в консоли команду <code>gulp</code>, а затем по одному добавлю в директорию <code>images</code> два файла-скриншота, созданных мною для этой статьи.</p>
+
+<p>Видим, что каждый раз, как в директорию <code>images</code> был добавлен файл, Gulp запускал задачу <code>compress</code> на выполнение:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span> <span class="nx">gulp</span>
+  <span class="nx">Using</span> <span class="nx">gulpfile</span> <span class="o">~</span><span class="err">/Projects/gulp_test/gulpfile.js</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="nx">after</span> <span class="mf">8.42</span> <span class="nx">ms</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="nx">after</span> <span class="mi">12</span> <span class="err">μ</span><span class="nx">s</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="nx">after</span> <span class="mi">13</span> <span class="nx">ms</span>
+  <span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">7</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">93.43</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mf">7.7</span><span class="o">%</span><span class="p">)</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="nx">after</span> <span class="mf">2.13</span> <span class="nx">ms</span>
+  <span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">8</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">103.77</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mi">8</span><span class="o">%</span><span class="p">)</span></code></pre></div>
+
+<p>На выполнение первой задачи ушло 7 миллисекунд:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">7</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">93.43</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mf">7.7</span><span class="o">%</span><span class="p">)</span></code></pre></div>
+
+<p>… на вторую задачу - 2.13 миллисекунд:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">8</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">103.77</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mi">8</span><span class="o">%</span><span class="p">)</span></code></pre></div>
+
+<p>При этом я “выиграл” <code>7.7%</code> и <code>8%</code> размера, что скажется на скорости загрузки страницы в браузере. Также обратите внимание, что Gulp продолжает работать, находясь в фоновом режиме.</p>
+
+<h2 id="gulp-imagemin-2">Усложним задачу для gulp-imagemin</h2>
+
+<p>Можно немного усложнить и усовершенствовать процесс оптимизации изображений. Для этого немного перепишу задачу <code>compress</code> таким образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Compress Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">({</span>
+      <span class="nx">progressive</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;images/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Первое изменение - это добавлена опция <code>progressive: true</code> к плагину <code>gulp-imagemin</code>. Эта опция управляет <em>методом сжатия графических файлов</em> и приведена мною для наглядности примера.</p>
+
+<p>Второе изменение - изменена директория назначения. Теперь директория-источник изображений <code>gulp.src('images/*')</code> и директория-“выхлоп” <code>gulp.dest('images/')</code>, куда помещаются обработанные изображения - одна и та же.</p>
+
+<p>Таким образом, достаточно положить в директорию <code>images</code> какое-либо изображение и оно тут же преобразуется в точно такое же изображение, но меньшего размера! Удобно, не правда ли?</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-24T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-plumber/">August 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -657,133 +826,6 @@
 <p>Пример получился не совсем удачный, но, тем не менее, наглядный. Видим, чтобы оба плагина отработали. Была произведена компиляция, а затем “склейка” двух файлов в один.</p>
 
 <p>Конечно, благодаря поточности в Gulp, в одну задачу можно добавлять не два плагина, а гораздо больше.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-20T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-install-and-launch-gulp-uglify/">August 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-install-and-launch-gulp-uglify/" rel="bookmark" title="Gulp - установка и запуск плагина gulp-uglify" itemprop="url">Gulp - установка и запуск плагина gulp-uglify</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Gulp - знакомство и первый запуск”” мы познакомились с установкой менеджера Gulp и запуском первой задачи под него. В этой статье мы перейдем к еще более интересному материалу, в котором узнаем, как устанавливать и запускать плагины под Gulp на примере одного из них - <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">gulp-uglify</a>.</p>
-</blockquote>
-
-<p>Как я уже упоминал ранее, Gulp имеет модульную структуру. Под Gulp, несмотря на молодость проекта, уже написано достаточное количество плагинов. Конечно, оно не сравниться с огромной коллекцией таковых под мега-популярный Grunt, но для большинства случаев жизни уже сейчас их хватит.</p>
-
-<p>Каждый из плагинов - это код, решающий только одну задачу. Например, один плагин умеет сжимать изображения, другой сжимает js-файлы, третий сжимает css-файлы; еще один умеет компилировать scss-файлы в css-файлы. И так далее - список можно продолжать и продолжать.</p>
-
-<p>Становиться понятно, что для конкретной задачи нам нужно установить нужный плагин и создать задачу (task) в файле <code>gulpfile.js</code>. А затем запустить Gulp на выполнение этой задачи. Конечно, задач может быть не одна, а несколько. Все зависит о того, какие именно задачи нам необходимо выполнять.</p>
-
-<p>Давайте рассмотрим процесс установки плагинов и настройки задач на примере одного из них - <code>gulp-uglify</code>. Данный плагин служит для минификации js-файлов - он удаляет пробелы, запятые, точки с запятой. В результате js-файл получается меньшим по размеру.</p>
-
-<p>Все плагины под Gulp размещены по этому адресу - <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">Gulp Plugins</a>. В строке поиска нужно вводить имя искомого плагина, в результате получаем (<em>или не получаем</em>) страницу с описанием плагина и командой для его установки.</p>
-
-<h2 id="gulp-uglify--gulp">Устанавливаем gulp-uglify под Gulp</h2>
-
-<p>На странице плагина <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">gulp-uglify</a> описана команда установки этого плагина, которую мы повторим для себя, в своем проекте:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-uglify</span></code></pre></div>
-
-<p>Опять таки, ключ <code>--save-dev</code> “говорит” менеджеру <code>npm</code> добавить плагин <code>gulp-uglify</code> в качестве зависимости в файл <code>package.json</code>:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">$</span> <span class="err">cat</span> <span class="err">package.json</span>
-<span class="p">{</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;gulp-uglify&quot;</span><span class="p">:</span> <span class="s2">&quot;~0.3.1&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="gulp-uglify--gulp-1">Создаем задачу gulp-uglify под Gulp</h2>
-
-<p>Плагин <code>gulp-uglify</code> установлен и теперь самое время прописать в файле <code>gulpfile.js</code> именованную задачу (named task) под него. Надеюсь, уважаемый читатель помнит о двух типах задач под Gulp, описанных в предыдущей статье “Gulp - знакомство и первый запуск”.</p>
-
-<p>Открываем файл <code>gulpfile.js</code> в редакторе кода (у меня это Sublime Text) и вносим туда следующие строки:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">uglify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">);</span>
-<span class="p">...</span>
-<span class="c1">// Gulp Uglify</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>В принципе, можно и не вводить вышеприведенные строки вручную, а просто скопировать их со страницы описания плагина <a href="https://www.npmjs.org/package/gulp-uglify/" title="Gulp-uglify">gulp-uglify</a>. Они размещены в блоке с заголовком Usage.</p>
-
-<p>Но это не главное. Важнее разобраться, что из себя представляет каждая из этих строк. Так вот, строка <code>uglify = require('gulp-uglify')</code> - это создание переменной с именем <code>uglify</code>, в которую помещается плагин <code>gulp-uglify</code>. Обратите внимание на синтаксис этой строки и ее табуляцию - оба аспекта важны и их несоблюдение приведет к тому, что Gulp не будет работать. По большому счету, можно написать и так - <code>var uglify = require('gulp-uglify');</code>, но предыдущая запись является более правильной.</p>
-
-<p>Далее идут строки для новой именованной задачи для Gulp. Имя задачи задаем произвольно и пусть оно будет таким - <code>gulp-uglify</code>. В теле callback-функции пропишем директорию, содержимое которой Gulp должен отслеживать - <code>gulp.src('js/*.js')</code>. В данном случае указываем, что Gulp должен следить за изменениями всех файлов с расширением .js, расположенных внутри директории <code>js</code>.</p>
-
-<p>Следующая строка <code>.pipe(uglify())</code> получает в виде потока содержимое директории <code>js</code> и обрабатывает его с помощью плагина <code>gulp-uglify</code>, помещенного внутрь переменной <code>uglify</code>. Результат обработки передается в виде потока в строку <code>.pipe(gulp.dest('build/js'))</code>, которая сохраняет его по пути <code>build/js</code>.</p>
-
-<p>Вот мы и разобрали суть задачи в Gulp! Ведь ничего сложного, правда?!</p>
-
-<h2 id="gulp-uglify--gulp-2">Запускаем задачу gulp-uglify в Gulp</h2>
-
-<p>Переходим от слов к делу и запустим на выполнение только что созданную нами задачу <code>gulp-uglify</code>. Не забываем, что именованные задачи в Gulp запускаются с указанием их имени:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">gulp-uglify</span>
-<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;gulp-uglify&#39;</span><span class="p">...</span>
-<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;gulp-uglify&#39;</span> <span class="n">after</span> <span class="n">12</span> <span class="n">ms</span></code></pre></div>
-
-<p>Вуаля! Видим (по аналогии с предыдушим опытом запуска дефолтной задачи), что именованная задача <code>gulp-uglify</code> успешно запустилась, выполнилась за 12 миллисекунд и также успешно завершилась. По идее, теперь по пути <code>build/js</code> у нас должен располагаться минифицированный js-файл (в моем случае это был <code>jquery-1.11.1.js</code>).</p>
-
-<p>Посмотрим и видим, что так оно и есть, файлик <code>jquery-1.11.1.js</code> помещен туда, куда мы и прописывали:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">js</span><span class="p">/</span>
-<span class="n">jquery</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">11</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">js</span></code></pre></div>
-
-<p>А точно ли он минифицированный? Это легко проверить - открываем его в Sublime Text и наблюдаем такую картину:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_gulp_uglify.png" alt="Минифицированный с помощью gulp-uglify файл в Gulp" /></p>
-
-<h2 id="gulp">Полезные плагины под Gulp</h2>
-
-<p>Мы успешно установили и запустили плагин под Gulp - можно в очередной раз поздравить себя! В данном случае это был плагин <code>gulp-uglify</code> для минификации js-файлов.</p>
-
-<p>Однако, как можно догадаться, существует большое количество других полезных плагинов. Все они устанавливаются и настраиваются точно также, как и рассмотренный нами <code>gulp-uglify</code>.</p>
-
-<p>Ниже я приведу примерный список наиболее полезных плагинов под Gulp, существующих на сегодняшний день:</p>
-
-<ul>
-  <li><code>gulp-minify-html</code> // минификация HTML-файлов</li>
-  <li><code>gulp-minify-css</code> // минификация CSS-файлов</li>
-  <li><code>gulp-csso</code> // еще один плагин минификации CSS-файлов</li>
-  <li><code>gulp-uglify</code> // минификация JS-файлов</li>
-  <li><code>gulp-sass</code> // компиляция SCSS-файлов в CSS-файлы</li>
-  <li><code>gulp-ruby-sass</code> // компиляции SCSS-файлов в CSS-файлы, более стабильный</li>
-  <li><code>gulp-concat</code> // конкатенация (соединение нескольких файлов в один файл)</li>
-  <li><code>gulp-jshint</code> // ???</li>
-  <li><code>gulp-livereload</code> // запуск плагина LiveReload</li>
-  <li><code>gulp-watch</code> // мониторинг файлов в фоновом режиме в Gulp</li>
-  <li><code>gulp-notify</code> // вывод окна с уведомлением о событиях в Gulp</li>
-  <li><code>gulp-imagemin</code> // сжатие изображений в Gulp</li>
-  <li><code>gulp-rename</code> // переименование файлов в Gulp</li>
-  <li><code>gulp-plumber</code> // настройка обработки ошибок в Gulp</li>
-</ul>
 
 <hr />
 

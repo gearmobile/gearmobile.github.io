@@ -144,6 +144,265 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-17T00:00:00+04:00"><a href="http://zencoder.ru/compass-hide-text/">May 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/compass-hide-text/" rel="bookmark" title="Замена текста изображением в Compass" itemprop="url">Замена текста изображением в Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При верстке макета довольно часто возникает задача создания кликабельного логотипа страницы.</p>
+</blockquote>
+
+<p>Но логотип страницы, как правило, создается с использованием на все 100% фантазии дизайнера - тут и необычный декоративный шрифт, и всякие добавленные в него изображения. Поэтому на практике обычно такой логотип вырезается из psd-макета целиком, в виде картинки.</p>
+
+<p>В HTML-разметке в заголовке страницы помещается текст-логотип сайта в теге первого уровня <code>h1</code> - все по правилам SEO. А в таблицах стилей производится подмена текста на вырезанное из макета изображение.</p>
+
+<p>В результате удается выйти из положения, когда и овцы целы и волки сыты. В этой статье будут рассмотрены несколько способов, с помощью которых можно решить данную задачу. Причем, решить наиболее простым и быстрым способом, с помощью миксинов благодаря волшебной библиотеке Compass.</p>
+
+<p>Первоначально произведем подключение неоходимого модуля в библиотеке Compass, добавив строку импортирования в проект:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/typography/text/replacement&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>… а затем приступим к изучению миксинов.</p>
+
+<h2 id="hide-text">Миксин hide-text</h2>
+
+<p>Первым миксином, который решает задачу замены текста изображением, является <code>hide-text</code>.</p>
+
+<p>Синтаксис этого миксина таков:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">hide-text</span><span class="o">([$</span><span class="nt">direction</span><span class="o">])</span></code></pre></div>
+
+<p>… где необязательный аргумент <code>$direction</code> определяет направление скрытия текста.</p>
+
+<p>Пример использования данного миксина:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;hidetext&quot;</span><span class="nt">&gt;</span>
+  mixin hide-text
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">426px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/cat.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_01.jpg" alt="Текст с фоновым изображением" /></p>
+
+<p>Подключим к вышеприведенному коду миксин <code>hide-text</code> и посмотрим на результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
+<span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">hide</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_hide-text.jpg" alt="Результат замещения текста с помощью миксина hide-text" /></p>
+
+<p>Результирующий CSS-код будет выглядеть таким образом. Добавляются смещение текста с помощью свойства <code>text-indent</code> с отрицательным значением; предотвращается случайное “схлопывание” блока через свойство <code>overflow: hidden</code>, если в нем вдруг окажутся плавающие элементы; задается расположение текста с левого края блока через свойство <code>text-align: left</code>, чтобы гарантировать его смещение за левый край блока через свойство <code>text-indent</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-119988px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="squish-text">Миксин squish-text</h2>
+
+<p>В библиотеке Compass также имеется миксин <code>squish-text</code> для замещения текста изображением с помощью <strong>эффекта скрытия</strong> данного текста. Другими словами, текст остается на своем месте, просто с помощью определенных CSS-свойств он делается визуально невидимым. Это может быть удобно для браузеров-читалок, которые проговаривают текст вслух для слабовидящих людей.</p>
+
+<p>Синтаксис миксина <code>squish-text</code> таков:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">squish-text</span><span class="p">;</span></code></pre></div>
+
+<p>Пример использования миксина <code>squish-text</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;squishtext&quot;</span><span class="nt">&gt;</span>
+  Mixin squish-text
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="nc">.squishtext</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">480px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/girl.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_02.png" alt="Текст с фоновым изображением" /></p>
+
+<p>Подключим миксин <code>squish-text</code> и посмотрим на результат его работы:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squishtext</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_squish-text.png" alt="Результат замещения текста с помощью миксина squish-text" /></p>
+
+<p>Результат компилирования представленного выше SCSS-кода в CSS-код показан ниже. Довольно интересный способ скрытия текста, который стоит рассмотреть более подробно. С помощью CSS-свойства <code>font</code> сбрасывается на ноль размер шрифта (<em>кегль</em>) и межстрочное расстояние (интерлиньяж) для текста. Цвет текста через CSS-свойство <code>color</code> устанавливается прозрачным. В добавок гарантированно убирается тень у текста, если она у него есть (вдруг сработает наследование).</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squishtext</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">0</span><span class="o">/</span><span class="m">0</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">text-shadow</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Несмотря на то, что визуально результат работы миксина <code>squish-text</code> аналогичен работе миксина <code>hide-text</code>, принцип последнего более эффективен для большинства современных браузеров в вопросе замещения inline-текста.</p>
+
+<p>В показанном ниже примере можно улучшить разметку, “обернув” отдельные участки текста в любой из inline-элементов (<code>span</code>, <code>b</code> или <code>i</code>) и добавив к нему ноебходимый класс:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;squish&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet,<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span> consectetur adipisicing elit,<span class="nt">&lt;/span&gt;</span> sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span>in reprehenderit in voluptate velit esse<span class="nt">&lt;/span&gt;</span> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span>cupidatat non proident<span class="nt">&lt;/span&gt;</span>, sunt in culpa qui officia deserunt mollit anim id est laborum.<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squish</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;PT Sans&#39;</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="err">{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
+    <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_03.png" alt="Текст с отдельными участками, подлежащими скрытию" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squish</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">.</span><span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="err">{</span>
+    <span class="o">...</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>В то время, как экранные программы-читалки и другие подобные инструменты могут свободно прочитать “спрятанный” текст, в окне обычного браузера он ни как не отображен:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_squish-text_text.png" alt="Скрытие текста с помощью миксина squish-text" /></p>
+
+<h2 id="section">Замещение текста изображением с фиксированными размерами</h2>
+
+<p>Если не принимать во внимание технологию спрайтов для фонового изображения, в Compass существует другой миксин, который также позволяет удобно замещать текст изображением. Это полезно, например, когда нужно поместить изображение логотипа в тег заголовка.</p>
+
+<p>Преимущество данного миксина заключается в автоматизированном способе установки размеров для элемента в соответствии с размерами используемого изображения. Для этой цели в библиотеке Compass имеется миксин с говорящим названием <code>replace-text-with-dimensions</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">replace-text-with-dimensions</span><span class="o">()</span><span class="p">;</span></code></pre></div>
+
+<p>Проиллюстрируем применение миксина <code>replace-text-with-dimensions</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;replace_dimensions&quot;</span><span class="nt">&gt;</span>
+  replace-text-with-dimensions
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_04.png" alt="Текст с непримененным миксином replace-text-with-dimensions" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.replace_dimensions</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">replace</span><span class="o">-</span><span class="k">text</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">dimensions</span><span class="p">(</span><span class="s1">&#39;alsatian.jpg&#39;</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Не забудьте активировать строку <code>relative_assets = true</code> в конфигурационном файле <code>config.rb</code>, чтобы сработали относительные пути для изображений!</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_replace-text-with-dimensions.png" alt="Текст с примененным миксином replace-text-with-dimensions" /></p>
+
+<p>Мне кажется, было бы очень любопытно взглянуть на результирующий код компиляции в CSS. Видим, что на изображение указывает корректная ссылка; а также, что у изображения установлены правильные ширина (<code>width</code>) и высота (<code>height</code>). Все это благодаря Compass!</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.replace_dimensions</span> <span class="p">{</span>
+  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-119988px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;../img/alsatian.jpg?1400248446&#39;)</span><span class="p">;</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="k">no-repeat</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">50%</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">470px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="html5-boilerplate">Замена текста изображением в HTML5 Boilerplate</h2>
+
+<p>За годы существования веб-разработки было создано немало оригинальных способов замещения текста изображением. На сегодняшний день наиболее лучшим способом является техника, представленная в хорошо известном проекте <a href="http://html5boilerplate.com" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
+
+<p>Ниже показан пример исходного CSS-кода, взятого из “HTML5 Boilerplate”, в котором показаны в виде классов различные способы замещения текста изображением. В каждом случае кратко описываются преимущества каждого из способов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.ir</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="c">/* IE 6/7 fallback */</span>
+    <span class="o">*</span><span class="k">text-indent</span><span class="o">:</span> <span class="m">-9999px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.ir</span><span class="nd">:before</span> <span class="p">{</span>
+    <span class="k">content</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">150%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">от</span> <span class="err">экранных</span> <span class="err">читалок</span> <span class="err">и</span> <span class="err">браузеров</span>
+
+<span class="nc">.hidden</span> <span class="p">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">none</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">только</span> <span class="err">визуально</span><span class="o">,</span> <span class="err">но</span> <span class="err">оставить</span> <span class="err">доступным</span> <span class="err">для</span> <span class="err">экранных</span> <span class="err">читалок</span>
+
+<span class="nc">.visuallyhidden</span> <span class="p">{</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">clip</span><span class="o">:</span> <span class="n">rect</span><span class="p">(</span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span><span class="p">);</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">-1px</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Расширение</span> <span class="err">класса</span> <span class="nc">.visuallyhidden</span> <span class="err">благодаря</span> <span class="err">возможности</span> <span class="err">для</span> <span class="err">элементов</span> <span class="err">получать</span> <span class="err">фокус</span> <span class="err">с</span> <span class="err">клавиатуры</span>
+
+<span class="nc">.visuallyhidden.focusable</span><span class="nd">:active</span><span class="o">,</span>
+<span class="nc">.visuallyhidden.focusable</span><span class="nd">:focus</span> <span class="p">{</span>
+    <span class="k">clip</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">visible</span><span class="p">;</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">static</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">визуально</span> <span class="err">и</span> <span class="err">от</span> <span class="err">экранных</span> <span class="err">читалок</span><span class="o">,</span> <span class="err">но</span> <span class="err">оставить</span> <span class="err">нетронутой</span> <span class="nt">HTML-</span><span class="err">разметку</span>
+
+<span class="nc">.invisible</span> <span class="p">{</span>
+    <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На этом все. Данная статья является вольным переводом отдельной главы из книги <strong>Ben Frain “Sass and Compass for Designers</strong>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-05-15T00:00:00+04:00"><a href="http://zencoder.ru/css/compass-make-sprite/">May 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -819,336 +1078,6 @@
 <p>Вот, в принципе, и все, что можно рассказать об online-редакторе SassMeister. Единственный момент, с которым я не разобрался, это вкладка <strong>Bookmark</strong> - для чего она нужна и как с ней работать, в чем прикол ее существования в этом редакторе. Может быть, внимательный читатель подскажет, для чего она нужна?</p>
 
 <p>Думаю, для кодеров, которые любят и активно используют препроцессор Sass совместно с великолепной библиотекой Compass и плагинами в ней, площадка для тестирования SassMeister понравиться однозначно!</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-02T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/">May 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~11 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/" rel="bookmark" title="Краткое введение в Susy 2 (Часть 2)" itemprop="url">Краткое введение в Susy 2 (Часть 2)</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье были рассмотрены краткие основы плагина Susy 2 и на примере создана с помощью Susy довольно сложная HTML-разметка.</p>
-</blockquote>
-
-<p>В этой статье будет углубленное изучение плагина Susy 2. Сегодня предстоит изучить вопрос, каким образом можно легко и быстро создавать RWD (Responsive Web Design) с помощью Susy 2.</p>
-
-<p>Если вы начали читать эту статью, но представления не имеете, что такое Susy 2 вообще, то вам стоит обратиться к предыдущей статье “Краткое руководство по Susy 2” - это стоит затраченного времени!</p>
-
-<h2 id="breakpoints">Контрольные точки (breakpoints)</h2>
-
-<p>По умолчанию, плагин Susy 2 не имеет в своем составе миксина для создания контрольных точек <code>breakpoints</code>. Наоборот, разработчики рекомендуют установить отдельно плагин <a href="http://breakpoint-sass.com/" title="Breakpoint">Breakpoint</a> и использовать его для создания медиа-запросов <code>media-queries</code>.</p>
-
-<p>Поэтому сначала произведем установку и импортирование этого плагина.</p>
-
-<blockquote>
-  <p>Прим. переводчика - имеется отдельная статья по установке и работе с плагином Breakpoint в Sass, расположенная по этому адресу - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Медиа-запросы Breakpoint в Sass</a>.</p>
-</blockquote>
-
-<p>Плагин Breakpoint требует для своей работы наличия библиотеки Compass. Поэтому, сначала необходимо выполнить две команды по установке Compass и затем Breakpoint:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span>
-<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
-
-<blockquote>
-  <p>Прим. переводчика: непонятно, что автор имел ввиду, но плагин Breakpoint для своей работы не нуждается в наличии библиотеки Compass. А вот препроцессор Sass ему необходим однозначно.</p>
-</blockquote>
-
-<p>Затем необходимо подключить плагин Breakpoint в конфигурационном файле <code>config.rb</code> и в файле <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="n">config</span><span class="o">.</span><span class="n">rb</span>
-<span class="c1"># Require any additional compass plugins here.</span>
-<span class="nb">require</span> <span class="s1">&#39;susy&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">style</span><span class="nc">.scss</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Теперь все готово для того, чтобы двигаться дальше.</p>
-
-<h2 id="breakpoint">Работаем с плагином Breakpoint</h2>
-
-<p>Если сказать одним предложением, что мне нравиться в использовании плагина Breakpoint, то это легкость, с которой можно создавать контрольные точки в веб-дизайнах под мобильные устройства. Давайте посмотрим, как это делается.</p>
-
-<p>Для того, чтобы воспользоваться плагином Breakpoint, необходимо вызвать одноименный миксин и вставить его в код, передав требуемые аргументы. Эти аргументы преобразуются плагином Breakpoint в соответствующие медиа-запросы. Общий синтаксис миксина таков:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">(&lt;</span><span class="nt">args</span><span class="o">&gt;)</span><span class="p">{</span>
-  <span class="o">//</span> <span class="nt">content</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Прелесть плагина Breakpoint в том, что если вы передаете ему только один аргумент, то он автоматически преобразуется в <code>mobile-first</code>. Этот аргумент должен быть значением минимальной ширины (<code>min-width</code>) разрабатываемого вами сайта, его контрольной точкой:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">1200px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">//</span> <span class="k">content</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>… что при компиляции в CSS-код даст результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">1200px</span><span class="o">)</span><span class="p">{</span>
-  <span class="nc">.container</span><span class="p">{</span>
-    <span class="o">//</span> <span class="k">content</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Миксин Breakpoint очень гибкий и с помощью него при необходимости можно создавать <a href="http://breakpoint-sass.com/#get_started" title="Сложные медиа-запросы">сложные медиа-запросы</a>.</p>
-
-<h2 id="breakpoint---susy-2">Использование Breakpoint совместно с Susy 2</h2>
-
-<p>Предположим, необходимо создать CSS-сетку, которая будет меняться в определенной контрольной точке <code>breakpoint</code>. Изначально все блоки CSS-сетки должны занимать всю ширину окна браузера в 900px. При превышении значения ширины окна в 900px CSS-сетка должна преобразовываться в 10-колоночный макет сайта, который был рассмотрен и создан в предыдущей статье.</p>
-
-<blockquote>
-  <p>Прим. переводчика - все в точности с принципом MobileFirst.</p>
-</blockquote>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_1.jpg" alt="Преобразование дизайна из Mobile View в Desktop View в Susy 2" /></p>
-
-<p>Для того, чтобы осуществить такую задачу, достаточно просто добавить нужную контрольную точку <code>breakpoint</code> в уже существующую таблицу стилей SCSS.</p>
-
-<p>В конкретном случае это будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-<span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-<span class="o">...</span>
-<span class="nc">.column_2</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_1_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_1</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_3_2</span><span class="p">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_4</span><span class="p">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
-        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span></code></pre></div>
-
-<p>То есть, для контрольной точки <code>min-width: 900px</code> создаются правила построения CSS-сетки с использованием плагина Susy 2. Если ширина окна браузера будет меньше 900px, все блоки будут располагаться на всю ширину вертикально (по умолчанию - ведь это и есть нормальный поток). При ширине окна больше 900px подключиться плагин Susy 2 и преобразует CSS-шаблон в 10-колоночный вид для Desktop. Все сделано с учетом принципа MobileFirst.</p>
-
-<p>Готовый пример переработанного кода можно посмотреть здесь - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Susy 2 + Breakpoint</a>.</p>
-
-<p>Все выглядит достаточно просто и работает нормально. Но что, если требуется решить чуть более сложную задачу?</p>
-
-<blockquote>
-  <p>Примечание автора: Если вам не нравиться использовать контрольные точки с помощью плагина Breakpoint, вы можете свободно применять старые добрые медиа-запросы <code>media queries</code>, как это делается в CSS.</p>
-</blockquote>
-
-<h2 id="susy-2">Добавляем несколько контрольных точек в Susy 2</h2>
-
-<p>Допустим, стоит задача создать еще одно состояние шаблона, промежуточное между состоянием “Mobile View” и состоянием “Desktop View”. Необходимо, чтобы при переходе от мобильного экрана к экрану монитора появилось еще одно состояние для планшетных компьютеров “Tablet View”, с отдельной информационной колонкой справа:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_2.jpg" alt="Промежуточный дизайн Tablet View для планшетных компьютеров" /></p>
-
-<p>Этот случай выглядит немного сложнее, чем предыдущий. Главным образом потому, что блок <code>column_1</code> меняет свое положение и перемещается слева направо. Каким же образом можно осущесвить подобный маневр? Здесь необходимо применить небольшую хитрость.</p>
-
-<p>Немного проанализируем будущий шаблон Tablet View для планшетного дизайна. В нем блоки <code>column_1</code> и <code>column_3</code> будут занимать 2 колонки из общих 6 колонок; в тоже время как блок <code>column_2</code> будет занимать 4 колонки из 6. Кроме того, блок <code>column_1</code> будет располагаться над блоком <code>column_3</code>.</p>
-
-<p>Вся хитрость заключается в миксине <code>last</code> (прим. переводчика: логично предположить, если до этого момента внимательно изучался результирующий CSS-код работы плагина Susy 2. Вот и profit чтения исходных кодов страницы!).</p>
-
-<p>Давайте взглянем на готовый SCSS-код и сразу многое станет понятно:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Tablet View</span>
-<span class="c">----------------------------*/</span>
-<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-<span class="nc">.column_2</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_1_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_1</span><span class="o">,</span> <span class="nc">.column_2_2_2</span><span class="o">,</span> <span class="nc">.column_2_4</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_3_2</span><span class="p">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_4</span><span class="p">{</span>
-        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Обратите внимание, что для блоков <code>.column_1</code> и <code>.column_3</code> изменилась их ширина и добавился миксин <code>last</code>. Если взглянуть на скомпилированный CSS-код, то увидим, что для этих блоков задано “плавание” вправо и убран правый <code>margin</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В то же время, для блока <code>.column_2</code> изменилась только его ширина, а “плавание” осталось прежним - влево. Вот в этом и заключается маленький секрет изменения раскладки блоков в шаблоне:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>В блоке <code>.column_2</code> также были произведены изменения ширины некоторых блоков с тем, чтобы шаблон в этом виде максимально соответсвовал своему предназначению - использованию на планшетных компьютерах. В частности, была увеличена ширина блоков <code>.column_2_2_1</code>, <code>.column_2_2_2</code>, <code>.column_2_4</code> для того, чтобы ими было удобно пользоваться на небольшом экране.</p>
-
-<p>Полный код получившегося примера можно посмотреть здесь - <a href="https://gist.github.com/roowa/11472003" title="Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View">Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View</a>.</p>
-
-<h2 id="susy-breakpoint">Миксин Susy-Breakpoint</h2>
-
-<p>Плагин Susy 2 имеет в своем составе дополнительный миксин <code>susy-breakpoint</code>. Цель создания и применения этого миксина - сокращенная форма записи кода контрольных точек в Sass, в точности следуя принципу этого препроцессора - DRY.</p>
-
-<p>Чтобы быть более понятным, приведу ниже кусочек кода, написанный с помощью миксина <code>susy-breakpoint</code> и точно такой же кусочек кода, написаный без этого миксина, как это делалось ранее в этой статье:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">C</span> <span class="err">использованием</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
-<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-
-<span class="o">//</span> <span class="err">Без</span> <span class="err">использования</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
-<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Видим, что миксин <code>susy-breakpoint</code> действительно использует сокращенную запись, в которой первый аргумент - это значение <code>breakpoint</code> (контрольной точки), а второй аргумент - число колонок, на которое разбита ширина шаблона.</p>
-
-<p>Тогда в миксине <code>span</code> достаточно указать число колонок из общего числа (которое равно 6), которое должен занимать указанный элемент. И что он является последним <code>last</code> с своем ряду (как дополнение).</p>
-
-<p>Приведем ниже измененый SCSS и CSS-код нашего разрабатываемого примера, с учетом использования миксина <code>susy-breakpoint</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-
-<span class="nc">.column_2</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">...</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>Лично я предпочитаю использовать первый метод, с применением плагина Breakpoint (прим. переводчика: мне он также кажется более наглядным и интуитивно понятным). Естественно, можно с одинаковым успехом пользоваться обоими сопособами. Все зависит от того, какой вам больше нравиться и легче применять на практике.</p>
-
-<p>В этом участке примеры вы, внимательный читатель, могли заметить, что допущена маленькая неточность, упущение. Связано оно с тем, что плавающему контейнеру разрешено занимать всю ширину окна браузера, даже если оно слишком большое. Давайте исправим этот недостаток.</p>
-
-<h2 id="section">Ограничение блока-контейнера по ширине</h2>
-
-<p>Так как в этом примере используется плавающий контейнер, то ограничить его по ширине очень просто:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>В результате будет произведено ограничение блока с классом <code>.container</code> по максимальной ео ширине:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>Точно такого же результата можно добиться, если просто записать:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>К сожалению, точно также нельзя поступить в случае с CSS-сетками фиксированной ширины <code>static grid</code>, потому что плагин Susy 2 производит все необходимые математические вычисления в CSS-сетке и расчет максимальной ширины блока-контейнера этой же CSS-сетки одновременно. Для построения CSS-сетки с фиксированной шириной необходим другой способ.</p>
-
-<p>Но рассмотрение этого способа оставим на следующий раз, так как на сегодня уже достаточно.</p>
-
-<p>Окончательный результат рассмотренного в этой статье шаблона можно посмотреть здесь - <a href="https://gist.github.com/roowa/11473471" title="Susy + Breakpoint = Final">Susy + Breakpoint = Final</a>.</p>
-
-<p>Данная статья является вольным переводом и обработкой оригинала - <a href="http://www.zell-weekeat.com/susy2-tutorial-2/" title="A Complete Tutorial to Susy 2 (Part 2)">A Complete Tutorial to Susy 2 (Part 2)</a>.</p>
 
 <hr />
 

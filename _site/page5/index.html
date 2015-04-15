@@ -144,6 +144,92 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-fallback-with-jquery/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/svg/svg-fallback-with-jquery/" rel="bookmark" title="SVG fallback с помощью jQuery" itemprop="url">SVG fallback с помощью jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Краткая статья, посвященная тому же вопросу - как реализовать кросс-браузерную поддержку SVG в браузерах.</p>
+</blockquote>
+
+<p>В предыдущей статье “SVG fallback с помощью PNG” было показано четыре очень интересных способа реализации такой задачи. В этой статье будут показаны также несколько способов решения, но уже с помощью библиотеки jQuery .</p>
+
+<p>В начале статьи автор рассказывает о преимуществах использования формата графики SVG. Думаю, что многие уже устали читать деферамбы о пользе SVG. Мне, как переводчику, тем более надоело переводить всю эту “воду”, поэтому смело ее опускаю и перехожу к главному.</p>
+
+<h2 id="jquery--modernizr">jQuery и Modernizr</h2>
+
+<p>Для реализации этого способа понадобиться библиотека Modernizr. Код реализации должен выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">Modernizr</span><span class="p">.</span><span class="nx">svg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="c1">// Supports SVG</span>
+<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+  <span class="c1">// Doesn&#39;t support SVG (Fallback)</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Если Modernizr обнаружит, что пользовательский браузер не поддерживает SVG, то запуститься простой jQuery-скрипт, который произведет замену расширения <code>svg</code> на <code>png</code> у всех файлов-изображений:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="nx">Modernizr</span><span class="p">.</span><span class="nx">svg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;img[src*=&quot;svg&quot;]&#39;</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">attr</span><span class="p">(</span><span class="s1">&#39;src&#39;</span><span class="p">).</span><span class="nx">replace</span><span class="p">(</span><span class="s1">&#39;.svg&#39;</span><span class="p">,</span> <span class="s1">&#39;.png&#39;</span><span class="p">);</span>
+  <span class="p">});</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Данный способ имет точно такие же ограничения, что и скрипт из предыдущей статьи - “SVG fallback с помощью PNG”. То есть, нужно иметь два комплекта файлов - один в SVG-формате, другой в PNG-формате. Имена файлов должны быть идентичными.</p>
+
+<h2 id="svgmagic-----jquery">SVGMagic - плагин под jQuery</h2>
+
+<p><a href="https://dirkgroenen.github.io/SVGMagic/index.html" title="SVGMagic">SVGMagic</a> - это простой плагин под библиотеку jQuery, который отыскивает в HTML-документе все SVG-изображения (в том числе и фоновые SVG-изображения). А затем им создаются PNG-копии всех найденных SVG-изображений, если браузер пользователя не поддерживает SVG.</p>
+
+<p>Для работы с плагином SVGMagic достаточно установить его в проект и запустить инициализацию через jQuery:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">).</span><span class="nx">svgmagic</span><span class="p">();</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Работа плагина SVGMagic строится следующим образом. Проверяется возможность браузером пользователя отображения SVG-изображений. Если такой поддержки нет, то плагин выполняет полную проверку всего HTML-документа и собирает коллекцию всех URL на SVG-файлы, размещенные внутри этого документа.</p>
+
+<p>Затем эта коллекция URL отправляется на сервер плагина. Сервер производит скачивание всех SVG-изображений по этим URL. Затем производиться конвертирование SVG в PNG.</p>
+
+<p>На страницу клиента отправляется новая коллекция URL, которые теперь указывают на файлы формата PNG. Браузер посетителя загружает по этим ссылкам новые PNG-файлы и внешний вид страницы не нарушается.</p>
+
+<h2 id="svgeezy------jquery">SVGeezy - еще один плагин jQuery</h2>
+
+<p><a href="http://benhowdle.im/svgeezy/" title="SVGeezy">SVGeezy</a> является fallback-плагином в полном смысле этого слова. Плагин проверяет поддержку SVG в браузере пользователя. Если таковой нет, то выполняется замена значения в атрибуте <code>src</code> на то, в котором указывается на путь PNG-файла.</p>
+
+<p>Для работы с плагином нужно подключить его в проект и инициализировать:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">svgeezy</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="kc">false</span><span class="p">,</span> <span class="s1">&#39;png&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>Первый параметр плагина SVGeezy “говорит” ему - не выполнять или выполнять проверку. Если необходима проверка плагином SVGeezy браузера и замена изображений, то нужно оставить значение в <code>false</code>. Этот параметр может понадобиться в случае, когда нет необходимости в работе плагина на каких-то страницах.</p>
+
+<p>Второй параметр - это тип файла, который будет заменять SVG на странице. Тип файла может быть любым; только нужно удостовериться, что файлы с таким расширением существуют.</p>
+
+<p>Например, файл по пути <code>/images/logo.svg</code> будет заменен файлом по пути <code>/images/logo.png</code>.</p>
+
+<p>На этом самая интересная часть статьи “<a href="http://www.jquerybyexample.net/2014/09/how-to-svg-fallback-with-png-jquery.html" title="How to fallback to PNG if SVG not supported?">How to fallback to PNG if SVG not supported?</a>” завершается. Как лично мне кажется, в данной статье заслуживают внимания только первый и последний способы реализации SVG fallback.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-fallback-png/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -818,61 +904,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-09T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/">November 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/" rel="bookmark" title="Размер pattern'а в Photoshop CC 2014" itemprop="url">Размер pattern'а в Photoshop CC 2014</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Коротенькая заметка о небольшом баге в Photoshop CC 2014, связанном с невозможностью узнать размер pattern’а.</p>
-</blockquote>
-
-<p>В предыдущих версиях Photoshop все было проще - выбираешь в палитре слоев примененный образец и в окне “Pattern Overlay” достаточно навести курсор мыши на пример pattern’а. Появляется всплывающая подсказка, в которой видны размеры образца.</p>
-
-<p>В Photoshop CC 2014 теперь таким образом невозможно получить подсказку о размере образцов изображения. Это баг или фича Photoshop CC 2014 - непонятно. Но жить стало труднее без такой возможности.</p>
-
-<p>Однако, выход все же есть, хоть и через всем известное место. Решение таково.</p>
-
-<h2 id="pattern-stamp">Шаг первый - Pattern Stamp</h2>
-
-<p>В палитре инструментов выбираем инструмент Pattern Stamp:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/pattern_stamp.png" alt="Инструмент Pattern Stamp" /></p>
-
-<h2 id="section">Шаг второй - верхняя панель инструментов</h2>
-
-<p>Переводим взгляд вверх, на верхнюю панель инструментов (<em>или как она там называется - неважно</em>). На ней находим иконку окна Pattern Overlay:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/pattern_overlay.png" alt="Окно Pattern Overlay" /></p>
-
-<h2 id="pattern-overlay">Шаг третий - окно Pattern Overlay</h2>
-
-<p>Щелкаем мышкой по этой иконке. Появится окно Pattern Overlay со списком образцов изображений. Наводим курсор мыши на нужный образец и в появившемся tooltip видим размеры (<em>момент появления tooltip я не заснял - но оно работает</em>):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/pattern_overlay_window.png" alt="Размер pattern'а в Photoshop" /></p>
-
-<h2 id="section-1">Заключение</h2>
-
-<p>Вот такую небольшую головоломку подкинули нам разработчики Photoshop. Но хоть и через заднее место, но выход все же есть.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
