@@ -46,6 +46,10 @@ share: true
 
 На GitHub имеется подробный пример markdown-синтаксиса - [Remarkable Demo][5], созданного в этом редакторе. Там есть что посмотреть и чему поучиться - своеобразная реклама редактора Remarkable.
 
+{% highlight html %}
+<iframe width="560" height="315" src="https://www.youtube.com/embed/Puzdbgo1b9A" frameborder="0"> </iframe>
+{% endhighlight %}
+
 Одна приятная и мощная особенность редактора - возможность экспортирования в HTML или PDF.
 
 Remarkable автоматически подсчитывает число строк, слов и символов в тексте и отображает эту информацию в строке состояния.
