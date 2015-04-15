@@ -20,29 +20,29 @@ share: true
 
 После установки и запуска редактор будет иметь такой примерный вид:
 
-![Remarkable - markdown editor]({{site.url}}/images/uploads/2015/04/remarkable_example_text.png  "Remarkable - markdown editor")
+![Remarkable - markdown editor]({{site.url}}/images/uploads/2015/04/remarkable_example_text.png "Remarkable - markdown editor")
 
 Вверху видим панель инструментов, одного взгляда на которую достаточно, чтобы разобраться - что для чего предназначено.
 
 Вставка, открытие и сохранение документа; иконки Undo и Redo; форматирование текста - **Bold**, *Italic*, ~~Stroke~~; удобные кнопки для вставки на страницу изображения, ссылки или timestamp:
 
-![Remarkable - insert images and links]({{site.url}}/images/uploads/2015/04/remarkable_links_images.png  "Remarkable - insert images and links")
+![Remarkable - insert images and links]({{site.url}}/images/uploads/2015/04/remarkable_links_images.png "Remarkable - insert images and links")
 
 Окно редактора Remarkable разбито на две части - левая для редактирования, правая - для предпросмотра. Все как и должно быть в нормальном markdown-редакторе.
 
 Предварительный просмотр можно отключить:
 
-![Remarkable - disable live preview]({{site.url}}/images/uploads/2015/04/remarkable_disable_live_preview.png  "Remarkable - disable live preview")
+![Remarkable - disable live preview]({{site.url}}/images/uploads/2015/04/remarkable_disable_live_preview.png "Remarkable - disable live preview")
 
 Есть также "ночной" режим работы:
 
-![Remarkable - night mode]({{site.url}}/images/uploads/2015/04/remarkable_nightmode.png  "Remarkable - night mode")
+![Remarkable - night mode]({{site.url}}/images/uploads/2015/04/remarkable_nightmode.png "Remarkable - night mode")
 
 Программа поддерживает синтаксис [Github Flavoured Markdown][4]:
 
-![Markdown Support]({{site.url}}/images/uploads/2015/04/remarkable_markdown.png  "Markdown Support")
+![Markdown Support]({{site.url}}/images/uploads/2015/04/remarkable_markdown.png "Markdown Support")
 
-![Markdown Support]({{site.url}}/images/uploads/2015/04/remarkable_markdown_support.png  "Markdown Support")
+![Markdown Support]({{site.url}}/images/uploads/2015/04/remarkable_markdown_support.png "Markdown Support")
 
 На GitHub имеется подробный пример markdown-синтаксиса - [Remarkable Demo][5], созданного в этом редакторе. Там есть что посмотреть и чему поучиться - своеобразная реклама редактора Remarkable.
 
