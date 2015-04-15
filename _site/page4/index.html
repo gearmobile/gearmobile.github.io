@@ -144,6 +144,152 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/css/nib-stylus/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/nib-stylus/" rel="bookmark" title="Nib - библиотека миксинов под Stylus" itemprop="url">Nib - библиотека миксинов под Stylus</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Легкое знакомство с библиотекой Nib под препроцессор Stylus. Эта библиотека является тем же самым, что Compass или Bourbon под препроцессор Sass.</p>
+</blockquote>
+
+<p>Библиотека миксинов Nib написана под препроцессор Stylus и является аналогом более известных библиотек Compass или Bourbon под препроцессор Sass. С самим препроцессором Stylus я с вами познакомился немного раньше - скажем так, это было краткое и легкое знакомство.</p>
+
+<p>Библиотека Nib проживает по адресу - <a href="https://github.com/tj/nib" title="Nib">Nib GitHub</a>. Она маленькая и легкая, но должна быть полезной. Поэтому мне необходимо с ней познакомиться поближе.</p>
+
+<h2 id="nib">Установка библиотеки Nib</h2>
+
+<p>В Сети мною было найдено два способа установки данной библиотеки:</p>
+
+<ul>
+  <li>с использованием GitHub</li>
+  <li>с использованием менеджера пакетов npm</li>
+</ul>
+
+<p>Второй способ мне кажется более удобным, так как в этом случае библиотека устанавливается глобально и доступна для любого проекта из любого места файловой системы. В первом же случае придется устанавливать библиотеку каждый раз - локально в каждый отдельный проект.</p>
+
+<p>Если вдруг в системе еще не установлен препроцессор Stylus, то первоначально необходимо установить его командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">stylus</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
+
+<p>Не забудьте добавить ключ <code>--global</code>, чтобы препроцессор установился глобально в системе.</p>
+
+<p>Установка библиотеки Nib почти ничем не отличается от установки препроцессора и выполняется командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">nib</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
+
+<p>Отлично! Все, что теперь осталось сделать - это подключить библиотеку в текущий проект (текущий рабочий Stylus-файл).</p>
+
+<p>Это выполняется директивой <code>@import</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">@import</span> <span class="s1">&#39;nib&#39;</span></code></pre></div>
+
+<p>Проверим, что библиотека подключена без ошибок и отрабатывает в проекте\файле. Для этого запишем в файле <code>style.styl</code> несколько миксинов этой библиотеки и “натравим” на файл <code>style.styl</code> утилиту <code>stylus</code> с несколькими ключами:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">-u</span> <span class="n">nib</span> <span class="n">-w</span> <span class="n">style</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
+
+<p>здесь:</p>
+
+<ul>
+  <li><code>-u nib</code> - говорит о том, что при компиляции в CSS должно учитываться наличие библиотеки Nib</li>
+  <li><code>-w style.styl</code> - мониторить изменения в файле <code>style.styl</code> и своевременно выполнять его компиляцию в CSS</li>
+</ul>
+
+<p>Посмотрим на результат компиляции Stylus в CSS - очень уж любопытно, получилось ли?</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/12/nib.png" alt="Библиотека Nib в действии" /></p>
+
+<p>Отлично! Все работает четко - миксины преобразуются в готовый CSS-код. Правда, выглядит он немного неприглядно - не причесанный и не почищенный.</p>
+
+<p>Ну это решается просто - достаточно на этот CSS-файл натравить Gulp-плагины <a href="https://www.npmjs.com/package/gulp-csscomb" title="gulp-csscomb">gulp-csscomb</a> и <a href="https://www.npmjs.com/package/gulp-autoprefixer" title="gulp-autoprefixer">gulp-autoprefixer</a>.</p>
+
+<p>Главное - библиотека подключена и работает!</p>
+
+<h2 id="nib------gulp">Nib - как подружить с Gulp</h2>
+
+<p>До этого момента мною использовалась нативная утилита <code>stylus</code> для компиляции из формата Stylus в формат CSS. И в том числе - с поддержкой библиотеки Nib.</p>
+
+<p>Однако, на практике такой способ вряд-ли будет использоваться. Я имею ввиду, что использование лишь одной утилиты <code>stylus</code> - я сомневаюсь, что кому-либо пригодиться.</p>
+
+<p>Гораздо практичнее использование Gulp, у которого есть соответствующий плагин <a href="https://www.npmjs.com/package/gulp-stylus" title="Stylus plugin for gulp">gulp-stylus</a> для компиляции из формата Stylus в CSS.</p>
+
+<p>Этот плагин имеет поддержку библиотеки Nib, достаточно только настроить таковую в своем проекте.</p>
+
+<p>Ниже я рассмотрю процесс подключения и настройки Nib (а заодно - и Stylus) в моем любимом Gulp.</p>
+
+<h2 id="gulp-stylus--nib">Установка плагинов gulp-stylus и nib</h2>
+
+<p>В своем рабочем проекте необходимо установить два плагина (<em>с помощью консоли</em>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">gulp-stylus</span> <span class="n">nib</span> <span class="p">-</span><span class="n">-save-dev</span></code></pre></div>
+
+<p>В результате оба пакета установятся в проект и добавятся в файл package.json в качестве зависимостей:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">...</span>
+<span class="s2">&quot;gulp-stylus&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.3.4&quot;</span><span class="p">,</span>
+<span class="s2">&quot;nib&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.0.4&quot;</span>
+<span class="p">...</span></code></pre></div>
+
+<h2 id="gulpfilejs">Настройка файла gulpfile.js</h2>
+
+<p>В файле <code>gulpfile.js</code> необходимо внести несколько правок. Первым делом - добавляем в начало файла две с строки:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+  <span class="nx">stylus</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-stylus&#39;</span><span class="p">),</span>
+  <span class="nx">nib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nib&#39;</span><span class="p">),</span>
+<span class="p">...</span></code></pre></div>
+
+<p>Затем создаем задачу task для компиляции из Stylus в CSS. В качестве параметра у метода <code>stylus</code> будет дополнительная строка <code>use:[nib()]</code>, говорящая о том, что необходимо использовать библиотеку Nib:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;stylus&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;app/styles/common.styl&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">stylus</span><span class="p">({</span><span class="nx">use</span><span class="o">:</span><span class="p">[</span><span class="nx">nib</span><span class="p">()]}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">prefixer</span><span class="p">({</span>
+      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 2 versions&#39;</span><span class="p">]</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">csscomb</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;dist/assets/styles/&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Вот это и все (<em>необходимый минимум</em>), чтобы подружить библиотеку Nib c Gulp.</p>
+
+<p>Не забываем подключить в stylus-файл проекта библиотеку:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;nib&#39;</span></code></pre></div>
+
+<h2 id="nib-1">Миксины библиотеки Nib</h2>
+
+<p>С подключением библиотеки Nib разобрались. Остался вопрос - а что там внутри, под капотом у Nib?</p>
+
+<p>С малой толикой миксинов я уже познакомился, когда создавал тестовую страничку подключения и компиляции (<em>см. изображение выше</em>).</p>
+
+<p>На <a href="https://github.com/tj/nib" title="Nib GitHub">официальной странице Nib</a> есть ссылка на документацию по миксинам - <a href="http://tj.github.io/nib/" title="Документация миксинов Nib">Документация миксинов Nib</a>.</p>
+
+<p>Там все описано просто и понято, с подробными примерами. Осталось только читать и пользоваться.</p>
+
+<p>В принципе, больше и сказать мне нечего (<em>по крайней мере - мне</em>) по поводу миксинов в Nib. Дальше только - брать их и использовать на практике.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/wordpress/modal-window-easy-fancybox/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -653,261 +799,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+03:00"><a href="http://zencoder.ru/css/sass-selector-placeholder/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-selector-placeholder/" rel="bookmark" title="Знакомимся с 'тихими' placeholder" itemprop="url">Знакомимся с 'тихими' placeholder</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Статья посвящена вопросу “тихих” placeholder’ов в препроцессоре Sass. Что это такое и в чем преимущество их использования.</p>
-</blockquote>
-
-<p>Оригинал статьи размещен здесь - <a href="http://thesassway.com/intermediate/understanding-placeholder-selectors" title="Understanding placeholder selectors">Understanding placeholder selectors</a>.</p>
-
-<p>Препроцессор Sass предоставляет несколько способов создания одного фрагмента кода, который будет многократно использоваться внутри CSS-кода.</p>
-
-<p>Например, можно воспользоваться миксинами (<code>mixins</code>) для вставки группы CSS-свойств (или CSS-правил) в CSS-коде.</p>
-
-<p>Или же использовать директиву <code>@extend</code> для расширения набора CSS-свойств одного HTML-элемента за счет CSS-свойств другого HTML-элемента.</p>
-
-<p>В Sass версии 3.2 введена новая концепция под названием <code>placeholder</code>, которая делает использование директивы <code>@extend</code> еще более эффективным способом.</p>
-
-<p>Но прежде чем мы перейдем к рассмотрению этого нововведенния, давайте остановимся на моменте, каким образом работает расширение (<code>@extend</code>) CSS-свойств в Sass.</p>
-
-<h2 id="extend">Как работает @extend</h2>
-
-<p>Директива <code>@extend</code> в препроцессоре Sass позволяет CSS-селекторам с легкостью обмениваться между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.icon</span><span class="o">,</span> <span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Рассмотрим “механизм” показанного выше примера более детально. В нем директива <code>@extend</code> играет ключевую роль. С помощью нее селекторы <code>.error-icon</code> и <code>.info-icon</code> наследуют свойства селектора <code>.icon</code>. При изменении CSS-свойств селектора <code>.icon</code> автоматически будут меняться свойства селекторов <code>.error-icon</code> и <code>.info-icon</code>, так как они наследуют определенный набор CSS-свойств у селектора <code>.icon</code>. Довольно изящный подход, не правда ли?</p>
-
-<p>А вот теперь наступает интересный момент. Что, если элемент с классом <code>.icon</code> не планируется использовать и он даже не будет присутствовать в HTML-разметке? Но CSS-свойства этого элемента нам нужны для стилизации элементов <code>.error-icon</code> и <code>.info-icon</code>.</p>
-
-<p>Получается, что результирующий CSS-код будет неоправданно раздут из-за того, что в нем присутствует “лишний” элемент, который напрямую никогда не будет использован.</p>
-
-<p>И тут наступает момент для выхода на сцену героя этой статьи - селектора <code>placeholder</code> (его еще называют “тихим” <code>placeholder</code>‘ом):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/placeholder.jpg" alt="Тихий placeholder" /></p>
-
-<h2 id="placeholder">Знакомимся с селектором placeholder</h2>
-
-<p>Селекторы <code>placeholder</code> были введены в Sass как раз для того, чтобы решать вышеназванную проблему. Синтаксис <code>placeholder</code> очень похож на синтаксис обычных CSS-классов, только вместо точки (<code>.</code>) перед именем ставиться символ процента <code>%</code>.</p>
-
-<p>Селекторы <code>placeholder</code> имеют одну специфичную для них особенность - они никак не проявляют себя в скомпилированном CSS-коде. Можно сказать по другому - вы никогда не найдете селекторов <code>placeholder</code> в результирующем CSS-коде (поэтому они и носят такое название - “тихие” <code>placeholder</code>). В скомпилированном CSS-коде будут только селекторы, которые используют “тихие” <code>placeholder</code>‘ы, но никак не сами “тихие” <code>placeholder</code>‘ы.</p>
-
-<p>Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса <code>.icon</code> на имя “тихого” placeholder’а - <code>%icon</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В результате скомпилированный CSS-код будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Обратите внимание на важный момент - класс <code>.icon</code> теперь не присутствует в результирующем CSS-коде! Его там нет!</p>
-
-<h2 id="extend--include">@extend или @include</h2>
-
-<p>На первый взгляд может показаться, что “тихие” <code>placeholder</code> - это почти тоже самое, что и миксины (<code>mixin</code>). С функциональной точки зрения такое утверждение абсолютно верно - результат в браузере получается идентичным. А вот с точки зрения CSS разница очень существенная!</p>
-
-<p>Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином <code>@mixin icon</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">icon</span> <span class="p">{</span>
-  <span class="nt">transition</span><span class="o">:</span> <span class="nt">background-color</span> <span class="nt">ease</span> <span class="nc">.2s</span><span class="o">;</span>
-  <span class="nt">margin</span><span class="o">:</span> <span class="nt">0</span> <span class="nc">.5em</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Посмотрим на сгенерированный CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>С точки зрения разработки данный пример ничем не хуже примера с использованием “тихого” <code>placeholder</code>‘а.</p>
-
-<p>Но обратите внимание на тот факт, что CSS-правила <code>transition: background-color ease .2s;</code> и <code>margin: 0 .5em;</code> дублируются между селекторами <code>.error-icon</code> и <code>.info-icon</code>, что приводит к неоправданному раздутию кода. В случае использования “тихого” <code>placeholder</code> этого не происходит.</p>
-
-<h2 id="section">Ограничения</h2>
-
-<p>Использование директивы <code>@extend</code> имеет одно ограничение, связанное с тем, что применение “тихих” <code>placeholder</code>‘ов никак не оправдывает себя в медиа-запросах <code>@media</code>.</p>
-
-<p>Рассмотрим такой пример:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-
-  <span class="nc">.error-icon</span> <span class="p">{</span>
-    <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nc">.info-icon</span> <span class="p">{</span>
-    <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="p">}</span>
-
-<span class="p">}</span></code></pre></div>
-
-<p>Видим, что в данном случае “тихий” <code>placeholder</code> добавлен для селекторов, находящихся внутри медиа-запроса <code>@media</code>.</p>
-
-<p>Однако, при попытке компиляции этого SCSS-кода в CSS-код получиться ошибка:</p>
-
-<blockquote>
-  <p>You may not @extend an outer selector from within @media. You may only @extend selectors within the same directive. From “@extend %icon” on line 8 of icons.scss</p>
-</blockquote>
-
-<p>Когда я первый раз увидел такую ошибку, то подумал, что это баг. Но по зрелом размышлении пришел к выводу, что в данном подходе все правильно.</p>
-
-<p>Механизм работы директивы <code>@extend</code> основан на добавлении одного селектора к другому селектору без необходимости дублировать CSS-свойства этих селекторов. Однако невозможно объединять селекторы, находящиеся в разных медиа-запросах <code>@media</code>.</p>
-
-<p>Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для “тихого” <code>placeholder</code>, распространяют свои свойства на селекторы, не размещенные внутри этого запроса.</p>
-
-<p>Выражение достаточно запутанное, поэтому лучше приведу пример:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-  <span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Компиляция пройдет без ошибок и ее результатом будет CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-  <span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
-    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-1">Заключение</h2>
-
-<p>Обе директивы <code>@extend</code> и <code>@include</code> являются очень полезными инструментами, между которыми существует тонкое различие. Если вопрос производительности генерируемого CSS-кода имеет для вас важное значение или же перед вами стоит проблема повторяемости кода, то решением будет являться директива <code>@extend</code>. В некоторых случая <code>@extend</code> значительно упрощает получаемый CSS-код и улучшает его производительность.</p>
-
-<p>Конечно же, ничто не мешает вам смешивать между собой директиву <code>@extend</code> и миксин <code>mixin</code> (<em>если этого требуют обстоятельства</em>):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-  <span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@mixin</span> <span class="nt">icon</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="o">$</span><span class="nt">url</span><span class="o">)</span> <span class="p">{</span>
-  <span class="k">@extend</span> <span class="o">%</span><span class="nt">icon</span><span class="p">;</span>
-  <span class="nt">background-color</span><span class="o">:</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
-  <span class="nt">background-url</span><span class="o">:</span> <span class="nt">url</span><span class="o">($</span><span class="nt">url</span><span class="o">);</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">(</span><span class="nb">red</span><span class="o">,</span> <span class="s1">&#39;/images/error.png&#39;</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">(</span><span class="nb">blue</span><span class="o">,</span> <span class="s1">&#39;/images/info.png&#39;</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1159,6 +1050,12 @@
       <li>
         
           <a href="http://zencoder.ru/page41">41</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page42">42</a>
         
       </li>
     
