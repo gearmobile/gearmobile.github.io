@@ -144,6 +144,110 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-09-02T00:00:00+04:00"><a href="http://zencoder.ru/git/git-rm-and-git-mv/">September 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-rm-and-git-mv/" rel="bookmark" title="git rm и git mv - удаление и переименование в Git" itemprop="url">git rm и git mv - удаление и переименование в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Еще один важный практический вопрос при работе с Git - это операции с файлами.</p>
+</blockquote>
+
+<p>В частности, это операции удаления и переименования файлов. В системе <a href="http://git-scm.com/" title="Git">Git</a> имеются специальные команды, которые очень похожи на консольные команды <code>rm</code> и <code>mv</code> в Linux/Mac OS. Но для Git они выглядят несколько иначе: <code>git rm</code> - для удаления файлов и <code>git mv</code> - для переименования файлов. Ниже я рассмотрю обе эти комадны более подробно.</p>
+
+<h2 id="git-rm">Команда git rm</h2>
+
+<p>Для удаления файлов в системе Git, как уже упоминалось выше, имеется специальная команда <code>git rm</code>. Ее отличие от обычной консольной команды <code>rm</code> (в том же Linux) заключается в особенности самой системы Git.</p>
+
+<p>Как хорошо известно, в системе Git файл может одновременно существовать в трех ипостасях: в области “Working Directory”, в области “Staging Area”, в области “Repository”. Удаление файла из области “Working Directory” не приведет к его удалению из областей “Staging Area” и “Repository”.</p>
+
+<p>Поэтому, чтобы удалить файл, нужно (в идеале) выполнить три команды подряд для удаления файла из Рабочей области “Working Directory”, затем из области индекса “Staging Area” и потом из области репозитория “Repository”:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Delete file index.html&#39;</span></code></pre></div>
+
+<p>Команда <code>git rm</code> является ни чем иным, как “вшитым” в Git сокращением двух первых команд:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span></code></pre></div>
+
+<p>Сделано это всего лишь для удобства пользования системой Git. Давайте на примере посмотрим работу команды <code>git rm</code>. Предположим, что имеется файл <code>index.html</code>, который проиндексирован и зафиксирован.</p>
+
+<p>Удалим его командой <code>git rm</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm.png" alt="Команда git rm - удаление файлов в Git" /></p>
+
+<p>Видим, что файл <code>index.html</code> был сразу удален из двух областей: рабочего каталога “Working Directory” и области индексации “Staging Area”. Но в репозитории файл все же остался, о чем говорит вывод команды <code>git status</code>.</p>
+
+<p>Любой последующий commit зафиксирует удаление этого файла:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_commit_deletion.png" alt="Фиксация удаления файла командой git rm" /></p>
+
+<h2 id="git-rm--cached">Команда git rm -cached</h2>
+
+<p>У команды <code>git rm</code> имеется пара полезных ключей, одним из которых является ключ <code>--cached</code>. Задача этого ключа - позволить команде <code>git rm</code> удалить файл из области индексирования “Staging Area”, но при этом оставить его в области рабочего проекта “Working Directory”. Давайте рассмотрим пример, когда создан файл <code>second.html</code> и произведена его индексация (но не фиксация):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_second-html.png" alt="Созданный файл second.html" /></p>
+
+<p>Удалим его командой <code>git rm --cached</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_cached.png" alt="Команда git rm -cached" /></p>
+
+<p>Отлично! Видим, что произошло удаление файла <code>second.html</code>. Кроме того, команда <code>git status</code> показывает, что в рабочей области “Working Directory” имеется неотслеживаемый (untracked) файл по имени <code>second.html</code>.</p>
+
+<h2 id="git-rm--f">Команда git rm -f</h2>
+
+<p>В предыдущем разделе я рассмотрел вариант, когда созданный и проиндексированный файл удаляется из области индексирования “Staging Area”, но остается в области “Working Directory”. Выполняется это с помощью команды <code>git rm --cached</code>.</p>
+
+<p>Логическим продолжением этой команды является та же самая команда <code>git rm</code>, но с ключом <code>-f</code> - <code>git rm -f</code>. Такая команда удаляет проиндексированный (но еще не зафиксированный) файл как из области “Staging Area”, так и из области “Working Directory”.</p>
+
+<p>Давайте рассмотрим на примере созданного и проиндексированного файла <code>third.html</code> его удаление с помощью команды <code>git rm -f</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_third-html.png" alt="Созданный файл third.html" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_f.png" alt="Команда git rm -f" /></p>
+
+<p>Файл <code>third.html</code> удален как из области “Staging Area”, так и из области “Working Directory”. В итоге можно сказать, что между командой <code>git rm -f</code> и командой <code>git rm</code> практически нет никакой разницы.</p>
+
+<h2 id="git-mv------">Команда git mv - перемещение или переименование файлов</h2>
+
+<p>В системе Git имеется “своя” команда для перемещения или переименования файлов. Слово “своя” здесь не даром взято в кавычки - аналогия с командой <code>git rm</code> полная. Команда <code>git mv</code> перемещает или переименовывает файлы, автоматически “уведомляя” об этих событиях область “Staging Area”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv.png" alt="Команда git mv - перемещение файла в Git" /></p>
+
+<p>Остается только зафиксировать эти изменения любым коммитом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Move index.html to papka&#39;</span>
+  <span class="no">[master 868d428]</span> <span class="n">Move</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="n">to</span> <span class="n">papka</span>
+   <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">0</span> <span class="n">insertions</span><span class="p">(+),</span> <span class="n">0</span> <span class="n">deletions</span><span class="p">(-)</span>
+   <span class="n">rename</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">=&gt;</span> <span class="n">papka</span><span class="p">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span></code></pre></div>
+
+<p>Переименуем файл <code>index.html</code> с помощью команды <code>git mv</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv_index.png" alt="Команда git mv - переименование файла в Git" /></p>
+
+<p>Вот и все несложные операции по перемещению\переименованию или удалению файлов с помощью команд <code>git rm</code> и <code>git mv</code>, под всевидящим оком Git.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-09-01T00:00:00+04:00"><a href="http://zencoder.ru/git/github-push-and-pull/">September 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -598,189 +702,6 @@
 <h2 id="gitignore-2">Шаблоны в файле .gitignore</h2>
 
 <p>Для файла <code>.gitignore</code> доступны шаблоны, с помощью которых можно задать маски для выборки необходимых типой файлов. Однако, обширная тема шаблонов выходит за рамки данной статьи. При желании можно почитать по теме шаблонов в книге “<a href="http://git-scm.com/book/ru" title="Pro Git - профессиональный контроль версий">Pro Git - профессиональный контроль версий</a>”.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-livereload/" rel="bookmark" title="Gulp - плагин gulp-livereload" itemprop="url">Gulp - плагин gulp-livereload</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке.</p>
-</blockquote>
-
-<p>Суть плагина <code>gulp-livereload</code> в автоматизации обновления страниц в окне браузера. Это тоже самое, что и связка - плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка - плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
-
-<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье - “Установка LiveReload в Sublime Text 2” меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда - почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
-
-<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер работает стабильно. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
-
-<h2 id="gulp-livereload">Установка плагина gulp-livereload</h2>
-
-<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу - <a href="https://www.npmjs.org/package/gulp-livereload" title="Gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-livereload</span></code></pre></div>
-
-<p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
- <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
- <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
- <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
-  <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;gulp-livereload&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.1.1&quot;</span>
- <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span></code></pre></div>
-
-<h2 id="livereload--">Установка плагина LiveReload под браузер</h2>
-
-<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера - Google Chrome и Safari.</p>
-
-<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla - <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится устаревшая версия плагина, которая наверняка не подойдет для вашего браузера.</p>
-
-<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров - <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
-
-<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин - он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
-
-<h2 id="gulp-livereload-1">Создание задачи под gulp-livereload</h2>
-
-<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него - это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас - устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
-
-<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_error_start_server.png" alt="Ошибка запуска сервера LiveReload" /></p>
-
-<p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Все - мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Complie Task</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">sassSCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
-    <span class="nx">minifyHTML</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-html&#39;</span><span class="p">),</span>
-    <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
-    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span>
-
-<span class="c1">// Default Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
-
-<span class="c1">// Watch Task</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="c1">// Sass Complie Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
-
-<h2 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h2>
-
-<p>Осталось выполнить две маленькие вещи. Первая - включаю плагин LiveReload в браузере. Вторая - запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">17</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">19</span> <span class="err">μ</span><span class="n">s</span>
-<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span></code></pre></div>
-
-<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию - 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">figure</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
- <span class="p">}</span></code></pre></div>
-
-<p>… и смотрю на вывод в консоли:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
-<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
-<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span></code></pre></div>
-
-<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> - он тоже подхватил изменения?</p>
-
-<p>Смотрим:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_01.png" alt="Изменения в gulp-livereload" /></p>
-
-<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> - “картинка” в окне браузера изменилась без перезагрузки последнего.</p>
-
-<p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
-<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
-<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span>
-<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">97</span> <span class="n">ms</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_02.png" alt="Изменения в gulp-livereload" /></p>
-
-<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp - использование плагина <code>gulp-livereload</code>.</p>
 
 <hr />
 

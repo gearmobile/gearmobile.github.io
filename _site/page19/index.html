@@ -144,6 +144,334 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-04-28T00:00:00+04:00"><a href="http://zencoder.ru/css/vertical-rhythm-in-compass/">April 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~13 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/vertical-rhythm-in-compass/" rel="bookmark" title="Создание Vertical Rhythm в Compass" itemprop="url">Создание Vertical Rhythm в Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Приступаем к интересной теме - вертикальному ритму “Vertical Rhythm” в веб-дизайне и способе его создания с помощью библиотеки Compass.</p>
+</blockquote>
+
+<p>Первое, с чего стоит начать, это небольшой вводный курс - что такое вертикальный ритм и для чего он нужен.</p>
+
+<p>Ну, во-первых, в Интернете на момент написания статьи не так уж и много материалов по этой тематике; в немногочисленных материалах сущность вопроса преподносится как нечто очень сложное.</p>
+
+<p>На самом деле это не так. Все мы когда-то учились в школе и наверное, помним тетрадки в линейку по русскому языку, в которых строгие учительницы заставляли нас писать:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/copybook.jpg" alt="Vertical Rhythm - Школьная тетрадь в линейку" /></p>
+
+<p>Так вот - сами не зная об этом, мы уже тогда использовали вертикальный ритм (Vertical Rhythm) на практике! Слово вертикальный ритм говорит само за себя - текст или контент на странице должен размещаться в определенном ритме, по определенному правилу; а не хаотично.</p>
+
+<p>В данном случае все строки на такой странице должны размещаться по нарисованным линейкам - это и есть суть пресловутого Vertical Rhythm.</p>
+
+<p>В типографике вертикальный ритм применяется с незапамятных времен; и только с недавних пор о вертикальном ритме заговорили применительно к веб-дизайну. Использование вертикального ритма в веб-дизайне подразумевает применение CSS-свойств, управляющих вертикальными параметрами элементов страницы: размером шрифта (<code>font-size</code>), высотой строки(<code>line-height</code>), отступами (<code>padding</code> и <code>margin</code>), границами (<code>border</code>).</p>
+
+<p>Основная цель вертикального ритма - сделать текст (контент - в общем случае) максимально читабельным. То есть, это когда посетитель заходит на страницу, читает что-либо на ней, и сам процесс не доставляет ему никаких неудобств. Напротив - ему приятно читать такой текст.</p>
+
+<p>В библиотеке Compass имеется модуль “Vertical Rhythm”, задача которого - максимально упростить создание и настройку вертикального ритма в проекте. Модуль Vertical Rhythm в Compass - это набор функций и миксинов, облегчающих вычисление высоты строк, вертикального <code>padding</code> и <code>margin</code>, толщины границ (<code>border</code>).</p>
+
+<p>Вычисления основаны на базовой высоте строки <code>line-height</code> и базовом размере шрифта <code>font-size</code> с целью создания горизонтальной сетки. Давайте приступим к практике; то, что я не смог рассказать своими словами, думаю, будет наглядно показано на живых примерах.</p>
+
+<p>Первое, что необходимо сделать - это установить (если еще не установлена) Compass версии <code>1.0.0 alpha 19</code>. Почему именно эту версию? В ней есть множество возможностей, которые отсутствуют в старой версии.</p>
+
+<p>Установка Compass этой версии под Windows 7 на момент написания статьи является достаточно непростой задачей, поэтому рекомендую обратиться к статье “Медиа-запросы Breakpoint в Sass”.</p>
+
+<h2 id="compass">Создаем и настраиваем проект в Compass</h2>
+
+<p>Создаем новый проект в командной строке с помощью Compass:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">vertical_rhythm_example</span> <span class="p">-</span><span class="n">-bare</span></code></pre></div>
+
+<p>Ключ <code>--bare</code> используется здесь, чтобы создать “голый” экземпляр проекта под Sass/Compass, без лишних файлов <code>print.scss</code>, <code>ie.scss</code> и так далее.</p>
+
+<p>Производим неодходимые настройки в файле <code>config.rb</code>, а также создаем файлы <code>sass/style.scss</code>, <code>css/style.css</code>, <code>index.html</code>.</p>
+
+<p>HTML-файл наполним структурой вида:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, architecto laborum quas iste nam maxime tempora temporibus inventore? Rerum, obcaecati porro officiis temporibus assumenda dicta odit ullam dolore vero laborum!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, accusantium, amet, molestiae quas dolore deleniti non aut quis inventore repudiandae nostrum porro alias dolor pariatur rem sequi ea consequatur perferendis.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, iusto, iure, quia ipsum dolore ea exercitationem porro et nostrum nam cumque hic possimus dolorem deleniti distinctio incidunt magnam earum quis.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h4&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/700x300&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, omnis, ut, quis, nesciunt voluptatum rem dolor dolores amet vel sit error laboriosam quasi accusamus magnam neque sunt exercitationem molestias! Aperiam!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h5&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, libero illum numquam sed quas. Assumenda, porro, suscipit, veniam, cum deleniti illo magnam harum ab earum obcaecati odit ad quo laudantium?<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/500x200&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;h6&gt;</span>header 6<span class="nt">&lt;/h6&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consectetur quod saepe unde corrupti tenetur minus nesciunt obcaecati tempore ut facere iusto pariatur corporis itaque eius? Doloribus, quaerat modi nihil.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>То есть, для чистоты эксперимента, создаем заголовки с первого по шестой уровень, несколько параграфов и два изображения. В процессе работы с модулем вертикального ритма будем пользоваться официальной документацией по адресу - <a href="http://beta.compass-style.org/reference/compass/typography/vertical_rhythm/" title="Vertical Rhythm">Vertical Rhythm</a>.</p>
+
+<p>В файле <code>style.scss</code> подключаем сброс стилей Compass и модуль вертикального ритма:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/typography/vertical_rhythm&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Сделаем небольшую стилизацию для блока <code>.wrapper</code>, заголовков, параграфов и изображений, чтобы визуально было проще разобраться, что к чему:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrapper</span><span class="p">{</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="o">,</span><span class="nt">h3</span><span class="o">,</span><span class="nt">h4</span><span class="o">,</span><span class="nt">h5</span><span class="o">,</span><span class="nt">h6</span><span class="p">{</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="m">700</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">img</span><span class="p">{</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="vertical-rhythm">Основные переменные в Vertical Rhythm</h2>
+
+<p>В модуле “Vertical Rhythm” библиотеки Compass имеется множество переменных, но среди них есть только две основные, которые необходимы для расчетов внутри этого модуля:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">base-font-size</span><span class="o">:</span> <span class="nt">22px</span><span class="o">;</span>    <span class="o">//</span> <span class="err">базовый</span> <span class="err">размер</span> <span class="err">шрифта</span>
+<span class="o">$</span><span class="nt">base-line-height</span><span class="o">:</span> <span class="nt">33px</span><span class="o">;</span>  <span class="o">//</span> <span class="err">базовое</span> <span class="err">межстрочное</span> <span class="err">расстояние</span></code></pre></div>
+
+<p>Значение переменной <code>$base-line-height</code> (как правило) равно выражению <code>$base-font-size * 1.5</code>, поэтому <code>22px * 1.5 = 33px</code>. Значение переменной <code>$base-font-size</code> в <code>22px</code> взято в качестве примера.</p>
+
+<p>Помимо этого, есть еще две дополнительные переменные:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">rhythm-unit</span><span class="o">:</span> <span class="s2">&quot;rem&quot;</span><span class="o">;</span>         <span class="o">//</span> <span class="err">базовая</span> <span class="err">единица</span> <span class="err">измерения</span> <span class="o">(</span><span class="err">по</span> <span class="err">умолчанию</span> <span class="nt">em</span><span class="o">)</span>
+<span class="o">$</span><span class="nt">rem-with-px-fallback</span><span class="o">:</span> <span class="nt">true</span><span class="o">;</span> <span class="o">//</span> <span class="err">откат</span> <span class="err">к</span> <span class="err">единицам</span> <span class="err">измерения</span> <span class="nt">px</span> <span class="err">в</span> <span class="err">браузерах</span><span class="o">,</span> <span class="err">которые</span> <span class="err">не</span> <span class="err">понимают</span> <span class="err">единицу</span> <span class="nt">rem</span></code></pre></div>
+
+<h2 id="vertical-rhythm-1">Включаем Vertical Rhythm</h2>
+
+<p>После ввода четырех вышеперечисленных переменных осталось только инициализировать модуль Vertical Rhythm” с помощью миксина:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">establish-baseline</span><span class="p">;</span></code></pre></div>
+
+<p>Миксин <code>establish-baseline</code> делает простые вещи - он устанавливает <code>font-size</code> и <code>line-height</code> для корневого тега <code>&lt;html&gt;</code>. Но делает он это с помощью относительных единиц измерения.</p>
+
+<p>Допустим, в своем проекте мы установили размер шрифта <code>22px</code> и высоту строки <code>33px</code>. Если взглянуть на результат компиляции из SCSS в CSS, то увидим следующее:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">137.5%</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1.5em</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Размер шрифта <code>16px</code> является установленным по умолчанию в большинстве браузеров, поэтому <code>16px = 100%</code>. Следовательно, <code>22px = 137.5%</code>.</p>
+
+<p>Относительная величина <code>line-height</code> всегда относительна к размеру шрифта <code>font-size</code> текущего элемента, поэтому в данном случае она равна 1.5em (<code>22px * 1.5 = 33px</code>).</p>
+
+<p>Перезагрузим браузер с открытой страницей создаваемого проекта-примера и увидим, как резко изменилась картина! Вместо слепленных друг с другом строчек появилась более четкая и удобочитаемая структура. Видно, что каждая строка текста располагается внутри своей линии.</p>
+
+<p>Чтобы еще более наглядно представить картину структурированного контента, воспользуемся миксином:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">debug</span><span class="o">-</span><span class="n">vertical</span><span class="o">-</span><span class="n">alignment</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Обрисовались строки, ну прямо как на школьном тетрадном листке! Хорошо видно, как все строки текста и изображение выстроились четко по линеечкам. Думаю, если читатель дошел до этого места, то ему стала понятна суть и принцип вертикального ритма без каких-либо объяснений!</p>
+
+<h2 id="margin--padding--vertical-rhythm">Margin и padding в Vertical Rhythm</h2>
+
+<p>Но строки, заголовки и изображения все равно тесно прижаты друг к другу. В модуле <strong>Vertical Rhythm</strong> имеются свои собственные инструменты для создания отступов у элементов контента, в основе которых лежит опять таки базовый размер шрифта (вот он - тот самый ритм!):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">base-font-size</span> <span class="o">*</span> <span class="nt">1</span></code></pre></div>
+
+<p>Для элемента страницы можно задать <code>margin-top</code> или <code>padding-top</code>, <code>margin-bottom</code> или <code>padding-bottom</code>. Реализуется это с помощью специальных миксинов (на выбор, один из четырех):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">trailer</span><span class="p">;</span>  <span class="o">//</span> <span class="k">margin-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>   <span class="o">//</span> <span class="k">margin-top</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="k">padding</span><span class="o">-</span><span class="n">trailer</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">padding</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>  <span class="o">//</span> <span class="k">padding-top</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Имеются универсальные миксины, которые являются сокращениями от вышеперечисленных. Таким миксинам передаются необходимые аргументы и на выходе получаем результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">trailer</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">margin</span><span class="p">);</span> <span class="o">//</span> <span class="k">margin-bottom</span> <span class="err">на</span> <span class="m">2</span> <span class="err">строки</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">trailer</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">padding</span><span class="p">);</span> <span class="o">//</span> <span class="k">padding-bottom</span> <span class="err">на</span> <span class="m">2</span> <span class="err">строки</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">leader</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">margin</span><span class="p">);</span> <span class="o">//</span> <span class="k">margin-top</span> <span class="err">на</span> <span class="m">2</span> <span class="err">строки</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">leader</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span><span class="m">3</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">padding</span><span class="p">);</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="err">на</span> <span class="m">3</span> <span class="err">строки</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Одновременно задать <code>margin-top + margin-bottom</code> или <code>padding-top + padding-bottom</code> можно с помощью миксинов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="n">margins</span><span class="p">;</span> <span class="o">//</span> <span class="k">margin-top</span> <span class="o">+</span> <span class="k">margin-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="k">padding</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="o">+</span> <span class="k">padding-bottom</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Миксин <code>@include rhythm</code> является глобальным сокращением вышеназванных миксинов для создания отступов <code>margin</code> или <code>padding</code>.</p>
+
+<h2 id="vertical-rhythm-2">Создание границ в Vertical Rhythm</h2>
+
+<p>Отступы можно совмещать с границами <code>border</code>. То есть, можно (к примеру) создать верхний <code>padding</code> с верхней границей <code>border</code>.</p>
+
+<p>Толщина границы и ее стиль управляются через переменные <code>$default-rhythm-border-width</code> и <code>$default-rhythm-border-style</code>. По умолчанию толщина границы равна <code>1px</code>, а ее стиль - <code>solid</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">leading</span><span class="o">-</span><span class="k">border</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="o">+</span> <span class="k">border-top</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">trailing</span><span class="o">-</span><span class="k">border</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-bottom</span> <span class="o">+</span> <span class="k">border-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">horizontal</span><span class="o">-</span><span class="n">borders</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="o">+</span> <span class="k">border-top</span> <span class="err">и</span> <span class="k">padding-bottom</span> <span class="o">+</span> <span class="k">border-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">h</span><span class="o">-</span><span class="n">borders</span><span class="p">;</span> <span class="o">//</span> <span class="n">alias</span> <span class="err">для</span> <span class="n">horizontal</span><span class="o">-</span><span class="n">borders</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Одновременно задать <code>padding</code> и <code>border</code> для всех четырех сторон можно через миксин:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="n">borders</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding</span> <span class="o">+</span> <span class="k">border</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Указать границу и отступ для какой-то одной стороны можно с помощью миксина:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">apply</span><span class="o">-</span><span class="n">side</span><span class="o">-</span><span class="n">rhythm</span><span class="o">-</span><span class="k">border</span><span class="p">(</span><span class="err">$</span><span class="n">side</span><span class="o">:</span> <span class="k">left</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="vertical-rhythm-3">Произвольный размер шрифта в Vertical Rhythm</h2>
+
+<p>Можно произвольно поменять размер шрифта любого элемента страницы, но делать это также нужно, исходя из ритма - с помощью соответствующего миксина <code>adjust-fonts-size-to</code>.</p>
+
+<p>Давайте изменим размер заголовков таким образом, чтобы они отличались от основного текста (и были действительно заголовками):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">2</span><span class="o">.</span><span class="m">074</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">728</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">44</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h4</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h5</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h6</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">0</span><span class="o">.</span><span class="m">833</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Или же, допустим, нужно установить для заголовка первого уровня <code>h1</code> размер шрифта в <code>42px</code>. Микcин будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">42px</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Первым делом, этот миксин делает размер шрифта элемента <code>h1</code> относительным к размеру шрифта элемента-контейнера. В нашем случае таковым является элемент <code>html</code>, поэтому размер шрифта равен <code>22px</code>. Соответственно, размер шрифта для <code>h1</code> получается (<code>42 / 22 = 1.90909</code>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">font-size</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.90909rem</span><span class="o">;</span></code></pre></div>
+
+<p>Вторым делом миксин заново вычисляет высоту строки для нашего заголовка <code>h1</code>. Делает он это таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">1</span><span class="nc">.90909rem</span> <span class="o">*</span> <span class="nt">1</span><span class="nc">.5</span> <span class="o">=</span> <span class="nt">3rem</span> <span class="o">(</span><span class="err">округленно</span><span class="o">)</span>
+<span class="nt">22</span> <span class="o">*</span> <span class="nt">3rem</span> <span class="o">=</span> <span class="nt">66px</span></code></pre></div>
+
+<p>Конечный результат показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">42px</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">90909</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">66px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">3</span><span class="n">rem</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Отлично, правда? Вся прелесть в том, что показанные выше расчеты можно с легкостью забыть - модуль “Vertical Rhythm” каждый раз будет вычислять размер шрифта и высоту строки сам, не “напрягая” нас.</p>
+
+<p>Помимо указания размера шрифта в качестве аргумента, миксину <code>adjust-fonts-size-to</code> можно также передать количество линий, которое должен занимать заголовок. Например, так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">44</span><span class="n">rem</span><span class="o">,</span><span class="m">1</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Если вы попробуете у себя, то сразу увидите результат.</p>
+
+<h2 id="vertical-rhythm-4">Выравнивание изображений в Vertical Rhythm</h2>
+
+<p>Внимательный читатель должен заметить одну неточность, если он у себя повторил все шаги, описанные выше. Неточность заключается в том, что изображение не вписывается в вертикальный ритм, созданный нами на странице:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/shift_in_vertical_rhythm.jpg" alt="Смещение в вертикальном ритме" /></p>
+
+<p>А именно - первое изображение своим верхним краем совпадает с линией ритма. А вот нижняя граница не попадает на линию. Из-за этого весь дальнейший контент также смещается и вертикальный ритм нарушается.</p>
+
+<p>Происходит это потому, что изображение мы сделали блочным элементом и присвоили ему фиксированные размеры в пикселях в HTML-коде:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/700x350&quot;</span> <span class="nt">/&gt;</span>
+...
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/500x250&quot;</span> <span class="nt">/&gt;</span>
+...</code></pre></div>
+
+<p>Исправить ситуацию можно с помощью плагина “Keep The Rhythm” под jQuery - <a href="http://www.gayadesign.com/diy/keep-the-rhythm-vertical-rhythm-on-objects-having-dynamic-heights/" title="Keep The Rhythm">Keep The Rhythm</a>. Вдаваться в подробности работы этого плагина я не буду, а сразу покажу, как он подключается и результат его работы.</p>
+
+<p>Получаем с GitHub библиотеку jQuery и сам плагин к ней:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">jquery-1</span><span class="nc">.9.1.min.js</span>
+<span class="nt">jquery</span><span class="nc">.keeptherhythm.js</span></code></pre></div>
+
+<p>Подключаем к HTML-странице в ее конце. И затем создаем небольшой скрипт. Смотрим результат:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/keep_the_rhythm.jpg" alt="Плагин Keep_The_Rhythm в действии" /></p>
+
+<p>Все получилось! Однако, стоит заметить, что приведенный выше пример является упрощенным. Достаточно изменить масштаб страницы в окне браузера, и вертикальный ритм поломается.</p>
+
+<p>Поэтому плагин “Keep The Rhythm” необходимо применять в связке с медиа-запросами для правильной его работы. По крайней мере, если возникнет вопрос по работе этого плагина, то документация на официальной странице всегда под рукой.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Основой для написания этой статьи послужили два материала (видео и статья):</p>
+
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=Leert-TnSSg" title="Compass (Sass) — вертикальный ритм (vertical rhythm)">Compass (Sass) — вертикальный ритм (vertical rhythm)</a></li>
+  <li><a href="http://atendesigngroup.com/blog/vertical-rhythm-compass" title="Vertical Rhythm with Compass">Vertical Rhythm with Compass</a></li>
+</ul>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-04-21T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/">April 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1048,257 +1376,6 @@
 <p><a href="http://www.impressivewebs.com/space-round-css3-background/" title="CSS3′s ‘space’ and ‘round’ Values for background-repeat">CSS3′s ‘space’ and ‘round’ Values for background-repeat</a></p>
 
 <p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-24T00:00:00+04:00"><a href="http://zencoder.ru/css/breakpoint-sass/">March 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~8 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/breakpoint-sass/" rel="bookmark" title="Медиа-запросы Breakpoint в Sass" itemprop="url">Медиа-запросы Breakpoint в Sass</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Прочитал одну статью, посвященную проблеме создания кода в CSS и Sass.</p>
-</blockquote>
-
-<p>Статья мне чрезвычайно понравилась - можно даже сказать, я был в восхищении о нее и от того, что написал ее автор. В ней вкратце описывались основные “опорные” моменты при написании кода в CSS/Sass. Одним из таких “опорных” моментов упоминались Breakpoint в Sass.</p>
-
-<p>Так как я большой поклонник этого препроцессора, то мне интересны все вопросы, связанные с ним. Поэтому мимо такой технологии, как Breakpoint - я просто не мог пройти мимо.</p>
-
-<p>Итак, давайте знакомиться с Breakpoint в препроцессоре Sass. Прежде всего, Breakpoint - это расширение (модуль) для хорошо известной и популярной библиотеки-фреймворка Compass. Создан он двумя web-разработчиками Mason Wendell и Sam Richard.</p>
-
-<p>Основная идея и цель создания этого модуля - сократить к одной строке создание медиа-запроса и возможность задавать для медиа-запросов осмысленные имена.</p>
-
-<h2 id="breakpoint">Установка модуля Breakpoint</h2>
-
-<p>Первое, что необходимо сделать, это установить в систему сам модуль <code>breakpoint</code>. Делается это обычной командой Ruby-окружения:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
-
-<p>Но тут могут быть несколько подводных камней, с которыми лично мне пришлось столкнуться (не знаю, как уж читателям). Первое - если у вас уже установлены <code>sass</code> и <code>compass</code> обычным способом, через команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
-<span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span></code></pre></div>
-
-<p>… то велика вероятность, что у вас в системе стоят Sass версии 3.2.18 и Compass версии 0.12.4. Поверить этот факт можно командой в терминале:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">list</span></code></pre></div>
-
-<p>Однако, на момент написания статьи разрабатывается библиотека Compass под версией <code>1.0.0.alpha.19</code>, которую уже можно использовать несмотря на ее экспериментальный вид. Более того, модуль <code>breakpoint</code> совместим только с библиотекой Compass этой версии (1.0.0.alpha.19).</p>
-
-<p>Поэтому, при запуске команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
-
-<p>… будет произведено автоматическое обновление пакетов <code>sass</code> и <code>compass</code> до версий Sass 3.3.4 и Compass 1.0.0.alpha.19. После успешной установки модуля <code>breakpoint</code> можно создать через Compass новый проект, указав при этом, что в проекте требуется поддержка (required) модуля <code>breakpoint</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">newProject</span> <span class="n">-r</span> <span class="n">breakpoint</span></code></pre></div>
-
-<p>Заходим в созданную директорию и пробуем запустить Compass на мониторинг изменений во всех файлах проекта. Но не тут то было:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/sass_wdm.png" alt="Ошибка при запуске библиотеки Compass - нет модуля wdm" class="center-image" /></p>
-
-<p>Compass пишет в терминале, что ему не хватает модуля <code>wdm</code> и не запускается в режим мониторинга. Что такое <code>wdm</code>, я не знаю (я не Ruby-разработчик), но подозреваю, что это какой-то модуль. И его придется установить.</p>
-
-<p>Для этого необходимо скачать с оф. сайта Ruby пакет разработчика Development Kit (Device). Мною скачивалась версия <code>DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe</code>. Ее нужно распаковать в любое (постоянное) место - папку, но при этом не туда же, где уже стоит у вас Ruby. Затем в терминале зайти в эту папку и запустить последовательно три команды (не обращая внимание, что они там пишут в ответ):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">init</span>
-<span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">review</span>
-<span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">install</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/ruby_devkit.png" alt="Установка пакета DevKit" class="center-image" /></p>
-
-<p>А затем в этом же терминале снова запустить установку загадочного (для меня) модуля <code>wdm</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">wdm</span></code></pre></div>
-
-<p>После этого процесс пройдет успешно и Compass, наконец-то, “заткнется” и станет делать то, что от него требуют - мониторинг содержимого папки:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/sass_install_wdm.png" alt="Успешная установка пакета wdm" class="center-image" /></p>
-
-<p>Теперь открывает уже созданный Compass файл <code>screen.scss</code> и дописываем в его начало строчку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>… говоря те самым, что в наш проект необходимо включить модуль <code>breakpoint</code>. Если проект создавался не с нуля, а уже был готовым, то поддержку Breakpoint в него можно добавить, дописав в конфигурационный файл <code>config.rb</code> строчку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
-
-<h2 id="breakpoint-1">Дальнейшее знакомство с Breakpoint</h2>
-
-<p>Можно приступать к дальнейшему знакомству с Breakpoint.</p>
-
-<p>Breakpoint - дословно с английского языка переводится как “опорная точка”. Медиа-запросы фактически и являются такими опорными точками. В правилах CSS мы указываем браузеру - при ширине <code>viewport</code> равной 480px сделать такой-то элемент таким-то; а при ширине <code>viewport</code> равной 768px сделать такой элемент другим! То есть, мы через CSS-правила определяем для браузера подобные опорные точки. Модуль Breakpoint позволяет создавать опорные точки в коде SCSS с помощью одной строки - через миксин (mixin) <code>breakpoint</code>.</p>
-
-<p>Простейший пример применения миксина <code>breakpoint</code> приведен ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">high-tide</span><span class="o">:</span> <span class="nt">500px</span><span class="o">;</span>
-
-<span class="nc">.johnny-utah</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="k">high</span><span class="o">-</span><span class="n">tide</span><span class="p">)</span> <span class="err">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Whoa.&#39;</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>То есть, сначала инициализируется переменная <code>$high-tide</code> со значением 500px. Затем селектору класса <code>.johnny-utah</code> задается CSS-правило через подключение миксина <code>@include breakpoint</code>, аргументом которому передается значение переменной <code>$high-tide</code>. В теле миксина пишется, что нужно сделать браузеру - создать контент <code>Whoa.</code> (в данном случае).</p>
-
-<p>Результатом генерации в CSS будет следующий код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">500px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.johnny-utah</span> <span class="p">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Whoa.&#39;</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Предельно просто! ОК, немного усложним задачу и продвинемся дальше, чтобы на примере лучше понять, что из себя представляют Breakpoint:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">bkpt-login-small</span><span class="o">:</span> <span class="nt">370px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">bkpt-login-medium</span><span class="o">:</span> <span class="nt">490px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">bkpt-login-large</span><span class="o">:</span> <span class="nt">865px</span><span class="o">;</span>
-
-<span class="nt">body</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">25%</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-small</span><span class="o">)</span><span class="p">{</span>
-  <span class="nt">body</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">30</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-medium</span><span class="o">)</span><span class="p">{</span>
-  <span class="nt">body</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-large</span><span class="o">)</span><span class="p">{</span>
-  <span class="nt">body</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Здесь мы создали три переменные <code>$bkpt-login-small</code>, <code>$bkpt-login-medium</code>, <code>$bkpt-login-large</code> с помощью которых установили три опорные точки для адаптивного дизайна. А затем в SCSS-правилах через подключение миксина <code>@include breakpoint</code> для каждой опорной точки задаем правило для элемента <code>body</code>, последовательно указывая этому миксину переменные в качестве аргументов. Результат работы этого кода приводить не буду - вы можете сами набрать его в редакторе и проверить!</p>
-
-<h2 id="breakpoint-2">Варианты аргументов миксина Breakpoint</h2>
-
-<p>Миксин <code>breakpoint</code> в качестве аргумента может принимать <strong>не только одно значение</strong>, как в примере выше.</p>
-
-<h3 id="section">Два числа в качестве значений</h3>
-
-<p>Переменной можно задать <strong>два числа в качестве значений</strong>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">ex-presidents</span><span class="o">:</span> <span class="nt">600px</span> <span class="nt">800px</span><span class="o">;</span></code></pre></div>
-
-<p>В этом случае модуль Breakpoint автоматически распознает и преобразует их в пару значений <strong>min-width/max-width</strong>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nixon</span> <span class="p">{</span>
-   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">ex</span><span class="o">-</span><span class="n">presidents</span><span class="p">)</span> <span class="err">{</span>
-   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Ex-Presidents&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="err">}</span>
-
-<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">800px</span><span class="o">)</span> <span class="p">{</span>
-   <span class="nc">.nixon</span> <span class="p">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Ex-Presidents&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="p">}</span></code></pre></div>
-
-<h3 id="section-1">Имя и значение этого имени</h3>
-
-<p>Переменной можно задать <strong>имя и значение этого имени</strong>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">surfboard-width</span><span class="o">:</span> <span class="nt">max-width</span> <span class="nt">1000px</span><span class="o">;</span></code></pre></div>
-
-<p>Модуль Breakpoint распознает его следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.johnson</span> <span class="p">{</span>
-   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">surfboard</span><span class="o">-</span><span class="k">width</span><span class="p">)</span> <span class="err">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Width&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="err">}</span>
-
- <span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">1000px</span><span class="o">)</span> <span class="p">{</span>
-   <span class="nc">.johnson</span> <span class="p">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Width&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="p">}</span></code></pre></div>
-
-<h3 id="section-2">Расширенный вариант имени и значения</h3>
-
-<p>И можно пойти еще дальше:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">surfboard-height</span><span class="o">:</span> <span class="o">(</span><span class="nt">min-height</span> <span class="nt">1000px</span><span class="o">)</span> <span class="o">(</span><span class="nt">orientation</span> <span class="nt">portrait</span><span class="o">);</span></code></pre></div>
-
-<p>Breakpoint воспримет это таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.carter</span> <span class="p">{</span>
-   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">surfboard</span><span class="o">-</span><span class="k">height</span><span class="p">)</span> <span class="err">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Height, Portrait&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="err">}</span>
-
-<span class="k">@media</span> <span class="o">(</span><span class="nt">min-height</span><span class="o">:</span> <span class="nt">1000px</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">orientation</span><span class="o">:</span> <span class="nt">portrait</span><span class="o">)</span> <span class="p">{</span>
-   <span class="nc">.carter</span> <span class="p">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Height, Portrait&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="p">}</span></code></pre></div>
-
-<h2 id="breakpoint-3">Настройки модуля Breakpoint</h2>
-
-<p>Модуль Breakpoint имеет совсем немного настроек, которые выражаются <strong>в четырех переменных</strong>, которые можно легко переопределить в рамках разрабатываемого проекта:</p>
-
-<ul>
-  <li><code>$breakpoint-default-media</code> - <strong>тип медиа-запроса</strong>. По умолчанию его значение равно <code>all</code>, то есть медиа-запрос применим ко всем типам устройств: мониторы, телефизоры и так далее.</li>
-  <li><code>$breakpoint-default-feature</code> - по умолчанию установлено в значение <code>min-width</code> как наиболее часто используемое на практике. То есть, это запрашиваемая <strong>характеристика типа устройства</strong>.</li>
-  <li><code>$breakpoint-default-pair</code> - установлено в значение <code>min-width/max-width</code> по умолчанию. То есть, при передаче миксину <code>breakpoint</code> пары чисел (к примеру - 400px и 500px) он распознает их как <code>min-width: 400px</code> и <code>max-width: 500px</code>.</li>
-  <li><code>$breakpoint-to-ems</code> - по умолчанию установлено в значение <code>false</code>. Если перевести этот параметр в значение <code>true</code>, то при передаче миксину <code>breakpoint</code> аргументов в любых единицах измерения (<code>px</code>, <code>pt</code>, <code>%</code>) они будут автоматически переконвертированы в <code>em</code>! Круто!</li>
-</ul>
-
-<p>Чтобы не быть голословным, приведу пример настройки последнего параметра - <code>$breakpoint-to-ems</code>:</p>
-
-<p><img src="http://zencoder.ru/images/2014/03/breakpoint-to-ems.png" alt="Параметр модуля Breakpoints - breakpoint-to-ems" class="center-image" /></p>
-
-<p>Авторами модуля Breakpoint была сделана еще одна дополнительная “плюшка” - поддержка кроссбраузерности для экранов повышенного разрешения (так называемых Retina-экранов). Чтобы не писать по отдельности медиа-запрос для каждого из движков браузеров:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-device-pixel-ratio</span>
-<span class="nt">-moz-device-pixel-ratio</span>
-<span class="nt">-o-device-pixel-ratio</span></code></pre></div>
-
-<p>… можно писать краткий медиа-запрос:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">device-pixel-ratio</span></code></pre></div>
-
-<p>… который преобразует полученное браузером значение в стандартное разрешение экрана.</p>
-
-<h2 id="section-3">Заключение</h2>
-
-<p>Перечисленные возможности модуля Breakpoint являются основными, <a href="http://breakpoint-sass.com/#advanced" title="Breakpoint - Advanced Features">но не единственными</a>. Однако, как мне кажется, этих основных возможностей хватит для 90% случаев на практике. Если же кто желает углубить свои познания в модуле Breakpoint, это легко можно сделать на оф. сайте проекта.</p>
-
-<p>При написании этой статьи активно использовались два бесценных источника (<em>а примеры кода вообще были скопированы оттуда самым наглым образом</em>):</p>
-
-<ul>
-  <li><a href="http://snugug.com/musings/introducing-breakpoint-media-queries-made-easy" title="INTRODUCING BREAKPOINT; MEDIA QUERIES MADE EASY">INTRODUCING BREAKPOINT; MEDIA QUERIES MADE EASY</a></li>
-  <li><a href="http://breakpoint-sass.com/" title="Breakpoint Really Simple, Organized, Media Queries with Sass">Breakpoint Really Simple, Organized, Media Queries with Sass</a></li>
-</ul>
-
-<p>Очень вольный перевод и компиляция этих двух статей была сделана с энтузиазмом и на одном дыхании.</p>
 
 <hr />
 

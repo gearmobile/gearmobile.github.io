@@ -144,6 +144,221 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-30T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-scss-part-2/">October 30, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-scss-part-2/" rel="bookmark" title="SASS (SCSS) в картинках - Часть 2" itemprop="url">SASS (SCSS) в картинках - Часть 2</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей части данного обзора - “SASS в картинках - Часть 1” мы посвятили все время установке, настройке и примерам мониторинга “сладкой” парочки Ruby/SASS.</p>
+</blockquote>
+
+<p>Разобрались, как установить под Windows платформу Ruby и ее приложение SASS, в чем отличия между старой и новой версией синтаксиса SASS. Как запустить SASS для мониторинга редактируемых файлов или директорий.</p>
+
+<p>В этой статье мы приступим к самому интересному - разбору вкусностей SASS. Что он может, как он это делает. И каким образом мы можем облегчить себе жизнь с помощью него. И начнем с самого простого, постепенно переходя к более сложному.</p>
+
+<h2 id="variables">Переменные (Variables)</h2>
+
+<p>SASS “вводит” в состав CSS переменные, которых изначально в нем нет. Тем самым, язык стилевых правил постепенно превращается в более-менее полноценный язык программирования. Как и в обычном языке программирования, сначала объявляется переменная (с помощью спецсимвола <code>$</code>), задается ее имя и присваивается значение.</p>
+
+<p>Затем эта переменная используется в последующем коде путем вызова ее по имени. Одновременно с применением переменной в коде с ней можно производить простые арифметические операции: сложение, вычитание, умножение и деление.</p>
+
+<p>Например, на рисунке ниже переменной <code>$color</code> присвоено значение цвета в HEX-формате. Далее в одном месте кода эта переменная применяется “как есть”, а в другом месте из значения переменной вычитается еще одно число в этом же формате. В результате цвет получается темнее на заданное количество - очень удобно и быстро!</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-variable.jpg" alt="Переменные в SASS" /></p>
+
+<h2 id="nesting">Вложенность (Nesting)</h2>
+
+<p>Тут все просто - как вы обычно пишите правила CSS?</p>
+
+<p>Наверное, так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span> <span class="nt">a</span> <span class="p">{</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>То есть, пишем, что заголовку первого уровня присвоить свойства - кегль и цвет шрифта. Ссылке, вложенной в этот заголовок, присваиваем свойства - убираем подчеркивание и задаем свой цвет.</p>
+
+<p>Теперь напишем этот же код на SASS (SCSS):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+
+  <span class="n">a</span> <span class="err">{</span>
+    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Вот в чем “фокус” - на SASS (SCSS) мы пишем код так, как видим. Смотрим HTML-код - ссылка вложена в тег <code>h1</code>. Поэтому, в SASS-коде так и “рисуем” - внутри селектора <code>h1</code> помещаем селектор <code>a</code>, говоря тем самым SASS, что тег <code>a</code> вложен в тег <code>h1</code>. После конвертации в CSS-код у нас получиться точно такой код, как в первом примере (где представлен CSS-код):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-nesting.jpg" alt="Вложенность селекторов в SASS" /></p>
+
+<p>В SASS вложенность (<code>nesting</code>) бывает двух типов: <em>вложенность селекторов</em> (рассмотренная выше) и <em>вложенность свойств</em>, которую мы рассмотрим сейчас.</p>
+
+<p><em>Вложенность свойств</em> - это почти тоже самое, что и первый случай. Разница лишь в том, что применяется она к CSS-свойствам, а не селекторам. Ее удобно использовать для сложносоставных свойств, таких как <code>font</code>.</p>
+
+<p>Например, на CSS мы бы написали так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На SASS (SCSS) этот же код мы напишем так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+
+  <span class="k">font</span><span class="o">:</span> <span class="err">{</span>
+    <span class="k">size</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="n">style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+    <span class="n">weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+    <span class="n">family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nt">color</span><span class="o">:</span> <span class="nf">#ccc</span><span class="o">;</span>
+  <span class="nt">padding-left</span><span class="o">:</span> <span class="nt">10px</span><span class="o">;</span>
+<span class="err">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-nesting-properties.jpg" alt="Вложенность свойств на SASS" /></p>
+
+<h2 id="section">Наследование</h2>
+
+<p>С помощью наследования можно значительно сократить код и ускорить его написание. Принцип также прост - если для одного элемента задан набор свойств, то можно для другого элемента указать наследовать эти же самые свойства.</p>
+
+<p>Наследование в SASS (SCSS) выполняется с помощью директивы <code>@extend</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">font</span><span class="o">:</span> <span class="err">{</span>
+    <span class="k">size</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="n">style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+    <span class="n">weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+    <span class="n">family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nt">color</span><span class="o">:</span> <span class="nf">#ccc</span><span class="o">;</span>
+  <span class="nt">padding-left</span><span class="o">:</span> <span class="nt">10px</span><span class="o">;</span>
+<span class="err">}</span>
+
+<span class="nt">h2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="n">h1</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#aaa</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-extend.jpg" alt="Наследование в SASS" /></p>
+
+<h2 id="parent">Parent</h2>
+
+<p>Не знаю, как переводиться данная фича в SASS, но в примере кода она очень понятна - может, и нет смысла искать ее перевод? Если кто изучал Javascript &amp; jQuery, то знает о таком символе - <code>&amp;</code>. Его можно перевести как “этот”.</p>
+
+<p>Давайте посмотрим код, и все сразу станет ясно:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-parent.jpg" alt="SASS Parent" /></p>
+
+<p>Видим, что в коде для ссылки прописаны свойства. И в этом же правиле прописано правило для <code>hover</code>. Так вот, чтобы не писать конструкции типа <code>a</code>, <code>a:hover</code> - запишем <code>a</code>, <code>&amp;:hover</code>. Если описать это простым языком, то “этому же элементу присвоить правило при псевдоклассе <code>:hover</code>.</p>
+
+<h2 id="sass">Функции SASS</h2>
+
+<p>Когда мы рассматривали переменные, то упомянули об арифметических операциях над значением переменных. Иногда это удобно, а иногда нет. В SASS имеется достаточно большой набор функций, предназначенных для самых разнообразных задач. Ознакомиться с их полным перечнем можно по адресу <a href="sass-lang.com/docs/yardoc/Sass/Script/Functions.html" title="Sass">sass-lang.com/docs/yardoc/Sass/Script/Functions.html</a>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-function.jpg" alt="Функции SASS" /></p>
+
+<p>К примеру, у нас в коде имеется правило задания цвета для ссылки. А также есть правило, по которому ссылка изменяет цвет по наведению на нее курсора мыши.</p>
+
+<p>На SASS (SCSS) такой код можно написать так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">a</span><span class="nd">:hover</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#ddd</span><span class="o">,</span> <span class="m">30%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>То есть, берем функцию <code>darken()</code> и передаем ей в качестве аргументов два значения - первоначальный цвет и величину в процентах, на которую необходимо затемнить цвет.</p>
+
+<p>Ну просто очень удобно и быстро!</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-darken.jpg" alt="Функция затемнения цвета в SASS" /></p>
+
+<h2 id="mixin">Подмешивания (Mixin)</h2>
+
+<p>Подмешивания в SASS полностью отвечают своему названию, по принципу применения. Но, в тоже время, по принципу своей работы это самые настоящие функции. То есть, SASS еще больше расширяет возможности CSS и превращает его из описательного языка в язык программирования.</p>
+
+<p>Если сказать простым языком, то <code>mixin</code> - это большой кусок CSS-кода, который можно применять бесконечное число раз. Так же как и переменные, <code>mixin</code> сначала объявляется с помощью директивы <code>@mixin</code> и задается имя для него. Затем в теле подмешивания прописываются CSS-правила, при этом одновременно можно использовать переменные в этих правилах.</p>
+
+<p>После объявления <code>mixin</code> его подключают в нужном месте кода с помощью директивы <code>@include</code>. Удобство применения подмешиваний заключается в том, что не нужно каждый раз писать один и тот же код в разных местах.</p>
+
+<p>Достаточно прописать всего одну строчку - “вставить такой кусок кода здесь”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-mixin.jpg" alt="Подмешивания в SASS" /></p>
+
+<h2 id="interpolation">Интерполяция (Interpolation)</h2>
+
+<p>Под таким непонятным первоначально словом подразумевается подстановка значения переменной в название CSS-свойства. Благодаря этому можно легко изменять само свойство в функции.</p>
+
+<p>Например, таким образом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-interpolation.jpg" alt="Интерполяция в SASS" /></p>
+
+<p>(На картинке закралась ошибка. Конечно же, переменной <code>$top</code> в названии свойства <code>border</code> не существует. На ее месте должна стоять переменная <code>$vert</code>).</p>
+
+<h2 id="mixin--">Подмешивания (<code>mixin</code>) с аргументами</h2>
+
+<p>Ранее мы познакомились с функциями без аргументов (<code>mixin</code>). Но это был простой пример. На самом деле, функции (<code>mixin</code>) в SASS могут иметь аргументы, которые они принимают в качестве параметров.</p>
+
+<p>Например, рассмотрим такой рисунок:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-mixin-with-arguments.jpg" alt="Функции с аргументами в SASS" /></p>
+
+<p>Видим, что в начале кода объявлена функция (<code>mixin</code>) с именем <code>corners</code>. В качестве аргументов она принимает три переменные - <code>$vert</code>, <code>$hor</code>, <code>$radius</code>. Значения переменных <code>$vert</code> и <code>$hor</code> передаются в тело функции как интерполяция, а значение переменной <code>$radius</code> подставляется в качестве значения CSS-свойства <code>border</code>.</p>
+
+<p>В результате можно очень легко и быстро изменять вид и значение CSS-свойства: <code>border-top-left: 8px</code>, <code>border-bottom-left: 8px</code>, <code>border-top-right: 8px</code>, <code>border-top-right: 8px</code> и так далее.</p>
+
+<p>Далее в коде подключается (вызывается) функция <code>corners</code> с помощью директивы <code>@include</code>. При вызове этой функции ей передаются аргументы:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">corners</span><span class="o">(</span><span class="nt">top</span><span class="o">,</span><span class="nt">left</span><span class="o">,</span><span class="nt">15px</span><span class="o">)</span><span class="p">;</span>
+<span class="k">@include</span> <span class="nt">corners</span><span class="o">(</span><span class="nt">bottom</span><span class="o">,</span><span class="nt">right</span><span class="o">,</span><span class="nt">35px</span><span class="o">)</span><span class="p">;</span></code></pre></div>
+
+<p>В результате обработки этих аргументов функцией corners получиться следующий CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-top-left</span><span class="o">:</span> <span class="nt">15px</span><span class="o">;</span>
+<span class="nt">border-bottom-right</span><span class="o">:</span> <span class="nt">35px</span><span class="o">;</span></code></pre></div>
+
+<p>Фантастика! Ну что же, на этом можно закончить обзор того, что умеет SASS (SCSS). Я думаю, что вы по достоинству оценили все преимущества данного языка и сразу же кинулись применять его на практике.</p>
+
+<p>Вроде ничего не забыл ))</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-29T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-scss-part-1/">October 29, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -800,126 +1015,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-26T00:00:00+04:00"><a href="http://zencoder.ru/css/breadcrumbs-css/">October 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs на основе изображений" itemprop="url">Навигация breadcrumbs на основе изображений</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Навигация breadcrumbs с помощью треугольников на CSS” описывался способ создания меню с помощью чистого CSS, без использования графики.</p>
-</blockquote>
-
-<p>Метод всем хорош, за исключением одного - поддержка такого меню в старых браузерах сомнительна. Но при переводе этой статьи упоминалась ссылка на способ создания навигации с помощью графики.</p>
-
-<p>Статья написана достаточно давно, но метод абсолютно рабочий. Автор статьи Veerle Pieters, а сам пост называется “Simple scalable CSS based breadcrumbs”. Ниже привожу даже не вольный его перевод, а вольный пересказ.</p>
-
-<p>Несколько дней назад у меня стояла задача создать навигационное меню в стиле “хлебные крошки” (breadcrumbs) для сайта, над которым я работал. Я не думаю, что такое меню необходимо для каждого сайта, но в некоторых случаях оно очень полезно и практично.</p>
-
-<p>Это послужило поводом для меня написать статью для своего блога. Тот пример, которым я хочу поделиться с вами, является очень простым, при его создании применяется только один графический файл. Остальная часть навигации создается с помощью CSS-кода.</p>
-
-<p>Однако этот пример является как бы основой, которую можно расширять и применять на практике. Меню будет создаваться при помощи обычного маркированного списка <code>ul</code>.</p>
-
-<p>Но сначала посмотрим на образец, с которым будем работать:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images.gif" alt="Навигационное меню хлебные крошки" /></p>
-
-<p>Меню достаточно простое, как и код, с помощью которого мы будем его создавать.</p>
-
-<h2 id="html------ul">HTML код - маркированный список ul</h2>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;crumbs&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Main section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Sub section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Sub sub section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>The page you are on right now<span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Все пункты меню имеют ссылки, кроме последнего - “The page you are on right now” (Страница, на которой вы сейчас находитесь). При работе над меню я задавался вопросом - является ли список наиболее подходящей структурой для создания меню? Я полагаю, что применение списка в этом случае не является строгим правилом, но мне кажется - это наиболее семантичный и правильный вариант.</p>
-
-<h2 id="css-------">CSS код - создаем стили для меню</h2>
-
-<p>Задаем общие стили для меню - убираем маркеры и обнуляем отступы в браузерах Firefox, IE:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">ul, li {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}</code></pre></div>
-
-<p>Далее для меню задаем класс с именем <code>crumbs</code>, устанавливаем границу толщиной в 1px и фиксированную ширину 30px:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#dedede</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Все “крошки” должны располагаться горизонтально, в одну линию, поэтому элементы <code>li</code> делаем плавающими через свойство <code>float:left</code>. Текст меню должен быть отцентрирован точно по вертикали, для этого устанавливаем для него значение свойства <code>line-height</code> равное высоте всего меню - <code>30px</code>.</p>
-
-<p>Помещаем слева каждого пункта небольшое пространство для отступа с помощью <code>padding-left: 10px</code>. И задаем цвет текста <code>#777</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#777</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Нам необходимо, чтобы вся область пункта меню была кликабельной, поэтому делаем ее блочным элементом <code>display:block</code>. Далее помещаем для ссылки фоновое изображение, вырезанное из макета. Для этого нужно вырезать только саму “стрелку”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images_cut.gif" alt="Вырезание стрелки из навигации" /></p>
-
-<p>… которую “задвигаем” вправо (100%) и размещаем точно по вертикали (50%). Также делаем у ссылки отступ справа <code>padding-left: 15px</code>, в котором будет как раз и находиться фоновое изображение (вырезанная стрелка):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span> <span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(img/crumbs.gif)</span> <span class="m">100%</span> <span class="m">50%</span> <span class="k">no-repeat</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Уже практически все сделано. Осталось задать стили для текста ссылок. Уберем стандартное подчеркивание и изменим ее цвет:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:link</span><span class="o">,</span> <span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span>
-    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="k">color</span><span class="o">:</span> <span class="m">#777</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Придадим ссылкам небольшую анимацию с помощью псевдо-класса <code>:hover</code> и <code>:focus</code>. При наведении курсора мыши или получения фокуса с клавиатуры цвет текста ссылки будет меняться:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover</span><span class="o">,</span> <span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:focus</span> <span class="p">{</span>
-    <span class="k">color</span><span class="o">:</span> <span class="m">#dd2c0d</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Результат нашей работы представлен здесь:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images_result.gif" alt="Готовая навигация хлебные крошки" /></p>
-
-<p>Примечание переводчика:</p>
-
-<blockquote>
-  <p>Автор статьи максимально упростил пример и сам код соответственно, насколько я понимаю. Дело в том, что на примере хорошо виден линейный горизонтальный градиент для каждого из пунктов меню. Однако в коде это никак отображено не было. Ну, не беда - разве это проблема создать линейный градиент на CSS3? Сама задача ведь выполнена!</p>
-</blockquote>
-
-<p>На этом все.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

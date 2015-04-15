@@ -24,7 +24,7 @@ share: true
 
 Вверху видим панель инструментов, одного взгляда на которую достаточно, чтобы разобраться - что для чего предназначено.
 
-Вставка, открытие и сохранение документа; иконки Undo и Redo; форматирование текста - **Bold**, *Italic*, ~~Stroke~~; удобные кнопки для вставки на страницу изображения, ссылки или timestamp:
+Вставка, открытие и сохранение документа; иконки Undo и Redo; форматирование текста - Bold, Italic, Stroke; удобные кнопки для вставки на страницу изображения, ссылки или timestamp:
 
 ![Remarkable - insert images and links]({{site.url}}/images/uploads/2015/04/remarkable_links_images.png "Remarkable - insert images and links")
 

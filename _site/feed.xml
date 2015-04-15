@@ -4,13 +4,149 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://zencoder.ru/feed.xml" />
 <link rel="alternate" type="text/html" href="http://zencoder.ru" />
-<updated>2015-04-15T12:23:38+04:00</updated>
+<updated>2015-04-15T15:06:59+04:00</updated>
 <id>http://zencoder.ru/</id>
 <author>
   <name>zencoder</name>
   <uri>http://zencoder.ru/</uri>
   <email>gearmobile@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[git diff - учимся сравнивать в Git]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/git/git-diff/" />
+  <id>http://zencoder.ru/git/git-diff</id>
+  <published>2015-04-16T00:00:00+04:00</published>
+  <updated>2015-04-16T00:00:00+04:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;blockquote&gt;
+  &lt;p&gt;Краткий обзор команды git diff&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Итак, продолжаю знакомиться с системой Git и на этот раз вопрос будет касаться команды &lt;code&gt;git diff&lt;/code&gt;. Это краткая заметка, которая ни в коей мере не претендует на полноценный обзор. Скорее всего - философское рассуждение на тему сравнения в Git.&lt;/p&gt;
+
+&lt;p&gt;С помощью этой команды в Git можно сравнивать между собой файлы для того, чтобы увидеть - где произошло изменение.&lt;/p&gt;
+
+&lt;p&gt;Когда изменение обнаружено, тогда можно решать, что с ним делать - оставить, удалить или отредактировать.&lt;/p&gt;
+
+&lt;p&gt;Перед использованием команды &lt;code&gt;diff&lt;/code&gt; стоит напомнить о трех состояниях системы Git: Working Area, Staging Area, Repository. Фактически, команда &lt;code&gt;diff&lt;/code&gt; производит сравнение между разными состояниями одного файла.&lt;/p&gt;
+
+&lt;p&gt;Поэтому, когда запускается команда &lt;code&gt;diff&lt;/code&gt;, следует принимать во внимание, что и с чем будет сравниваться.&lt;/p&gt;
+
+&lt;h2 id=&quot;working-area&quot;&gt;Working Area&lt;/h2&gt;
+
+&lt;p&gt;Рассмотрим &lt;strong&gt;первый случай&lt;/strong&gt;, когда имеется отслеживаемый файл &lt;code&gt;index.html&lt;/code&gt;, в который вносятся изменения.&lt;/p&gt;
+
+&lt;p&gt;Но изменения в этом файле &lt;strong&gt;не индексируются&lt;/strong&gt; (&lt;code&gt;git add&lt;/code&gt;) и &lt;strong&gt;не фиксируются&lt;/strong&gt; (&lt;code&gt;git commit&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;В этом случае, чтобы увидеть изменения, нужно запустить команду:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;В этом случае производится сравнение между фиксированной версией файла &lt;code&gt;index.html&lt;/code&gt; (в области Repository) и его измененной версией (в области Working Area).&lt;/p&gt;
+
+&lt;p&gt;Вывод будет примерно таким:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff
+diff --git a/index.html b/index.html
+index 8fbea1c..fff54a9 100644
+--- a/index.html
++++ b/index.html
+@@ -5,6 +5,6 @@
+   &amp;lt;title&amp;gt;Index&amp;lt;/title&amp;gt;
+ &amp;lt;/head&amp;gt;
+ &amp;lt;body&amp;gt;
+-
++  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;
+ &amp;lt;/body&amp;gt;
+ &amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;В этом примере все предельно ясно и понятно. Строка &lt;code&gt;--- a/index.html&lt;/code&gt; - это фиксированная версия файла &lt;code&gt;index.html&lt;/code&gt;. Строка &lt;code&gt;+++ b/index.html&lt;/code&gt; - это измененная версия файла &lt;code&gt;index.html&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Две строки:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;-
++  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;… отображают, сколько и каких строк удалено (знак минус); сколько и каких строк добавлено (знак плюс).&lt;/p&gt;
+
+&lt;p&gt;Итак, с первым вариантом разобрались. Комадна &lt;code&gt;git diff&lt;/code&gt; выполняет сравнение версии файла из области Repository и этой же версии из области Working Area.&lt;/p&gt;
+
+&lt;h2 id=&quot;staging-area&quot;&gt;Staging Area&lt;/h2&gt;
+
+&lt;p&gt;&lt;strong&gt;Второй вариант&lt;/strong&gt; - файл &lt;code&gt;index.html&lt;/code&gt; отслеживается, в него внесено изменение, которое проиндексировано (внесено в область Staging Area).&lt;/p&gt;
+
+&lt;p&gt;Команда &lt;code&gt;git diff&lt;/code&gt; &lt;strong&gt;ничего не покажет&lt;/strong&gt;, так как изменения в файле &lt;code&gt;index.html&lt;/code&gt; были перенесены (&lt;code&gt;git add&lt;/code&gt;) из области Working Area в область Staging Area. Другими словами, область Working Area чистая и в ней нет ничего, чтобы можно было сравнить с областью Repository.&lt;/p&gt;
+
+&lt;p&gt;В этом случае для команды &lt;code&gt;git diff&lt;/code&gt; необходимо добавить ключ &lt;code&gt;--staged&lt;/code&gt;. Тогда вывод будет примерно таким:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff --staged
+diff --git a/index.html b/index.html
+index 8fbea1c..fff54a9 100644
+--- a/index.html
++++ b/index.html
+@@ -5,6 +5,6 @@
+   &amp;lt;title&amp;gt;Index&amp;lt;/title&amp;gt;
+ &amp;lt;/head&amp;gt;
+ &amp;lt;body&amp;gt;
+-
++  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;
+ &amp;lt;/body&amp;gt;
+ &amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ключ &lt;code&gt;--staged&lt;/code&gt; указывает, что необходимо сравнивать область Repository с областью Staging Area.&lt;/p&gt;
+
+&lt;p&gt;Итак, разобрались со вторым случаем. Команда &lt;code&gt;git diff --staged&lt;/code&gt;производит сравнение области Repository с областью Staging Area.&lt;/p&gt;
+
+&lt;h2 id=&quot;repository&quot;&gt;Repository&lt;/h2&gt;
+
+&lt;p&gt;Третий вариант - файл &lt;code&gt;index.html&lt;/code&gt; отслеживается, в него внесены изменения, которые проиндексированы (&lt;code&gt;git add&lt;/code&gt;) и зафиксированы (&lt;code&gt;git commit&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;В этом случае область Working Area и Staging Area чистые от изменений, поэтому область Repository нельзя сравнивать с ними - там нет ничего для сравнения.&lt;/p&gt;
+
+&lt;p&gt;Поэтому команда &lt;code&gt;git diff&lt;/code&gt; или &lt;code&gt;git diff --staged&lt;/code&gt; &lt;strong&gt;ничего не покажет&lt;/strong&gt; - сравнивать то не с чем!&lt;/p&gt;
+
+&lt;p&gt;Так как все изменения зафиксированы и перенесены в область Repository, то и сравнивать их между собой нужно только там, в этой области.&lt;/p&gt;
+
+&lt;p&gt;В этом случае команда сравнения &lt;code&gt;git diff&lt;/code&gt; будет выглядеть примерно таким образом:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff 0644c20  73a4c4c
+diff --git a/index.html b/index.html
+index fff54a9..8fbea1c 100644
+--- a/index.html
++++ b/index.html
+@@ -5,6 +5,6 @@
+   &amp;lt;title&amp;gt;Index&amp;lt;/title&amp;gt;
+ &amp;lt;/head&amp;gt;
+ &amp;lt;body&amp;gt;
+-  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;
++
+ &amp;lt;/body&amp;gt;
+ &amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Здесь &lt;code&gt;0644c20&lt;/code&gt; - это первые семь символов hash-суммы последнего commit’а, &lt;code&gt;73a4c4c&lt;/code&gt; - первые семь символов hash-суммы предпоследнего commit’а.&lt;/p&gt;
+
+&lt;p&gt;Их можно получить командой:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Другими словами, в этом случае сравниваются между собой различные коммиты. И это могут быть совсем не обязательно соседние коммиты - можно сравнить, к примеру, первый и последний коммиты.&lt;/p&gt;
+
+&lt;p&gt;Итак, разобрались с третим вариантом - когда сравниваются командой &lt;code&gt;git diff hash_sum_1 hash_sum_2&lt;/code&gt; между собой различные коммиты, расположенные в области Repository.&lt;/p&gt;
+
+&lt;p&gt;На этом все.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/git-diff/&quot;&gt;git diff - учимся сравнивать в Git&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on April 16, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
 <entry>
@@ -45,7 +181,7 @@
 
 &lt;p&gt;Вверху видим панель инструментов, одного взгляда на которую достаточно, чтобы разобраться - что для чего предназначено.&lt;/p&gt;
 
-&lt;p&gt;Вставка, открытие и сохранение документа; иконки Undo и Redo; форматирование текста - &lt;strong&gt;Bold&lt;/strong&gt;, &lt;em&gt;Italic&lt;/em&gt;, ~~Stroke~~; удобные кнопки для вставки на страницу изображения, ссылки или timestamp:&lt;/p&gt;
+&lt;p&gt;Вставка, открытие и сохранение документа; иконки Undo и Redo; форматирование текста - Bold, Italic, Stroke; удобные кнопки для вставки на страницу изображения, ссылки или timestamp:&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/04/remarkable_links_images.png&quot; alt=&quot;Remarkable - insert images and links&quot; title=&quot;Remarkable - insert images and links&quot; /&gt;&lt;/p&gt;
 
@@ -2770,181 +2906,6 @@
 &lt;hr /&gt;
 
     &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/html/jade-to-html/&quot;&gt;Jade - два способа компиляции в HTML&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 21, 2014.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Parallax Scrolling с помощью Stellar.js]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/html/parallax-scrolling-stellar-js/" />
-  <id>http://zencoder.ru/html/parallax-scrolling-stellar-js</id>
-  <published>2014-11-20T00:00:00+04:00</published>
-  <updated>2014-11-20T00:00:00+04:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;blockquote&gt;
-  &lt;p&gt;Отличный пример создания parallax scrolling с помощью Stellar.js. Оригинал статьи размещен здесь - &lt;a href=&quot;http://www.sitepoint.com/introduction-parallax-scrolling-using-stellar-js/&quot; title=&quot;An Introduction to Parallax Scrolling Using Stellar.js&quot;&gt;An Introduction to Parallax Scrolling Using Stellar.js&lt;/a&gt;.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Одним из наиболее обсуждаемых трендов в web-дизайне последние несколько лет является эффект &lt;code&gt;parallax scrolling&lt;/code&gt;. Нравиться он вам или нет, но этот эффект сегодня применяется на очень многих сайтах. В этой статье будет дано краткое описание принципа &lt;code&gt;parallax scrolling&lt;/code&gt; и будет показано, как применить этот эффект на странице с помощью jQuery-плагина под названием Stellar.js.&lt;/p&gt;
-
-&lt;h2 id=&quot;parallax-scrolling&quot;&gt;Что такое parallax scrolling&lt;/h2&gt;
-
-&lt;p&gt;Основная идея parallax scrolling заключается в том, что при прокрутке страницы вниз фоновое изображение движется с меньшей скоростью, нежели содержимое страницы. Таким образом создается иллюзия 3D на странице. Этот эффект является прекрасным дополнением к web-странице, однако он становиться навязчивым при чрезмерном злоупотреблении им. Время от времени вы встречаете на просторах Сети сайты, перегруженные подобными эффектами. И вам не всегда может такое понравиться. Потому что в основном при реализации такого эффекта используется анимация фоновых изображений, что значительно увеличивает вес страницы, в результате чего она очень медленно загружается в браузере.&lt;/p&gt;
-
-&lt;p&gt;Примерами сайтов со злоупотреблением таких эффектов, на мой взгляд, могут послужить &lt;a href=&quot;http://community.saucony.com/kinvara3/&quot; title=&quot;Saucony Kinavara 3&quot;&gt;Saucony Kinavara 3&lt;/a&gt; и &lt;a href=&quot;http://moto.oakley.com/&quot; title=&quot;Oakley Airbrake MX&quot;&gt;Oakley Airbrake MX&lt;/a&gt;. Первый сайт “весит” 50Mb(!), второй сайт - около 20Mb.&lt;/p&gt;
-
-&lt;p&gt;Теперь, когда вы имеете представление о том, как на деле выглядит эффект parallax scrolling, давайте попробуем реализовать его с помощью плагина Stellar.js.&lt;/p&gt;
-
-&lt;h2 id=&quot;stellarjs&quot;&gt;Что такое Stellar.js&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/markdalgleish/stellar.js/&quot; title=&quot;Stellar.js&quot;&gt;Stellar.js&lt;/a&gt; - это jQuery-плагин, с помощью которого можно легко реализовать эффект parallax scrolling на web-странице. Несмотря на то, что этот плагин уже не поддерживается разработчиком, он все еще остается очень надежным, совместим с самыми последними версиями библиотеки jQuery и часто применяется web-разработчиками в проектах (&lt;em&gt;что является показателем&lt;/em&gt;). Stellar.js в списке популярных плагинов &lt;a href=&quot;http://plugins.jquery.com/&quot; title=&quot;The jQuery Plugin Registry&quot;&gt;The jQuery Plugin Registry&lt;/a&gt; находится на высших позициях, поэтому вы наверняка о нем слышали или же читали упоминание о нем.&lt;/p&gt;
-
-&lt;p&gt;Отлично, вкратце мы познакомились, что такое Stellar.js и можно приступать к процессу создания parallax scrolling на странице с его помощью.&lt;/p&gt;
-
-&lt;h2 id=&quot;stellarjs----&quot;&gt;Stellar.js - начинаем работу&lt;/h2&gt;
-
-&lt;p&gt;Начать работать с плагином Stellar.js очень просто. Для начала нужно скачать этот плагин и подключить к странице. Получить плагин Stellar.js можно двумя способами - из &lt;a href=&quot;https://github.com/markdalgleish/stellar.js/&quot; title=&quot;Git-репозиторий Stellar.js&quot;&gt;Git-репозитория&lt;/a&gt; или с помощью менеджера пакетов Bower. Если остановится на использовании Bower, то в консоли нужно набрать такую команду:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-powershell&quot; data-lang=&quot;powershell&quot;&gt;&lt;span class=&quot;n&quot;&gt;bower&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;install&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;jquery&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;stellar&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Когда плагин Stellar.js получен любым из вышеописанных способов, необходимо подключить его к странице как обычно.&lt;/p&gt;
-
-&lt;p&gt;После подключения плагина Stellar.js все готово для того, чтобы применить эффект &lt;code&gt;parallax scrolling&lt;/code&gt; на странице. Этот плагин позволяет применить данный эффект к любому scrolling-элементу на странице, будь то объект &lt;code&gt;window&lt;/code&gt; или любой другой. Для этого нужно выполнить выборку нужного элемента с помощью jQuery, а затем применить к выбранному элементу метод &lt;code&gt;stellar()&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Самый простой пример применения плагина Stellar.js к объекту показан ниже:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#someElement&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stellar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Для объекта &lt;code&gt;window&lt;/code&gt; можно использовать и более краткий синтаксис вышеприведенного примера:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stellar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;В этом коде производится поиск фоновых изображений или элементов, к которым применяется эффект &lt;code&gt;parallax&lt;/code&gt;; и для этих элементов выполняется пересчет их расположения на web-странице при ее прокрутке.&lt;/p&gt;
-
-&lt;p&gt;Если вам хочется взглянуть хотя бы на один готовый пример страницы с &lt;code&gt;parallax scrolling&lt;/code&gt;, созданной с помощью Stellar.js, то можете посетить эту ссылку - &lt;a href=&quot;http://markdalgleish.com/projects/stellar.js/demos/backgrounds.html&quot; title=&quot;Stellar.js Backgrounds Demo&quot;&gt;Stellar.js Backgrounds Demo&lt;/a&gt;.&lt;/p&gt;
-
-&lt;h2 id=&quot;stellarjs-1&quot;&gt;Настройки Stellar.js&lt;/h2&gt;
-
-&lt;p&gt;&lt;a href=&quot;https://github.com/markdalgleish/stellar.js/&quot; title=&quot;Stellar.js&quot;&gt;Stellar.js&lt;/a&gt;, как и большинство других плагинов подобного рода, достаточно гибок в настройке. В нем есть несколько параметров, с помощью которых можно задать нужный вариант работы. В Stellar.js все настройки делятся на два типа - глобальные (&lt;em&gt;оказывают влияние на все элементы&lt;/em&gt;) и локальные, имеющие отношение только к конкретному элементу.&lt;/p&gt;
-
-&lt;p&gt;Глобальные настройки передаются методу &lt;code&gt;stellar()&lt;/code&gt; в качестве аргументов, в момент вызова этого метода. Специфичные для элемента настройки передаются в виде &lt;code&gt;data-*&lt;/code&gt;-атрибутов. В этом разделе статьи я не буду подробно останавливаться на рассмотрении всех возможных параметров плагина Stellar.js. Если у вас возникнет желание детально ознакомиться с ними, то можно обратиться к разделу, посвященному этому вопросу - &lt;a href=&quot;https://github.com/markdalgleish/stellar.js#configuring-everything&quot; title=&quot;Configuring Everything&quot;&gt;Configuring Everything&lt;/a&gt;.&lt;/p&gt;
-
-&lt;p&gt;Одной из основных настроек плагина, которая может понадобиться в первую очередь, является выбор направления, в котором будет осуществляться эффект. Классическим вариантом &lt;code&gt;parallax scrolling&lt;/code&gt; является направление &lt;code&gt;parallax&lt;/code&gt; по вертикали - сверху вниз или же наоборот. Однако, с помощью настроек можно задать parallax по горизонтали - слева направо и наоборот. И даже можно задать сразу два направления - по вертикали и по горизонтали. Для управления направлением &lt;code&gt;parallax&lt;/code&gt; в плагине Stellar.js имеются два параметра Boolean-типа:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;horizontalScrolling&lt;/code&gt; - для управления parallax по горизонтали&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;verticalScrolling&lt;/code&gt; - для управления parallax по вертикали&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;По умолчанию оба параметра имеют значение &lt;code&gt;true&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Другим интересным параметров плагина Stellar.js является &lt;code&gt;responsive&lt;/code&gt;. Данная настройка отвечается за возможность обновления содержимого блока с эффектом parallax при наступлении событий &lt;code&gt;load&lt;/code&gt; и &lt;code&gt;resize&lt;/code&gt; объекта &lt;code&gt;window&lt;/code&gt;. Значением по умолчанию является &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Последним (достойным внимания) глобальным параметром плагина Stellar.js является &lt;code&gt;hideDistantElements&lt;/code&gt;. Значением по умолчанию этого параметра является &lt;code&gt;true&lt;/code&gt;. Данный параметр отвечает за эффект скрытия объекта в том случае, когда он выходит на границы viewport. Если такое поведение вам не нужно, то можно поставить значение &lt;code&gt;hideDistantElements&lt;/code&gt; в &lt;code&gt;false&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Единственным специфичным для элемента параметром плагина Stellar.js, о котором я расскажу в этой статье, является &lt;code&gt;data-stellar-background-ratio&lt;/code&gt;. Расскажу только потому, что он используется очень часто при работе с плагином Stellar.js. Параметр принимает в качестве значения положительное число и управляет скоростью parallax для выбранного элемента.&lt;/p&gt;
-
-&lt;p&gt;Например, &lt;code&gt;data-stellar-background-ratio=&quot;0.5&quot;&lt;/code&gt; означает, что скорость перемещения элемента при scrolling будет в два раза меньше обычной. Если вы будете использовать данный параметр со значением, меньшим 1, то, согласно документации, для элемента с parallax необходимо применить CSS-правило &lt;code&gt;background-attachment: fixed;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Теперь, когда мы познакомились с плагином Stellar.js и научились управлять им с помощью параметров, самое время посмотреть его в действии.&lt;/p&gt;
-
-&lt;h2 id=&quot;demo&quot;&gt;Demo&lt;/h2&gt;
-
-&lt;p&gt;В этом разделе статьи мы создадим пример кода, в котором применим плагин Stellar.js и настроим его с помощью параметров, рассмотренных ранее. Первым делом нам понадобиться HTML-разметка. Для этого создадим шесть блоков &lt;code&gt;div&lt;/code&gt;, внутри которых будет содержаться некоторый текст:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content1&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content2&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content3&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-stellar-background-ratio=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;0.5&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content4&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-stellar-background-ratio=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;0.5&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content5&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-stellar-background-ratio=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;0.5&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;div&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;class=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;content6&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;data-stellar-background-ratio=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;0.5&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&lt;/span&gt;
-  &lt;span class=&quot;nt&quot;&gt;&amp;lt;p&amp;gt;&lt;/span&gt;text here&lt;span class=&quot;nt&quot;&gt;&amp;lt;/p&amp;gt;&lt;/span&gt;
-&lt;span class=&quot;nt&quot;&gt;&amp;lt;/div&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Для представленной выше HTML-разметки необходимо написать некоторые CSS-стили для задания фоновых изображений. В нашем примере будут использоваться три изображения, при этом каждое из них будет использоваться дважды. Так как к последним трем блокам &lt;code&gt;div&lt;/code&gt; применен атрибут &lt;code&gt;data-stellar-background-ratio&lt;/code&gt;, то в CSS-стилях также необходимо прописать правило &lt;code&gt;background-attachment: fixed;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Финальный вариант CSS-кода будет выглядеть таким образом:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-css&quot; data-lang=&quot;css&quot;&gt;&lt;span class=&quot;k&quot;&gt;@import&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;compass&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;@import&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;compass/reset&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;#fff&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;o&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;black&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;#000&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;body&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;font-size&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;20px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;white&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;text-shadow&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1px&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;black&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;5px&lt;/span&gt; &lt;span class=&quot;err&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;nb&quot;&gt;black&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nt&quot;&gt;p&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;padding&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;.5em&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;margin&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nc&quot;&gt;.content&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-attachment&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;fixed&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;400px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;line-height&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;400px&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;text-align&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;center&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;#content1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(&amp;quot;http://www.tamperlock.com/blog/wp-content/uploads/2014/08/london-england.jpg&amp;quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;#content2&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(&amp;quot;http://ocdn.eu/images/pulscms/ZjU7MDQsMCwzMiwzODQsMWZhOzA2LDMyMCwxYzI_/1eb29a70dabd0994cdefaad01ca3c884.jpg&amp;quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;#content3&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(&amp;quot;http://www.zeus.aegee.org/magazine/wp-content/uploads/napoli-golfo-vesuvio.jpg&amp;quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;#content4&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(&amp;quot;http://www.tamperlock.com/blog/wp-content/uploads/2014/08/london-england.jpg&amp;quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;#content5&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(&amp;quot;http://ocdn.eu/images/pulscms/ZjU7MDQsMCwzMiwzODQsMWZhOzA2LDMyMCwxYzI_/1eb29a70dabd0994cdefaad01ca3c884.jpg&amp;quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
-
-&lt;span class=&quot;nf&quot;&gt;#content6&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;k&quot;&gt;background-image&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;sx&quot;&gt;url(&amp;quot;http://www.zeus.aegee.org/magazine/wp-content/uploads/napoli-golfo-vesuvio.jpg&amp;quot;)&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Последний шаг, который нужно выполнить, это запустить эффект, вызвав метод &lt;code&gt;stellar()&lt;/code&gt;. Этому методу также передадим несколько аргументов:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;stellar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;({&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;horizontalScrolling&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;responsive&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;});&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2014/11/stellar.png&quot; alt=&quot;Stellar.js - parallax scrolling with jQuery&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;Заключение&lt;/h2&gt;
-
-&lt;p&gt;В данной статье был рассмотрен плагин Stellar.js для создания эффекта parallax на web-странице. Мною не были рассмотрены все настройки и возможности этого плагина. Но целью этой статьи было заинтересовать читателей плагином Stellar.js для того, чтобы продолжить его изучение самостоятельно.&lt;/p&gt;
-
-&lt;p&gt;Что вы думаете о плагине Stellar.js? Вы слышали о таком или же используете его давно?&lt;/p&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/html/parallax-scrolling-stellar-js/&quot;&gt;Parallax Scrolling с помощью Stellar.js&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 20, 2014.&lt;/p&gt;
   </content>
 </entry>
 

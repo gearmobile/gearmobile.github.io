@@ -144,6 +144,120 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-21T00:00:00+04:00"><a href="http://zencoder.ru/css/css-side-lined-headline/">October 21, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-side-lined-headline/" rel="bookmark" title="Создать зачеркнутый заголовок на CSS" itemprop="url">Создать зачеркнутый заголовок на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Создать заголовок с эффектом зачеркивания. Создается с помощью псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+</blockquote>
+
+<p>Оба псевдо-элемента применяются только к одному элементу - заголовку определенного уровня и дополнительной разметки не требуется, все семантично. Линии подчеркивания имеют фиксированную ширину с обеих сторон, что упрощает задачу. Положение линий по вертикали - точно по центру.</p>
+
+<p>Создание такого эффекта выполняется простым кодом. Первоначально задаем HTML-разметку с использованием заголовка первого уровня <code>h1</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
+  about me
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<p>И прописываем для него CSS-правила, чтобы привести его к тому виду, который нам необходим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Выравнивание по центру, размер шрифта (кегль) и высота блока через интерлиньяж <code>line-height</code>, делаем все буквы заглавными - все стандартно. Но не забываем о позиционировании, которое устанавливаем относительным, ибо оно потребуется нам для псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+
+<p>Теперь создаем общие правила для обоих псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Единственным примечательным моментом в этом коде является свойство <code>top: 50%</code>, которое размещает линию точно по центру вертикали блочного элемента. В нашем случае таким блочным элементом является заголовок первого уровня <code>h1</code>. Кроме того, нужно установить еще одно правило - <code>margin-top: -2px</code>.</p>
+
+<p>Этим правилом мы поднимаем сгенерированные линии вверх на половину их высоты. Почему это нужно делать, можно догадаться и так.</p>
+
+<p>Так как правила мы прописали для обоих элементов, то следуют переписать некоторые из них для элемента <code>:after</code>. Точнее - нам нужно только правило <code>right</code>, чтобы “сдвинуть” его вправо:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результат работы кода показан на рисунке ниже. Граница для заголовка задана мною для наглядности:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/header-stroke.jpg" alt="Зачеркнутый заголовок на CSS" /></p>
+
+<p>Полностью весь код для создания такого эффекта приведен ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="upd-19012014">UPD 19\01\2014</h2>
+
+<p>Для быстроты, удобства и краткости можно воспользоваться готовым миксином из библиотеки Scut - <a href="http://davidtheclark.github.io/scut/side-lined.html" title="Scut Side Line">Side-Lined</a>.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-20T00:00:00+04:00"><a href="http://zencoder.ru/css/css-center-in-block/">October 20, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -445,120 +559,6 @@
 <p><img src="http://zencoder.ru/images/uploads/2013/11/block-inside.png" alt="Картинка, вложенная в блок в качестве фонового изображения" /></p>
 
 <p>Код более краткий. Единственный минус - изображение должно быть только в качестве фона для блока.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-16T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-hotkeys/">October 16, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-hotkeys/" rel="bookmark" title="Photoshop - магия горячих клавиш (hotkeys)" itemprop="url">Photoshop - магия горячих клавиш (hotkeys)</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В этом обзоре мною собраны описания “горячих” клавиш в Photoshop.</p>
-</blockquote>
-
-<p>Если быть более точным - здесь описаны “горячие” клавиши, которые необходимы для повседневной работы верстальщика в этой программе. О преимуществах использования hotkeys мне кажется, не стоит даже упоминать.</p>
-
-<p>Они значительно ускоряют и упрощают работу в Photoshop. Конечно, перед этим необходимо их заучить - это единственная трудность. Но как только сочетания клавиш будут запомнены, результаты на практике будут сразу видны. Это можно ощутить на собственном опыте.</p>
-
-<p>Описания приемов работы с “горячими” клавишами собраны мною постепенно, по частям. Те “секреты”, которые я узнавал в своей работе с программой Photoshop, я постепенно объединял в данном небольшом руководстве, которое можно скорее назвать памяткой верстальщика в Photoshop.</p>
-
-<h2 id="photoshop">Горячие клавиши панели инструментов Photoshop</h2>
-
-<p>С левой стороны рабочего окна Photoshop имеется плавающая панель инструментов, которая является незаменимым способом выбора нужного набора инструментов.</p>
-
-<p>Если нужно вырезать часть изображения - пользуемся инструментом “Рамка”, выделить нужный слой или группу слоев - инструмент “Перемещение”, определить цвет определенного слоя - инструмент “Пипетка”.</p>
-
-<p>Этот список я продолжать не буду. Описание всех инструментов Photoshop в Интернете хоть отбавляй и созданы они куда более красочно и подробно.</p>
-
-<p>Я остановлюсь на другом моменте. Для каждого инструмента на этой панели имеется “привязанная” к нему “горячая клавиша”. С помощью этих hotkeys выбирать или переключаться между инструментами панели можно очень быстро.</p>
-
-<p>Не говоря уже об удобстве. Ниже приведу список таких “горячих клавиш” панели инструментов, применительно к работе верстальщика:</p>
-
-<ul>
-  <li>“Перемещение” - <kbd>V</kbd></li>
-  <li>“Прямоугольная область” - <kbd>M</kbd></li>
-  <li>“Рамка” - <kbd>C</kbd></li>
-  <li>“Пипетка” - <kbd>I</kbd></li>
-  <li>“Горизонтальный текст” - <kbd>T</kbd></li>
-  <li>“Рука” - <kbd>H</kbd></li>
-  <li>“Масштаб” - <kbd>Z</kbd></li>
-</ul>
-
-<p>Стоит только упомянуть, что выбор инструментов на панели с помощью “горячих клавиш” возможно производить при <em>английской раскладке</em> клавиатуры. Другими словами, “горячие клавиши” должны быть <em>латинскими</em>.</p>
-
-<p>Запомнить эти немногочисленные сочетания очень просто. Они являются сокращениями от английского названия соответствующих инструментов:</p>
-
-<ul>
-  <li><kbd>V</kbd> - MoVe</li>
-  <li><kbd>M</kbd> - Marquee</li>
-  <li><kbd>C</kbd> - Crop</li>
-  <li><kbd>I</kbd> - Invert</li>
-  <li><kbd>T</kbd> - Transform</li>
-  <li><kbd>H</kbd> - Hand</li>
-  <li><kbd>Z</kbd> - Zoom</li>
-</ul>
-
-<h2 id="section">Особенность работы с инструментом “Текст”</h2>
-
-<p>При верстке шаблона сайта из PSD-макета одним из моментов является работа со шрифтами. То есть, когда дело доходит до передачи и оформления шрифтов через правила CSS.</p>
-
-<p>Для точного соответствия шаблона сайта PSD-макету необходимо однозначно знать все свойства шрифтов, использованных дизайнером при создании макета. Это семейство шрифтов, насыщенность шрифта, его размер и цвет.</p>
-
-<p>Естественно, для этого нужно воспользоваться инструментом “Текст”. Но имеется один момент. Например, стоит задача определить свойства шрифтов, расположенных в разных блоках макета, подряд.</p>
-
-<p>То есть, сперва один шрифт, затем другой, потом третий и так далее. При выборе одного шрифта и определения его свойств инструмент “Текст” как бы “зависает” (говорю своими словами, как понимаю и как вижу). Если вы выделили этот шрифт, то затем не сможете определить другой. Для этого необходимо “сбросить” запомненное инструментом “Текст” состояние.</p>
-
-<p>Выполняется это просто. Для этого нажимаем клавишу <kbd>Esc</kbd>. Инструмент “Текст” выходит из “запомненного” состояния, но остается активированным. Теперь можно выделять следующий шрифт и определять его параметры. Используя клавишу <kbd>Esc</kbd>, можно легко и быстро узнать свойства всех шрифтов макета за один шаг.</p>
-
-<h2 id="section-1">Горячие клавиши при работе со слоями</h2>
-
-<p>Несколько моментов, связанных с работой со слоями. А именно, при объединении и выделении слоев.</p>
-
-<p>Имеется объект макета, состоящий из нескольких слоев. Давайте покажем, из каких именно он состоит:</p>
-
-<figure id="attachment_176" style="width: 375px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/several-layers.png" alt="Несколько слоев изображения в Photoshop" width="375" height="228" class="size-full wp-image-176" />][1]<figcaption class="wp-caption-text">Несколько слоев изображения в Photoshop</figcaption></figure>
-
-<p>Первоначально необходимо удостовериться, что именно эти слои отвечают за прорисовку данного изображения. Для этого в Photoshop имеется очень удобное сочетание горячей клавиши <kbd>Alt</kbd> и левой кнопки мыши (ЛКМ). Нажимаем и держим зажатой клавишу <kbd>Alt</kbd>.</p>
-
-<p>А затем щелкаем ЛКМ на значке “глаза” напротив слоя “Layer 5”. При этом все остальные слои макета отключаются и мы видим только то изображение (точнее - слои), которое “рисует” данный слой:</p>
-
-<figure id="attachment_177" style="width: 346px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/deactivated-layers-346x600.png" alt="Отключенные слои Photoshop" width="346" height="600" class="size-medium wp-image-177" />][2]<figcaption class="wp-caption-text">Отключенные слои Photoshop</figcaption></figure>
-
-<p>Это чрезвычайно удобный способ отключения ненужных слоев. Чтобы вернуть назад в “как было”, поступаем точно также. Опять нажимаем и держим зажатой клавишу <kbd>Alt</kbd> и кликаем по “глазику” напротив слоя “Layer 5”. Все остальные слои автоматически возвращаются в исходное состояние, при этом слой “Layer 5” также остается активным.</p>
-
-<p>Вернемся к предыдущему шагу, когда “лишние” слои у нас были отключены. У нас имеются только два слоя, оставшихся после действий <kbd>Alt</kbd> + ЛКМ. Нам нужно объединить (свести) все оставшиеся слои в один, чтобы потом можно было сохранить изображение одним файлом.</p>
-
-<p>Выделяем два оставшихся слоя. Для этого зажимаем клавишу <kbd>Ctrl</kbd> и левой кнопкой мыши (ЛКМ) последовательно выделяем каждый из слоев, кликая одинарным щелчком мыши на этих слоях.</p>
-
-<p>Объединяем выделенные слои. Тут еще проще - для этого служит сочетание “горячих” клавиш <kbd>Ctrl + E</kbd>. Нажимаем их и видим результат:</p>
-
-<figure id="attachment_178" style="width: 361px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/merged-layer.png" alt="Сведенный в один слой" width="361" height="309" class="size-full wp-image-178" />][3]<figcaption class="wp-caption-text">Сведенный в один слой</figcaption></figure>
-
-<p>Теперь можно сохранять полученное изображение как обычно, через “Файл - Сохранить для Web и устройств” с помощью длинного сочетания клавиш <kbd>Alt + Shift + Ctrl + S</kbd>. Также стоит упомянуть, что при работе со слоями всегда можно вернуться назад, нажав стандартную комбинацию клавиш <kbd>Ctrl + Z</kbd>.</p>
-
-<p>На этом все. Думаю, данный небольшой обзор будет пополняться описаниями тех возможностей, о которых я пока не знаю на данный момент.</p>
 
 <p>На этом все.</p>
 

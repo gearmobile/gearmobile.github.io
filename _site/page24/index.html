@@ -144,6 +144,86 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-27T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/ssl-wordpress/">November 27, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/wordpress/ssl-wordpress/" rel="bookmark" title="Использование SSL в административной панели WordPress" itemprop="url">Использование SSL в административной панели WordPress</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Со времен, когда я увлекался изучением операционных систем семейства Linux, для меня небезразличной была тема цифровой безопасности. Благо, системы Linux имеют богатый набор инструментов в этой области.</p>
+</blockquote>
+
+<p>С того времени ничего не изменилось и при любом удобном случае я всегда поступаю по принципу - “безопасности много не бывает”. Особенно, когда это касается сайтов, выложенных во всеобщем доступе и работающих на такой мега-популярной CMS, как WordPress (со всеми вытекающими отсюда последствиями).</p>
+
+<p>Поэтому неудивительно, что рано или поздно у меня возник вопрос: “А как так происходит, что я могу часами “висеть” подключенным к административной панели WordPress, передавая при этом на хостинг самую различную информацию: текст, изображения и пароли в том числе. И все это происходит по незащищенному, незашифрованному каналу?”</p>
+
+<p>То есть - я подключаюсь к панели, она у меня запрашивает пароль и я отсылаю его в открытом виде. Но ведь тогда любой желающий может подключиться и перехватить этот пароль в готовом виде, ему даже не потребуются всякие брутфорсы со словарями. Однако, так дело не пойдет!</p>
+
+<p>Логичным для меня шагом было найти доступный мануальчик по созданию безопасного канала связи с административной панелью WordPress. Но вот незадача - на русском языке я такового не нашел. Пришлось перевести англоязычную статью, вольный перевод которой привожу ниже.</p>
+
+<p>Перед установкой WordPress у вас уже должен быть SSL-сертификат, который подключается к учетной записи хостинга, на котором будет располагаться ваш сайт. Если у вас нет сертификата SSL, вам необходимо приобрести его.</p>
+
+<p>Эта услуга платная и существуют различные службы для предоставления таких сертификатов. В том числе, вы можете воспользоваться регистратором доменных имен, так как многие из них также предоставляют подобные услуги.</p>
+
+<p>Для того, чтобы активировать сертификат SSL в WordPress, необходимо отредактировать файл <code>wp-config.php</code>. Можете поступить двумя способами:</p>
+
+<ol>
+  <li>скачать этот файл на локальную машину, используя файловый менеджер FTP</li>
+  <li>воспользоваться встроенным редактором файлов в файловом менеджере FTP (например, FileZilla)</li>
+</ol>
+
+<h2 id="ssl----wordpress">Подключение SSL к административной панели WordPress</h2>
+
+<ol>
+  <li>
+    <p>Открываем для редактирования файл <code>wp-config.php</code></p>
+  </li>
+  <li>
+    <p>Находим в этом файле строку:</p>
+  </li>
+</ol>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/*</span> <span class="n">That</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">all</span><span class="p">,</span> <span class="n">stop</span> <span class="n">editing</span><span class="p">!</span> <span class="n">Happy</span> <span class="n">blogging</span><span class="p">.</span> <span class="p">*/</span></code></pre></div>
+
+<ol>
+  <li>Выше этой строки добавляем в файл две строки:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_ADMIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_LOGIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span></code></pre></div>
+
+<ol>
+  <li>В результате файл <code>wp-onfig.php</code> должен выглядеть следующим образом:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_ADMIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_LOGIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<span class="p">/*</span> <span class="n">That</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">all</span><span class="p">,</span> <span class="n">stop</span> <span class="n">editing</span><span class="p">!</span> <span class="n">Happy</span> <span class="n">blogging</span><span class="p">.</span> <span class="p">*/</span></code></pre></div>
+
+<p>Теперь каждый раз, когда вы подключитесь к административной панели WordPress, в адресной строке браузера вы увидите, что url начинается с <code>https://</code> вместо <code>http://</code>.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Все хорошо, но теперь осталось выкроить “немного” маленьких зеленых бумажечек, чтобы приобрести SSL-сертификат.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-11-26T00:00:00+04:00"><a href="http://zencoder.ru/css/markdown/">November 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -553,153 +633,6 @@
 <p>На этом все.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-19T00:00:00+04:00"><a href="http://zencoder.ru/css/less-hat-mixin-less/">November 19, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/less-hat-mixin-less/" rel="bookmark" title="LESS Hat - коллекция готовых mixin'ов под LESS" itemprop="url">LESS Hat - коллекция готовых mixin'ов под LESS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжение темы препроцессоров для CSS, которая для меня намного интереснее всех остальных.</p>
-</blockquote>
-
-<p>На этот раз остановимся на препроцессоре LESS, ибо было бы странно рассказать о SASS (SCSS) и не упомянуть о не менее популярном его аналоге. Преимуществ у LESS столько же, сколько и недостатков.</p>
-
-<p>Эта статья является моей попыткой на личном опыте познакомиться с LESS Hat и сравнить ее с Compass. Про сам LESS и его синтаксис я рассказывать не буду - это глупо, ибо документация для этого препроцессора прекрасно оформлена и переведена на русский язык на оф. сайте проекта.</p>
-
-<p>Плюсы - этот препроцессор развивается более динамично, это более молодой проект. Синтаксис LESS интуитивно понятный и максимально приближен к CSS, поэтому новички могут освоить его совсем без труда. Документация для LESS гораздо более подробная, с примерами и переведена на множество языков, что облегчает его изучение (для SASS это серьезный недостаток, я сам с этим сталкиваюсь постоянно, когда изучаю Compass).</p>
-
-<p>Ну и последний немаловажный момент, который оказывает существенное влияние на распространенность LESS, это тот факт, что он включен в состав модного и известного фреймворка Bootstrap. То есть, все компоненты этого фреймворка созданы с использованием данного препроцессора. А если учесть, что один из трех китов CMS - Joomla 3 - создана на Bootstrap, то можно только гадать, куда заведет этот процесс.</p>
-
-<p>К недостаткам LESS лично я могу отнести такой факт, как большое время для компиляции (хотя на оф. сайте один из создателей Bootstrap отвечал на вопрос, что им выбран препроцессор LESS как раз из-за высокой скорости компиляции, ибо он написан на языке Javascript). Еще один момент в минус LESS - файл с расширением .less компилируется каждый раз при обращении к нему браузера.</p>
-
-<p>В SASS производится создание файла <code>.css</code> из <code>.scss</code> “раз и навсегда”, там не нужно что-то собирать на лету, а он уже готовый подключается в HTML-документ. И последнее - LESS не имеет на сегодня такой продвинутой библиотеки миксинов, как Compass для SASS (SCSS). Точнее - подобная библиотека уже есть и ее название <a href="www.csshat.com" title="CSS Hat">LESS Hat</a> (глупо было бы, если бы такая библиотека не появилась). Однако она уступает по своим возможностям Compass.</p>
-
-<p>Итак, мы уже выяснили, что LESS Hat - аналог Compass под SASS (SCSS). Библиотека LESS Hat была создана командой, которая разработала плагин под Adobe Photoshop с названием <a href="www.csshat.com" title="CSS Hat">CSS Hat</a>. Этот плагин выполняет автоматизированные операции по переводу свойств любого элемента на psd-макете в свойства CSS.</p>
-
-<p>То есть, он старается упростить и ускорить задачу верстальщика, которую тот обычно выполняет вручную. Плагин CSS Hat не бесплатный, цену его я не знаю (это нетрудно узнать) и сам им не пользовался ни разу, поэтому ничего не могу сказать по этому поводу.</p>
-
-<p>Проект <a href="http://lesshat.com" title=" LESS Hat">LESS Hat</a> на сегодняшний момент является самой большой и популярной библиотекой готовых миксинов под препроцессор LESS. В отличие от плагина <a href="www.csshat.com" title="CSS Hat">CSS Hat</a>, библиотека <a href="http://lesshat.com" title=" LESS Hat">LESS Hat</a> бесплатная для использования. На момент написания статьи самая свежая версия этой библиотеки - v2.0.7, которую я и забираю со страницы проекта для своих собственных экспериментов. Архивчик .zip весит около 200Kb, что прилично для подобной библиотеки. Но пугаться не стоит - из всего архива нам потребуется только один файлик, а все остальное - это сопутствующая информация. Если распаковать архив, то увидим следующий список файлов и папок:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">build</span><span class="p">\</span>
-  <span class="n">mixins</span><span class="p">\</span>
-  <span class="p">.</span><span class="n">gitignore</span>
-  <span class="p">.</span><span class="n">travis</span><span class="p">.</span><span class="n">yml</span>
-  <span class="n">bower</span><span class="p">.</span><span class="n">json</span>
-  <span class="n">Gruntfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="n">LICENSE</span>
-  <span class="n">package</span><span class="p">.</span><span class="n">json</span>
-  <span class="n">README</span><span class="p">.</span><span class="n">md</span>
-  <span class="n">README-template</span><span class="p">.</span><span class="n">md</span></code></pre></div>
-
-<p>Первая папка <code>build</code> - самая нужная, там находятся два файла <code>lesshat.less</code> и <code>lesshat-prefixed.less</code> (не успел разобраться, для чего нужен этот файл), которые являются готовыми к использованию коллекциями LESS-миксинов.</p>
-
-<p>Вторая папка <code>mixins</code> - также содержит всю коллекцию миксинов, но предназначена для разработчиков. Другими словами, если у вас есть соответствующая квалификация и желание что-то подправить в любом из миксинов, то вам сюда. Все остальные файлы можно смело пропустить, они для работы не нужны.</p>
-
-<p>Теперь создаю шаблон для будущей площадки экспериментов под LESS и LESS Hat. Все как обычно - подключаю файл стилей в формате <code>.less</code> и файл для автоматической компиляции в CSS на лету - <code>less-1.3.3.min.js</code>.</p>
-
-<p>Затем вытаскиваю из папки файлик lesshat.less и кидаю его в папочку <code>css</code>, где также расположен файл <code>style.less</code> (все до кучи). Кстати, сразу оговорюсь, что все файлы и пример в целом (для этой статьи) у меня крутился под управлением локального сервера XAMPP. С ним у меня отношения сложились с первого раза, в отличие от других популярных серверов, таких как OpenServer, Endels(Denwer), WAMP.</p>
-
-<p>Файл <code>lesshat.less</code> подключаю к <code>style.less</code> через директиву <code>@import</code>. Как говориться в оф. документации к LESS, расширение <code>.less</code> можно и не указывать, но оставлю “как есть”:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="c">/* Imports</span>
-<span class="c">------------------*/</span>
-<span class="k">@import</span> <span class="s2">&quot;lesshat.less&quot;</span><span class="p">;</span>
-
-<span class="o">...</span></code></pre></div>
-
-<p>Все готово для того, чтобы опробовать библиотеку LESS Hat. Применю оттуда готовый миксин <code>.border-radius(10)</code> для создания скругленных углов у блока с помощью CSS-свойства <code>border-radius</code>. В документации к этому миксину говориться, что он может принимать значения без указания единиц измерения, так как допишет их сам (<code>px</code> по умолчанию).</p>
-
-<p>Также вспомним функции для работы с цветами в LESS. И воспользуемся еще двумя миксинами из LESS Hat: <code>.background-image()</code> для создания градиентов у блока и <code>.box-shadow()</code> для придания внешней тени.</p>
-
-<p>Рабочий файлик <code>style.less</code> получиться следующим:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Imports</span>
-<span class="c">  ------------------*/</span>
-  <span class="k">@import</span> <span class="s2">&quot;lesshat.less&quot;</span><span class="p">;</span>
-
-  <span class="c">/* Variables</span>
-<span class="c">  ------------------*/</span>
-  <span class="k">@width</span><span class="o">:</span> <span class="nt">200px</span><span class="p">;</span>
-  <span class="k">@color</span><span class="o">:</span> <span class="nf">#778899</span><span class="p">;</span>
-
-  <span class="c">/* Block</span>
-<span class="c">  ------------------*/</span>
-  <span class="nt">div</span><span class="p">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="o">@</span><span class="k">width</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="o">@</span><span class="k">width</span><span class="o">/</span><span class="m">2</span><span class="p">;</span>
-    <span class="o">.</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Colors</span>
-<span class="c">  ------------------*/</span>
-  <span class="nc">.color</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="o">@</span><span class="k">color</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nc">.lighten</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.darken</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.saturate</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">saturate</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.desaturate</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">desaturate</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.fadein</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">fadein</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.fadeout</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">fadeout</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.spin-plus</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">spin</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.spin-minus</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">spin</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">-20</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.gradient</span><span class="p">{</span>
-    <span class="o">.</span><span class="k">background-image</span><span class="p">(</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">to</span> <span class="k">bottom</span><span class="o">,</span> <span class="n">lighten</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">)</span> <span class="m">0%</span><span class="o">,</span> <span class="n">darken</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">)</span> <span class="m">100%</span><span class="p">));</span>
-    <span class="o">.</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="p">(</span><span class="m">2</span><span class="o">,</span> <span class="m">2</span><span class="o">,</span> <span class="m">3</span><span class="o">,</span> <span class="n">lighten</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">10%</span><span class="p">));</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Результат работы препроцессора LESS и его библиотеки миксинов LESS Hat показан ниже. Вот это да - работает!</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/LESSHat_border-radius.png" alt="LESS Hat - миксин .border-radius()" /></p>
-
-<p>Список всех миксинов, доступных в этой библиотеке, представлен в начале файла <code>lesshat.less</code>, в разделе “TABLE OF MIXINS”. Количество mixin’ов немаленькое (86 штук), но мне кажется, что у Compass оно будет намного больше.</p>
-
-<p>Подробное описание и примеры использования каждого из миксинов библиотеки LESS Hat доступно на GitHub в файле <code>README.md</code>. Добро пожаловать ознакомиться - там все хорошо описано.</p>
-
-<p>В принципе - больше и сказать нечего. Подключайте и используйте LESS Hat - только так можно освоить и оценить эту библиотеку. Для себя я сделал вывод, что мне пока удобнее работать с SASS/Compass и возможностей у последнего больше, чем у LESS/LESS Hat.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
