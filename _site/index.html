@@ -144,12 +144,12 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-18T00:00:00+03:00"><a href="http://zencoder.ru/web-development/pixel-perfect/">April 18, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-18T00:00:00+04:00"><a href="http://zencoder.ru/web-development/pixel-perfect/">April 18, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~3 minutes
+        Reading time ~5 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
@@ -158,10 +158,8 @@
     
   </header>
   <div class="entry-content">
-    <h1 id="pixel-perfect">Знакомимся с Pixel Perfect</h1>
-
-<blockquote>
-  <p>Обзор плагинов для работы в технике Pixel Perfect</p>
+    <blockquote>
+  <p>Обзор плагинов и скриптов для работы в технике Pixel Perfect.</p>
 </blockquote>
 
 <p>Для начала - что такое техника Pixel Perfect? Все просто и можно догадаться по названию - это техника верстки, при которой сверстанный HTML-шаблон в точности (пиксель-в-пиксель) совпадает с оригиналом, PSD-макетом.</p>
@@ -218,6 +216,8 @@
 
 <p><img src="http://zencoder.ru/images/uploads/2015/04/perfectpixel_01.png" alt="PerfectPixel Activate" title="PerfectPixel Activate" /></p>
 
+<p><strong>Важно!</strong> Перед экспортом в PNG-изображение PSD-макет необходимо <strong>привести к оригинальному размеру</strong>! Для этого в Photoshop зарезервирована комбинация hotkeys: <kbd>Ctrl+1</kbd> - под Windows\Linux, <kbd>Cmd+1</kbd> - под Mac OS X.</p>
+
 <p>После этого запускаем плагин PerfectPixel, добавляем в нем новый слой (PNG-копию оригинала) и проверяем:</p>
 
 <p><img src="http://zencoder.ru/images/uploads/2015/04/perfectpixel_02.png" alt="PerfectPixel Work" title="PerfectPixel Work" /></p>
@@ -232,9 +232,30 @@
 
 <h2 id="x-precise">X-Precise</h2>
 
-<p>Если в двух предыдущих случаях были рассмотрены бесплатные плагины под два популярных браузера Firefox и Chrome, то в данном случае речь пойдет о платном скрипте <a href="http://codecanyon.net/item/xprecise/78685" title="X-Precise">X-Precise</a>, написанном на JavaScript и использующем библиотеку jQuery.</p>
+<p>Если в двух предыдущих случаях были рассмотрены бесплатные плагины под два популярных браузера Firefox и Chrome, то в данном случае речь пойдет о платном ($5 на момент написания статьи) скрипте <a href="http://codecanyon.net/item/xprecise/78685" title="X-Precise">X-Precise</a>, написанном на JavaScript и использующем библиотеку jQuery.</p>
 
-<p>… не закончено …</p>
+<h3 id="x-precise-1">Подключение X-Precise</h3>
+
+<p>Для того, чтобы получить наложение картинки-оригинала на сверстанную страницу нужно подключить скрипт X-Precise к этой странице. Для этого необходимо скачать архив X-Precise. Затем нужно распаковать папку <code>_xprecise</code>в корневую директорию проекта. И подключить скрипт <code>xprecise.min.js</code> к HTML-странице для запуска интерсейса скрипта X-Precise. Обратите внимание, что скрипт для своей работы использует библиотеку jQuery, поэтому подключение X-Precise должно выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;_xprecise/xprecise.min.js&quot;</span> <span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>Затем нужно создать копии PSD-оригиналов в формате JPG и сохранить под тем же именем, что и файл оригинала в директории <code>/_xprecise/</code> скрипта X-Precise. При сохранении в формате JPG рекомендуется выбирать режим оттенков серого, так как при таком варианте лучше видна разница между сверстанной копией и оригиналом (помните об опции “Invert” плагина Pixel Perfect?).</p>
+
+<p>Скрипт X-Precise попытается автоматически загрузить JPG-изображение из директории <code>/_xprecise/</code> по имени файла этого изображения, считая, что имя файла иображения идентично имени файла открытой HTML-страницы (index.html -&gt; index.jpg). Но это не означает, что нельзя загрузить файл изображения с другим именем. Для этого достаточно задать другой путь к файлу в интерфейсе скрипта X-Precise.</p>
+
+<h3 id="x-precise-2">Использование X-Precise</h3>
+
+<p>Основным достоинством скрипта X-Precise является его способность автоматически запоминать и хранить все настройки. В целом, интерфейс скрипта X-Precise и его применение ничем не отличается от плагинов Pixel Perfect или PerfectPixel. Для желающих - можно ознакомиться со скриншотами по <a href="http://codecanyon.net/theme_previews/78685-xprecise?index=0&amp;url_name=xprecise" title="X-Precise Screenshots">ссылке</a> на главной странице проекта.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>В этом небольшом обзоре мы познакомились с тремя инструментами для попиксельной (pixel perfect) верстки. Два из них - это бесплатные плагины под браузеры. Третий - скрипт на JavaScript для подключения к HTML-странице.</p>
+
+<p>Что выбирать для своей работы - решать каждому. В пользу плагинов можно сказать, что они бесплатные, их легко установить и просто использовать. В минус скрипту X-Precise можно сказать, что он платный ($5), требует подключения к проверяемой HTML-странице и зависит от библиотеки jQuery.</p>
+
+<p>На этом все.</p>
 
 <hr />
 
@@ -245,7 +266,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-17T00:00:00+03:00"><a href="http://zencoder.ru/git/fast-forward-git/">April 17, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-17T00:00:00+04:00"><a href="http://zencoder.ru/git/fast-forward-git/">April 17, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -316,7 +337,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-16T00:00:00+03:00"><a href="http://zencoder.ru/git/git-diff/">April 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-16T00:00:00+04:00"><a href="http://zencoder.ru/git/git-diff/">April 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -456,7 +477,7 @@ index fff54a9..8fbea1c 100644
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-15T00:00:00+03:00"><a href="http://zencoder.ru/linux/remarkable-markdown-editor-linux/">April 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-15T00:00:00+04:00"><a href="http://zencoder.ru/linux/remarkable-markdown-editor-linux/">April 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -537,7 +558,7 @@ index fff54a9..8fbea1c 100644
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-08T00:00:00+03:00"><a href="http://zencoder.ru/git/github-change-url/">April 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-04-08T00:00:00+04:00"><a href="http://zencoder.ru/git/github-change-url/">April 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
