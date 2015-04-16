@@ -38,7 +38,7 @@ $ git checkout -b speedup
 
 В ситуациях подобного рода система Git всегда старается применить режим **fast-forward**, если это возможно. Однако, такое поведение Git можно [легко изменить][2] на режим **no fast-forward** и сделать его поведением системы по умолчанию.
 
-...
+Пожалуй, самой главной неприятной неожиданностью при использовании `merge` в режиме **no fast-forward** - это когда вы нажимаете ту самую зеленую кнопку "Merge" в web-интерфейсе сервиса GitHub при выполнении [pull request][5]:
 
 ![GitHub Pull Request]({{site.url}}/images/uploads/2015/04/fast-forward_3.png "GitHub Pull Request")
 
@@ -50,54 +50,11 @@ $ git checkout -b speedup
 
 Внимательно посмотрите на приведенный выше рисунок. На нем хорошо видно, что некоторые слияния (`merge`) веток могут быть выполнены в режиме **fast-forward**. Но своеобразный подход GitHub к слиянию веток привел к тому, что линейная история коммитов была превращена в нечто похожее на рисунок железнодорожного пути.
 
-...
-
-перевод еще не закончен ...
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+... перевод еще не закончен ...
 
 ---
 [1]: http://ariya.ofilabs.com/2013/09/fast-forward-git-merge.html "Fast-Forward Git Merge"
 [2]: http://stackoverflow.com/questions/2500296/can-i-make-fast-forwarding-be-off-by-default-in-git "Fast Forward Off By Default"
 [3]: https://github.com/eslint/eslint "ESLint"
 [4]: http://git-scm.com/book/ru/v2 "Pro Git"
+[5]: https://help.github.com/articles/using-pull-requests/ "Pull Request"
