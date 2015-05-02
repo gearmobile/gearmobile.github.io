@@ -144,6 +144,139 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-09T00:00:00+04:00"><a href="http://zencoder.ru/modernizr/how-to-use-modernizr/">December 09, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/modernizr/how-to-use-modernizr/" rel="bookmark" title="Как использовать Modernizr" itemprop="url">Как использовать Modernizr</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Инструмент, который призван сделать жизнь прогрессивных веб-дизайнеров немного легче, это Modernizr.</p>
+</blockquote>
+
+<p>Короткий мануал, задача которого показать, каким образом можно применять этот полезный скрипт с максимальным эффектом для своих рабочих проектов.</p>
+
+<h2 id="modernizr">Обзор Modernizr</h2>
+
+<p>Несмотря на то, что возможности CSS3 используются веб-дизайнерами все больше и больше, поддержка этих возможностей браузерами значительно отстает.</p>
+
+<p>В последнее время я использую Modernizr практически постоянно для того, чтобы выделить те браузеры, которые не поддерживают специфические свойства стандарта CSS3.</p>
+
+<h2 id="modernizr-1">Как работает Modernizr</h2>
+
+<p>Для того, чтобы установить Modernizr, сначала скачайте его с этой страницы - <a href="http://www.modernizr.com/" title="Modernizr">http://www.modernizr.com/</a>. Затем внутри тега <code>head</code> html-страницы подключите распакованный из архива файл <code>modernizr-1.0.min.js</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/modernizr-1.0.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>Вторым шагом будет подключение класса <code>no-js</code> для корневого элемента <code>html</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">&quot;no-js&quot;</span><span class="nt">&gt;</span></code></pre></div>
+
+<p>Для чего необходимо подключать класс <code>no-js</code> к элементу <code>html</code>?</p>
+
+<p>Потому что элемент <code>html</code> с классом <code>no-js</code> будет состоянием страницы по-умолчанию. Если JavaScript (<code>js</code>) на странице отключен, то скрипт Modernizr также не будет работать (совместно со всеми остальными функциями страницы, завязанными на этом языке), поэтому было бы хорошо, если у нас будет возможность отката (fallback) для этого случая.</p>
+
+<blockquote>
+  <p>Прим. переводчика: попробую от себя объяснить в двух словах, но иначе (если вдруг непонятно) что хотела сказать прекрасная девушка, автор статьи. Если на сайте отключена поддержка JavaScript, то класс <code>no-js</code> для элемента html - это та “зацепка”, на которую можно повесить все CSS-fallback’и для этого случая.</p>
+</blockquote>
+
+<p>Если же поддержка JavaScript в браузере включена, то произойдет динамическая подмена класса <code>no-js</code> для элемента html на целую группу других классов. В результате исходный код страницы может выглядеть примерно так:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;html</span> <span class="na">class=</span><span class="s">&quot;js canvas canvastext geolocation rgba hsla no-multiplebgs borderimage borderradius boxshadow opacity no-cssanimations csscolumns no-cssgradients no-cssreflections csstransforms no-csstransforms3d no-csstransitions  video audio cufon-active fontface cufon-ready&quot;</span><span class="nt">&gt;</span></code></pre></div>
+
+<p>Впечатляет, не правда ли? Но что означают все эти классы? Давайте разберемся.</p>
+
+<p>В данном случае, страница была открыта в браузере Firefox 3.5. Этот браузер (к сожалению) не поддерживает множественные фоны на CSS, CSS-градиенты и CSS-трансформации.</p>
+
+<p>Скрипт Modernizr умеет автоматически определять возможности браузера, в котором открыта текущая веб-страница. Для каждого из CSS-свойств в скрипте Modernizr имеются свои собственные классы для их обозначения.</p>
+
+<p>Например, множественные фоны на CSS “обозначены” как <code>multipebgs</code>, CSS-градиенты как <code>cssgradients</code>, CSS-трансформации как <code>csstransforms</code> и так далее.</p>
+
+<p>Когда Modernizr определит, какие CSS-свойства данный браузер поддерживает, а какие нет, он создаст своеобразный отчет - список классов, по которому можно точно узнать, что браузер “умеет”, а что - нет.</p>
+
+<p>Если браузер поддерживает CSS-свойство трансформации, то на элемент html скрипт Modernizr “подцепит” класс <code>csstransforms</code>. А если браузер не поддерживает это свойство, то Modernizr добавит для имени класса <code>csstransforms</code> префикс <code>no-</code> и также “повесит” этот класс на элемент <code>html</code>, но в виде <code>no-csstransforms</code>. И так далее …</p>
+
+<p>Пример такого списка-отчета и был показан выше.</p>
+
+<h2 id="section">Что мне даст эта (ценная) информация?</h2>
+
+<p>Логичный вопрос - “а что мы можем делать с этой информацией?”. Хорошо, давайте рассмотрим простой пример.</p>
+
+<h2 id="css">Множественные фоны на CSS</h2>
+
+<p>Фон вашего сайта тщательным образом отстроен и вы используете множественные фоны для того, чтобы сделать его более простым и быстрым с помощью CSS-кода.</p>
+
+<p>Ваш CSS выглядит следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#nice</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(background-one.png)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="o">,</span>
+  <span class="sx">url(background-two.png)</span> <span class="k">bottom</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>И браузер генерирует этот прекрасный (ведь не даром же идентификатор имеет имя <code>nice</code>) фон так:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/modernizr-safari.jpg" alt="Множественные фоны" /></p>
+
+<p>При использовании библиотеки Modernizr ваш код CSS должен быть преобразован в такой вид:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#nice</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(background-one.png)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.multiplebgs</span> <span class="nf">#nice</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(background-one.png)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="o">,</span>
+  <span class="sx">url(background-two.png)</span> <span class="k">bottom</span> <span class="k">left</span> <span class="k">repeat-x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>И вот что увидят посетители сайта в зависимости от того, каким браузером (понимает он множественный фон или нет) они пользуются:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/modernizr-safari.jpg" alt="Множественный фон с Modernizr в Safari" class="center-image" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/modernizr-opera.jpg" alt="Множественный фон с Modernizr в Opera" class="center-image" /></p>
+
+<p>Это очень простой пример использования скрипта Modernizr, но он должен послужит образцом того, что можно сделать с помощью данной библиотеки.</p>
+
+<h2 id="html5">HTML5</h2>
+
+<p>Библиотека Modernizr также позволяет использовать новые элементы, доступные в HTML5 - <code>header</code>, <code>footer</code>, <code>section</code>, <code>hgroup</code>, <code>video</code> и так далее и стилизовать их.</p>
+
+<p>Однако, это не означает, что все эти элементы можно использовать также в браузере IE. Но вы можете стилизовать эти элементы и тогда IE “поймет” их и не сможет игнорировать.</p>
+
+<blockquote>
+  <p>Прим. переводчика: загадочная фраза, которая лично мне ни о чем не говорит. Требует дальнейшего изучения.</p>
+</blockquote>
+
+<h2 id="javascript">JavaScript</h2>
+
+<p>Вы также можете анализировать в вашем собственном JavaScript возможности, которые поддерживает Modernizr, используя пример следующего синтаксиса:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">Modernizr</span><span class="p">.</span><span class="nx">geolocation</span><span class="p">)</span> <span class="p">{</span>
+  <span class="p">...</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-1">Заключение</h2>
+
+<p>Надеюсь, мне удалось объяснить, для чего нужен Modernizr и насколько он полезен в повседневной работе. Так как мы не можем полностью полагаться на тот факт, что браузеры поддерживают все свойства, которые мы хотим использовать, то библиотека Modernizr является лучшим средством для того, чтобы объединить два мира - один, где все возможно, и другой, где все возможно лишь частично.</p>
+
+<p>Оригинал статьи - <a href="http://webdesignernotebook.com/css/how-to-use-modernizr/" title="How To Use Modernizr">How to use Modernizr</a></p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-12-08T00:00:00+04:00"><a href="http://zencoder.ru/css/wonderful-function-calc/">December 08, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1302,134 +1435,6 @@
 <p>Я доволен тем, что познакомился с языком Markdown. С ним действительно создавать статьи под сайт гораздо легче, быстрее и удобнее. Писать статьи или обзоры с помощью Markdown - одно удовольствие.</p>
 
 <p>Редактором-победителем для меня стала программа MarkdownPad - быстрая, удобная и надежная. Тот момент, что она отказалась установиться на моем ноуте под Windows 7 роли не играет, как мне кажется.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-23T00:00:00+04:00"><a href="http://zencoder.ru/css/bootstrap-part-1/">November 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/bootstrap-part-1/" rel="bookmark" title="Начало с Bootstrap Twitter - Часть 1" itemprop="url">Начало с Bootstrap Twitter - Часть 1</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Приступаем к изучению Bootstrap Twitter.</p>
-</blockquote>
-
-<p>Лично мое мнение, что любой веб-мастер, какого-бы он класса и квалификации он не был, обязан иметь о нем представление. И должен уметь создавать проекты с помощью этого продукта.</p>
-
-<p>Итак, Bootstrap Twitter. Прежде всего - почему двойное название и почему Twitter? На оба вопроса одно объяснение - этот фреймворк создала команда, которая ранее создала еще один проект - Twitter. Хорошо, тогда еще один вопрос - а что такое фреймворк? Как говорит всезнающая Википедия, фреймворк, это:</p>
-
-<blockquote>
-  <p>… программное обеспечение, облегчающее разработку и объединение разных компонентов большого программного проекта.</p>
-</blockquote>
-
-<p>Если сказать простым языком, то фреймворк - фундамент, минимальная база, которая может одинаково успешно применяться для создания любого сайта или веб-приложения. Как это часто бывает, в любой работе можно найти часть рутинного процесса, который выполняется снова и снова, без изменений.</p>
-
-<p>Так вот, чтобы не повторять написание одинакового кода опять и снова, были созданы такие базовые наборы, которые можно взять за основу и потом наращивать и видоизменять. В этом суть фреймворков, но есть один момент.</p>
-
-<p>C английского языка фреймворк переводиться как “каркас”. И этим уже можно все сказать, в принципе. Но, еще раз внимательно почитаем Википедию:</p>
-
-<blockquote>
-  <p>… каркас диктует правила построения архитектуры приложения, задавая на начальном этапе разработки поведение по умолчанию, каркас, который нужно будет расширять и изменять согласно указанным требованиям.</p>
-</blockquote>
-
-<p>Вот почему некоторые веб-дизайнеры не любят этот фреймворк, но это дела не меняет. Продолжим знакомиться с Bootstrap.</p>
-
-<p>На момент написания статьи имелось две версии этого фреймворка - v3.0.2 и v2.3.2. Здесь мы начнем изучение с версии <a href="http://getbootstrap.com/2.3.2/" title="Bootstrap 2">v2.3.2</a>, а потом плавно (я надеюсь) перейдем к более свежей и современной <a href="http://getbootstrap.com/getting-started/" title="Bootstrap 3">v3.0.2</a>. Кстати, сразу стоит упомянуть, что в Сети есть несколько русскоязычных ресурсов, посвященных Bootstrap.</p>
-
-<p>Но, насколько я понял, оба они являются локализованными (с разной степенью кривизны) версиями одного сайта-первоисточника - <a href="http://getbootstrap.com/" title="Bootstrap">http://getbootstrap.com/</a>. Видно, авторы этих проектов сильно торопились со своими детищами. Я рекомендую пользоваться оригиналом и в данной статье мы так и будем поступать, по мере сил.</p>
-
-<p>Скачать готовый фреймворк Bootstrap можно со страницы домашнего проекта (откуда же еще?) в виде архива. Если распаковать скачанный архив на локальном компьютере, то увидим, что он состоит из трех папок: <code>css</code>, <code>js</code>, <code>img</code>. Первые две папки обязательны при создании любого нового проекта на Bootstrap.</p>
-
-<p>Содержимое папки CSS:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">bootstrap</span><span class="p">.</span><span class="n">css</span>
-<span class="n">bootstrap</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">css</span>
-<span class="n">bootstrap-responsive</span><span class="p">.</span><span class="n">css</span>
-<span class="n">bootstrap-responsive</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Здесь расположены четыре CSS-файла, но на самом деле их два. Различия между <code>bootstrap.css</code> и <code>bootstrap.min.css</code>, <code>bootstrap-responsive.css</code> и <code>bootstrap-responsive.min.css</code> только в том, что первый вариант - это <code>development</code>-версия файла, которая предназначена для внесения в нее изменений при соответствующей квалификации программиста.</p>
-
-<p>А второй вариант - это <code>production</code>-версия файла, в которую изменений вносить не планируется и практически этого невозможно сделать, так как в этом файле убраны все комментарии, отступы, табуляции и тому подобное, что делает этот файл трудночитаемым для человека. Зато размер данного файла намного меньше, чем у <code>development</code>-версии, поэтому главная цель этого файла - просто подключить его к проекту для дальнейшей работы.</p>
-
-<p>Кстати, стоит упомянуть, что в фреймворке Bootstrap вместо сброса стилей через файл <code>reset.css</code> от Эрика Мейера используется приведение всех браузеров к одному общему знаменателю с помощью файла <code>normalize.css</code>. Помимо этого, используются компоненты известного <a href="http://html5boilerplate.com/" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
-
-<p>Файл <code>bootstrap.css</code> - это главный файл стилевых правил CSS для фреймворка Bootstrap, без него этот фреймворк - просто не фреймворк. В этом файле находится коллекция готовых CSS-классов, которые подключаются к элементам HTML-документа по мере необходимости и тем самым форматируют HTML-страницу.</p>
-
-<p>Файл <code>bootstrap-responsive.css</code> - единственная задача данного файла сделать HTML-страницу, к которой подключается этот файл, адаптивной (<code>responsive</code>). Что такое адаптивный дизайн, вы можете легко найти в Интернете, на сегодняшний день это тема №1 в веб-дизайне.</p>
-
-<p>Содержимое папки JS:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">bootstrap</span><span class="p">.</span><span class="n">js</span>
-<span class="n">bootstrap</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">js</span></code></pre></div>
-
-<p>Также, как и в случае со стилевыми правилами, в этой папке присутствует только один файл - <code>bootstrap.js</code>, тогда как <code>bootstrap.min.js</code> - это его минимизированная <code>production</code>-версия. Файл <code>bootstrap.js</code> - это набор готовых js-сценариев, задача которых является вспомогательной в деле создания HTML-компонентов.</p>
-
-<p>Дело в том, что фреймворк Bootstrap это не только набор CSS-правил, но и компонентов. Готовая панель навигации (<code>html+css+js</code>), форма поиска с кнопкой внутри (<code>html+css+js</code>), рабочая панель вкладок (html+css+js) и так далее - это все HTML-компоненты. И как уже должно быть понятно, роль js-сценариев здесь - помочь сделать эти компоненты полностью готовыми к работе.</p>
-
-<p>Содержимое папки IMG:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">glyphicons-halflings</span><span class="p">.</span><span class="n">png</span>
-<span class="n">glyphicons-halflings-white</span><span class="p">.</span><span class="n">png</span></code></pre></div>
-
-<p>Единственная папка с изображениями в проекте Bootstrap. Если вы ее откроете (предпочтительно в Adobe Photoshop), то увидите, что это обычный спрайт (sprite) - набор готовых стилизованных иконок.</p>
-
-<p>Первый файл <code>glyphicons-halflings.png</code> - там иконки черные, а второй файл <code>glyphicons-halflings-white.png</code> - там иконки точно такие же, но только белого цвета (контраст).</p>
-
-<p>Что такое CSS-спрайт, я тоже объяснять не буду - в Интернете есть подробная информация по этой технологии. Хотя, когда я впервые с ней познакомился, у меня было желание ее описать у себя - это интересно. Но потом время ушло, для меня все стало просто и обыденно в этом плане типа “да чего там писать - и так все просто и понятно.”</p>
-
-<p>C содержимым архива и проекта Bootstrap Twitter познакомились. Теперь рассмотрим, как подключать данный фреймворк к своему рабочему проекту и пользоваться всеми его “вкусностями”.</p>
-
-<p>Создаем папку с новым проектом и туда распаковываем архив с Bootstrap. Первое - нам необходим HTML-шаблон с обязательным условием - <code>DOCTYPE HTML 5</code>, то есть, так:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content=</span><span class="s">&quot;IE=edge&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="nt">&gt;</span>
-    <span class="c">&lt;!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --&gt;</span>
-    <span class="nt">&lt;title&gt;</span>Bootstrap 101 Template<span class="nt">&lt;/title&gt;</span>
-
-    <span class="c">&lt;!-- Bootstrap --&gt;</span>
-    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;css/bootstrap.min.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span><span class="nt">&gt;</span>
-
-    <span class="c">&lt;!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --&gt;</span>
-    <span class="c">&lt;!-- WARNING: Respond.js doesn&#39;t work if you view the page via file:// --&gt;</span>
-    <span class="c">&lt;!--[if lt IE 9]&gt;</span>
-<span class="c">      &lt;script src=&quot;https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js&quot;&gt;&lt;/script&gt;</span>
-<span class="c">      &lt;script src=&quot;https://oss.maxcdn.com/respond/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;</span>
-<span class="c">    &lt;![endif]--&gt;</span>
-  <span class="nt">&lt;/head&gt;</span>
-  <span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
-
-    <span class="c">&lt;!-- jQuery (necessary for Bootstrap&#39;s JavaScript plugins) --&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="c">&lt;!-- Include all compiled plugins (below), or include individual files as needed --&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/bootstrap.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span></code></pre></div>
-
-<p>К нему подключаем CSS и JS-файлы из распакованного архива и сохраняем в ту же папку с будущим проектом. В принципе, все готово для дальнейшей работы …</p>
 
 <p>На этом все.</p>
 
