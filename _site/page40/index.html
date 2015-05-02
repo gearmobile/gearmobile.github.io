@@ -144,6 +144,63 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-04-23T00:00:00+04:00"><a href="http://zencoder.ru/linux/pclinuxos-livecd-grub/">April 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/linux/pclinuxos-livecd-grub/" rel="bookmark" title="PCLinuxOS LiveCD - восстановление загрузчика Grub" itemprop="url">PCLinuxOS LiveCD - восстановление загрузчика Grub</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>С недавних пор открыл для себя такой дистрибутив Linux как PCLinuxOS. Поставил его исключительно для того, чтобы сделать скриншоты при написании статьи. Но в процессе установки и краткого пользования мне он понравился даже больше, чем Linux Mint, которым пользовался до этого.</p>
+
+<p>И все бы хорошо, но проблема подкралась незаметно. Нет, она была связана не с PCLinuxOS. Наверное, как не трудно догадаться, это была Windows XP. Я не хочу сказать, что эта операционная система так уж плоха. Хотя бы ради таких прекрасных программ, как Adobe Dreamweaver, Adobe Photoshop, AutoCAD, MS Office ее просто нужно иметь на своем компьютере.</p>
+
+<p>Но вот ее нежелание видеть другие операционные системы и стремление затереть MBR вне зависимости от того, есть там какие-либо записи или нет, напрягает. Все началось с того, что я проглядел статус четвертого раздела на своем жестком диске. А надо было заметить, так как он имел флаг загрузочного раздела. И хотя Windows установилась, как я и указал, на первый раздел, но все ее главные файлы (<em>какие они там - не знаю</em>) расположились на четвертом разделе. Все логично. А четвертый раздел у меня служит в качестве мусорной ямы для всех операционок, установленных на компе.</p>
+
+<p>Результат предсказать нетрудно. В один прекрасный момент я решил основательно почистить мусорку-раздел от лишний файлов. В корзину неглядя полетели и файлы Windows XP. Стоит оговориться, что эта операционная система стоит у меня исключительно для работы, ради программ Adobe Dreamweaver, Adobe Photoshop, ABBYY Lingvo. Потребность в ней у меня есть и серьезная. Поэтому я был весьма опечален, когда в очередной раз загрузил комп и выбрал в меню Windows XP. Но система лишь посоветовала мне нажать волшебную комбинацию клавиш <kbd>Ctrl+Alt+Del</kbd>.</p>
+
+<p>Подумал немного и решил, что проще и быстрее мне переустановить Windows. Ничего сложного в этом нет. Но вот запись MBR была затерта. А у меня еще стоят Linux Mint и PCLinuxOS, к которым нужно открыть доступ. Хорошо, у меня сохранился PCLinuxOS LiveCD. С помощью него я быстро и в несколько шагов переустановил Grub в главную загрузочную запись жесткого диска. Ниже приведу 7 последовательный ход действий по восстановлению Grub под PCLinuxOS.</p>
+
+<h2 id="section">Последовательность действий:</h2>
+
+<ul>
+  <li>Вставляю PCLinuxOS LiveCD в дисковод и перезагружаюсь. В меню BIOS выбираю загрузку с оптического диска. Операционная система PCLinuxOS загружается на компьютер</li>
+  <li>Открываю терминал и захожу в нем под учетную запись <code>root</code> с помощью команды <code>su -</code>. Пароль для <code>root</code> в PCLinuxOS LiveCD имеет значение <code>root</code> (как ни странно!)</li>
+  <li>Ввожу команду <code>grub</code>. При этом приглашение командной строки изменится и примет вид “grub&gt;”</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/grub_pclinuxos_livecd_1.jpg" alt="Вход в оболочку Grub" /></p>
+
+<ul>
+  <li>Задаю команду для поиска файла <code>stage1</code> - <code>find /boot/grub/stage1</code>. На моем компьютере Grub отыскал его только на одном разделе - <code>hd0,2</code>. Это абсолютно верно, так как на <code>/dev/sda3</code> установлена PCLinuxOS.</li>
+  <li>Ввожу команду <code>root (hd0,2)</code></li>
+  <li>И устанавливаю Grub в MBR - <code>setup (hd0)</code></li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/grub_pclinuxos_livecd_2.jpg" alt="Успешная установка Grub" /></p>
+
+<p>Задача выполнена. Выхожу из оболочки Grub - <code>quit</code>. И перезагружаюсь.</p>
+
+<p>Описанный здесь способ восстановления Grub с помощью PCLinuxOS LiveCD подходит не только для этой операционной системы. Для любого случая, когда в качестве загрузчика используется Grub (но не Grub2), данное описание поможет с высокой долей вероятности.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-04-22T00:00:00+04:00"><a href="http://zencoder.ru/notepad/notepad-macros/">April 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -719,57 +776,6 @@
 <p>Изображение было развернуто на 180 градусов против часовой стрелки.</p>
 
 <p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-04-01T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-marquee-tool/">April 01, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-marquee-tool/" rel="bookmark" title="Photoshop Marquee Tool - измерение размеров элементов" itemprop="url">Photoshop Marquee Tool - измерение размеров элементов</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>При верстке макета сайта одним из наиболее важных моментов является точное измерение размеров элементов на psd-шаблоне.</p>
-</blockquote>
-
-<p>Без знания, какие размеры имеют логотип, кнопки навигации, навигационное меню и т. д. невозможно сверстать макет сайта в точности, как он задуман дизайнером в шаблоне. А если нет точности при верстке, но и работа верстальщика (сайт) будет неряшливым.</p>
-
-<p>Об одном из инструментов измерения размеров на psd-шаблоне я уже рассказывал. Но программа Photoshop очень богата возможностями. Поэтому этот способ не является единственным. Сегодня будет показан еще один способ измерения размеров - с помощью инструмента “Rectangular Marquee Tool”.</p>
-
-<p>Допустим, у нас имеется некий psd-макет, который необходимо порезать в Photoshop. И на этом макете нам необходимо узнать высоту шапки будущего сайта, то есть там, где располагается логотип. Открываем psd-шаблон, масштабируем его, чтобы шапка макета была крупной и нам было удобно с ней работать.</p>
-
-<p>Затем переводим взгляд на панель инструментов Photoshop и на ней выбираем щелком мыши инструмент “Rectangular Marquee Tool”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/04/marquee_tool.png" alt="Marquee Tool" /></p>
-
-<p>Теперь аккуратно выделяем логотип на psd-шаблоне, чтобы границы выделения точно совпали с верхней границей самого макета и нижней границей навигационной панели. Таким образом достигается точность измерений. В результате логотип выделяется пунктирной линией. Это подсказка для нас, что он выделен и где именно проходят границы выделения.</p>
-
-<p>Проверяем, что все так, как и было задумано:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/04/selected_element.png" alt="Selected Element" /></p>
-
-<p>Большая часть дела уже была сделана. Теперь осталось узнать размеры выделенной области.</p>
-
-<p>Для этого необходимо, чтобы была активирована панель “Инфо”. Если ее нет, необходимо включить ее через меню “Window - Info”. На этой панели в правом нижнем разделе показываются геометрические размеры выделенного элемента (<em>W - ширина, H - высота</em>):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/04/element_size.png" alt="Element Size" /></p>
-
-<p>Все размеры указаны в пикселах.</p>
 
 <hr />
 
