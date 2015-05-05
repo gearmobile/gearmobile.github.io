@@ -11,7 +11,7 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://zencoder.ru/images/abstract-1.jpg">
+<meta name="twitter:image" content="http://zencoder.ru/images/header.jpg">
 
 <meta name="twitter:title" content="Заметки верстальщика">
 <meta name="twitter:description" content="Заметки верстальщика">
@@ -127,7 +127,7 @@
   
   
     <div class="entry-image">
-      <img src="http://zencoder.ru/images/abstract-1.jpg" alt="Заметки верстальщика">
+      <img src="http://zencoder.ru/images/header.jpg" alt="Заметки верстальщика">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -144,7 +144,313 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-09T00:00:00+03:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/">November 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-11T00:00:00+04:00"><a href="http://zencoder.ru/css/gutter-susy/">November 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~10 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/gutter-susy/" rel="bookmark" title="Как управлять положением gutters в Susy" itemprop="url">Как управлять положением gutters в Susy</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При изучении Susy одним из вопросов, который всегда стоял передо мной, заключался в следующем: “Как удалить <code>padding</code> или <code>margin</code> у первого и последнего столбца <code>column</code> в разметке Susy без применения CSS-свойств <code>first-child</code> и <code>last-child?</code>”.</p>
+</blockquote>
+
+<p>Этот вопрос является один из самых главных для всех, кто только начинает изучение Susy. Если посмотреть в корень данного вопроса, то его основную суть можно свести к следующему (<em>если судить по многочисленным постам в Интернет</em>): необходимо использовать значение <code>inside</code> вместо значения <code>after</code>. Для того, чтобы точно ответить на этот вопрос, необходимо хорошо понимать, каким образом положение отступов <code>gutter</code> в целом оказывает влияние на всю разметку, созданную в Susy.</p>
+
+<p>Как мне кажется, вопрос о расположении отступов <code>gutter</code> в разметке Susy является самой важной настройкой, поскольку он оказывает влияние на весь код в целом. Если у вас перед прочтением статьи существовал такой вопрос, то данная статья именно для вас.</p>
+
+<h2 id="gutter">Что такое - расположение отступов gutter</h2>
+
+<p>Расположение отступа <code>gutter</code> позволяет полностью менять всю разметку страницы, созданную в Susy. Данный параметр определяет, где должны находиться отступы <code>gutter</code> относительно столбцов <code>columns</code>. Также данная настройка определяет, будут ли отступы <code>gutter</code> являться CSS-свойством <code>padding</code> или <code>margin</code>.</p>
+
+<p>Эта параметр находиться среди глобальных настроек переменной <code>$susy</code>. Как вариант, данный параметр можно использовать локально, внутри миксина <code>span</code>. Давайте начнем с рассмотрения случая, когда расположение отступа <code>gutter</code> управляется из глобальной переменной <code>$susy</code>.</p>
+
+<p>По умолчанию, расположение отступов в Susy определено ключевым словом <code>after</code>. Помимо этого, существуют еще варианты: <code>before</code>, <code>split</code>, <code>inside</code> и <code>inside-static</code>. Ниже представлен полный вариант синтаксиса параметра <code>gutter-position</code> в глобальной переменной <code>$susy</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
+  <span class="nt">gutter-position</span><span class="o">:</span> <span class="nt">after</span> <span class="o">(</span> <span class="nt">before</span> <span class="o">|</span> <span class="nt">after</span> <span class="o">|</span> <span class="nt">split</span> <span class="o">|</span> <span class="nt">inside</span> <span class="o">|</span> <span class="nt">inside-static</span> <span class="o">)</span>
+<span class="o">);</span></code></pre></div>
+
+<p>Ключевые слова в круглых скобках являются возможными вариантами значения параметра <code>gutter-position</code>.</p>
+
+<p>Для ясности понимания тонкостей разметки в Susy при использовании параметра <code>gutter-position</code> необходимо создать простую структуру:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_01.png" alt="Базовая разметка в Susy" /></p>
+
+<h2 id="gutter-position-after">Gutter-position: after</h2>
+
+<p>Значением по умолчанию для параметра <code>gutter-position</code> является ключевое слово <code>after</code>. Данное значение заставляет Susy располагать отступы gutters после каждого столбца разметки. В этом режиме необходимо удалить отступ у последнего столбца в разметке. В этом случае отступы gutters являются CSS-свойством margin и размещаются в разметке следующим образом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_02.png" alt="Gutter-position: after" /></p>
+
+<p>При использовании значения по умолчанию для параметра <code>gutter-position</code> миксин <code>span</code> создает три CSS-правила - <code>width</code>, <code>margin-right</code> и <code>float: left</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результирующий CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">73.68421%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В этом коде свойство <code>margin-right</code> - это отступ <code>gutter</code>, созданный Susy в данной разметке.</p>
+
+<p>Можно использовать ключевое слово <code>last</code> для удаления крайнего <code>margin</code> у столбца:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.last</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате получим результат в виде <code>margin-right: 0</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.last</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">21.05263%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В рассматриваемой нами разметке область контента занимает 3 столбца из 4. При этом область боковой панели размещается в одном столбце из 4-х. Кроме того, боковая панель является последним элементом разметки, поэтому код для подобного случая будет таким:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>after</code> параметра <code>gutter-position</code> является наиболее интуитивно понятным случаем создания разметки в Susy. При использовании значения по умолчанию единственный момент, о котором следует помнить - это убрать отступ у последнего столбца разметки с помощью ключевого слова <code>last</code>.</p>
+</blockquote>
+
+<h2 id="gutter-position-before">Gutter-position: before</h2>
+
+<p>Значение <code>before</code> является одним из вариантов предыдущего значения - <code>after</code>. Суть этого значения также простая. Вместо размещения отступов gutter после столбцов (как в случае с <code>after</code>), при значении <code>before</code> отступы gutters размещаются перед столбцами. В этом случае необходимо удалить отступ у первого столбца в разметке. Отступы gutter также являются в данном случае CSS-свойством <code>margin</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_03.png" alt="Gutter-position: before" /></p>
+
+<p>При использовании значения <code>before</code> для параметра <code>gutter-position</code> миксин <code>span</code> генерирует три CSS-правила: <code>width</code>, <code>margin-left</code> и <code>float: left</code> с помощью кода:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результирующий CSS-код будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">73.68421%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span> <span class="c">/* Notice this is margin left, not right */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Так как значение <code>before</code> является прямой противоположностью значения <code>after</code>, то его очень легко понять, если до этого вы хорошо разобрались с <code>after</code>. Вместо использования ключевого слова <code>last</code> для удаления отступа у последнего столбца разметки, в данном случае нужно использовать ключевое слово <code>first</code> для удаления отступа у первого столбца разметки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате получим точно такую же разметку, что и в предыдущем случае.</p>
+
+<blockquote>
+  <p>Краткое заключение: при использовании значения <code>before</code> разметка получается точно такой же, как и в предыдущем случае. Единственное отличие заключается в применении ключевого слова <code>first</code> для первого столбца разметки.</p>
+</blockquote>
+
+<h2 id="gutter-position-split">Gutter-position: split</h2>
+
+<p>Значение <code>split</code> параметра <code>gutter-position</code> кардинально отличается от двух предыдущих значений  <code>before</code> и <code>after</code>. Если установлено значение <code>split</code>, то ширина отступа <code>gutter</code> делиться пополам (надвое) и обе половинки отступа располагаются по обеим сторонам одного столбца. В этом режиме отступы <code>gutters</code> генерируются в CSS-коде в виде CSS-свойства <code>margin</code>. В этом случае нет необходимости удалять отступы для крайних столбцов разметки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_04.png" alt="Gutter-position: split" /></p>
+
+<p>Если, как в нашем случае, имеются только два блока (с классом <code>.content</code>  и <code>.sidebar</code>), то создание такой разметки выполняется просто. Для этого достаточно воспользоваться функцией <code>span</code>, как обычно:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_05.png" alt="Разметка с двумя блоками" /></p>
+
+<p>Однако, ситуация становиться не такой ясной, если блок <code>.content</code> или блок <code>.sidebar</code> будут содержать внутри себя блоки-потомки.</p>
+
+<p>Давайте добавим два блока <code>div</code> с классом <code>.child-one</code> и классом <code>.child-two</code> внутрь блока <code>.content</code> для того, чтобы проиллюстрировать эту ситуацию:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    Content
+  <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;child-one&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Child One
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;child-two&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Child Two
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Для обоих вновь созданных блока применим тот же подход, что и ранее. Блок с классом <code>.child-one</code> будет иметь ширину 2-х столбцов из 3-х; блок с классом <code>.child-two</code> будет иметь ширину 1-го столбца из 3-х.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_06.png" alt="Разметка с двумя дополнительными блоками" /></p>
+
+<p>Обратите внимание на тот факт, что границы обоих блоков <code>.child-one</code> и <code>.child-two</code> не совпадают с границами фоновой сетки!</p>
+
+<p>Это происходит потому, что при задании для параметра <code>gutter-position</code> значения <code>split</code> нужно учитывать взаимосвязь между блоками-родителями и блоками-потомками. В данном конкретном случае блоком-родителем является <code>.content</code>, а блоками-потомками являются <code>.child-one</code> и <code>.child-two</code>.</p>
+
+<p>Для создания правильной разметки в данном случае необходимо добавить для блока-родителя ключевое слово <code>nest</code> для того, чтобы показать, что этот блок как раз и является блоком-родителем:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">nest</span><span class="p">);</span> <span class="o">//</span> <span class="err">Добавлен</span> <span class="err">ключ</span> <span class="n">nest</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_07.png" alt="Применение ключевого слова nest" /></p>
+
+<p>Теперь посмотрите, как точно оба блока .child-one<code>и</code>.child-two` вписались в границы сетки, “нарисованной” фоновым изображением!</p>
+
+<p>На первый взгляд, ситуация является немного запутанной. Для того, чтобы не путаться, нужно всегда помнить, что в случае необходимости вписать блоки-потомки точно в границы сетки, нужно использовать ключевое слово для их блока-родителя.</p>
+
+<p>Если “копнуть” поглубже и проанализировать сгенерированный CSS-код, то можно заметить, что для блоков <code>.child-one</code> и <code>.child-two</code> он совершенно различный:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">75%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">26.66667%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок-родитель имеет плавание влево <code>float: left</code> и ширину, которая указана в процентах; при этом ширина отступов <code>gutters</code> этого блока не учитывается (75% равно 3/4).</p>
+
+<p>Блоки-потомки имеют все те же свойства, что и блок-родитель. Но при этом отступы gutters имеют место быть для этих блоков.</p>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>split</code> кардинально отличается от двух рассмотренных ранее значений <code>before</code> и <code>after</code>. При использовании значения <code>split</code> необходимо добавлять ключевое слово <code>nest</code> к блоку-родителю и использовать миксин <code>span</code> для всех блоков-потомков.</p>
+</blockquote>
+
+<h2 id="gutter-position-insideinside-static">Gutter-position: inside/inside-static</h2>
+
+<p>Оба значения <code>inside</code> и <code>inside-static</code> очень похожи на предыдущее значение <code>split</code>. Отступы gutters также делятся пополам (надвое) и обе половинки располагаются по обеим сторонам каждого столбца. Однако, в этом случае в CSS-выводе отступы являются свойством <code>padding</code>, а не <code>margin</code>. Также в этом случае нет необходимости удалять отступы у крайних столбцов в разметке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_08.png" alt="Gutter-position: inside" /></p>
+
+<p>Отступы <code>gutters</code> в случае <code>gutter-position: inside</code> имеют тот же принцип, что и при значении <code>split</code>. Если для блока-родителя не будет указано ключевое слово <code>nest</code>, то блоки-потомки выйдут за границы разметки.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_09.png" alt="Блоки-потомки выходят за границы разметки" /></p>
+
+<p>Если просто добавить ключевое слово <code>nest</code> для блока-родителя <code>.content</code>, то в результате получим следующее:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">nest</span><span class="p">);</span> <span class="o">//</span> <span class="n">The</span> <span class="n">nest</span> <span class="n">key</span> <span class="n">is</span> <span class="n">needed</span>
+<span class="p">}</span>
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_10.png" alt="Блоки-потомки в границах разметки" /></p>
+
+<p>Значение <code>inside-static</code> работает точно также, как и значение <code>inside</code>. Единственное исключение заключается в том, что отступы gutters получаются в фиксированных единицах измерения, а не в процентах. Кроме этого, в глобальной переменной <code>$susy</code> необходимо задать параметр <code>column-width</code> с указанием ширины столбца <code>column</code>.</p>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>inside</code> работает точно также, как и значение <code>split</code>. При использовании значения <code>inside</code> необходимо добавлять ключевое слово <code>nest</code> к блоку-родителю и использовать миксин <code>span</code> для всех блоков-потомков.</p>
+</blockquote>
+
+<p>Значение <code>inside</code> и <code>split</code> имеют одинаковый сгенерированный CSS-код, поэтому можно с легкостью менять между собой эти значения в глобальной переменной <code>$susy</code> для параметра <code>gutter-position</code>.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Различные типы разметки в Susy создаются с помощью выбора расположения отступов <code>gutters</code>. Различное местоположение отступов <code>gutters</code> в каждом случае имеет свои тонкости и требует понимания процесса, если вы хотите эффективно их использовать.</p>
+
+<p>Существует два основных способа создания разметки при содействии отступов <code>gutters</code>:</p>
+
+<ul>
+  <li>
+    <p>значения <code>before</code> и <code>after</code> имеют создают отступы <code>gutters</code> с одной стороны каждого столбца <code>column</code>; для крайнего столбца необходимо удалить отступ <code>gutter</code> с помощью ключевого слова <code>first</code> или <code>last</code>.</p>
+  </li>
+  <li>
+    <p>значения <code>inside</code>, <code>inside-static</code>, <code>split</code> разделяют каждый отступ <code>gutter</code> на две равные половины, которые располагаются по обе стороны каждого столбца <code>column</code>. Такие отступы не нуждаются в удалении.</p>
+  </li>
+</ul>
+
+<p>Эта статья является небольшой выдержкой из книги <a href="http://zell-weekeat.com/learnsusy" title="Learning Susy">Learning Susy</a>, а точнее - из главы 8, посвященной позиционированию отступов <code>gutter</code> в разметке Susy. В книге вопрос позиционирования рассмотрен подробнее на основе более сложного примера. Если материал, поданный в статье, вам понравился, то книга понравиться еще больше.</p>
+
+<blockquote>
+  <p>Примечание переводчика: данный пост является переводом статьи <a href="http://www.zell-weekeat.com/susy-gutter-positions/" title="Understanding Gutter Positions in Susy">Understanding Gutter Positions in Susy</a>, созданным мною с любезного разрешения ее автора Zell Liew.</p>
+</blockquote>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-09T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/">November 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -199,7 +505,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-08T00:00:00+03:00"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/">November 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-08T00:00:00+04:00"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/">November 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -299,7 +605,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-04T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/">November 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-04T00:00:00+04:00"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/">November 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -465,7 +771,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-03T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js/">November 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-03T00:00:00+04:00"><a href="http://zencoder.ru/javascript/parallax-js/">November 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -610,115 +916,6 @@
 <span class="err">}</span></code></pre></div>
 
 <p>Полный исходный код примера можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs" title="Parallax.js">Parallax.js</a></p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-02T00:00:00+03:00"><a href="http://zencoder.ru/macos/spectacle-window-management-mac-os-x/">November 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/macos/spectacle-window-management-mac-os-x/" rel="bookmark" title="Spectacle - менеджер окон Mac OS X" itemprop="url">Spectacle - менеджер окон Mac OS X</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>С недавних пор (чуть больше двух недель) я стал счастливым обладателем Mac OS X. Если быть точнее - это iMac (21.5-inch, Mid 2014).</p>
-</blockquote>
-
-<p>Неделю чувствовал себя не своей “тарелке” под ним, еще неделю привыкал. Потом все уже пошло по накатанной - система хороша, ничего не скажешь. Для работы - лучше не придумаешь.</p>
-
-<p>Но речь в этой статье не о прелестях Mac OS X - их и без меня (с моими скромными талантами) превознесли до небес. Тема этой небольшой статьи - маленькое приложение Spectacle. Эта небольшая программка призвана <em>улучшить-ускорить-облегчить</em> работу в оконной среде Mac, служа в качестве менеджера этих самых окон.</p>
-
-<p>Другими словами - Spectacle - это оконный менеджер для Mac OS X. Это приложение является не единственным в своем роде. Существуют еще программы - платная (<em>и самая известная</em>) - <a href="http://mizage.com/divvy/" title="Divvy">Divvy</a>, также платная (<em>стоит целых 2$</em>) - <a href="https://itunes.apple.com/en/app/bettersnaptool/id417375580?mt=12" title="BetterSnapTool">BetterSnapTool</a> и бесплатная - <a href="http://www.boastr.de/" title="BetterTouchTool">BetterTouchTool</a>. Однако, Spectacle (<em>в отличие от Divvy, которая стоит $13.99</em>) - бесплатен.</p>
-
-<p>Проживает программка по адресу - <a href="http://spectacleapp.com/" title="Spectacle">Spectacle</a>. Домашняя страничка приложения очень проста - также, как и само приложение. Кстати, там же можно полюбоваться демо - что умеет делать данная программа.</p>
-
-<h2 id="spectacle">Установка Spectacle</h2>
-
-<p>Установка программы Spectacle под Mac OS X стандартная. Скачиваем с официального сайта архив приложения, распаковываем его и перетаскиваем программку в папку “Applications”.</p>
-
-<h2 id="spectacle-1">Настройки Spectacle</h2>
-
-<p>При запуске программы Spectacle она появиться в области индикаторов строки меню в виде значка:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/spectacle_icon.png" alt="Значок Spectacle" /></p>
-
-<p>При щелчке мыши на нем откроется длинный список <em>загадочных клавиатурных сокращений</em>. Эти сокращения можно редактировать, если открыть окно настроек программы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/spectacle_settings.png" alt="Настройки Spectacle" /></p>
-
-<p>Там же расположен checkbox - “Launch Spectacle at login” - думаю, все понятно и в переводе не нуждается.</p>
-
-<h2 id="spectacle-2">Управление окнами с помощью Spectacle</h2>
-
-<p>Чтобы разобраться, что это за <em>клавиатурные сокращения</em>, достаточно пять минут поиграться с ними и все станет понятно. Выберем любое приложение (<em>в моем случае это будет окно Terminal</em>) в качестве подопытного кролика и будем нажимать hotkeys.</p>
-
-<p>Следующие hotkeys заставят окно терминала занимать ровно половину экрана монитора, смещаясь при этом в нужную сторону:</p>
-
-<ul>
-  <li>занять левую половину окна — <kbd>⌥⌘←</kbd></li>
-  <li>занять правую половину окна — <kbd>⌥⌘→</kbd></li>
-  <li>занять верхнюю половину окна — <kbd>⌥⌘↑</kbd></li>
-  <li>занять нижнюю половину окна — <kbd>⌥⌘↓</kbd></li>
-</ul>
-
-<p>Нижеследующие hotkeys заставят окно терминала “побегать” по углам экрана монитора. То есть, поместиться в нужный угол экрана, при этом размер окна останется без изменения:</p>
-
-<ul>
-  <li>сместиться в левый верхний угол — <kbd>⌃⌘←</kbd></li>
-  <li>сместиться в правый верхний угол — <kbd>⌃⌘→</kbd></li>
-  <li>сместится в нижний левый угол — <kbd>⌃⇧⌘←</kbd></li>
-  <li>сместиться в нижний правый угол — <kbd>⌃⇧⌘→</kbd></li>
-</ul>
-
-<p>Еще пара полезных команд для управления окном:</p>
-
-<ul>
-  <li>окно программы по центру экрана - <kbd>⌥⌘C</kbd></li>
-  <li>окно во всю ширину экрана - <kbd>⌥⌘F</kbd></li>
-</ul>
-
-<p>Программа Spectacle умеет перемещать окно приложения таким образом, чтобы оно занимало ровно треть площади экрана монитора. Сочетание - <kbd>⌃⌥→</kbd> заставит окно перемещаться сперва вертикально, а потом горизонтально по экрану, при этом занимая треть площади. Сочетание - <kbd>⌃⌥←</kbd> заставит окно двигаться в обратном порядке. Попробуйте у себя - интересный эффект получается.</p>
-
-<p>Изменение размера окна приложения достигается с помощью двух сочетаний клавиш:</p>
-
-<ul>
-  <li>увеличение размера окна - <kbd>⌃⌥⇧→</kbd></li>
-  <li>уменьшение размера окна - <kbd>⌃⌥⇧←</kbd></li>
-</ul>
-
-<p>Перемещение окна между виртуальными дисплеями:</p>
-
-<ul>
-  <li>переместить окно на следующий дисплей - <kbd>⌃⌥⌘→</kbd></li>
-  <li>переместить окно на предыдущий дисплей - <kbd>⌃⌥⌘←</kbd></li>
-</ul>
-
-<p>Очень полезной и приятной (<em>а более того - нужной</em>) особенностью Spectacle является то, что программа запоминает местоположение и размер окна для каждого приложения. В следующий раз, когда запуститься (<em>например, у меня - окно терминала</em>) приложение, его окно расположиться точно в нужном месте экрана монитора.</p>
-
-<p>Если нужно сбросить настройки для окна проложения, то для этого существует комбинация - <kbd>⌥⌘Z</kbd>. Вернуть обратно настройки для окна приложения - <kbd>⌥⇧⌘Z</kbd>.</p>
-
-<h2 id="spectacle-3">Заключение о Spectacle</h2>
-
-<p>Программа Spectacle мне понравилась однозначно. Первый фактор - она бесплатна. Второй - она (<em>можно сказать</em>) незаменима для удобной настройки workflow.</p>
-
-<p>Первое упоминание об этой программе я увидел у Sorax. До этого пытался “подружиться” с Divvy, которую рекомендовали ребята из Loftblog. Однако, как-то не получилось у меня с ней работать.</p>
-
-<p>А вот Spectacle понравилась с первого взгляда. Как мне кажется, из программа разряда “must have”.</p>
 
 <hr />
 
@@ -991,6 +1188,7 @@
     <a href="http://zencoder.ru/page8" class="btn">Next</a>
   
 </div><!-- /.pagination -->
+
 </div><!-- /#main -->
 
 <div class="footer-wrapper">

@@ -11,7 +11,7 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://zencoder.ru/images/abstract-1.jpg">
+<meta name="twitter:image" content="http://zencoder.ru/images/header.jpg">
 
 <meta name="twitter:title" content="Заметки верстальщика">
 <meta name="twitter:description" content="Заметки верстальщика">
@@ -127,7 +127,7 @@
   
   
     <div class="entry-image">
-      <img src="http://zencoder.ru/images/abstract-1.jpg" alt="Заметки верстальщика">
+      <img src="http://zencoder.ru/images/header.jpg" alt="Заметки верстальщика">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -144,7 +144,231 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-30T00:00:00+03:00"><a href="http://zencoder.ru/svg/svg-css-part-2/">November 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-12-27T00:00:00+04:00"><a href="http://zencoder.ru/css/stylus-introduction/">December 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/stylus-introduction/" rel="bookmark" title="Stylus - знакомство с препроцессором" itemprop="url">Stylus - знакомство с препроцессором</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Настало время познакомиться с препроцессором Stylus. Ниже привожу перевод статьи от David Walsh, посвященную малоизвестному, но крайне полезному препроцессору Stylus. Оригинал статьи размещен здесь - <a href="http://blog.teamtreehouse.com/getting-started-stylus" title="Getting Started with Stylus">Getting Started with Stylus</a></p>
+</blockquote>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/12/stylus-logo.png" alt="Stylus" class="center-image" /></p>
+
+<p>В среде web-разработчиков можно часто и постоянно слышать только о двух препроцессорах: <a href="http://sass-lang.com/" title="Sass">Sass</a> и <a href="http://lesscss.org/" title="LESS">LESS</a>. Однако, существует еще один препроцессор, о котором слышно совсем не так часто - это <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a>. При редизайне Mozilla Developer Network мною был выбран Stylus по нескольким причинам:</p>
+
+<ul>
+  <li>так как Stylus основан на <a href="http://nodejs.org/" title="Node.js">Node.js</a>, то отпадает необходимость в использовании сторонней технологии (Sass требует для своей работы Ruby)</li>
+  <li>Stylus предоставляет набор <a href="https://github.com/LearnBoost/stylus/blob/master/docs/js.md" title="JavaScript API">JavaScript API</a>, что делает возможным дальнейшую настройку этого инструмента</li>
+  <li>синтаксис Stylus не нуждается в скобках (brackets), запятых (comma), двоеточиях (colons), точках с запятыми (semicolon) - он целиком и полностью основан на использовании табуляции и пробелов; но если необходимо использовать любой из видов пунктуаций, то его можно легко применить в Stylus - компиляция произойдет корректно</li>
+  <li>под препроцессор Stylus имеется готовая библиотека миксинов (mixin) под названием <a href="https://github.com/visionmedia/nib" title="Nib">Nib</a></li>
+</ul>
+
+<h2 id="stylus">Установка Stylus</h2>
+
+<p>Препроцессор Stylus является Open Source проектом, расположенным на GitHub, поэтому его можно легко установить как из исходных файлов, так и с помощью менеджера пакетов <code>npm</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">stylus</span> <span class="n">-g</span></code></pre></div>
+
+<p>CSS-файлы, созданные при помощи синтаксиса Stylus, должны иметь расширение <code>.styl</code> и могут располагаться в любом месте проекта. Препроцессор Stylus не имеет какого-либо конфигурационного файла, для начала компиляции достаточно запустить утилиту командной строки <code>stylus</code> с минимальным набором ключей:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">app</span><span class="p">/</span><span class="n">main</span><span class="p">.</span><span class="n">styl</span> <span class="p">-</span><span class="n">-out</span> <span class="p">/</span><span class="n">dist</span> <span class="p">-</span><span class="n">-compress</span></code></pre></div>
+
+<p>Представленная выше команда выполняет компиляцию исходного stylus-файла <code>main.styl</code> в директорию <code>/dist</code> с тем же самым именем <code>main.styl</code>. Другими словами, файл <code>main.styl</code> компилируется в файл <code>main.css</code> и помещается в директорию <code>/dist</code>.</p>
+
+<p>Утилита <code>stylus</code> может запускаться не только для однократной компиляции, но и отслеживать изменения файлов, выполняя компиляцию на лету; для этого имеется ключ <code>--watch</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="p">-</span><span class="n">-watch</span> <span class="n">app</span><span class="p">/</span><span class="n">main</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
+
+<p>Как можно догадаться, у программы <code>stylus</code> имеется гораздо больше опций, с полным списком которых можно ознакомиться здесь - <a href="https://github.com/LearnBoost/stylus/blob/master/docs/executable.md" title="Executable">Executable</a>. В частности, с помощью нужных ключей можно выполнять обратную конвертацию из CSS в Stylus, сравнивать ввод\вывод и многое дугое.</p>
+
+<blockquote>
+  <p>Но приступим к рассмотрению самого главного, ради чего и затевался данный перевод - синтаксису и возможностям препроцессора Stylus</p>
+</blockquote>
+
+<h2 id="stylus-1">Основы синтаксиса Stylus</h2>
+
+<p>Синтаксис Stylus очень похож на синтаксис остальных препроцессоров (Sass или LESS). Но давайте более детально рассмотрим, что он из себя представляет на деле:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  Простая переменная  */</span>
+  <span class="nt">base-font-size</span> <span class="o">=</span> <span class="nt">12px</span>
+
+<span class="c">/* Инициализация переменной с помощью вызова миксина */</span>
+<span class="nt">body-background</span> <span class="o">=</span> <span class="nt">invert</span><span class="o">(</span><span class="nf">#ccc</span><span class="o">)</span>
+
+<span class="c">/* Селектор и набор правил для него */</span>
+<span class="nt">body</span>
+  <span class="nt">color</span> <span class="nf">#333</span>
+  <span class="nt">background</span> <span class="nf">#fff</span>
+
+<span class="c">/* Вложенность правил */</span>
+<span class="nt">nav</span>
+  <span class="nt">margin</span> <span class="nt">10px</span>
+    <span class="nt">ul</span>
+      <span class="nt">list-style-type</span> <span class="nt">none</span>
+        <span class="o">&gt;</span> <span class="nt">li</span>
+          <span class="nt">display</span> <span class="nt">inline-block</span>
+          <span class="o">&amp;</span><span class="nc">.current</span>
+            <span class="nt">background-color</span> <span class="nt">lightblue</span>
+
+<span class="c">/* Использование вычисляемых значений */</span>
+<span class="nt">div</span><span class="nc">.column</span>
+  <span class="nt">margin-right</span> <span class="o">(</span><span class="nt">grid-spacing</span> <span class="o">/</span> <span class="nt">2</span><span class="o">)</span>
+  <span class="nt">margin-top</span> <span class="o">(</span><span class="nt">grid-spacing</span> <span class="o">*</span> <span class="nt">2</span><span class="o">)</span>
+
+<span class="c">/* Использование ранее установленного значения */</span>
+<span class="nt">div</span><span class="nc">.center-column</span>
+  <span class="nt">width</span> <span class="nt">200px</span>
+  <span class="nt">margin-left</span> <span class="nt">-</span><span class="o">(</span><span class="k">@width</span> <span class="o">/</span> <span class="nt">2</span><span class="o">)</span>
+
+<span class="c">/* Задание значений, полученных как результат вычислений миксинов */</span>
+<span class="nc">.promo</span>
+  <span class="nt">apply-promo-style</span><span class="o">()</span>
+  <span class="nt">apply-width-center</span><span class="o">(</span><span class="nt">400px</span><span class="o">)</span>
+
+<span class="c">/* Итерация в цикле */</span>
+<span class="nt">table</span>
+  <span class="nt">for</span> <span class="nt">row</span> <span class="nt">in</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">4</span> <span class="nt">5</span>
+    <span class="nt">tr</span><span class="nd">:nth-child</span><span class="o">(</span><span class="p">{</span><span class="nt">row</span><span class="p">}</span><span class="o">)</span>
+      <span class="nt">height</span> <span class="nt">10px</span> <span class="o">*</span> <span class="nt">row</span>
+
+<span class="c">/* Другой вариант итерации в цикле */</span>
+<span class="nt">for</span> <span class="nt">row</span> <span class="nt">in</span> <span class="o">(</span><span class="nt">1</span><span class="o">.</span><span class="nc">.5</span><span class="o">)</span>
+  <span class="nt">tr</span><span class="nd">:nth-child</span><span class="o">(</span><span class="p">{</span><span class="n">row</span><span class="p">}</span><span class="o">)</span>
+    <span class="nt">height</span> <span class="nt">10px</span> <span class="o">*</span> <span class="nt">row</span>
+
+<span class="c">/* Импортирование в Stylus-файл другой таблицы стилей в формате Stylus */</span>
+<span class="k">@import</span> <span class="s2">&quot;links.styl&quot;</span>
+
+<span class="c">/* extend существующего класса */</span>
+<span class="nc">.warning</span>
+  <span class="k">@extend</span> <span class="nc">.block</span></code></pre></div>
+
+<p>В принципе, ничего нового в вышесказанном нет - все эти моменты также существуют в других препроцессорах. Если вдруг в синтаксисе не достает скобок, двоеточий или запятых, то их можно смело добавлять в код - препроцессор Stylus вас прекрасно поймет и в этом случае.</p>
+
+<h2 id="section">Создание и использование миксинов</h2>
+
+<p>Миксины чрезвычайно полезны по нескольким причинам. Благодаря им при написании стилей на CSS можно использовать логику, а также структурировать код.</p>
+
+<p>Создание миксинов в Stylus является простой задачей, а синтаксис миксинов именно такой, какой и ожидалось увидеть:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Простой миксин для добавления вендорных префиксов.</span>
+
+<span class="c">  Использование:</span>
+<span class="c">  vendorize(box-sizing, border-box)</span>
+
+<span class="c">*/</span>
+
+<span class="nt">vendorize</span><span class="o">(</span><span class="nt">property</span><span class="o">,</span> <span class="nt">value</span><span class="o">)</span>
+  <span class="nt">-webkit-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
+  <span class="nt">-moz-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
+  <span class="nt">-ms-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
+  <span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span></code></pre></div>
+
+<p>При создании миксинов под Stylus можно задать значения по умолчанию для аргументов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин создания треугольника на CSS */</span>
+
+<span class="nt">generate-arrow</span><span class="o">(</span><span class="nt">arrow-width</span> <span class="o">=</span> <span class="nt">10px</span><span class="o">)</span>
+  <span class="o">&amp;</span><span class="nd">:before</span><span class="o">,</span> <span class="o">&amp;</span><span class="nd">:after</span>
+    <span class="nt">content</span> <span class="s1">&#39;&#39;</span>
+    <span class="nt">height</span> <span class="nt">0</span>
+    <span class="nt">width</span> <span class="nt">0</span>
+    <span class="nt">position</span> <span class="nt">absolute</span>
+    <span class="nt">border</span> <span class="nt">arrow-width</span> <span class="nt">solid</span> <span class="nt">transparent</span></code></pre></div>
+
+<p>Миксин может возвращать вычисляемое значение с помощью ключевого слова <code>return</code> или же возвращать стили, определенные внутри самого миксина. Такие стили можно применить к элементу, который вызывает этот миксин:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин для задания стилей к текущему элементу и дочерним элементам текущего элемента */</span>
+
+<span class="nt">special-homestyles</span><span class="o">(</span><span class="nt">background</span> <span class="o">=</span> <span class="s1">&#39;#ccc&#39;</span><span class="o">)</span>
+  <span class="nt">background-color</span> <span class="nt">background</span>
+    <span class="nt">a</span>
+      <span class="nt">color</span> <span class="nt">lightblue</span>
+    <span class="o">&amp;</span><span class="nc">.visited</span>
+      <span class="nt">color</span> <span class="nt">navy</span></code></pre></div>
+
+<p>И конечно же, внутри миксинов можно использовать условия (впрочем, как и в любом другом месте кода на Stylus):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин создания grid на основе минимального\максимального значений и инкремента */</span>
+
+<span class="nt">generate-grid</span><span class="o">(</span><span class="nt">increment</span><span class="o">,</span><span class="nt">start</span><span class="o">,</span><span class="nt">end</span><span class="o">,</span><span class="nt">return-dimension</span><span class="o">=</span><span class="nt">false</span><span class="o">)</span>
+  <span class="nt">total</span> <span class="o">=</span> <span class="nt">start</span>
+<span class="nt">for</span> <span class="nt">n</span><span class="o">,</span> <span class="nt">x</span> <span class="nt">in</span> <span class="nt">0</span><span class="o">..((</span><span class="nt">end</span> <span class="nt">-</span> <span class="nt">start</span><span class="o">)</span> <span class="o">/</span> <span class="nt">increment</span><span class="o">)</span>
+  <span class="nt">if</span> <span class="nt">return-dimension</span>
+    <span class="nt">if</span> <span class="nt">x</span><span class="o">+</span><span class="nt">1</span> <span class="nt">is</span> <span class="nt">return-dimension</span>
+      <span class="nt">return</span> <span class="nt">total</span>
+        <span class="nt">else</span>
+	  <span class="nc">.column-</span><span class="p">{</span><span class="n">x</span><span class="o">+</span><span class="m">1</span><span class="p">}</span>
+	     <span class="nt">width</span> <span class="nt">total</span>
+	<span class="nt">total</span> <span class="o">=</span> <span class="nt">total</span> <span class="o">+</span> <span class="nt">increment</span></code></pre></div>
+
+<p>Представленный выше миксин генерирует grid на основе минимального значения (минимальной ширины столбца), максимального значения (максимальной ширины столбца) и количества столбцов (которое изменяется с помощью инкремента). Последний аргумент return-dimension служит для указания того, будет ли миксин просто возвращать полученное значение, не создавая CSS-классов.</p>
+
+<h2 id="stylus-2">Полезные миксины Stylus</h2>
+
+<p>При работе над проектом MDN мне потребовалось большое количество полезных миксинов под Stylus, например таких, как поддержка RTL, поддержка локализации, а также поддержка большого числа браузеров. Ниже я представлю некоторые из этих миксинов - возможно, они пригодятся на практике некоторым из читателей.</p>
+
+<h3 id="last-child">Обнуление last child</h3>
+
+<p>Данный миксин был создан для обнуления пустого пространства у последнего элемента блока-родителя. Как правило, такими пространствами в CSS являются <code>padding-bottom</code> и <code>margin-bottom</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Удаление пустого пространства у элемента, если он является последним у своего родителя */</span>
+
+<span class="nt">prevent-last-child-spacing</span><span class="o">(</span><span class="nt">element</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="o">,</span> <span class="nt">property</span><span class="o">=</span><span class="s2">&quot;padding-bottom&quot;</span><span class="o">)</span>
+  <span class="nt">if</span> <span class="nt">element</span> <span class="nt">is</span> <span class="s2">&quot;*&quot;</span>
+    <span class="nt">element</span> <span class="o">=</span> <span class="nt">unquote</span><span class="o">(</span><span class="nt">element</span><span class="o">)</span>
+      <span class="o">&amp;</span> <span class="o">&gt;</span> <span class="p">{</span><span class="n">element</span><span class="p">}</span><span class="nd">:last-child</span>
+        <span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">0</span></code></pre></div>
+
+<p>С помощью этого миксина устанавливается <code>margin</code> или <code>padding</code> для блока-родителя. А затем просто убирается пустое пространство у последнего элемента этого блока.</p>
+
+<h3 id="placeholder">Стилизация placeholder</h3>
+
+<p>Стилизация placeholder является достаточно хитрой задачей из-за необходимости использования вендорных префиксов, поэтому использование миксина значительно упрощает эту задачу:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">set-placeholder-style</span><span class="o">(</span><span class="nt">prop</span><span class="o">,</span> <span class="nt">value</span><span class="o">)</span>
+   <span class="o">&amp;:</span><span class="nd">:-webkit-input-placeholder</span>
+     <span class="p">{</span><span class="n">prop</span><span class="p">}</span> <span class="nt">value</span>
+   <span class="o">&amp;:</span><span class="nd">:-moz-input-placeholder</span>
+     <span class="p">{</span><span class="n">prop</span><span class="p">}</span> <span class="nt">value</span></code></pre></div>
+
+<h2 id="section-1">Заключение</h2>
+
+<p>На этом перевод закончен.</p>
+
+<p>От себя могу добавить.</p>
+
+<p>Под Sublime Text 3 имеется плагин <a href="https://sublime.wbond.net/packages/Stylus" title="Stylus">Stylus</a> для подсветки синтаксиса и автоматической табуляции. Если планируется дальнейшая работа в Stylus, то данный плагин обязателен к установке - без него просто тяжело и долго кодить.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/12/sublime_stylus.png" alt="Stylus Sublime Text" /></p>
+
+<p>Плагин Emmet имеет поддержку синтаксиса Stylus (<em>меня Emmet не перестает радовать</em>). Все <a href="http://docs.emmet.io/cheat-sheet/" title="Emmet CheatSheet">горячие клавиши Emmet</a> остались неизменными и под Stylus, как если бы я кодил в старом добром CSS.</p>
+
+<p>На моем любимом YouTube-канале Level Up Tuts недавно вышла небольшая серия видео-обзоров по Stylus - <a href="http://youtu.be/eJahtnmywMI" title="Stylus Tutorials">Stylus Tutorials</a></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-30T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-css-part-2/">November 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -236,7 +460,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-26T00:00:00+03:00"><a href="http://zencoder.ru/css/sass-css-importer/">November 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-26T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-css-importer/">November 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -324,7 +548,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+03:00"><a href="http://zencoder.ru/css/sass-selector-placeholder/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-selector-placeholder/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -579,7 +803,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+03:00"><a href="http://zencoder.ru/html/jade-to-html/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+04:00"><a href="http://zencoder.ru/html/jade-to-html/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -704,185 +928,6 @@
 <p>На этом все.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-20T00:00:00+03:00"><a href="http://zencoder.ru/html/parallax-scrolling-stellar-js/">November 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/html/parallax-scrolling-stellar-js/" rel="bookmark" title="Parallax Scrolling с помощью Stellar.js" itemprop="url">Parallax Scrolling с помощью Stellar.js</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Отличный пример создания parallax scrolling с помощью Stellar.js. Оригинал статьи размещен здесь - <a href="http://www.sitepoint.com/introduction-parallax-scrolling-using-stellar-js/" title="An Introduction to Parallax Scrolling Using Stellar.js">An Introduction to Parallax Scrolling Using Stellar.js</a>.</p>
-</blockquote>
-
-<p>Одним из наиболее обсуждаемых трендов в web-дизайне последние несколько лет является эффект <code>parallax scrolling</code>. Нравиться он вам или нет, но этот эффект сегодня применяется на очень многих сайтах. В этой статье будет дано краткое описание принципа <code>parallax scrolling</code> и будет показано, как применить этот эффект на странице с помощью jQuery-плагина под названием Stellar.js.</p>
-
-<h2 id="parallax-scrolling">Что такое parallax scrolling</h2>
-
-<p>Основная идея parallax scrolling заключается в том, что при прокрутке страницы вниз фоновое изображение движется с меньшей скоростью, нежели содержимое страницы. Таким образом создается иллюзия 3D на странице. Этот эффект является прекрасным дополнением к web-странице, однако он становиться навязчивым при чрезмерном злоупотреблении им. Время от времени вы встречаете на просторах Сети сайты, перегруженные подобными эффектами. И вам не всегда может такое понравиться. Потому что в основном при реализации такого эффекта используется анимация фоновых изображений, что значительно увеличивает вес страницы, в результате чего она очень медленно загружается в браузере.</p>
-
-<p>Примерами сайтов со злоупотреблением таких эффектов, на мой взгляд, могут послужить <a href="http://community.saucony.com/kinvara3/" title="Saucony Kinavara 3">Saucony Kinavara 3</a> и <a href="http://moto.oakley.com/" title="Oakley Airbrake MX">Oakley Airbrake MX</a>. Первый сайт “весит” 50Mb(!), второй сайт - около 20Mb.</p>
-
-<p>Теперь, когда вы имеете представление о том, как на деле выглядит эффект parallax scrolling, давайте попробуем реализовать его с помощью плагина Stellar.js.</p>
-
-<h2 id="stellarjs">Что такое Stellar.js</h2>
-
-<p><a href="https://github.com/markdalgleish/stellar.js/" title="Stellar.js">Stellar.js</a> - это jQuery-плагин, с помощью которого можно легко реализовать эффект parallax scrolling на web-странице. Несмотря на то, что этот плагин уже не поддерживается разработчиком, он все еще остается очень надежным, совместим с самыми последними версиями библиотеки jQuery и часто применяется web-разработчиками в проектах (<em>что является показателем</em>). Stellar.js в списке популярных плагинов <a href="http://plugins.jquery.com/" title="The jQuery Plugin Registry">The jQuery Plugin Registry</a> находится на высших позициях, поэтому вы наверняка о нем слышали или же читали упоминание о нем.</p>
-
-<p>Отлично, вкратце мы познакомились, что такое Stellar.js и можно приступать к процессу создания parallax scrolling на странице с его помощью.</p>
-
-<h2 id="stellarjs----">Stellar.js - начинаем работу</h2>
-
-<p>Начать работать с плагином Stellar.js очень просто. Для начала нужно скачать этот плагин и подключить к странице. Получить плагин Stellar.js можно двумя способами - из <a href="https://github.com/markdalgleish/stellar.js/" title="Git-репозиторий Stellar.js">Git-репозитория</a> или с помощью менеджера пакетов Bower. Если остановится на использовании Bower, то в консоли нужно набрать такую команду:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">bower</span> <span class="n">install</span> <span class="n">jquery</span><span class="p">.</span><span class="n">stellar</span></code></pre></div>
-
-<p>Когда плагин Stellar.js получен любым из вышеописанных способов, необходимо подключить его к странице как обычно.</p>
-
-<p>После подключения плагина Stellar.js все готово для того, чтобы применить эффект <code>parallax scrolling</code> на странице. Этот плагин позволяет применить данный эффект к любому scrolling-элементу на странице, будь то объект <code>window</code> или любой другой. Для этого нужно выполнить выборку нужного элемента с помощью jQuery, а затем применить к выбранному элементу метод <code>stellar()</code>.</p>
-
-<p>Самый простой пример применения плагина Stellar.js к объекту показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#someElement&#39;</span><span class="p">).</span><span class="nx">stellar</span><span class="p">();</span></code></pre></div>
-
-<p>Для объекта <code>window</code> можно использовать и более краткий синтаксис вышеприведенного примера:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">stellar</span><span class="p">();</span></code></pre></div>
-
-<p>В этом коде производится поиск фоновых изображений или элементов, к которым применяется эффект <code>parallax</code>; и для этих элементов выполняется пересчет их расположения на web-странице при ее прокрутке.</p>
-
-<p>Если вам хочется взглянуть хотя бы на один готовый пример страницы с <code>parallax scrolling</code>, созданной с помощью Stellar.js, то можете посетить эту ссылку - <a href="http://markdalgleish.com/projects/stellar.js/demos/backgrounds.html" title="Stellar.js Backgrounds Demo">Stellar.js Backgrounds Demo</a>.</p>
-
-<h2 id="stellarjs-1">Настройки Stellar.js</h2>
-
-<p><a href="https://github.com/markdalgleish/stellar.js/" title="Stellar.js">Stellar.js</a>, как и большинство других плагинов подобного рода, достаточно гибок в настройке. В нем есть несколько параметров, с помощью которых можно задать нужный вариант работы. В Stellar.js все настройки делятся на два типа - глобальные (<em>оказывают влияние на все элементы</em>) и локальные, имеющие отношение только к конкретному элементу.</p>
-
-<p>Глобальные настройки передаются методу <code>stellar()</code> в качестве аргументов, в момент вызова этого метода. Специфичные для элемента настройки передаются в виде <code>data-*</code>-атрибутов. В этом разделе статьи я не буду подробно останавливаться на рассмотрении всех возможных параметров плагина Stellar.js. Если у вас возникнет желание детально ознакомиться с ними, то можно обратиться к разделу, посвященному этому вопросу - <a href="https://github.com/markdalgleish/stellar.js#configuring-everything" title="Configuring Everything">Configuring Everything</a>.</p>
-
-<p>Одной из основных настроек плагина, которая может понадобиться в первую очередь, является выбор направления, в котором будет осуществляться эффект. Классическим вариантом <code>parallax scrolling</code> является направление <code>parallax</code> по вертикали - сверху вниз или же наоборот. Однако, с помощью настроек можно задать parallax по горизонтали - слева направо и наоборот. И даже можно задать сразу два направления - по вертикали и по горизонтали. Для управления направлением <code>parallax</code> в плагине Stellar.js имеются два параметра Boolean-типа:</p>
-
-<ul>
-  <li><code>horizontalScrolling</code> - для управления parallax по горизонтали</li>
-  <li><code>verticalScrolling</code> - для управления parallax по вертикали</li>
-</ul>
-
-<p>По умолчанию оба параметра имеют значение <code>true</code>.</p>
-
-<p>Другим интересным параметров плагина Stellar.js является <code>responsive</code>. Данная настройка отвечается за возможность обновления содержимого блока с эффектом parallax при наступлении событий <code>load</code> и <code>resize</code> объекта <code>window</code>. Значением по умолчанию является <code>false</code>.</p>
-
-<p>Последним (достойным внимания) глобальным параметром плагина Stellar.js является <code>hideDistantElements</code>. Значением по умолчанию этого параметра является <code>true</code>. Данный параметр отвечает за эффект скрытия объекта в том случае, когда он выходит на границы viewport. Если такое поведение вам не нужно, то можно поставить значение <code>hideDistantElements</code> в <code>false</code>.</p>
-
-<p>Единственным специфичным для элемента параметром плагина Stellar.js, о котором я расскажу в этой статье, является <code>data-stellar-background-ratio</code>. Расскажу только потому, что он используется очень часто при работе с плагином Stellar.js. Параметр принимает в качестве значения положительное число и управляет скоростью parallax для выбранного элемента.</p>
-
-<p>Например, <code>data-stellar-background-ratio="0.5"</code> означает, что скорость перемещения элемента при scrolling будет в два раза меньше обычной. Если вы будете использовать данный параметр со значением, меньшим 1, то, согласно документации, для элемента с parallax необходимо применить CSS-правило <code>background-attachment: fixed;</code>.</p>
-
-<p>Теперь, когда мы познакомились с плагином Stellar.js и научились управлять им с помощью параметров, самое время посмотреть его в действии.</p>
-
-<h2 id="demo">Demo</h2>
-
-<p>В этом разделе статьи мы создадим пример кода, в котором применим плагин Stellar.js и настроим его с помощью параметров, рассмотренных ранее. Первым делом нам понадобиться HTML-разметка. Для этого создадим шесть блоков <code>div</code>, внутри которых будет содержаться некоторый текст:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span> <span class="na">id=</span><span class="s">&quot;content1&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;p&gt;</span>text here<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span> <span class="na">id=</span><span class="s">&quot;content2&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;p&gt;</span>text here<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span> <span class="na">id=</span><span class="s">&quot;content3&quot;</span> <span class="na">data-stellar-background-ratio=</span><span class="s">&quot;0.5&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;p&gt;</span>text here<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span> <span class="na">id=</span><span class="s">&quot;content4&quot;</span> <span class="na">data-stellar-background-ratio=</span><span class="s">&quot;0.5&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;p&gt;</span>text here<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span> <span class="na">id=</span><span class="s">&quot;content5&quot;</span> <span class="na">data-stellar-background-ratio=</span><span class="s">&quot;0.5&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;p&gt;</span>text here<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span> <span class="na">id=</span><span class="s">&quot;content6&quot;</span> <span class="na">data-stellar-background-ratio=</span><span class="s">&quot;0.5&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;p&gt;</span>text here<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Для представленной выше HTML-разметки необходимо написать некоторые CSS-стили для задания фоновых изображений. В нашем примере будут использоваться три изображения, при этом каждое из них будет использоваться дважды. Так как к последним трем блокам <code>div</code> применен атрибут <code>data-stellar-background-ratio</code>, то в CSS-стилях также необходимо прописать правило <code>background-attachment: fixed;</code>.</p>
-
-<p>Финальный вариант CSS-кода будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
-<span class="o">$</span><span class="nt">white</span><span class="o">:</span> <span class="nf">#fff</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">black</span><span class="o">:</span> <span class="nf">#000</span><span class="o">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="nb">white</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span> <span class="err">$</span><span class="nb">black</span><span class="o">,</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="err">$</span><span class="nb">black</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.content</span> <span class="p">{</span>
-  <span class="k">background-attachment</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#content1</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;http://www.tamperlock.com/blog/wp-content/uploads/2014/08/london-england.jpg&quot;)</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#content2</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;http://ocdn.eu/images/pulscms/ZjU7MDQsMCwzMiwzODQsMWZhOzA2LDMyMCwxYzI_/1eb29a70dabd0994cdefaad01ca3c884.jpg&quot;)</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#content3</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;http://www.zeus.aegee.org/magazine/wp-content/uploads/napoli-golfo-vesuvio.jpg&quot;)</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#content4</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;http://www.tamperlock.com/blog/wp-content/uploads/2014/08/london-england.jpg&quot;)</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#content5</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;http://ocdn.eu/images/pulscms/ZjU7MDQsMCwzMiwzODQsMWZhOzA2LDMyMCwxYzI_/1eb29a70dabd0994cdefaad01ca3c884.jpg&quot;)</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#content6</span> <span class="p">{</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;http://www.zeus.aegee.org/magazine/wp-content/uploads/napoli-golfo-vesuvio.jpg&quot;)</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Последний шаг, который нужно выполнить, это запустить эффект, вызвав метод <code>stellar()</code>. Этому методу также передадим несколько аргументов:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">.</span><span class="nx">stellar</span><span class="p">({</span>
-  <span class="nx">horizontalScrolling</span><span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
-  <span class="nx">responsive</span><span class="o">:</span> <span class="kc">true</span>
-<span class="p">});</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/stellar.png" alt="Stellar.js - parallax scrolling with jQuery" /></p>
-
-<h2 id="section">Заключение</h2>
-
-<p>В данной статье был рассмотрен плагин Stellar.js для создания эффекта parallax на web-странице. Мною не были рассмотрены все настройки и возможности этого плагина. Но целью этой статьи было заинтересовать читателей плагином Stellar.js для того, чтобы продолжить его изучение самостоятельно.</p>
-
-<p>Что вы думаете о плагине Stellar.js? Вы слышали о таком или же используете его давно?</p>
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -1152,6 +1197,7 @@
     <a href="http://zencoder.ru/page6" class="btn">Next</a>
   
 </div><!-- /.pagination -->
+
 </div><!-- /#main -->
 
 <div class="footer-wrapper">

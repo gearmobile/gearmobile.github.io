@@ -11,7 +11,7 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://zencoder.ru/images/abstract-1.jpg">
+<meta name="twitter:image" content="http://zencoder.ru/images/header.jpg">
 
 <meta name="twitter:title" content="Заметки верстальщика">
 <meta name="twitter:description" content="Заметки верстальщика">
@@ -127,7 +127,7 @@
   
   
     <div class="entry-image">
-      <img src="http://zencoder.ru/images/abstract-1.jpg" alt="Заметки верстальщика">
+      <img src="http://zencoder.ru/images/header.jpg" alt="Заметки верстальщика">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -140,6 +140,260 @@
 
 <div id="main" role="main">
   
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-18T00:00:00+04:00"><a href="http://zencoder.ru/css/cycle-for-sass/">July 18, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/cycle-for-sass/" rel="bookmark" title="Цикл for в Sass" itemprop="url">Цикл for в Sass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Очень краткий пример работы с циклом <code>for</code> в препроцессоре Sass.</p>
+</blockquote>
+
+<p>С чего вдруг мне приспичило воспользоваться циклом в препроцессоре? Все, как всегда, просто - в предыдущей статье, посвященной плагину Smooth Scroll (<a href="http://localhost:7788/third/?p=1527" title="Плагин Smooth Scroll">Плагин Smooth Scroll</a>), мне потребовался создать пример разметки HTML-документа с заголовками всех уровней, с первого (h1) до шестого (h6). Все бы ничего, но вручную создавать стили для заголовков всех уровней как-то утомительно.</p>
+
+<h2 id="html----for">HTML-разметка для цикла for</h2>
+
+<p>Вот я и озаботился задачей автоматизировать этот процесс, через цикл. Для этой цели я использовал цикл <code>for</code>. Упростил пример, выкинув параграфы и оставив только заголовки всех уровней:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;h4&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
+  <span class="nt">&lt;h5&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
+  <span class="nt">&lt;h6&gt;</span>header 6<span class="nt">&lt;/h6&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<h2 id="css-">Базовые CSS-стили</h2>
+
+<p>Затем пропишу основные стили для этой разметки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#778899</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">percent</span><span class="o">:</span> <span class="nt">5</span><span class="o">%;</span>
+<span class="o">$</span><span class="nt">percentStep</span><span class="o">:</span> <span class="nt">5</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">fontSize</span><span class="o">:</span> <span class="nt">76px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">fontSizeStep</span><span class="o">:</span> <span class="nt">10</span><span class="o">;</span>
+
+<span class="nc">.wrapper</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">5%</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="o">,</span><span class="nt">h3</span><span class="o">,</span><span class="nt">h4</span><span class="o">,</span><span class="nt">h5</span><span class="o">,</span><span class="nt">h6</span><span class="p">{</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">4%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="for--sass">Использую цикл for в Sass</h2>
+
+<p>Теперь у меня стоит задача “покрасить” все заголовки в оттенки цвета, указанного в переменной <code>$color: #778899;</code>. Для создания оттенков воспользуюсь функцией <code>lighten()</code> из препроцессора Sass.</p>
+
+<p>Цвет будет меняться с шагом в 5% (<code>$percentStep: 5;</code>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h3</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">15%</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="o">...</span></code></pre></div>
+
+<p>Также будет изменяться размер шрифта (<em>кегль</em>) в заголовках уровней с первого (<code>h1</code>) до шестого (<code>h6</code>), с шагом 10px (<code>$fontSizeStep: 10</code>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">76px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">66px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h3</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">56px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">...</span></code></pre></div>
+
+<p>Как видим, задача и вправду не для ленивых - это же надо тупо вбивать столько значений! Но мне поможет Sass и его циклы, а точнее - цикл <code>for</code>.</p>
+
+<p>Для этого создаю такую конструкцию цикла <code>for</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@for</span> <span class="o">$</span><span class="nt">i</span> <span class="nt">from</span> <span class="nt">1</span> <span class="nt">through</span> <span class="nt">6</span> <span class="p">{</span>
+  <span class="nt">h</span><span class="err">#</span><span class="p">{</span><span class="err">$</span><span class="n">i</span><span class="p">}{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">percent</span><span class="p">);</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="err">$</span><span class="n">fontSize</span><span class="p">;</span>
+    <span class="err">$</span><span class="n">percent</span><span class="o">:</span> <span class="err">$</span><span class="n">percent</span> <span class="o">+</span> <span class="err">$</span><span class="n">percentStep</span><span class="p">;</span>
+    <span class="err">$</span><span class="n">fontSize</span><span class="o">:</span> <span class="err">$</span><span class="n">fontSize</span> <span class="o">-</span> <span class="err">$</span><span class="n">fontSizeStep</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Небольшая расшифровка приведенного выше цикла. В данном случае используется цикл <code>for</code>, в котором счетчик <code>$i</code> изменяет свое значение в диапазоне от 1 до 6 включительно. Конструкция <code>#{$i}</code> называется экранированием в Sass и служит для того, чтобы значение счетчика <code>$i</code> подставилось в коде “как есть”, в виде текста.</p>
+
+<p>В результате получается такой вывод:</p>
+
+<ul>
+  <li>h1</li>
+  <li>h2</li>
+  <li>h3</li>
+  <li>h4</li>
+  <li>h5</li>
+  <li>h6</li>
+</ul>
+
+<p>Далее идут CSS-правила с использованием функции <code>lighten()</code> препроцессора Sass и переменных <code>$color</code>, <code>$percent</code>, <code>$fontSize</code>. Последние две строки производят увеличение значения переменных на указанный шаг:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">percent</span><span class="o">:</span> <span class="o">$</span><span class="nt">percent</span> <span class="o">+</span> <span class="o">$</span><span class="nt">percentStep</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">fontSize</span><span class="o">:</span> <span class="o">$</span><span class="nt">fontSize</span> <span class="nt">-</span> <span class="o">$</span><span class="nt">fontSizeStep</span><span class="o">;</span></code></pre></div>
+
+<p>Приведенный выше SCSS-код скомпилируется в готовый CSS-код подобного вида:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#8695a4</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">76px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#94a2af</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">66px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h3</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#a3aeba</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">56px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h4</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#b1bbc5</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">46px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h5</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#c0c8d0</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">36px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h6</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ced5db</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">26px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Смотрим результат в браузере и радуемся успеху:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/sass_cycle.jpg" alt="Результат работы цикла for в Sass" /></p>
+
+<h2 id="for--sass-1">Полный код примера цикла for в Sass</h2>
+
+<p>Полный код рассмотренного примера создания цикла <code>for</code> в Sass приведен ниже:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;h4&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
+  <span class="nt">&lt;h5&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
+  <span class="nt">&lt;h6&gt;</span>header 6<span class="nt">&lt;/h6&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+<span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#778899</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">percent</span><span class="o">:</span> <span class="nt">5</span><span class="o">%;</span>
+<span class="o">$</span><span class="nt">percentStep</span><span class="o">:</span> <span class="nt">5</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">fontSize</span><span class="o">:</span> <span class="nt">76px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">fontSizeStep</span><span class="o">:</span> <span class="nt">10</span><span class="o">;</span>
+
+<span class="nc">.wrapper</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">5%</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="o">,</span><span class="nt">h3</span><span class="o">,</span><span class="nt">h4</span><span class="o">,</span><span class="nt">h5</span><span class="o">,</span><span class="nt">h6</span><span class="p">{</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">4%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@for</span> <span class="o">$</span><span class="nt">i</span> <span class="nt">from</span> <span class="nt">1</span> <span class="nt">through</span> <span class="nt">6</span> <span class="p">{</span>
+  <span class="nt">h</span><span class="err">#</span><span class="p">{</span><span class="err">$</span><span class="n">i</span><span class="p">}{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">percent</span><span class="p">);</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="err">$</span><span class="n">fontSize</span><span class="p">;</span>
+    <span class="err">$</span><span class="n">percent</span><span class="o">:</span> <span class="err">$</span><span class="n">percent</span> <span class="o">+</span> <span class="err">$</span><span class="n">percentStep</span><span class="p">;</span>
+    <span class="err">$</span><span class="n">fontSize</span><span class="o">:</span> <span class="err">$</span><span class="n">fontSize</span> <span class="o">-</span> <span class="err">$</span><span class="n">fontSizeStep</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Скомпилированный в CSS-код результат нашего кодинга:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrapper</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">5%</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span><span class="o">,</span> <span class="nt">h3</span><span class="o">,</span> <span class="nt">h4</span><span class="o">,</span> <span class="nt">h5</span><span class="o">,</span> <span class="nt">h6</span> <span class="p">{</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">4%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#8695a4</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">76px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#94a2af</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">66px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h3</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#a3aeba</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">56px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h4</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#b1bbc5</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">46px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h5</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#c0c8d0</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">36px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h6</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ced5db</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">26px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
 <article class="hentry">
   <header>
     
@@ -969,170 +1223,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-11T00:00:00+04:00"><a href="http://zencoder.ru/css/bourbon-brief-introduction/">July 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/bourbon-brief-introduction/" rel="bookmark" title="Bourbon + Sass - краткое знакомство" itemprop="url">Bourbon + Sass - краткое знакомство</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Библиотека миксинов (mixin) под препроцессор Sass под названием <a href="http://bourbon.io/" title="Bourbon">Bourbon</a> - вот о чем будет сегодняшний краткий обзор.</p>
-</blockquote>
-
-<p>Данная статья не могла не появиться по нескольким причинам. Первая - я являюсь большим поклонником препроцессора Sass и библиотеки миксинов Compass под него. Библиотека Bourbon является аналогом Compass, просто она меньше по размеру и возможностям. Но это не значит, что она хуже - она обладает некоторыми возможностями, которых нет в Compass.</p>
-
-<p>Помимо этого, существует прекрасная сравнительная статья Sass-гуру <a href="http://hugogiraudel.com/" title="Hugo Giraudel">Hugo Giraudel</a>, посвященная этим двум библиотекам под один препроцессор. Оригинал статьи находиться здесь - <a href="http://www.sitepoint.com/compass-or-bourbon-sass-frameworks/" title="Sass Frameworks: Compass or Bourbon?">Sass Frameworks: Compass or Bourbon?</a>, а посильный перевод этой статьи размещен здесь - <a href="http://bourbon.io/docs/#buttons" title="Button">Что выбрать - Compass или Bourbon?</a>. В этой статье Юг Жиродель (Hugo Giraudel) приводит преимущества использования библиотеки Bourbon и сопутствующих ему пакетов, таких как Neat для создания адаптивной CSS-сетки (grid).</p>
-
-<p>Однако, после прочтения вышеназванной статьи один вопрос остается открытым - а как установить библиотеку Bourbon? Что можно в ней делать и как это делать? На эти вопросы я постараюсь ответить самому себе (<em>и возможно - вам, уважаемый читатель</em>).</p>
-
-<h2 id="bourbon">Установка библиотеки Bourbon</h2>
-
-<p>Инсталляцию библиотеки миксинов Bourbon я буду производить под операционной системой Linux Mint 17 Cinnamon, просто потому что мне так интереснее. Под OS Windows процесс ничем не отличается от того, который будет описан здесь. Единственное условие - на момент установки Bourbon в системе уже должны стоять и нормально работать Ruby + Sass.</p>
-
-<p>Установка библиотеки сводиться к одной вещи - установке пакета <code>bourbon</code> под Ruby. Выполняется это одной командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">bourbon</span></code></pre></div>
-
-<p>Проверяю, какая версия этой библиотеки “попала” ко мне:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bourbon</span> <span class="n">-v</span>
-  <span class="n">Bourbon</span> <span class="n">4</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">2</span></code></pre></div>
-
-<p>Отлично! Теперь можно приступать к разворачиванию проекта с поддержкой Bourbon.</p>
-
-<h2 id="bourbon-1">Создание проекта Bourbon</h2>
-
-<p>Перехожу в директорию с опытными (подопытными?) образцами всего разного и создаю там папку с именем <code>bourbon</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cd</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span>
-<span class="p">$</span> <span class="n">mkdir</span> <span class="n">bourbon</span>
-<span class="p">$</span> <span class="n">cd</span> <span class="n">bourbon</span><span class="p">/</span></code></pre></div>
-
-<p>… и запускаю там команду:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bourbon</span> <span class="n">install</span>
-  <span class="n">Bourbon</span> <span class="n">files</span> <span class="n">installed</span> <span class="n">to</span> <span class="n">bourbon</span><span class="p">/</span></code></pre></div>
-
-<p>Не знаю, как вы, а я сразу после этого задал себе вопрос - “А что это было?” Что это за команда и зачем она нужна? Все оказалось просто.</p>
-
-<p>В библиотеке Compass в таблице стилей конкретно указывается, какой модуль необходимо подключить к проекту. К примеру, таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/utilities/general/clearfix&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/css3/transition&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/css3/border-radius&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>В результате Compass выборочно подгружает по сети только указанные модули. И ничего больше.</p>
-
-<p>Библиотека Bourbon поступает прямо противоположно - она устанавливает локально, в отдельную папку проекта (имя этой папки всегда - <code>bourbon</code>) все миксины сразу, на все случаи жизни. Если посмотреть на содержимое папки <code>bourbon</code>, то увидим такую картину:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="n">bourbon</span><span class="p">/</span>
-  <span class="n">drwxr-xr-x</span> <span class="n">2</span> <span class="n">addons</span>
-  <span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">1</span> <span class="n">_bourbon-deprecated-upcoming</span><span class="p">.</span><span class="n">scss</span>
-  <span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">1</span> <span class="n">_bourbon</span><span class="p">.</span><span class="n">scss</span>
-  <span class="n">drwxr-xr-x</span> <span class="n">2</span> <span class="n">css3</span>
-  <span class="n">drwxr-xr-x</span> <span class="n">2</span> <span class="n">functions</span>
-  <span class="n">drwxr-xr-x</span> <span class="n">2</span> <span class="n">helpers</span>
-  <span class="n">drwxr-xr-x</span> <span class="n">2</span> <span class="n">settings</span></code></pre></div>
-
-<p>Видим, что все миксины “расфасованы” по папкам в зависимости от их назначения. Давайте “заглянем” в одну из этих подпапок - пусть это будет <code>css3</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/bourbon.png" alt="Содержимое папки Bourbon" /></p>
-
-<p>Видим здесь готовые миксины для создания самых различных CSS3-эффектов - <code>border-radius</code>, <code>gradient</code>, <code>transform</code>, <code>transition</code> и так далее. Ну, теперь все понятно, не правда ли?</p>
-
-<h2 id="bourbon--">Включение библиотеки Bourbon в проект</h2>
-
-<p>Дело осталось за малым - включить поддержку миксинов библиотеки в таблицу стилей. Выполняется это обычно, директивой <code>@import</code>. Для этого создаю структуру папок и файлов будущего проекта (<em>однако, Compass это может делать одной командой!</em>):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">sass</span>
-<span class="p">$</span> <span class="n">mkdir</span> <span class="n">css</span>
-<span class="p">$</span> <span class="n">touch</span> <span class="n">sass</span><span class="p">/</span><span class="n">style</span><span class="p">.</span><span class="n">scss</span>
-<span class="p">$</span> <span class="n">touch</span> <span class="n">css</span><span class="p">/</span><span class="n">style</span><span class="p">.</span><span class="n">css</span>
-<span class="p">$</span> <span class="n">touch</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span></code></pre></div>
-
-<p>… и помещаю одну строку в таблице стилей <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;bourbon/bourbon&quot;</span><span class="p">;</span></code></pre></div>
-
-<h2 id="bourbon-2">Мониторинг изменений в проекте Bourbon</h2>
-
-<p>Чтобы автоматически отслеживать изменения в файле таблиц стилей <code>style.scss</code> и выполнять компиляцию в CSS-стили, запускаю команду мониторинга:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sass</span> <span class="p">-</span><span class="n">-watch</span> <span class="n">sass</span><span class="p">/</span><span class="n">style</span><span class="p">.</span><span class="n">scss</span><span class="err">:</span><span class="n">css</span><span class="p">/</span><span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<h2 id="bourbon-3">Использование библиотеки Bourbon</h2>
-
-<p>Ну и что, скажете вы? Что дальше? А ничего - дальше только пользоваться библиотекой Bourbon. Для этого с главной страницы проекта <a href="http://bourbon.io/" title="Bourbon">Bourbon</a> переходим на страницу документации, нажав кнопочку <a href="http://bourbon.io/docs/" title="Bourbon Documentation">Bourbon Documentation</a>. В правом верхнем углу есть две ссылки, одна из которых “View Spec” - ведет на страницу CSS-документации MDN, а вторая “View Source” - на страницу GitHub c рабочими примерами миксинов.</p>
-
-<p>Также видим, что миксинов здесь даже на беглый взгляд значительно меньше, чем в библиотеке <a href="http://beta.compass-style.org/reference/compass/" title="Compass Core Framework">Compass</a>. Ну это ничего.</p>
-
-<h3 id="bourbon----">Bourbon - создаем кнопки</h3>
-
-<p>Давайте для начала создадим на Bourbon что-нибудь простенькое. Пусть это будут кнопки. Для этого перейдем на страницу документации по созданию кнопок - <a href="http://bourbon.io/docs/#buttons" title="Button">Button</a>.</p>
-
-<p>Видим, что в библиотеке Bourbon есть три готовых миксина для создания кнопок:</p>
-
-<ul>
-  <li><code>simple</code></li>
-  <li><code>pill</code></li>
-  <li><code>shiny</code></li>
-</ul>
-
-<p>Поэтому в HTML-коде создаю кнопку:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;button</span> <span class="na">class=</span><span class="s">&quot;simple&quot;</span> <span class="na">type=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;&lt;/button&gt;</span></code></pre></div>
-
-<p>… и прописываю для нее миксин в таблице стилей <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.simple</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Смотрим результат в браузере - готовая красивая синенькая кнопочка! Точно также можно создать еще две другие кнопки, с помощью миксинов <code>pill</code> и <code>shiny</code>. При этом можно передать в качестве аргумента фоновый цвет создаваемой кнопки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.pill</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">(</span><span class="n">pill</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.shiny</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">(</span><span class="n">shiny</span><span class="o">,</span> <span class="m">#ff9900</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Ради любопытства посмотрите на скомпилированный CSS-код этих кнопок в файле <code>style.css</code> - вы будете поражены однозначно!</p>
-
-<h3 id="bourbon-----1">Bourbon - создаем треугольники</h3>
-
-<p>Кто из внимательных читателей может на память создать треугольник на чистом CSS? Конечно, там нет ничего сложного, но уверен - время у вас все равно уйдет на то, чтобы вспомнить все тонкости этого процесса - обнулить ширину и высоту, задать ширину и цвет границы, убрать ее с трех остальных сторон и так далее.</p>
-
-<p>А вот в библиотеке Bourbon эта задача выполняется в одну строку, для этого достаточно миксину <code>triangle</code> передать всего лишь три аргумента - ширину границы, цвет границы, направление треугольник’а:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">triangle</span><span class="o">(</span><span class="nt">2em</span><span class="o">,</span> <span class="nf">#ff9900</span><span class="o">,</span> <span class="nt">up</span><span class="o">)</span><span class="p">;</span></code></pre></div>
-
-<p>Все - треугольник готов! Самые разные варианты создания теругольников хорошо описаны на странице документации - <a href="http://bourbon.io/docs/#triangle" title="Triangle">Triangle</a>.</p>
-
-<h2 id="section">Заключение</h2>
-
-<p>На этом задачу ознакомления с библиотекой Bourbon считаю законченной. Читайте документацию - там все хорошо описано!</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1398,6 +1488,7 @@
     <a href="http://zencoder.ru/page14" class="btn">Next</a>
   
 </div><!-- /.pagination -->
+
 </div><!-- /#main -->
 
 <div class="footer-wrapper">

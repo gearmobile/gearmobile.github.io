@@ -11,7 +11,7 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://zencoder.ru/images/abstract-1.jpg">
+<meta name="twitter:image" content="http://zencoder.ru/images/header.jpg">
 
 <meta name="twitter:title" content="Заметки верстальщика">
 <meta name="twitter:description" content="Заметки верстальщика">
@@ -127,7 +127,7 @@
   
   
     <div class="entry-image">
-      <img src="http://zencoder.ru/images/abstract-1.jpg" alt="Заметки верстальщика">
+      <img src="http://zencoder.ru/images/header.jpg" alt="Заметки верстальщика">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -140,6 +140,126 @@
 
 <div id="main" role="main">
   
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-26T00:00:00+04:00"><a href="http://zencoder.ru/css/breadcrumbs-css/">October 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs на основе изображений" itemprop="url">Навигация breadcrumbs на основе изображений</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье “Навигация breadcrumbs с помощью треугольников на CSS” описывался способ создания меню с помощью чистого CSS, без использования графики.</p>
+</blockquote>
+
+<p>Метод всем хорош, за исключением одного - поддержка такого меню в старых браузерах сомнительна. Но при переводе этой статьи упоминалась ссылка на способ создания навигации с помощью графики.</p>
+
+<p>Статья написана достаточно давно, но метод абсолютно рабочий. Автор статьи Veerle Pieters, а сам пост называется “Simple scalable CSS based breadcrumbs”. Ниже привожу даже не вольный его перевод, а вольный пересказ.</p>
+
+<p>Несколько дней назад у меня стояла задача создать навигационное меню в стиле “хлебные крошки” (breadcrumbs) для сайта, над которым я работал. Я не думаю, что такое меню необходимо для каждого сайта, но в некоторых случаях оно очень полезно и практично.</p>
+
+<p>Это послужило поводом для меня написать статью для своего блога. Тот пример, которым я хочу поделиться с вами, является очень простым, при его создании применяется только один графический файл. Остальная часть навигации создается с помощью CSS-кода.</p>
+
+<p>Однако этот пример является как бы основой, которую можно расширять и применять на практике. Меню будет создаваться при помощи обычного маркированного списка <code>ul</code>.</p>
+
+<p>Но сначала посмотрим на образец, с которым будем работать:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images.gif" alt="Навигационное меню хлебные крошки" /></p>
+
+<p>Меню достаточно простое, как и код, с помощью которого мы будем его создавать.</p>
+
+<h2 id="html------ul">HTML код - маркированный список ul</h2>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;crumbs&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Main section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Sub section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Sub sub section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>The page you are on right now<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Все пункты меню имеют ссылки, кроме последнего - “The page you are on right now” (Страница, на которой вы сейчас находитесь). При работе над меню я задавался вопросом - является ли список наиболее подходящей структурой для создания меню? Я полагаю, что применение списка в этом случае не является строгим правилом, но мне кажется - это наиболее семантичный и правильный вариант.</p>
+
+<h2 id="css-------">CSS код - создаем стили для меню</h2>
+
+<p>Задаем общие стили для меню - убираем маркеры и обнуляем отступы в браузерах Firefox, IE:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">ul, li {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}</code></pre></div>
+
+<p>Далее для меню задаем класс с именем <code>crumbs</code>, устанавливаем границу толщиной в 1px и фиксированную ширину 30px:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#dedede</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Все “крошки” должны располагаться горизонтально, в одну линию, поэтому элементы <code>li</code> делаем плавающими через свойство <code>float:left</code>. Текст меню должен быть отцентрирован точно по вертикали, для этого устанавливаем для него значение свойства <code>line-height</code> равное высоте всего меню - <code>30px</code>.</p>
+
+<p>Помещаем слева каждого пункта небольшое пространство для отступа с помощью <code>padding-left: 10px</code>. И задаем цвет текста <code>#777</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#777</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Нам необходимо, чтобы вся область пункта меню была кликабельной, поэтому делаем ее блочным элементом <code>display:block</code>. Далее помещаем для ссылки фоновое изображение, вырезанное из макета. Для этого нужно вырезать только саму “стрелку”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images_cut.gif" alt="Вырезание стрелки из навигации" /></p>
+
+<p>… которую “задвигаем” вправо (100%) и размещаем точно по вертикали (50%). Также делаем у ссылки отступ справа <code>padding-left: 15px</code>, в котором будет как раз и находиться фоновое изображение (вырезанная стрелка):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span> <span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(img/crumbs.gif)</span> <span class="m">100%</span> <span class="m">50%</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Уже практически все сделано. Осталось задать стили для текста ссылок. Уберем стандартное подчеркивание и изменим ее цвет:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:link</span><span class="o">,</span> <span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span>
+    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#777</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Придадим ссылкам небольшую анимацию с помощью псевдо-класса <code>:hover</code> и <code>:focus</code>. При наведении курсора мыши или получения фокуса с клавиатуры цвет текста ссылки будет меняться:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover</span><span class="o">,</span> <span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:focus</span> <span class="p">{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#dd2c0d</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Результат нашей работы представлен здесь:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images_result.gif" alt="Готовая навигация хлебные крошки" /></p>
+
+<p>Примечание переводчика:</p>
+
+<blockquote>
+  <p>Автор статьи максимально упростил пример и сам код соответственно, насколько я понимаю. Дело в том, что на примере хорошо виден линейный горизонтальный градиент для каждого из пунктов меню. Однако в коде это никак отображено не было. Ну, не беда - разве это проблема создать линейный градиент на CSS3? Сама задача ведь выполнена!</p>
+</blockquote>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
 <article class="hentry">
   <header>
     
@@ -925,120 +1045,6 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-21T00:00:00+04:00"><a href="http://zencoder.ru/css/css-side-lined-headline/">October 21, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-side-lined-headline/" rel="bookmark" title="Создать зачеркнутый заголовок на CSS" itemprop="url">Создать зачеркнутый заголовок на CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Создать заголовок с эффектом зачеркивания. Создается с помощью псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
-</blockquote>
-
-<p>Оба псевдо-элемента применяются только к одному элементу - заголовку определенного уровня и дополнительной разметки не требуется, все семантично. Линии подчеркивания имеют фиксированную ширину с обеих сторон, что упрощает задачу. Положение линий по вертикали - точно по центру.</p>
-
-<p>Создание такого эффекта выполняется простым кодом. Первоначально задаем HTML-разметку с использованием заголовка первого уровня <code>h1</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
-  about me
-<span class="nt">&lt;/h1&gt;</span></code></pre></div>
-
-<p>И прописываем для него CSS-правила, чтобы привести его к тому виду, который нам необходим:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Выравнивание по центру, размер шрифта (кегль) и высота блока через интерлиньяж <code>line-height</code>, делаем все буквы заглавными - все стандартно. Но не забываем о позиционировании, которое устанавливаем относительным, ибо оно потребуется нам для псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
-
-<p>Теперь создаем общие правила для обоих псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Единственным примечательным моментом в этом коде является свойство <code>top: 50%</code>, которое размещает линию точно по центру вертикали блочного элемента. В нашем случае таким блочным элементом является заголовок первого уровня <code>h1</code>. Кроме того, нужно установить еще одно правило - <code>margin-top: -2px</code>.</p>
-
-<p>Этим правилом мы поднимаем сгенерированные линии вверх на половину их высоты. Почему это нужно делать, можно догадаться и так.</p>
-
-<p>Так как правила мы прописали для обоих элементов, то следуют переписать некоторые из них для элемента <code>:after</code>. Точнее - нам нужно только правило <code>right</code>, чтобы “сдвинуть” его вправо:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Результат работы кода показан на рисунке ниже. Граница для заголовка задана мною для наглядности:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/header-stroke.jpg" alt="Зачеркнутый заголовок на CSS" /></p>
-
-<p>Полностью весь код для создания такого эффекта приведен ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="upd-19012014">UPD 19\01\2014</h2>
-
-<p>Для быстроты, удобства и краткости можно воспользоваться готовым миксином из библиотеки Scut - <a href="http://davidtheclark.github.io/scut/side-lined.html" title="Scut Side Line">Side-Lined</a>.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1304,6 +1310,7 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
     <a href="http://zencoder.ru/page30" class="btn">Next</a>
   
 </div><!-- /.pagination -->
+
 </div><!-- /#main -->
 
 <div class="footer-wrapper">
