@@ -1,5 +1,5 @@
 ---
-title: "Операторы сравнения и логические значения"
+title: "Операторы сравнения Javascript"
 layout: post
 categories: javascript
 tags: [javascript]
