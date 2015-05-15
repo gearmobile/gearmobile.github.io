@@ -50,7 +50,7 @@ $('button').click(function () {
 });
 
 $('button').click(function() {
-	$('p').show('slow');
+  $('p').show('slow');
 });
 {% endhighlight %}
 
@@ -59,19 +59,25 @@ $('button').click(function() {
 
 {% highlight javascript %}
 $('#clickme').click(function() {
-	$('#book').hide('slow', function() {
-		alert('Animation complete.');
-	});
+  $('#book').hide('slow', function() {
+    alert('Animation complete.');
+  });
 });
 
 $('#clickme').click(function() {
-	$('#book').show('slow', function() {
-		alert('Animation complete.');
-	});
+  $('#book').show('slow', function() {
+    alert('Animation complete.');
+  });
 });
 {% endhighlight %}
 
-Материал основан на ресурсах [http://jquery.page2page.ru][1], [http://jquery-docs.ru][2], [http://api.jquery.com][3] и не претендует на оригинальность.
+Материал данной статьи основан на ресурсах:
+
+* [http://jquery.page2page.ru][1]
+* [http://jquery-docs.ru][2]
+* [http://api.jquery.com][3]
+
+... и не претендует на оригинальность.
 
 ***
 
