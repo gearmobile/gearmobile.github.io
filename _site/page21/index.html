@@ -144,677 +144,326 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-24T00:00:00+04:00"><a href="http://zencoder.ru/css/breakpoint-sass/">March 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-04-28T00:00:00+04:00"><a href="http://zencoder.ru/css/vertical-rhythm-in-compass/">April 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~8 minutes
+        Reading time ~13 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/breakpoint-sass/" rel="bookmark" title="Медиа-запросы Breakpoint в Sass" itemprop="url">Медиа-запросы Breakpoint в Sass</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/vertical-rhythm-in-compass/" rel="bookmark" title="Создание Vertical Rhythm в Compass" itemprop="url">Создание Vertical Rhythm в Compass</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Прочитал одну статью, посвященную проблеме создания кода в CSS и Sass.</p>
+  <p>Приступаем к интересной теме - вертикальному ритму “Vertical Rhythm” в веб-дизайне и способе его создания с помощью библиотеки Compass.</p>
 </blockquote>
 
-<p>Статья мне чрезвычайно понравилась - можно даже сказать, я был в восхищении о нее и от того, что написал ее автор. В ней вкратце описывались основные “опорные” моменты при написании кода в CSS/Sass. Одним из таких “опорных” моментов упоминались Breakpoint в Sass.</p>
+<p>Первое, с чего стоит начать, это небольшой вводный курс - что такое вертикальный ритм и для чего он нужен.</p>
 
-<p>Так как я большой поклонник этого препроцессора, то мне интересны все вопросы, связанные с ним. Поэтому мимо такой технологии, как Breakpoint - я просто не мог пройти мимо.</p>
+<p>Ну, во-первых, в Интернете на момент написания статьи не так уж и много материалов по этой тематике; в немногочисленных материалах сущность вопроса преподносится как нечто очень сложное.</p>
 
-<p>Итак, давайте знакомиться с Breakpoint в препроцессоре Sass. Прежде всего, Breakpoint - это расширение (модуль) для хорошо известной и популярной библиотеки-фреймворка Compass. Создан он двумя web-разработчиками Mason Wendell и Sam Richard.</p>
+<p>На самом деле это не так. Все мы когда-то учились в школе и наверное, помним тетрадки в линейку по русскому языку, в которых строгие учительницы заставляли нас писать:</p>
 
-<p>Основная идея и цель создания этого модуля - сократить к одной строке создание медиа-запроса и возможность задавать для медиа-запросов осмысленные имена.</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/04/copybook.jpg" alt="Vertical Rhythm - Школьная тетрадь в линейку" /></p>
 
-<h2 id="breakpoint">Установка модуля Breakpoint</h2>
+<p>Так вот - сами не зная об этом, мы уже тогда использовали вертикальный ритм (Vertical Rhythm) на практике! Слово вертикальный ритм говорит само за себя - текст или контент на странице должен размещаться в определенном ритме, по определенному правилу; а не хаотично.</p>
 
-<p>Первое, что необходимо сделать, это установить в систему сам модуль <code>breakpoint</code>. Делается это обычной командой Ruby-окружения:</p>
+<p>В данном случае все строки на такой странице должны размещаться по нарисованным линейкам - это и есть суть пресловутого Vertical Rhythm.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
+<p>В типографике вертикальный ритм применяется с незапамятных времен; и только с недавних пор о вертикальном ритме заговорили применительно к веб-дизайну. Использование вертикального ритма в веб-дизайне подразумевает применение CSS-свойств, управляющих вертикальными параметрами элементов страницы: размером шрифта (<code>font-size</code>), высотой строки(<code>line-height</code>), отступами (<code>padding</code> и <code>margin</code>), границами (<code>border</code>).</p>
 
-<p>Но тут могут быть несколько подводных камней, с которыми лично мне пришлось столкнуться (не знаю, как уж читателям). Первое - если у вас уже установлены <code>sass</code> и <code>compass</code> обычным способом, через команды:</p>
+<p>Основная цель вертикального ритма - сделать текст (контент - в общем случае) максимально читабельным. То есть, это когда посетитель заходит на страницу, читает что-либо на ней, и сам процесс не доставляет ему никаких неудобств. Напротив - ему приятно читать такой текст.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
-<span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span></code></pre></div>
+<p>В библиотеке Compass имеется модуль “Vertical Rhythm”, задача которого - максимально упростить создание и настройку вертикального ритма в проекте. Модуль Vertical Rhythm в Compass - это набор функций и миксинов, облегчающих вычисление высоты строк, вертикального <code>padding</code> и <code>margin</code>, толщины границ (<code>border</code>).</p>
 
-<p>… то велика вероятность, что у вас в системе стоят Sass версии 3.2.18 и Compass версии 0.12.4. Поверить этот факт можно командой в терминале:</p>
+<p>Вычисления основаны на базовой высоте строки <code>line-height</code> и базовом размере шрифта <code>font-size</code> с целью создания горизонтальной сетки. Давайте приступим к практике; то, что я не смог рассказать своими словами, думаю, будет наглядно показано на живых примерах.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">list</span></code></pre></div>
+<p>Первое, что необходимо сделать - это установить (если еще не установлена) Compass версии <code>1.0.0 alpha 19</code>. Почему именно эту версию? В ней есть множество возможностей, которые отсутствуют в старой версии.</p>
 
-<p>Однако, на момент написания статьи разрабатывается библиотека Compass под версией <code>1.0.0.alpha.19</code>, которую уже можно использовать несмотря на ее экспериментальный вид. Более того, модуль <code>breakpoint</code> совместим только с библиотекой Compass этой версии (1.0.0.alpha.19).</p>
+<p>Установка Compass этой версии под Windows 7 на момент написания статьи является достаточно непростой задачей, поэтому рекомендую обратиться к статье “Медиа-запросы Breakpoint в Sass”.</p>
 
-<p>Поэтому, при запуске команды:</p>
+<h2 id="compass">Создаем и настраиваем проект в Compass</h2>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
+<p>Создаем новый проект в командной строке с помощью Compass:</p>
 
-<p>… будет произведено автоматическое обновление пакетов <code>sass</code> и <code>compass</code> до версий Sass 3.3.4 и Compass 1.0.0.alpha.19. После успешной установки модуля <code>breakpoint</code> можно создать через Compass новый проект, указав при этом, что в проекте требуется поддержка (required) модуля <code>breakpoint</code>:</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">vertical_rhythm_example</span> <span class="p">-</span><span class="n">-bare</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">newProject</span> <span class="n">-r</span> <span class="n">breakpoint</span></code></pre></div>
+<p>Ключ <code>--bare</code> используется здесь, чтобы создать “голый” экземпляр проекта под Sass/Compass, без лишних файлов <code>print.scss</code>, <code>ie.scss</code> и так далее.</p>
 
-<p>Заходим в созданную директорию и пробуем запустить Compass на мониторинг изменений во всех файлах проекта. Но не тут то было:</p>
+<p>Производим неодходимые настройки в файле <code>config.rb</code>, а также создаем файлы <code>sass/style.scss</code>, <code>css/style.css</code>, <code>index.html</code>.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/sass_wdm.png" alt="Ошибка при запуске библиотеки Compass - нет модуля wdm" class="center-image" /></p>
+<p>HTML-файл наполним структурой вида:</p>
 
-<p>Compass пишет в терминале, что ему не хватает модуля <code>wdm</code> и не запускается в режим мониторинга. Что такое <code>wdm</code>, я не знаю (я не Ruby-разработчик), но подозреваю, что это какой-то модуль. И его придется установить.</p>
-
-<p>Для этого необходимо скачать с оф. сайта Ruby пакет разработчика Development Kit (Device). Мною скачивалась версия <code>DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe</code>. Ее нужно распаковать в любое (постоянное) место - папку, но при этом не туда же, где уже стоит у вас Ruby. Затем в терминале зайти в эту папку и запустить последовательно три команды (не обращая внимание, что они там пишут в ответ):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">init</span>
-<span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">review</span>
-<span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">install</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/ruby_devkit.png" alt="Установка пакета DevKit" class="center-image" /></p>
-
-<p>А затем в этом же терминале снова запустить установку загадочного (для меня) модуля <code>wdm</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">wdm</span></code></pre></div>
-
-<p>После этого процесс пройдет успешно и Compass, наконец-то, “заткнется” и станет делать то, что от него требуют - мониторинг содержимого папки:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/sass_install_wdm.png" alt="Успешная установка пакета wdm" class="center-image" /></p>
-
-<p>Теперь открывает уже созданный Compass файл <code>screen.scss</code> и дописываем в его начало строчку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>… говоря те самым, что в наш проект необходимо включить модуль <code>breakpoint</code>. Если проект создавался не с нуля, а уже был готовым, то поддержку Breakpoint в него можно добавить, дописав в конфигурационный файл <code>config.rb</code> строчку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
-
-<h2 id="breakpoint-1">Дальнейшее знакомство с Breakpoint</h2>
-
-<p>Можно приступать к дальнейшему знакомству с Breakpoint.</p>
-
-<p>Breakpoint - дословно с английского языка переводится как “опорная точка”. Медиа-запросы фактически и являются такими опорными точками. В правилах CSS мы указываем браузеру - при ширине <code>viewport</code> равной 480px сделать такой-то элемент таким-то; а при ширине <code>viewport</code> равной 768px сделать такой элемент другим! То есть, мы через CSS-правила определяем для браузера подобные опорные точки. Модуль Breakpoint позволяет создавать опорные точки в коде SCSS с помощью одной строки - через миксин (mixin) <code>breakpoint</code>.</p>
-
-<p>Простейший пример применения миксина <code>breakpoint</code> приведен ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">high-tide</span><span class="o">:</span> <span class="nt">500px</span><span class="o">;</span>
-
-<span class="nc">.johnny-utah</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="k">high</span><span class="o">-</span><span class="n">tide</span><span class="p">)</span> <span class="err">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Whoa.&#39;</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>То есть, сначала инициализируется переменная <code>$high-tide</code> со значением 500px. Затем селектору класса <code>.johnny-utah</code> задается CSS-правило через подключение миксина <code>@include breakpoint</code>, аргументом которому передается значение переменной <code>$high-tide</code>. В теле миксина пишется, что нужно сделать браузеру - создать контент <code>Whoa.</code> (в данном случае).</p>
-
-<p>Результатом генерации в CSS будет следующий код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">500px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.johnny-utah</span> <span class="p">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Whoa.&#39;</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Предельно просто! ОК, немного усложним задачу и продвинемся дальше, чтобы на примере лучше понять, что из себя представляют Breakpoint:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">bkpt-login-small</span><span class="o">:</span> <span class="nt">370px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">bkpt-login-medium</span><span class="o">:</span> <span class="nt">490px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">bkpt-login-large</span><span class="o">:</span> <span class="nt">865px</span><span class="o">;</span>
-
-<span class="nt">body</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">25%</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-small</span><span class="o">)</span><span class="p">{</span>
-  <span class="nt">body</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">30</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-medium</span><span class="o">)</span><span class="p">{</span>
-  <span class="nt">body</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-large</span><span class="o">)</span><span class="p">{</span>
-  <span class="nt">body</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Здесь мы создали три переменные <code>$bkpt-login-small</code>, <code>$bkpt-login-medium</code>, <code>$bkpt-login-large</code> с помощью которых установили три опорные точки для адаптивного дизайна. А затем в SCSS-правилах через подключение миксина <code>@include breakpoint</code> для каждой опорной точки задаем правило для элемента <code>body</code>, последовательно указывая этому миксину переменные в качестве аргументов. Результат работы этого кода приводить не буду - вы можете сами набрать его в редакторе и проверить!</p>
-
-<h2 id="breakpoint-2">Варианты аргументов миксина Breakpoint</h2>
-
-<p>Миксин <code>breakpoint</code> в качестве аргумента может принимать <strong>не только одно значение</strong>, как в примере выше.</p>
-
-<h3 id="section">Два числа в качестве значений</h3>
-
-<p>Переменной можно задать <strong>два числа в качестве значений</strong>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">ex-presidents</span><span class="o">:</span> <span class="nt">600px</span> <span class="nt">800px</span><span class="o">;</span></code></pre></div>
-
-<p>В этом случае модуль Breakpoint автоматически распознает и преобразует их в пару значений <strong>min-width/max-width</strong>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nixon</span> <span class="p">{</span>
-   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">ex</span><span class="o">-</span><span class="n">presidents</span><span class="p">)</span> <span class="err">{</span>
-   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Ex-Presidents&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="err">}</span>
-
-<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">800px</span><span class="o">)</span> <span class="p">{</span>
-   <span class="nc">.nixon</span> <span class="p">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Ex-Presidents&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="p">}</span></code></pre></div>
-
-<h3 id="section-1">Имя и значение этого имени</h3>
-
-<p>Переменной можно задать <strong>имя и значение этого имени</strong>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">surfboard-width</span><span class="o">:</span> <span class="nt">max-width</span> <span class="nt">1000px</span><span class="o">;</span></code></pre></div>
-
-<p>Модуль Breakpoint распознает его следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.johnson</span> <span class="p">{</span>
-   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">surfboard</span><span class="o">-</span><span class="k">width</span><span class="p">)</span> <span class="err">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Width&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="err">}</span>
-
- <span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">1000px</span><span class="o">)</span> <span class="p">{</span>
-   <span class="nc">.johnson</span> <span class="p">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Width&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="p">}</span></code></pre></div>
-
-<h3 id="section-2">Расширенный вариант имени и значения</h3>
-
-<p>И можно пойти еще дальше:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">surfboard-height</span><span class="o">:</span> <span class="o">(</span><span class="nt">min-height</span> <span class="nt">1000px</span><span class="o">)</span> <span class="o">(</span><span class="nt">orientation</span> <span class="nt">portrait</span><span class="o">);</span></code></pre></div>
-
-<p>Breakpoint воспримет это таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.carter</span> <span class="p">{</span>
-   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">surfboard</span><span class="o">-</span><span class="k">height</span><span class="p">)</span> <span class="err">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Height, Portrait&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="err">}</span>
-
-<span class="k">@media</span> <span class="o">(</span><span class="nt">min-height</span><span class="o">:</span> <span class="nt">1000px</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">orientation</span><span class="o">:</span> <span class="nt">portrait</span><span class="o">)</span> <span class="p">{</span>
-   <span class="nc">.carter</span> <span class="p">{</span>
-     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Height, Portrait&#39;</span><span class="p">;</span>
-   <span class="p">}</span>
- <span class="p">}</span></code></pre></div>
-
-<h2 id="breakpoint-3">Настройки модуля Breakpoint</h2>
-
-<p>Модуль Breakpoint имеет совсем немного настроек, которые выражаются <strong>в четырех переменных</strong>, которые можно легко переопределить в рамках разрабатываемого проекта:</p>
-
-<ul>
-  <li><code>$breakpoint-default-media</code> - <strong>тип медиа-запроса</strong>. По умолчанию его значение равно <code>all</code>, то есть медиа-запрос применим ко всем типам устройств: мониторы, телефизоры и так далее.</li>
-  <li><code>$breakpoint-default-feature</code> - по умолчанию установлено в значение <code>min-width</code> как наиболее часто используемое на практике. То есть, это запрашиваемая <strong>характеристика типа устройства</strong>.</li>
-  <li><code>$breakpoint-default-pair</code> - установлено в значение <code>min-width/max-width</code> по умолчанию. То есть, при передаче миксину <code>breakpoint</code> пары чисел (к примеру - 400px и 500px) он распознает их как <code>min-width: 400px</code> и <code>max-width: 500px</code>.</li>
-  <li><code>$breakpoint-to-ems</code> - по умолчанию установлено в значение <code>false</code>. Если перевести этот параметр в значение <code>true</code>, то при передаче миксину <code>breakpoint</code> аргументов в любых единицах измерения (<code>px</code>, <code>pt</code>, <code>%</code>) они будут автоматически переконвертированы в <code>em</code>! Круто!</li>
-</ul>
-
-<p>Чтобы не быть голословным, приведу пример настройки последнего параметра - <code>$breakpoint-to-ems</code>:</p>
-
-<p><img src="http://zencoder.ru/images/2014/03/breakpoint-to-ems.png" alt="Параметр модуля Breakpoints - breakpoint-to-ems" class="center-image" /></p>
-
-<p>Авторами модуля Breakpoint была сделана еще одна дополнительная “плюшка” - поддержка кроссбраузерности для экранов повышенного разрешения (так называемых Retina-экранов). Чтобы не писать по отдельности медиа-запрос для каждого из движков браузеров:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-device-pixel-ratio</span>
-<span class="nt">-moz-device-pixel-ratio</span>
-<span class="nt">-o-device-pixel-ratio</span></code></pre></div>
-
-<p>… можно писать краткий медиа-запрос:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">device-pixel-ratio</span></code></pre></div>
-
-<p>… который преобразует полученное браузером значение в стандартное разрешение экрана.</p>
-
-<h2 id="section-3">Заключение</h2>
-
-<p>Перечисленные возможности модуля Breakpoint являются основными, <a href="http://breakpoint-sass.com/#advanced" title="Breakpoint - Advanced Features">но не единственными</a>. Однако, как мне кажется, этих основных возможностей хватит для 90% случаев на практике. Если же кто желает углубить свои познания в модуле Breakpoint, это легко можно сделать на оф. сайте проекта.</p>
-
-<p>При написании этой статьи активно использовались два бесценных источника (<em>а примеры кода вообще были скопированы оттуда самым наглым образом</em>):</p>
-
-<ul>
-  <li><a href="http://snugug.com/musings/introducing-breakpoint-media-queries-made-easy" title="INTRODUCING BREAKPOINT; MEDIA QUERIES MADE EASY">INTRODUCING BREAKPOINT; MEDIA QUERIES MADE EASY</a></li>
-  <li><a href="http://breakpoint-sass.com/" title="Breakpoint Really Simple, Organized, Media Queries with Sass">Breakpoint Really Simple, Organized, Media Queries with Sass</a></li>
-</ul>
-
-<p>Очень вольный перевод и компиляция этих двух статей была сделана с энтузиазмом и на одном дыхании.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-22T00:00:00+04:00"><a href="http://zencoder.ru/css/chrome-emulate/">March 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/chrome-emulate/" rel="bookmark" title="Режим эмуляции мобильных устройств в Chrome" itemprop="url">Режим эмуляции мобильных устройств в Chrome</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>На сегодняшний день тестирование страниц становиться непростой задачей. Времена, когда проверка работоспособности сайта ограничивалась парой браузеров, давно прошли.</p>
-</blockquote>
-
-<p>Сегодня ваше творение необходимо тщательно проверять в целом диапазоне мобильных телефонов, планшетов и настольных систем с различными операционными системами, разрешениями экранов и возможностями. В особо серьезных случаях процесс тестирования может занять столько же времени, сколько и разработка проекта.</p>
-
-<p>Процесс тестирования также усложняется благодаря устройствам с сенсорным экраном и мониторов с высоким разрешением. Если вы ведете разработку проекта на обычном PC с помощью таких же обычных мыши и клавиатуры, то вам будет трудно оценить работоспособность вашего кода в реальных условиях (на всех вышеперечисленных устройствах). Такая возможность, как событие мыши <code>hover</code> может не работать и ваше приложение становиться неработоспособным. Но тогда каким же образом можно протестировать программу и избежать при этом необходимости переключения между различными устройствами?</p>
-
-<p>К счастью, сегодня выход из этой ситуации есть. В браузер Chrome версии 32 был добавлен <strong>режим эмуляции</strong>. С помощью него можно решить многие вышеназванные проблемы, не покидая комфортного окружения PC.</p>
-
-<p>Первое, что необходимо сделать, это заполучить сам браузер Chrome v.32. Если последние шесть лет вы жили на обратной стороне Луны, то тогда вы можете сделать это по ссылке <a href="google.com/chrome" title="Google Chrome">google.com/chrome</a>.</p>
-
-<p>Запустите установленный Chrome, откройте в нем страницу, которую хотите протестировать и откройте <strong>Developer Tools</strong> (<strong>Menu - Tools - Developer Tools</strong>, <kbd>Cmd+Opt+I</kbd> на Mac или <kbd>F12/Ctrl+Shift+I</kbd> под Windows и Linux). Кликните мышью на значке-шестеренке <strong>Settings</strong> в правом верхнем углу окна браузера, затем откройте раздел <strong>Overrides</strong> для того, чтобы включить показ эмуляции в браузере - <strong>Show Emulation view in console drawer</strong> (<em>в версии 33 эта возможность активирована по умолчанию</em>):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/settings.png" alt="Режим Settings в браузере Chrome" class="center-image" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_show.png" alt="Show Emulation view in console drawer" class="center-image" /></p>
-
-<p>Закрываем окно <strong>Settings</strong> и открываем “Console Drawer” (это не тоже самое, что общая “Console”) - для этого кликаем мышью на иконке (расположенной слева от иконки <strong>Settings</strong>) или нажав клавишу <kbd>Esc</kbd>. У вас должна открыться вкладка <strong>Emulate</strong> в “Console Drawer” (если этого не произошло, перезапустите браузер Chrome):</p>
-
-<h2 id="device">Режим эмуляции - раздел Device</h2>
-
-<p>Раздел <strong>Device</strong> предоставляет несколько дюжин готовых предустановок для большинства популярных мобильных устройств, включая iPhone, iPad, Kindles, планшеты Nexus, смартфоны Samsung Galaxy и т. д. Выбор одного из устройств приводит к изменениям настроек в остальных разделах.</p>
-
-<p>Выбираем из списка нужное устройство и жмем кнопочку “Emulate” внизу этого списка:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_device.png" alt="Выбор эмулируемого устройства" class="center-image" /></p>
-
-<blockquote>
-  <p>Обратите внимание! Инструкция, представленная выше, описывает включение режима эмуляции в стабильной версии v.32 браузера Chrome. Если вы используете последнюю версию браузера Chrome Canary, эта опция будет располагаться в разделе “Settings” во вкладке “General” под вкладкой “Appearance”. (<em>прим. переводчика: кто не знает, браузер Chrome Canary - это самая свежая и нестабильная версия браузера Chrome.</em>)</p>
-</blockquote>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_chrome_canary.png" alt="Режим эмуляции в Chrome Canary" class="center-image" /></p>
-
-<h2 id="screen">Режим эмуляции - раздел Screen</h2>
-
-<p>В разделе <strong>Screen</strong> можно самостоятельно установить настройки экрана эмулируемого устройства:</p>
-
-<ul>
-  <li><strong>Resolution</strong> - произвольный размер экрана устройства</li>
-  <li><strong>Device pixel ratio</strong> - то есть для дисплеев Retina от Apple нужно ставит 2, чтобы производилось удваивание размера объектов в области просмотра</li>
-  <li>font-scaling factor (<em>прим. переводчика: неизвестный для меня параметр</em>)</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_screen.png" alt="Настройка экрана в режиме эмуляции" class="center-image" /></p>
-
-<h2 id="user-agent">Режим эмуляции - раздел User Agent</h2>
-
-<p>В этом разделе настраивается режим агента пользователя. То есть, устанавливается модель взаимодействия между эмулируемыми клиентом и сервером:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_user_agent.png" alt="Эмуляция агента пользователя" class="center-image" /></p>
-
-<h2 id="sensors">Режим эмуляции - раздел Sensors</h2>
-
-<p>В этом разделе настраивается режим эмуляции сенсорного экрана:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_touch_screen.png" alt="Эмуляция сенсорного экрана устройства" class="center-image" /></p>
-
-<p>В режиме эмуляции сенсорного экрана курсор мыши приобретает вид отпечатка пальца на экране устройства:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_touch_screen_finger.png" alt="Эмуляция отпечатка пальца на экране устройства" class="center-image" /></p>
-
-<p>Эмуляция multi-touch может быть выполнена при помощи зажатой клавиши <kbd>Shift</kbd> и движения мыши в нужную сторону. Этот режим задействует соответствующие JavaScript-события, такие как <code>touchstart</code>, <code>touchend</code>, <code>touchmove</code>. Также делается попытка полностью соответствовать мобильным браузерам благодаря реализации JavaScript-события <code>mouseover</code>, но это событие возникает только тогда, когда будет произведено “нажатие” на элемент интерфейса. Эмулятор корректно игнорирует событие <code>mouseover</code>, возникающее, когда курсор сенсорного устройства просто движется поверх элемента интерфейса.</p>
-
-<h2 id="section">Возвращение браузера в обычный режим</h2>
-
-<p>Для того, чтобы завершить режим эмуляции и возвратиться в обычный режим просмотра, нужно перейти обратно в раздел <strong>Device</strong> и нажать кнопку <kbd>Reset</kbd>.</p>
-
-<h2 id="section-1">Мне больше не нужны устройства</h2>
-
-<p>Рассмотренный выше эмулятор браузера Chrome является полезным инструментом, но он не может в точности реализовать поведение настоящих устройств с сенсорным экраном, во всех их тонкостях.</p>
-
-<p>Стоит также обратить внимание, что эмулятор несовершенен в следующих вопросах:</p>
-
-<ul>
-  <li>вы можете столкнуть с некоторыми необъяснимыми ошибками в работе эмулятора</li>
-  <li>CSS-событие <code>:hover</code> все еще в действии и</li>
-  <li>для него нет механизма эмуляции; страница будет сгенерирована браузером Chrome вне зависимости от того, все ли устройства поддерживают возможности, заложенные в ней</li>
-</ul>
-
-<p>Будем надеяться, что команда Google обратит внимание на эти недостатки и исправит их в последующих релизах.</p>
-
-<p>Если подвести итог, то можно сказать, что режим эмуляции в браузере Google Chrome является простым и быстрым способом протестировать страницу, без необходимости проверки на реальных устройствах, таких как смартфоны или планшеты. Кроме того, у вас есть полный набор инструментов разработчика, что может сэкономить несколько часов вашего труда.</p>
-
-<p>Автор статьи: Craig Buckler, <a href="http://www.sitepoint.com/use-mobile-emulation-mode-chrome/" title="How to Use Mobile Emulation Mode in Chrome">How to Use Mobile Emulation Mode in Chrome</a></p>
-
-<h2 id="section-2">От переводчика</h2>
-
-<p>Хочется от себя немного добавить в эту тему. В книге Б. Фрейна “HTML5 и CSS3. Разработка сайтов для любых браузеров и устройств” автор приводит краткий список плагинов для тестирования страниц в различных браузерах. Эти плагины не такие “продвинутые”, как режим эмуляции в браузере Chrome. Их задача сводиться только к одному - проверке работоспособности страниц на экранах различных устройств, с разными размерами области просмотра. Цель такой проверки - создание полностью рабочего <strong>адаптивного дизайна сайта</strong>.</p>
-
-<p>Для браузера Safari автор рекомендует расширение <strong>Resize</strong> или <strong>ResizeMe</strong>. Под браузер Mozilla Firefox имеется плагин <strong>Firesizer</strong>. А под браузер Google Chrome автором рекомендуется использовать расширение <strong>Windows Resizer</strong>.</p>
-
-<p>Например, после установки и активизации расширения <strong>Windows Resizer</strong> под Chrome при щелчке мыши на иконке появиться окно с предустановленными размерами экранов устройств:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/windows-_resizer_chrome.png" alt="Расширение Windows Resizer под Chrome" class="center-image" /></p>
-
-<p>В дальнейших объяснениях работа с плагином не нуждается, как мне кажется.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-19T00:00:00+04:00"><a href="http://zencoder.ru/css/wireframes/">March 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/wireframes/" rel="bookmark" title="Wireframes - визуальный эскиз HTML-разметки" itemprop="url">Wireframes - визуальный эскиз HTML-разметки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Перед созданием HTML-разметки часто бывает необходимым и полезным сделать визуальный набросок будущего макета сайта (<code>wireframes</code>).</p>
-</blockquote>
-
-<p>Особенно это необходимо для начинающих HTML-верстальщиков, так как такой эскиз помогает понять, какие блоки и каким образом должны располагаться внутри будущей HTML-разметки. Когда я только начинал самостоятельно изучать практику верстки, я просто не мог обойтись без того, чтобы не нарисовать схематичное расположение будущих блоков.</p>
-
-<p>Рисовал их где придется и как придется - в простом Paint или на листе бумаги карандашом или ручкой. Тут главное не до красоты - чтобы схема была доступной и понятной, это основное. Если схема не нарисована, то я элементарно не мог приставить себе “в голове”, как должна выглядеть блочная структура будущего сайта. А если я не мог представить, как должен выглядеть каркас здания, то о каком дальнейшем строительстве могла идти речь?</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/mockup_notepad.jpg" alt="Wireframe в Notepad" class="center-image" /></p>
-
-<p>Но вот когда блок-схема нарисована, то уже становится ясным, что делать дальше с точки зрения HTML-программирования. Я уже видел, что здесь нужно создать блок-обертку <code>div.wrap</code>, вверху поместить блок-шапку <code>div.header</code>, по центру должен располагаться большой блок <code>div.main</code> с основным контентом и внутренними блоками <code>div.sidebar</code> + <code>div.content</code>. Ну, а внизу должен находиться блок-подвал <code>div.footer</code>.</p>
-
-<p>Другими словами, я просто повторял свои действия, выполненные на бумаге; но уже на компьютере и с помощью программного кода, в HTML-редакторе. Конечно, когда опыта у меня появилось немного побольше, я смог чисто “на глаз” определять основную структуру будущей HTML-разметки. Открывал готовый PSD-макет в Photoshop, “пробегал” его глазами и сразу “вычленял” составные части; которые должны были становиться основными блоками будущей HTML-страницы.</p>
-
-<p>Но один я знаю, сколько времени у меня ушло на то, чтобы так “с лету” видеть структуру сайта. Я не хочу сказать, что это трудное дело. Совсем нет! Но в каждом деле нужен опыт и сноровка; а если ее нет, то дело движется тяжело и медленно (<em>сразу вспомнилась любимая книжка детства - Робинзон Крузо</em>).</p>
-
-<p>К тому же, речь идет только о дизайне сайтов с простой структурой. Если же это сложный и большой сайт, то тут и опыт не поможет, так как одновременно держать “в голове” структуру и “ваять” код будет затруднительно. Тут без предварительной блок-схемы, разработанной на чем угодно и где угодно, не обойтись. Например, оцените вот такой пример готового наброска, сделанный на сайте <a href="http://mockupbuilder.com/" title="Mockup Builder">Mockup Builder</a>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/mockup_silverlight.jpg" alt="Mockup Builder" class="center-image" /></p>
-
-<p>Чуть позже, по мере чтения статей и книг, посвященных верстке, я познакомился с <strong>тремя способами создания эскиза</strong> HTML-разметки.</p>
-
-<h2 id="section">Первый подход - аскетичный</h2>
-
-<p>Одни верстальщики идут по минималистичному пути и используют <strong>стандартный лист бумаги и карандаш</strong>. На бумаге делается набросок будущей схемы сайта, в котором расположены основные и дополнительные блоки HTML-страницы. Быстро, просто и со вкусом, что называется.</p>
-
-<h2 id="wireframes">Второй подход - wireframes</h2>
-
-<p>Другие верстальщики используют специальные программы для создания эскизов HTML-разметки. Такие программы относятся к классу <em>wireframes</em>. Они бывают разных типов: <strong>online-сервисы</strong> (<em>платные или бесплатные</em>) или <strong>desktop-приложения</strong> (<em>платные или бесплатные</em>). Мое личное предпочтение к использованию именно таких программ, ибо мне кажется смешным рисовать карандашом на бумаге, сидя перед компьютером.</p>
-
-<p>Вообще-то, существуют <strong>три класса программ для создания эскиза</strong> будущего сайта: <strong>wireframes</strong>, <strong>mockup</strong>, <strong>prototype</strong>. <strong>Wireframes</strong> - для создания простого эскиза дизайна, ничего больше. <strong>Mockup</strong> - это тот же wireframes, но в нем добавлены визуальные отрисовки для всех элементов управления (кнопки, картинки и т. д.). <strong>Prototype</strong> - это самый продвинутый тип; это mockup с возможностью программирования элементов интерфейса (кнопок) прямо в программе.</p>
-
-<p>Преимущество <em>wireframes</em> в том, что у них есть уже готовый набор инструментов для создания набросков HTML-разметки - блоки, кнопки, текстовые поля. Результат получается быстро, просто и красиво. Продвинутые программы этого класса используются разработчиками даже для создания набросков, которые можно предоставлять заказчику в качестве предварительно выполненной работы.</p>
-
-<h2 id="photoshop--illustrator">Третий подход - Photoshop или Illustrator</h2>
-
-<p>Промежуточным звеном между первыми и вторыми верстальщиками являются кодеры, которые умеют и любят использовать для создания визуального HTML-макета программы редактирования графики, такие как Adobe Photoshop, Adobe Illustrator или Adobe Firework. И они в чем-то правы - в этих программах есть все необходимое для создания эскиза сайта и ничего лишнего.</p>
-
-<h2 id="wireframes----">Wireframes - выбор инструмента</h2>
-
-<p>Что выбрать для работы - целиком зависит от предпочтений. Если в поисковой строке Google (Yandex) набрать <code>wireframes</code>, то результат превзойдет все ожидания - выбор просто огромен! На любой вкус и цвет - мощные программы для прототипирования (например, старейшая и известнейшая <a href="http://www.axure.com/" title="Axure">Axure</a>), популярный <a href="http://balsamiq.com/" title="Balsamiq">Balsamiq</a>, готовый PNG-набор под Photoshop под названием <a href="http://developer.yahoo.com/ypatterns/about/stencils/" title="Stencil Kit">Stencil Kit</a> от команды Yahoo. Этот список можно продолжать и продолжать.</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/axure_pr_prototype.jpg" alt="Axure PR - пример создания макета" class="center-image" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/balsamiq_mockup_web.jpg" alt="Официальный пример от Balsamiq" class="center-image" /></p>
-
-<p>Лично для меня интерес представляют программы класса <code>wireframes</code>, бесплатные online-версии с минималистичным интерфейсом и возможностями. Чтобы открыл ее, за пару минут разобрался, как работать и создавать. И только <code>wireframes</code>, ничего больше.</p>
-
-<p>Наверное, в этом плане можно упомянуть online-сервисы <a href="http://cacoo.com/" title="Cacoo">Cacoo</a> или <a href="http://www.mockflow.com/" title="MockFlow">MockFlow</a>. Очень нравиться Balsamiq, но он платный (хотя есть бесплатная online-demo версия - <a href="http://builds.balsamiq.com//b/mockups-web-demo/" title="Balsamiq Demo">Balsamiq Demo</a>).</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/cacoo.jpg" alt="Cacoo" class="center-image" /></p>
-
-<h2 id="section-1">Источники вдохновения</h2>
-
-<ul>
-  <li><a href="http://psd.fanextra.com/tutorials/wireframes/" title="Wireframes: A Beginner’s Guide">Wireframes: A Beginner’s Guide</a></li>
-  <li><a href="http://webdesign.tutsplus.com/articles/a-beginners-guide-to-wireframing--webdesign-7399" title="A Beginner's Guide to Wireframing">A Beginner’s Guide to Wireframing</a></li>
-</ul>
-
-<p>Вот такая получилась статья. На мой взгляд, не совсем информативная, наполовину - свои собственные мысли. Но может быть, кому и понадобиться, понравиться.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-05T00:00:00+04:00"><a href="http://zencoder.ru/css/calculate-width-block-box-sizing/">March 05, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/calculate-width-block-box-sizing/" rel="bookmark" title="Вычисление ширины блока через box-sizing" itemprop="url">Вычисление ширины блока через box-sizing</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В CSS3 появилось свойство <code>box-sizing</code>, смысл которого в способе вычисления ширины HTML-блока браузером. Но, прежде чем переходить к его рассмотрению, сначала давайте вспомним, как обычно браузер производит расчет ширины блока элемента в HTML-разметке?</p>
-</blockquote>
-
-<p>Вычисление всегда выполняется по формуле: <code>Width = Margin + Border + Padding + Content</code>. То есть, если ширина контента задана в 200px, <code>padding</code> равен 25px, <code>border</code> равен 10px, а <code>margin</code> равен 15px; то результирующая ширина блока будет равна 300px.</p>
-
-<p>Такой способ вычисления ширины блока делают все современные браузеры:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">200px</span> <span class="p">+</span> <span class="n">25px</span><span class="p">*</span><span class="n">2</span> <span class="p">+</span> <span class="n">10px</span><span class="p">*</span><span class="n">2</span> <span class="p">+</span> <span class="n">15px</span><span class="p">*</span><span class="n">2</span> <span class="p">=</span> <span class="n">300px</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/content-box.jpg" alt="Модель расчета ширины блока в браузере по умолчанию" class="center-image" /></p>
-
-<p>Однако, были времена, когда не все браузеры вычисляли размеры блока элемента подобным образом. Существовал Internet Explorer версии 5/6, который ширину блока считал несколько иначе: <strong>из заданной ширины блока вычитались padding и border, получалась результирующая ширина области content</strong>. В те времена веб-разработчики “показывали пальцем” на этот браузер и говорили, что это ошибка и недочет разработчиков IE5/6.</p>
-
-<p>Но теперь времена изменились благодаря появлению адаптивного (<code>responsive</code>) дизайна. Причины возникновения адаптивного дизайна - в огромном количестве устройств с разными размерами экранов, по большей части мобильных. Задача адаптивного дизайна в “подстраивании” одного и того же дизайна сайта под различные размеры мониторов. При таком “подстраивании” важной становиться задача вычисления ширины блоков элементов, чтобы верстка не “разваливалась”.</p>
-
-<p>Чтобы такого не произошло, как раз и становиться удобным “возврат” к той модели расчета ширины блока, какая присутствовала в IE5/6. Для этого было разработано свойство <code>box-sizing</code>, с помощью которого можно управлять подобной моделью расчета.</p>
-
-<table>
-  <tbody>
-    <tr>
-      <td>Свойство <code>box-sizing</code> принимает <strong>три значения</strong> (<em>три модели вычисления ширины блока</em>): **content-box</td>
-      <td> </td>
-      <td>padding-box</td>
-      <td> </td>
-      <td>border-box**.</td>
-    </tr>
-  </tbody>
-</table>
-
-<h2 id="box-sizing-content-box">Свойство box-sizing: content-box</h2>
-
-<p>Первая модель <code>content-box</code> является <em>способом вычисления ширины блока по умолчанию</em>, принятым в современных браузерах:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-sizing</span><span class="o">:</span> <span class="nt">content-box</span></code></pre></div>
-
-<p>Ширина блока равна сумме: <code>Width = Width (Content) + Padding + Border + Margin</code></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/content-box.jpg" alt="Свойство box-sizing со значением content-box" class="center-image" /></p>
-
-<h2 id="box-sizing-padding-box">Свойство box-sizing: padding-box</h2>
-
-<p>Вторая модель <code>padding-box</code> заключается в том, что ширина блока включает в себя ширину контента (<code>content</code>) и ширину <code>padding</code>. Остальные - <code>border-box</code> и <code>margin-box</code> - приплюсовываются к заданной ширине, как обычно. Данная модель, хоть и заявлена в спецификации CSS3, не поддерживается на сегодняшний день почти никакими браузерами; <em>так что о ней можно забыть (пока забыть)</em>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-sizing</span><span class="o">:</span> <span class="nt">padding-box</span></code></pre></div>
-
-<p>Ширина блока равна сумме: <code>Width = Width (Content + Padding) + Border + Margin</code></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/padding-box.jpg" alt="Свойство box-sizing со значением padding-box" class="center-image" /></p>
-
-<h2 id="box-sizing-border-box">Свойство box-sizing: border-box</h2>
-
-<p>Третья модель <code>border-box</code> очень похожа на предыдущую модель <code>padding-box</code>. Но, в данном случае, ширина блока включает в себя еще и <code>border-box</code>; то есть ширина блока включает в себя область <code>content-box</code>, <code>padding-box</code> и <code>border-box</code>. Область <code>margin-box</code> прибавляется к ширине блока элемента, как обычно.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-sizing</span><span class="o">:</span> <span class="nt">border-box</span></code></pre></div>
-
-<p>Ширина блока равна сумме: <code>Width = Width (Content + Padding + Border) + Margin</code></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/border-box.jpg" alt="Свойство box-sizing со значением border-box" class="center-image" /></p>
-
-<h2 id="box-sizing">Практический пример свойства box-sizing</h2>
-
-<p>Теперь не мешало бы продемонстрировать на практике, каким образом браузеры выполняют вычисления ширины блоков элементов под управлением свойства <code>box-sizing</code>. Допустим, у нас имеется блок-обертка <code>div class="wrap"</code>, внутри которого расположены два плавающих блока-потомка <code>div class="left"</code> и <code>div class="right"</code>.</p>
-
-<p>HTML-разметка представлена ниже:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;right&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, architecto laborum quas iste nam maxime tempora temporibus inventore? Rerum, obcaecati porro officiis temporibus assumenda dicta odit ullam dolore vero laborum!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Doloremque, accusantium, amet, molestiae quas dolore deleniti non aut quis inventore repudiandae nostrum porro alias dolor pariatur rem sequi ea consequatur perferendis.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Consequatur, iusto, iure, quia ipsum dolore ea exercitationem porro et nostrum nam cumque hic possimus dolorem deleniti distinctio incidunt magnam earum quis.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h4&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/700x300&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Tempora, omnis, ut, quis, nesciunt voluptatum rem dolor dolores amet vel sit error laboriosam quasi accusamus magnam neque sunt exercitationem molestias! Aperiam!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;h5&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Atque, libero illum numquam sed quas. Assumenda, porro, suscipit, veniam, cum deleniti illo magnam harum ab earum obcaecati odit ad quo laudantium?<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/500x200&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;h6&gt;</span>header 6<span class="nt">&lt;/h6&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aliquid, consectetur quod saepe unde corrupti tenetur minus nesciunt obcaecati tempore ut facere iusto pariatur corporis itaque eius? Doloribus, quaerat modi nihil.<span class="nt">&lt;/p&gt;</span>
 <span class="nt">&lt;/div&gt;</span></code></pre></div>
 
-<p>… и CSS-таблица, обычная для такого случая. Единственное “новое” правило в этом коде - это свойство <code>box-sizing</code>, указанное с вендорными префиксами. Обычно его можно не указывать, так как у браузеров по умолчанию свойство <code>box-sizing</code> установлено в значении <code>content-box</code> (<em>как уже упоминалось ранее</em>). Но в нашем случае понадобится <strong>явно указать</strong> это свойство. Для блоков-потомков здесь намерено мы не указываем (<em>пока не указываем</em>) <code>padding</code>, <code>border</code> и <code>margin</code>:</p>
+<p>То есть, для чистоты эксперимента, создаем заголовки с первого по шестой уровень, несколько параграфов и два изображения. В процессе работы с модулем вертикального ритма будем пользоваться официальной документацией по адресу - <a href="http://beta.compass-style.org/reference/compass/typography/vertical_rhythm/" title="Vertical Rhythm">Vertical Rhythm</a>.</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">*</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
+<p>В файле <code>style.scss</code> подключаем сброс стилей Compass и модуль вертикального ритма:</p>
 
-<span class="nt">html</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#a7c5a8</span><span class="p">;</span>
-<span class="p">}</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/typography/vertical_rhythm&quot;</span><span class="p">;</span></code></pre></div>
 
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+<p>Сделаем небольшую стилизацию для блока <code>.wrapper</code>, заголовков, параграфов и изображений, чтобы визуально было проще разобраться, что к чему:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrapper</span><span class="p">{</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
   <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nc">.wrap</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">800px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">3px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
+<span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="o">,</span><span class="nt">h3</span><span class="o">,</span><span class="nt">h4</span><span class="o">,</span><span class="nt">h5</span><span class="o">,</span><span class="nt">h6</span><span class="p">{</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="m">700</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+<span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nc">.left</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="nt">img</span><span class="p">{</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="vertical-rhythm">Основные переменные в Vertical Rhythm</h2>
+
+<p>В модуле “Vertical Rhythm” библиотеки Compass имеется множество переменных, но среди них есть только две основные, которые необходимы для расчетов внутри этого модуля:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">base-font-size</span><span class="o">:</span> <span class="nt">22px</span><span class="o">;</span>    <span class="o">//</span> <span class="err">базовый</span> <span class="err">размер</span> <span class="err">шрифта</span>
+<span class="o">$</span><span class="nt">base-line-height</span><span class="o">:</span> <span class="nt">33px</span><span class="o">;</span>  <span class="o">//</span> <span class="err">базовое</span> <span class="err">межстрочное</span> <span class="err">расстояние</span></code></pre></div>
+
+<p>Значение переменной <code>$base-line-height</code> (как правило) равно выражению <code>$base-font-size * 1.5</code>, поэтому <code>22px * 1.5 = 33px</code>. Значение переменной <code>$base-font-size</code> в <code>22px</code> взято в качестве примера.</p>
+
+<p>Помимо этого, есть еще две дополнительные переменные:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">rhythm-unit</span><span class="o">:</span> <span class="s2">&quot;rem&quot;</span><span class="o">;</span>         <span class="o">//</span> <span class="err">базовая</span> <span class="err">единица</span> <span class="err">измерения</span> <span class="o">(</span><span class="err">по</span> <span class="err">умолчанию</span> <span class="nt">em</span><span class="o">)</span>
+<span class="o">$</span><span class="nt">rem-with-px-fallback</span><span class="o">:</span> <span class="nt">true</span><span class="o">;</span> <span class="o">//</span> <span class="err">откат</span> <span class="err">к</span> <span class="err">единицам</span> <span class="err">измерения</span> <span class="nt">px</span> <span class="err">в</span> <span class="err">браузерах</span><span class="o">,</span> <span class="err">которые</span> <span class="err">не</span> <span class="err">понимают</span> <span class="err">единицу</span> <span class="nt">rem</span></code></pre></div>
+
+<h2 id="vertical-rhythm-1">Включаем Vertical Rhythm</h2>
+
+<p>После ввода четырех вышеперечисленных переменных осталось только инициализировать модуль Vertical Rhythm” с помощью миксина:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">establish-baseline</span><span class="p">;</span></code></pre></div>
+
+<p>Миксин <code>establish-baseline</code> делает простые вещи - он устанавливает <code>font-size</code> и <code>line-height</code> для корневого тега <code>&lt;html&gt;</code>. Но делает он это с помощью относительных единиц измерения.</p>
+
+<p>Допустим, в своем проекте мы установили размер шрифта <code>22px</code> и высоту строки <code>33px</code>. Если взглянуть на результат компиляции из SCSS в CSS, то увидим следующее:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">137.5%</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1.5em</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Размер шрифта <code>16px</code> является установленным по умолчанию в большинстве браузеров, поэтому <code>16px = 100%</code>. Следовательно, <code>22px = 137.5%</code>.</p>
+
+<p>Относительная величина <code>line-height</code> всегда относительна к размеру шрифта <code>font-size</code> текущего элемента, поэтому в данном случае она равна 1.5em (<code>22px * 1.5 = 33px</code>).</p>
+
+<p>Перезагрузим браузер с открытой страницей создаваемого проекта-примера и увидим, как резко изменилась картина! Вместо слепленных друг с другом строчек появилась более четкая и удобочитаемая структура. Видно, что каждая строка текста располагается внутри своей линии.</p>
+
+<p>Чтобы еще более наглядно представить картину структурированного контента, воспользуемся миксином:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">debug</span><span class="o">-</span><span class="n">vertical</span><span class="o">-</span><span class="n">alignment</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Обрисовались строки, ну прямо как на школьном тетрадном листке! Хорошо видно, как все строки текста и изображение выстроились четко по линеечкам. Думаю, если читатель дошел до этого места, то ему стала понятна суть и принцип вертикального ритма без каких-либо объяснений!</p>
+
+<h2 id="margin--padding--vertical-rhythm">Margin и padding в Vertical Rhythm</h2>
+
+<p>Но строки, заголовки и изображения все равно тесно прижаты друг к другу. В модуле <strong>Vertical Rhythm</strong> имеются свои собственные инструменты для создания отступов у элементов контента, в основе которых лежит опять таки базовый размер шрифта (вот он - тот самый ритм!):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">base-font-size</span> <span class="o">*</span> <span class="nt">1</span></code></pre></div>
+
+<p>Для элемента страницы можно задать <code>margin-top</code> или <code>padding-top</code>, <code>margin-bottom</code> или <code>padding-bottom</code>. Реализуется это с помощью специальных миксинов (на выбор, один из четырех):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">trailer</span><span class="p">;</span>  <span class="o">//</span> <span class="k">margin-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>   <span class="o">//</span> <span class="k">margin-top</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="k">padding</span><span class="o">-</span><span class="n">trailer</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">padding</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>  <span class="o">//</span> <span class="k">padding-top</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Имеются универсальные миксины, которые являются сокращениями от вышеперечисленных. Таким миксинам передаются необходимые аргументы и на выходе получаем результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">trailer</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">margin</span><span class="p">);</span> <span class="o">//</span> <span class="k">margin-bottom</span> <span class="err">на</span> <span class="m">2</span> <span class="err">строки</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">trailer</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">padding</span><span class="p">);</span> <span class="o">//</span> <span class="k">padding-bottom</span> <span class="err">на</span> <span class="m">2</span> <span class="err">строки</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">leader</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">2</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">margin</span><span class="p">);</span> <span class="o">//</span> <span class="k">margin-top</span> <span class="err">на</span> <span class="m">2</span> <span class="err">строки</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">leader</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span><span class="m">3</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">padding</span><span class="p">);</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="err">на</span> <span class="m">3</span> <span class="err">строки</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Одновременно задать <code>margin-top + margin-bottom</code> или <code>padding-top + padding-bottom</code> можно с помощью миксинов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="n">margins</span><span class="p">;</span> <span class="o">//</span> <span class="k">margin-top</span> <span class="o">+</span> <span class="k">margin-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="k">padding</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="o">+</span> <span class="k">padding-bottom</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Миксин <code>@include rhythm</code> является глобальным сокращением вышеназванных миксинов для создания отступов <code>margin</code> или <code>padding</code>.</p>
+
+<h2 id="vertical-rhythm-2">Создание границ в Vertical Rhythm</h2>
+
+<p>Отступы можно совмещать с границами <code>border</code>. То есть, можно (к примеру) создать верхний <code>padding</code> с верхней границей <code>border</code>.</p>
+
+<p>Толщина границы и ее стиль управляются через переменные <code>$default-rhythm-border-width</code> и <code>$default-rhythm-border-style</code>. По умолчанию толщина границы равна <code>1px</code>, а ее стиль - <code>solid</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+
+  <span class="o">@</span><span class="n">include</span> <span class="n">leading</span><span class="o">-</span><span class="k">border</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="o">+</span> <span class="k">border-top</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">trailing</span><span class="o">-</span><span class="k">border</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-bottom</span> <span class="o">+</span> <span class="k">border-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">horizontal</span><span class="o">-</span><span class="n">borders</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding-top</span> <span class="o">+</span> <span class="k">border-top</span> <span class="err">и</span> <span class="k">padding-bottom</span> <span class="o">+</span> <span class="k">border-bottom</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">h</span><span class="o">-</span><span class="n">borders</span><span class="p">;</span> <span class="o">//</span> <span class="n">alias</span> <span class="err">для</span> <span class="n">horizontal</span><span class="o">-</span><span class="n">borders</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Одновременно задать <code>padding</code> и <code>border</code> для всех четырех сторон можно через миксин:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="n">borders</span><span class="p">;</span> <span class="o">//</span> <span class="k">padding</span> <span class="o">+</span> <span class="k">border</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Указать границу и отступ для какой-то одной стороны можно с помощью миксина:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">1</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">apply</span><span class="o">-</span><span class="n">side</span><span class="o">-</span><span class="n">rhythm</span><span class="o">-</span><span class="k">border</span><span class="p">(</span><span class="err">$</span><span class="n">side</span><span class="o">:</span> <span class="k">left</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="vertical-rhythm-3">Произвольный размер шрифта в Vertical Rhythm</h2>
+
+<p>Можно произвольно поменять размер шрифта любого элемента страницы, но делать это также нужно, исходя из ритма - с помощью соответствующего миксина <code>adjust-fonts-size-to</code>.</p>
+
+<p>Давайте изменим размер заголовков таким образом, чтобы они отличались от основного текста (и были действительно заголовками):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">2</span><span class="o">.</span><span class="m">074</span><span class="n">rem</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nc">.right</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_default.jpg" alt="Свойство box-sizing со значением content-box" class="center-image" /></p>
-
-<p>Блоки-потомки четко вписываются в блок-родитель, так как у них нет <code>border</code>, <code>padding</code> и <code>margin</code>; ширина блоков-потомков точно равна половине ширине блока-родителя.</p>
-
-<p>Теперь добавим для блоков-потомков <code>padding: 5px</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Картина будет заранее предсказуемая - один из блоков-потомков опуститься вниз из-за добавления <code>padding: 5px</code> к обоим блокам:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding.jpg" alt="Свойство box-sizing со значением content-box и padding: 5px" class="center-image" /></p>
-
-<p>Настало время применить свойство <code>box-sizing</code> со значением <code>border-box</code>. Браузер сразу же <strong>пересчитает ширину обоих блоков</strong> и картина, как по волшебству, изменится:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding_border-box.jpg" alt="Свойство box-sizing со значением border-box и padding: 5px" class="center-image" /></p>
-
-<p>Даже если добавить к блокам-потомкам границу <code>border</code>, то картинка останется прежней:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">6px</span> <span class="k">solid</span> <span class="m">#0000ff</span><span class="p">;</span>
+<span class="nt">h2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">728</span><span class="n">rem</span><span class="p">);</span>
 <span class="p">}</span>
 
-<span class="nc">.right</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">6px</span> <span class="k">solid</span> <span class="m">#00ff00</span><span class="p">;</span>
+<span class="nt">h3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">44</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h4</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h5</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="n">rem</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">h6</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">0</span><span class="o">.</span><span class="m">833</span><span class="n">rem</span><span class="p">);</span>
 <span class="p">}</span></code></pre></div>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding_border_border-box.jpg" alt="Свойство box-sizing со значением border-box и border: 6px" class="center-image" /></p>
+<p>Или же, допустим, нужно установить для заголовка первого уровня <code>h1</code> размер шрифта в <code>42px</code>. Микcин будет выглядеть таким образом:</p>
 
-<p>Но если прибавить к блокам <code>div class="left"</code> и <code>div class="right"</code> правило <code>margin</code>, то наша разметка снова “сломается”:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">42px</span><span class="p">);</span>
 <span class="p">}</span></code></pre></div>
 
-<p>Это происходит потому, что в модель вычисления <code>border-box</code> поля <code>margin</code> не входят. Поле <code>margin-left</code> размером 5px прибавляется к ширине блока-потомка. Суммарная ширина обоих блоков-потомков превышает ширину блока-родителя и один из них выходит из его, опускаясь (<em>снова</em>) вниз:</p>
+<p>Первым делом, этот миксин делает размер шрифта элемента <code>h1</code> относительным к размеру шрифта элемента-контейнера. В нашем случае таковым является элемент <code>html</code>, поэтому размер шрифта равен <code>22px</code>. Соответственно, размер шрифта для <code>h1</code> получается (<code>42 / 22 = 1.90909</code>):</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding_border_margin_border-box.jpg" alt="Свойство box-sizing со значением border-box и margin-left: 5px" class="center-image" /></p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">font-size</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.90909rem</span><span class="o">;</span></code></pre></div>
 
-<p>В этом примере мы не применили к свойству <code>box-sizing</code> значения <code>padding-box</code>, потому что [браузеры не понимают этого значения][1] и свойство <code>box-sizing</code> работать не будет в этом случае.</p>
+<p>Вторым делом миксин заново вычисляет высоту строки для нашего заголовка <code>h1</code>. Делает он это таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">1</span><span class="nc">.90909rem</span> <span class="o">*</span> <span class="nt">1</span><span class="nc">.5</span> <span class="o">=</span> <span class="nt">3rem</span> <span class="o">(</span><span class="err">округленно</span><span class="o">)</span>
+<span class="nt">22</span> <span class="o">*</span> <span class="nt">3rem</span> <span class="o">=</span> <span class="nt">66px</span></code></pre></div>
+
+<p>Конечный результат показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">42px</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">90909</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">66px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">3</span><span class="n">rem</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Отлично, правда? Вся прелесть в том, что показанные выше расчеты можно с легкостью забыть - модуль “Vertical Rhythm” каждый раз будет вычислять размер шрифта и высоту строки сам, не “напрягая” нас.</p>
+
+<p>Помимо указания размера шрифта в качестве аргумента, миксину <code>adjust-fonts-size-to</code> можно также передать количество линий, которое должен занимать заголовок. Например, так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">44</span><span class="n">rem</span><span class="o">,</span><span class="m">1</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Если вы попробуете у себя, то сразу увидите результат.</p>
+
+<h2 id="vertical-rhythm-4">Выравнивание изображений в Vertical Rhythm</h2>
+
+<p>Внимательный читатель должен заметить одну неточность, если он у себя повторил все шаги, описанные выше. Неточность заключается в том, что изображение не вписывается в вертикальный ритм, созданный нами на странице:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/shift_in_vertical_rhythm.jpg" alt="Смещение в вертикальном ритме" /></p>
+
+<p>А именно - первое изображение своим верхним краем совпадает с линией ритма. А вот нижняя граница не попадает на линию. Из-за этого весь дальнейший контент также смещается и вертикальный ритм нарушается.</p>
+
+<p>Происходит это потому, что изображение мы сделали блочным элементом и присвоили ему фиксированные размеры в пикселях в HTML-коде:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/700x350&quot;</span> <span class="nt">/&gt;</span>
+...
+<span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/500x250&quot;</span> <span class="nt">/&gt;</span>
+...</code></pre></div>
+
+<p>Исправить ситуацию можно с помощью плагина “Keep The Rhythm” под jQuery - <a href="http://www.gayadesign.com/diy/keep-the-rhythm-vertical-rhythm-on-objects-having-dynamic-heights/" title="Keep The Rhythm">Keep The Rhythm</a>. Вдаваться в подробности работы этого плагина я не буду, а сразу покажу, как он подключается и результат его работы.</p>
+
+<p>Получаем с GitHub библиотеку jQuery и сам плагин к ней:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">jquery-1</span><span class="nc">.9.1.min.js</span>
+<span class="nt">jquery</span><span class="nc">.keeptherhythm.js</span></code></pre></div>
+
+<p>Подключаем к HTML-странице в ее конце. И затем создаем небольшой скрипт. Смотрим результат:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/keep_the_rhythm.jpg" alt="Плагин Keep_The_Rhythm в действии" /></p>
+
+<p>Все получилось! Однако, стоит заметить, что приведенный выше пример является упрощенным. Достаточно изменить масштаб страницы в окне браузера, и вертикальный ритм поломается.</p>
+
+<p>Поэтому плагин “Keep The Rhythm” необходимо применять в связке с медиа-запросами для правильной его работы. По крайней мере, если возникнет вопрос по работе этого плагина, то документация на официальной странице всегда под рукой.</p>
 
 <h2 id="section">Заключение</h2>
 
-<p>Вот и все, что можно сказать о свойстве <code>box-sizing</code>. Понимание этого свойства понадобиться еще, когда придет время изучать адаптивный (<em>responsive</em>) дизайн.</p>
+<p>Основой для написания этой статьи послужили два материала (видео и статья):</p>
 
-<p>Основой для данной статьи послужила замечательная “Большая книга CSS3 Д. Макфарланд (<em>3-е издание</em>).</p>
+<ul>
+  <li><a href="https://www.youtube.com/watch?v=Leert-TnSSg" title="Compass (Sass) — вертикальный ритм (vertical rhythm)">Compass (Sass) — вертикальный ритм (vertical rhythm)</a></li>
+  <li><a href="http://atendesigngroup.com/blog/vertical-rhythm-compass" title="Vertical Rhythm with Compass">Vertical Rhythm with Compass</a></li>
+</ul>
 
 <hr />
 
-<table>
-  <tbody>
-    <tr>
-      <td>[1]: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing “MDN</td>
-      <td>CSS - box-sizing”</td>
-    </tr>
-  </tbody>
-</table>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -823,127 +472,910 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-03T00:00:00+04:00"><a href="http://zencoder.ru/css/playground-codepen/">March 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-04-21T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/">April 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~7 minutes
+        Reading time ~3 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/playground-codepen/" rel="bookmark" title="Площадка для тестирования CodePen" itemprop="url">Площадка для тестирования CodePen</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/" rel="bookmark" title="Настройка permalink в WordPress" itemprop="url">Настройка permalink в WordPress</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Любому веб-мастеру необходима площадка для тестирования. На сегодняшний день таких проектов около десятка. Есть старые проекты, есть молодые; более “навороченные” или менее “навороченные”. Каждый из мастеров выбирает себе тот, который ему больше всего нравиться.</p>
+  <p>В первую очередь, что за загадочное слово - <code>permalink</code>? Все просто - это сокращение от <em>permanent link - постоянная ссылка</em>.</p>
 </blockquote>
 
-<p>Наиболее популярные сервисы такого рода это <a href="http://codepen.io" title="CodePen">CodePen</a> и <a href="http://jsfiddle.net/" title="jsFiddle">jsFiddle</a>. Лично мне больше нравиться jsFiddle, но у него есть один существенный для меня недостаток (<em>точнее - их два на самом деле</em>). В этом сервисе можно выполнить замену CSS на SCSS, но подключить библиотеку Compass - нельзя. И еще там нет автоматического обновления создаваемого проекта.</p>
+<p>Постоянные ссылки нужны в системе WordPress для того, чтобы указывать на одну и ту же запись в перемещающейся ленте записей. При первоначальной настройке WordPress одной из задач является вопрос с постоянными ссылками. По умолчанию в WordPress permalink имеют ужасающий вид:</p>
 
-<p>Другой сервис - CodePen является идеальным инструментом для веб-мастера или верстальщика. В нем есть все, что нужно и ничего лишнего. Может быть, это потому, что проект был создан хорошо известным <a href="http://css-tricks.com/" title="Cris Coyier - CSS-TRICKS">Cris Coyier</a>?</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="p">/</span><span class="n">word1</span><span class="p">/</span><span class="k">?</span><span class="n">p</span><span class="p">=</span><span class="n">123</span></code></pre></div>
 
-<p>Данная статья, возможно, никогда не была бы написана, если не одна причина - я не знал, как в этом сервисе подключить поддержку SCSS + Compass. Решение лежало на поверхности, достаточно было “остановиться на бегу” - выделить немного времени на изучение этого проекта.</p>
+<p>Ужасающий в том смысле, что такая ссылка для человека совершенно не читаемая. Сможете ли вы сказать, что находится по адресу, указанному в этой ссылке? Конечно нет!</p>
 
-<p>Ниже привожу подробное и красочное описание работы с CodePen в картинках. Точнее - это будет описание основных, самых основных или ключевых моментов при написании кода в CodePen.</p>
+<p>Это для системы CMS WordPress понятно, что в этой ссылке указан адрес на пост с <code>id=123</code> (<em>порядковый номер записи 123</em>). И если система покопается в своей базе данных, то она (<em>может быть</em>) найдет запись с таким идентификатором и выдаст ее “на гора”. А для человека такая запись ни о чем не говорит.</p>
 
-<h2 id="codepen">Главная страница CodePen</h2>
+<p>Поэтому в настройках WordPress имеется специальный раздел, в котором можно настроить вид постоянных ссылок на понятный человеку (<em>ЧПУ - Человеко-Понятный Урл</em>). Размещен этот раздел по адресу “Настройки” - “Постоянные ссылки”.</p>
 
-<p>Первое, что необходимо, это конечно же зайти на данный ресурс по адресу <a href="http://codepen.io" title="Главная страница CodePen">http://codepen.io</a>. Тем, кто первый раз попал сюда, может зарябить в глазах, но это с непривычки:</p>
+<p>Система WordPress предлагает на выбор пять вариантов постоянных ссылок (permalink) - один по умолчанию и четыре готовых (на выбор):</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-main.jpg" alt="Главная страница CodePen" class="center-image" /></p>
+<ul>
+  <li><strong>День и название поста</strong> - http://localhost:7788/third/2014/04/20/sample-post/</li>
+  <li><strong>Месяц и название поста</strong> - http://localhost:7788/third/2014/04/sample-post/</li>
+  <li><strong>Цифры</strong> - http://localhost:7788/third/archives/123</li>
+  <li><strong>Название записи</strong> - http://localhost:7788/third/sample-post/</li>
+</ul>
 
-<p>Самое основное на главной странице - это окна с готовыми работами других веб-мастеров. То есть, люди работали в этом сервисе, написали и протестировали какой-то код; и этот код в готовом виде демонстрируется в различных окошках проекта CodePen. Выборка работ производится в случайном порядке, насколько я понимаю.</p>
+<p>По большому счету, с каждым из этих четырех видов permalink все понятно. Я имею ввиду, в каком виде она предоставляет ссылку.</p>
 
-<p>Внизу каждого “окошка” с готовой работой показаны <em>метаданные</em> - информация об авторе. К примеру, рассмотрим код, созданный автором по имени Yaroslav. Видим, что веб-мастер экспериментировал с созданием на CSS различных продвинутых типов <code>background</code> (<em>насколько правильно я понял его работу чисто по внешнему виду, исходный код не смотрел</em>). Комментариев к его работе никто не пожелал оставить, хотя ознакомилось с ним уже 129 человек и семерым из них он даже понравился.</p>
+<p>Но, помимо этих четырех permalink, имеется еще один вариант:</p>
 
-<p>При щелчке мыши на любом из заинтересовавших проектов (<em>прямо в окошко</em>) открывается его исходный код, с которым можно детально ознакомиться при желании.</p>
+<ul>
+  <li><strong>Произвольно</strong> - http://localhost:7788/third</li>
+</ul>
 
-<h2 id="codepen---">Настройка CodePen - начало</h2>
+<p>В этом случае администратору сайта предоставляется возможность настроить вид permalink произвольно, руководствуясь специальными переменными. Ниже приведен список таких переменных, с указанием примера в скобках:</p>
 
-<p>В принципе, больше ничего нас в главном окне CodePen не интересует - ведь нам необходимо самим создавать “нетленные” работы! Для этого сначала нужно зарегистрироваться на CodePen, после чего получаем свой личный кабинет с настройками. Так как первоначально задача стояла в подключении SCSS + Compass в CodePen, то будет решать ее с первых шагов. В правом верхнем углу есть синий значок-аватар, по которому нужно щелкнуть мышью. Раскроется список, в котором необходимо выбрать строку <strong>“Your Settings”</strong>:</p>
+<ul>
+  <li><strong>%year%</strong> - год публикации записи (2014)</li>
+  <li><strong>%monthnum%</strong> - порядковый номер месяца публикации записи (05)</li>
+  <li><strong>%day%</strong> - порядковый день месяца публикации записи (21)</li>
+  <li><strong>%hour%</strong> - час публикации записи (09)</li>
+  <li><strong>%minute%</strong> - минута публикации записи (12)</li>
+  <li><strong>%second%</strong> - секунда публикации записи (13)</li>
+  <li><strong>%post_id%</strong> - идентификатор записи (123)</li>
+  <li><strong>%postname%</strong> - имя записи (about-the-permalink)</li>
+  <li><strong>%category%</strong> - категория записи (wordpress)</li>
+  <li><strong>%author%</strong> - автор записи (zencoder)</li>
+  <li><strong>%tag%</strong> - метка записи (css)</li>
+</ul>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-settings.jpg" alt="Доступ к личному профилю на CodePen" class="center-image" /></p>
+<p>Благодаря этим переменным можно создать permalink практически любого вида и под любые потребности.</p>
 
-<p>Все настройки CodePen уместились на одной странице и это замечательно! Окно разделено на четыре секции - <strong>Syntax Hightlighting</strong>, <strong>Fonts</strong>, <strong>Key Bindings</strong>, <strong>Preprocessor &amp; Library Defaults</strong>. В принципе, здесь все интуитивно понятно:</p>
+<p>К примеру, для <strong>блога с регулярными записями без тематики</strong> подойдет permalink следующей конструкции:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-profile-settings.jpg" alt="Настройки CodePen" class="center-image" /></p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="k">%</span><span class="n">year</span><span class="p">%/</span><span class="k">%</span><span class="n">monthnum</span><span class="p">%/</span><span class="k">%</span><span class="n">day</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
 
-<p>Секция <strong>Syntax Hightlighting</strong> служит для выбора цветовой схемы подсветки синтаксиса с предварительным просмотром. Можно выбрать одну из пяти, но первая (<em>по умолчанию</em>) самая лучшая.</p>
+<span class="p">//</span> <span class="err">Пример:</span>
+<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="k">%</span><span class="n">year</span><span class="p">%/</span><span class="k">%</span><span class="n">monthnum</span><span class="p">%/</span><span class="k">%</span><span class="n">day</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
 
-<p>Секция <strong>Fonts</strong> помогает выбрать шрифт и размер шрифта. Выбор шрифтов небольшой, но лучше оставить <strong>Monaco</strong> - он лучше всех смотрится. Размер шрифта можете выбрать, какой вам нравиться.</p>
+<p>Для <strong>блога с нерегулярными записями и записи без тематики</strong> подойдет permalink вида:</p>
 
-<p>Секция <strong>Key Bindings</strong> совсем простенькая - здесь можно выбрать сочетание клавиш при работе в CodePen. <strong>Normal</strong> - это обычный набор сочетаний клавиш, а <strong>Vim</strong> для тех, кто привык и хорошо себя чувствует в линуксовом (<em>весьма своеобразном</em>) редакторе Vim.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="n">url</span><span class="p">/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
 
-<p>Секция <strong>Preprocessor &amp; Library Defaults</strong> самая большая и самая необходимая для нас, ведь ради нее мы и зашли в настройки. В этом разделе можно установить, какие препроцессоры для HTML, CSS и JavaScript будут использоваться в каждом новом проекте, создаваемом в CodePen. В строке <strong>HTML Preprocessor</strong> ничего не делаем, так как препроцессорами для HTML не пользуемся. В строке <strong>CSS Preprocessor</strong> выбираем из списка SCSS, а в следующей строке <strong>CSS Preprocessor Add-on</strong> выбираем библиотеку под SCSS - <strong>Compass (for Sass)</strong>. Строка <strong>CSS Reset</strong> служит для выбора “CSS-ластика”: <em>CSS Reset</em> или <em>Normalize</em>. Можно также обратить внимание на строчку <strong>Prefix Free?</strong>, в которой есть возможность поставить галочку:</p>
+<span class="p">//</span> <span class="err">Пример:</span>
+<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="n">url</span><span class="p">/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-prefix_free.jpg" alt="JavaScript библиотека Prefix Free" class="center-image" /></p>
+<p>Для <strong>блога с регулярными тематическими записями</strong> подойдет краткий permalink:</p>
 
-<p><strong>Prefix Free</strong> - это JavaScript, созданный для того, чтобы работать с браузерными префиксами на самом современном уровне. Другими словами, этот скрипт фильтрует созданный CSS-код на предмет наличия в нем браузерных (вендорных) префиксов и проверяет, какие из них нужно использовать на сегодняшний день, а от каких уже можно отказаться. Польза <strong>Prefix Free</strong> в очистке CSS-кода от лишнего мусора и увеличение скорости загрузки в браузере.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="k">%</span><span class="n">category</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
 
-<p>Но продолжим разбор секции <strong>Preprocessor &amp; Library Defaults</strong>. Три последние строчки относятся к поддержке JavaScript в CodePen. В строке <strong>JS Preprocessor</strong> выбирается препроцессор JavaScript, в строке <strong>JS Library</strong> - подключаем библиотеку JavaScript, а в строчке <strong>Modernizr?</strong> отмечаем, нужна ли нам встроенная поддержка JavaScript-библиотеки Modernizr.</p>
+<span class="p">//</span> <span class="err">Пример:</span>
+<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="k">%</span><span class="n">category</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
 
-<p>Последняя строчка <strong>Auto Run?</strong> очень полезна и по умолчанию она включена. Ее задача автоматически обновлять создаваемый проект в окне предпросмотра. Очень удобная функция. К примеру, в jsFiddle этого нет, там нужно самому нажимать кнопку <strong>Run</strong> каждый раз, когда нужно обновить окно предпросмотра после внесения изменений в исходный код.</p>
+<p>Настройку постоянных ссылок необходимо выполнять заранее, то есть в самом начале создания сайта на WordPress. Иначе, когда записей будет много и вы решите изменить вид постоянных ссылок для своего сайта, повторная индексация записей может произойти со сбоями.</p>
 
-<p>Вот и все, что можно или нужно сделать в настройках CodePen. Сохраняем изменения, нажав большую зеленую кнопку <strong>Save All Settings</strong> в нижнем правом углу окна.</p>
+<p>Еще одним важным моментом при самостоятельной настройке permalink является то, что любая из них должна заканчиваться переменной %postname% или %post_id%. В этом случае каждая из существующих в системе WordPress permalink будет указывать на конкретную запись. Если вы посмотрите на примеры выше, то заметите, что ссылки построены именно по такому принципу.</p>
 
-<h2 id="css---codepen">Быстрая настройка CSS-препроцессоров в CodePen</h2>
+<p>Данный материал является отрывком из книги Криса Койера “Digging Into WordPress”, пересказанным автором сайта своими словами.</p>
 
-<p>Стоит также сказать, чтобы настройки, рассмотренные выше, можно внести в создаваемый проект “на лету”. Для этого нужно щелкнуть мышью на значке шестеренки в окне кода CSS. Появиться небольшое окошко с выбором одного из четырех CSS-препроцессоров: SASS, SCSS, LESS, Stylus. Также можно выбрать CSS-ластик: <em>Normalize</em>, <em>Reset</em> или вообще никакого (<em>Neither</em>). Включить библиотеку <strong>Prefix-Free</strong>; подключить внешнюю таблицу стилей CSS или же другой проект, указав в строке <strong>External CSS File or Another Pen</strong> абсолютный путь к этому файлу:</p>
+<p>На этом все.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-quick_settings.jpg" alt="Окно быстрых настроек CSS в CodePen" class="center-image" /></p>
+<hr />
 
-<p>Кнопка <strong>Analyze CSS via CSS Lint</strong> служит для проверки CSS-кода в CodePen на синтаксические ошибки с помощью известного проекта <strong>CSS Lint</strong> (<em>под редактор Sublime Text также есть подобный плагин</em>). На рисунке “Основное окно CodePen” внимательный читатель может заметить ошибки, на которые обязательно “заругается” <strong>CSS Lint</strong>. В частности, <code>font-size: 62,5%</code> )):</p>
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-quick_select_preprocessor.jpg" alt="Выбираем CSS-препроцессор в CodePen" class="center-image" /></p>
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-04-09T00:00:00+04:00"><a href="http://zencoder.ru/css/module-grid-960gs/">April 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~19 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/module-grid-960gs/" rel="bookmark" title="Верстаем с помощью модульной сетки 960gs" itemprop="url">Верстаем с помощью модульной сетки 960gs</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Вот плавно и постепенно, стараясь без рывков и пробелов в познаниях front-end, я подошел к теме модульных сеток на CSS. Очередные мысли по поводу верстки для начинающего верстальщика.</p>
+</blockquote>
 
-<h2 id="codepen-1">Основное окно CodePen</h2>
+<p>Зачем я подошел к этой теме? Для чего нужны модульные сетки для верстальщика? Ответ прост - сегодня по крайней мере половина всех дизайнов верстается по такой сетке. Зачем это делается? Для быстроты процесса верстки и стандартизации этого же самого процесса. Сама идея модульной сетки далеко и далеко не новая - в типографии она была разработана еще в прошлом веке (<em>если я не ошибаюсь</em>). Благодаря такой сетке упорядочивается расположение всех элементов текста (изображений) на странице журнала, газеты и т. д.</p>
 
-<p>С настройками CodePen разобрались, теперь давайте вкратце рассмотрим основное окно в этом редакторе. Оно разбито на три части для написания кода на HTML, CSS и JavaScript. Внизу расположено окно предварительного просмотра. Не стоит даже упоминать, что можно легко изменить расположение и вид этих окон:</p>
+<p>Чтобы воочию представить себе модульную сетку в типографии, возьмите любой журнал или статью и внимательно посмотрите на любую его(ее) страницу. Вы сразу обратите внимание, что колонки текста, заголовки, фотографии на странице располагаются не хаотично, а <em>в некотором порядке</em>. Если попытаться начертить границы между блоками контента, то можно увидеть <strong>определенную блочную структуру</strong>:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-pen.jpg" alt="Основное окно CodePen" class="center-image" /></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/04/journal_grid_example.jpg" alt="Выдуманный пример разметки журнальной страницы" /></p>
 
-<p>Вверху находятся четыре большие кнопки: <strong>Save</strong>, <strong>Fork</strong>, <strong>Info</strong>, <strong>Share</strong>. Кнопка <strong>Save</strong> - конечно же для сохранения проекта (Pen). Если имеются несохраненные изменения, то вверху этой кнопки появляется оранжевая полоска, как напоминание о необходимости сохранить изменения. Кстати, забыл упомянуть, что в CodePen проект называется Pen (&lt;/em&gt;вот так незатейливо&lt;/em&gt;). Кнопка <strong>Fork</strong> - для создания ответвления (<em>fork</em>) проекта. Кнопка <strong>Info</strong> - внести информацию о создаваемом Pen: <em>его заголовок, описание и мета-теги</em>:</p>
+<p>Рисунок выше - самый что ни на есть истинный пример модульной сетки. Блоки на этом рисунке могут быть блоками текста или изображениями. И такое расположение блоков информации на странице вполне может иметь место быть в реальной жизни.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-info.jpg" alt="Информация о проекте на CodePen" class="center-image" /></p>
+<p>Кстати, а почему модульные? Откуда такое название? Все просто - под модулем в таких сетках подразумевается “кирпичик”, основа сетки. Минимальная единица “измерения”, которая является основой этой сетки.</p>
 
-<p>Кнопка <strong>Share</strong> весьма и весьма полезна. С помощью нее можно поделиться созданным проектом (кодом) с другими людьми. <em>Собственно, именно для этой цели сервис CodePen и создавался.</em> Там же можно скачать проект в виде zip-архива или выложить его на GitHub. И даже отправить ссылку в виде SMS на указанный номер телефона:</p>
+<p>Обыкновенная кирпичная стена - это тоже модульная структура, модулем у которой является - <strong>кирпич</strong>. Стена увеличивается в размерах в высоту и ширину на шаг, равный высоте и ширине кирпича. Поэтому такая структура и называется модульной.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-share.jpg" alt="Публичная ссылка в CodePen" class="center-image" /></p>
+<p>Сетка в электронной таблице MS Excel тоже является модульной структурой, в основе которой лежит <strong>ячейка</strong> этой сетки. Таблица в Excel может увеличиваться или уменьшаться с шагом, равным размеру ячейки этой таблицы.</p>
 
-<p>На CodePen можно встраивать один проект (Pen) в другой проект (Pen). Более того, созданный Pen можно встраивать в виде готового куска кода в другие проекты (<em>не обязательно созданные в CodePen</em>), в том числе и под CMS WordPress. Это уже совсем круто!</p>
+<p>Как очень хорошо известно, CSS - это типография, перешедшая в Интернет. Многие термины и понятия также перекочевали из типографии в технологию CSS: размер шрифта, межстрочное расстояние и т. д. Не стала исключением модульная сетка.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-embed.jpg" alt="Встраивание CodePen в другой проект" class="center-image" /></p>
+<p>В один прекрасный момент веб-дизайнеры поняли, что не стоит изобретать велосипед. Что создание макета веб-страницы в коде HTML&amp;CSS гораздо удобнее, проще и быстрее выполнять по модульной сетке, нежели “тасовать” блоки произвольно. Кроме того, сам дизайн страницы получается более стандартизированным, унифицированным; <strong>подчиненным одним и тем же, единым правилам</strong>.</p>
 
-<h2 id="scss--compass--codepen">Работаем с SCSS + Compass в CodePen</h2>
+<p>С помощью кода на CSS была сделана попытка воспроизвести модульную сетку в Веб и применить ее на практике. Первой такой (<em>насколько я знаю</em>) попыткой была система <strong>960 Grid System</strong>:</p>
 
-<p>Настройку подключения SCSS + Compass в CodePen мы выполнили, осталось посмотреть, реально ли все работает. Да, действительно все нормально! Собственно, сам код SCSS внимательный читатель мог увидеть уже на рисунке “Основное окно CodePen”, когда говорилось о трех основных окнах CodePen. Там же можно было заметить, что рядом с надписью CSS появилась еще одна - (SCSS), что говорит о включенной поддержке SCSS.</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid.jpg" alt="Модульная сетка на CSS" /></p>
 
-<p>На рисунке хорошо видны <strong>переменные SCSS</strong> и <strong>подключения mixin’ов из библиотеки Compass</strong> для создания радиуса скругления (<code>border-radius</code>), линейного градиента (<code>linear gradient</code>) и тени блока (<code>box-shadow</code>):</p>
+<p>При первом взгляде на рисунок (<em>не знаю, как у вас</em>), у меня сразу возник вопрос - “а где же здесь сетка?” Сетка, сетка - <strong>это и есть сетка, спроектированная под особенности Веб</strong>! Ведь вы хорошо знаете, что в макете веб-страницы имеет значение только ширина блоков контента; высота же блоков является <em>величиной переменной</em>, она меняется в зависимости от количества контента, наполняющего эти блоки; она почти никогда не задается жестко, фиксировано. Поэтому в данном случае строки сетки совсем ни к чему - <strong>остаются только колонки</strong>.</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">border-radius</span><span class="o">(...)</span>
-<span class="k">@include</span> <span class="nt">single-box-shadow</span><span class="o">(...)</span>
-<span class="k">@include</span> <span class="nt">background-image</span><span class="o">(...)</span></code></pre></div>
+<p>Как уже упоминалось выше, модульная сетка пришла в CSS из типографии; понятия, связанные с модульной сеткой, также пришли из типографии.</p>
 
-<p>Двойной щелчок мыши на значке квадратика в правом верхнем углу окна CSS(SCSS) распахивает его на всю ширину окна браузера для большего удобства работы с кодом:</p>
+<p>В модульной сетке имеются всего <strong>три параметра</strong>:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-expand_pen.jpg" alt="Распахиваем окно кода в CodePen" class="center-image" /></p>
+<ul>
+  <li><strong>container</strong> (<em>контейнер</em>)</li>
+  <li><strong>column</strong> (<em>колонка</em>)</li>
+  <li><strong>gutter</strong> (<em>канавка</em>)</li>
+</ul>
 
-<p>А щелчок мыши на самой надписи CSS переводит окно в <strong>режим компиляции</strong>, то есть перевода SCSS в готовый CSS-код:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_structure.jpg" alt="Структура модульной сетки на CSS" /></p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-scss.jpg" alt="Создание SCSS-кода в CodePen" class="center-image" /></p>
+<p>Видим, что основной блок-обертка (<strong>container</strong>) содержит в себе 12 колонок (<strong>column</strong>). Содержимое (&lt;/em&gt;контент&lt;/em&gt;) располагается в этих колонках. Колонок может быть не обязательно 12; другими популярными величинами являются <strong>16 колонок</strong> и <strong>24 колонки</strong>:</p>
 
-<h3 id="codepen-2">Клавиатурные сокращения CodePen</h3>
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_16_columns.jpg" alt="Модульная CSS-сетка из 16 колонок" /></p>
 
-<p>В заключение можно упомянуть горячие клавиши для работы в CodePen. В принципе, ничего неожиданного в списке сочетания клавиш для CodePen нет, кроме, может быть, единственного - новый проект (Pen) создается с помощью <kbd>Ctrl+P</kbd> (а ожидался стандартный <kbd>Ctrl+N</kbd>). Также заметно, что сочетания клавиш обозначены под Mac OS X (<em>это естественно - у автора проекта рабочий компьютер Mac</em>). Но это не значит, эти горячие клавиши не будут работать и под Windows:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_24_columns.jpg" alt="Модульная CSS-сетка из 24 колонок" /></p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-hotkeyes.jpg" alt="Список клавиатурных сокращений в CodePen" class="center-image" /></p>
+<p>Откуда такие величины - 12, 16 и 24 колонки? Во-первых, они взяты из математических расчетов, на которых основана модульная сетка. А во-вторых, такие значения наиболее применимы на практике.</p>
 
-<h3 id="section">Заключение</h3>
+<p>Колонки разделяются между собой промежутками (<code>gutter</code>). Как правило, самые крайние отступы от колонок равны половине <strong>gutter</strong> - <strong>gutter/2</strong>.</p>
 
-<p>На этом статья о сервисе CodePen завершена. Конечно, можно было бы упомянуть о добавлении проектов Pen в <strong>Коллекции</strong>, о кнопке удаления Pen. Но я оставлю это в качестве “домашнего задания” для тех, кому это нужно.</p>
+<p>Колонки можно объединять между собой - две колонки объединить в одну, три колонки объединить в одну и так далее. В результате получаются ячейки сетки - блоки с контентом. Чтобы визуально разъяснить (<em>если еще непонятно</em>) этот вопрос, посмотрите на рисунок ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/css_module_grid.jpg" alt="Пример блочной верстки на основе CSS-сетки" /></p>
+
+<p>Вот и получается примерный вид блочной верстки страницы на основе модульной CSS-сетки.</p>
+
+<p>Ну, это было краткое теоретическое введение в модульные CSS-сетки. Задачей данной статьи не являются теоретические основы подобных сеток, так как уже давно написаны прекрасные материалы (<em>с не менее прекрасными иллюстрациями</em>) по этой теме другими людьми. В этой же статье мы попытаемся осуществить практическое применение таких сеток и воспользуемся одной из старейший из них - <strong>960 Grid System</strong> (сокращенное название - 960gs).</p>
+
+<h2 id="gs">Получение модульной сетки 960gs</h2>
+
+<p>Первым шагом необходимо получить копию заготовки (шаблон) данной модульной CSS-сетки. Для этого заходим на сайт проекта <a href="http://960.gs/" title="960gs">960gs</a> и скачиваем оттуда заготовку, нажав большую кнопку посередине с надписью - <strong>‘Big ol’DOWNLOAD button :)’</strong>. Получаем на свой компьютер архив с именем <code>960-Grid-System-master.zip</code>.</p>
+
+<p>Кстати, а почему такое название у этой модульной сетки - 960 Grid System? Все просто, здесь цифра 960 - это ширина блока-обертки <strong>container</strong> в 960px, наиболее приемлемая ширина страницы сайта для мониторов с разрешением 1024x768px. На время создания этой модульной CSS-сетки большинство сайтов делалось фиксированной ширины для наиболее популярного разрешения мониторов - 1024x768px.</p>
+
+<p>Разархивируем этот пакет и взглянем на его содержимое:</p>
+
+<ul>
+  <li>app_plugins</li>
+  <li>code</li>
+  <li>licenses</li>
+  <li>logo_files</li>
+  <li>sketch_sheets</li>
+  <li>templates</li>
+  <li>.gitignore</li>
+  <li>README.txt</li>
+</ul>
+
+<p>В папке <strong>app_plugins</strong> находятся плагины под два графических редактора - Fireworks и Photoshop. Цель плагинов - будучи установленными в эти программы, помогать создавать макеты сайтов на основе модульной сетки 960gs. Это помощь для дизайнеров, которые рисуют макеты будущих сайтов.</p>
+
+<p>В папке <strong>licenses</strong> располагаются тексты лицензий, под которыми распространяется данная модульная сетка.</p>
+
+<p>В директории <strong>logo_files</strong> находятся логотип 960 Grid System в разных форматах - <code>.ai</code>, <code>.eps</code>, <code>.png</code> и <code>.psd</code>. Как пишется сам автор 960gs - Nathan Smith, этот логотип был создан и предоставлен в бесплатное пользование всем желающим по многочисленным просьбам “трудящихся”.</p>
+
+<p>Есть также заготовки модульной сетки в виде <strong>линованной бумаги с колонкой для комментариев</strong>. Эти заготовки помещены в папку <strong>sketch_sheets</strong> в формате <code>.pdf</code> и готовы для того, чтобы их распечатать и пользоваться. Видимо, это тоже было сделано по просьбам “трудящихся”, которые любят создавать наброски макета на бумаге с помощью ручки или карандаша.</p>
+
+<p>А вот для настоящих IT-ов имеется директория <strong>templates</strong>, в которой расфасованы точно такие же макеты, но в электронном виде, под самые разные wireframe-программы. Количество впечатляет - тут и Balsamiq, и Photoshop, Firework и Illustrator; под Gimp на Linux и под Omnigraffle на Mac OS X; пользуйся не хочу, что называется.</p>
+
+<p>Но мы вернемся к самой главной папке, которую мы пропустили - <strong>code</strong>. Там находится то, ради чего мы и затеялись с этой модульной сеткой 960gs - готовые файлы с кодом этой самой сетки. Файлы формата HTML (<code>demo.html</code>, <code>demo_24_col.html</code>, <code>demo_24_col_rtl.html</code>, <code>demo_rtl.html</code>) можно посмотреть, но интереса они представляют мало - как понятно из их названия, это всего лишь демо-файлы. В папке <strong>img</strong> находятся три файла формата <code>.gif</code>: <code>12_col.gif</code>, <code>16_col.gif</code>, <code>24_col.gif</code>. Задача этих файлов - “подкладывать” их в виде фона для блока <code>.container_12</code> (или <code>.container_16</code> или <code>.container_24</code>) для того, чтобы удобно было визуально видеть эту самую сетку при верстке.</p>
+
+<p>Папка <strong>CSS</strong> имеет список файлов формата CSS:</p>
+
+<ul>
+  <li>960.css</li>
+  <li>960<em>12</em>col.css</li>
+  <li>960<em>12</em>col_rtl.css</li>
+  <li>960<em>16</em>col.css</li>
+  <li>960<em>16</em>col_rtl.css</li>
+  <li>960<em>24</em>col.css</li>
+  <li>960<em>24</em>col_rtl.css</li>
+  <li>960_rtl.css</li>
+  <li>demo.css</li>
+  <li>reset.css</li>
+  <li>reset_rtl.css</li>
+  <li>text.css</li>
+  <li>text_rtl.css</li>
+</ul>
+
+<p>… и подпапку <strong>min</strong>, в которой содержится точно такой же список файлов. Разница между первым и вторым списком в том, что первый список - это <strong>developer</strong>-версия, а второй - <strong>production</strong>-версия.</p>
+
+<p>Внимательный читатель спросит - а что это за суффикс странный у некоторых файлов CSS - <code>rtl</code>. Ну, даже новичкам (которые в теме) должно быть понятно, что это <code>right-to-left</code>, стили для создания дизайна, в котором текст пишется и располагается справа налево. Таки если вы не собираетесь иммигрировать на историческую родину, то эти стили вам никогда не пригодятся, по большому счету!</p>
+
+<p>Эти файлы формата CSS является тем самым, ради чего мы заходили на оф. сайт - это и сеть модульная сетка 960gs! Можно открыть их в HTML-редакторе и просмотреть исходный код - он очень короткий и простой.</p>
+
+<p>Построение верстки на основе модульной сетки 960gs производится с помощью классов, расположенных в главном файле <code>960_12_col.css</code> (или <code>960_16_col.css</code>, или <code>960_24_col.css</code>). Классов в модульной сетке 960gs не так уж много - точнее, их совсем мало:</p>
+
+<ul>
+  <li>.container<em>12 (.container</em>16, .container_24)</li>
+  <li>.grid_х</li>
+  <li>.push_х</li>
+  <li>.pull_х</li>
+  <li>.alpha</li>
+  <li>.omega</li>
+  <li>.prefix_х</li>
+  <li>.suffix_х</li>
+  <li>.clear</li>
+</ul>
+
+<p>Эти классы - своего рода рычаги, с помощью которых можно управлять созданием верстки:</p>
+
+<ul>
+  <li><strong>Класс</strong> <code>.container_12</code> создает блок-обертку шириной 960px, расположенную по центру окна браузера, состоящую из 12 колонок. Аналогично классы <code>.container_16</code> и <code>.container_24</code> также создают обертку шириной 960px, но состоящую из 16 и 24 колонок, соответственно.</li>
+  <li><strong>Класс</strong> <code>.grid_х</code> - это общее представление (<em>можно сказать - формула</em>) для создания ячеек модульной сетки. В качестве <code>х</code> может быть значение от 1 до 12 (в 12-колоночной сетке), от 1 до 16 (в 16-колоночной сетке), от 1 до 24 (в 24-колоночной сетке). Задав значение вместо <code>х</code>, создается ячейка шириной <code>х</code> колонок. То есть, <code>.grid_2</code> создает ячейку шириной 2 колонки; <code>.grid_10</code> - создает ячейку шириной в 10 колонок. Естественно, значение <code>х</code> не может превышать общее число колонок в контейнере. То есть, в контейнере с классом <code>.container_12</code> может быть класс <code>.grid_12</code>, но не больше. В контейнере с классом <code>.container_16</code> может быть класс <code>.grid_16</code>, но не больше. Аналогично с контейнером класса <code>.container_24</code>.</li>
+  <li><strong>Класс</strong> <code>.push_х</code> “сдвигает” ячейку вправо на указанное количество колонок. То есть, класс <code>.push_4</code> “отодвигает” ячейку вправо на 4 колонки.</li>
+  <li><strong>Класс</strong> <code>.pull_х</code> “сдвигает” ячейку влево на указанное количество колонок. Например, <code>.pull_3</code> сдвинет ячейку влево на три колонки.</li>
+  <li><strong>Классы</strong> <code>.alpha</code> и <code>.omega</code> просты - они убирают отступы у ячейки слева и справа, соответственно.</li>
+  <li><strong>Классы</strong> <code>.prefix_х</code> и <code>.suffix_х</code> добавляют пустое пространство (расширяют) ячейку слева и справа, соответственно.</li>
+  <li><strong>Класс</strong> <code>.clear</code> служит для “очистки” содержимого после плавающего блока.</li>
+</ul>
+
+<p>Давайте от теории перейдем к практике и создадим каркас обычного трех-колоночного макета, в котором “шапка” и “подвал” будут занимать всю ширину страницы:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/css_module_grid_simple_mockup.jpg" alt="Пример простого трех-колоночного макета" /></p>
+
+<p>Из скачанного архива <code>960-Grid-System-master.zip</code> нам потребуются файлы:</p>
+
+<ul>
+  <li><strong>text.css</strong> (<em>в нем находятся все правила по типографике</em>)</li>
+  <li><strong>reset.css</strong> (<em>файл сброса стилей для браузеров</em>)</li>
+  <li><strong>960_24_col.css</strong> (<em>модульная CSS-сетка на 24 колонок</em>)</li>
+  <li><strong>24_col.gif</strong> (фоновая картинка, рисующая 24 колонок в основном блоке <code>.container_24</code>)</li>
+</ul>
+
+<p>Выбираем их оттуда и раскладываем по папкам нашего собственного проекта:</p>
+
+<ul>
+  <li><strong>css</strong>:
+    <ul>
+      <li>text.css</li>
+      <li>reset.css</li>
+      <li>960<em>24</em>col.css</li>
+    </ul>
+  </li>
+  <li><strong>img</strong>:
+    <ul>
+      <li>24_col.gif</li>
+    </ul>
+  </li>
+</ul>
+
+<p>В шапке <code>header</code> файла <code>index.html</code> производим последовательное подключение полученных файлов. Только один из них - <code>style.css</code> - мы создадим самостоятельно, для написания своих собственных CSS-стилей. Все остальные файлы оставим без изменения - так и нужно поступать с файлами данного фреймворка (и не только этого):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/reset.css&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/text.css&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/960_24_col.css&quot;</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
+
+<p>Затем создадим HTML-структуру страницы, применив знания классов, которые были рассмотрены выше. Шапке сайта задаем класс <code>.grid_24</code>, чтобы она заняла всю ширину 24-колоночного блока. Затем создаем левый блок шириной в 8 колонок с помощью класса <code>.grid_8</code>, центральный блок шириной в 13 колонок с помощью класса <code>.grid_13</code>, правый блок шириной в 3 колонки через класс <code>.grid_3</code>. И внизу помещаем “подвал” сайта опять на всю ширину страницы с помощью класса <code>.grid_24</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_24&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- header --&gt;</span>
+    <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">&quot;grid_24&quot;</span><span class="nt">&gt;&lt;/header&gt;</span>
+  <span class="c">&lt;!-- content --&gt;</span>
+    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">&quot;grid_8 leftSideBar&quot;</span><span class="nt">&gt;&lt;/aside&gt;</span>
+    <span class="nt">&lt;main</span> <span class="na">class=</span><span class="s">&quot;grid_13&quot;</span><span class="nt">&gt;&lt;/main&gt;</span>
+    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">&quot;grid_3 rightSideBar&quot;</span><span class="nt">&gt;&lt;/aside&gt;</span>
+  <span class="c">&lt;!-- footer --&gt;</span>
+    <span class="nt">&lt;footer</span> <span class="na">class=</span><span class="s">&quot;grid_24&quot;</span><span class="nt">&gt;&lt;/footer&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
+
+<p>Все, совсем несложными движениями мы создали структуру страницы сайта. Осталось применить некоторое оформление к блокам, чтобы визуально их отличать:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_24</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/24_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">header</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.leftSideBar</span><span class="o">,</span> <span class="nc">.rightSideBar</span><span class="o">,</span> <span class="nt">main</span><span class="p">{</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.leftSideBar</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">main</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">180</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.rightSideBar</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">300</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">footer</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">7</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На официальном сайте проекта 960gs имеется ссылка на слайд-шоу, в котором есть несколько интересных примеров создания разметки с помощью 960gs. Давайте разберем их - кусочки кода, которые можно применить на практике (кстати, именно такое предназначение имеют сниппеты).</p>
+
+<h2 id="section">Простой пример колонок</h2>
+
+<p>Очень простой пример создания двух рядов с тремя и двумя ячейками на всю ширину страницы:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_several_grids.jpg" alt="Два ряда с колонками на всю ширину страницы" /></p>
+
+<p>Для этого создаем такую разметку:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- header --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      1/3 ширины блока .container
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      1/3 ширины блока .container
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      1/3 ширины блока .container
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;clear&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- гадость! --&gt;</span>
+  <span class="c">&lt;!-- footer --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      1/2 ширины блока .container
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;p&gt;</span>
+      1/2 ширины блока .container
+    <span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
+
+<p>… и CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/12_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">=</span><span class="s2">&quot;grid_4&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">=</span><span class="s2">&quot;grid_6&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-1">Ячейки, обернутые другой ячейкой</h2>
+
+<p>Простой пример обертывания ячеек с сетке еще одной - общей ячейкой, которая может служить для придания общего фона для всех элементов внутри блока. Стоит обратить внимание на применение двух классов <code>alpha</code> и <code>omega</code> для первого и последнего блоков. С помощью этих классов убираются отступы слева и справа от этих крайних блоков. Если не добавить эти классы, то верстка поломается:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_wrap_grids.jpg" alt="Обертывание ячеек в 960gs" /></p>
+
+<p>HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- content --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;wrap&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_12&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3 alpha&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Part_1
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Part_2
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Part_3
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3 omega&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Part_4
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
+
+<p>… и CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/12_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;wrap&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid_3&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="gs-1">Смещение ячеек в 960gs</h2>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_rearrangement_grids.jpg" alt="Перемещение ячеек в сетке 960gs" /></p>
+
+<p>Интересный пример перемещения ячеек в модульной сетке 960gs. Если внимательно посмотреть на пример, то станет заметно, что фиолетовый блок с надписью Last (последний) стоит на первом месте в ряду. Достигнуто это благодаря двум классам <code>.push</code> и <code>.pull</code>. Если не вдаваться в код, стоящий за этими двумя классами, то их назначение запомнить легко: <code>push</code> - толкать (толкаем, двигаем ячейки слева направо), <code>pull</code> - тянуть (тянем, двигаем ячейки справа налево). В этом примере было произведено взаимное замещение двух ячеек - они поменялись местами.</p>
+
+<p>HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- header --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;first&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_6 push_6&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_2 alpha&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Grid_1
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_2&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Grid_2
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_2 omega&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Grid_3
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- content --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;last&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_6 pull_6&quot;</span><span class="nt">&gt;</span>
+    Last
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
+
+<p>… CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/12_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid_2&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">180</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="gs-2">Создание рамки вокруг ячейки в 960gs</h2>
+
+<p>Также интересный пример создания рамки вокруг ячейки с изображением. Такая рамка с помощью обычного CSS-кода создается очень легко и просто; а вот в системе 960gs это достаточно непростая задача. Для этого придется в одну ячейку вложить блок, для которого установить границу, которая будет служить рамкой для картинки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_border_grids.jpg" alt="Ячейка с рамкой в 960gs" /></p>
+
+<p>HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- content --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;top&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_7&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;border&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, voluptatum, minus dolor eaque officiis quis placeat commodi unde minima recusandae amet velit dolorem perferendis quibusdam dolorum! Saepe iste nisi nobis!
+      <span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, iusto, id veniam non quas nesciunt laborum error debitis ipsam delectus sequi incidunt sunt et iste nulla deserunt vitae aut beatae.
+      <span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, ab, totam, labore, odio accusamus excepturi repellendus porro deserunt ut nisi molestiae molestias quibusdam accusantium saepe doloribus perspiciatis aliquid voluptatum sit?
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;top&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_5&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;border&quot;</span> <span class="na">class=</span><span class="s">&quot;banner&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
+
+<p>… CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;border&quot;</span><span class="o">]</span><span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">10px</span> <span class="k">solid</span> <span class="m">#e5e5e6</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">280px</span><span class="p">;</span>
+<span class="p">}</span>
+
+  <span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;border&quot;</span><span class="o">]</span> <span class="nt">p</span><span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;border&quot;</span> <span class="o">][</span><span class="nt">class</span><span class="o">=</span><span class="s2">&quot;banner&quot;</span><span class="o">]</span><span class="p">{</span>
+    <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/weiss.jpg)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">no-repeat</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<h2 id="gs-3">Ячейка с обтеканием в 960gs</h2>
+
+<p>И напоследок еще один пример, на этот раз с примером отмены обтекания. Обратите внимание на два последних ряда. В предпоследнем намеренно сделано три ячейки, чтобы ширина страницы не была заполнена до конца. После этого ряда добавлен блок с классом <code>clear</code>, чтобы предотвратить смещение ячеек следующего ряда в это пустое пространство. Это одно из предназначений класса <code>clear</code> в системе 960gs.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_clear_grids.jpg" alt="Отмена обтекания ячейки в 960gs" /></p>
+
+<p>HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_24&quot;</span><span class="nt">&gt;</span>
+  <span class="c">&lt;!-- header --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_24 navbar&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_12 push_2 alpha header&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 push_5 omega header&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- content --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_24 content&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">&quot;grid_10 alpha leftColumn&quot;</span><span class="nt">&gt;&lt;/aside&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4 pull_9 label&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_11 push_3 rightColumn omega&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- subtopics --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 topic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 topic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 topic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;clear&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="c">&lt;!-- вот он зачем здесь, этот странный блок! --&gt;</span>
+  <span class="c">&lt;!-- subtopics --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
+
+<p>… CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_24</span><span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/24_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.navbar</span><span class="p">{</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.header</span><span class="p">{</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">7</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.content</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">15px</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.leftColumn</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">300</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.rightColumn</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">180</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">150px</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-60px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.label</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.news</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.topic</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">80px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.subtopic</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">30</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">80px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.border</span><span class="p">{</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Вот и все. Объемной получилась статейка!</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-31T00:00:00+04:00"><a href="http://zencoder.ru/browser/conditional%20comments/">March 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/browser/conditional%20comments/" rel="bookmark" title="Что такое условные комментарии" itemprop="url">Что такое условные комментарии</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Короткая статья, посвященная условным комментариям. Такие комментарии до сих пор активно применяются на практике и имеют отношение исключительно к браузерам семейства Internet Explorer (IE).</p>
+</blockquote>
+
+<p>Точнее - условные комментарии и являются изобретением фирмы ООО “Микрософт”, призванным помочь браузерам этой конторы более-менее адекватно обрабатывать веб-сайты. Откуда такое странное название - условный комментарий? Его можно расшифровать как слияние двух слов:</p>
+
+<ul>
+  <li>условие;</li>
+  <li>комментарий;</li>
+</ul>
+
+<p><strong>Условие</strong> - это как обычное условие <strong>if</strong> в любом языке программирования (в том же JavaScript, к примеру). А <strong>комментарий</strong> - это как обычный комментарий в HTML-документе:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span> <span class="err">Это</span> <span class="err">комментарий</span> <span class="err">в</span> <span class="nt">HTML</span> <span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
+
+<h2 id="section">Синтаксис условного комментария</h2>
+
+<p>Сочетание условия и комментария в итоге получило название условного комментария. Синтаксис можно представить примером ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">8</span><span class="o">]&gt;</span>
+  <span class="o">...</span>
+<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
+
+<p>Новичок, если увидит впервые такой синтаксис, может удивиться и устрашиться его сложного написания (таким новичком был я когда-то, пока не привык). Тем более, его сложно запомнить для написания вручную, проще просто копировать. Но на самом деле в условных комментариях все предельно просто.</p>
+
+<p>Начинается (<code>if</code>) условный комментарий со строки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">8</span><span class="o">]&gt;</span>
+  <span class="o">&lt;</span><span class="nt">p</span><span class="o">&gt;...</span> <span class="err">после</span> <span class="err">которой</span> <span class="err">идет</span> <span class="nt">HTML-</span><span class="err">код</span><span class="o">.</span> <span class="err">Заканчивается</span> <span class="o">(&lt;</span><span class="nt">strong</span><span class="o">&gt;</span><span class="nt">endif</span><span class="o">&lt;/</span><span class="nt">strong</span><span class="o">&gt;)</span> <span class="err">условный</span> <span class="err">комментарий</span> <span class="err">строкой</span><span class="o">:&lt;/</span><span class="nt">p</span><span class="o">&gt;</span>
+<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
+
+<p>Реальный рабочий пример условного комментария можно привести ниже. Например, таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">8</span><span class="o">]&gt;</span>
+  <span class="o">&lt;</span><span class="nt">link</span> <span class="nt">rel</span><span class="o">=</span><span class="s2">&quot;stylesheets&quot;</span> <span class="nt">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span> <span class="nt">href</span><span class="o">=</span><span class="s2">&quot;css/ie.css&quot;</span> <span class="nt">media</span><span class="o">=</span><span class="s2">&quot;screen, projection&quot;</span><span class="o">&gt;</span>
+<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
+
+<p>Расшифровать подобный условный комментарий можно таким образом: “<em>если браузером посетителя является Internet Explorer версии 8 или ниже, то следует загрузить таблицу стилей <code>ie.css</code>, расположенную по адресу <code>css/</code></em>”.</p>
+
+<h2 id="section-1">Цель создания условных комментариев</h2>
+
+<p>Условные комментарии понимают только браузеры семейства IE. Для других браузеров (таких как Chrome, Firefox или Opera) такие строки являются обычным HTML-комментарием, который они просто опускают (проходят мимо него).</p>
+
+<p>В этом и заключается цель создания условных комментариев - сделать так, чтобы браузеры IE смогли загружать таблицы стилей, предназначенные только для них; в то время как остальные браузеры не загружали бы эти таблицы.</p>
+
+<p>Зачем понадобилась такая особенность именно для браузеров IE, много говорить не надо. Все хорошо знают, что IE версии 6-9 отображают HTML-страницы не всегда в соответствии с веб-стандартами.</p>
+
+<p>Поэтому был придуман обходной маневр, призванный не нагружать “правильные” браузеры Chrome, Firefox или Opera лишним кодом, предназначенным только для браузера IE.</p>
+
+<h2 id="section-2">Ключевые слова в условных комментариях</h2>
+
+<p>Условие в условном комментарии создается с помощью <strong>специальных слов</strong>, запомнить значение которых очень легко, так как их <strong>всего четыре</strong>:</p>
+
+<ul>
+  <li><code>lt</code> - меньше (<code>&lt;</code>)</li>
+  <li><code>lte</code> - меньше или равно (<code>&lt;=</code>)</li>
+  <li><code>gt</code> - больше (<code>&gt;</code>)</li>
+  <li><code>gte</code> - больше или равно (<code>&gt;=</code>)</li>
+</ul>
+
+<p>То есть, запись вида:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">7</span><span class="o">]&gt;</span>
+  <span class="o">...</span>
+<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
+
+<p>… читается как: “<em>если браузер IE версии 7 или ниже (версия 6 или 5), то применить код внутри комментария</em>”.</p>
+
+<p>Или же:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lt</span> <span class="nt">IE</span> <span class="nt">9</span><span class="o">]&gt;</span>
+  <span class="o">...</span>
+<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
+
+<p>… “<em>если версия браузера IE меньше 9, то применить код внутри комментария.</em>”</p>
+
+<p>С записями - IE 6, IE 7, IE 8, IE 9 - думаю, все должно быть понятно без объяснений: Internet Explorer 6 (IE 6), Internet Explorer 7 (IE 7), Internet Explorer 8 (IE 8), Internet Explorer 9 (IE 9).</p>
+
+<h2 id="section-3">Заключение</h2>
+
+<p>Более подробно и обстоятельно об условных комментариях можно почитать из первоисточника (очень логично и правильно так сделать) - <a href="http://msdn.microsoft.com/ru-RU/library/ms537512.aspx" title="About conditional comments">About conditional comments</a>. Правда, оригинал написан на языке Шекспира, но кто не владеет им, может разобраться и так.</p>
+
+<p>Стоит также заметить, что на оф. сайте Microsoft говориться о том, что в браузере IE начиная с версии 10 прекращается поддержка условных комментариев - <a href="http://msdn.microsoft.com/ru-ru/library/ie/hh801214(v=vs.85).aspx" title="Условные комментарии более не поддерживаются">Условные комментарии более не поддерживаются</a>. То есть, браузер IE10 не сможет понять условный комментарий в HTML-документе и пропустит его, посчитав обычным комментарием.</p>
+
+<p>Насколько я могу лично судить о таком шаге, вызван он тем, что в компании Microsoft уверены в том, что браузер версии 10 сможет правильно работать в соответствии с W3C-стандартами и “костыль” в виде условного комментария ему больше не требуется.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-27T00:00:00+04:00"><a href="http://zencoder.ru/css/background-repeat-round-space/">March 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/background-repeat-round-space/" rel="bookmark" title="Background-repeat и его значения round и space" itemprop="url">Background-repeat и его значения round и space</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Помимо хорошо известных четырех значений свойства <code>background-repeat</code> - <code>repeat</code>, <code>no-repeat</code>, <code>repeat-x</code>, <code>repeat-y</code>, в спецификации CSS3 появились еще два, с которыми я познакомился совсем недавно.</p>
+</blockquote>
+
+<p>Перечислим их:</p>
+
+<ul>
+  <li><code>background-repeat: round</code></li>
+  <li><code>background-repeat: space</code></li>
+</ul>
+
+<p>Отлично, скажете вы! Ну и что, что же это за свойства? Мало прежних четырех? Давайте разберемся сначала, что это за свойства, а уже потом будем говорить, нужны они или не нужны.</p>
+
+<h2 id="background-repeat-repeat">Свойство background-repeat: repeat</h2>
+
+<p>Для начала посмотрим, как работает простое и привычное нам значение <code>repeat</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rnd</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">700px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(img/ChristinaVujnich.jpg)</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="k">top</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="k">repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/background-repeat_repeat.jpg" alt="Свойство background-repeat: repeat" class="center-image" /></p>
+
+<p>Видим, как браузер аккуратно сделал все, что мы от него требовали - размножил фоновое изображение по горизонтали и по вертикали. Что не вместилось в блок, то было обрезано. Получилось несколько некрасиво; но зато - что требовали.</p>
+
+<h2 id="background-repeat-round">Свойство background-repeat: round</h2>
+
+<p>В спецификации CSS3 появилось одно из двух значений свойства <code>background-repeat</code>, которое делает попытку исправить ситуацию и выполнять “заливку” фона более красиво и “интеллектуально”. Это значение называется <code>round</code> - от английского округлять.</p>
+
+<p>Работает оно по следующему принципу - изображение размножается по вертикали и горизонтали фона блока, как и прежде. Но при этом браузер определяет, сколько раз удалось поместить изображение в блок без обрезки (по вертикали и по горизонтали). Сколько “целых” раз удалось поместить - столько раз он и помещает. А с оставшимся пустым пространством он поступает так - растягивает изображение по вертикали и горизонтали, чтобы равномерно заполнить это пустое пространство.</p>
+
+<p>Пример показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rnd</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">700px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(img/ChristinaVujnich.jpg)</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="k">top</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="n">round</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/background-repeat_round.jpg" alt="Свойство background-repeat: round" class="center-image" /></p>
+
+<p>Результат получился не слишком красивый, конечно. Но зачет - попытка сделана. А если быть более точным и без всякого “юмора”, то такой способ хорошо подойдет для фоновых изображений небольшого размера.</p>
+
+<h2 id="background-repeat-space">Свойство background-repeat: space</h2>
+
+<p>Еще одно значение свойства <code>background-repeat</code> из спецификации CSS3, призванное решить проблему красивого размещения фонового изображения в блоке элемента, это значение <code>space</code>.</p>
+
+<p>Принцип работы этого свойства аналогичен значению <code>round</code> - браузер также считает количество целых “вхождений” изображения в фон элемента. Но вот с пустым пространством он поступает несколько иначе. Браузер равномерно распределяет его между изображениями (размер которых он оставляет неизменными).</p>
+
+<p>Чтобы было понятно, о чем идет речь, посмотрите на пример ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rnd</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">700px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(img/ChristinaVujnich.jpg)</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="k">top</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="n">space</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/background-repeat_space.jpg" alt="Свойство background-repeat: space" class="center-image" /></p>
+
+<p>Мною намеренно были изменены размер блока, для которого “прописывалось” фоновое изображение; и размер самого изображения также. Все было сделано с целью более наглядного представления, как работает значение <code>space</code> для свойства <code>background-repeat</code>.</p>
+
+<p>На рисунке выше хорошо видно, как браузер равномерно распределил пустое пространство по вертикали и горизонтали между изображениями.</p>
+
+<h2 id="round--space----">Значения Round &amp; Space - поддержка браузерами</h2>
+
+<p>В заключение осталось упомянуть последнее - какими браузерами поддерживаются оба значения свойства <code>background-repeat</code>. Похвастаться особо нечем - только два браузера на момент написания этой статьи поддерживают <code>space</code> и <code>round</code>. Первый - это Google Chrome начиная с <code>v.32</code>. А вот второй браузер, который может похвастаться (держитесь крепче за стул!) - это Internet Explorer v10.</p>
+
+<h2 id="modernizr">Поддержка с помощью Modernizr</h2>
+
+<p>В библиотеку Modernizr включена (благодаря ходатайству Louis Lazaris) поддержка значений <code>round</code> и <code>space</code> CSS-свойства <code>background-repeat</code> с помощью соответствующих классов <code>bgrepeatspace</code> и <code>bgrepeatround</code>. Поэтому, теперь можно использовать эту библиотеку для определения возможности поддержки в браузерах.</p>
+
+<p>Например, таким кодом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.element</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">550px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span> <span class="sx">url(bg.jpg)</span> <span class="k">repeat</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span> <span class="c">/* for all browsers */</span>
+<span class="p">}</span>
+
+<span class="nc">.bgrepeatspace</span> <span class="nc">.element</span> <span class="p">{</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="n">space</span><span class="p">;</span> <span class="c">/* for supporting browsers */</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section">Заключение</h2>
+
+<p>Вот, в принципе, и все по значениям <code>round</code> и <code>space</code> свойства <code>background-repeat</code>. В статье активно использовались мысли (и даже код, когда шла речь о Modernizr) из источника:</p>
+
+<p><a href="http://www.impressivewebs.com/space-round-css3-background/" title="CSS3′s ‘space’ and ‘round’ Values for background-repeat">CSS3′s ‘space’ and ‘round’ Values for background-repeat</a></p>
+
+<p>На этом все.</p>
 
 <hr />
 
@@ -1208,6 +1640,12 @@
       <li>
         
           <a href="http://zencoder.ru/page42">42</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page43">43</a>
         
       </li>
     

@@ -144,223 +144,461 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-12-27T00:00:00+04:00"><a href="http://zencoder.ru/css/stylus-introduction/">December 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-01-16T00:00:00+03:00"><a href="http://zencoder.ru/css/rupture-breakpoints-stylus/">January 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~7 minutes
+        Reading time ~5 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/stylus-introduction/" rel="bookmark" title="Stylus - знакомство с препроцессором" itemprop="url">Stylus - знакомство с препроцессором</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/rupture-breakpoints-stylus/" rel="bookmark" title="Rupture - система breakpoint под Stylus" itemprop="url">Rupture - система breakpoint под Stylus</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Настало время познакомиться с препроцессором Stylus. Ниже привожу перевод статьи от David Walsh, посвященную малоизвестному, но крайне полезному препроцессору Stylus. Оригинал статьи размещен здесь - <a href="http://blog.teamtreehouse.com/getting-started-stylus" title="Getting Started with Stylus">Getting Started with Stylus</a></p>
+  <p>Краткое знакомство с системой контрольных точек Rupture под препроцессор Stylus.</p>
 </blockquote>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/12/stylus-logo.png" alt="Stylus" class="center-image" /></p>
-
-<p>В среде web-разработчиков можно часто и постоянно слышать только о двух препроцессорах: <a href="http://sass-lang.com/" title="Sass">Sass</a> и <a href="http://lesscss.org/" title="LESS">LESS</a>. Однако, существует еще один препроцессор, о котором слышно совсем не так часто - это <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a>. При редизайне Mozilla Developer Network мною был выбран Stylus по нескольким причинам:</p>
+<p>Ниже приведено краткое и сбивчивое описание (<em>знакомство</em>) с системой <code>breakpoints</code> под препроцессор Stylus. Оно основано на двух материалах, оба являющихся официальными:</p>
 
 <ul>
-  <li>так как Stylus основан на <a href="http://nodejs.org/" title="Node.js">Node.js</a>, то отпадает необходимость в использовании сторонней технологии (Sass требует для своей работы Ruby)</li>
-  <li>Stylus предоставляет набор <a href="https://github.com/LearnBoost/stylus/blob/master/docs/js.md" title="JavaScript API">JavaScript API</a>, что делает возможным дальнейшую настройку этого инструмента</li>
-  <li>синтаксис Stylus не нуждается в скобках (brackets), запятых (comma), двоеточиях (colons), точках с запятыми (semicolon) - он целиком и полностью основан на использовании табуляции и пробелов; но если необходимо использовать любой из видов пунктуаций, то его можно легко применить в Stylus - компиляция произойдет корректно</li>
-  <li>под препроцессор Stylus имеется готовая библиотека миксинов (mixin) под названием <a href="https://github.com/visionmedia/nib" title="Nib">Nib</a></li>
+  <li><a href="http://jenius.github.io/rupture/" title="Rupture">rupture on GitHub</a></li>
+  <li><a href="https://github.com/jenius/rupture" title="Rupture">Rupture - official project</a></li>
 </ul>
 
-<h2 id="stylus">Установка Stylus</h2>
+<p>А больше в Сети материалов по Rupture и нет, даже на английском языке. Есть, правда, очень краткий - на французском, которым я совсем не владею.</p>
 
-<p>Препроцессор Stylus является Open Source проектом, расположенным на GitHub, поэтому его можно легко установить как из исходных файлов, так и с помощью менеджера пакетов <code>npm</code>:</p>
+<p>Rupture был создан на примере плагина <a href="https://github.com/lolmaus/breakpoint-slicer" title="Breakpoint Slicer">Breakpoint Slicer</a> под препроцессор Sass.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">stylus</span> <span class="n">-g</span></code></pre></div>
+<h2 id="rupture">Шкала Rupture</h2>
 
-<p>CSS-файлы, созданные при помощи синтаксиса Stylus, должны иметь расширение <code>.styl</code> и могут располагаться в любом месте проекта. Препроцессор Stylus не имеет какого-либо конфигурационного файла, для начала компиляции достаточно запустить утилиту командной строки <code>stylus</code> с минимальным набором ключей:</p>
+<p>Основа Rupture - шкала значений <code>breakpoints</code>, которая так и называется - <code>scale</code>. Фактически <code>scale</code> - это объект со своими свойствами и методами. Перечень контрольных точек (<code>breakpoints</code>) - это массив значений, передаваемых объекту <code>scale</code>.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">app</span><span class="p">/</span><span class="n">main</span><span class="p">.</span><span class="n">styl</span> <span class="p">-</span><span class="n">-out</span> <span class="p">/</span><span class="n">dist</span> <span class="p">-</span><span class="n">-compress</span></code></pre></div>
+<p>Ниже представлена <code>scale</code> по умолчанию (<em>но которую можно легко изменить при необходимости</em>):</p>
 
-<p>Представленная выше команда выполняет компиляцию исходного stylus-файла <code>main.styl</code> в директорию <code>/dist</code> с тем же самым именем <code>main.styl</code>. Другими словами, файл <code>main.styl</code> компилируется в файл <code>main.css</code> и помещается в директорию <code>/dist</code>.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">scale</span> <span class="p">=</span> <span class="n">0</span> <span class="n">400px</span> <span class="n">600px</span> <span class="n">800px</span> <span class="n">1050px</span> <span class="n">1800px</span></code></pre></div>
 
-<p>Утилита <code>stylus</code> может запускаться не только для однократной компиляции, но и отслеживать изменения файлов, выполняя компиляцию на лету; для этого имеется ключ <code>--watch</code>:</p>
+<p>Количество этих значений - <code>0, 400px, 600px 800px, 1050px</code> - может быть необязательно равно 5 (пяти). Их может быть неограниченное количество - столько, сколько нужно.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="p">-</span><span class="n">-watch</span> <span class="n">app</span><span class="p">/</span><span class="n">main</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
+<p>Перечень значений <code>breakpoints</code>, показанных выше, можно представить в виде диапазонов; каждому диапазону можно присвоить порядковый номер <code>slice number</code> и “обозвать” как <code>slice</code>:</p>
 
-<p>Как можно догадаться, у программы <code>stylus</code> имеется гораздо больше опций, с полным списком которых можно ознакомиться здесь - <a href="https://github.com/LearnBoost/stylus/blob/master/docs/executable.md" title="Executable">Executable</a>. В частности, с помощью нужных ключей можно выполнять обратную конвертацию из CSS в Stylus, сравнивать ввод\вывод и многое дугое.</p>
+<p><img src="http://zencoder.ru/images/uploads/2015/01/scale_rupture.png" alt="Rupture Scale" /></p>
+
+<p>Подключать библиотеку Rupture в проект <strong>нет необходимости</strong>. Достаточно установить библиотеку командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">rupture</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
+
+<p>После этого Rupture готова к использованию. Можно запустить компиляцию из командной строки (<em>не рекомендуется</em>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">-u</span> <span class="n">rupture</span> <span class="n">-c</span> <span class="n">example</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
+
+<p>Здесь <code>-c</code> - это сокращение от <code>--compress</code>, то есть - минифицировать CSS-код на выходе. Почему не рекомендуется использовать командную строку? Просто для этих целей лучше (<em>и целесообразнее</em>) использовать Gulp.</p>
+
+<h2 id="rupture-1">Миксины Rupture</h2>
+
+<p>В Rupture все управляется <strong>миксинами</strong>. Есть заранее созданный набор миксинов, которые необходимо применять для определенного случая (<code>breakpoints</code>).</p>
+
+<p>Все миксины Rupture делятся на <strong>два вида</strong>:</p>
+
+<ul>
+  <li><strong>простые миксины</strong> для практического использования каждый день</li>
+  <li><strong>сложный набор миксинов</strong>, которые фактически представляют из себя <code>grid sistem</code></li>
+</ul>
+
+<p>В этом кратком обзоре я буду рассматривать только “практические” миксины. Более сложные - нет, ибо “не зачем”.</p>
+
+<h2 id="rupture-2">Набор практических миксинов Rupture</h2>
+
+<p>Первые три миксина - <strong>наиболее применимые</strong> и удобные на практике.</p>
+
+<p><strong>+above(measure)</strong>
+- если размер окна браузера <strong>больше</strong> указанного значения (<code>&gt; measure</code>), то применить стили
+- <code>+from-width(measure)</code> - это алиас миксина <strong>+above(measure)</strong></p>
+
+<p><strong>+below(measure)</strong>
+- если размер окна браузера <strong>меньше</strong> указанного значения (<code>&lt; measure</code>), то применить стили
+- <code>+to-width(measure)</code> - это алиас миксина <strong>+below(measure)</strong></p>
+
+<p><strong>+between(measure1, measure2)</strong>
+- если размер окна браузера находится в указанных пределах (<code>measure1 &lt;= between &lt;= measure2</code>), то применить стили</p>
+
+<p>Дальше пошли миксины - “по обстоятельствам”.</p>
+
+<p><strong>+at(measure)</strong>
+- если размер окна браузера <code>&gt;=</code> указанного значения, то применить стили</p>
+
+<p><strong>+mobile()</strong>
+- если размер окна браузера <code>&lt;= 400px</code>, то применить стили
+- <code>rupture.mobile-cutoff</code> - переменная, в которой хранится значение для миксина <code>mobile()</code></p>
+
+<p><strong>+tablet()</strong>
+- если размер окна браузера находится в пределах <code>&gt;= 1050px</code> и <code>&lt; 400px</code>, то применить стили</p>
+
+<p><strong>+desktop()</strong>
+- если размер окна браузера <code>&gt; 1050px</code>, то применить стили
+- <code>rupture.desktop-cutoff</code> - переменная, в которой хранится значение для миксина <code>desktop()</code></p>
+
+<p><strong>+hd()</strong>
+- если размер окна браузера <code>&gt;=</code> 1800px, то применить стили
+- <code>rupture.hd-cutoff</code> - переменная, в которой хранится значение для миксина <code>hd()</code></p>
+
+<p><strong>+retina()</strong>
+- если плотность размещения пикселей больше 1.5 <code>(retina display)</code>, то применить стили</p>
+
+<p><strong>+landscape()</strong>
+- если у окна браузера <strong>высота меньше, чем ширина</strong>, то применить стили</p>
+
+<p><strong>+portrait()</strong>
+- если у окна браузера <strong>высота больше, чем ширина</strong>, то применить стили</p>
+
+<h2 id="rupture-3">Настройка Rupture</h2>
+
+<p>Как любая система, Rupture имеет свои собственные настройки. Которые можно задавать в файле проекта в виде <strong>переменных</strong> с их значениями.</p>
+
+<p>К примеру, Rupture имеет возможность <strong>автоматического конвертирования</strong> значений <code>breakpoints</code> из пикселей (px) в <code>em</code>. Как говорится в официальном руководстве, в веб-разработке существует мнение, что задавать контрольные точки в <code>em</code> - это хорошая практика.</p>
+
+<p>Поэтому, такой пример иллюстрирует <strong>включение автоматической конвертации</strong> из <code>px</code> в <code>em</code>; и задание базового размера шрифта в 18px (<em>базовый размер шрифта равен 16px</em>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">rupture</span><span class="nc">.enable-em-breakpoints</span> <span class="o">=</span> <span class="nt">true</span>
+<span class="nt">base-font-size</span> <span class="o">=</span> <span class="nt">18px</span></code></pre></div>
+
+<p><strong>rupture.scale</strong> - одна из <strong>важнейших переменных</strong> Rupture. В этой переменной можно в виде массива переопределить значения breakpoints.</p>
+
+<p>Например, таким образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">rupture</span><span class="p">.</span><span class="n">scale</span> <span class="p">=</span> <span class="n">0</span> <span class="n">380px</span> <span class="n">768px</span> <span class="n">1200px</span></code></pre></div>
+
+<h2 id="rupture-4">Пример работы Rupture</h2>
+
+<p>Перейдем от теории к практике и рассмотрим маленький рабочий пример - как будет <em>отрабатывать</em> Rupture:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">div.wrapper
+  div.left
+  div.right</code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;nib&#39;</span>
+<span class="k">@import</span> <span class="s1">&#39;jeet&#39;</span>
+
+<span class="o">//</span> <span class="nt">Partials</span>
+<span class="k">@import</span> <span class="s1">&#39;partials/*.styl&#39;</span>
+
+<span class="nt">rupture</span><span class="nc">.enable-em-breakpoints</span> <span class="o">=</span> <span class="nt">true</span>
+
+<span class="nc">.wrapper</span>
+  <span class="nt">center</span><span class="o">()</span>
+
+<span class="nc">.left</span>
+  <span class="nt">col</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">3</span><span class="o">)</span>
+  <span class="nt">height</span> <span class="nt">20vh</span>
+  <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">10</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">(</span><span class="nt">800px</span><span class="o">)</span>
+    <span class="nt">col</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span>
+    <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">20</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">(</span><span class="nt">400px</span><span class="o">)</span>
+    <span class="nt">stack</span><span class="o">()</span>
+    <span class="nt">margin-bottom</span> <span class="nt">10px</span>
+
+<span class="nc">.right</span>
+  <span class="nt">col</span><span class="o">(</span><span class="nt">2</span><span class="o">/</span><span class="nt">3</span><span class="o">)</span>
+  <span class="nt">height</span> <span class="nt">20vh</span>
+  <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">20</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">(</span><span class="nt">800px</span><span class="o">)</span>
+    <span class="nt">col</span><span class="o">(</span><span class="nt">3</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span>
+    <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">30</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">(</span><span class="nt">400px</span><span class="o">)</span>
+    <span class="nt">stack</span><span class="o">()</span></code></pre></div>
+
+<p>Комментировать вышеприведенный код мне как-то не особого желания. Он очень простой и наглядный - слова тут излишни.</p>
+
+<p>Кроме одного вопроса, который чуть не забыл упомянуть! В этом коде (<em>и всех примерах выше</em>) применялось точное значение для миксинов - <code>+below(400px)</code>, к примеру.</p>
+
+<p>Но ничто не мешает использовать любые <strong>произвольные переменные</strong>, в которые можно “загружать” нужные значения. К примеру, код выше можно преобразовать таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;nib&#39;</span>
+<span class="k">@import</span> <span class="s1">&#39;jeet&#39;</span>
+
+<span class="o">//</span> <span class="nt">Partials</span>
+<span class="k">@import</span> <span class="s1">&#39;partials/*.styl&#39;</span>
+
+<span class="o">//</span> <span class="nt">Breakpoint</span> <span class="nt">Variables</span>
+<span class="o">$</span><span class="nt">bp1</span> <span class="o">=</span> <span class="nt">800px</span>
+<span class="o">$</span><span class="nt">bp2</span> <span class="o">=</span> <span class="nt">400px</span>
+
+<span class="nt">rupture</span><span class="nc">.enable-em-breakpoints</span> <span class="o">=</span> <span class="nt">true</span>
+
+<span class="nc">.wrapper</span>
+  <span class="nt">center</span><span class="o">()</span>
+
+<span class="nc">.left</span>
+  <span class="nt">col</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">3</span><span class="o">)</span>
+  <span class="nt">height</span> <span class="nt">20vh</span>
+  <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">10</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">($</span><span class="nt">bp1</span><span class="o">)</span>
+    <span class="nt">col</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span>
+    <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">20</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">($</span><span class="nt">bp2</span><span class="o">)</span>
+    <span class="nt">stack</span><span class="o">()</span>
+    <span class="nt">margin-bottom</span> <span class="nt">10px</span>
+
+<span class="nc">.right</span>
+  <span class="nt">col</span><span class="o">(</span><span class="nt">2</span><span class="o">/</span><span class="nt">3</span><span class="o">)</span>
+  <span class="nt">height</span> <span class="nt">20vh</span>
+  <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">20</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">($</span><span class="nt">bp1</span><span class="o">)</span>
+    <span class="nt">col</span><span class="o">(</span><span class="nt">3</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span>
+    <span class="nt">background-color</span> <span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span><span class="nt">30</span><span class="o">%)</span>
+  <span class="o">+</span><span class="nt">below</span><span class="o">($</span><span class="nt">bp2</span><span class="o">)</span>
+    <span class="nt">stack</span><span class="o">()</span></code></pre></div>
+
+<h2 id="rupture-5">Заключение о Rupture</h2>
+
+<p>Вот я и познакомился с Rupture. Что можно сказать - система мне (<em>в очередной раз - все из мира Stylus</em>) понравилась, она очень проста и наглядна. Достаточно полчаса, чтобы ознакомиться с ее возможностями и начать применять на практике.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-01-15T00:00:00+03:00"><a href="http://zencoder.ru/css/jeet-gs-first-introduction/">January 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/jeet-gs-first-introduction/" rel="bookmark" title="Jeet.gs - первое знакомство" itemprop="url">Jeet.gs - первое знакомство</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h2 id="section">Вступление</h2>
 
 <blockquote>
-  <p>Но приступим к рассмотрению самого главного, ради чего и затевался данный перевод - синтаксису и возможностям препроцессора Stylus</p>
+  <p>Сегодня приступим к знакомству с системой построения сеток jeet.gs.</p>
 </blockquote>
 
-<h2 id="stylus-1">Основы синтаксиса Stylus</h2>
+<p>Читатели могут спросить - отлично, но чем плоха <a href="http://susy.oddbird.net/" title="Susy">Susy</a>? Ответ прост - Susy работает на Ruby, она просто несовместима со Stylus.</p>
 
-<p>Синтаксис Stylus очень похож на синтаксис остальных препроцессоров (Sass или LESS). Но давайте более детально рассмотрим, что он из себя представляет на деле:</p>
+<p>Так как с недавнего времени я перешел с Sass(SCSS) на <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a> и <em>совсем не жалею об этом</em>, то сразу принялся искать замену Susy. Надо сказать, я быстро ее нашел и этой заменой оказалась <a href="http://jeet.gs/" title="jeet.gs">jeet.gs</a>. “Grid system для людей” - как ее “обозвали” в прекрасном task runner <a href="http://incident57.com/codekit/" title="CodeKit">CodeKit</a>. Кстати, сам факт присутствия jeet.gs в CodeKit говорит за себя.</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  Простая переменная  */</span>
-  <span class="nt">base-font-size</span> <span class="o">=</span> <span class="nt">12px</span>
+<p>Система jeet.gs <em>изначально адаптивная</em>, она проста в использовании и изучении. Если честно, Susy я так до конца и не освоил (<em>только необходимые основы</em>), так как она достаточно сложна в изучении, несмотря на прекрасную документацию. Еще можно сказать, что jeet.gs очень молода - ей всего 9 месяцев и поэтому я с вами, уважаемый читатель, иду в ногу со временем, я на cutting edge!</p>
 
-<span class="c">/* Инициализация переменной с помощью вызова миксина */</span>
-<span class="nt">body-background</span> <span class="o">=</span> <span class="nt">invert</span><span class="o">(</span><span class="nf">#ccc</span><span class="o">)</span>
+<p>Существование и использование jeet.gs имеет мало смысла без системы контрольных точек (breakpoint). В Susy в этом качестве служит хороший инструмент <a href="http://breakpoint-sass.com/" title="Breakpoint">Breakpoint</a>. Под jeet.gs конечно же существует аналог под названием <a href="https://github.com/jenius/rupture" title="Rupture">Rupture</a>. Эта система также проста и наглядна, как и jeet.gs.</p>
 
-<span class="c">/* Селектор и набор правил для него */</span>
-<span class="nt">body</span>
-  <span class="nt">color</span> <span class="nf">#333</span>
-  <span class="nt">background</span> <span class="nf">#fff</span>
+<p>Стоит также оговориться, что под Stylus имеются не менее прекрасные проекты <a href="https://github.com/corysimmons/typographic" title="Typographic">Typographic</a> и <a href="https://github.com/jenius/axis" title="Axis">Axis</a>, с которыми я планирую познакомиться в свое время.</p>
 
-<span class="c">/* Вложенность правил */</span>
-<span class="nt">nav</span>
-  <span class="nt">margin</span> <span class="nt">10px</span>
-    <span class="nt">ul</span>
-      <span class="nt">list-style-type</span> <span class="nt">none</span>
-        <span class="o">&gt;</span> <span class="nt">li</span>
-          <span class="nt">display</span> <span class="nt">inline-block</span>
-          <span class="o">&amp;</span><span class="nc">.current</span>
-            <span class="nt">background-color</span> <span class="nt">lightblue</span>
+<h2 id="jeetgs---grid-system--stylus">Jeet.gs - grid system под Stylus</h2>
 
-<span class="c">/* Использование вычисляемых значений */</span>
-<span class="nt">div</span><span class="nc">.column</span>
-  <span class="nt">margin-right</span> <span class="o">(</span><span class="nt">grid-spacing</span> <span class="o">/</span> <span class="nt">2</span><span class="o">)</span>
-  <span class="nt">margin-top</span> <span class="o">(</span><span class="nt">grid-spacing</span> <span class="o">*</span> <span class="nt">2</span><span class="o">)</span>
+<p>Итак, фанфары прозвучали в честь обоих героев сегодняшнего дня. Пора приступать к более детальному знакоству с ними. И начнем с главного героя - системы сеток (grid system) jeet.gs.</p>
 
-<span class="c">/* Использование ранее установленного значения */</span>
-<span class="nt">div</span><span class="nc">.center-column</span>
-  <span class="nt">width</span> <span class="nt">200px</span>
-  <span class="nt">margin-left</span> <span class="nt">-</span><span class="o">(</span><span class="k">@width</span> <span class="o">/</span> <span class="nt">2</span><span class="o">)</span>
+<h2 id="jeetgs--stylus">Установка Jeet.gs под Stylus</h2>
 
-<span class="c">/* Задание значений, полученных как результат вычислений миксинов */</span>
-<span class="nc">.promo</span>
-  <span class="nt">apply-promo-style</span><span class="o">()</span>
-  <span class="nt">apply-width-center</span><span class="o">(</span><span class="nt">400px</span><span class="o">)</span>
+<p>Любое знакомство начинается с установки пакета. На официальной странице <a href="http://jeet.gs/" title="jeet.gs">jeet.gs</a> прекрасно оформлено описание инсталляции - она проста. Кстати, стоит оговориться, что jeet.gs можно установить и под Sass(SCSS). Но я этого делать не буду - мне это не интересно и не нужно.</p>
 
-<span class="c">/* Итерация в цикле */</span>
-<span class="nt">table</span>
-  <span class="nt">for</span> <span class="nt">row</span> <span class="nt">in</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">4</span> <span class="nt">5</span>
-    <span class="nt">tr</span><span class="nd">:nth-child</span><span class="o">(</span><span class="p">{</span><span class="nt">row</span><span class="p">}</span><span class="o">)</span>
-      <span class="nt">height</span> <span class="nt">10px</span> <span class="o">*</span> <span class="nt">row</span>
+<p>Предполагается, что у читателя рабочей операционной системой является MacOSX или Linux OS (<em>все команды в этой статье будут показаны применительно к этим двум родственным системам</em>). Также предполагается, что в любой из этих систем уже установлены Node.js и Stylus (<em>иначе вы немного забежали вперед, уважаемый читатель</em>).</p>
 
-<span class="c">/* Другой вариант итерации в цикле */</span>
-<span class="nt">for</span> <span class="nt">row</span> <span class="nt">in</span> <span class="o">(</span><span class="nt">1</span><span class="o">.</span><span class="nc">.5</span><span class="o">)</span>
-  <span class="nt">tr</span><span class="nd">:nth-child</span><span class="o">(</span><span class="p">{</span><span class="n">row</span><span class="p">}</span><span class="o">)</span>
-    <span class="nt">height</span> <span class="nt">10px</span> <span class="o">*</span> <span class="nt">row</span>
+<p><em>Установка</em> jeet.gs выполняется одной строкой:</p>
 
-<span class="c">/* Импортирование в Stylus-файл другой таблицы стилей в формате Stylus */</span>
-<span class="k">@import</span> <span class="s2">&quot;links.styl&quot;</span>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">jeet</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
 
-<span class="c">/* extend существующего класса */</span>
-<span class="nc">.warning</span>
-  <span class="k">@extend</span> <span class="nc">.block</span></code></pre></div>
+<p>Далее библиотека jeet.gs <em>импортируется</em> в файл проекта <code>*.styl</code> с помощью директивы <code>@import</code>:</p>
 
-<p>В принципе, ничего нового в вышесказанном нет - все эти моменты также существуют в других препроцессорах. Если вдруг в синтаксисе не достает скобок, двоеточий или запятых, то их можно смело добавлять в код - препроцессор Stylus вас прекрасно поймет и в этом случае.</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;jeet&#39;</span></code></pre></div>
 
-<h2 id="section">Создание и использование миксинов</h2>
+<p>После этого можно <em>запустить мониторинг и компиляцию</em> командой:</p>
 
-<p>Миксины чрезвычайно полезны по нескольким причинам. Благодаря им при написании стилей на CSS можно использовать логику, а также структурировать код.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">stylus</span> <span class="n">-u</span> <span class="n">jeet</span> <span class="n">-w</span> <span class="n">style</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
 
-<p>Создание миксинов в Stylus является простой задачей, а синтаксис миксинов именно такой, какой и ожидалось увидеть:</p>
+<p>где <code>-u</code> - это сокращение от <code>--using</code>, <code>-w</code> - от <code>--watch</code>. То есть, мониторить (watch) все изменения файла <code>style.styl</code> и при этом учитывать (<code>using</code>) возможности подключенной библиотеки jeet.gs.</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Простой миксин для добавления вендорных префиксов.</span>
+<p>Пакет jeet.gs можно заставить работать несколько иначе - <em>крутиться под Gulp</em>. Для этого достаточно правильно оформить файл <code>gulpfile.js</code>:</p>
 
-<span class="c">  Использование:</span>
-<span class="c">  vendorize(box-sizing, border-box)</span>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+<span class="p">...</span>
+<span class="nx">nib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nib&#39;</span><span class="p">),</span>
+<span class="nx">jeet</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;jeet&#39;</span><span class="p">),</span>
+<span class="nx">rupture</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;rupture&#39;</span><span class="p">);</span>
 
-<span class="c">*/</span>
 
-<span class="nt">vendorize</span><span class="o">(</span><span class="nt">property</span><span class="o">,</span> <span class="nt">value</span><span class="o">)</span>
-  <span class="nt">-webkit-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
-  <span class="nt">-moz-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
-  <span class="nt">-ms-</span><span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span>
-  <span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">value</span></code></pre></div>
+<span class="c1">// STYLUS WITH NIB AND JEET AND RUPTURE</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;stylus&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;app/styles/style.styl&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">stylus</span><span class="p">({</span><span class="nx">use</span><span class="o">:</span><span class="p">[</span><span class="nx">nib</span><span class="p">(),</span><span class="nx">jeet</span><span class="p">(),</span><span class="nx">rupture</span><span class="p">()]}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;dist/&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
 
-<p>При создании миксинов под Stylus можно задать значения по умолчанию для аргументов:</p>
+<h2 id="jeetgs">Возможности Jeet.gs</h2>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин создания треугольника на CSS */</span>
+<p>С документацией по jeet.gs можно ознакомиться на оф. сайте в разделе Jeet’s API или же на страничке GitHub - <a href="https://github.com/mojotech/jeet/tree/master/stylus" title="jeet/stylus">jeet/stylus</a>.</p>
 
-<span class="nt">generate-arrow</span><span class="o">(</span><span class="nt">arrow-width</span> <span class="o">=</span> <span class="nt">10px</span><span class="o">)</span>
-  <span class="o">&amp;</span><span class="nd">:before</span><span class="o">,</span> <span class="o">&amp;</span><span class="nd">:after</span>
-    <span class="nt">content</span> <span class="s1">&#39;&#39;</span>
-    <span class="nt">height</span> <span class="nt">0</span>
-    <span class="nt">width</span> <span class="nt">0</span>
-    <span class="nt">position</span> <span class="nt">absolute</span>
-    <span class="nt">border</span> <span class="nt">arrow-width</span> <span class="nt">solid</span> <span class="nt">transparent</span></code></pre></div>
+<h3 id="column">Функция column()</h3>
 
-<p>Миксин может возвращать вычисляемое значение с помощью ключевого слова <code>return</code> или же возвращать стили, определенные внутри самого миксина. Такие стили можно применить к элементу, который вызывает этот миксин:</p>
+<p><em>Синтаксис</em>:</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин для задания стилей к текущему элементу и дочерним элементам текущего элемента */</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">column</span><span class="o">(</span><span class="nt">ratios</span> <span class="o">=</span> <span class="nt">1</span><span class="o">,</span> <span class="nt">offset</span> <span class="o">=</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">cycle</span> <span class="o">=</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">uncycle</span> <span class="o">=</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">gutter</span> <span class="o">=</span> <span class="nt">jeet</span><span class="nc">.gutter</span><span class="o">)</span></code></pre></div>
 
-<span class="nt">special-homestyles</span><span class="o">(</span><span class="nt">background</span> <span class="o">=</span> <span class="s1">&#39;#ccc&#39;</span><span class="o">)</span>
-  <span class="nt">background-color</span> <span class="nt">background</span>
-    <span class="nt">a</span>
-      <span class="nt">color</span> <span class="nt">lightblue</span>
-    <span class="o">&amp;</span><span class="nc">.visited</span>
-      <span class="nt">color</span> <span class="nt">navy</span></code></pre></div>
+<p>Основой любой современной grid system являются колонки\столбцы - <code>column</code>. Так как jeet.gs изначально является <em>адаптивной системой</em>, то задать ширину column можно как <em>дробную часть</em> от ширины блока-контейнера - <code>1/3</code>, <code>1/6</code>, <code>1/10</code>, <code>1/100</code> и так далее. Не обязательно можно задавать в виде дроби, можно в <em>десятичном</em> виде - <code>.3</code>, <code>.25</code>, <code>.15</code>.</p>
 
-<p>И конечно же, внутри миксинов можно использовать условия (впрочем, как и в любом другом месте кода на Stylus):</p>
+<p>Пример задания ширины для двух блоков <code>.sidebar</code> и <code>.main</code>. В обоих случаях используется функция <code>column()</code>, у которой есть более используемое сокращение - <code>col()</code>:</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Миксин создания grid на основе минимального\максимального значений и инкремента */</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sidebar</span>
+  <span class="nt">col</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span>
+<span class="nc">.main</span>
+  <span class="nt">col</span><span class="o">(</span><span class="nt">3</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span></code></pre></div>
 
-<span class="nt">generate-grid</span><span class="o">(</span><span class="nt">increment</span><span class="o">,</span><span class="nt">start</span><span class="o">,</span><span class="nt">end</span><span class="o">,</span><span class="nt">return-dimension</span><span class="o">=</span><span class="nt">false</span><span class="o">)</span>
-  <span class="nt">total</span> <span class="o">=</span> <span class="nt">start</span>
-<span class="nt">for</span> <span class="nt">n</span><span class="o">,</span> <span class="nt">x</span> <span class="nt">in</span> <span class="nt">0</span><span class="o">..((</span><span class="nt">end</span> <span class="nt">-</span> <span class="nt">start</span><span class="o">)</span> <span class="o">/</span> <span class="nt">increment</span><span class="o">)</span>
-  <span class="nt">if</span> <span class="nt">return-dimension</span>
-    <span class="nt">if</span> <span class="nt">x</span><span class="o">+</span><span class="nt">1</span> <span class="nt">is</span> <span class="nt">return-dimension</span>
-      <span class="nt">return</span> <span class="nt">total</span>
-        <span class="nt">else</span>
-	  <span class="nc">.column-</span><span class="p">{</span><span class="n">x</span><span class="o">+</span><span class="m">1</span><span class="p">}</span>
-	     <span class="nt">width</span> <span class="nt">total</span>
-	<span class="nt">total</span> <span class="o">=</span> <span class="nt">total</span> <span class="o">+</span> <span class="nt">increment</span></code></pre></div>
+<p>Функция <code>column()</code> может принимать целый ряд аргументов, с помощью которых возможна тонкая настройка блоков в разметке.</p>
 
-<p>Представленный выше миксин генерирует grid на основе минимального значения (минимальной ширины столбца), максимального значения (максимальной ширины столбца) и количества столбцов (которое изменяется с помощью инкремента). Последний аргумент return-dimension служит для указания того, будет ли миксин просто возвращать полученное значение, не создавая CSS-классов.</p>
+<p>Смещение колонок\столбцов выполняется с помощью аргумента <code>offset</code>, который может принимать как положительное, так и отрицательное значение. Положительное значение <code>offset</code> задает у столбца <code>margin-left</code> - и столбец смещается влево. Отрицательное значение задает <code>margin-right</code> - и блок смещается вправо.</p>
 
-<h2 id="stylus-2">Полезные миксины Stylus</h2>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span>
+  <span class="nt">column</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">3</span><span class="o">,</span> <span class="nt">offset</span><span class="o">:</span> <span class="nt">1</span><span class="o">/</span><span class="nt">4</span><span class="o">)</span></code></pre></div>
 
-<p>При работе над проектом MDN мне потребовалось большое количество полезных миксинов под Stylus, например таких, как поддержка RTL, поддержка локализации, а также поддержка большого числа браузеров. Ниже я представлю некоторые из этих миксинов - возможно, они пригодятся на практике некоторым из читателей.</p>
+<p>Аргумент <code>cycle</code> позволяет создавать <em>галлереи</em>. Допустим, необходимо создать галлерею из картинок, в которой должно быть 4 (четыре) картинки в ряду. Тогда для функции <code>column()</code> задаем параметр <code>cycle: 4</code> :</p>
 
-<h3 id="last-child">Обнуление last child</h3>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span>
+  <span class="nt">column</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">3</span><span class="o">,</span> <span class="nt">cycle</span><span class="o">:</span> <span class="nt">4</span><span class="o">)</span></code></pre></div>
 
-<p>Данный миксин был создан для обнуления пустого пространства у последнего элемента блока-родителя. Как правило, такими пространствами в CSS являются <code>padding-bottom</code> и <code>margin-bottom</code>.</p>
+<p>Аргумент <code>uncycle</code> позволяет создавать мобильные версии галерей. Допустим, desktop-версия галлереи - <code>column(1/3, cycle: 4)</code>. Чтобы создать мобильную версию этой галлереи, в которой картинки будут располагаться по две в ряд, достаточно прописать так:</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Удаление пустого пространства у элемента, если он является последним у своего родителя */</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span>
+  <span class="nt">column</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">3</span><span class="o">,</span> <span class="nt">uncycle</span><span class="o">:</span> <span class="nt">4</span><span class="o">,</span> <span class="nt">cycle</span><span class="o">:</span> <span class="nt">2</span><span class="o">)</span></code></pre></div>
 
-<span class="nt">prevent-last-child-spacing</span><span class="o">(</span><span class="nt">element</span><span class="o">=</span><span class="s2">&quot;*&quot;</span><span class="o">,</span> <span class="nt">property</span><span class="o">=</span><span class="s2">&quot;padding-bottom&quot;</span><span class="o">)</span>
-  <span class="nt">if</span> <span class="nt">element</span> <span class="nt">is</span> <span class="s2">&quot;*&quot;</span>
-    <span class="nt">element</span> <span class="o">=</span> <span class="nt">unquote</span><span class="o">(</span><span class="nt">element</span><span class="o">)</span>
-      <span class="o">&amp;</span> <span class="o">&gt;</span> <span class="p">{</span><span class="n">element</span><span class="p">}</span><span class="nd">:last-child</span>
-        <span class="p">{</span><span class="n">property</span><span class="p">}</span> <span class="nt">0</span></code></pre></div>
+<p>Аргумент <code>gutter</code> позволяет управлять шириной gutter между столбцами в каждом конкретном случае. Допустим, таким образом:</p>
 
-<p>С помощью этого миксина устанавливается <code>margin</code> или <code>padding</code> для блока-родителя. А затем просто убирается пустое пространство у последнего элемента этого блока.</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span>
+  <span class="nt">column</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">3</span><span class="o">,</span> <span class="nt">uncycle</span><span class="o">:</span> <span class="nt">4</span><span class="o">,</span> <span class="nt">cycle</span><span class="o">:</span> <span class="nt">2</span><span class="o">,</span> <span class="nt">gutter</span><span class="o">:</span> <span class="nc">.5</span><span class="o">)</span></code></pre></div>
 
-<h3 id="placeholder">Стилизация placeholder</h3>
+<h3 id="span">Функция span()</h3>
 
-<p>Стилизация placeholder является достаточно хитрой задачей из-за необходимости использования вендорных префиксов, поэтому использование миксина значительно упрощает эту задачу:</p>
+<p><em>Синтаксис</em>:</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">set-placeholder-style</span><span class="o">(</span><span class="nt">prop</span><span class="o">,</span> <span class="nt">value</span><span class="o">)</span>
-   <span class="o">&amp;:</span><span class="nd">:-webkit-input-placeholder</span>
-     <span class="p">{</span><span class="n">prop</span><span class="p">}</span> <span class="nt">value</span>
-   <span class="o">&amp;:</span><span class="nd">:-moz-input-placeholder</span>
-     <span class="p">{</span><span class="n">prop</span><span class="p">}</span> <span class="nt">value</span></code></pre></div>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">span</span><span class="o">(</span><span class="nt">ratio</span> <span class="o">=</span> <span class="nt">1</span><span class="o">,</span> <span class="nt">offset</span> <span class="o">=</span> <span class="nt">0</span><span class="o">)</span></code></pre></div>
 
-<h2 id="section-1">Заключение</h2>
+<p>Эта функция является своего рода облегченным вариантом функции <code>column()</code>. Функция <code>span()</code> не “понимает” такого свойства, как отступы <code>gutter</code> у блоков. По одной простой причине - функция <code>span()</code> создает разметку из блоков, плотно прилегающих друг к другу, без <code>margin</code>.</p>
 
-<p>На этом перевод закончен.</p>
+<p>Такая разметка крайне полезна при создании горизонтальной навигации. Например, создать навигацию из восьми пунктов:</p>
 
-<p>От себя могу добавить.</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nav</span>
+  <span class="nt">cf</span><span class="o">()</span>
+  <span class="nt">a</span>
+    <span class="nt">span</span><span class="o">(</span><span class="nt">1</span><span class="o">/</span><span class="nt">8</span><span class="o">)</span></code></pre></div>
 
-<p>Под Sublime Text 3 имеется плагин <a href="https://sublime.wbond.net/packages/Stylus" title="Stylus">Stylus</a> для подсветки синтаксиса и автоматической табуляции. Если планируется дальнейшая работа в Stylus, то данный плагин обязателен к установке - без него просто тяжело и долго кодить.</p>
+<h3 id="shift">Функция shift()</h3>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/12/sublime_stylus.png" alt="Stylus Sublime Text" /></p>
+<p><em>Синтаксис</em>:</p>
 
-<p>Плагин Emmet имеет поддержку синтаксиса Stylus (<em>меня Emmet не перестает радовать</em>). Все <a href="http://docs.emmet.io/cheat-sheet/" title="Emmet CheatSheet">горячие клавиши Emmet</a> остались неизменными и под Stylus, как если бы я кодил в старом добром CSS.</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">shift</span><span class="o">(</span><span class="nt">ratios</span> <span class="o">=</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">col_or_span</span> <span class="o">=</span> <span class="nt">column</span><span class="o">,</span> <span class="nt">gutter</span> <span class="o">=</span> <span class="nt">jeet</span><span class="nc">.gutter</span><span class="o">)</span></code></pre></div>
 
-<p>На моем любимом YouTube-канале Level Up Tuts недавно вышла небольшая серия видео-обзоров по Stylus - <a href="http://youtu.be/eJahtnmywMI" title="Stylus Tutorials">Stylus Tutorials</a></p>
+<p>Эта функция служит для изменения порядка расположения элементов в нормальном потоке, с помощью свойства <code>position: relative</code>. Величина смещения задается аргументом <code>ratios</code> и применяется подобное смещение в виде свойства <code>left</code> к блоку. При этом функции <code>shift()</code> с помощью задания или не задания аргумента <code>gutter</code> можно указать, является ли данный блок столбцом (через функцию <code>column()</code>) или блоком span (через функцию <code>span()</code>).</p>
+
+<p>Функция <code>shift()</code> точно также, как и аргумент <code>offset</code>, может принимать отрицательные значения для изменения направления смещения блока. Также, функция <code>shift()</code> может принимать не только целые, но и дробные значения для точного позиционирования.</p>
+
+<h3 id="unshift">Функция unshift()</h3>
+
+<p><em>Синтаксис - отсутствует</em></p>
+
+<p>Эта функция не принимает каких-либо аргументов. Ее задача - отменить действие функции <code>shift()</code>.</p>
+
+<h3 id="edit">Функция edit()</h3>
+
+<p><em>Синтаксис - отсутствует</em></p>
+
+<p>Данная функция не создает разметку напрямую. Ее задача - помочь в создании разметки. С ее помощью каждый элемент на странице <em>окрашивается в определенный оттенок серого цвета</em>. Это помогает визульно контролировать правильность процесса создания разметки.</p>
+
+<p>Чтобы функция заработала, достаточно включить ее в файле проекта в любом месте:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">edit</span><span class="o">()</span></code></pre></div>
+
+<p>Вид разметки будет примерно таким:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/01/jeet_edit.png" alt="Функция edit() в jeet.gs" /></p>
+
+<h3 id="center">Функция center()</h3>
+
+<p><em>Синтаксис</em>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">center</span><span class="o">(</span><span class="nt">max-width</span> <span class="o">=</span> <span class="nt">1410px</span><span class="o">,</span> <span class="nt">pad</span> <span class="o">=</span> <span class="nt">0</span><span class="o">)</span></code></pre></div>
+
+<p>Задача функции <code>center()</code> - быстро и грамотно выполнять центрирование блока в разметке. Как видно из синтаксиса, функция принимает два аргумента:</p>
+
+<ul>
+  <li>максимальную ширину <code>max-width</code>, равную по умолчанию <code>1410px</code>;</li>
+  <li><code>padding-left</code> и <code>padding-right</code> для блока, задаваемые в виде шортката <code>pad</code> и равного нулю по умолчанию; то есть, нельзя управлять <code>padding-left</code> и <code>padding-right</code> по отдельности - только одно значение сразу для двух свойств.</li>
+</ul>
+
+<h3 id="cf">Функция cf()</h3>
+
+<p><em>Синтаксис - отсутствует</em></p>
+
+<p>Данная функция - это всего лишь <code>clearfix</code> от Nicholas Gallagher. Думаю, дальнейшее объяснение излишне. Принимать - маленькими дозами для любых блоков с <code>column()</code> или <code>span()</code>.</p>
+
+<h3 id="align">Функция align()</h3>
+
+<p>Функция для выравнивания блока внутри блока-контейнера с помощью <code>position: absolute</code>. Вертикальное выравнивание в браузерах IE9+ теперь простая вещь.</p>
+
+<h3 id="stack">Функция stack()</h3>
+
+<p><em>Синтаксис</em>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">stack</span><span class="o">(</span><span class="nt">pad</span> <span class="o">=</span> <span class="nt">0</span><span class="o">,</span> <span class="nt">align</span> <span class="o">=</span> <span class="nt">false</span><span class="o">)</span></code></pre></div>
+
+<p>Данная функция предназначена для расположения блоков стопкой (stack), друг над другом. Такой вид расположения блоков применим для модильной версии страницы. Функция <code>stack()</code> принимает два вида аргументов:</p>
+
+<ul>
+  <li><code>pad</code> - отступы <code>padding-left</code> и <code>padding-right</code> для блока;</li>
+  <li><code>align</code> - выпавнивание текста внутри блока.</li>
+</ul>
+
+<h3 id="unstack">Функция unstack()</h3>
+
+<p><em>Синтаксис - отсутствует</em></p>
+
+<p>Данная функция отменяет действие функции <code>stack()</code>. Однако, действие этой функции не возвращает разметку к прежнему виду, с применением функции <code>column()</code>. Чтобы вернуть разметку к такому результату, необходимо снова использовать функцию <code>column()</code>.</p>
+
+<h2 id="jeetgs-1">Настройки Jeet.gs</h2>
+
+<p>Настройки системы jeet.gs очень просты. Первоначально необходимо создать файл <code>_settings.styl</code>, который нужно подключить в файл стилей директивой <code>@import '_settings'</code>. При этом необходимо, чтобы строка <code>@import '_settings'</code> размещалась сразу после строки <code>@import 'jeet'</code>.</p>
+
+<p>Содержимое файла настроек <code>_settings.styl</code> - это несколько переменных:</p>
+
+<ul>
+  <li><code>jeet[&amp;#8216;gutter'] = 3</code> - размер ширины gutter в процентах, от общей ширины страницы</li>
+  <li><code>jeet[&amp;#8216;parent-first'] = false</code> - если сказать коротко, каким образом будет производиться вычисление ширины блока; относительно конкретного блока-родителя; или же относительно корневого блока-родителя</li>
+  <li><code>jeet[&amp;#8216;layout-direction'] = LTR</code> - направление текста внутри разметки</li>
+</ul>
+
+<h2 id="jeetgs-2">Заключение по Jeet.gs</h2>
+
+<p>Итак, познакомились с системой создания разметки jeet.gs. На удивление, она оказалась проста и достаточно полчаса, чтобы разобраться в ней. Не сравнить с Susy, конечно.</p>
+
+<p>Но этого мало, естественно. Хотелось бы посмотреть на живые примеры сайтов, созданных с помощью jeet.gs. В этом вопросе может помочь сам официальный сайт <a href="http://jeet.gs/" title="Jeet.gs">Jeet.gs</a> - милости просим.</p>
+
+<p>Создано по материалам:</p>
+
+<ul>
+  <li><a href="https://github.com/mojotech/jeet/tree/master/stylus" title="Jeet for Stylus">Jeet for Stylus</a></li>
+  <li><a href="http://jeet.gs/" title="A grid system for humans">A grid system for humans</a></li>
+  <li><a href="https://wooster.checkmy.ws/2014/04/responsive-grid-typographie/" title="Fondations responsive avec Stylus, Jeet et Rupture">Fondations responsive avec Stylus, Jeet et Rupture</a></li>
+</ul>
+
+<h2 id="ps">P.S.</h2>
+
+<p>В данной статье возможны (и 100% - что есть) неточности и мелкие ошибки. Это и понятно - это мое первое знакомство с Jeet.gs. Поэтому, если будут замечания - милости просим.</p>
 
 <p>На этом все.</p>
 
 <hr />
 
-
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
@@ -368,90 +606,248 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-30T00:00:00+04:00"><a href="http://zencoder.ru/svg/svg-css-part-2/">November 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2015-01-07T00:00:00+03:00"><a href="http://zencoder.ru/tags-wordpress/">January 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~3 minutes
+        Reading time ~5 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/svg/svg-css-part-2/" rel="bookmark" title="Стилизация SVG с помощью CSS - Часть 2" itemprop="url">Стилизация SVG с помощью CSS - Часть 2</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/tags-wordpress/" rel="bookmark" title="Теги шаблона WordPress" itemprop="url">Теги шаблона WordPress</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Продолжение предыдущей статьи “Стилизация SVG с помощью CSS - Часть 1”, посвященной формату векторной графики SVG.</p>
+  <p>Наверное, это очередная бестолковая вещь, которую мои руки так и чешутся сделать.</p>
 </blockquote>
 
-<h2 id="css">Стилизация с помощью CSS</h2>
+<p>И раз у меня есть на это время и нет сил на что-либо еще, то тогда уж точно - напишу! “О чем?” - может спросить уважаемый читатель. О тегах WordPress!</p>
 
-<p>Между языками HTML и CSS существует четкая и ясная взаимосвязь: язык HTML предназначен для <strong>структуризации контента</strong> на странице; задача языка CSS - внешнее <strong>оформление этого контента</strong>. Формат SVG размывает четкие границы этой взаимосвязи. Например, формат версии SVG1.1 не нуждается в CSS для стилизации отдельных элементов SVG-объектов - для этой цели имеются так называемые <strong>презентационные атрибуты</strong>.</p>
+<p>“О Боже!” - это в полном праве может сказать читатель - но ведь есть же <a href="http://codex.wordpress.org/" title="Codex WordPress">Кодекс WordPress</a>! Зачем еще?!”</p>
 
-<p><strong>Презентационные атрибуты</strong> являются сокращениями CSS-свойств для SVG-элементов. Можно думать об этих атрибутах, как о CSS-свойствах для SVG с особым синтаксисом. К этим свойствам применима каскадность стилей, но в этой статье мы поступим более кратким способом.</p>
+<p>Ну что же - очень и очень резонно! В качестве оправдания могу лишь привести две вещи.</p>
 
-<p>Показанный ниже пример является кодом, в котором используются <strong>презентационные атрибуты</strong> для стилизации границы <code>"border" (stroke)</code> и фоновой заливки <code>"background color" (fill)</code> многоугольника в виде пятиконечной звезды:</p>
+<p>Первая причина - из огромного количества тегов WordPress на практике используется лишь малая их часть. И вот здесь я хотел бы собрать воедино как раз те, которые используются.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">&lt;</span><span class="n">svg</span> <span class="n">xmlns</span><span class="p">=</span><span class="s2">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="n">version</span><span class="p">=</span><span class="s2">&quot;1.1&quot;</span> <span class="n">width</span><span class="p">=</span><span class="s2">&quot;300px&quot;</span> <span class="n">height</span><span class="p">=</span><span class="s2">&quot;300px&quot;</span> <span class="n">viewBox</span><span class="p">=</span><span class="s2">&quot;0 0 300 300&quot;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">polygon</span>
-    <span class="n">fill</span> <span class="p">=</span> <span class="s2">&quot;#FF931E&quot;</span>
-    <span class="n">stroke</span> <span class="p">=</span> <span class="s2">&quot;#ED1C24&quot;</span>
-    <span class="n">stroke-width</span> <span class="p">=</span> <span class="s2">&quot;5&quot;</span>
-    <span class="n">points</span> <span class="p">=</span> <span class="s2">&quot;279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 &quot;</span><span class="p">/&gt;</span>
-<span class="p">&lt;/</span><span class="n">svg</span><span class="p">&gt;</span></code></pre></div>
+<p>Более того, могу сказать, что пользуясь лишь перечисленным ниже списком, я уже успел создать две вполне себе работающих темы под WordPress. Конечно, эти две темы простенькие, но факт остается фактом.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/11/star.png" alt="Star SVG" /></p>
+<p>Вторая причина - я так быстрее запомню все эти теги WordPress.</p>
 
-<p>В этом примере атрибуты <code>fill</code>, <code>stroke</code>, <code>stroke-width</code> являются <strong>презентационными атрибутами</strong>.</p>
+<p>Итак - ниже представлен список “практичных” тегов WordPress с их кратким описанием. Все теги условно мною разбиты на области их применения в теме WordPress.</p>
 
-<p>В SVG набор CSS-свойств может быть представлен в виде атрибутов и наоборот. В спецификации SVG имеется <a href="http://www.w3.org/TR/SVG/propidx.html" title="Перечень SVG-атрибутов">перечень SVG-атрибутов</a>, которые могут быть представлены как CSS-свойства. Некоторые из этих атрибутов абсолютно идентичны CSS-свойствам, как например <code>opacity</code> или <code>transform</code>. Другие же, такие как <code>fill</code>, <code>stroke</code> или <code>stroke-width</code>, абсолютно не похожи на свои CSS-аналоги.</p>
+<h2 id="wordpress">Теги шаблона WordPress</h2>
 
-<p>В формате SVG2 имеются несколько <strong>презентационных атрибутов</strong>, таких как <code>x</code>, <code>y</code>, <code>width</code>, <code>height</code>, <code>cx</code>, <code>cy</code> и некоторые другие, которые невозможно задать с помощью CSS в SVG1.1. Список новых SVG-атрибутов можно посмотреть по этой ссылке - <a href="http://www.w3.org/TR/SVG2/styling.html#SVGStylingProperties" title="SVG2 спецификация">SVG2 спецификация</a>.</p>
+<p>Выводит название сайта:</p>
 
-<p>Другим способом стилизации SVG-элементов является использование для этой цели CSS-свойств. Точно также, как и в случае в HTML-элементами, CSS-свойства могут быть заданы с помощью inline-стиля:</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;name&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">&lt;</span><span class="n">svg</span> <span class="n">xmlns</span><span class="p">=</span><span class="s2">&quot;http://www.w3.org/2000/svg&quot;</span> <span class="n">version</span><span class="p">=</span><span class="s2">&quot;1.1&quot;</span> <span class="n">style</span><span class="p">=</span><span class="s2">&quot;width: 300px; height: 300px;&quot;</span> <span class="n">viewBox</span><span class="p">=</span><span class="s2">&quot;0 0 300 300&quot;</span><span class="p">&gt;</span>
-  <span class="p">&lt;</span><span class="n">polygon</span>
-    <span class="n">style</span> <span class="p">=</span> <span class="s2">&quot;fill: #FF931E; stroke: #ED1C24; stroke-width: 5;&quot;</span>
-    <span class="n">points</span> <span class="p">=</span> <span class="s2">&quot;279.1,160.8 195.2,193.3 174.4,280.8   117.6,211.1 27.9,218.3 76.7,142.7 42.1,59.6 129.1,82.7 197.4,24.1 202.3,114 &quot;</span><span class="p">/&gt;</span>
-<span class="p">&lt;/</span><span class="n">svg</span><span class="p">&gt;</span></code></pre></div>
+<p>Выводит описание сайта:</p>
 
-<h2 id="svg">Каскады стилей SVG</h2>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;description&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p>Как уже говорилось ранее, <strong>презентационные атрибуты</strong> являются специальной разновидностью свойств и что они представляют из себя просто сокращение CSS-свойств, применимых к SVG-элементам. Исходя из вышесказанного, логично предположить, что к презентационным SVG-атрибутам также, как и CSS-свойствам, применимо такое понятие как <strong>каскад стилей</strong>.</p>
+<p>Возвращает ссылку на главную страницу сайта:</p>
 
-<p>Презентационные атрибуты позиционируются как “авторские стилевые правила” и могут быть переопределены любыми другими определениями: внешними таблицами стилей, внутренними таблицами стилей или же inline-стилями.</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;url&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p>Диаграмма ниже показывает порядок расположения стилей в каскаде стилей. Чем ниже расположены стили в этой таблице, тем большим количеством вышележащих стилей они могут быть перезаписаны. В нашем случае презентационные стили могут быть переопределены почти всеми другими стилями, кроме <strong>стилей агента пользователя</strong>:</p>
+<p>Возвращает кодировку сайта (под WordPress это всегда utf–8):</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/11/diagram.jpg" alt="Таблица каскадности стилей SVG" /></p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;charset&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p>Например, представленный ниже образец кода является кругом, написанным на SVG. Цвет заливки круга в виде атрибута <code>fill="blue"</code> будет переопределен цветом <code>deep pink</code> с помощью правила <code>style="fill:deepPink;"</code>:</p>
+<p>Также возвращает ссылку на главную страницу сайта:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">&lt;</span><span class="n">circle</span> <span class="n">cx</span><span class="p">=</span><span class="s2">&quot;100&quot;</span> <span class="n">cy</span><span class="p">=</span><span class="s2">&quot;100&quot;</span> <span class="n">r</span><span class="p">=</span><span class="s2">&quot;75&quot;</span> <span class="n">fill</span><span class="p">=</span><span class="s2">&quot;blue&quot;</span> <span class="n">style</span><span class="p">=</span><span class="s2">&quot;fill:deepPink;&quot;</span> <span class="p">/&gt;</span></code></pre></div>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">get_home_url</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<h2 id="svg-1">Селекторы SVG</h2>
+<p>Возвращает путь к файлу стилей style.css темы WordPress (<em>устарело и не рекомендуется использовать</em>):</p>
 
-<p>Большинство CSS-селекторов могут быть использованы для выборки SVG-элементов. В дополнение к основному типу, классам и идентификаторам, SVG-элементы могут быть стилизованы с помощью <a href="http://www.w3.org/TR/2008/REC-CSS2-20080411/selector.html#dynamic-pseudo-classes" title="CSS2 dynamic pseudo-classes">динамических псевдо-классов</a> (<code>:hover</code>, <code>:active</code>, <code>:focus</code>) и <a href="http://www.w3.org/TR/2008/REC-CSS2-20080411/selector.html#q15" title="pseudo-classes">псевдо-классов</a> (<code>:first-child</code>, <code>:visited</code>, <code>:link</code> и <code>:lang</code>). Остальные псевдо-классы, включая тех, которые генерируют контент (такие как <code>::before</code> и <code>::after</code>) не являются частью спецификации SVG и поэтому не могут быть использованы для стилизации SVG-элементов.</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;stylesheet_url&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p>Ниже приведен простой пример анимации фоновой заливки цветов круга при наведении. При этом используется селектор тега и псевдо-класс <code>:hover</code>.</p>
+<p>Возвращает путь к текущей теме WordPress:</p>
 
-<p>Этот пример является простым, но можно создать и гораздо более сложные и интересные примеры. Еще одним простым, но интересным примером может послужить набор иконок <a href="https://useiconic.com/" title="Iconic">Iconic</a>, с помощью которых можно создать зажигающуюся лампочку. Демо-пример представлен здесь - <a href="http://tutsplus.github.io/Styling-Iconic/styling/index.html" title="Demo of the effect">demo of the effect </a>.</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_url&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<h2 id="section">Замечания</h2>
+<p>Также возвращает путь к текущей теме WordPress:</p>
 
-<p>Так как презентационные атрибуты имеют XML-синтаксис, то они <strong>чувствительны к регистру</strong>. Например, при задании цвета заливки SVG-элемента атрибут должен быть записан как <code>fill="..."</code>, но не как <code>Fill="..."</code>.</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">get_directory_template_uri</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p>Более того, ключевые значения этих атрибутов, такие как <code>italic</code> в <code>font-style="italic"</code>, также чувствительны к регистру и должны записываться в коде точно так, как это указано в спецификации.</p>
+<p>Возвращает язык сайта (страницы):</p>
 
-<p>Все остальные стили указываются как CSS-свойства, вне зависимости, где они расположены. Будь то стилевые атрибуты, тег <code>&lt;br&gt;</code>, <code>&lt;style&gt;</code> или внешние таблицы стилей.</p>
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">language_attributes</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
 
-<p>На этом все.</p>
+<p>Возвращает e-mail администратора сайта:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;admin_email&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Возвращает заголовок просматриваемой статьи или записи:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">wp_title</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Подключить файл шаблона header.php:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">get_header</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Подключить файл шаблона sidebar.php:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">get_sidebar</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Подключить файл шаблона footer.php:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">get_footer</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Запуск action в шапке и подвале страницы, обе функции необходимы для правильной работы некоторых плагинов и всей темы WordPress в целом:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">wp_head</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<ul>
+  <li>помещается перед тегом</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">wp_footer</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<ul>
+  <li>помещается перед тегом</li>
+</ul>
+
+<p>Подключить файл шаблона комментариев:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">comments_template</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Вывод текущего года в шаблоне WordPress:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nb">date</span><span class="p">(</span><span class="s1">&#39;Y&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<h2 id="wordpress-1">Теги записи WordPress</h2>
+
+<p>Выводит <em>заголовок</em> текущей страницы или записи:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_title</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Возвращает <em>ссылку</em> на текущую страницу или запись:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_permalink</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Выводит <em>отрывок</em> (цитату) записи с помещением в конец этой цитаты символов […] (может существовать только внутри цикла loop):</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_excerpt</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Выводит <em>полное содержимое</em> (весь текст) текущей записи (может существовать только внутри цикла loop):</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_content</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Выводит <em>имя автора</em> записи:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_author</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Выводит <em>время</em> (дату) публикации текущей записи:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_time</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p><em>Стандартный цикл</em> loop для вывода записей в шаблоне WordPress:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="nx">have_posts</span><span class="p">())</span> <span class="o">:</span> <span class="k">while</span><span class="p">(</span><span class="nx">have_posts</span><span class="p">())</span> <span class="o">:</span> <span class="nx">the_post</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;?php</span> <span class="k">endwhile</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Расширенный пример (<em>показанного выше</em>) стандартного цикла loop, который может послужить в качестве <em>миниатюрного шаблона</em>:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="nx">have_posts</span><span class="p">())</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;?php</span> <span class="k">while</span><span class="p">(</span><span class="nx">have_posts</span><span class="p">())</span> <span class="o">:</span> <span class="nx">the_post</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">    &lt;a href=&quot;</span><span class="cp">&lt;?php</span> <span class="nx">the_permalink</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x">&quot;&gt;</span><span class="cp">&lt;?php</span> <span class="nx">the_title</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x">&lt;/a&gt;</span>
+<span class="x">    </span><span class="cp">&lt;?php</span> <span class="nx">the_content</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;?php</span> <span class="k">endwhile</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Возвращает ссылку на <em>предыдущую запись</em>:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">previous_post_link</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Возвращает ссылку на <em>следующую запись</em>:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">next_post_link</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Вывести <em>теги</em> записи (может существовать только внутри цикла loop):</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_tags</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Вывести ссылку на <em>комментарии</em> к записи (может существовать только внутри цикла loop):</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">comments_popup_link</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Вывести <em>миниатюру</em> записи внутри самой записи:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">the_post_thumbnail</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Вывод <em>миниатюры по умолчанию</em>, если не задана другая миниатюра:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="nx">has_post_thumbnail</span><span class="p">())</span><span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;?php</span> <span class="nx">the_post_thumbnail</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">  </span><span class="cp">&lt;?php</span> <span class="k">else</span><span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">    &lt;img src=&quot;</span><span class="cp">&lt;?php</span> <span class="nx">bloginfo</span><span class="p">(</span><span class="s1">&#39;template_url&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x">/images/image.jpg&quot; alt=&quot;Image&quot;&gt;</span>
+<span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Вывести (создать) <em>постраничную навигацию</em> (пагинация):</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="nx">posts_nav_link</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<p>Подключить виджет в шаблоне WordPress:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="cp">&lt;?php</span> <span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">dynamic_sidebar</span><span class="p">(</span><span class="s1">&#39;идентификатор виджета&#39;</span><span class="p">))</span> <span class="o">:</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="cp">&lt;?php</span> <span class="k">endif</span><span class="p">;</span> <span class="cp">?&gt;</span><span class="x"></span></code></pre></div>
+
+<h2 id="functionsphp">Функции файла functions.php</h2>
+
+<p>Поставить на загрузку файл js-скриптов:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">wp_enqueue_script();</span></code></pre></div>
+
+<p>Поставить на загрузку файл CSS-стилей:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">wp_enqueue_style();</span></code></pre></div>
+
+<p>Пример функции для загрузки скриптов и стилей:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">function load_scripts_and_styles(){</span>
+<span class="x">	wp_enqueue_script(&#39;jquery_custom&#39;,get_directory_template_uri().&#39;/js/my-jquery.js&#39;);</span>
+<span class="x">	wp_enqueue_script(&#39;js_custom&#39;,get_directory_template_uri().&#39;/js/my-js.js&#39;);</span>
+<span class="x">	wp_enqueue_style(&#39;style&#39;,get_directory_template_uri().&#39;/style.css&#39;);</span>
+<span class="x">}</span>
+<span class="x">add_action(&#39;wp_enqueue_scripts&#39;,&#39;load_scripts_and_styles&#39;);</span></code></pre></div>
+
+<p>Зарегистрировать новую панель под виджеты в шаблоне WordPress:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">register_sidebar()</span>
+<span class="x">  &#39;name&#39; =&gt; &#39;имя новой панели&#39;,</span>
+<span class="x">  &#39;id&#39; =&gt; &#39;идентификатор новой панели&#39;,</span>
+<span class="x">  &#39;description&#39; =&gt; &#39;описание новой панели&#39;,</span>
+<span class="x">  &#39;before_widget&#39; =&gt; &#39;&#39;,</span>
+<span class="x">  &#39;after_widget&#39; =&gt; &#39;&#39;,</span>
+<span class="x">  &#39;before_title&#39; =&gt; &#39;&#39;,</span>
+<span class="x">  &#39;after_title&#39; =&gt; &#39;&#39;</span></code></pre></div>
+
+<p>Включить возможность применения миниатюр в шаблоне WordPress:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">add_theme_support(&#39;post-thumbnails&#39;);</span></code></pre></div>
+
+<p>Установить размер миниатюр в шаблоне по умолчанию:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">set_post_thumbnail_size($width,$height);</span></code></pre></div>
+
+<p>Шаблон с метаданными темы WordPress:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">/*</span>
+<span class="x">  Theme Name: Имя темы</span>
+<span class="x">  Theme URI: Домашняя страница темы</span>
+<span class="x">  Description: Краткое описание темы</span>
+<span class="x">  Author: Имя автора темы</span>
+<span class="x">  Author URI: Домашняя страница автора темы</span>
+<span class="x">  Version: Номер версии темы</span>
+<span class="x">*/</span></code></pre></div>
+
+<p>Будет дополняться (<em>возможно</em>).</p>
 
 <hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -460,350 +856,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-26T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-css-importer/">November 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-css-importer/" rel="bookmark" title="Плагин Sass CSS Importer" itemprop="url">Плагин Sass CSS Importer</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Краткий обзор плагина Sass CSS Importer для импортирования файлов CSS в файлы Sass.</p>
-</blockquote>
-
-<p>В чем заключается вопрос? Как хорошо известно всем, кто постоянно работает с Sass, с помощью директивы <code>@import</code> можно подключать одни Sass-файлы в другие Sass-файлы.</p>
-
-<p>Например, подключить файл <code>typography.scss</code> в файл <code>main.scss</code> можно так:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;_typography&#39;</span><span class="p">;</span></code></pre></div>
-
-<p>Оба файла <code>main.scss</code> и <code>typography.scss</code> будут объединены препроцессором в один файл <code>main.scss</code>, который уже будет компилироваться в файл <code>main.css</code>.</p>
-
-<p>Знак подчеркивания в данном случае является дополнительной опцией. Этим знаком препроцессору Sass указывается не выполнять предварительную компиляцию файла <code>typography.scss</code> в файл <code>typography.css</code> перед его подключением в <code>main.scss</code>.</p>
-
-<p>Но что, если стоит задача подключения файлов формата CSS в файлы формата Sass? Директива <code>@import</code> в этом случае помочь не может. CSS-файл нельзя просто так подключить в Sass-файл.</p>
-
-<p>Задача подключения CSS-файлов в Sass-файлы наиболее часто может возникнуть в случае использования различных готовых слайдеров или каруселей, которые зачастую идут “в комплекте” с минимальными правилами на CSS. Что же делать?</p>
-
-<h2 id="sass-css-importer">Плагин Sass CSS Importer</h2>
-
-<p>Совсем недавно (<em>17 июля сего года</em>) Chris Eppstein выпустил специальный плагин, задачей которого и является импортирование CSS-файлов в Sass-файлы. Страничка с официальной документацией по плагину Sass CSS Importer расположена на GitHub - <a href="https://github.com/chriseppstein/sass-css-importer" title="Sass CSS Importer">Sass CSS Importer Plugin</a>.</p>
-
-<p>Там все описано кратко и предельно ясно. Однако, я был так доволен тем фактом, что теперь могу свободно подключать CSS в Sass, что решил потратить часть своего времени, чтобы описать его своими словами, по-русски.</p>
-
-<h2 id="sass-css-importer-1">Установка Sass CSS Importer</h2>
-
-<p>Установка плагина выполняется как обычно, через менеджер пакетов <code>gem</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="p">-</span><span class="n">-pre</span> <span class="n">sass-css-importer</span></code></pre></div>
-
-<h2 id="sass-css-importer-2">Подключение Sass CSS Importer</h2>
-
-<p>При использовании фреймворка Compass нужно добавить строку в конфигурационный файл <code>config.rb</code> своего текущего проекта:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">require</span> <span class="s1">&#39;sass-css-importer&#39;</span></code></pre></div>
-
-<h2 id="css--sass">Импортирование CSS в Sass</h2>
-
-<p>Теперь, чтобы импортировать CSS в Sass, нужно воспользоваться все той же директивой <code>@import</code>, но со специальным синтаксисом.</p>
-
-<p>В общем случае этот синтаксис выглядит таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;CSS:имя_директории/имя_css_файла&#39;</span><span class="p">;</span></code></pre></div>
-
-<p>В частном случае синтаксис будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;CSS:carousel&#39;</span><span class="p">;</span></code></pre></div>
-
-<blockquote>
-  <p>Обратите внимание на важный момент: имя CSS-файла нужно указывать без расширения!</p>
-</blockquote>
-
-<p>Можно запустить процесс компиляции через командную строку:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">compass</span> <span class="n">watch</span></code></pre></div>
-
-<p>… и проверить, что CSS-файл будет включен в общий вывод:</p>
-
-<p class="center"><img src="http://zencoder.ru/images/uploads/2014/11/sass-css-importer.png" alt="Плагин Sass CSS Importer" /></p>
-
-<h2 id="section">Заключение</h2>
-
-<p>В принципе, вот и все, что можно сказать о Sass CSS Importer.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-selector-placeholder/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-selector-placeholder/" rel="bookmark" title="Знакомимся с 'тихими' placeholder" itemprop="url">Знакомимся с 'тихими' placeholder</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Статья посвящена вопросу “тихих” placeholder’ов в препроцессоре Sass. Что это такое и в чем преимущество их использования.</p>
-</blockquote>
-
-<p>Оригинал статьи размещен здесь - <a href="http://thesassway.com/intermediate/understanding-placeholder-selectors" title="Understanding placeholder selectors">Understanding placeholder selectors</a>.</p>
-
-<p>Препроцессор Sass предоставляет несколько способов создания одного фрагмента кода, который будет многократно использоваться внутри CSS-кода.</p>
-
-<p>Например, можно воспользоваться миксинами (<code>mixins</code>) для вставки группы CSS-свойств (или CSS-правил) в CSS-коде.</p>
-
-<p>Или же использовать директиву <code>@extend</code> для расширения набора CSS-свойств одного HTML-элемента за счет CSS-свойств другого HTML-элемента.</p>
-
-<p>В Sass версии 3.2 введена новая концепция под названием <code>placeholder</code>, которая делает использование директивы <code>@extend</code> еще более эффективным способом.</p>
-
-<p>Но прежде чем мы перейдем к рассмотрению этого нововведенния, давайте остановимся на моменте, каким образом работает расширение (<code>@extend</code>) CSS-свойств в Sass.</p>
-
-<h2 id="extend">Как работает @extend</h2>
-
-<p>Директива <code>@extend</code> в препроцессоре Sass позволяет CSS-селекторам с легкостью обмениваться между собой своими CSS-свойствами. Лучше всего вышесказанное можно проиллюстрировать на живом примере:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Результатом компиляции этого SCSS-кода в CSS-код будет следующий фрагмент:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.icon</span><span class="o">,</span> <span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Рассмотрим “механизм” показанного выше примера более детально. В нем директива <code>@extend</code> играет ключевую роль. С помощью нее селекторы <code>.error-icon</code> и <code>.info-icon</code> наследуют свойства селектора <code>.icon</code>. При изменении CSS-свойств селектора <code>.icon</code> автоматически будут меняться свойства селекторов <code>.error-icon</code> и <code>.info-icon</code>, так как они наследуют определенный набор CSS-свойств у селектора <code>.icon</code>. Довольно изящный подход, не правда ли?</p>
-
-<p>А вот теперь наступает интересный момент. Что, если элемент с классом <code>.icon</code> не планируется использовать и он даже не будет присутствовать в HTML-разметке? Но CSS-свойства этого элемента нам нужны для стилизации элементов <code>.error-icon</code> и <code>.info-icon</code>.</p>
-
-<p>Получается, что результирующий CSS-код будет неоправданно раздут из-за того, что в нем присутствует “лишний” элемент, который напрямую никогда не будет использован.</p>
-
-<p>И тут наступает момент для выхода на сцену героя этой статьи - селектора <code>placeholder</code> (его еще называют “тихим” <code>placeholder</code>‘ом):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/placeholder.jpg" alt="Тихий placeholder" /></p>
-
-<h2 id="placeholder">Знакомимся с селектором placeholder</h2>
-
-<p>Селекторы <code>placeholder</code> были введены в Sass как раз для того, чтобы решать вышеназванную проблему. Синтаксис <code>placeholder</code> очень похож на синтаксис обычных CSS-классов, только вместо точки (<code>.</code>) перед именем ставиться символ процента <code>%</code>.</p>
-
-<p>Селекторы <code>placeholder</code> имеют одну специфичную для них особенность - они никак не проявляют себя в скомпилированном CSS-коде. Можно сказать по другому - вы никогда не найдете селекторов <code>placeholder</code> в результирующем CSS-коде (поэтому они и носят такое название - “тихие” <code>placeholder</code>). В скомпилированном CSS-коде будут только селекторы, которые используют “тихие” <code>placeholder</code>‘ы, но никак не сами “тихие” <code>placeholder</code>‘ы.</p>
-
-<p>Вернемся назад, к нашему начальному примеру. Заменим в нем имя класса <code>.icon</code> на имя “тихого” placeholder’а - <code>%icon</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В результате скомпилированный CSS-код будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Обратите внимание на важный момент - класс <code>.icon</code> теперь не присутствует в результирующем CSS-коде! Его там нет!</p>
-
-<h2 id="extend--include">@extend или @include</h2>
-
-<p>На первый взгляд может показаться, что “тихие” <code>placeholder</code> - это почти тоже самое, что и миксины (<code>mixin</code>). С функциональной точки зрения такое утверждение абсолютно верно - результат в браузере получается идентичным. А вот с точки зрения CSS разница очень существенная!</p>
-
-<p>Давайте снова изменим наш первоначальный пример и теперь воспользуемся миксином <code>@mixin icon</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">icon</span> <span class="p">{</span>
-  <span class="nt">transition</span><span class="o">:</span> <span class="nt">background-color</span> <span class="nt">ease</span> <span class="nc">.2s</span><span class="o">;</span>
-  <span class="nt">margin</span><span class="o">:</span> <span class="nt">0</span> <span class="nc">.5em</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Посмотрим на сгенерированный CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .error-icon */</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="c">/* здесь - специфичные стили класса .info-icon */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>С точки зрения разработки данный пример ничем не хуже примера с использованием “тихого” <code>placeholder</code>‘а.</p>
-
-<p>Но обратите внимание на тот факт, что CSS-правила <code>transition: background-color ease .2s;</code> и <code>margin: 0 .5em;</code> дублируются между селекторами <code>.error-icon</code> и <code>.info-icon</code>, что приводит к неоправданному раздутию кода. В случае использования “тихого” <code>placeholder</code> этого не происходит.</p>
-
-<h2 id="section">Ограничения</h2>
-
-<p>Использование директивы <code>@extend</code> имеет одно ограничение, связанное с тем, что применение “тихих” <code>placeholder</code>‘ов никак не оправдывает себя в медиа-запросах <code>@media</code>.</p>
-
-<p>Рассмотрим такой пример:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-
-  <span class="nc">.error-icon</span> <span class="p">{</span>
-    <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nc">.info-icon</span> <span class="p">{</span>
-    <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-  <span class="p">}</span>
-
-<span class="p">}</span></code></pre></div>
-
-<p>Видим, что в данном случае “тихий” <code>placeholder</code> добавлен для селекторов, находящихся внутри медиа-запроса <code>@media</code>.</p>
-
-<p>Однако, при попытке компиляции этого SCSS-кода в CSS-код получиться ошибка:</p>
-
-<blockquote>
-  <p>You may not @extend an outer selector from within @media. You may only @extend selectors within the same directive. From “@extend %icon” on line 8 of icons.scss</p>
-</blockquote>
-
-<p>Когда я первый раз увидел такую ошибку, то подумал, что это баг. Но по зрелом размышлении пришел к выводу, что в данном подходе все правильно.</p>
-
-<p>Механизм работы директивы <code>@extend</code> основан на добавлении одного селектора к другому селектору без необходимости дублировать CSS-свойства этих селекторов. Однако невозможно объединять селекторы, находящиеся в разных медиа-запросах <code>@media</code>.</p>
-
-<p>Но можно поступить по другому, чтобы выйти из данной затруднительной ситуации. Любой медиа-запрос, который служит оберткой для “тихого” <code>placeholder</code>, распространяют свои свойства на селекторы, не размещенные внутри этого запроса.</p>
-
-<p>Выражение достаточно запутанное, поэтому лучше приведу пример:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-  <span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">%</span><span class="k">icon</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Компиляция пройдет без ошибок и ее результатом будет CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-  <span class="nc">.error-icon</span><span class="o">,</span> <span class="nc">.info-icon</span> <span class="p">{</span>
-    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-1">Заключение</h2>
-
-<p>Обе директивы <code>@extend</code> и <code>@include</code> являются очень полезными инструментами, между которыми существует тонкое различие. Если вопрос производительности генерируемого CSS-кода имеет для вас важное значение или же перед вами стоит проблема повторяемости кода, то решением будет являться директива <code>@extend</code>. В некоторых случая <code>@extend</code> значительно упрощает получаемый CSS-код и улучшает его производительность.</p>
-
-<p>Конечно же, ничто не мешает вам смешивать между собой директиву <code>@extend</code> и миксин <code>mixin</code> (<em>если этого требуют обстоятельства</em>):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="p">{</span>
-  <span class="o">%</span><span class="nt">icon</span> <span class="p">{</span>
-    <span class="n">transition</span><span class="o">:</span> <span class="k">background-color</span> <span class="n">ease</span> <span class="m">.2s</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">.5em</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@mixin</span> <span class="nt">icon</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="o">$</span><span class="nt">url</span><span class="o">)</span> <span class="p">{</span>
-  <span class="k">@extend</span> <span class="o">%</span><span class="nt">icon</span><span class="p">;</span>
-  <span class="nt">background-color</span><span class="o">:</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
-  <span class="nt">background-url</span><span class="o">:</span> <span class="nt">url</span><span class="o">($</span><span class="nt">url</span><span class="o">);</span>
-<span class="p">}</span>
-
-<span class="nc">.error-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">(</span><span class="nb">red</span><span class="o">,</span> <span class="s1">&#39;/images/error.png&#39;</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.info-icon</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">icon</span><span class="p">(</span><span class="nb">blue</span><span class="o">,</span> <span class="s1">&#39;/images/info.png&#39;</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Однако, в разработке я придерживаюсь такого подхода, когда исходный код легко читается и поддерживается.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-21T00:00:00+04:00"><a href="http://zencoder.ru/html/jade-to-html/">November 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/css/nib-stylus/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -813,121 +866,243 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/html/jade-to-html/" rel="bookmark" title="Jade - два способа компиляции в HTML" itemprop="url">Jade - два способа компиляции в HTML</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/nib-stylus/" rel="bookmark" title="Nib - библиотека миксинов под Stylus" itemprop="url">Nib - библиотека миксинов под Stylus</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>В этом посте поделюсь своим опытом реализации задачи компиляции jade-файлов в HTML-формат.</p>
+  <p>Легкое знакомство с библиотекой Nib под препроцессор Stylus. Эта библиотека является тем же самым, что Compass или Bourbon под препроцессор Sass.</p>
 </blockquote>
 
-<p>Рассмотрю два способа реализации этой задачи. Первый - самый нативный, с помощью родной утилиты <code>jade</code>. Второй - с помощью плагина <code>gulp-jade</code> под Gulp.</p>
+<p>Библиотека миксинов Nib написана под препроцессор Stylus и является аналогом более известных библиотек Compass или Bourbon под препроцессор Sass. С самим препроцессором Stylus я с вами познакомился немного раньше - скажем так, это было краткое и легкое знакомство.</p>
 
-<p>Но способов компиляции Jade в HTML существует больше - есть плагин под Sublime Text, существует плагин под Grunt. Обладатели Mac OS X могут воспользоваться прекрасной программой CodeKit. И я уверен, что это только малая часть того, чем можно воспользоваться.</p>
+<p>Библиотека Nib проживает по адресу - <a href="https://github.com/tj/nib" title="Nib">Nib GitHub</a>. Она маленькая и легкая, но должна быть полезной. Поэтому мне необходимо с ней познакомиться поближе.</p>
 
-<p>Кратко остановлюсь на вопросе, зачем мне понадобился <a href="http://jade-lang.com/" title="Jade">Jade</a>. Честно сказать, до недавнего момента я даже не подозревал о сущестовании такого шаблонизатора. Тихо-спокойно пользовался Sublime Text + Emmet и считал, что я на вершине современных требований к web-разработчику.</p>
+<h2 id="nib">Установка библиотеки Nib</h2>
 
-<p>Однако это оказалось не совсем так. Мне посоветовали посмотреть в сторону Jade и разобраться с работой в нем. Хотя бы с синтаксисом, для начала.</p>
-
-<p>И я скажу вам - мне понравилось! Даже простое использование синтаксиса. Первое впечатление и ощущение - использование этого шаблонизатора освобождает от рамок HTML при написании кода. Точнее - при создании кода сосредотачиваешься на содержимом, которое создаешь.</p>
-
-<p>Но у Jade есть еще и миксины, с которыми мне предстоит познакомиться. Так что - лучшее только впереди!</p>
-
-<p>Написание кода в этом шаблонизаторе чем-то похоже на написание текста в <a href="http://localhost:7788/third/?p=717" title="Язык Markdown - обзор редакторов для работы">Markdown</a>. Под Markdown имеются (и должны иметься) утилиты\программы для компиляции в HTML. Точно также для Jade должны иметься (и имеются) утилиты\программы для компиляции в HTML.</p>
-
-<h2 id="jade-----sublime-text">Jade - синтаксис для Sublime Text</h2>
-
-<p>Прежде чем писать код в редакторе, в моем случае необходимо настроить поддержку синтаксиса Jade. Я использую Sublime Text 3, который изначально не имеет таковой.</p>
-
-<p>Исправить это легко - достаточно через <code>Package Control</code> установить пакет <code>Jade</code>. Помимо подсветки синтаксиса, появиться поддержка автоматической табуляции, что значительно упрощает процесс написания кода.</p>
-
-<p>Пример подсветки синтаксиса Jade в Sublime Text:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/jade.png" alt="Пример подсветки синтаксиса Jade в Sublime Text" /></p>
-
-<h2 id="jade-----">Jade - родная утилита шаблонизатора</h2>
-
-<p>Разработчиками была создана <strong>родная утилита</strong> для преобразования jade-файлов в HTML-файлы. Имя утилиты легко запомнить - это <code>jade</code>.</p>
-
-<p>Утилита является <strong>модулем под Node.js</strong>, поэтому последний у вас должен быть заранее установлен (<em>если еще не установлен по какой-то необъяснимой причине</em>).</p>
-
-<p>Инсталляция утилиты производиться банально:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">-g</span> <span class="n">jade</span></code></pre></div>
-
-<p>Утилита имеет немногочисленные параметры, с кратким описанием которых можно ознакомиться на странице официальной документации - <a href="http://jade-lang.com/command-line/" title="Jade - Command Line">Jade - Command Line</a>.</p>
-
-<p>Но стоит обратить внимание на некоторые интересные параметры:</p>
-
-<p><strong>К примеру</strong>:</p>
+<p>В Сети мною было найдено два способа установки данной библиотеки:</p>
 
 <ul>
-  <li><code>-P, --pretty</code> - создание “удобочитаемого” HTML-кода</li>
-  <li><code>-w, --watch</code> - мониторинг изменений файлов</li>
+  <li>с использованием GitHub</li>
+  <li>с использованием менеджера пакетов npm</li>
 </ul>
 
-<p>Использование утилиты также является простым делом. К примеру, можно указать ей производить компиляцию всех файлов в директории <code>templates</code>:</p>
+<p>Второй способ мне кажется более удобным, так как в этом случае библиотека устанавливается глобально и доступна для любого проекта из любого места файловой системы. В первом же случае придется устанавливать библиотеку каждый раз - локально в каждый отдельный проект.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">jade</span> <span class="n">templates</span></code></pre></div>
+<p>Если вдруг в системе еще не установлен препроцессор Stylus, то первоначально необходимо установить его командой:</p>
 
-<p>Утилита может сама создавать jade-файлы:</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">stylus</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">jade</span> <span class="p">{</span><span class="n">foo</span><span class="p">,</span><span class="n">bar</span><span class="p">}.</span><span class="n">jade</span></code></pre></div>
+<p>Не забудьте добавить ключ <code>--global</code>, чтобы препроцессор установился глобально в системе.</p>
 
-<p>Или же можно реализовать <strong>два способа вывода</strong>:</p>
+<p>Установка библиотеки Nib почти ничем не отличается от установки препроцессора и выполняется командой:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">jade</span> <span class="p">&gt;</span> <span class="n">my</span><span class="p">.</span><span class="n">jade</span> <span class="p">&gt;</span> <span class="n">my</span><span class="p">.</span><span class="n">html</span></code></pre></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">nib</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">echo</span> <span class="s2">&quot;h1 Jade!&quot;</span> <span class="p">|</span> <span class="n">jade</span></code></pre></div>
+<p>Отлично! Все, что теперь осталось сделать - это подключить библиотеку в текущий проект (текущий рабочий Stylus-файл).</p>
 
-<p>Или же осуществить рендеринг двух директорий <code>foo</code> и <code>bar</code> в директорию <code>tmp</code>:</p>
+<p>Это выполняется директивой <code>@import</code>:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">jade</span> <span class="n">foo</span> <span class="n">bar</span> <span class="p">-</span><span class="n">-out</span> <span class="p">/</span><span class="n">tmp</span></code></pre></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">@import</span> <span class="s1">&#39;nib&#39;</span></code></pre></div>
 
-<h2 id="gulp-jade-----gulp">Gulp-jade - компиляция под Gulp</h2>
+<p>Проверим, что библиотека подключена без ошибок и отрабатывает в проекте\файле. Для этого запишем в файле <code>style.styl</code> несколько миксинов этой библиотеки и “натравим” на файл <code>style.styl</code> утилиту <code>stylus</code> с несколькими ключами:</p>
 
-<p>Кто знаком с task-manager’ом Gulp, тот может воспользоваться соответствующим плагином <code>gulp-jade</code> под него. Страничка плагина размещена здесь - <a href="https://www.npmjs.org/package/gulp-jade" title="gulp-jade">gulp-jade</a>.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">-u</span> <span class="n">nib</span> <span class="n">-w</span> <span class="n">style</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
 
-<p>Установка плагина стандартная:</p>
+<p>здесь:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-jade</span></code></pre></div>
+<ul>
+  <li><code>-u nib</code> - говорит о том, что при компиляции в CSS должно учитываться наличие библиотеки Nib</li>
+  <li><code>-w style.styl</code> - мониторить изменения в файле <code>style.styl</code> и своевременно выполнять его компиляцию в CSS</li>
+</ul>
 
-<p>Затем нужно создать задачу (task) для компиляции jade-файлов в HTML-файлы. Ниже приведу свой рабочий task:</p>
+<p>Посмотрим на результат компиляции Stylus в CSS - очень уж любопытно, получилось ли?</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/12/nib.png" alt="Библиотека Nib в действии" /></p>
+
+<p>Отлично! Все работает четко - миксины преобразуются в готовый CSS-код. Правда, выглядит он немного неприглядно - не причесанный и не почищенный.</p>
+
+<p>Ну это решается просто - достаточно на этот CSS-файл натравить Gulp-плагины <a href="https://www.npmjs.com/package/gulp-csscomb" title="gulp-csscomb">gulp-csscomb</a> и <a href="https://www.npmjs.com/package/gulp-autoprefixer" title="gulp-autoprefixer">gulp-autoprefixer</a>.</p>
+
+<p>Главное - библиотека подключена и работает!</p>
+
+<h2 id="nib------gulp">Nib - как подружить с Gulp</h2>
+
+<p>До этого момента мною использовалась нативная утилита <code>stylus</code> для компиляции из формата Stylus в формат CSS. И в том числе - с поддержкой библиотеки Nib.</p>
+
+<p>Однако, на практике такой способ вряд-ли будет использоваться. Я имею ввиду, что использование лишь одной утилиты <code>stylus</code> - я сомневаюсь, что кому-либо пригодиться.</p>
+
+<p>Гораздо практичнее использование Gulp, у которого есть соответствующий плагин <a href="https://www.npmjs.com/package/gulp-stylus" title="Stylus plugin for gulp">gulp-stylus</a> для компиляции из формата Stylus в CSS.</p>
+
+<p>Этот плагин имеет поддержку библиотеки Nib, достаточно только настроить таковую в своем проекте.</p>
+
+<p>Ниже я рассмотрю процесс подключения и настройки Nib (а заодно - и Stylus) в моем любимом Gulp.</p>
+
+<h2 id="gulp-stylus--nib">Установка плагинов gulp-stylus и nib</h2>
+
+<p>В своем рабочем проекте необходимо установить два плагина (<em>с помощью консоли</em>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">gulp-stylus</span> <span class="n">nib</span> <span class="p">-</span><span class="n">-save-dev</span></code></pre></div>
+
+<p>В результате оба пакета установятся в проект и добавятся в файл package.json в качестве зависимостей:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">...</span>
+<span class="s2">&quot;gulp-stylus&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.3.4&quot;</span><span class="p">,</span>
+<span class="s2">&quot;nib&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.0.4&quot;</span>
+<span class="p">...</span></code></pre></div>
+
+<h2 id="gulpfilejs">Настройка файла gulpfile.js</h2>
+
+<p>В файле <code>gulpfile.js</code> необходимо внести несколько правок. Первым делом - добавляем в начало файла две с строки:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-<span class="nx">jade</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-jade&#39;</span><span class="p">);</span>
+  <span class="nx">stylus</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-stylus&#39;</span><span class="p">),</span>
+  <span class="nx">nib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nib&#39;</span><span class="p">),</span>
+<span class="p">...</span></code></pre></div>
 
-<span class="c1">// Jade</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;jade&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;./template/*.jade&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">jade</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;./dist/&#39;</span><span class="p">))</span>
-<span class="p">});</span>
+<p>Затем создаем задачу task для компиляции из Stylus в CSS. В качестве параметра у метода <code>stylus</code> будет дополнительная строка <code>use:[nib()]</code>, говорящая о том, что необходимо использовать библиотеку Nib:</p>
 
-<span class="c1">// Watch</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;./template/*.jade&#39;</span><span class="p">,[</span><span class="s1">&#39;jade&#39;</span><span class="p">]);</span>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;stylus&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;app/styles/common.styl&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">stylus</span><span class="p">({</span><span class="nx">use</span><span class="o">:</span><span class="p">[</span><span class="nx">nib</span><span class="p">()]}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">prefixer</span><span class="p">({</span>
+      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 2 versions&#39;</span><span class="p">]</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">csscomb</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;dist/assets/styles/&#39;</span><span class="p">));</span>
 <span class="p">});</span></code></pre></div>
 
-<p>В Сети есть еще один интересный Gulp-task. Работоспособность его <strong>не проверял</strong>, взял как есть, для - “чтобы было”.</p>
+<p>Вот это и все (<em>необходимый минимум</em>), чтобы подружить библиотеку Nib c Gulp.</p>
 
-<p>Как говориться на <a href="http://david.nowinsky.net/gulp-book/example/jade.html" title="Compiling Jade files">странице-оригинале</a>, эта задача производит компиляцию файлов из директории <code>app/</code> в директорию <code>_public/</code>:</p>
+<p>Не забываем подключить в stylus-файл проекта библиотеку:</p>
 
-<div class="highlight"><pre><code class="language-coffeescript" data-lang="coffeescript"><span class="nv">jade = </span><span class="nx">require</span> <span class="s">&#39;gulp-jade&#39;</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;nib&#39;</span></code></pre></div>
 
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span> <span class="s">&#39;jade&#39;</span><span class="p">,</span> <span class="nf">-&gt;</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span> <span class="nx">parameters</span><span class="p">.</span><span class="nx">app_path</span> <span class="o">+</span> <span class="s">&#39;/*.jade&#39;</span>
-  <span class="p">.</span><span class="nx">pipe</span> <span class="nx">jade</span> <span class="nv">pretty: </span><span class="kc">true</span>
-  <span class="p">.</span><span class="nx">pipe</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span> <span class="nx">parameters</span><span class="p">.</span><span class="nx">web_path</span>
-  <span class="p">.</span><span class="nx">on</span> <span class="s">&#39;error&#39;</span><span class="p">,</span> <span class="nx">gutil</span><span class="p">.</span><span class="nx">log</span></code></pre></div>
+<h2 id="nib-1">Миксины библиотеки Nib</h2>
 
-<h2 id="section">Заключение</h2>
+<p>С подключением библиотеки Nib разобрались. Остался вопрос - а что там внутри, под капотом у Nib?</p>
 
-<p>Я запомнил (<em>записал для себя</em>), а вы (<em>уважаемый читатель</em>) познакомились (<em>если не знали</em>) с двумя способами настройки компиляции jade-файлов в HTML-файлы.</p>
+<p>С малой толикой миксинов я уже познакомился, когда создавал тестовую страничку подключения и компиляции (<em>см. изображение выше</em>).</p>
+
+<p>На <a href="https://github.com/tj/nib" title="Nib GitHub">официальной странице Nib</a> есть ссылка на документацию по миксинам - <a href="http://tj.github.io/nib/" title="Документация миксинов Nib">Документация миксинов Nib</a>.</p>
+
+<p>Там все описано просто и понято, с подробными примерами. Осталось только читать и пользоваться.</p>
+
+<p>В принципе, больше и сказать мне нечего (<em>по крайней мере - мне</em>) по поводу миксинов в Nib. Дальше только - брать их и использовать на практике.</p>
 
 <p>На этом все.</p>
 
 <hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/wordpress/modal-window-easy-fancybox/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/wordpress/modal-window-easy-fancybox/" rel="bookmark" title="Модальное окно на Easy FancyBox" itemprop="url">Модальное окно на Easy FancyBox</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Три способа подключения всплывающего (модального) окна на WordPress, созданного с помощью плагинов Easy FancyBox и Contact Form 7.</p>
+</blockquote>
+
+<p>Данная статья посвящена вопросу создания всплывающего (модального) окна на WordPress. Такие окна еще называются модальными и их также можно создавать на CSS.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/12/modal_window.jpg" alt="Easy Fancybox" /></p>
+
+<p>Этой статьи очень легко могло бы не быть, если бы не две причины.</p>
+
+<p>Первая причина - Сеть буквально завалена статьями и статейками на эту тему, но все они одна в одну повторяют друг друга. И только в одной я нашел грамотное, точное и краткое описание, как выполнять подключение модального окна в WordPress.</p>
+
+<p>Вторая причина - у меня первоначально созданное модальное окно не заработало. И только на одном из форумов я нашел ответ на свой вопрос.</p>
+
+<p>Ниже привожу описания решения обоих вопросов.</p>
+
+<h2 id="easy-fancybox">Три способа подключения модального окна Easy FancyBox</h2>
+
+<p>Итак, как я уже говорил выше, статей по вопросу создания модального окна с помощью плагинов <a href="https://wordpress.org/plugins/easy-fancybox/" title="Easy FancyBox">Easy FancyBox</a> и <a href="http://contactform7.com/" title="Contact Form 7">Contact Form 7</a> существует огромное количество. Поэтому здесь я его описывать не буду. А коснусь вопроса - как подключить уже созданную форму в WordPress.</p>
+
+<h2 id="easy-fancybox--">Код формы Easy FancyBox в шаблон</h2>
+
+<p>Если готовая форма встраивается непосредственно в шаблон, то код должен быть таким:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">&lt;a class=&quot;fancybox&quot; href=&quot;#contact_form_pop&quot;&gt;Контактная форма&lt;/a&gt;</span>
+<span class="x">&lt;div class=&quot;fancybox-hidden&quot; style=&quot;display:none&quot;&gt;</span>
+<span class="x">&lt;div id=&quot;contact_form_pop&quot;&gt;</span>
+<span class="x">  </span><span class="cp">&lt;?php</span> <span class="k">echo</span> <span class="nx">do_shortcode</span><span class="p">(</span><span class="s1">&#39;[contact-form-7 id=&quot;&quot; title=&quot;&quot;]&#39;</span><span class="p">);</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span></code></pre></div>
+
+<p>Обратите внимание на конструкцию <code>&lt;?php echo do_shortcode(''); ?&gt;</code>, в которую вставлен <code>shortcode</code>, созданный в плагине Contact Form 7.</p>
+
+<h2 id="easy-fancybox---1">Код формы Easy FancyBox на страницу</h2>
+
+<p>Если готовая форма встраивается в запись или на страницу, то код должен быть таким:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">&lt;a class=&quot;fancybox&quot; href=&quot;#contact_form_pop&quot;&gt;Контактная форма&lt;/a&gt;</span>
+<span class="x">&lt;div class=&quot;fancybox-hidden&quot; style=&quot;display:none&quot;&gt;</span>
+<span class="x">&lt;div id=&quot;contact_form_pop&quot;&gt;</span>
+<span class="x">  [contact-form-7 id=&quot;&quot; title=&quot;&quot;]</span>
+<span class="x">&lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span></code></pre></div>
+
+<p>Здесь <code>shortcode</code> вставляется “как есть” - как его создал плагин Contact Form 7.</p>
+
+<h2 id="easy-fancybox---2">Код формы Easy FancyBox в виджет</h2>
+
+<p>Готовую форму можно встраивать в виджет, но для этого сначала нужно включить поддержку shortcode в WordPress. Для этого в файле <code>functions.php</code> нужно добавить строку:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">add_filter(&#39;widget_text&#39;, &#39;do_shortcode&#39;);</span></code></pre></div>
+
+<p>Теперь виджет “Текст” имеет поддержку shortcode и вставить готовую форму в виджет “Текст” нужно таким образом:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">&lt;a class=&quot;fancybox&quot; href=&quot;#contact_form_pop&quot;&gt;Контактная форма&lt;/a&gt;</span>
+<span class="x">&lt;div class=&quot;fancybox-hidden&quot; style=&quot;display:none&quot;&gt;</span>
+<span class="x">&lt;div id=&quot;contact_form_pop&quot;&gt;</span>
+<span class="x">  [contact-form-7 id=&quot;&quot; title=&quot;&quot;]</span>
+<span class="x">&lt;/div&gt;</span>
+<span class="x">&lt;/div&gt;</span></code></pre></div>
+
+<p>Здесь <code>shortcode</code> вставляется точно также - без изменений, как есть из плагина Contact Form 7.</p>
+
+<p>Все три способа были “подсмотрены” мною здесь - “<a href="http://web.warwolf.org/kontaktnaya-forma-contact-form-7-vo-vsplyvayushhem-o/" title="Контактная форма (Contact Form 7) во всплывающем окне">Контактная форма (Contact Form 7) во всплывающем окне</a>”.</p>
+
+<h2 id="easy-fancybox---3">Модальное окно Easy FancyBox не работает</h2>
+
+<p>Перехожу ко второму вопросу - все настроено, но ничего не работает. Такое было у меня и было связано с тем, что мною была сверстана и создана тема под Worpdress с нуля.</p>
+
+<p>Проблема заключалась в том, что я “забыл” добавить в созданную тему две функции, которые обязательно должны присутствовать в любой WordPress-теме - <code>wp_head();</code> и <code>wp_footer();</code>.</p>
+
+<p>В файле шапки сайта <code>header.php</code> перед закрывающим тегом <code>&lt;/head&gt;</code> необходимо вставить запись, которая будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">...</span>
+<span class="cp">&lt;?php</span> <span class="nx">wp_head</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/head&gt;</span></code></pre></div>
+
+<p>В файле подвала сайта <code>footer.php</code> перед закрывающим тегом <code>&lt;/body&gt;</code> необходимо вставить запись, которая будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-php" data-lang="php"><span class="x">...</span>
+<span class="cp">&lt;?php</span> <span class="nx">wp_footer</span><span class="p">();</span> <span class="cp">?&gt;</span><span class="x"></span>
+<span class="x">&lt;/body&gt;</span></code></pre></div>
+
+<p>На этом все.</p>
+
+<hr />
+
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -1189,6 +1364,12 @@
       <li>
         
           <a href="http://zencoder.ru/page42">42</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page43">43</a>
         
       </li>
     

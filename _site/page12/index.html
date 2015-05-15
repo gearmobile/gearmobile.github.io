@@ -144,269 +144,178 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-21T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/">August 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~5 minutes
+        Reading time ~6 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/" rel="bookmark" title="Gulp - плагин gulp-ruby-sass" itemprop="url">Gulp - плагин gulp-ruby-sass</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-livereload/" rel="bookmark" title="Gulp - плагин gulp-livereload" itemprop="url">Gulp - плагин gulp-livereload</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Рассмотрим очень нужный и полезный плагин <code>gulp-ruby-sass</code> под Gulp для компиляции файлов Sass в файлы формата CSS. Для разработчиков, которые пользуются препроцессором Sass данный плагин <code>gulp-ruby-sass</code> просто необходим.</p>
+  <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке.</p>
 </blockquote>
 
-<p>Для компиляции Sass в CSS под Gulp имеется несколько плагинов. Например, <code>gulp-sass</code> или <code>gulp-ruby-sass</code>. Более стабильным плагином является <code>gulp-ruby-sass</code>. Вот его мы и установим.</p>
+<p>Суть плагина <code>gulp-livereload</code> в автоматизации обновления страниц в окне браузера. Это тоже самое, что и связка - плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка - плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
 
-<h2 id="gulp-ruby-sass">Установка плагина gulp-ruby-sass</h2>
+<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье - “Установка LiveReload в Sublime Text 2” меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда - почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
 
-<p>Команда установки уже стандартная для нас:</p>
+<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер работает стабильно. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-ruby-sass</span></code></pre></div>
+<h2 id="gulp-livereload">Установка плагина gulp-livereload</h2>
 
-<p>В директории <code>sass</code> заранее помещены мною два scss-файла <code>main.scss</code> и <code>style.scss</code>:</p>
+<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу - <a href="https://www.npmjs.org/package/gulp-livereload" title="Gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">sass</span><span class="p">/</span>
-<span class="n">main</span><span class="p">.</span><span class="n">scss</span>  <span class="n">style</span><span class="p">.</span><span class="n">scss</span></code></pre></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-livereload</span></code></pre></div>
 
-<p>После этого создаю именованную задачу <code>sass</code> для плагина <code>gulp-ruby-sass</code>:</p>
+<p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>И запускаем задачу <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">12</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Оба файла скомпилированы <code>main.scss</code> и <code>style.scss</code> и помещены по пути <code>build/css</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
-  <span class="n">main</span><span class="p">.</span><span class="n">css</span>  <span class="n">one</span><span class="p">.</span><span class="n">css</span>  <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Взглянем на содержимое хотя бы одного из них (пускай это будет <code>main.css</code>), чтобы убедиться в том, что это уже CSS-файл, а не SCSS-файл:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin.png" alt="Компиляция Sass в CSS с помощью gulp-ruby-sass" /></p>
-
-<p>Да, действительно, перед нами CSS-файл!</p>
-
-<h2 id="gulp-ruby-sass-1">Добавление опций к плагину gulp-ruby-sass</h2>
-
-<p>До этого момента все плагины, которые мы устанавливали и настраивали в виде задач, были без опций. То есть, в потоке мы просто вызывали плагин через переменную и передавали ему данные для обработки. На этом работа плагина заканчивалась.</p>
-
-<p>Однако внимательный читатель мог уже при первом знакостве с плагинами заметить, что в руководстве почти к каждому из них, помимо описания установки, есть раздел, посвященный опциям данного плагина. Другими словами, плагин может не просто обрабатывать данные, а обрабатывать так, как нам это нужно.</p>
-
-<p>Что касается плагина <code>gulp-ruby-sass</code>, то данный плагин может производить компиляцию из Sass в CSS <strong>несколькими способами</strong>. Достаточно почитать раздел <strong>API</strong> к документации к нему - <a href="https://www.npmjs.org/package/gulp-ruby-sass" title="Gulp-Ruby-Sass">gulp-ruby-sass</a>.</p>
-
-<p>Мы же воспользуемся всего одной опцией из этого списка и сделаем так, чтобы результат компиляции был <strong>более сжатым</strong>. Для этого немного изменим созданную ранее задачу <code>sass</code> и добавим опцию <code>style: 'compressed'</code> к переменной <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">({</span>
-    <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;compressed&#39;</span>
-  <span class="p">}))</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Снова запустим задачу <code>sass</code> из консоли:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">68</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>И взглянем на результат компиляции файла <code>main.scss</code> в файл <code>main.css</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin_compressed.png" alt="Компиляция gulp-ruby-sass с опцией compressed" /></p>
-
-<p>Отлично! Видим, что плагин <code>gulp-ruby-sass</code> действительно отработал с опцией <code>compressed</code> и произвел не просто компиляцию из SCSS в CSS, но и сжатие CSS-файла <code>main.css</code> - удалены все лишние пробелы и табуляция, выкинуты лишние точки с запятой, а все CSS-правила размещены в одну строку.</p>
-
-<h2 id="section">Объединение нескольких плагинов в одной задаче</h2>
-
-<p>До недавнего момента при работе в Gulp мы всегда поступали таким образом - “один плагин - одна задача”. Однако, Gulp гораздо гибче и мощнее, чем можно было бы подумать. В частности, в одной задаче можно объединить несколько ранее установленных плагинов именно благодаря поточности Gulp.</p>
-
-<p>Чтобы было более понятно, разберем все вышесказанное на живом примере. Дополним задачу <code>sass</code> плагином конкатенации, чтобы “склеить” два результирующих файла <code>main.css</code> и <code>style.css</code> в один файл <code>compile.css</code>. Как вы уже догадались, для этой цели мы воспользуемся уже установленным ранее плагином <code>gulp-concat</code>.</p>
-
-<p>Видоизменим задачу <code>sass</code>, добавив строку <code>.pipe(concat('compile.css'))</code> после строки с вызовом плагина <code>gulp-ruby-sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">({</span>
-      <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;compressed&#39;</span>
-    <span class="p">}))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;compile.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-  <span class="p">});</span></code></pre></div>
-
-<p>Вновь запустим в консоли задачу <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">05</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Посмотрим содержимое по пути <code>build/css</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">aaron</span><span class="nv">@zmk</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span> <span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
-  <span class="n">compile</span><span class="p">.</span><span class="n">css</span>  <span class="n">one</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Файл <code>compile.css</code> появился по указанному пути. Взглянем на его содержимое в редакторе Sublime Text:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin_compressed_concat.png" alt="Компиляция gulp-ruby-sass и конкатенация Sass в CSS под Gulp" /></p>
-
-<p>Пример получился не совсем удачный, но, тем не менее, наглядный. Видим, чтобы оба плагина отработали. Была произведена компиляция, а затем “склейка” двух файлов в один.</p>
-
-<p>Конечно, благодаря поточности в Gulp, в одну задачу можно добавлять не два плагина, а гораздо больше.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-20T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-install-and-launch-gulp-uglify/">August 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-install-and-launch-gulp-uglify/" rel="bookmark" title="Gulp - установка и запуск плагина gulp-uglify" itemprop="url">Gulp - установка и запуск плагина gulp-uglify</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Gulp - знакомство и первый запуск”” мы познакомились с установкой менеджера Gulp и запуском первой задачи под него. В этой статье мы перейдем к еще более интересному материалу, в котором узнаем, как устанавливать и запускать плагины под Gulp на примере одного из них - <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">gulp-uglify</a>.</p>
-</blockquote>
-
-<p>Как я уже упоминал ранее, Gulp имеет модульную структуру. Под Gulp, несмотря на молодость проекта, уже написано достаточное количество плагинов. Конечно, оно не сравниться с огромной коллекцией таковых под мега-популярный Grunt, но для большинства случаев жизни уже сейчас их хватит.</p>
-
-<p>Каждый из плагинов - это код, решающий только одну задачу. Например, один плагин умеет сжимать изображения, другой сжимает js-файлы, третий сжимает css-файлы; еще один умеет компилировать scss-файлы в css-файлы. И так далее - список можно продолжать и продолжать.</p>
-
-<p>Становиться понятно, что для конкретной задачи нам нужно установить нужный плагин и создать задачу (task) в файле <code>gulpfile.js</code>. А затем запустить Gulp на выполнение этой задачи. Конечно, задач может быть не одна, а несколько. Все зависит о того, какие именно задачи нам необходимо выполнять.</p>
-
-<p>Давайте рассмотрим процесс установки плагинов и настройки задач на примере одного из них - <code>gulp-uglify</code>. Данный плагин служит для минификации js-файлов - он удаляет пробелы, запятые, точки с запятой. В результате js-файл получается меньшим по размеру.</p>
-
-<p>Все плагины под Gulp размещены по этому адресу - <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">Gulp Plugins</a>. В строке поиска нужно вводить имя искомого плагина, в результате получаем (<em>или не получаем</em>) страницу с описанием плагина и командой для его установки.</p>
-
-<h2 id="gulp-uglify--gulp">Устанавливаем gulp-uglify под Gulp</h2>
-
-<p>На странице плагина <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">gulp-uglify</a> описана команда установки этого плагина, которую мы повторим для себя, в своем проекте:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-uglify</span></code></pre></div>
-
-<p>Опять таки, ключ <code>--save-dev</code> “говорит” менеджеру <code>npm</code> добавить плагин <code>gulp-uglify</code> в качестве зависимости в файл <code>package.json</code>:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">$</span> <span class="err">cat</span> <span class="err">package.json</span>
-<span class="p">{</span>
-  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
-    <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
-    <span class="nt">&quot;gulp-uglify&quot;</span><span class="p">:</span> <span class="s2">&quot;~0.3.1&quot;</span>
-  <span class="p">}</span>
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
+ <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;gulp-livereload&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.1.1&quot;</span>
+ <span class="p">}</span>
 <span class="p">}</span></code></pre></div>
 
-<h2 id="gulp-uglify--gulp-1">Создаем задачу gulp-uglify под Gulp</h2>
-
-<p>Плагин <code>gulp-uglify</code> установлен и теперь самое время прописать в файле <code>gulpfile.js</code> именованную задачу (named task) под него. Надеюсь, уважаемый читатель помнит о двух типах задач под Gulp, описанных в предыдущей статье “Gulp - знакомство и первый запуск”.</p>
-
-<p>Открываем файл <code>gulpfile.js</code> в редакторе кода (у меня это Sublime Text) и вносим туда следующие строки:</p>
+<p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">uglify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">);</span>
-<span class="p">...</span>
-<span class="c1">// Gulp Uglify</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span></code></pre></div>
+
+<h2 id="livereload--">Установка плагина LiveReload под браузер</h2>
+
+<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера - Google Chrome и Safari.</p>
+
+<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla - <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится устаревшая версия плагина, которая наверняка не подойдет для вашего браузера.</p>
+
+<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров - <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
+
+<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин - он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
+
+<h2 id="gulp-livereload-1">Создание задачи под gulp-livereload</h2>
+
+<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него - это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас - устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
+
+<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_error_start_server.png" alt="Ошибка запуска сервера LiveReload" /></p>
+
+<p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
 <span class="p">});</span></code></pre></div>
 
-<p>В принципе, можно и не вводить вышеприведенные строки вручную, а просто скопировать их со страницы описания плагина <a href="https://www.npmjs.org/package/gulp-uglify/" title="Gulp-uglify">gulp-uglify</a>. Они размещены в блоке с заголовком Usage.</p>
+<p>Все - мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
 
-<p>Но это не главное. Важнее разобраться, что из себя представляет каждая из этих строк. Так вот, строка <code>uglify = require('gulp-uglify')</code> - это создание переменной с именем <code>uglify</code>, в которую помещается плагин <code>gulp-uglify</code>. Обратите внимание на синтаксис этой строки и ее табуляцию - оба аспекта важны и их несоблюдение приведет к тому, что Gulp не будет работать. По большому счету, можно написать и так - <code>var uglify = require('gulp-uglify');</code>, но предыдущая запись является более правильной.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Complie Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
 
-<p>Далее идут строки для новой именованной задачи для Gulp. Имя задачи задаем произвольно и пусть оно будет таким - <code>gulp-uglify</code>. В теле callback-функции пропишем директорию, содержимое которой Gulp должен отслеживать - <code>gulp.src('js/*.js')</code>. В данном случае указываем, что Gulp должен следить за изменениями всех файлов с расширением .js, расположенных внутри директории <code>js</code>.</p>
+<p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
 
-<p>Следующая строка <code>.pipe(uglify())</code> получает в виде потока содержимое директории <code>js</code> и обрабатывает его с помощью плагина <code>gulp-uglify</code>, помещенного внутрь переменной <code>uglify</code>. Результат обработки передается в виде потока в строку <code>.pipe(gulp.dest('build/js'))</code>, которая сохраняет его по пути <code>build/js</code>.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">sassSCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
+    <span class="nx">minifyHTML</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-html&#39;</span><span class="p">),</span>
+    <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span>
 
-<p>Вот мы и разобрали суть задачи в Gulp! Ведь ничего сложного, правда?!</p>
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
 
-<h2 id="gulp-uglify--gulp-2">Запускаем задачу gulp-uglify в Gulp</h2>
+<span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span>
 
-<p>Переходим от слов к делу и запустим на выполнение только что созданную нами задачу <code>gulp-uglify</code>. Не забываем, что именованные задачи в Gulp запускаются с указанием их имени:</p>
+<span class="c1">// Sass Complie Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">gulp-uglify</span>
-<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;gulp-uglify&#39;</span><span class="p">...</span>
-<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;gulp-uglify&#39;</span> <span class="n">after</span> <span class="n">12</span> <span class="n">ms</span></code></pre></div>
+<p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
 
-<p>Вуаля! Видим (по аналогии с предыдушим опытом запуска дефолтной задачи), что именованная задача <code>gulp-uglify</code> успешно запустилась, выполнилась за 12 миллисекунд и также успешно завершилась. По идее, теперь по пути <code>build/js</code> у нас должен располагаться минифицированный js-файл (в моем случае это был <code>jquery-1.11.1.js</code>).</p>
+<h2 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h2>
 
-<p>Посмотрим и видим, что так оно и есть, файлик <code>jquery-1.11.1.js</code> помещен туда, куда мы и прописывали:</p>
+<p>Осталось выполнить две маленькие вещи. Первая - включаю плагин LiveReload в браузере. Вторая - запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">js</span><span class="p">/</span>
-<span class="n">jquery</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">11</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">js</span></code></pre></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">17</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">19</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span></code></pre></div>
 
-<p>А точно ли он минифицированный? Это легко проверить - открываем его в Sublime Text и наблюдаем такую картину:</p>
+<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию - 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_gulp_uglify.png" alt="Минифицированный с помощью gulp-uglify файл в Gulp" /></p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">figure</span><span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+ <span class="p">}</span></code></pre></div>
 
-<h2 id="gulp">Полезные плагины под Gulp</h2>
+<p>… и смотрю на вывод в консоли:</p>
 
-<p>Мы успешно установили и запустили плагин под Gulp - можно в очередной раз поздравить себя! В данном случае это был плагин <code>gulp-uglify</code> для минификации js-файлов.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span></code></pre></div>
 
-<p>Однако, как можно догадаться, существует большое количество других полезных плагинов. Все они устанавливаются и настраиваются точно также, как и рассмотренный нами <code>gulp-uglify</code>.</p>
+<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> - он тоже подхватил изменения?</p>
 
-<p>Ниже я приведу примерный список наиболее полезных плагинов под Gulp, существующих на сегодняшний день:</p>
+<p>Смотрим:</p>
 
-<ul>
-  <li><code>gulp-minify-html</code> // минификация HTML-файлов</li>
-  <li><code>gulp-minify-css</code> // минификация CSS-файлов</li>
-  <li><code>gulp-csso</code> // еще один плагин минификации CSS-файлов</li>
-  <li><code>gulp-uglify</code> // минификация JS-файлов</li>
-  <li><code>gulp-sass</code> // компиляция SCSS-файлов в CSS-файлы</li>
-  <li><code>gulp-ruby-sass</code> // компиляции SCSS-файлов в CSS-файлы, более стабильный</li>
-  <li><code>gulp-concat</code> // конкатенация (соединение нескольких файлов в один файл)</li>
-  <li><code>gulp-jshint</code> // ???</li>
-  <li><code>gulp-livereload</code> // запуск плагина LiveReload</li>
-  <li><code>gulp-watch</code> // мониторинг файлов в фоновом режиме в Gulp</li>
-  <li><code>gulp-notify</code> // вывод окна с уведомлением о событиях в Gulp</li>
-  <li><code>gulp-imagemin</code> // сжатие изображений в Gulp</li>
-  <li><code>gulp-rename</code> // переименование файлов в Gulp</li>
-  <li><code>gulp-plumber</code> // настройка обработки ошибок в Gulp</li>
-</ul>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_01.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> - “картинка” в окне браузера изменилась без перезагрузки последнего.</p>
+
+<p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">97</span> <span class="n">ms</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_02.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp - использование плагина <code>gulp-livereload</code>.</p>
 
 <hr />
 
@@ -418,7 +327,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-19T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-introduction-and-first-launch/">August 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-26T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-imagemin/">August 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -428,118 +337,428 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-introduction-and-first-launch/" rel="bookmark" title="Gulp - знакомство и первый запуск" itemprop="url">Gulp - знакомство и первый запуск</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-imagemin/" rel="bookmark" title="Gulp-imagemin - оптимизация изображений в Gulp" itemprop="url">Gulp-imagemin - оптимизация изображений в Gulp</a></h1>
     
   </header>
   <div class="entry-content">
-    <p>В этой статье будем знакомиться с новым менеджером задач (task manager) под названием <a href="http://gulpjs.com/" title="Gulp">Gulp</a>. Постепенно вместе с вами я пройду весь процесс - от установки Gulp до установки плагинов, создания задач, отслеживания ошибок и еще многое другое.</p>
+    <blockquote>
+  <p>Крайне необходимая задача, возникающая в работе каждого верстальщика - это оптимизация графики, нарезанной из psd-макета или используемой в HTML-шаблоне.</p>
+</blockquote>
 
-<p>Но для начала узнаем, что такое Gulp. Это точно такой менеджер задач, как и Grunt. Оба они являются модулями под Node.js и устанавливаются с помощью пакетного менеждера <code>npm</code>.</p>
+<p>Для этой цели существует много разных инструментов, начиная с RIOT и заканчивая утилитами Linux. Но гораздо более удобной возможностью является автоматизация процесса сжатия картинок с помощью плагина под Gulp.</p>
 
-<p>Отличие от Grunt в том, что Gulp является переработкой Grunt. Как говорят его разработчики, цель создания была в том, чтобы выбросить из Grunt все лишнее. Кроме того, настройка Gulp значительно упростилась:</p>
+<p>Таким плагином является <a href="https://www.npmjs.org/package/gulp-imagemin" title="Gulp-imagemin">gulp-imagemin</a>. Он умеет сжимать картинки форматов PNG, JPEG, GIF и SVG. Все остальные (не поддерживаемые) форматы графических файлов просто игнорируются плагином <code>gulp-imagemin</code>.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp.png" alt="Gulp" class="center-image" /></p>
+<h2 id="gulp-imagemin">Установка gulp-imagemin</h2>
 
-<p>На сегодня однозначным преимуществом Gulp перед Grunt является скорость обработки файлов - она в разы выше, чем у старенького Grunt.</p>
+<p>Установка плагина <code>gulp-imagemin</code> стандартная и производиться командой <code>npm install</code> с ключом <code>--save-dev</code> для внесения пакета в список зависимостей проекта:</p>
 
-<h2 id="gulp">Установка Gulp</h2>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-imagemin</span></code></pre></div>
 
-<p>Установка будет производиться под операционной системой Linux Mint 17 Cinnamon. Поэтому, пользователи Mac OS найдут все нижеприведенные команды абсолютно идентичными для себя. Подразумевается, что в системе уже установлен Node.js и менеджер пакетов npm.</p>
+<h2 id="gulp-imagemin-1">Создание задачи под gulp-imagemin</h2>
 
-<p>Процесс инсталляции выполняется в два этапа. Первоначально Gulp устанавливается глобально, с помощью ключа <code>-g</code>. Давайте так и поступим - произведем установку в системе:</p>
+<p>После установки плагина <code>gulp-imagemin</code> необходимо создать задачу сжатия картинок под этот плагин. Ничего необычного в этом нет и задача создается стандартно. Сначала создаем переменную <code>imagemin</code>, в которую помещаем сам плагин <code>gulp-imagemin</code>:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">-g</span> <span class="n">gulp</span></code></pre></div>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-imagemin&#39;</span><span class="p">);</span></code></pre></div>
 
-<p>Затем создадим тестовую директорию с именем <code>gulp_test</code>, в которой будет производить наше знакомство:</p>
+<p>А затем создаем задачу с произвольным именем <code>compress</code>:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">gulp_test</span>
-<span class="p">$</span> <span class="n">cd</span> <span class="n">gulp_test</span><span class="p">/</span></code></pre></div>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Compress Task</span>
 
-<p>В этой директории создадим файл <code>package.json</code> и пропишем в нем имя проекта и его версию:</p>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/images&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
-<span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
-<span class="p">{</span>
-  <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{}</span>
-<span class="p">}</span></code></pre></div>
+<p>Задачу <code>compress</code> можно запускать однократно вручную или автоматически, доверив это дело Gulp и поместив ее внутрь встроенной функции <code>gulp.watch</code>.</p>
 
-<p>Этого будет достаточно. Теперь установим Gulp внутри директории <code>gulp_test</code>. При этом воспользуемся ключом <code>--save-dev</code>, который будет “говорить” менеджеру пакетов npm вносить в файл <code>package.json</code> все устанавливаемые им пакеты в качестве зависимостей проекта:</p>
+<p>Создаю в проекте <code>gulp_test</code> директорию <code>images</code> и размещаю в ней несколько изображений формата <code>.jpg</code>, но достаточно большого размера:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp</span></code></pre></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">images</span><span class="p">/</span>
+<span class="n">black</span> <span class="p">(</span><span class="n">22</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">23</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">28</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">31</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">36</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">41</span><span class="p">).</span><span class="n">jpg</span></code></pre></div>
 
-<p>Теперь снова посмотрим на содержимое файла <code>package.json</code> и увидим, что npm добавил Gulp в качестве зависмости:</p>
+<p>Цель - проверить, действительно ли происходит сжатие графических файлов. Давайте опробуем работу плагина <code>gulp-imagemin</code> однократно, запустив в консоли команду <code>gulp compress</code>:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
-<span class="p">{</span>
-  <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
-  <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
-    <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.7&quot;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">compress</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">56</span> <span class="n">ms</span>
+<span class="n">gulp-imagemin</span><span class="err">:</span> <span class="n">Minified</span> <span class="n">6</span> <span class="n">images</span> <span class="p">(</span><span class="n">saved</span> <span class="n">83</span><span class="p">.</span><span class="n">02</span> <span class="n">kB</span> <span class="p">-</span> <span class="n">7</span><span class="p">.</span><span class="n">2</span><span class="p">%)</span></code></pre></div>
 
-<p>Установка завершена и можно переходить к использованию этого менеждера задач.</p>
+<p>Отлично! Задача <code>compress</code> запустилась и выполнилась за 8.56 миллисекунд. При этом было обработано 6 изображений, над которыми была произведена операция сжатия. Экономия размера в результате компресии составила <code>7.2%</code>.</p>
 
-<h2 id="gulp-1">Первый запуск Gulp</h2>
+<p>Давайте посмотрим на изображения в оригинале, расположенные в директории <code>images</code>:</p>
 
-<p>Менеджер задач - само слово говорит за себя, это программа для управления задачами. В Gulp все задачи прописываются в одном единственном файле <code>gulpfile.js</code>. Первоначально этого файла не существует и его нужно создать самостоятельно, вручную:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_origin_images.png" alt="Оригинальные изображения в проекте" /></p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span></code></pre></div>
+<p>… запомним примерные размеры каждого из файлов. А затем взглянем на содержимое директории <code>build/images/</code>, в которой располагаются сжатые плагином <code>gulp-imagemin</code> изображения:</p>
 
-<p>Затем в нем пропишем первую задачу. Все задачи деляться на <strong>два неравнозначных типа</strong>: <strong>задача по умолчанию</strong> (default task) и <strong>именованные задачи</strong> (named tasks). Разница между ними в том, что задача по умолчанию имеет имя <code>default</code>, которое можно и не указывать. Кроме того, задача по умолчанию запускается в консоли <strong>всего одной командой</strong>:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-imagemin_pictures.png" alt="Обработанные плагином gulp-imagemin изображения" /></p>
+
+<p>Видно при сравнении, что размер графических файлов, пускай и ненамного, но уменьшился.</p>
+
+<h2 id="gulp-imagemin----">Gulp-imagemin - автоматический мониторинг</h2>
+
+<p>Давайте доведем нашу задачу до логического завершения и настроим Gulp таким образом, чтобы он автоматически отслеживал добавление в директории <code>images</code> новых изображений.</p>
+
+<p>И как только они появляются там, то немедлено производил бы их сжатие при помощи плагина <code>gulp-imagemin</code>.</p>
+
+<p>Для этого создам задачу мониторинга <code>watch</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;compress&#39;</span><span class="p">]);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>… которую добавлю в очередь на выполнение для дефолтной задачи <code>default</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>Полностью листниг файла <code>gulpfile.js</code> для данного случая выглядит следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-imagemin&#39;</span><span class="p">);</span>
+
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+
+<span class="c1">// Watch Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;compress&#39;</span><span class="p">]);</span>
+<span class="p">});</span>
+
+<span class="c1">// Compress Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/images&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Запускаю в консоли команду <code>gulp</code>, а затем по одному добавлю в директорию <code>images</code> два файла-скриншота, созданных мною для этой статьи.</p>
+
+<p>Видим, что каждый раз, как в директорию <code>images</code> был добавлен файл, Gulp запускал задачу <code>compress</code> на выполнение:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span> <span class="nx">gulp</span>
+  <span class="nx">Using</span> <span class="nx">gulpfile</span> <span class="o">~</span><span class="err">/Projects/gulp_test/gulpfile.js</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="nx">after</span> <span class="mf">8.42</span> <span class="nx">ms</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="nx">after</span> <span class="mi">12</span> <span class="err">μ</span><span class="nx">s</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="nx">after</span> <span class="mi">13</span> <span class="nx">ms</span>
+  <span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">7</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">93.43</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mf">7.7</span><span class="o">%</span><span class="p">)</span>
+  <span class="nx">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
+  <span class="nx">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="nx">after</span> <span class="mf">2.13</span> <span class="nx">ms</span>
+  <span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">8</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">103.77</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mi">8</span><span class="o">%</span><span class="p">)</span></code></pre></div>
+
+<p>На выполнение первой задачи ушло 7 миллисекунд:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">7</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">93.43</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mf">7.7</span><span class="o">%</span><span class="p">)</span></code></pre></div>
+
+<p>… на вторую задачу - 2.13 миллисекунд:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">8</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">103.77</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mi">8</span><span class="o">%</span><span class="p">)</span></code></pre></div>
+
+<p>При этом я “выиграл” <code>7.7%</code> и <code>8%</code> размера, что скажется на скорости загрузки страницы в браузере. Также обратите внимание, что Gulp продолжает работать, находясь в фоновом режиме.</p>
+
+<h2 id="gulp-imagemin-2">Усложним задачу для gulp-imagemin</h2>
+
+<p>Можно немного усложнить и усовершенствовать процесс оптимизации изображений. Для этого немного перепишу задачу <code>compress</code> таким образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Compress Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">({</span>
+      <span class="nx">progressive</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;images/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Первое изменение - это добавлена опция <code>progressive: true</code> к плагину <code>gulp-imagemin</code>. Эта опция управляет <em>методом сжатия графических файлов</em> и приведена мною для наглядности примера.</p>
+
+<p>Второе изменение - изменена директория назначения. Теперь директория-источник изображений <code>gulp.src('images/*')</code> и директория-“выхлоп” <code>gulp.dest('images/')</code>, куда помещаются обработанные изображения - одна и та же.</p>
+
+<p>Таким образом, достаточно положить в директорию <code>images</code> какое-либо изображение и оно тут же преобразуется в точно такое же изображение, но меньшего размера! Удобно, не правда ли?</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-24T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-plumber/">August 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-plumber/" rel="bookmark" title="Gulp-plumber - отслеживание ошибок в Gulp" itemprop="url">Gulp-plumber - отслеживание ошибок в Gulp</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Кто не знаком с тем, что при написании кода очень часто возникают ошибки или банальные опечатки?</p>
+</blockquote>
+
+<p>И даже если установлены такие палочки-выручалочки, как Emmet, это не всегда спасает из ситуации. А если представить, что вы пишете большой проект и в нем закралась ошибка, то нелегко будет ее найти в куче кода.</p>
+
+<p>При использовании Gulp, который автоматически отслеживает события и выполняет соотвествующие задачи, ситуация несколько “облегчается” тем, что при возникновении ошибки можно увидеть тот момент, когда она произошла.</p>
+
+<p>Например, Gulp настроен на автоматическое фиксирование изменений через <code>gulp.watch</code>. Если возникла ошибка, то выполнение мониторинга в Gulp прерывается:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_error.png" alt="Прерванная работа Gulp" /></p>
+
+<p>Но даже в этом случае довольно трудно разобраться, где именно закралась ошибка. В этой ситуации может помочь плагин <a href="https://www.npmjs.org/package/gulp-plumber" title="Gulp-plumber">gulp-plumber</a>, который формирует вывод об ошибке. Но при этом работа Gulp не прерывается.</p>
+
+<p>Давайте установим и попробуем в работе плагин <code>gulp-plumber</code>.</p>
+
+<h2 id="gulp-plumber">Установка плагина gulp-plumber</h2>
+
+<p>Установка плагина <code>gulp-plumber</code> стандартная, через менеджер пакетов <code>npm</code> с ключом <code>--save-dev</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-plumber</span></code></pre></div>
+
+<h2 id="gulp-plumber-1">Использование плагина gulp-plumber</h2>
+
+<p>Для применения плагина <code>gulp-plumber</code> в проекте необходимо создать переменную <code>plumber</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">plumber</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-plumber&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>А затем дописать строку <code>.pipe(plumber())</code> в ту задачу, в которой необходимо включить возможность отслеживания ошибок. Например, пусть это будет задача минификации всех js-файлов проекта <code>uglify</code>. Тогда в ней сразу после строки <code>gulp.src('js/*.js')</code> добавляем строку <code>.pipe(plumber())</code>, чтобы отслеживались возможные ошибки во всех нижеследующих задачах, таких как <code>.pipe(uglify())</code> или <code>.pipe(gulp.dest('build/js'))</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span> <span class="c1">// plumber</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Точно также можно поступить, если необходим контроль ошибок в другой задаче, к примеру конкатенации CSS-файлов:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concatCSS</span><span class="p">(</span><span class="s1">&#39;concatenate.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minifyCSS</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
+
+<h2 id="gulp-plumber-2">Запуск мониторинга ошибок gulp-plumber</h2>
+
+<p>Для удобства проверки работы плагина <code>gulp-plumber</code> создам задачу <code>gulp.watch</code> и помещу ее в задачу по умолчанию <code>default</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
+<span class="p">});</span>
+
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>Запускаю в консоли процесс мониторинга в Gulp командой:</p>
 
 <div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span></code></pre></div>
 
-<p>В то время как <strong>именованная задача</strong> (named task) может иметь произвольное имя. Запуск такой задачи в консоли выполняется с указанием имени конкретной задачи:</p>
+<p>… и смотрю на вывод в консоли:</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">name_of_task</span></code></pre></div>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_watch.png" alt="Gulp в фоновом режиме" /></p>
 
-<p>Еще один важный момент заключается в том, что этот менеджер задач является потоковым. Что это значит? Не знаю, получиться ли у меня достаточно точно объяснить данный вопрос, но вот линуксоиды, хорошо знакомые с командной строкой, меня должны понять. В консоли Linux (Unix) есть такое понятие, как <a href="http://en.wikipedia.org/wiki/Pipeline_%28Unix%29" title="Pipeline">pipe</a>.</p>
+<p>Теперь намеренно вношу ошибку в файл <code>jquery-1.11.1.js</code> и снова перевожу взгзляд на консоль:</p>
 
-<p>Например, простая команда:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-error.png" alt="Плагин gulp-plumber отследил ошибку" /></p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="p">|</span> <span class="n">less</span></code></pre></div>
+<p>Отлично! Плагин <code>gulp-plumber</code> выполнил свою задачу - сформировал ясный и четкий отчет об ошибке. И при этом не прервал работу самого Gulp.</p>
 
-<p>… выполняет следующее: результат команды <code>ls -l</code> <strong>перенаправляется</strong> для обработки в программу <code>less</code>. Редактор <code>less</code> автоматически открывается в консоли с уже готовым для чтения текстом внутри себя.</p>
+<p>Возвратим все назад и исправим ошибку, допущенную ранее. Снова взглянем на консоль:</p>
 
-<p>Чисто схематично такой пример можно усложнить и представить в таком виде:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-success.png" alt="Плагин gulp-plumber - ошибка исправлена" /></p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">programm1</span> <span class="p">|</span> <span class="n">programm2</span> <span class="p">|</span> <span class="n">programm3</span> <span class="p">|</span> <span class="n">programm4</span> <span class="p">|</span> <span class="n">programm5</span></code></pre></div>
+<p>Плагин <code>gulp-plumber</code> снова справился со своей задачей - ошибка нами исправлена и он прилежно ее зафиксировал.</p>
 
-<p>Каждая из программ в этом списке будет производить обработку данных и передавать результат этой обработки другой программе, по цепочке.</p>
+<hr />
 
-<p>Принцип работы Gulp точно такой же. Только вместо программ в нем используются плагины (я не забыл сказать, что он имеет модульную структуру?):</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">plugin1</span> <span class="p">|</span> <span class="n">plugin2</span> <span class="p">|</span> <span class="n">plugin3</span> <span class="p">|</span> <span class="n">plugin4</span> <span class="p">|</span> <span class="n">plugin5</span> <span class="p">|</span> <span class="n">plugin6</span></code></pre></div>
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
 
-<p>Отлично! С теорией закончили и можно снова возвращаться к практике, к нашему файлу настроек <code>gulpfile.js</code>. Откроем его и пропишем в нем такие строки:</p>
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-watch/">August 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-watch/" rel="bookmark" title="Gulp - мониторинг изменений gulp.watch" itemprop="url">Gulp - мониторинг изменений gulp.watch</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В Gulp имеется встроенная функция <code>gulp.watch</code> для отслеживания изменений в любом из файлов проекта.</p>
+</blockquote>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">var</span> <span class="n">gulp</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">);</span>
+<p>Это очень удобно в работе, так как отпадает необходимость вручную запускать определенную задачу каждый раз, когда нужно зафиксировать эти изменения. В предыдущих статьях мы так и делали - запускали вручную на выполнение задачи по умолчанию или же определенную именованную задачу.</p>
 
-<span class="n">gulp</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
-  <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Hello from Gulp!&#39;</span><span class="p">)</span>
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp.png" alt="Gulp watch" class="center-image" /></p>
+
+<p>Сейчас давайте рассмотрим возможность запуска автоматического мониторинга в Gulp с помощью встроенной функции <code>gulp.watch</code>. Допустим, у нас имеются две именованные задачи, одна из которых выполняет минификацию js-файлов <code>gulp-uglify</code>, а вторая - конкатенацию css-файлов <code>gulp-concat</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span>
+
+<span class="c1">// Concat Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
 <span class="p">});</span></code></pre></div>
 
-<p>Первая строка <code>var gulp = require('gulp');</code> создает переменную <code>gulp</code>, в которую помещается сам Gulp. Это необходимо для Node.js, который будет читать файл <code>gulpfile.js</code> и работать с Gulp в виде переменной <code>gulp</code>.</p>
+<p>Нам нужно сделать так, чтобы Gulp запускал их каждый раз самостоятельно, когда мы внесем изменения в любой из js-файлов или css-файлов, а затем сохраним эти изменения.</p>
 
-<p>Вторая строка, начинающаяся с <code>gulp.task</code> - это не что иное, как задача. Именно так создаются задачи в этом менеджере. Здесь <code>'default'</code> - это имя задачи (в данном случае это задача по умолчанию, как вы помните). Функция <code>function()</code> имеет в своем теле неограниченное количество инструкций. Так как мы еще не умеем работать с плагинами под Gulp, то в качестве инструкции пропишем вывод в консоль обычной текстовой строки - <code>console.log('Hello from Gulp!')</code>.</p>
+<p>Для этого создадим еще одну именованную задачу <code>watch</code>, цель которой - отслеживание изменений в указанных файлах. Создаем все как обычно (или - почти как обычно):</p>
 
-<p>Давайте попробуем запустить наш менеджер задач, чтобы посмотреть, а работает ли он вообще? И как он работает? Для этого переходим в консоль и вводим в ней одну единственную команду <code>gulp</code>:</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Создаем задачу по имени <code>watch</code>, а внутри тела функции поместим встроенную функцию <code>gulp.watch</code>. В качестве аргументов этой функции мы передаем ей два параметра.</p>
+
+<p><strong>Первый параметр</strong> - что и где Gulp должен отслеживать; <code>js/*.js</code> говорит о том, что необходимо отслеживать изменения всех файлов с расширением <code>.js</code>, помещенных в директории <code>js</code>.</p>
+
+<p><strong>Второй параметр</strong> - что должен делать Gulp, если обнаружит изменения в указанном месте. В данном случае мы говорим ему, что необходимо запустить задачу по имени <code>uglify</code>.</p>
+
+<p>Как видим, имя задачи передается функции <code>gulp.watch</code> в виде массива; отсюда можно сделать вывод, что задач может быть не одна, а несколько - в виде последовательности.</p>
+
+<p>Перейдем от слов к делу и запустим в консоли выполнение мониторинга с помощью функции <code>gulp.watch</code>. Команда для мониторинга в Gulp выглядит таким образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">06</span> <span class="n">ms</span></code></pre></div>
+
+<p>Видим, что задача по имени <code>watch</code> запустилась и вроде как закончилась (<code>Finished 'watch' after 7.06 ms</code>). Но на самом деле Gulp находиться в фоновом режиме и отслеживает изменения js-файлов.</p>
+
+<p>Чтобы проверить это, отредактируем и сохраним js-файл (в моем случае это <code>jquery.js</code>):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span> <span class="nx">gulp</span> <span class="nx">watch</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Using</span> <span class="nx">gulpfile</span> <span class="o">~</span><span class="err">/Projects/gulp_test/gulpfile.js</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="nx">after</span> <span class="mf">7.06</span> <span class="nx">ms</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="p">]</span> <span class="nx">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="p">]</span> <span class="nx">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="nx">after</span> <span class="mf">8.96</span> <span class="nx">ms</span></code></pre></div>
+
+<p>Вау! Видим, что в консоли появились две строчки - это отработала задача <code>uglify</code>. То есть, Gulp “увидел”, что я внес изменение в файле <code>jquery.js</code> и мгновенно запустил задачу <code>uglify</code>, чтобы зафиксировать это изменение. Мониторинг с помощью функции <code>gulp.watch</code> работает!</p>
+
+<p>Давайте немного усложним задачу и добавим мониторинг <code>gulp.watch</code> в директории <code>css</code>. При любом изменении файлов в этой папке должна запускаться задача <code>concat</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Снова запустим Gulp для мониторинга изменений в проекте.</p>
+
+<blockquote>
+  <p>Кстати, а вы знаете, как останавливать Gulp, запущенный в фоновом режиме? Если нет, то это просто - в консоли Linux это выполняется сочетанием клавиш <kbd>Ctrl+C</kbd>.</p>
+</blockquote>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">24</span> <span class="n">ms</span></code></pre></div>
+
+<p>Внесем и сохраним изменения в файле <code>normalize.css</code>, размещенном в директории <code>css</code>. Вернемся в консоль:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">24</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">04</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">04</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">12</span> <span class="n">ms</span></code></pre></div>
+
+<p>О! Видим, что <code>gulp.watch</code> “подхватил” изменение в файле <code>normalize.css</code> и запустил соответствующую этому изменению задачу <code>concat</code>. Отлично - все работает!</p>
+
+<p>Мониторинг <code>gulp.watch</code> можно добавить в задачу по умолчанию (<code>default</code>). Давайте создадим такую конструкцию:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
+
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
+
+<p>Теперь, если запустить задачу <code>default</code> в консоли, то увидим следующее:</p>
 
 <div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="p">[</span><span class="n">19</span><span class="err">:</span><span class="n">37</span><span class="err">:</span><span class="n">53</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="p">[</span><span class="n">19</span><span class="err">:</span><span class="n">37</span><span class="err">:</span><span class="n">53</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Hello</span> <span class="n">from</span> <span class="n">Gulp</span><span class="p">!</span>
-<span class="p">[</span><span class="n">19</span><span class="err">:</span><span class="n">37</span><span class="err">:</span><span class="n">53</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">169</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">18</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">65</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">96</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">23</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
 
-<p>Вот это да! А что означают все эти строки в консоли? Означают они только хорошее! Строка <code>Using gulpfile ~/Projects/gulp_test/gulpfile.js</code> говорит о том, что Gulp для своей работы воспользовался файлом настроек <code>gulpfile</code> по указанному пути. Затем было запущено выполнение задачи с именем <code>default</code> - <code>Starting 'default'...</code>. Результатом выполнения этой задачи был вывод в консоль строки - <code>Hello from Gulp!</code>. И задача с именем <code>default</code> благополучно завершилась - <code>Finished 'default' after 169 μs</code>, причем на ее выполнение ушло 169 миллисекунд.</p>
+<p>Задачи запустились и выполнились именно в той последовательности, в какой они прописаны в массиве. Сперва выполнились две задачи на конкатенацию <code>concat</code> и минификацию <code>uglify</code>, а затем запустилась задача на мониторинг <code>watch</code>.</p>
 
-<p>Можно поздравить самих себя - мы только что создали и запустили на выполнение свою первую задачу под Gulp!</p>
+<p>Gulp “повис” в фоновом режиме и отслеживает изменения с помощью функции <code>gulp.watch</code> в указанных директориях. Проверим это и внесем легкое изменение в любом из файлов (пусть это будут снова <code>normalize.css</code> и <code>jquery.js</code>):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">18</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">65</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">96</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">23</span> <span class="err">μ</span><span class="n">s</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">37</span> <span class="n">ms</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">49</span> <span class="n">ms</span></code></pre></div>
+
+<p>Функция <code>gulp.watch</code> прилежно отследила оба эти изменения и запустила соотвествующие им задачи:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">...</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">37</span> <span class="n">ms</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">49</span> <span class="n">ms</span></code></pre></div>
+
+<p>Отлично! Мы изучили вопрос создания задачи мониторинга в Gulp с помощью функции <code>gulp.watch</code>!</p>
 
 <hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -548,537 +767,101 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-01T00:00:00+04:00"><a href="http://zencoder.ru/javascript/owl-carousel/">August 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-08-22T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-named-task/">August 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~4 minutes
+        Reading time ~3 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/owl-carousel/" rel="bookmark" title="Слайдер Owl Carousel" itemprop="url">Слайдер Owl Carousel</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-named-task/" rel="bookmark" title="Gulp - именованная задача (named task)" itemprop="url">Gulp - именованная задача (named task)</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Встретил на Google+ упоминание о плагине под jQuery для создания карусели - OWL Carousel.</p>
+  <p>В предыдущей статье “Gulp - установка и запуск плагина gulp-uglify”, где мы учились устанавливать и запускать плагины под Gulp, мы создавали задачу под этот плагин.</p>
 </blockquote>
 
-<p>Попробовал с ним разобраться и посмотреть примеры создания слайдеров на официальной странице. Могу сказать, что я впечатлен данным скриптом и его возможностями. Слайдер адаптивный, имеет множество настроек, обладает хорошими эффектами “из коробки”. Мое личное мнение - отличный выбор для применения на практике!</p>
+<p>Сами не зная того, тогда мы создали именованную задачу (named task). Как вы помните из вводной статьи “Gulp - знакомство и первый запуск”, в этом менеджере имеется два типа задач - задача по умолчанию (default) и именованная задача (named task).</p>
 
-<p>Официальная страница проекта располагается здесь - <a href="http://owlgraphic.com/owlcarousel/" title="OWL Carousel">OWL Carousel</a>. Стабильная версия скрипта на данный момент - <code>v1.3.2</code>, но на странице упоминается о версии <code>2.0.0-beta</code>. Для своей работы плагин требует библиотеки jQuery версии не ниже <code>1.7</code>.</p>
+<p>В этом разделе мы углубимся в вопрос задач в Gulp и рассмотрим детально, каким образом создается именованная задача (named task) или несколько именованных задач (named tasks), как можно объединять именованные задачи (named tasks) в последовательности, как можно вызывать выполнение одной задачи из другой задачи.</p>
 
-<p>Ниже я попробую создать простой вариант карусели с помощью плагина OWL Carousel. Более интересные и продвинутые варианты, я думаю, показывать не имеет смысла. По той простой причине, что разобравшись с базовым вариантом, всегда можно его улучшить. И для этой цели как ничто лучше подойдут примеры на официальной странице - <a href="http://owlgraphic.com/owlcarousel/#demo" title="Demo">Demo</a> и <a href="http://owlgraphic.com/owlcarousel/#more-demos" title="More Demo">More Demo</a>. Стоит сказать, что для себя я увидел там готовые решения практически на все случаи жизни.</p>
+<h2 id="named-task--gulp">Создание named task в Gulp</h2>
 
-<h2 id="owl-carousel">Подключение OWL Carousel</h2>
+<p>В менеджере Gulp может существовать тысячи задач, каждая из которых нацелена на получение конкретного результата. Давайте создадим отдельную задачу для конкатенации файлов. Для этой цели существует плагин <code>gulp-concat</code>. На странице документации этого плагина описан процесс установки и настройки - <a href="https://www.npmjs.org/package/gulp-concat" title="Gulp-concat">gulp-concat</a>.</p>
 
-<p>Для подключения плагина OWL Carousel к готовому проекту необходимо получить архив плагина с официальной страницы - <a href="http://owlgraphic.com/owlcarousel/" title="OWL Carousel">OWL Carousel</a> или с GitHub - <a href="https://github.com/OwlFonk/OwlCarousel" title="OwlCarousel">OwlCarousel</a>. В архиве имеется все, что необходимо - библиотека jQuery, плагин <code>owl.carousel.min.js</code>, готовые CSS-стили для карусели. Ничего сложного или необычного в подключении плагина OWL Carousel нет - все стандартно.</p>
+<p>Установим плагин <code>gulp-concat</code> в проект:</p>
 
-<p>HTML-разметка и подключение скрипта будут выглядеть следующим образом:</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-concat</span></code></pre></div>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;carousel&quot;</span> <span class="na">class=</span><span class="s">&quot;owl-carousel carousel&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl1.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_1&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl2.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_2&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl3.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_3&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl4.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_4&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl5.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_5&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl6.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_6&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl7.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_7&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/owl8.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;200&quot;</span> <span class="na">alt=</span><span class="s">&quot;Owl_8&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span>
-<span class="c">&lt;!--  SCRIPTS  --&gt;</span></code></pre></div>
+<p>И создадим в файле <code>gulpfile.js</code> отдельную задачу для этого плагина:</p>
 
-<p>В <code>head</code> подключаются две готовых CSS-таблицы из архива - <code>owl.carousel.css</code> и <code>owl.theme.css</code>. Таблица <code>style.css</code> - опциональная, для настройки плагина под конкретные условия.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
+  <span class="p">})</span></code></pre></div>
 
-<p>Тип HTML-элементов для создания разметки слайдера, по большому счету, не имеет особого значения, так как скрипт OWL Carousel умеет работать со всеми типами. Главное, чтобы у блока-обертки имелся обязательный класс <code>owl-carousel</code>, к которому будет производиться привязка стилей из файла <code>owl.carousel.css</code>.</p>
+<p>… а также создадим отдельную переменную для этого плагина:</p>
 
-<p>В конце тела <code>body</code> документа подключаются библиотека jQuery, скрипт плагина OWL Carousel и файл настроек данного скрипта.</p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">concat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-concat&#39;</span><span class="p">);</span></code></pre></div>
 
-<p>Базовая конфигурация js-файла <code>settings.js</code> выглядит следующим образом:</p>
+<p>Кстати, если вы еще не задались вопросом, а что это за странные строки - <code>gulp.src</code>, <code>gulp.dest</code>, <code>gulp.task</code>, то могу вкратце сказать, что это встроенные функции Gulp, каждая из которых выполняет свою задачу.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#carousel&quot;</span><span class="p">).</span><span class="nx">owlCarousel</span><span class="p">();</span>
+<p>Осталось запустить в консоли именованную задачу (named task) <code>concat</code>, которая произведет слияние в один файл всех файлов с расширением .css, расположенных в директории css:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">concat</span>
+  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">91</span> <span class="n">ms</span></code></pre></div>
+
+<p>Отлично - мы создали named task!</p>
+
+<h2 id="named-tasks--gulp">Создание последовательности named tasks в Gulp</h2>
+
+<p>В Gulp можно создавать последовательность задач, в которой выполнение всех задач будет производиться в том порядке, в котором они помещены в очередь. Для этого несколько отдельных именованных задач (named tasks) помещают внутрь задачи по умолчанию (default).</p>
+
+<p>Вместо callback-функции разместим массив, состоящий из списка имен тех именованных задач (named tasks), которые мы хотим поместить в очередь. Фактически, в данном случае выполнение одной задачи будет производиться через вызов другой задачи.</p>
+
+<p>Допустим, у нас имеются две именованные задачи (named tasks):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span>
+
+<span class="c1">// Concat Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
 <span class="p">});</span></code></pre></div>
 
-<p>Все, можно смотреть на готовый (<em>слегка подредактированный</em>) результат:</p>
+<p>Поместим их в задачу по умолчанию:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/08/owl_carousel-base.jpg" alt="Базовый вариант слайдера OWL Carousel" /></p>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span></code></pre></div>
 
-<h2 id="owl-carousel-1">Настройка плагина OWL Carousel</h2>
+<p>Теперь в консоли достаточно запустить одну команду <code>gulp</code> на выполнение задачи по умолчанию (default). Тем самым мы запустим выполнение последовательности нескольких отдельных команд - <code>'concat', 'uglify'</code>:</p>
 
-<p>Скрипт OWL Carousel имеет большое количество настроек, которые добавляются или убираются в файле настроек. Ссылка на страницу с полным списком настроек располагается здесь - <a href="http://owlgraphic.com/owlcarousel/#customizing" title="Customizing OWL Carousel">Customizing OWL Carousel</a>.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">17</span> <span class="n">ms</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">64</span> <span class="n">ms</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">04</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
 
-<p>К примеру, переменная <code>items</code> задает количество одновременно показываемых в слайдере изображений:</p>
+<p>В выводе консоли видим, что сначала запустилась задача <code>concat</code> и выполнилась за 7.17 миллисекунд, затем запустилась задача <code>uglify</code> и на ее выполнение ушло 2.64 милисекунды. И затем запустилась задача по умолчанию <code>default</code>, которая выполнилась за 7.04 миллисекунд.</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">items</span><span class="o">:</span> <span class="mi">5</span></code></pre></div>
-
-<p>Переменные <code>itemsDesktopSmall</code>, <code>itemsTablet</code>, <code>itemsTabletSmall</code>, <code>itemsMobile</code> устанавливают количество одновременно отображаемых изображений в зависимости от размера окна браузера. Например, запись вида <code>itemsDesktop: [1199,4]</code> “говорит” браузеру, что при размере окна <strong>меньше или равному</strong> 1199px следует отображать одновременно только четыре изображения:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">itemsDesktop</span><span class="o">:</span> <span class="p">[</span><span class="mi">1199</span><span class="p">,</span><span class="mi">4</span><span class="p">]</span></code></pre></div>
-
-<p>Переменная <code>singleItem</code> устанавливает, отображать ли только одно изображение в слайдере или несколько:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">singleItem</span><span class="o">:</span> <span class="kc">false</span></code></pre></div>
-
-<p>Переменные <code>navigation</code> и <code>pagination</code> управляют возможностью включения или выключения навигации\пагинации у слайдера:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">navigation</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
-<span class="nx">pagination</span><span class="o">:</span> <span class="kc">true</span></code></pre></div>
-
-<p>Автоматическая прокрутка изображений в слайдере включается с помощью переменной <code>autoPlay</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">autoPlay</span><span class="o">:</span> <span class="kc">true</span></code></pre></div>
-
-<p>Имеются множество других настроек плагина OWL Carousel, с которыми можно легко разобраться на официальной странице. Все перечислять здесь я не буду.</p>
-
-<h2 id="owl-carousel-2">Варианты слайдера OWL Carousel</h2>
-
-<p>Стоит “побродить” по странице с демонстрационными примерами работы плагина OWL Carousel. Там есть на что посмотреть и что подобрать для себя.</p>
-
-<p>Мне понравились примеры создания слайдеров - <a href="http://owlgraphic.com/owlcarousel/demos/lazyLoad.html" title="Lazy Load">Lazy Load</a> и <a href="file:///media/aaron/small_flash/source/owl.carousel/demos/autoHeight.html" title="Auto Height">Auto Height</a>.</p>
-
-<p>Наиболее интересные (<em>для меня</em>) примеры расположены в списке со ссылками.</p>
-
-<p>К примеру, по ссылке <a href="file:///media/aaron/small_flash/source/owl.carousel/demos/transitions.html" title="CSS3 Transitions">CSS3 Transitions</a> располагается образец слайдера с эффектом перехода, основанном на CSS3-свойстве transition. Более того, из выпадающего списка можно прямо на странице подобрать себе подходящий эффект - своеобразный конструктор получается:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/owl_carousel-transitions.jpg" alt="Слайдер OWL Carousel с эффектом transition" /></p>
-
-<p>Или пример создания слайдера с расположенной вверху полосой progress bar - <a href="http://owlgraphic.com/owlcarousel/demos/progressBar.html" title="Progress Bar">Progress Bar</a>.</p>
-
-<h2 id="section">Заключение</h2>
-
-<p>Плагин OWL Carousel мне понравился и я буду стараться применять его на практике, при верстке страниц.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-19T00:00:00+04:00"><a href="http://zencoder.ru/css/hexagon-css/">July 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~12 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/hexagon-css/" rel="bookmark" title="Hexagon на CSS" itemprop="url">Hexagon на CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В этой статье будет детально рассмотрен вопрос создания фигуры шестиугольника (hexagon) на CSS.</p>
-</blockquote>
-
-<p>Материал целиком основан на замечательной статье <a href="http://jtauber.github.io/articles/css-hexagon.html" title="CSS Hexagon Tutorial">CSS Hexagon Tutorial</a>. В Сети имеется хорошая статья по примерам создания различных видов фигур на CSS, и располагается эта статья на блоге известного CSS-гуру Chris Coyier <a href="http://css-tricks.com/examples/ShapesOfCSS/" title="Shapes of CSS">Shapes of CSS</a>. Среди прочих фигур там есть и желанный шестиугольник <code>hexagon</code> с готовым CSS-кодом что называется, “бери и пользуйся”.</p>
-
-<p>Но ведь такой подход для нас не интересен, правда? Это потом, когда мы изучим вопрос создания шестиугольника, мы будем делать так - нашел готовый код, скопировал к себе, подредактировал и готово! А сейчас мы пошагово пройдем весь путь, от начала и до конца - это даст нам понимание процесса.</p>
-
-<h2 id="hexagon">Как будем строить hexagon</h2>
-
-<p>Фигура hexagon изначально кажется неприступной - не понятно, с какого боку к ней подойди, чтобы начать постороение шестиугольника на CSS. Однако, если внимательно присмотреться, то hexagon можно разделить на три простые фигуры:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_origin.jpg" alt="Три части фигуры hexagon" /></p>
-
-<p>Видно, что фигура состоит из двух одинаковых треугольников и одного прямоугольника. Построение треугольников на CSS выполняется очень просто - “CSS – почему треугольник это треугольник”, прямоугольника - вообще в два движения.</p>
-
-<p>Поэтому, построение шестиугольника hexagon на CSS сводится к двух задачам:</p>
-
-<ul>
-  <li>создать два треугольника</li>
-  <li>создать один прямоугольник</li>
-</ul>
-
-<h2 id="css">Построение треугольников на CSS</h2>
-
-<p>Задачу создания треугольников на CSS начнем с построения обычного квадрата со стороной в <code>100px</code> и широкой границей <code>30px</code> определенного цвета <code>#789</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon&quot;</span><span class="nt">&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="m">#789</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square.jpg" alt="Квадрат на CSS" /></p>
-
-<p>“Раскрасим” границы квадрата для того, чтобы можно было визуально отличать их друг от друга:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_colors</span><span class="p">{</span>
-  <span class="k">border-top-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">5%</span><span class="p">);</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
-  <span class="k">border-bottom-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
-  <span class="k">border-left-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#789</span><span class="o">,</span> <span class="m">5%</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_colors.jpg" alt="Квадрат на CSS с границами разного цвета" /></p>
-
-<p>Затем обнулим высоту <code>height</code> и ширину <code>width</code> нашего квадрата. Он “схлопнется”, оставив для нас видимой только его широкую границу со всех четырех сторон:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_zero</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_zero.jpg" alt="Квадрат на CSS с нулевой высотой и шириной" /></p>
-
-<p>Теперь превратим полученную фигуру в настоящий треугольник. Для этого обнулим (уберем) у нее верхнюю границу <code>border-top</code>, а обе боковые границы <code>border-left</code>, <code>border-right</code> сделаем прозрачного <code>transparent</code> цвета:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_triangle_up</span><span class="p">{</span>
-  <span class="k">border-top-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-left-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_to_triangle.jpg" alt="Треугольник на CSS" /></p>
-
-<p>У получившегося треугольника все стороны равны - высота и ширина по 30px каждая. Нам же необходимо “растянуть” треугольник в ширину, чтобы он у него появился тупой угол. Для этого нужно увеличить ширину боковых границ <code>border-left</code>, <code>border-right</code> треугольника, а ширину нижней границы <code>border-bottom</code> оставить прежней:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexagon_triangle_up_large</span><span class="p">{</span>
-  <span class="k">border-left-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_to_triangle_large.jpg" alt="Удлиненный треугольник на CSS" /></p>
-
-<p>Задача создания треугольника нами выполнена. Теперь необходимо получить точно такой треугольник, только “направленный” вниз. Это просто - достаточно поменять нулевое значение между верхней и нижней границей фигуры. Все остальные значения останутся неизменными. Чуть не забыл сказать, что для “повернутого” треугольника придется создать в HTML-коде новый блок:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.hexagon_triangle_down</span><span class="p">{</span>
-  <span class="k">border-bottom-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-left-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexagon_triangle_down_large</span><span class="p">{</span>
-  <span class="k">border-left-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_square_to_two_triangles.jpg" alt="Два треугольника на CSS" /></p>
-
-<p>Первый шаг по созданию шестиугольника hexagon на CSS выполнен - у нас есть два одинаковых разнонаправленных треугольника. Теперь нужно создать “тело” для шестиугольника - прямоугольник.</p>
-
-<h3 id="css-1">Построение прямоугольника на CSS</h3>
-
-<p>Для создания прямоугольника на CSS достаточно прописать для нового блока три величины - высоту, ширину и фоновый цвет. Новый блок я размещу между двумя блоками-треугольниками.</p>
-
-<p>А вот с размерами для прямоугольника нужно разобраться немного подробнее. У него ширина должна быть равна удвоенной ширине боковой границы треугольника:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-left-width</span><span class="o">:</span> <span class="nt">52px</span> <span class="o">+</span> <span class="nt">border-right-width</span><span class="o">:</span> <span class="nt">52px</span> <span class="o">=</span> <span class="nt">104px</span></code></pre></div>
-
-<p>А высота должна быть равна удвоенной высоте треугольника (или ширине верхней\нижней границы - кому как нравиться):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-top</span><span class="o">:</span> <span class="nt">30px</span> <span class="o">*</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">60px</span></code></pre></div>
-
-<p>В результате код будет следующим:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.inside</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">104px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#789</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon.jpg" alt="Hexagon на CSS" /></p>
-
-<p>Все - задача построения шестиугольника hexagon на CSS выполнена - все оказалось достаточно просто!</p>
-
-<h2 id="hexagon-1">Создание сетки из hexagon</h2>
-
-<p>Теперь можно усложнить задачу и создать из фигур hexagon своеобразную сетку, а-ля пчелиные соты. Задача тривиальная и весь вопрос сводиться к нескольким CSS-свойствам: <code>float</code>, <code>overflow</code>, <code>margin</code>, <code>padding</code>.</p>
-
-<p>Создаю первый ряд сетки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end row  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.inside</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">104px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexa</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">3px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.row</span><span class="p">{</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_first_row.jpg" alt="Первый ряд сетки из hexagons" /></p>
-
-<p>Второй ряд сетки строиться аналогично, за тем лишь исключением, что его необходимо сдвинуть влево и вверх:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!--  ROW  --&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row left_padding top_margin&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_up hexagon_triangle_up_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_down hexagon_triangle_down_large&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end row  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left_padding</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">53px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.top_margin</span><span class="p">{</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-28px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_first-second_rows.jpg" alt="Первый и второй ряды сетки из hexagons" /></p>
-
-<p>Дальше продолжать не имеет смысла - все остальные ряды строятся аналогично. Нужно только управлять ими с помощью соотвествующих классов, смещая влево или вверх:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_full_stack.jpg" alt="Несколько рядов сетки из hexagons" /></p>
-
-<p>Лучше перейдем к другому интересному вопросу - созданию такого же шестиугольника hexagon, но несколько иной формы, “повернутого”. У которого углы развернуты по-горизонтали, а не по-вертикали.</p>
-
-<h3 id="hexagon--css">Построение повернутого hexagon на CSS</h3>
-
-<p>Задача создания развернутого hexagon почти ничем не отличается от задачи построения обычного шестиугольника. Только потребуется несколько дополнительных строчек кода.</p>
-
-<p>Дело в том, что в этом случае нужны углы, которые будут располагаться горизонтально и “смотреть” влево или вправо. Помимо этого, понадобиться “плавание” влево <code>float: left;</code>.</p>
-
-<p>Для блока - “тела” hexagon нужно будет изменить значения высоты или ширины на прямопротивоположные.</p>
-
-<p>Но не буду голословным, а лучше создам один такой <code>hexagon</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end hexa  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  LEFT ARROW  */</span>
-
-<span class="nc">.hexagon_triangle_left</span><span class="p">{</span>
-  <span class="k">border-left-width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-top-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-bottom-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexagon_triangle_left_large</span><span class="p">{</span>
-  <span class="k">border-top-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-bottom-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c">/*  RIGHT ARROW  */</span>
-
-<span class="nc">.hexagon_triangle_right</span><span class="p">{</span>
-  <span class="k">border-right</span><span class="o">-</span><span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-top-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-bottom-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.hexagon_triangle_right_large</span><span class="p">{</span>
-  <span class="k">border-top-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-  <span class="k">border-bottom-width</span><span class="o">:</span> <span class="m">52px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.inside_rotate</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">104px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.left</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated.jpg" alt="Развернутый hexagon" /></p>
-
-<p>Добавлю несколько таких шестиугольников, чтобы получился полный ряд:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_row.jpg" alt="Несколько развернутых hexagons в ряд" /></p>
-
-<p>Отлично! Теперь нужно добавить еще один ряд - нижний. При этом опять придется немного модифицировать код, чтобы произвести смещение фигур влево и вверх:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!--  ROW  --&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row top_margin_double&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa left_padding_double_middle&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa left_padding_double&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexa left_padding_double&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_left hexagon_triangle_left_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;inside_rotate left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;hexagon hexagon_colors hexagon_zero hexagon_triangle_right hexagon_triangle_right_large left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!--  end hexa  --&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!--  end row  --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left_padding_double</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">64px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.left_padding_double_middle</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">94px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.top_margin_double</span><span class="p">{</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_several_rows.jpg" alt="Развернутые hexagons в два ряда" /></p>
-
-<p>Можно продолжать постороние рядов до бесконечности, получая сетку из hexagons все большего размера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_more_rows.jpg" alt="Развернутые hexagons в несколько рядов" /></p>
-
-<h3 id="d--hexagons">3D-проекция hexagons</h3>
-
-<p>Можно видоизменить внешний вид сетки из hexagons, воспользовавшись CSS3-свойством <code>transform</code>. Создаю отдельный класс, в котором прописываю такие свойстсва:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hexa_transform</span><span class="p">{</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-  <span class="n">transform</span><span class="o">:</span> <span class="n">perspective</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span> <span class="n">rotateX</span><span class="p">(</span><span class="m">60</span><span class="n">deg</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… и проверяю в окне браузера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_rotated_transform.jpg" alt="3D-проекция сетки из hexagons" /></p>
-
-<h2 id="hexagons----">Hexagons с помощью псевдо-классов</h2>
-
-<p>Рассмотренный выше способ создания hexagons хорош, но имеет один недостаток - слишком много дополнительных блоков, одними из которых являются блоки для создания треугольников.</p>
-
-<p>Можно (и нужно) значительно сократить код, воспользовавшись для этой цели псевдо-классами <code>:before</code> и <code>:after</code>. Давайте я так и поступлю, при этом возьму код из примера, не буду ничего выдумывать:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hex</span><span class="nd">:before</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="o">-</span> <span class="s2">&quot;;</span>
-<span class="s2">  width: 0; height: 0;</span>
-<span class="s2">  border-bottom: 30px solid #778899;</span>
-<span class="s2">  border-left: 52px solid transparent;</span>
-<span class="s2">  border-right: 52px solid transparent;</span>
-<span class="s2">  position: absolute;</span>
-<span class="s2">  top: -30px;</span>
-<span class="s2">}</span>
-
-<span class="s2">.hex {</span>
-<span class="s2">  margin-top: 30px;</span>
-<span class="s2">  width: 104px;</span>
-<span class="s2">  height: 60px;</span>
-<span class="s2">  background-color: #778899;</span>
-<span class="s2">  position: relative;</span>
-<span class="s2">  float: left;</span>
-<span class="s2">}</span>
-
-<span class="s2">.hex:after {</span>
-<span class="s2">  content: &quot;</span><span class="err">&quot;</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">-30px</span><span class="p">;</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">52px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">:</span> <span class="m">52px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/hexagon_pseudo.jpg" alt="Hexagon на CSS с помощью псевдо-классов :before и :after" /></p>
-
-<h2 id="css-hexagon">CSS Hexagon</h2>
-
-<p>Рассмотренный выше способ неплох, причем оба его варианта. Но для практического применения оба они достаточно трудоемкие. В Сети, помимо многих других подобного рода, имеется online CSS-генератор для создания hexagon в считанные минуты.</p>
-
-<p>Адрес сервиса располагается здесь - <a href="http://csshexagon.com/" title="CSS Hexagon">CSS Hexagon</a>. Помимо создания самого hexagon, там можно “прикрутить” к фигуре тень и границу, что просто великолепно!</p>
-
-<p>Все - на этом обзор закончен.</p>
+<p>Все прошло успешно.</p>
 
 <hr />
 
@@ -1343,6 +1126,12 @@
       <li>
         
           <a href="http://zencoder.ru/page42">42</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page43">43</a>
         
       </li>
     

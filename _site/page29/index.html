@@ -144,685 +144,7 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-26T00:00:00+04:00"><a href="http://zencoder.ru/css/breadcrumbs-css/">October 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs на основе изображений" itemprop="url">Навигация breadcrumbs на основе изображений</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Навигация breadcrumbs с помощью треугольников на CSS” описывался способ создания меню с помощью чистого CSS, без использования графики.</p>
-</blockquote>
-
-<p>Метод всем хорош, за исключением одного - поддержка такого меню в старых браузерах сомнительна. Но при переводе этой статьи упоминалась ссылка на способ создания навигации с помощью графики.</p>
-
-<p>Статья написана достаточно давно, но метод абсолютно рабочий. Автор статьи Veerle Pieters, а сам пост называется “Simple scalable CSS based breadcrumbs”. Ниже привожу даже не вольный его перевод, а вольный пересказ.</p>
-
-<p>Несколько дней назад у меня стояла задача создать навигационное меню в стиле “хлебные крошки” (breadcrumbs) для сайта, над которым я работал. Я не думаю, что такое меню необходимо для каждого сайта, но в некоторых случаях оно очень полезно и практично.</p>
-
-<p>Это послужило поводом для меня написать статью для своего блога. Тот пример, которым я хочу поделиться с вами, является очень простым, при его создании применяется только один графический файл. Остальная часть навигации создается с помощью CSS-кода.</p>
-
-<p>Однако этот пример является как бы основой, которую можно расширять и применять на практике. Меню будет создаваться при помощи обычного маркированного списка <code>ul</code>.</p>
-
-<p>Но сначала посмотрим на образец, с которым будем работать:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images.gif" alt="Навигационное меню хлебные крошки" /></p>
-
-<p>Меню достаточно простое, как и код, с помощью которого мы будем его создавать.</p>
-
-<h2 id="html------ul">HTML код - маркированный список ul</h2>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;crumbs&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Main section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Sub section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Sub sub section<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>The page you are on right now<span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Все пункты меню имеют ссылки, кроме последнего - “The page you are on right now” (Страница, на которой вы сейчас находитесь). При работе над меню я задавался вопросом - является ли список наиболее подходящей структурой для создания меню? Я полагаю, что применение списка в этом случае не является строгим правилом, но мне кажется - это наиболее семантичный и правильный вариант.</p>
-
-<h2 id="css-------">CSS код - создаем стили для меню</h2>
-
-<p>Задаем общие стили для меню - убираем маркеры и обнуляем отступы в браузерах Firefox, IE:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">ul, li {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-}</code></pre></div>
-
-<p>Далее для меню задаем класс с именем <code>crumbs</code>, устанавливаем границу толщиной в 1px и фиксированную ширину 30px:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#dedede</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Все “крошки” должны располагаться горизонтально, в одну линию, поэтому элементы <code>li</code> делаем плавающими через свойство <code>float:left</code>. Текст меню должен быть отцентрирован точно по вертикали, для этого устанавливаем для него значение свойства <code>line-height</code> равное высоте всего меню - <code>30px</code>.</p>
-
-<p>Помещаем слева каждого пункта небольшое пространство для отступа с помощью <code>padding-left: 10px</code>. И задаем цвет текста <code>#777</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#777</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Нам необходимо, чтобы вся область пункта меню была кликабельной, поэтому делаем ее блочным элементом <code>display:block</code>. Далее помещаем для ссылки фоновое изображение, вырезанное из макета. Для этого нужно вырезать только саму “стрелку”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images_cut.gif" alt="Вырезание стрелки из навигации" /></p>
-
-<p>… которую “задвигаем” вправо (100%) и размещаем точно по вертикали (50%). Также делаем у ссылки отступ справа <code>padding-left: 15px</code>, в котором будет как раз и находиться фоновое изображение (вырезанная стрелка):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span> <span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(img/crumbs.gif)</span> <span class="m">100%</span> <span class="m">50%</span> <span class="k">no-repeat</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Уже практически все сделано. Осталось задать стили для текста ссылок. Уберем стандартное подчеркивание и изменим ее цвет:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:link</span><span class="o">,</span> <span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span>
-    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="k">color</span><span class="o">:</span> <span class="m">#777</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Придадим ссылкам небольшую анимацию с помощью псевдо-класса <code>:hover</code> и <code>:focus</code>. При наведении курсора мыши или получения фокуса с клавиатуры цвет текста ссылки будет меняться:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover</span><span class="o">,</span> <span class="nc">.crumbs</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:focus</span> <span class="p">{</span>
-    <span class="k">color</span><span class="o">:</span> <span class="m">#dd2c0d</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Результат нашей работы представлен здесь:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/breadcrumbs-images_result.gif" alt="Готовая навигация хлебные крошки" /></p>
-
-<p>Примечание переводчика:</p>
-
-<blockquote>
-  <p>Автор статьи максимально упростил пример и сам код соответственно, насколько я понимаю. Дело в том, что на примере хорошо виден линейный горизонтальный градиент для каждого из пунктов меню. Однако в коде это никак отображено не было. Ну, не беда - разве это проблема создать линейный градиент на CSS3? Сама задача ведь выполнена!</p>
-</blockquote>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-25T00:00:00+04:00"><a href="http://zencoder.ru/css/breadcrumbs-css/">October 25, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~8 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs с помощью треугольников на CSS" itemprop="url">Навигация breadcrumbs с помощью треугольников на CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Интересная статья по созданию навигации в виде “хлебных крошек” (breadcrumbs).</p>
-</blockquote>
-
-<p>Такая навигация удобна и полезна для сайтов с большим количеством рубрик. Благодаря такой навигации пользователь сайта может не запутаться в содержимом, точно знать, где он находиться и легко перейти в то место, куда ему нужно.</p>
-
-<p>Видов такой навигации может быть множество, все зависит от дизайна. Но принцип построения на CSS стандартный - с помощью списков <code>ul</code>.</p>
-
-<p>Статья была опубликована на одном из моих любимых сайтов CSS-Tricks. Ниже привожу вольный перевод ее автора (Chris Coyier):</p>
-
-<p>Вы уже знаете, как создавать треугольники на чистом CSS? Для этого просто генерируется блочный элемент с нулевой шириной и высотой, у которого имеется одна граница с цветом, а две смежные границы имеют прозрачный цвет. Такие треугольники применяются в самых разнообразных местах дизайна - например, для указателей в навигации.</p>
-
-<p>Другое место их применения - невинные украшательства дизайна, не нарушающие его общую разметку. В счастью, это возможно благодаря псевдо-элементам, которые часто используются при их создании. Применяя <code>:before</code>, <code>:after</code> или оба сразу можно сгенерировать блочные элементы и с их помощью создать треугольники.</p>
-
-<p>А вот последние можно применять для создания навигации в стиле “хлебные крошки”. Как выглядит одна из таких навигаций (<em>чтобы иметь представление, что это такое</em>), показано на рисунке ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/trianglebreadcrumbs.png" alt="Один из видов навигации хлебные крошки" /></p>
-
-<h2 id="html-">HTML разметка</h2>
-
-<p>Начнем создание такого меню с HTML-разметки, которая максимально проста и представляет собой обычный неупорядоченный список с классом breadcrumb:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;breadcrumb&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Vehicles<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Vans<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Camper Vans<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>1989 VW Westfalia Vanagon<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h2 id="css-">CSS код</h2>
-
-<p>В первую очередь убедимся, что наш список не выглядит, как обычный неупорядоченный список. Для этого уберем у него маркеры, сделаем его пункты плавающими влево и зададим самые общие стилевые правила для ссылок внутри этого списка. Обратите внимание на свойство <code>overflow</code> для всего списка в целом - он применяется здесь по двум причинам.</p>
-
-<p>Первая - наш список должен иметь высоту. Контейнеры, которые содержат только плавающие элементы, схлопываются (<code>collapse</code>), что совсем не то, что нам нужно. Второе - когда мы будем создавать треугольники, мы сделаем их достаточно большими:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="p">{</span>
-  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">font</span><span class="o">:</span> <span class="m">18px</span> <span class="n">Helvetica</span><span class="o">,</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">0</span> <span class="m">10px</span> <span class="m">65px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="nb">brown</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span> <span class="m">85%</span><span class="o">,</span> <span class="m">35%</span><span class="o">,</span> <span class="m">1</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Для создания треугольника мы воспользуемся псевдо-элементом <code>:after</code>. Для него установим высоту и ширину, равную нулю; и абсолютно спозиционируем его на 100% влево, что означает - он будет располагаться у правого края своего блока родителя.</p>
-
-<p>Затем сместим треугольник вниз на 50% и “вернем” назад на -50px для точного позиционирования по центру (это классический прием - перевод здесь). Есть только один момент, на который нужно обратить внимание.</p>
-
-<p>Граница, которую мы создаем сверху, равна 50px, нижняя граница также равна 50px, а ширина левой границы равна 30px. Это сделано для того, чтобы треугольник получился более “плоским”, с не такой острой вершиной. Если мы сделаем левую границу равной остальным сторонам в 50px, угол треугольника будет слишком острый.</p>
-
-<p>Так как верхняя и нижняя границы равны по 50px, то общая высота треугольника получается в 100px. Это гораздо больше, чем высота нашего меню, в котором высота шрифта <code>18px</code> и <code>padding-top: 10px</code>, <code>padding-bottom: 10px</code>. Однако, это хорошо, что треугольник больше высоты меню. Это означает, что у нас остается достаточно свободного пространства, чтобы “поиграться” с размером шрифта:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">2</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span> <span class="m">85%</span><span class="o">,</span> <span class="m">35%</span><span class="o">,</span> <span class="m">1</span><span class="p">);</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-bottom</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Все хорошо. Но на примере, который нужно воссоздать в коде, есть тонкая полоска шириной в 1px, идущая по краю треугольника. Чтобы “нарисовать” ее в CSS-коде, нам потребуется еще “поколдовать”, так как напрямую создать границу для треугольника не получиться. Ведь треугольник как раз сам и является границей!</p>
-
-<p>Поэтому мы поступим по другому - создадим еще один треугольник, который поместим позади нашего первого и зададим для него белый фоновый цвет. По своим свойствам второй треугольник будет практически одинаков с первым, но создаваться будет с помощью псевдо-элемента <code>:before</code>.</p>
-
-<p>Обратите внимание на важную вещь - <code>z-index</code>. С помощью этого свойства можно “тасовать” элементы <code>:before</code> и <code>:after</code> (точнее - созданные ими треугольники) в нужном порядке - какой треугольник над каким должен располагаться:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:before</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">-50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-bottom</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Примечание переводчика:</p>
-
-<blockquote>
-  <p>Изменения минимальны. Цвет границы задан белым <code>#fff</code> и добавлено смещение треугольника влево на 1px <code>margin-left: 1px</code>, чтобы разделительная черта была более заметна.</p>
-</blockquote>
-
-<p>Теперь что касается цветовой заливки навигации. Так как пример имеет плавное изменение цвета элементов навигации, нам потребуются еще два замечательных CSS-свойства: <code>nth-child</code> и HSLa.</p>
-
-<ul>
-  <li>Чем полезно <code>nth-child</code> - можно задать цвета для различных элементов навигации без добавления дополнительной разметки в HTML-код;</li>
-  <li>Чем полезно HSLa - основываясь только на одном цвете, можно легко задать различные оттенки для элементов навигации.</li>
-</ul>
-
-<p>Помимо этого, для первой ссылки мы уменьшим отступ слева с помощью <code>padding-left</code>, чтобы все элементы меню имели одинаковый размер; для последней ссылки совсем уберем цвет, сделаем некликабельной и вернем вид курсора по умолчанию. Все это мы выполним без какой-либо дополнительной разметки, с помощью псевдо-элементов <code>:first-child</code> и <code>:last-child</code> (<em>плюс к двум предыдущим</em>):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:first-child</span> <span class="nt">a</span> <span class="p">{</span><span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">45%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">45%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">55%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">55%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">4</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">65%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">4</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">65%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">75%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">75%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:last-child</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span> <span class="cp">!important</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span> <span class="k">pointer</span><span class="o">-</span><span class="n">events</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="k">cursor</span><span class="o">:</span> <span class="k">default</span><span class="p">;}</span></code></pre></div>
-
-<p>Примечание переводчика:</p>
-
-<blockquote>
-  <p>Нумерация в <code>nth-child</code> начинается с единицы, а не с нуля, как принято в языках программирования.</p>
-</blockquote>
-
-<p>И наконец, состояния элементов навигации при наведении курсора мыши. Здесь единственная особенность - нам нужно задать цвет треугольника точно таким же, как и ссылка. Не проблема:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">25%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
-<span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">25%</span><span class="o">,</span><span class="m">1</span><span class="p">)</span> <span class="cp">!important</span><span class="p">;}</span></code></pre></div>
-
-<h2 id="section">Совместимость с браузерами</h2>
-
-<p>Назовите меня ленивым, но я не занимался вопросом проверки данного кода на кросс-браузерную совместимость. Я был слишком захвачен самой идеей создания меню “хлебные крошки” на чистом CSS, чтобы думать его практическом использовании. Но если вас волнует мысль о его поддержке более старыми версиями браузеров, то стоит обратить внимание на следующие вещи:</p>
-
-<ul>
-  <li>используйте для передачи цвета HEX-код вместо HSLa;</li>
-  <li>для каждого из пунктов меню <code>li</code> создайте свои классы, вместо использования <code>nth-child</code>;</li>
-  <li>для браузеров, не поддерживающих псевдо-классы <code>:after</code>/<code>:before</code> используйте схему создания навигационного меню, основанную на изображениях;</li>
-  <li>применяйте библиотеку Modernizr для определения поддержки браузерами тех или иных свойств (например, HSLa);</li>
-  <li>используйте дополнительные стилевые правила для IE.</li>
-</ul>
-
-<p>Результат, созданный с помощью приведенного выше кода, показан ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/breadcrumb-result.jpg" alt="Меню хлебные крошки с помощью CSS-треугольников" /></p>
-
-<p>Эффект при наведении курсора мыши на один из пунктов меню:</p>
-
-<figure id="attachment_96" style="width: 600px;" class="wp-caption aligncenter">
-  [<img src="http://localhost:7788/third/wp-content/uploads/2013/10/breadcrumb-result-hover-600x129.jpg" alt="Эффект при наведении курсора мыши на меню навигации" width="600" height="129" class="size-medium wp-image-96" />][3]
-  <figcaption class="wp-caption-text">Эффект при наведении курсора мыши на меню навигации</figcaption>
-</figure>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/breadcrumb-result-hover.jpg" alt="Эффект при наведении курсора мыши на меню навигации" /></p>
-
-<p>На этом все и перевод закончен.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-24T00:00:00+04:00"><a href="http://zencoder.ru/css/css-lifted-shadows/">October 24, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-lifted-shadows/" rel="bookmark" title="Создание приподнятых теней с помощью CSS" itemprop="url">Создание приподнятых теней с помощью CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Создание приподнятых теней (<code>lifted shadow</code>) с помощью CSS.</p>
-</blockquote>
-
-<p>Такие тени создаются с помощью двух псевдо-элементов <code>:before</code> и <code>:after</code>. Дополнительной HTML-разметки при этом не требуется. Оба псевдо-элемента применяются только к одному элементу, который должен быть блочным. Ниже показана последовательность действий, которая совсем несложная.</p>
-
-<p>Статья написана по мотивам известного блога Николаса Галлахера, где показаны самые разнообразные виды таких сложных теней.</p>
-
-<p>Приступаем к написанию кода. Создаем элемент <code>p</code> и для него прописываем правила (<em>чтобы смотрелся хорошо</em>):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;lifted&quot;</span><span class="nt">&gt;</span>
-  Lifted Corners
-<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">40px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">3</span><span class="p">)</span> <span class="k">inset</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Здесь все несложно. Задаем ширину и высоту блока, а также косметическую красоту типа выравнивания по центру и придания тени для блока. Не забываем сделать блок относительно позиционированным, так как в последующих шагах нам потребуются псевдо-элементы, которые нужно будет позиционировать относительно блока-родителя.</p>
-
-<p>Такой интересный момент в этом коде - нужно обязательно явно установить фоновый цвет для блока <code>background-color: #fff</code>. Иначе он будет прозрачным по умолчанию и сквозь него будут проступать наши тени.</p>
-
-<p>Необходимо получить две тени, одна из которых располагается под левым углом блока, а другая - под правым. Поэтому нам потребуются два псевдо-элемента - <code>:before</code> и <code>:after</code>. Создаем правила, общие для обоих псевдо-элементов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:before</span><span class="o">,</span> <span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="k">z-index</span><span class="o">:</span> <span class="m">-1</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-          <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Немного “расшифруем” показанный выше код. Устанавливаем для обоих псевдо-элементов абсолютное позиционирование и координаты: от нижней границы 15px (<code>bottom: 15px</code>) и от левой границы 4px (<code>left: 4px;</code>). Ширину элемента устанавливаем в половину от ширины элемента-родителя (<code>width: 50%;</code>), высоту - 10% от ширины этого же элемента. Один интересный момент, про который не нужно забыть - “подсовываем” тени под блок-родитель с помощью свойства <code>z-index: -1</code>. Ну и создаем сами тени правилом <code>box-shadow: 0 15px 10px rgba(0,0,0,0.6)</code>, указав браузерные префиксы.</p>
-
-<p>Теперь у нас есть обе тени, но выглядят они как одна, так как первая накладывается на другую, ибо их координаты одинаковы. Поэтому нужно “разнести” их по разным углам, установив для псевдо-элемента <code>:after</code> иное позиционирование по оси X:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Почти все готово. Осталось только сделать для обеих теней “косину”, то есть развернуть их на определенное количество градусов. Левую тень развернем против часовой стрелки, чтобы ее внутренний угол оказался под блоком-родителем. Правую развернем точно также, только по часовой стрелке, чтобы ее внутренний угол также “спрятался” под блоком. Разворачивание будем выполнять с помощью правила <code>transform: rotate</code> для псевдо-элемента <code>:before</code> -</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
-        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span></code></pre></div>
-
-<p>и для псевдо-элемента <code>:after</code> -</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
-        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span></code></pre></div>
-
-<p>Результат нашей работы можно посмотреть ниже. Красиво!</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/drop-down-shadows.jpg" alt="Блок с тенями под углами" /></p>
-
-<p>Можно немного усложнить задачу и сделать нижние уголки блока визуально приподнятыми. Создастся иллюзия того, что у блока завернутые вверх уголки, как у листочка бумаги. Для этого нужно вспомнить о том, что у свойства <code>border-radius</code> есть два параметра, а не одно.</p>
-
-<p>То есть, для одного угла можно задать два радиуса скругления, и тогда само скругление получиться не таким “правильным”, но более реалистичным. Первый радиус делаем большого размера, а второй немного меньше.</p>
-
-<p>В результате угол получается не скругленным, а немного скошенным. В нашем примере для блока-родителя задаем радиусы скругления нижних углов следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">border-bottom-left-radius: 40px 12px;
-border-bottom-right-radius: 40px 12px;</code></pre></div>
-
-<p>Итогом получается картинка листочка бумаги с завернутыми уголками:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/curved-corners.jpg" alt="Завернутые уголки на чистом CSS" /></p>
-
-<p>На сайте Николаса Галлахера есть множество других примеров создания теней, которые по-настоящему впечатляют. В этой статье приведен только один из них, самый распространенный. Как видите, ничего сложного в его создании нет. Но вот на кросс-браузерность такой пример мною не рассматривался, ибо мне был важен сам результат.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-23T00:00:00+04:00"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/">October 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/" rel="bookmark" title="Создаем горизонтальное выпадающее меню на CSS" itemprop="url">Создаем горизонтальное выпадающее меню на CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Создаем вертикальное меню на CSS” был освещен вопрос построения вертикального меню с подменю.</p>
-</blockquote>
-
-<p>В этой статье будет логическое продолжение этого вопроса и мы научимся делать горизонтальное меню с выпадающим подменю. Принцип построение и функционирования такой навигации очень похож на вертикальное меню, с той лишь разницей, что она будет располагаться горизонтально. В основе заложен тот же самый принцип - свойство <code>display</code> со значениями <code>none</code> и <code>block</code>.</p>
-
-<p>При построении горизонтального меню нужно быть внимательным с принципом специфичности CSS, то есть - с вложенностью и каскадностью правил. Хорошим подспорьем в этом вопросе является SASS (SCSS), благодаря которому исключаются ошибки при соблюдении каскадности и наследовании свойств.</p>
-
-<p>Код, написанный на SASS (SCSS) короче и логически читается проще, чем CSS. Поэтому, рекомендую изучить этот вопрос в статьях “SASS (SCSS) в картинках - Часть 1”, “SASS (SCSS) в картинках - Часть 2”.</p>
-
-<p>Мы же приступим к созданию горизонтального меню с подменю “на коленках”. Почему говорю так? Дело в том, что существует масса готовых примеров и кода, а также генераторов различных меню. Но они неинтересны - нам нужно разобраться в принципе построения и возможности самому написать такую навигацию. Как обычно, начинаем с каркаса меню, выполненного на HTML:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;hormenu&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-4<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_2<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_4<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-4<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-5<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Структура подобного меню абсолютно одинакова со структурой вертикального меню. Также имеется внешний маркированный список с пунктами в виде ссылок, перед некоторыми из которых добавлены дополнительные подменю, выполненные также в виде маркированного списка.</p>
-
-<p>Различие между внешним и внутренним меню в классах, с помощью которых они будут видоизменяться. Помимо этого вы можете заметить, что у некоторых ссылок есть класс <code>arrow</code>, но о нем мы поговорим позже.</p>
-
-<p>Приступим к оформлению нашего меню с помощью CSS. Сразу оговорюсь, что примеры кода, представленного здесь, написаны на SASS (SCSS). Начнем с того, что расположим навигацию горизонтально:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hormenu</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="n">li</span><span class="err">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-    <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
-      <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="p">}</span></code></pre></div>
-
-<p>Думаю, ничего загадочного в этой части кода нет. Делаем отступ для меню и располагаем элементы <code>li</code> внутри него горизонтально с помощью свойства <code>float: left</code>. Предотвращаем схлопывание (<code>collapse</code>) блока-родителя <code>ul</code>, прописав для него <code>overflow: hidden</code>.</p>
-
-<p>Чтобы пункты меню были легко различимы, сделаем промежуток между ними с помощью левого <code>margin</code> в 1px. И для аккуратности уберем левый <code>margin</code> у первого элемента <code>li</code>.</p>
-
-<p>Далее оформляем ссылки внутри пунктов <code>li</code>. Делаем ссылки блочными, чтобы кликабельной была вся область пункта навигации и задаем для нее высоту. Также указываем интерлиньяж, чтобы выровнять текст по вертикали и <code>text-align</code> для выравнивания по горизонтали. Цвет фона и цвет текста - как обычно.</p>
-
-<p>Помимо этого, делаем ссылки с относительным позиционированием - оно нам пригодиться позже, когда будем отрисовывать треугольники. В этом коде стоит обратить внимание только на один момент - ширина элемента задается жестко. Это делается для того, чтобы основное меню не дергалось вправо-влево.</p>
-
-<p>Возможна ситуация, когда пункт подменю по ширине будет больше, чем пункт основного меню, и тогда ребенок “растянет” своего родителя.</p>
-
-<p>При скрытии же подменю пункты основного меню будут “сжиматься”, уменьшая ширину до своей собственной. Вот для этой цели и применяется явное задание ширины элемента <code>a</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">130px</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#555</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Продолжим стилизацию нашей навигации и займемся подменю, а точнее - его подпунктами <code>li</code>. Уберем у этих элементов плавание влево <code>float</code> и левый <code>margin</code>, чтобы они не наследовали эти свойства. Убираем плавание, чтобы элементы <code>li</code> расположились вертикально, а левый <code>margin</code> - убрать “лесенку”:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span><span class="p">;</span></code></pre></div>
-
-<p>Стилизуем ссылки пунктов подменю. Делаем фоновую заливку чуть светлее, чтобы отличалась от основного меню, а текст - чуть темнее по той же причине. Ну и анимация пунктов при наведении курсора мыши:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#111</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#222</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Теперь самое главное - сделаем подпункты меню выпадающими. Для этого сначала спрячем его, убрав из DOM-модели HTML-документа с помощью значения свойства <code>dislay: none</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-hormenu</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span></code></pre></div>
-
-<p>… а затем будем показывать его только при наведении курсора мыши на пункт меню. Код здесь может показаться немного непонятным, но знак амперсанда означает тоже, что и класс <code>hormenu</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&amp;</span><span class="nd">:hover</span> <span class="nc">.sub-hormenu</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Все - наше меню создано и работает. Давайте немного приукрасив его, придав функциональности. А именно - на данный момент визуально невозможно различить, у какого пункта основного меню есть подменю, а у какого - нет. Для этого “продрисуем” к нужным пунктам небольшой треугольник с помощью псевдо-класса <code>:after</code>.</p>
-
-<p>Как раз здесь нам и понадобиться относительное позиционирование для ссылок, о котором говорилось ранее. Создание стрелки “поручим” отдельному классу <code>arrow</code>, который будем “вешать” только на нужные нам ссылки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.arrow</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border-top</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">666</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">border-right</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот, в принципе, и все. Основная задача выполнена и горизонтальное меню с выпадающим подменю у нас работает. Конечно, можно озадачиться целью “окрасить” активный пункт основного меню в тот же цвет, что и у подменю. Но эта проблема не входит в рассмотрение поставленной нами задачи. Ниже представлен полный код правил CSS (SCSS) для нашего меню:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
- <span class="nt">a</span><span class="p">{</span>
-   <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="nc">.arrow</span><span class="nd">:after</span><span class="p">{</span>
-   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-   <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-   <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-   <span class="k">left</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-   <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-   <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-   <span class="k">border-top</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">666</span><span class="p">;</span>
-   <span class="k">border-left</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-   <span class="k">border-right</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-   <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
- <span class="p">}</span>
-
- <span class="nc">.hormenu</span><span class="p">{</span>
-   <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
-   <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-   <span class="n">li</span><span class="err">{</span>
-     <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-     <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-     <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
-       <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-     <span class="p">}</span>
-     <span class="o">&amp;</span><span class="nd">:hover</span> <span class="nc">.sub-hormenu</span><span class="p">{</span>
-       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-     <span class="p">}</span>
-     <span class="nc">.sub-hormenu</span><span class="p">{</span>
-       <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-       <span class="n">li</span><span class="err">{</span>
-         <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-         <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span><span class="p">;</span>
-         <span class="n">a</span><span class="err">{</span>
-           <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#111</span><span class="p">;</span>
-           <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#333</span><span class="p">;</span>
-           <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-             <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#222</span><span class="p">;</span>
-           <span class="p">}</span>
-           <span class="o">&amp;</span><span class="nd">:after</span><span class="p">{</span>
-             <span class="k">content</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-           <span class="p">}</span>
-         <span class="err">}</span>
-       <span class="err">}</span>
-     <span class="err">}</span>
-     <span class="nt">a</span><span class="p">{</span>
-       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-       <span class="k">line-height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-       <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-       <span class="k">width</span><span class="o">:</span> <span class="m">130px</span><span class="p">;</span>
-       <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-       <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
-       <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#555</span><span class="p">;</span>
-       <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-     <span class="p">}</span>
-   <span class="err">}</span>
- <span class="err">}</span></code></pre></div>
-
-<p>… и то, как оно выглядит:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-horizontal-menu.jpg" alt="Горизонтальное меню на CSS" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-horizontal-menu-with-dropdown-submenu.jpg" alt="Горизонтальное меню с выпадающим подменю" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-22T00:00:00+04:00"><a href="http://zencoder.ru/css/css-vertical-dropdown-menu/">October 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2013-10-30T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-scss-part-2/">October 30, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
@@ -832,215 +154,867 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-vertical-dropdown-menu/" rel="bookmark" title="Создаем вертикальное меню на CSS" itemprop="url">Создаем вертикальное меню на CSS</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-scss-part-2/" rel="bookmark" title="SASS (SCSS) в картинках - Часть 2" itemprop="url">SASS (SCSS) в картинках - Часть 2</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Продолжаем изучение CSS и сегодня приступим к построению вертикального меню.</p>
+  <p>В предыдущей части данного обзора - “SASS в картинках - Часть 1” мы посвятили все время установке, настройке и примерам мониторинга “сладкой” парочки Ruby/SASS.</p>
 </blockquote>
 
-<p>Такие меню очень популярны и без них не обходится каждый второй сайт. Статей по созданию подобной навигации написано немало, но меня данный факт волнует мало. Моя задача - разобраться в принципе построения подобного меню и возможность сделать его самому, на коленках за пару минут. В действительности все просто, даже очень просто.</p>
+<p>Разобрались, как установить под Windows платформу Ruby и ее приложение SASS, в чем отличия между старой и новой версией синтаксиса SASS. Как запустить SASS для мониторинга редактируемых файлов или директорий.</p>
 
-<p>Созданное в этой статье вертикальное меню будет далеко по своим внешним эстетическим данным от совершенства. Но это и неважно - важен сам принцип, механизм построения и функционирования подобной навигации. А всякие фантики-бантики можно навесить всегда, было бы желание.</p>
+<p>В этой статье мы приступим к самому интересному - разбору вкусностей SASS. Что он может, как он это делает. И каким образом мы можем облегчить себе жизнь с помощью него. И начнем с самого простого, постепенно переходя к более сложному.</p>
 
-<p>Механизм действия и построения такого меню основан на одном единственном CSS-свойстве - <code>display</code>, а точнее на его значениях - <code>display: block</code> и <code>display: none</code>.</p>
+<h2 id="variables">Переменные (Variables)</h2>
 
-<p>В этой статье будет создаваться простое вертикальное меню, в котором подменю размещается сбоку от основного меню. Существует более сложный вариант вертикального меню, в котором подменю размещается внутри основного.</p>
+<p>SASS “вводит” в состав CSS переменные, которых изначально в нем нет. Тем самым, язык стилевых правил постепенно превращается в более-менее полноценный язык программирования. Как и в обычном языке программирования, сначала объявляется переменная (с помощью спецсимвола <code>$</code>), задается ее имя и присваивается значение.</p>
 
-<p>Такая навигация называется <code>меню-аккордеон</code> и принцип его создания будет рассмотрен позже.</p>
+<p>Затем эта переменная используется в последующем коде путем вызова ее по имени. Одновременно с применением переменной в коде с ней можно производить простые арифметические операции: сложение, вычитание, умножение и деление.</p>
 
-<p>C чего же мы начнем? С построения обычного маркированного списка, пунктами которого будут ссылки. Списку зададим класс с именем <code>menu</code>, так как он нам понадобиться в дальнейшем:</p>
+<p>Например, на рисунке ниже переменной <code>$color</code> присвоено значение цвета в HEX-формате. Далее в одном месте кода эта переменная применяется “как есть”, а в другом месте из значения переменной вычитается еще одно число в этом же формате. В результате цвет получается темнее на заданное количество - очень удобно и быстро!</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-variable.jpg" alt="Переменные в SASS" /></p>
 
-<p>Созданное только что меню будет внешним, а внутри него (<em>точнее внутри его пунктов</em>) мы поместим еще одно меню. Получиться одно меню, вложенное в другое (помните уроки HTML?).</p>
+<h2 id="nesting">Вложенность (Nesting)</h2>
 
-<p>То есть, у нас есть пять пунктов внешнего меню - вот мы и вложим в каждый из них еще одно меню, перед ссылкой. Ссылка будет исполнять роль переключателя, который будет переводить значение свойства <code>display</code> из none в <code>block</code> и наоборот.</p>
+<p>Тут все просто - как вы обычно пишите правила CSS?</p>
 
-<p>В итоге получиться пять подменю, для каждого из которых мы пропишем один класс - <code>sub-menu</code>. Этот класс нам также потребуется в дальнейшем:</p>
+<p>Наверное, так:</p>
 
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1<span class="nt">&lt;/a&gt;</span>
-        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2<span class="nt">&lt;/a&gt;</span>
-        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3<span class="nt">&lt;/a&gt;</span>
-        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4<span class="nt">&lt;/a&gt;</span>
-        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5<span class="nt">&lt;/a&gt;</span>
-        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-1<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-2<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;</span>
-        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-3<span class="nt">&lt;/a&gt;</span>
-      <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Все - каркас будущего вертикального меню готов и больше мы его трогать не будем. Остальные действия будем выполнять только с помощью CSS. Для начала создадим базовые стили, чтобы придать нашему меню хоть какой-то вид:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">*</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nt">a</span><span class="p">{</span>
+<span class="nt">h1</span> <span class="nt">a</span> <span class="p">{</span>
   <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>То есть, пишем, что заголовку первого уровня присвоить свойства - кегль и цвет шрифта. Ссылке, вложенной в этот заголовок, присваиваем свойства - убираем подчеркивание и задаем свой цвет.</p>
+
+<p>Теперь напишем этот же код на SASS (SCSS):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+
+  <span class="n">a</span> <span class="err">{</span>
+    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Вот в чем “фокус” - на SASS (SCSS) мы пишем код так, как видим. Смотрим HTML-код - ссылка вложена в тег <code>h1</code>. Поэтому, в SASS-коде так и “рисуем” - внутри селектора <code>h1</code> помещаем селектор <code>a</code>, говоря тем самым SASS, что тег <code>a</code> вложен в тег <code>h1</code>. После конвертации в CSS-код у нас получиться точно такой код, как в первом примере (где представлен CSS-код):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-nesting.jpg" alt="Вложенность селекторов в SASS" /></p>
+
+<p>В SASS вложенность (<code>nesting</code>) бывает двух типов: <em>вложенность селекторов</em> (рассмотренная выше) и <em>вложенность свойств</em>, которую мы рассмотрим сейчас.</p>
+
+<p><em>Вложенность свойств</em> - это почти тоже самое, что и первый случай. Разница лишь в том, что применяется она к CSS-свойствам, а не селекторам. Ее удобно использовать для сложносоставных свойств, таких как <code>font</code>.</p>
+
+<p>Например, на CSS мы бы написали так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На SASS (SCSS) этот же код мы напишем так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+
+  <span class="k">font</span><span class="o">:</span> <span class="err">{</span>
+    <span class="k">size</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="n">style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+    <span class="n">weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+    <span class="n">family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nt">color</span><span class="o">:</span> <span class="nf">#ccc</span><span class="o">;</span>
+  <span class="nt">padding-left</span><span class="o">:</span> <span class="nt">10px</span><span class="o">;</span>
+<span class="err">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-nesting-properties.jpg" alt="Вложенность свойств на SASS" /></p>
+
+<h2 id="section">Наследование</h2>
+
+<p>С помощью наследования можно значительно сократить код и ускорить его написание. Принцип также прост - если для одного элемента задан набор свойств, то можно для другого элемента указать наследовать эти же самые свойства.</p>
+
+<p>Наследование в SASS (SCSS) выполняется с помощью директивы <code>@extend</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">font</span><span class="o">:</span> <span class="err">{</span>
+    <span class="k">size</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+    <span class="n">style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+    <span class="n">weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+    <span class="n">family</span><span class="o">:</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nt">color</span><span class="o">:</span> <span class="nf">#ccc</span><span class="o">;</span>
+  <span class="nt">padding-left</span><span class="o">:</span> <span class="nt">10px</span><span class="o">;</span>
+<span class="err">}</span>
+
+<span class="nt">h2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="n">h1</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#aaa</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-extend.jpg" alt="Наследование в SASS" /></p>
+
+<h2 id="parent">Parent</h2>
+
+<p>Не знаю, как переводиться данная фича в SASS, но в примере кода она очень понятна - может, и нет смысла искать ее перевод? Если кто изучал Javascript &amp; jQuery, то знает о таком символе - <code>&amp;</code>. Его можно перевести как “этот”.</p>
+
+<p>Давайте посмотрим код, и все сразу станет ясно:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-parent.jpg" alt="SASS Parent" /></p>
+
+<p>Видим, что в коде для ссылки прописаны свойства. И в этом же правиле прописано правило для <code>hover</code>. Так вот, чтобы не писать конструкции типа <code>a</code>, <code>a:hover</code> - запишем <code>a</code>, <code>&amp;:hover</code>. Если описать это простым языком, то “этому же элементу присвоить правило при псевдоклассе <code>:hover</code>.</p>
+
+<h2 id="sass">Функции SASS</h2>
+
+<p>Когда мы рассматривали переменные, то упомянули об арифметических операциях над значением переменных. Иногда это удобно, а иногда нет. В SASS имеется достаточно большой набор функций, предназначенных для самых разнообразных задач. Ознакомиться с их полным перечнем можно по адресу <a href="sass-lang.com/docs/yardoc/Sass/Script/Functions.html" title="Sass">sass-lang.com/docs/yardoc/Sass/Script/Functions.html</a>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-function.jpg" alt="Функции SASS" /></p>
+
+<p>К примеру, у нас в коде имеется правило задания цвета для ссылки. А также есть правило, по которому ссылка изменяет цвет по наведению на нее курсора мыши.</p>
+
+<p>На SASS (SCSS) такой код можно написать так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ddd</span><span class="p">;</span>
 <span class="p">}</span>
 
-<span class="nt">ul</span><span class="p">{</span>
-  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.menu</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">30px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="nt">a</span><span class="nd">:hover</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#ddd</span><span class="o">,</span> <span class="m">30%</span><span class="p">);</span>
 <span class="p">}</span></code></pre></div>
 
-<p>Здесь мы обнуляем <code>margin</code> и <code>padding</code> для всех элементов, в том числе и <code>ul</code>; убираем маркер у пунктов меню; убираем подчеркивание у ссылок.</p>
+<p>То есть, берем функцию <code>darken()</code> и передаем ей в качестве аргументов два значения - первоначальный цвет и величину в процентах, на которую необходимо затемнить цвет.</p>
 
-<p>Для внешнего списка с классом menu задаем отступ сверху и слева, чтобы не прилипал к границам окна браузера и устанавливаем фиксированную ширину в <code>100px</code>.</p>
+<p>Ну просто очень удобно и быстро!</p>
 
-<p>Дальше форматируем пункты меню:</p>
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-darken.jpg" alt="Функция затемнения цвета в SASS" /></p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span><span class="p">{</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-    <span class="k">line-height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
-    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
+<h2 id="mixin">Подмешивания (Mixin)</h2>
 
-<p>Ставим высоту каждого элемента <code>li</code> равной 20px и выравниваем текст внутри него по центру вертикали; задаем фоновый цвет для них же, чтобы можно было различать каждый из пунктов на фоне окна браузера; делаем нижний <code>margin</code> в 1px, чтобы элементы <code>li</code> не сливались между собой и были похожи на пункты меню.</p>
+<p>Подмешивания в SASS полностью отвечают своему названию, по принципу применения. Но, в тоже время, по принципу своей работы это самые настоящие функции. То есть, SASS еще больше расширяет возможности CSS и превращает его из описательного языка в язык программирования.</p>
 
-<p>Последний шаг - устанавливаем для <code>li</code> относительное позиционирование, так как в дальнейшем будем размещать подменю относительно этого элемента.</p>
+<p>Если сказать простым языком, то <code>mixin</code> - это большой кусок CSS-кода, который можно применять бесконечное число раз. Так же как и переменные, <code>mixin</code> сначала объявляется с помощью директивы <code>@mixin</code> и задается имя для него. Затем в теле подмешивания прописываются CSS-правила, при этом одновременно можно использовать переменные в этих правилах.</p>
 
-<p>Далее чисто косметические правила для ссылок, находящихся внутри внешнего меню - размер шрифта (кегль) и цвет текста:</p>
+<p>После объявления <code>mixin</code> его подключают в нужном месте кода с помощью директивы <code>@include</code>. Удобство применения подмешиваний заключается в том, что не нужно каждый раз писать один и тот же код в разных местах.</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<p>Достаточно прописать всего одну строчку - “вставить такой кусок кода здесь”:</p>
 
-<p>Теперь приступаем к самому интересному - стилизации подменю. Для начала зададим его ширину (пусть будет чуть меньше ширины внешнего списка):</p>
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-mixin.jpg" alt="Подмешивания в SASS" /></p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">90px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<h2 id="interpolation">Интерполяция (Interpolation)</h2>
 
-<p>Затем установим для подменю абсолютное позиционирование для того, чтобы сместить его вправо на значение, равное ширине внешнего списка и “прилепить” кверху каждого из элементов <code>li</code>.</p>
+<p>Под таким непонятным первоначально словом подразумевается подстановка значения переменной в название CSS-свойства. Благодаря этому можно легко изменять само свойство в функции.</p>
 
-<p>И самое главное - скроем его отображение в браузере через правило <code>display: none</code>. В результате код будет выглядеть следующим образом:</p>
+<p>Например, таким образом:</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">90px</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-interpolation.jpg" alt="Интерполяция в SASS" /></p>
 
-<p>Немного стилизуем пункты меню и ссылки в подменю. Для каждого пункта подменю устанавливаем цвет фона, чтобы отличать подменю от основного меню. И цвет ссылок по той же причине:</p>
+<p>(На картинке закралась ошибка. Конечно же, переменной <code>$top</code> в названии свойства <code>border</code> не существует. На ее месте должна стоять переменная <code>$vert</code>).</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span> <span class="nt">li</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#aaa</span><span class="p">;</span>
-<span class="p">}</span>
-  <span class="nc">.sub-menu</span> <span class="nt">li</span> <span class="nt">a</span><span class="p">{</span>
-    <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
+<h2 id="mixin--">Подмешивания (<code>mixin</code>) с аргументами</h2>
 
-<p>Заключительный код, который заставляет наше меню работать именно так, как задумано. То есть, этим мы говорим браузеру присвоить свойству <code>display</code> значение <code>block</code> при наведении мыши на ссылку во внешнем списке:</p>
+<p>Ранее мы познакомились с функциями без аргументов (<code>mixin</code>). Но это был простой пример. На самом деле, функции (<code>mixin</code>) в SASS могут иметь аргументы, которые они принимают в качестве параметров.</p>
 
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span><span class="nd">:hover</span> <span class="nc">.sub-menu</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
+<p>Например, рассмотрим такой рисунок:</p>
 
-<p>В результате подменю отобразиться (браузер сгенерирует его). Изначально в коде было прописано для него <code>display: none</code>. То есть, для браузера такого подменю не существовало и в DOM-модели документа элемент <code>ul</code> с классом <code>sub-menu</code> отсутствовал.</p>
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-mixin-with-arguments.jpg" alt="Функции с аргументами в SASS" /></p>
 
-<p>Так как этому подменю задано абсолютное позиционирование со смещением вправо на <code>100px</code> и вверх на <code>0px</code>, то оно поместиться точно справа вверху от своего родителя - пункта меню внешнего списка.</p>
+<p>Видим, что в начале кода объявлена функция (<code>mixin</code>) с именем <code>corners</code>. В качестве аргументов она принимает три переменные - <code>$vert</code>, <code>$hor</code>, <code>$radius</code>. Значения переменных <code>$vert</code> и <code>$hor</code> передаются в тело функции как интерполяция, а значение переменной <code>$radius</code> подставляется в качестве значения CSS-свойства <code>border</code>.</p>
 
-<p>В принципе, на этом уже все сказано. Основной принцип вертикального меню показан и создан. Остальное - уже дело техники, если нужно придать ему нужный вид. На закуску пример нашего меню в обычном состоянии:</p>
+<p>В результате можно очень легко и быстро изменять вид и значение CSS-свойства: <code>border-top-left: 8px</code>, <code>border-bottom-left: 8px</code>, <code>border-top-right: 8px</code>, <code>border-top-right: 8px</code> и так далее.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-vertical-menu.jpg" alt="Вертикальное меню на CSS" /></p>
+<p>Далее в коде подключается (вызывается) функция <code>corners</code> с помощью директивы <code>@include</code>. При вызове этой функции ей передаются аргументы:</p>
 
-<p>И меню, когда наведена мышка на один из пунктов меню и справа появляется подменю, соответствующее этому пункту:</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">corners</span><span class="o">(</span><span class="nt">top</span><span class="o">,</span><span class="nt">left</span><span class="o">,</span><span class="nt">15px</span><span class="o">)</span><span class="p">;</span>
+<span class="k">@include</span> <span class="nt">corners</span><span class="o">(</span><span class="nt">bottom</span><span class="o">,</span><span class="nt">right</span><span class="o">,</span><span class="nt">35px</span><span class="o">)</span><span class="p">;</span></code></pre></div>
 
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-vertical-menu-expand.jpg" alt="Вертикальное меню на CSS с подменю" /></p>
+<p>В результате обработки этих аргументов функцией corners получиться следующий CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-top-left</span><span class="o">:</span> <span class="nt">15px</span><span class="o">;</span>
+<span class="nt">border-bottom-right</span><span class="o">:</span> <span class="nt">35px</span><span class="o">;</span></code></pre></div>
+
+<p>Фантастика! Ну что же, на этом можно закончить обзор того, что умеет SASS (SCSS). Я думаю, что вы по достоинству оценили все преимущества данного языка и сразу же кинулись применять его на практике.</p>
+
+<p>Вроде ничего не забыл ))</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-29T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-scss-part-1/">October 29, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-scss-part-1/" rel="bookmark" title="SASS (SCSS) в картинках - Часть 1" itemprop="url">SASS (SCSS) в картинках - Часть 1</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Следующий виток саморазвития верстальщика - начинаем изучение препроцессора SASS.</p>
+</blockquote>
+
+<p>Вы спросите - а зачем он нужен и что это за “зверь” такой? Ведь в багаже знаний верстальщика и так полно вещей, которые он должен знать. Это и HTML&amp;CSS, и Javascript с jQuery, и основы PHP с системами управления контентом (CMS) WordPress, Joomla, Drupal. Помимо этого - знание основ Photoshop (не сможете нарезать psd-макет). И еще куча всего по мелочи. Так зачем усложнять себе жизнь еще чем-то?</p>
+
+<p>И будете неправы. В данном случае - это не усложнение, а облегчение “тяжелой” жизни верстальщика. Достаточно потратить пару дней на изучение SASS, чтобы потом верстать страницы быстрее и семантически более правильно. Ну хорошо, скажете вы - уговорил. Так что же это за такая прекрасная вещь, SASS?</p>
+
+<p>SASS - это надстройка над CSS, написанная на языке программирования Ruby (есть такой). Правильно такая надстройка называется препроцессором. SASS добавляет в CSS такие вещи, как переменные, функции и многое другое. Тем самым, описательный язык CSS превращается в более-менее полноценный язык программирования. Часто ли вы при написании CSS-кода повторяете один и тот же код?</p>
+
+<p>Я думаю, ответ однозначен - конечно часто! И тут на помощь может прийти функции - достаточно один раз прописать ее в начале документа, а затем только подключать в нужных местах. Или, к примеру, вы прописали цвет для ссылок, но заказчику он не понравился - это нужно выискивать все подобные ссылки в коде и менять их. Но можно прописать одну переменную, и присваивать ее значение там, где это необходимо.</p>
+
+<p>Существует аналог SASS по имени LESS. Отличие в том, что LESS моложе, проще и не имеет такой мощной библиотеки-фреймворка Compass, какую имеет SASS.</p>
+
+<p>Стоит также сказать, что существую две версии SASS - собственно SASS и SCSS. Первый - это старая версия синтаксиса, которая только отдаленно напоминает CSS. В нем построение кода выполняется с помощью табуляции размером в два пробела.</p>
+
+<p>При этом отсутствуют точки запятой и фигурные скобки. На сегодняшний день такой синтаксис (и эта версия - соответственно) уже не используются.</p>
+
+<p>Пример такого кода показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">table</span><span class="nc">.hl</span>
+  <span class="nt">margin</span><span class="o">:</span> <span class="nt">2em</span> <span class="nt">0</span>
+  <span class="nt">td</span><span class="nc">.ln</span>
+    <span class="nt">text-align</span><span class="o">:</span> <span class="nt">right</span></code></pre></div>
+
+<p>Более новая версия - SCSS (SASS-подобный CSS) имеет синтаксис почти такой же, как и у CSS. Поэтому особо рассказывать тут нечего, лучше посмотреть на пример кода:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">table</span><span class="nc">.hl</span> <span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">2em</span> <span class="m">0</span><span class="p">;</span>
+  <span class="n">td</span><span class="o">.</span><span class="n">ln</span> <span class="err">{</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Прежде чем начинать изучение SASS, его необходимо установить. В этой статье все время будет посвящено установке и настройке последнего. А во второй части уже будет самое интересное - показ и рассказ того, что может и что умеет SASS.</p>
+
+<p>Установка SASS разделена на два этапа. Первый - необходимо установить поддержку языка Ruby в операционной системе, так как SASS - это всего лишь одно из многих приложений, написанное на этом языке. Больше всего в этом плане повезло пользователям MacOS X - там поддержка Ruby предустановлена по-умолчанию. Для пользователей Linux OS нужно только немного напрячься - установить эту поддержку с помощью менеджера пакетов. Например, для систем Debian* эта команда будет выглядеть так:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">apt-get</span> <span class="n">install</span> <span class="n">ruby</span></code></pre></div>
+
+<p>Пользователи же Windows как всегда “впереди планеты всей”. Придется находить и скачивать вручную пакет-инсталлятор Ruby. Для этого переходим по адресу <a href="rubyinstaller.org/downloads/" title="Ruby Installer">rubyinstaller.org/downloads/</a>, выбираем из списка самую свежую версию пакета (на момент написания это Ruby 2.0.0-p247) и скачиваем ее:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/rubyinstaller-windows.jpg" alt="Пакет Ruby-инсталлятора для Windows" /></p>
+
+<p>Потом запускаем программу на установку. Инсталлятор Ruby имеет стандартный вид и опции, кроме одной, на которую нужно обратить внимание:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/ruby-install.jpg" alt="Установка Ruby под Windows" /></p>
+
+<p>Необходимо поставить галочки так, как это показано на рисунке, иначе Ruby и его приложение SASS не запустятся в терминале. Стоит сразу оговориться, что ни сам Ruby, ни программа SASS не имеют графического интерфейса. Управление обоими программными продуктами осуществляется через командную строку.</p>
+
+<p>Что касается трех галочек в окне инсталлятора, то тут все просто. Первая галочка устанавливает поддержку языка Tcl\Tk, вторая галочка добавляет путь к исполняемому файлу Ruby в окружение командной оболочки, третья галочка устанавливает привязку файлов с расширением <code>.rb</code> и <code>.rdw</code> к Ruby.</p>
+
+<p>После того, как установлен Ruby, настало время SASS. Здесь ситуация проще, так как Ruby имеет свой собственный менеджер пакетов a-la системы Linux OS. Менеджер пакетов имеет название <code>gem</code>. Чтобы установить приложение SASS, достаточно иметь подключение к Интернет и запустить в терминале Windows следующую команду:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/gem-install-sass.jpg" alt="Установка SASS под Windows" /></p>
+
+<p>Если все прошло успешно, то вывод в терминале должен быть таким:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-installed.jpg" alt="Успешная установка SASS под Windows" /></p>
+
+<p>Для самоуспокоения и ознакомления с командами приложения SASS можно набрать в терминале:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sass</span> <span class="p">-</span><span class="n">-help</span></code></pre></div>
+
+<p>Должен появиться список всех команд программы SASS. Это подтверждает факт, что установка прошла успешно. Теперь немного отвлечемся от темы и углубимся в сторону HTML. Как хорошо известно, подключение таблиц со стилями в HTML-странице производится по следующему типу:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/index-html.jpg" alt="Подключение стилевых таблиц в HTML" /></p>
+
+<p>Браузеры понимают только файлы с расширением .css и кодом, созданным в синтаксисе CSS. Однако, мы уже выяснили, что SASS имеет свой собственный синтаксис и файлы создает с расширением .scss. Как быть в такой ситуации? Все очень просто - программа SASS может конвертировать свои собственные файлы в файлы формата CSS, а также сохранять их с расширением .css. Поэтому то, что создается в SASS можно считать промежуточным результатом.</p>
+
+<p>Приложение SASS умеет выполнять мониторинг редактируемого sass-файла в автоматическом режиме, для этого достаточно указать ей входной (input) и выходной (output) файлы. К примеру, такая команда может выглядеть следующим образом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-watch.jpg" alt="Запуск мониторинга sass-файла" /></p>
+
+<p>Если sass-файлов несколько и расположены они в одной директории, то можно запустить мониторинг все этой директории следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sass</span> <span class="p">-</span><span class="n">-watch</span> <span class="n">input_directory</span><span class="err">:</span><span class="n">output_directory</span></code></pre></div>
+
+<p>Из рисунка видно, что программа в автоматическом режиме производит анализ всех изменений в sass-файле и записывает их в выходной css-файл. При этом фиксируются все изменения, в том числе и ошибки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-monitoring.jpg" alt="Фиксирование всех событий в sass-файле" /></p>
+
+<p>При этом, если взглянуть на содержимое директории, к которой расположен проект, то увидим, что там, помимо sass-файла, располагается и css-файл (результат работы):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-dir.jpg" alt="Содержимое директории с проектом" /></p>
+
+<p>Кроме того, из подсказки командной строки видно, что процесс мониторинга можно прервать в любой момент, нажав сочетание клавиш <kbd>Ctrl+C</kbd>. Программа настроена с умом и случайно (по ошибке) остановить ее не получиться - она попросит подтверждения выбранного действия путем ввода буковки <code>Y</code> (Yes) и нажатия клавиши <kbd>Enter</kbd>.</p>
+
+<p>Помимо конвертации sass-файлов с css-файлы, в SASS имеется встроенная возможность обратного процесса. Осуществляется она с помощью утилиты <code>sass-convert</code>. Синтаксис такой команды может быть таким:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sass-convert</span> <span class="p">-</span><span class="n">-from</span> <span class="n">css</span> <span class="p">-</span><span class="n">-to</span> <span class="n">sass</span> <span class="n">-R</span> <span class="p">.</span></code></pre></div>
+
+<p>Такая команда рекурсивно (ключ <code>-R</code>) сконвертирует все css-файлы в sass-файлы, расположенные в текущей (точка здесь не зря стоит!) директории.</p>
+
+<p>В принципе, все что нужно сказать об установке Ruby/SASS, о том как прекрасен и хорошо SASS - уже сказано. В следующей статье будет рассмотрено на примерах, на что же действительно способен SASS.</p>
 
 <p>На этом все.</p>
 
 <hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-28T00:00:00+04:00"><a href="http://zencoder.ru/web-tools/webmaster-command-line/">October 28, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/web-tools/webmaster-command-line/" rel="bookmark" title="Командная строка (cmd) для веб-мастера" itemprop="url">Командная строка (cmd) для веб-мастера</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Для веб-разработчика, и для верстальщика в частности, первые вещи, которые он обязан знать, это языки HTML, CSS, Javascript с библиотекой jQuery.</p>
+</blockquote>
+
+<p>Желательно знание основ PHP, популярных CMS - WordPress, Joomla, Drupal. Обязательно знание основ работы в Photoshop, иначе просто не сможет верстальщик работать.</p>
+
+<p>Но причем здесь командная строка Windows, скажете вы? Это системному администратору в его ремесле она необходима, чтобы создавать <code>bat</code>-файлы, через терминал управлять удаленными соединениями, создавать и настраивать локальные сети. Для чего же она нужна человеку, который работает с веб-приложениями?</p>
+
+<p>Оказывается, нужна. Не вся ее мощь, не все ее DOS-команды - только самые распространенные и необходимые. А нужна при работе с препроцессорами CSS, такими как SASS или LESS.</p>
+
+<p>Насчет LESS - это можно еще поспорить, а вот для SASS она понадобиться однозначно. Установка препроцессора SASS производиться через командную строку; процесс мониторинга также запускается через командную оболочку.</p>
+
+<p>Так что давайте подтянем свои знания в этой области на тот уровень, который необходим. Ниже приведено краткое описание с примерами всех тех команд, которые могут потребоваться. Некоторые читатели могут сказать - а зачем плодить еще одну статью по командной строке Windows?</p>
+
+<p>В Интернете и так таких статей пруд пруди! На это могу сказать одно - этот сайт является моей записной книжкой. И здесь я выкладываю записи по принципу: “чтобы не забыть”, “описать задачу и ее выполнение самому, чтобы лучше понять”. Ну, лирика закончена, приступаем к делу.</p>
+
+<h2 id="section">Горячие клавиши командной оболочки</h2>
+
+<ul>
+  <li><kbd>Win+R</kbd> - быстрый запуск командной оболочки;</li>
+  <li><kbd>Alt+Space</kbd> - меню настройки командной строки;</li>
+  <li><kbd>F7</kbd> - показ списка введенных команд в оболочке;</li>
+</ul>
+
+<p><code>cmd /f:on</code> - включение перебора директорий по сочетанию <kbd>Ctrl+D</kbd> и перебора файлов по сочетанию <kbd>Ctrl+F</kbd>; (очень полезное свойство - благодаря ему не нужно вручную писать имя каталога, куда необходимо попасть, достаточно найти его методом перебора).</p>
+
+<h2 id="section-1">Создание папок</h2>
+
+<ul>
+  <li><code>mkdir sass</code> - создание новой папки sass в корне текущего диска;</li>
+  <li><code>md sass</code> - аналогично предыдущей (укороченный вариант);</li>
+  <li><code>md sass\verstka</code> - создание вложенных директорий;</li>
+  <li><code>md F:verstka\revoltz</code> - создание директорий в указанном диске;</li>
+</ul>
+
+<h2 id="section-2">Просмотр содержимого каталогов</h2>
+
+<ul>
+  <li><code>tree</code> - показ дерева каталогов;</li>
+  <li><code>tree /f</code> - показ дерева каталогов с их содержимым;</li>
+  <li><code>tree F:sass</code> - показ “куска” дерева каталогов, начиная с указанного места;</li>
+  <li><code>dir</code> - просмотр содержимого текущего диска (каталога) в виде списка;</li>
+  <li><code>dir F:</code> - просмотр содержимого диска <code>F:</code></li>
+  <li><code>dir /p F:</code> - постраничный вывод содержимого диска <code>F:</code></li>
+  <li><code>type test.txt</code> - просмотр содержимого файла (расширение файла указывать обязательно);</li>
+</ul>
+
+<h2 id="section-3">Перемещение по каталогам и дискам</h2>
+
+<ul>
+  <li><code>cd /d F:</code> - переход в корень диска <code>F:</code> (<em>для меня, как бывшего линуксоида, странное и неудобное нагромождение с ключом</em>)</li>
+  <li><code>cd ..</code> - перейти на уровень вверх;</li>
+  <li><code>cd Folder\Folder2\Folder3</code> - перейти в папку <code>Folder3</code>;</li>
+</ul>
+
+<h2 id="section-4">Удаление файлов и каталогов</h2>
+
+<ul>
+  <li><code>del test.txt</code> - удалить файл (расширение файла указывать обязательно);</li>
+  <li><code>rmdir folder3</code> - удалить папку (директорию);</li>
+</ul>
+
+<h2 id="section-5">Копирование и перемещение</h2>
+
+<ul>
+  <li><code>copy text.txt Folder\Folder2\Folder3</code> - скопировать файл в директорию <code>Folder3</code>;</li>
+  <li><code>move text.txt Folder\Folder2\Folder3</code> - переместить файл в директорию <code>Folder3</code>;</li>
+</ul>
+
+<h2 id="section-6">Разное</h2>
+
+<ul>
+  <li><code>cls</code> - очистка экрана ввода;</li>
+</ul>
+
+<p>Для работы в командной строке также желательно ее настроить, облагородить под себя. Ибо изначально вид командной оболочки достаточно непригляден. Для открытия свойств окна терминала достаточно щелкнуть ПКМ на любом месте заголовка окна.</p>
+
+<p>Затем перейти в свойства - окно с четырьмя вкладками.</p>
+
+<p>Первую - “Options” - можно пропустить, там ничего особо интересного нет.</p>
+
+<p>Вторая вкладка - “Font” - для настройки шрифтов. Лучше всего поставить шрифт “Lucida Console” и кегль 12:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/font-cmd.jpg" alt="Шрифты терминала Windows" /></p>
+
+<p>Третья вкладка - “Layout” - для настройки размеров окна. Наиболее удобные размеры приведены на рисунке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/layout-cmd.jpg" alt="Размеры окна терминала Windows" /></p>
+
+<p>Четвертая вкладка - “Colors” - для настройки цветов фона, текста. Всплывающее окно (появляется по нажатию клавиши <kbd>F7</kbd>) также настраивается с помощью фонового цвета и цвета текста - но кто его использует? (<em>можно оставить “как есть”</em>):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/colors-cmd.jpg" alt="Цвета терминала Windows" /></p>
+
+<p>Конечно, все настройки индивидуальны. Как говориться, на вкус и цвет все фломастеры разные. Поэтому рисунок ниже - примерный вид того, каким может быть настроенный терминал Windows:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/terminal-cmd.jpg" alt="Вид терминала Windows" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-27T00:00:00+04:00"><a href="http://zencoder.ru/css/jquery-ui-accordion-css/">October 27, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~11 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/jquery-ui-accordion-css/" rel="bookmark" title="Создаем меню-аккордеон на jQuery UI" itemprop="url">Создаем меню-аккордеон на jQuery UI</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В этой статье будем создавать меню-аккордеон с помощью jQuery UI.</p>
+</blockquote>
+
+<p>Что такое jQuery, знают все - это библиотека Javascript. То есть, это собрание готовых модулей для самых разнообразный действий на сайте, таких как применение анимации, динамического изменения свойств HTML-элементов и многое другое. С помощью jQuery подобные действия можно “прикрутить” к страничке легко и быстро.</p>
+
+<p>jQuery UI - это библиотека для библиотеки jQuery. Другими словами, если jQuery - это надстройка над Javascript, то jQuery UI - это надстройка над jQuery. Пирамида получается в некотором смысле этого слова.</p>
+
+<p>Предназначение jQuery UI - создание интерфейсов пользователя на HTML-странице. UI - это аббревиатура User Interface (Интерфейс Пользователя), а именно - это меню навигации, вкладки, полоса прогресса, календарь, автопроверка вводимых данных и другое.</p>
+
+<p>Меню-аккордеон можно сделать на чистом CSS, но сегодня рассмотрим самый простой и надежный способ - на Javascript, так как он заведомо будет работать во всех браузерах, если в них не отключена поддержка этого языка.</p>
+
+<p>Первое, что нужно сделать - это набросать каркас HTML-страницы, то есть <code>doctype</code>, кодировку, <code>head</code>, <code>body</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+      <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;UTF-8&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;/head&gt;</span>
+    <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;/body&gt;</span>
+  <span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<p>Затем подключаем библиотеку jQuery и ее надстройку jQuery UI, причем делать это нужно в указанном порядке: сначала основная библиотека, затем ее надстройка. Так как мы будем делать меню со своими собственными стилями, то необходимо выполнить следующие шаги.</p>
+
+<p>Переходим на <a href="http://jqueryui.com/download/" title="Download">страницу загрузки</a> и здесь выполним компиляцию ядра и только необходимых нам модулей (возможностей) jQuery UI. Что это значит? Полный комплект библиотеки jQuery UI содержит в себе возможность создания самых различный интерфейсов - вкладок, ползунков, календарей, полос прогресса, автозаполнения и так далее. Нам же необходима только одна из них - меню-аккордеон. Зачем скачивать и использовать библиотеку целиком, когда можно применять в работе только малую ее часть? Выигрыш в загрузке страницы в окне браузера очевиден.</p>
+
+<p>Другая, менее очевидная причина такого выбора заключается в том, что во время работы движок jQuery UI создает свои собственные классы стилизации для меню, в частности. Эти классы напрямую соотносятся с файлом стилизации, таким как <code>smoothness/jquery-ui.css</code>. Когда мы будем создавать правила CSS для нашего аккордеона, мы будет прописывать свои собственные классы. В итоге те классы, которые “вмонтированы” в связку “jQuery UI + Theme” будут только ненужным балластом и мусором.</p>
+
+<p>Итогом всех вышеперечисленных умозаключений является следующая последовательность шагов. Заходим, как было уже сказано, на <a href="http://jqueryui.com/download/" title="Download">страницу</a> и видим там три больших раздела: “Version”, “Components”, “Theme”. В первом разделе “Version” выбирается версия библиотеки jQuery. На момент написания статьи это <code>v.1.10.3</code>. Это нас устраивает, поэтому оставляем все как есть.</p>
+
+<p>Переходим во второй раздел “Components”. Здесь из длинного списка модулей выберем только то, что нам необходимо. Но сначала снимаем галочку со всех выбранных по умолчанию опций - “Toggle All”. Пролистываем список вниз и находим нужную нам строчку - “Accordion”, ставим против нее галочку. Обращаем внимание, что автоматически активировались еще две галочки в подразделе “UI Core” - “Core” и “Widget”. Это два основных компонента ядра “jQuery UI”, без которых не будет работать ни один модуль.</p>
+
+<p>Опускаемся вниз страницы в раздел “Theme”. Здесь по умолчанию выбрана тема “UI lightness”, это набор CSS-стилей для оформления меню-аккордеон, созданный командой разработчиков jQuery UI. Список готовых тем не ограничивается только этим файлом, на самом деле таких тем около 24, из которых можно выбрать понравившуюся. Помимо этого, можно воспользоваться визуальным конструктором “ThemeRoller”, перейдя по ссылке “Design a custom theme”. Но нас оба эти выбора не интересуют, так как мы будем создавать свои собственные стили. Поэтому в выпадающем списке тем данного раздела выбираем “No Theme”.</p>
+
+<p>Осталось нажать кнопку “Download”, чтобы скачать скомпилированную библиотеку, которая будет носить имя jquery-ui-1.10.3.custom.zip и весить 461 Kb. Сравните - полная версия jQuery UI весит 2.37 Mb, разница ощутимая! Теперь распаковываем архив и вытаскиваем из него необходимые нам файлы, которые распихиваем в соответствующие им папки: <code>jquery-1.9.1.js</code> и <code>jquery-ui-1.10.3.custom.js</code> в папку javascripts (я буду создавать меню с помощью SASS/Compass). В папке css скачанного архива есть подпапка no-theme с CSS-файлом <code>jquery-ui-1.10.3.custom.css</code>. Пролистав го, я сделал вывод, что данный файл служит для подключения иконок и другого вспомогательного оформления будущего меню. Рискну оставить его в архиве и не использовать.</p>
+
+<p>Подключаю полученные файлы библиотеки jQuery UI в <code>head</code> HTML-документа. Напоминаю, что я буду создавать меню-аккордеон с помощью SASS/Compass, поэтому название папок и синтаксис кода будет отличаться от “общепринятого”.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;head&gt;</span>
+      <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;title&gt;</span>Accordion jQuery UI<span class="nt">&lt;/title&gt;</span>
+      <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-1.9.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+      <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-ui-1.10.3.custom.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+      <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;stylesheets/screen.css&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>Создаем HTML-разметку для будущего меню аккордеон. Для чистоты эксперимента просто скопируем ее с сайта проекта jQuery UI, со страницы примера <a href="http://api.jqueryui.com/accordion/" title="Accordion">Accordion</a>. Как написано на этой странице, разметка выполнена в виде заголовков третьего уровня <code>h3</code> и блоков <code>div</code> для того, чтобы контент был доступен на странице даже при отключенной поддержке Javascript в браузере пользователей.</p>
+
+<p>Ниже приведена точная копия оригинальной разметки от разработчиков jQuery. Видим, что роль пунктов меню выполняют заголовки, а контент меню обернут в блоки <code>div</code>, внутри которых может располагаться все что угодно - текст, список, картинки. Принцип создания меню на основе h3 и div немного не стандарный, так как обычно такие меню строятся на основе маркированных списков ul.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;accordion&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 1<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+        ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+        amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+        odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+        <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 2<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+        purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+        velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+        suscipit faucibus urna.
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 3<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+        Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+        ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+        lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+      <span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;ul&gt;</span>
+        <span class="nt">&lt;li&gt;</span>List item one<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>List item two<span class="nt">&lt;/li&gt;</span>
+        <span class="nt">&lt;li&gt;</span>List item three<span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;/ul&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Section 4<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;div&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+        et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+        faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+        mauris vel est.
+      <span class="nt">&lt;/p&gt;</span>
+      <span class="nt">&lt;p&gt;</span>
+        Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+        Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+        inceptos himenaeos.
+      <span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Все готово для написания своих собственных стилей для нашего меню. Сброс стилей (reset) мне выполнять не нужно, так как Compass автоматически подключил его к моему проекту:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Устанавливаем самые общие правила для контейнера #accordion:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#accordion</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Создаем правила для заголовков <code>h3</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">...
+  h3 {
+    font: 18px/30px Georgia, serif;
+    background-color: #778899;
+    text-indent: 10px;
+    cursor: pointer;
+    margin-bottom: 1px;
+    <span class="err">&amp;</span>:hover{
+    background-color: lighten(#778899, 10%);
+  }
+    <span class="err">&amp;</span>:focus {
+    outline: none;
+  }</code></pre></div>
+
+<p>… и для контента в меню:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">...
+  div{
+  padding: 10px 20px;
+  background-color: lighten(#778899, 20%);
+  margin-bottom: 1px;
+  font: 14px/20px &#39;PT Sans&#39;, sans-serif;
+  text-indent: 1em;
+}</code></pre></div>
+
+<p>Теперь прикрутим скрипт в head нашего HTML-документа, чтобы меню-аккордеон заработало:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#accordion&#39;</span><span class="p">).</span><span class="nx">accordion</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span></code></pre></div>
+
+<p>Вуаля - все готово! Меню работает на скрытие и раскрытие. Можно немного приукрасить навигацию, сделав заголовки активными - при щелчке мыши на нем содержимое будет сворачивается. При повторном щелчке на этом же заголовке содержимое меню будет вновь разворачивается. Выполняется это передачей нашему скрипту параметра <code>collapsible</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">&quot;text/javascript&quot;</span><span class="o">&gt;</span>
+  <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#accordion&#39;</span><span class="p">).</span><span class="nx">accordion</span><span class="p">({</span>
+      <span class="nx">collapsible</span><span class="o">:</span> <span class="kc">true</span>
+    <span class="p">});</span>
+  <span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span></code></pre></div>
+
+<p>Все хорошо, но есть один небольшой недочет - по умолчанию скрипт задает для блоков <code>div</code> высоту <code>120px</code>. В третьем блоке у нас имеются два элемента - параграф <code>p</code> и список <code>ul</code>. При раскрытии этого пункта контент не вмещается по высоте и “налазит” на четвертый пункт. Аналогичная ситуация и с контентом четвертого пункта меню. Решение напрашивается само собой - нужно отрегулировать высоту для контента нашего меню.</p>
+
+<p>Для этого нужно перейти по ссылке <a href="http://api.jqueryui.com/accordion/" title="Accordion">API documentation</a>, где представлен список опций, методов и событий для меню аккордеон на jQuery UI. Нас интересует одна из опций - heightStyle, которая может принимать три значения:</p>
+
+<ul>
+  <li><code>fill</code> - высота всех блоков с контентом будет высчитана, исходя из высоты всей панели навигации (то бишь - меню-аккордеон). Для тех блоков, содержимое которых не вмещается, добавиться вертикальная полоса прокрутки;</li>
+  <li><code>auto</code> - непонятно, как оно работает. В документации сказано, что при установке данного значения высота для каждого блока содержимого панели будет высчитываться, исходя из высоты самого высокого блока. Однако, работа навигации с этим значением параметра <code>heightStyle</code> аналогична той, когда его вообще нет;</li>
+  <li><code>content</code> - высота каждого из блоков с контентом вычисляется в зависимости от величины его содержимого, то есть - подстраивается под контент.</li>
+</ul>
+
+<p>Ниже представлены скриншоты меню аккордеон с вариантами значений <code>fill</code> и <code>content</code> для опции <code>heightStyle</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/jquery-ui_heightStyle-fill.jpg" alt="Меню аккордеон с опцией heightStyle: fill" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/jquery-ui_heightStyle-content.jpg" alt="Меню аккордеон с опцией heightStyle: content" /></p>
+
+<p>Есть еще несколько интересных опций для меню на jQuery UI.</p>
+
+<p>Опция <code>active</code> - какой пункт меню будет открыт по умолчанию в браузере. Номер пункта устанавливается через целое число, отсчет ведется с нуля.</p>
+
+<p>Например, код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">active</span><span class="o">:</span> <span class="mi">2</span></code></pre></div>
+
+<p>… заставит браузер раскрыть третий по счету пункт меню.</p>
+
+<p>Событие event назначит, при каком условии будет происходить переключение между пунктами меню. По умолчанию таковым является событие <code>click</code>, то есть щелчок мыши на пункте. Можно изменить событие на <code>mouseover</code>, что заставит скрипт открывать вкладку при наведении курсора мыши на пункт меню.</p>
+
+<p>Можно сказать, что задача выполнена. Меню аккордеон на jQuery UI имеет еще достаточно опций и способов настройки, но здесь представлен самый простой и общий результат. Ниже приведен полный код созданного нами меню.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!doctype html&gt;</span>
+  <span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Accordion jQuery UI<span class="nt">&lt;/title&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-1.9.1.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;javascripts/jquery-ui-1.10.3.custom.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&#39;http://fonts.googleapis.com/css?family=PT+Sans&#39;</span> <span class="na">rel=</span><span class="s">&#39;stylesheet&#39;</span> <span class="na">type=</span><span class="s">&#39;text/css&#39;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;stylesheets/screen.css&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
+      <span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+        <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#accordion&#39;</span><span class="p">).</span><span class="nx">accordion</span><span class="p">({</span>
+          <span class="nx">collapsible</span><span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+          <span class="nx">heightStyle</span><span class="o">:</span> <span class="s2">&quot;content&quot;</span>
+        <span class="p">});</span>
+      <span class="p">});</span>
+    <span class="nt">&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;accordion&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 1<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Mauris mauris ante, blandit et, ultrices a, suscipit eget, quam. Integer
+            ut neque. Vivamus nisi metus, molestie vel, gravida in, condimentum sit
+            amet, nunc. Nam a nibh. Donec suscipit eros. Nam mi. Proin viverra leo ut
+            odio. Curabitur malesuada. Vestibulum a velit eu ante scelerisque vulputate.
+          <span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 2<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Sed non urna. Donec et ante. Phasellus eu ligula. Vestibulum sit amet
+            purus. Vivamus hendrerit, dolor at aliquet laoreet, mauris turpis porttitor
+            velit, faucibus interdum tellus libero ac justo. Vivamus non quam. In
+            suscipit faucibus urna.
+          <span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 3<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Nam enim risus, molestie et, porta ac, aliquam ac, risus. Quisque lobortis.
+            Phasellus pellentesque purus in massa. Aenean in pede. Phasellus ac libero
+            ac tellus pellentesque semper. Sed ac felis. Sed commodo, magna quis
+            lacinia ornare, quam ante aliquam nisi, eu iaculis leo purus venenatis dui.
+          <span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;ul&gt;</span>
+            <span class="nt">&lt;li&gt;</span>List item one<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>List item two<span class="nt">&lt;/li&gt;</span>
+            <span class="nt">&lt;li&gt;</span>List item three<span class="nt">&lt;/li&gt;</span>
+          <span class="nt">&lt;/ul&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Section 4<span class="nt">&lt;/h3&gt;</span>
+        <span class="nt">&lt;div&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Cras dictum. Pellentesque habitant morbi tristique senectus et netus
+            et malesuada fames ac turpis egestas. Vestibulum ante ipsum primis in
+            faucibus orci luctus et ultrices posuere cubilia Curae; Aenean lacinia
+            mauris vel est.
+          <span class="nt">&lt;/p&gt;</span>
+          <span class="nt">&lt;p&gt;</span>
+            Suspendisse eu nisl. Nullam ut libero. Integer dignissim consequat lectus.
+            Class aptent taciti sociosqu ad litora torquent per conubia nostra, per
+            inceptos himenaeos.
+          <span class="nt">&lt;/p&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+  <span class="nf">#accordion</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="n">h3</span><span class="err">{</span>
+      <span class="k">font</span><span class="o">:</span> <span class="m">18px</span><span class="o">/</span><span class="m">30px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+      <span class="k">text-indent</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+      <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
+      <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#778899</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nd">:focus</span><span class="p">{</span>
+     <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+    <span class="nt">div</span><span class="p">{</span>
+      <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">20px</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#778899</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
+      <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+      <span class="k">font</span><span class="o">:</span> <span class="m">14px</span><span class="o">/</span><span class="m">20px</span> <span class="s1">&#39;PT Sans&#39;</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+      <span class="k">text-indent</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="err">}</span></code></pre></div>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-26T00:00:00+04:00"><a href="http://zencoder.ru/css/inline-block-remove-padding-bottom/">October 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/inline-block-remove-padding-bottom/" rel="bookmark" title="Элемент inline - пять способов убрать отступ" itemprop="url">Элемент inline - пять способов убрать отступ</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При оборачивании изображения в блок <code>div</code> внизу картинки возникает странный отступ.</p>
+</blockquote>
+
+<p>Появляется он потому, что элемент <code>img</code> является строчным <code>inline</code>. При верстке часто возникает задача его убрать, так как он лишний и только портит дизайн. Решений данного вопроса существует несколько.</p>
+
+<p>С тремя из них я был уже знаком благодаря замечательному ресурсу для верстальщиков - <a href="xiper.net" title="Xiper.net">xiper.net</a>. А вот на сайте <a href="htmlbook.ru" title="HTML Book">htmlbook.ru</a> Влада Мержевича в разделе “Практикум” узнал, что таких способ не три, а пять. С задачкой справился, а решения захотел поместить у себя.</p>
+
+<h2 id="section">Пять способов убрать отступ под картинкой</h2>
+
+<p>Создаем блок <code>div</code> с классом <code>.image</code>, для которого назначаем ширину, центрирование и границу для наглядности. Внутрь блока <code>div.image</code> помещаем картинку:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;image&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;img/charlize_theron.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;307&quot;</span> <span class="na">height=</span><span class="s">&quot;230&quot;</span> <span class="na">alt=</span><span class="s">&quot;Charlize Theron&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.image</span> <span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">2px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">307px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Видим этот отступ под изображением:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/inline-block_origin.png" alt="Изображение с отступом" /></p>
+
+<p>И пробуем пятью различными способами убрать этот отступ.</p>
+
+<h2 id="img-">1. Сделать элемент img блочным</h2>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/inline-block_block.png" alt="Сделать элемент inline блочным - display: block" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-1">2. Задать вертикальное выравнивание</h2>
+
+<p>Так как элемент <code>img</code> является строчным <code>inline</code>, то к нему применимо свойство <code>vertical-align</code>, как к любому строчному элементу. Мне такой способ нравиться больше всего:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/inline-block_vertical-align.png" alt="Элемент inline - присвоить vertical-align: top" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.vertical</span> <span class="p">{</span>
+  <span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="float">3. Сделать элемент плавающим через float</h2>
+
+<p>Задать для элемента <code>img</code> свойство <code>float: left</code> или <code>float: right</code>. Если элемент делается плавающим через <code>float</code>, то из строчного <code>inline</code> он становится блочным <code>block</code>.</p>
+
+<p>И отступ также пропадает. Только надо не забыть добавить для контейнера <code>div.image</code> свойство <code>overflow: hidden</code>, иначе пропадет граница вокруг изображения.</p>
+
+<p>Что и понятно, так как при <code>float: left</code> или <code>float: right</code> элемент “вырывается” из общего потока, становится плавающим:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/inline-block_float.png" alt="Элемент inline - присвоить float: left" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.float</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-2">4. Сделать картинку таблицей</h2>
+
+<p>Для изображения задать свойство <code>display: table</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/inline-block_table.png" alt="Элемент inline - присвоить display: table" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.table</span> <span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="n">table</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-3">5. Задать высоту для блока</h2>
+
+<p>Для блока-контейнера <code>div.image</code> жестко задать высоту, равную высоте изображения. В моем случае высота картинки равна 230 пикселей, поэтому и для блока-обертки задаю такую же - 230 пикселей:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/inline-block_width.png" alt="Элемент inline - присвоить width" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.height</span> <span class="p">{</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">230px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Все пять способов проверены мною и должны работать в реальности.</p>
+
+<p>На это все.</p>
+
+<hr />
+
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -1302,6 +1276,12 @@ border-bottom-right-radius: 40px 12px;</code></pre></div>
       <li>
         
           <a href="http://zencoder.ru/page42">42</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page43">43</a>
         
       </li>
     

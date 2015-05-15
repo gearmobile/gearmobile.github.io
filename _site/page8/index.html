@@ -144,104 +144,301 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-02T00:00:00+04:00"><a href="http://zencoder.ru/macos/spectacle-window-management-mac-os-x/">November 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-11T00:00:00+03:00"><a href="http://zencoder.ru/css/gutter-susy/">November 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~3 minutes
+        Reading time ~10 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/macos/spectacle-window-management-mac-os-x/" rel="bookmark" title="Spectacle - менеджер окон Mac OS X" itemprop="url">Spectacle - менеджер окон Mac OS X</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/gutter-susy/" rel="bookmark" title="Как управлять положением gutters в Susy" itemprop="url">Как управлять положением gutters в Susy</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>С недавних пор (чуть больше двух недель) я стал счастливым обладателем Mac OS X. Если быть точнее - это iMac (21.5-inch, Mid 2014).</p>
+  <p>При изучении Susy одним из вопросов, который всегда стоял передо мной, заключался в следующем: “Как удалить <code>padding</code> или <code>margin</code> у первого и последнего столбца <code>column</code> в разметке Susy без применения CSS-свойств <code>first-child</code> и <code>last-child?</code>”.</p>
 </blockquote>
 
-<p>Неделю чувствовал себя не своей “тарелке” под ним, еще неделю привыкал. Потом все уже пошло по накатанной - система хороша, ничего не скажешь. Для работы - лучше не придумаешь.</p>
+<p>Этот вопрос является один из самых главных для всех, кто только начинает изучение Susy. Если посмотреть в корень данного вопроса, то его основную суть можно свести к следующему (<em>если судить по многочисленным постам в Интернет</em>): необходимо использовать значение <code>inside</code> вместо значения <code>after</code>. Для того, чтобы точно ответить на этот вопрос, необходимо хорошо понимать, каким образом положение отступов <code>gutter</code> в целом оказывает влияние на всю разметку, созданную в Susy.</p>
 
-<p>Но речь в этой статье не о прелестях Mac OS X - их и без меня (с моими скромными талантами) превознесли до небес. Тема этой небольшой статьи - маленькое приложение Spectacle. Эта небольшая программка призвана <em>улучшить-ускорить-облегчить</em> работу в оконной среде Mac, служа в качестве менеджера этих самых окон.</p>
+<p>Как мне кажется, вопрос о расположении отступов <code>gutter</code> в разметке Susy является самой важной настройкой, поскольку он оказывает влияние на весь код в целом. Если у вас перед прочтением статьи существовал такой вопрос, то данная статья именно для вас.</p>
 
-<p>Другими словами - Spectacle - это оконный менеджер для Mac OS X. Это приложение является не единственным в своем роде. Существуют еще программы - платная (<em>и самая известная</em>) - <a href="http://mizage.com/divvy/" title="Divvy">Divvy</a>, также платная (<em>стоит целых 2$</em>) - <a href="https://itunes.apple.com/en/app/bettersnaptool/id417375580?mt=12" title="BetterSnapTool">BetterSnapTool</a> и бесплатная - <a href="http://www.boastr.de/" title="BetterTouchTool">BetterTouchTool</a>. Однако, Spectacle (<em>в отличие от Divvy, которая стоит $13.99</em>) - бесплатен.</p>
+<h2 id="gutter">Что такое - расположение отступов gutter</h2>
 
-<p>Проживает программка по адресу - <a href="http://spectacleapp.com/" title="Spectacle">Spectacle</a>. Домашняя страничка приложения очень проста - также, как и само приложение. Кстати, там же можно полюбоваться демо - что умеет делать данная программа.</p>
+<p>Расположение отступа <code>gutter</code> позволяет полностью менять всю разметку страницы, созданную в Susy. Данный параметр определяет, где должны находиться отступы <code>gutter</code> относительно столбцов <code>columns</code>. Также данная настройка определяет, будут ли отступы <code>gutter</code> являться CSS-свойством <code>padding</code> или <code>margin</code>.</p>
 
-<h2 id="spectacle">Установка Spectacle</h2>
+<p>Эта параметр находиться среди глобальных настроек переменной <code>$susy</code>. Как вариант, данный параметр можно использовать локально, внутри миксина <code>span</code>. Давайте начнем с рассмотрения случая, когда расположение отступа <code>gutter</code> управляется из глобальной переменной <code>$susy</code>.</p>
 
-<p>Установка программы Spectacle под Mac OS X стандартная. Скачиваем с официального сайта архив приложения, распаковываем его и перетаскиваем программку в папку “Applications”.</p>
+<p>По умолчанию, расположение отступов в Susy определено ключевым словом <code>after</code>. Помимо этого, существуют еще варианты: <code>before</code>, <code>split</code>, <code>inside</code> и <code>inside-static</code>. Ниже представлен полный вариант синтаксиса параметра <code>gutter-position</code> в глобальной переменной <code>$susy</code>:</p>
 
-<h2 id="spectacle-1">Настройки Spectacle</h2>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
+  <span class="nt">gutter-position</span><span class="o">:</span> <span class="nt">after</span> <span class="o">(</span> <span class="nt">before</span> <span class="o">|</span> <span class="nt">after</span> <span class="o">|</span> <span class="nt">split</span> <span class="o">|</span> <span class="nt">inside</span> <span class="o">|</span> <span class="nt">inside-static</span> <span class="o">)</span>
+<span class="o">);</span></code></pre></div>
 
-<p>При запуске программы Spectacle она появиться в области индикаторов строки меню в виде значка:</p>
+<p>Ключевые слова в круглых скобках являются возможными вариантами значения параметра <code>gutter-position</code>.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/11/spectacle_icon.png" alt="Значок Spectacle" /></p>
+<p>Для ясности понимания тонкостей разметки в Susy при использовании параметра <code>gutter-position</code> необходимо создать простую структуру:</p>
 
-<p>При щелчке мыши на нем откроется длинный список <em>загадочных клавиатурных сокращений</em>. Эти сокращения можно редактировать, если открыть окно настроек программы:</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_01.png" alt="Базовая разметка в Susy" /></p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/11/spectacle_settings.png" alt="Настройки Spectacle" /></p>
+<h2 id="gutter-position-after">Gutter-position: after</h2>
 
-<p>Там же расположен checkbox - “Launch Spectacle at login” - думаю, все понятно и в переводе не нуждается.</p>
+<p>Значением по умолчанию для параметра <code>gutter-position</code> является ключевое слово <code>after</code>. Данное значение заставляет Susy располагать отступы gutters после каждого столбца разметки. В этом режиме необходимо удалить отступ у последнего столбца в разметке. В этом случае отступы gutters являются CSS-свойством margin и размещаются в разметке следующим образом:</p>
 
-<h2 id="spectacle-2">Управление окнами с помощью Spectacle</h2>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_02.png" alt="Gutter-position: after" /></p>
 
-<p>Чтобы разобраться, что это за <em>клавиатурные сокращения</em>, достаточно пять минут поиграться с ними и все станет понятно. Выберем любое приложение (<em>в моем случае это будет окно Terminal</em>) в качестве подопытного кролика и будем нажимать hotkeys.</p>
+<p>При использовании значения по умолчанию для параметра <code>gutter-position</code> миксин <code>span</code> создает три CSS-правила - <code>width</code>, <code>margin-right</code> и <code>float: left</code>:</p>
 
-<p>Следующие hotkeys заставят окно терминала занимать ровно половину экрана монитора, смещаясь при этом в нужную сторону:</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результирующий CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">73.68421%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В этом коде свойство <code>margin-right</code> - это отступ <code>gutter</code>, созданный Susy в данной разметке.</p>
+
+<p>Можно использовать ключевое слово <code>last</code> для удаления крайнего <code>margin</code> у столбца:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.last</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате получим результат в виде <code>margin-right: 0</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.last</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">21.05263%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В рассматриваемой нами разметке область контента занимает 3 столбца из 4. При этом область боковой панели размещается в одном столбце из 4-х. Кроме того, боковая панель является последним элементом разметки, поэтому код для подобного случая будет таким:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>after</code> параметра <code>gutter-position</code> является наиболее интуитивно понятным случаем создания разметки в Susy. При использовании значения по умолчанию единственный момент, о котором следует помнить - это убрать отступ у последнего столбца разметки с помощью ключевого слова <code>last</code>.</p>
+</blockquote>
+
+<h2 id="gutter-position-before">Gutter-position: before</h2>
+
+<p>Значение <code>before</code> является одним из вариантов предыдущего значения - <code>after</code>. Суть этого значения также простая. Вместо размещения отступов gutter после столбцов (как в случае с <code>after</code>), при значении <code>before</code> отступы gutters размещаются перед столбцами. В этом случае необходимо удалить отступ у первого столбца в разметке. Отступы gutter также являются в данном случае CSS-свойством <code>margin</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_03.png" alt="Gutter-position: before" /></p>
+
+<p>При использовании значения <code>before</code> для параметра <code>gutter-position</code> миксин <code>span</code> генерирует три CSS-правила: <code>width</code>, <code>margin-left</code> и <code>float: left</code> с помощью кода:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результирующий CSS-код будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">73.68421%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span> <span class="c">/* Notice this is margin left, not right */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Так как значение <code>before</code> является прямой противоположностью значения <code>after</code>, то его очень легко понять, если до этого вы хорошо разобрались с <code>after</code>. Вместо использования ключевого слова <code>last</code> для удаления отступа у последнего столбца разметки, в данном случае нужно использовать ключевое слово <code>first</code> для удаления отступа у первого столбца разметки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате получим точно такую же разметку, что и в предыдущем случае.</p>
+
+<blockquote>
+  <p>Краткое заключение: при использовании значения <code>before</code> разметка получается точно такой же, как и в предыдущем случае. Единственное отличие заключается в применении ключевого слова <code>first</code> для первого столбца разметки.</p>
+</blockquote>
+
+<h2 id="gutter-position-split">Gutter-position: split</h2>
+
+<p>Значение <code>split</code> параметра <code>gutter-position</code> кардинально отличается от двух предыдущих значений  <code>before</code> и <code>after</code>. Если установлено значение <code>split</code>, то ширина отступа <code>gutter</code> делиться пополам (надвое) и обе половинки отступа располагаются по обеим сторонам одного столбца. В этом режиме отступы <code>gutters</code> генерируются в CSS-коде в виде CSS-свойства <code>margin</code>. В этом случае нет необходимости удалять отступы для крайних столбцов разметки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_04.png" alt="Gutter-position: split" /></p>
+
+<p>Если, как в нашем случае, имеются только два блока (с классом <code>.content</code>  и <code>.sidebar</code>), то создание такой разметки выполняется просто. Для этого достаточно воспользоваться функцией <code>span</code>, как обычно:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_05.png" alt="Разметка с двумя блоками" /></p>
+
+<p>Однако, ситуация становиться не такой ясной, если блок <code>.content</code> или блок <code>.sidebar</code> будут содержать внутри себя блоки-потомки.</p>
+
+<p>Давайте добавим два блока <code>div</code> с классом <code>.child-one</code> и классом <code>.child-two</code> внутрь блока <code>.content</code> для того, чтобы проиллюстрировать эту ситуацию:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    Content
+  <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;child-one&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Child One
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;child-two&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Child Two
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Для обоих вновь созданных блока применим тот же подход, что и ранее. Блок с классом <code>.child-one</code> будет иметь ширину 2-х столбцов из 3-х; блок с классом <code>.child-two</code> будет иметь ширину 1-го столбца из 3-х.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_06.png" alt="Разметка с двумя дополнительными блоками" /></p>
+
+<p>Обратите внимание на тот факт, что границы обоих блоков <code>.child-one</code> и <code>.child-two</code> не совпадают с границами фоновой сетки!</p>
+
+<p>Это происходит потому, что при задании для параметра <code>gutter-position</code> значения <code>split</code> нужно учитывать взаимосвязь между блоками-родителями и блоками-потомками. В данном конкретном случае блоком-родителем является <code>.content</code>, а блоками-потомками являются <code>.child-one</code> и <code>.child-two</code>.</p>
+
+<p>Для создания правильной разметки в данном случае необходимо добавить для блока-родителя ключевое слово <code>nest</code> для того, чтобы показать, что этот блок как раз и является блоком-родителем:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">nest</span><span class="p">);</span> <span class="o">//</span> <span class="err">Добавлен</span> <span class="err">ключ</span> <span class="n">nest</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_07.png" alt="Применение ключевого слова nest" /></p>
+
+<p>Теперь посмотрите, как точно оба блока .child-one<code>и</code>.child-two` вписались в границы сетки, “нарисованной” фоновым изображением!</p>
+
+<p>На первый взгляд, ситуация является немного запутанной. Для того, чтобы не путаться, нужно всегда помнить, что в случае необходимости вписать блоки-потомки точно в границы сетки, нужно использовать ключевое слово для их блока-родителя.</p>
+
+<p>Если “копнуть” поглубже и проанализировать сгенерированный CSS-код, то можно заметить, что для блоков <code>.child-one</code> и <code>.child-two</code> он совершенно различный:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">75%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">26.66667%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок-родитель имеет плавание влево <code>float: left</code> и ширину, которая указана в процентах; при этом ширина отступов <code>gutters</code> этого блока не учитывается (75% равно 3/4).</p>
+
+<p>Блоки-потомки имеют все те же свойства, что и блок-родитель. Но при этом отступы gutters имеют место быть для этих блоков.</p>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>split</code> кардинально отличается от двух рассмотренных ранее значений <code>before</code> и <code>after</code>. При использовании значения <code>split</code> необходимо добавлять ключевое слово <code>nest</code> к блоку-родителю и использовать миксин <code>span</code> для всех блоков-потомков.</p>
+</blockquote>
+
+<h2 id="gutter-position-insideinside-static">Gutter-position: inside/inside-static</h2>
+
+<p>Оба значения <code>inside</code> и <code>inside-static</code> очень похожи на предыдущее значение <code>split</code>. Отступы gutters также делятся пополам (надвое) и обе половинки располагаются по обеим сторонам каждого столбца. Однако, в этом случае в CSS-выводе отступы являются свойством <code>padding</code>, а не <code>margin</code>. Также в этом случае нет необходимости удалять отступы у крайних столбцов в разметке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_08.png" alt="Gutter-position: inside" /></p>
+
+<p>Отступы <code>gutters</code> в случае <code>gutter-position: inside</code> имеют тот же принцип, что и при значении <code>split</code>. Если для блока-родителя не будет указано ключевое слово <code>nest</code>, то блоки-потомки выйдут за границы разметки.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_09.png" alt="Блоки-потомки выходят за границы разметки" /></p>
+
+<p>Если просто добавить ключевое слово <code>nest</code> для блока-родителя <code>.content</code>, то в результате получим следующее:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">nest</span><span class="p">);</span> <span class="o">//</span> <span class="n">The</span> <span class="n">nest</span> <span class="n">key</span> <span class="n">is</span> <span class="n">needed</span>
+<span class="p">}</span>
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_10.png" alt="Блоки-потомки в границах разметки" /></p>
+
+<p>Значение <code>inside-static</code> работает точно также, как и значение <code>inside</code>. Единственное исключение заключается в том, что отступы gutters получаются в фиксированных единицах измерения, а не в процентах. Кроме этого, в глобальной переменной <code>$susy</code> необходимо задать параметр <code>column-width</code> с указанием ширины столбца <code>column</code>.</p>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>inside</code> работает точно также, как и значение <code>split</code>. При использовании значения <code>inside</code> необходимо добавлять ключевое слово <code>nest</code> к блоку-родителю и использовать миксин <code>span</code> для всех блоков-потомков.</p>
+</blockquote>
+
+<p>Значение <code>inside</code> и <code>split</code> имеют одинаковый сгенерированный CSS-код, поэтому можно с легкостью менять между собой эти значения в глобальной переменной <code>$susy</code> для параметра <code>gutter-position</code>.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Различные типы разметки в Susy создаются с помощью выбора расположения отступов <code>gutters</code>. Различное местоположение отступов <code>gutters</code> в каждом случае имеет свои тонкости и требует понимания процесса, если вы хотите эффективно их использовать.</p>
+
+<p>Существует два основных способа создания разметки при содействии отступов <code>gutters</code>:</p>
 
 <ul>
-  <li>занять левую половину окна — <kbd>⌥⌘←</kbd></li>
-  <li>занять правую половину окна — <kbd>⌥⌘→</kbd></li>
-  <li>занять верхнюю половину окна — <kbd>⌥⌘↑</kbd></li>
-  <li>занять нижнюю половину окна — <kbd>⌥⌘↓</kbd></li>
+  <li>
+    <p>значения <code>before</code> и <code>after</code> имеют создают отступы <code>gutters</code> с одной стороны каждого столбца <code>column</code>; для крайнего столбца необходимо удалить отступ <code>gutter</code> с помощью ключевого слова <code>first</code> или <code>last</code>.</p>
+  </li>
+  <li>
+    <p>значения <code>inside</code>, <code>inside-static</code>, <code>split</code> разделяют каждый отступ <code>gutter</code> на две равные половины, которые располагаются по обе стороны каждого столбца <code>column</code>. Такие отступы не нуждаются в удалении.</p>
+  </li>
 </ul>
 
-<p>Нижеследующие hotkeys заставят окно терминала “побегать” по углам экрана монитора. То есть, поместиться в нужный угол экрана, при этом размер окна останется без изменения:</p>
+<p>Эта статья является небольшой выдержкой из книги <a href="http://zell-weekeat.com/learnsusy" title="Learning Susy">Learning Susy</a>, а точнее - из главы 8, посвященной позиционированию отступов <code>gutter</code> в разметке Susy. В книге вопрос позиционирования рассмотрен подробнее на основе более сложного примера. Если материал, поданный в статье, вам понравился, то книга понравиться еще больше.</p>
 
-<ul>
-  <li>сместиться в левый верхний угол — <kbd>⌃⌘←</kbd></li>
-  <li>сместиться в правый верхний угол — <kbd>⌃⌘→</kbd></li>
-  <li>сместится в нижний левый угол — <kbd>⌃⇧⌘←</kbd></li>
-  <li>сместиться в нижний правый угол — <kbd>⌃⇧⌘→</kbd></li>
-</ul>
-
-<p>Еще пара полезных команд для управления окном:</p>
-
-<ul>
-  <li>окно программы по центру экрана - <kbd>⌥⌘C</kbd></li>
-  <li>окно во всю ширину экрана - <kbd>⌥⌘F</kbd></li>
-</ul>
-
-<p>Программа Spectacle умеет перемещать окно приложения таким образом, чтобы оно занимало ровно треть площади экрана монитора. Сочетание - <kbd>⌃⌥→</kbd> заставит окно перемещаться сперва вертикально, а потом горизонтально по экрану, при этом занимая треть площади. Сочетание - <kbd>⌃⌥←</kbd> заставит окно двигаться в обратном порядке. Попробуйте у себя - интересный эффект получается.</p>
-
-<p>Изменение размера окна приложения достигается с помощью двух сочетаний клавиш:</p>
-
-<ul>
-  <li>увеличение размера окна - <kbd>⌃⌥⇧→</kbd></li>
-  <li>уменьшение размера окна - <kbd>⌃⌥⇧←</kbd></li>
-</ul>
-
-<p>Перемещение окна между виртуальными дисплеями:</p>
-
-<ul>
-  <li>переместить окно на следующий дисплей - <kbd>⌃⌥⌘→</kbd></li>
-  <li>переместить окно на предыдущий дисплей - <kbd>⌃⌥⌘←</kbd></li>
-</ul>
-
-<p>Очень полезной и приятной (<em>а более того - нужной</em>) особенностью Spectacle является то, что программа запоминает местоположение и размер окна для каждого приложения. В следующий раз, когда запуститься (<em>например, у меня - окно терминала</em>) приложение, его окно расположиться точно в нужном месте экрана монитора.</p>
-
-<p>Если нужно сбросить настройки для окна проложения, то для этого существует комбинация - <kbd>⌥⌘Z</kbd>. Вернуть обратно настройки для окна приложения - <kbd>⌥⇧⌘Z</kbd>.</p>
-
-<h2 id="spectacle-3">Заключение о Spectacle</h2>
-
-<p>Программа Spectacle мне понравилась однозначно. Первый фактор - она бесплатна. Второй - она (<em>можно сказать</em>) незаменима для удобной настройки workflow.</p>
-
-<p>Первое упоминание об этой программе я увидел у Sorax. До этого пытался “подружиться” с Divvy, которую рекомендовали ребята из Loftblog. Однако, как-то не получилось у меня с ней работать.</p>
-
-<p>А вот Spectacle понравилась с первого взгляда. Как мне кажется, из программа разряда “must have”.</p>
+<blockquote>
+  <p>Примечание переводчика: данный пост является переводом статьи <a href="http://www.zell-weekeat.com/susy-gutter-positions/" title="Understanding Gutter Positions in Susy">Understanding Gutter Positions in Susy</a>, созданным мною с любезного разрешения ее автора Zell Liew.</p>
+</blockquote>
 
 <hr />
 
@@ -253,260 +450,153 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-10-02T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/actions-photoshop/">October 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-09T00:00:00+03:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/">November 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~4 minutes
+        Reading time ~1 minute
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/actions-photoshop/" rel="bookmark" title="Actions в Photoshop" itemprop="url">Actions в Photoshop</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/" rel="bookmark" title="Размер pattern'а в Photoshop CC 2014" itemprop="url">Размер pattern'а в Photoshop CC 2014</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Рассмотрим вопрос автоматизации действий в программе Photoshop.</p>
+  <p>Коротенькая заметка о небольшом баге в Photoshop CC 2014, связанном с невозможностью узнать размер pattern’а.</p>
 </blockquote>
 
-<p>Тема статьи перекликается с предыдущей статей “Macros в Sublime Text 3”, посвященной макросам в Sublime Text.</p>
+<p>В предыдущих версиях Photoshop все было проще - выбираешь в палитре слоев примененный образец и в окне “Pattern Overlay” достаточно навести курсор мыши на пример pattern’а. Появляется всплывающая подсказка, в которой видны размеры образца.</p>
 
-<p>В Adobe Photoshop также имеется <em>инструмент для записи макросов</em>, только называется он по другому - Actions (Операции). Но от смены названия суть не меняется.</p>
+<p>В Photoshop CC 2014 теперь таким образом невозможно получить подсказку о размере образцов изображения. Это баг или фича Photoshop CC 2014 - непонятно. Но жить стало труднее без такой возможности.</p>
 
-<p>С помощью Actions (Операции) в Photoshop можно <em>записать последовательность действий</em>, а потом запускать их на выполнение каждый раз, когда это понадобиться.</p>
+<p>Однако, выход все же есть, хоть и через всем известное место. Решение таково.</p>
 
-<p>Для чего нужны Actions (Операции) верстальщику? Не поверите, но это очень удобная вешь, которая значительно ускоряет работу в Photoshop. В частности, можно <em>ускорить нарезку изображений</em> из psd-макета.</p>
+<h2 id="pattern-stamp">Шаг первый - Pattern Stamp</h2>
 
-<p>Буквально за месяц до этого я приобрел лицензию на плагин PNG Hat для автоматизации вырезания картинок:</p>
+<p>В палитре инструментов выбираем инструмент Pattern Stamp:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/png_hat.png" alt="Плагин PNG Hat в Photoshop" /></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/pattern_stamp.png" alt="Инструмент Pattern Stamp" /></p>
 
-<p>Так вот - я просто на тот момент не знал о существовании макросов в Photoshop! Actions - это намного круче, чем PNG Hat.</p>
+<h2 id="section">Шаг второй - верхняя панель инструментов</h2>
 
-<p>Но меньше слов - больше дела. Приступим к изучению Actions (Операции) в Photoshop на простом примере. Создадим макрос для вырезания и экспорта картинок из psd-макета.</p>
+<p>Переводим взгляд вверх, на верхнюю панель инструментов (<em>или как она там называется - неважно</em>). На ней находим иконку окна Pattern Overlay:</p>
 
-<h2 id="actions-----">Actions - где они живут</h2>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/pattern_overlay.png" alt="Окно Pattern Overlay" /></p>
 
-<p>Все <code>actions</code> в Photoshop “проживают”” по одному адресу - в меню “Окно” - “Операции” (если Photoshop русскоязычный). Или же быстрее и проще - через сочетание клавиш <kbd>Alt+F9</kbd>. Как и все другие инструменты в этой программе, <code>actions</code> имеют свою собственную панель:</p>
+<h2 id="pattern-overlay">Шаг третий - окно Pattern Overlay</h2>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/actions_panel.png" alt="Палитра Actions в Photoshop" /></p>
+<p>Щелкаем мышкой по этой иконке. Появится окно Pattern Overlay со списком образцов изображений. Наводим курсор мыши на нужный образец и в появившемся tooltip видим размеры (<em>момент появления tooltip я не заснял - но оно работает</em>):</p>
 
-<p>По умолчанию, в Photoshop уже есть готовые операции <code>actions</code>, расположенные в папке “Операции по умолчанию”: “Виньетка”, “Рамка - 50 пикс.”, “Деревянная рамка - 50 пикс.” и так далее.</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/pattern_overlay_window.png" alt="Размер pattern'а в Photoshop" /></p>
 
-<p>Actions в Photoshop не могут жить вне набора операций (правильно такой набор называется “Set”). На скриншоте как раз показаны два таких набора (“Set”) - один от Photoshop, второй - мой собственный.</p>
+<h2 id="section-1">Заключение</h2>
 
-<p>Внизу палитры расположены шесть кнопок управления <code>actions</code>. Перечислю их по порядку, слева направо:</p>
+<p>Вот такую небольшую головоломку подкинули нам разработчики Photoshop. Но хоть и через заднее место, но выход все же есть.</p>
 
-<ul>
-  <li>остановка записи <code>action</code></li>
-  <li>запуск записи <code>action</code></li>
-  <li>воспроизведение записанного <code>action</code></li>
-  <li>создание нового набора <code>actions</code></li>
-  <li>создание нового <code>action</code></li>
-</ul>
+<hr />
 
-<h2 id="action">Создаем новую операцию action</h2>
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
 
-<p>В палитре “Операции” кликаем на кнопке “Создать новый набор”. В диалоговом окне вводим название нового набора - “Export-Images-to-Web”, затем сохраняем его.</p>
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-08T00:00:00+03:00"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/">November 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/" rel="bookmark" title="ExFAT - файловая система для Mac OS X и Linux" itemprop="url">ExFAT - файловая система для Mac OS X и Linux</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Тема достаточно освещенная, но для меня, как новичка в мире Mac OS X - очередное маленькое открытие. Вопрос связан с одной небольшой проблемой - выбором файловой системы для флешек.</p>
+</blockquote>
 
-<p>Созданный набор операций (“Set”) готов, но он пока пустой, в нем нет ни одной операции (<code>action</code>):</p>
+<p>Для пары Windows + Linux обычным решением является файловая система NTFS. Обе операционные системы с ней прекрасно работают - чтение+запись.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_set_of_actions.png" alt="Новый Set для Actions" /></p>
+<p>Для пары Mac OS X + Linux такой выбор не подойдет, так как NTFS в Mac OS X имеет поддержку только чтения. Для записи нужно ставить сторонний софт, типа Paragon. Это не является решением - нужна нативная поддержка в обеих системах.</p>
 
-<p>В самом левом столбце палитры можно напротив каждого Set’а ставить или убирать галочки, тем самым включая или отлючая данный набор операций (<code>actions</code>).</p>
+<p>Решением является файловая система ExFAT. В Mac OS X у нее есть поддержка “из коробки”. В Linux поддержки “из коробки” нет - но проблема решается установкой дополнительных пакетов (как почти всегда).</p>
 
-<p>Треугольнички напротив названия Set’а разворачивают или сворачивают данный набор операций (<code>actions</code>). Каждый набор операций (“Set”) может содержать неограниченное число операций (<code>actions</code>).</p>
+<p>Более того, в Сети <a href="http://en.wikipedia.org/wiki/ExFAT">пишут о системе ExFAT</a> как изначально созданной для флеш-накопителей. Что она умеет бережно относится к флешкам и поддерживает размер более 4Gb.</p>
 
-<p>Предварительно откроем в Photoshop любой psd-макет, из которого можно экспортировать изображения для будущего HTML-шаблона. В палитре “Слои” заранее выделим слой с изображением, которое будем экспортировать (отключим все эффекты данного слоя, если они есть):</p>
+<p>Все отлично - ставлю ее на обе свои флешки: Apacer 8Gb и Transcend 16Gb. Начну с более сложного - с системы Linux.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/select_layer_with_image.png" alt="Слой с изображением для экспорта" /></p>
+<h2 id="exfat-----linux">ExFAT - установка в Linux</h2>
 
-<p>И нажмем кнопку “Создать новую операцию” в палитре “Операции”. Откроется диалоговое окна настройки будущей операции (<code>action</code>):</p>
+<p>Для включения поддержки файловой системы в Linux нужно установить пару пакетов - <code>exfat-fuse</code> и <code>exfat-utils</code>:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/setting_new_action.png" alt="Настройка будущего action" /></p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">exfat-fuse</span> <span class="n">exfat-utils</span></code></pre></div>
 
-<p>В этом окне указываем имя для будущей операции (<code>action</code>); в какой набор операций (“Set”) она будет входить; назначить “горячие” клавиши для данной операции.</p>
+<p>Скажу, что приведенная выше команда на моей системе Linux Mint 17 Cinnamon оказалась действенной - все пакеты установились без проблем и поддержка ExFAT в системе появилась сразу же.</p>
 
-<p>Кнопка “Записать” запускает процесс записи макроса. Внизу панели “Операции” кнопочка “Запись операции” станет красной, что напоминает о том, что запись пошла! С этого момента все мои действия будут запоминаться программой Photoshop, поэтому буду внимательным.</p>
+<p>В Интернете почти на всех ресурсах приведена другая команда для установки пакетов <code>exfat-fuse</code> и <code>exfat-utils</code> (причем - один в один, перепечатывают друг у друга вслепую):</p>
 
-<p>Вырезание картинки из выбранного слоя я буду делать пошагово, в следующем порядке:</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="nb">add-apt</span><span class="n">-repository</span> <span class="n">ppa</span><span class="err">:</span><span class="n">relan</span><span class="p">/</span><span class="n">exfat</span>
+<span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">update</span>
+<span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">fuse</span> <span class="n">fuse-exfat</span> <span class="n">exfat-utils</span></code></pre></div>
 
-<ul>
-  <li>дублирование активного слоя</li>
-  <li>отрезка прозрачных пикселов (<code>trimming</code>)</li>
-  <li>сохранение полученной картинки для Web</li>
-  <li>закрытие нового документа без его сохранения</li>
-</ul>
+<p>Однако, эта команда на моей системе не запустилась - выдала ошибку ключа при подключении репозитория <code>ppa:relan/exfat</code>. Именно этот факт и послужил для меня поводом написать этот краткий обзор.</p>
 
-<p>Не забываем нажать кнопочку “Остановить запись”. В принципе, все мои действия очень легко прочитать внутри самой операции (<code>action</code>):</p>
+<p>Все - дело сделано. Теперь отформатирую флешку под файловую систему ExFAT в Linux.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/created_action.png" alt="Созданная операция (action)" /></p>
+<p>Для этого сначала нахожу, где она расположена в файловой системе (в моем случае это устройство <code>/dev/sdb1</code>):</p>
 
-<h2 id="action-1">Настройка операции (action)</h2>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">fdisk</span> <span class="n">-l</span></code></pre></div>
 
-<p>По большому счету, созданная мною операция полностью готова к работе. Можно ради любопытства выбрать любой другой слой с изображением и нажать клавишу <kbd>F3</kbd>. Произойдет практически мгновенное экспортирование изображения в этом слоя для Web.</p>
+<p>… и затем произвожу форматирование флешки командой:</p>
 
-<p>Но что может не устраивать нас в этой операции? Все, кроме одного - возможность самому выбирать, куда Photoshop должен сохранять экспортируемое изображение.</p>
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">mkfs</span><span class="p">.</span><span class="n">exfat</span> <span class="n">-n</span> <span class="n">large_flash</span> <span class="p">/</span><span class="n">dev</span><span class="p">/</span><span class="n">sdb1</span></code></pre></div>
 
-<p>Для этой цели существует колоночка с пустыми квадратиками напротив каждого действия в записанной мною операции (<code>action</code>).</p>
+<p>где ключ <code>-n</code> - это задание для флешки имени как устройства.</p>
 
-<p>Если навести курсор мыши на любой из них, то всплывающий tooltip подскажет, что это - “Возможность установки или отмены установки диалогового окна”.</p>
+<p>Форматирование происходит буквально за пару секунд, ждать не придется. Первая флешка готова и операция форматирования выполнена под Linux.</p>
 
-<p>К слову сказать, все операции (<code>actions</code>) в Photoshop делятся на два вида:</p>
+<h2 id="exfat-----mac-os-x">ExFAT - форматирование под Mac OS X</h2>
 
-<ul>
-  <li>автоматические (без вмешательства пользователя)</li>
-  <li>полуавтоматические (с частичным вмешательством пользователя)</li>
-</ul>
+<p>Как уже говорилось мною выше, система Mac OS X имеет нативную поддержку файловой системы ExFAT. То есть, ничего дополнительно ставить не придется - все готово “из коробки”.</p>
 
-<p>Нам как раз нужно из автоматической операции (<code>action</code>) сделать ее полуавтоматической. На этапе “Экспортировать” нужно сделать так, чтобы Photoshop спрашивал нас, куда нужно сохранять изображение.</p>
+<p>Операции по форматированию накопителей и другим действиям с жесткими дисками производится в стандартной утилите “Disk Utility”.</p>
 
-<p>Делается это очень просто - достаточно кликнуть мышью в нужном окошке:</p>
+<p>Вставляю вторую флешку и запускаю “Disk Utility”:</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/dialog_action.png" alt="Диалоговое окно экспорта изображения" /></p>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/small_flash_exfat.png" alt="Создание ExFAT в дисковой утилите Disk Utility" class="center-image responsive-image" /></p>
 
-<p>Попробуем снова экспортировать изображение по нажатию клавиши <kbd>F3</kbd>. Вуаля - видим, что открылось окно Photoshop, в котором можем задать параметры для экспорта изображения. И в том числе - куда необходимо сохранять изображение:</p>
+<p>Разобраться с работой этой утилиты нетрудно, но вкратце опишу.</p>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/10/action_export_for_web.png" alt="Экспорт изображения для Web" /></p>
+<p>Слева находиться окно со всеми подключенными дисками, которые утилита сумела обнаружить.</p>
+
+<p>Справа на вкладке “Erase” производиться настройка и выполнение форматирования (в терминологии Mac OS X форматирование называется “Erase”). В списке “Format” выбирается нужная файловая система (кстати, выбор небогатый).</p>
+
+<p>В списке “Name” выбирается диск, который будет форматироваться. Там же находиться одноименная кнопка “Erase” для запуска форматирования.</p>
+
+<p>Ниже располагается информативное (я был приятно впечатлен объемом и качеством подачи информации в нем) окно, в котором можно увидеть всю информацию по подключенному диску. Внимательный читатель заметит, что флешка у меня уже отформатирована в ExFAT - обзор делал “по горячим следам”.</p>
+
+<p>В принципе - и все. Осталось нажать кнопку “Erase” и моя флешка отформатируется под систему ExFAT.</p>
+
+<p>Если ее открыть в Finder, то теперь мне будут доступны как чтение с нее, так и запись на нее.</p>
 
 <h2 id="section">Заключение</h2>
 
-<p>На этом можно закончить тему создания операций (actions) в Photoshop. На самом деле эта тема большая и достаточно сложная. Я видел даже специальный курс для дизайнеров по написанию actions под Photoshop.</p>
+<p>Вот так “неожиданно” я решил проблему совместимости флешки под Mac OS X и Linux. Более того, данная система ExFAT является разработкой Microsoft, поэтому с ее поддержкой в Windows вообще нет проблем.</p>
 
-<p>Но для верстальщика нет необходимости создавать большие и сложные операции. Поэтому этого уже достаточно для ускорения и облегчения своей работы. Попробуйте - оно того стоит!</p>
+<p>А если учитывать обещанный создателями ExFAT бережный способ обращения с флеш-накопителями, то этому решению вообще цены нет.</p>
 
 <p>На этом все.</p>
 
 <hr />
 
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-10-01T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop/">October 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/pattern-photoshop/" rel="bookmark" title="Pattern в качестве фонового изображения" itemprop="url">Pattern в качестве фонового изображения</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Недавно познакомился с тремя способами вырезания фонового изображения на макете. До недавнего времени знал о существовании только одного способа, с которым познакомился еще на сайте htmlbook.ru.</p>
-</blockquote>
-
-<p>Чтобы было яснее, рассмотрим пример psd-макета страницы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/background_page.png" alt="Страница с фоновым изображением" /></p>
-
-<p>Видим, что на странице имеются множественные фоновые изображения. И как вы думаете, каким образом нужно вырезать такое изображение? Чтоб потом замостить им фон страницы или фон блока-контейнера?</p>
-
-<p>До недавнего времени я бы сделал так. Попытался визуально отыскать повторяющиеся фрагменты в фоне, одном и втором.</p>
-
-<p>Если бы удалось обнаружить таковой фрагмент, то вырезал бы его с помощью инструмента “Crop”. Если бы фрагмент не обнаружил, то просто бы вырезал кусок фона размером побольше (что называется “на глазок”), опять-таки, с помощью инструмента “Crop”.</p>
-
-<p>Немного позже я узнал, что существует три подхода к вырезанию фоновой картинки для будущего HTML-шаблона. Первые два способа простые и неточные. Третий способ - более медленный, но точный.</p>
-
-<p>Ниже последовательно рассмотрим все три способа, начиная с самого простого и заканчивая самым трудоемким.</p>
-
-<p>Описание выполняемых действий приведено в локализованной версии Photoshop.</p>
-
-<h2 id="section">Простое вырезание фона</h2>
-
-<p>Фон страницы на psd-макете представляет из себя растровое изображение, у которого имеется всего один слой. И при этом визуально не получается выделить повторяющиеся фрагменты в этом фоне.</p>
-
-<p>В этом случае нужно поступить только одним способом.</p>
-
-<p>Свести воедино все видимые слои с помощью сочетания клавиш <kbd>Shift+Ctrl+E</kbd>.</p>
-
-<p>Инструментом “Crop” с зажатой клавишей <kbd>Shift</kbd> (чтобы получился квадрат) выделяем на фоне psd-макета квадрат побольше, размера <code>50x50px</code> или <code>100x100px</code>. Размер должен быть побольше именно для того, чтобы гарантировать бесшовность такого рисунка в фоне.</p>
-
-<p>Затем экспортируем его в Web и используем в CSS для установки в качестве фонового изображения.</p>
-
-<h2 id="section-1">Вырезание фрагмента фона</h2>
-
-<p>Второй способ отличается от первого лишь только тем, что на этот раз удалось обнаружить в рисунке фона макета повторяющиеся фрагменты. При этом фон макета все также является растровым изображением.</p>
-
-<p>Инструментом “Crop” вырезаем из фона обнаруженный фрагмент, сохраняем его для Web и используем по назначению в CSS.</p>
-
-<h2 id="pattern--photoshop">Pattern в Photoshop</h2>
-
-<p>Третий способ основан на понятии <code>pattern</code> в Photoshop. Этот способ самый точный и надежный. В нем мы как-бы “опираемся” на силы самого Photoshop, который должен “помочь” нам обнаружить <code>pattern</code> в нарисованном дизайнером psd-макете.</p>
-
-<p>Я не дизайнер (и никогда им не буду), поэтому могу сказать по поводу того, что такое <code>pattern</code> в двух словах.</p>
-
-<p>Это <em>образец узора</em> какого-то определенного размера (который может быть любым) - <code>102x102px</code>, <code>20x20px</code> или же <code>5x5px</code>. Этот образец узора может быть любого рисунка (завитушки, полосочки, цветочки и т. д.).</p>
-
-<p>Вся задача pattern’а - служить образчиком, которым дизайнер выполняет заливку слоя. То есть, ситуация получается в точности такая, как у верстальщика. Имеется маленький кусочек рисунка, которым дизайнер “мостит” весь слой.</p>
-
-<p>Задача верстальщика при нарезке psd-макета - выделить этот <code>pattern</code> из psd-макета в отдельное изображение. Чтобы увидеть, что в данном слое используется <code>pattern</code>, достаточно открыть палитру “Слои” и активировать нужный слой. В качестве примененных к слою эффектов должно стоять “Наложение узора”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/bakground_layer_with_pattern.png" alt="Фоновый слой с pattern" /></p>
-
-<p>Все! Наша задача наполовину выполнена - мы знаем, что для этого слоя дизайнер применил <code>pattern</code> в качестве заливки каким-то там рисунком.</p>
-
-<p>Осталось только найти этот <code>pattern</code>, что является задачей чисто технической. И нам в этом поможет сам Photoshop.</p>
-
-<p>Дважды кликаем мышкой по выбранному слою с фоновым рисунком. Откроется окно “Стиль слоя”, в котором активируем пункт - “Наложение узора”. В правой части окна будет показан конкретный <code>pattern</code>, с помощью которого дизайнер выполнял заливку данного слоя.</p>
-
-<p>То есть, Photoshop показал, какой <code>pattern</code> использовал дизайнер в анализируемом нами слое. Нам осталось “вычленить” этот <code>pattern</code> и в этом нам снова поможет Photoshop:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/background_pattern.png" alt="Pattern для выбранного слоя" /></p>
-
-<p>В этом же окне нужно навести курсор мыши на окошко с <code>pattern</code>‘ом (окно “Узор”) и немного подождать, пока рядом с курсором мыши не появиться всплывающий tooltip, в котором будут показаны размеры данного <code>pattern</code>‘а.</p>
-
-<p>Запоминаем (или записываем на листике бумаги) эти размеры - они нам понадобятся в дальнейшем.</p>
-
-<p>Щелчком мыши на маленькой стрелочке справа от окна с образцом <code>pattern</code>‘а открываем палитру паттернов (<code>patterns</code>):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/panel_patterns.png" alt="Палитра паттернов (patterns)" /></p>
-
-<p>В этой палитре нам необходимо добавить выбранный нами <code>pattern</code> в свою коллекцию паттернов. Это нужно для того, чтобы потом использовать этот <code>pattern</code> в своих “коварных” целях. Для этой цели кликаем на круглой кнопочке со стрелкой - далее можно разобраться, что и как добавлять.</p>
-
-<p>Закрываем окно “Стиль слоя” и создаем новый документ <kbd>Ctrl+N</kbd> с размерами, как у нашего <code>pattern</code>‘а:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_image.png" alt="Новое изображение с размерами pattern'а" /></p>
-
-<p>Здесь самое главное - правильно указать размеры будущего документа (как правило, все <code>pattern</code>‘ы имеют форму квадрата), все остальное для нас неважно.</p>
-
-<p>Создаем новый документ. Затем в меню Photoshop переходим по пути “Слои” - “Новый слой-заливка” - “Узор”. И в открывшемся окошке “Новый слой” просто кликаем по кнопке <kbd>ОК</kbd>, все остальное для нас опять неважно:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_layer_pattern.png" alt="Заливка нового слоя с помощью pattern'а" /></p>
-
-<p>Откроется еще одно окошко, в котором выбираем нужный нам <code>pattern</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/select_pattern_for_layer.png" alt="Выбор pattern'а для заливки слоя" /></p>
-
-<p>Как результат получаем новый документ с заливкой слоя выбранным нами <code>pattern</code>‘ом. Это хорошо заметно чисто визуально, в основном окне. В палитре “Слои” также видно, что к слою была применена заливка узором:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/10/new_image_background_ready.png" alt="Готовое изображение для фоновой заливки" /></p>
-
-<p>Картинка для фоновой заливки готова! Осталось только экспортировать ее для Web и применить на странице силами CSS.</p>
-
-<p>Например, таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">background-position</span><span class="o">:</span> <span class="nt">0</span> <span class="nt">0</span><span class="o">;</span>
-<span class="nt">background-repeat</span><span class="o">:</span> <span class="nt">repeat</span><span class="o">;</span>
-<span class="nt">background-image</span><span class="o">:</span> <span class="nt">url</span><span class="o">(../</span><span class="nt">images</span><span class="o">/</span><span class="nt">bg_body</span><span class="nc">.png</span><span class="o">);</span></code></pre></div>
-
-<p>Все - задача выполнена!</p>
-
-<h2 id="section-2">Заключение</h2>
-
-<p>Вот мы и познакомились с тремя способами вырезания фонового изображения из psd-макета.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -515,128 +605,164 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-30T00:00:00+04:00"><a href="http://zencoder.ru/sublime/sublime-macros/">September 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-04T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/">November 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~4 minutes
+        Reading time ~6 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/sublime/sublime-macros/" rel="bookmark" title="Macros в Sublime Text 3" itemprop="url">Macros в Sublime Text 3</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/" rel="bookmark" title="Parallax.js - создаем parallax со скроллингом" itemprop="url">Parallax.js - создаем parallax со скроллингом</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Отличная тема из разряда “как повысить эффективность своей работы”.</p>
+  <p>В данном примере рассмотрим создание parallax с эффектом вертикального скроллинга. Это самый популярный вид parallax’а для страниц типа Landing Page.</p>
 </blockquote>
 
-<p>Возможно, эта тема уже и избитая, но вот Google у меня выдает только англоязычные ресурсы со справкой по этим словам. Для меня это совсем не критично, но все же.</p>
+<p>Создавать эффект будет с помощью скрипта Parallax.js. По странному стечению обстоятельств данный скрипт имеет точно такое же имя, что и скрипт из предыдущего примера - “Parallax.js - создаем простой parallax”. Однако, <strong>это разные скрипты</strong> и авторы у них разные; данный скрипт расположен на странице GitHub по адресу - <a href="https://github.com/pixelcog/parallax.js/" title="Parallax.js">Parallax.js</a>.</p>
 
-<p>Захотел написать маленький обзор этой темы, когда пересматривал видео по верстке от Adi Purdila, записанное им для Tuts Plus. В этом видео он прямо-таки волшебным образом вставлял комментарии в HTML-файл. Конечно, делать комментарии в этаких файлах - дело нужное и полезное. Но вот добавлять их - это такая нудная задача!</p>
+<p>Домашняя страничка скрипта выполнена также с эффектом parallax - <a href="http://pixelcog.com/parallax.js/" title="Simple Parallax Scrolling">Simple Parallax Scrolling</a>.</p>
 
-<p>Решил потратить немного своего времени, чтобы разобраться, как же он мог сделать? Немного подумал и пришел к мысли, что наверняка он делал это с помощью макросов (macros). Точнее - он создал макрос (macros), который вставляет комментарий в файл. А потом только применял этот макрос (macros) - просто и быстро!</p>
+<h2 id="parallaxjs----html-">Parallax.js - создаем HTML-разметку</h2>
 
-<p>Ну что же, давайте и мы разберемся, каким образом можно записать свой собственный макрос (macros) в Sublime Text. Чем мы хуже Adi Purdila?</p>
+<p>Разметка для скрипта Parallax.js проста. Это обычный блок, который может быть <code>div</code>, <code>section</code> или что-либо еще. Обязательным условием является подключение для блока класса <code>class="parallax-window"</code> и двух data-атрибутов: <code>data-parallax="scroll"</code> и <code>data-image-src="images/one.jpg"</code>.</p>
 
-<h2 id="macros">Что такое macros?</h2>
-
-<p>Для начала неплохо было бы вспомнить, что такое макрос (macros)? В любой программе, будь то MS Excel, Adobe Photoshop, Notepad++ или же Sublime Text макрос (macros) - это записанная этой программой последовательность действий, выполненная пользователем. Образно говоря, пользователь говорит программе - “смотри, запоминай и повторяй за мной”.</p>
-
-<h2 id="macros--sublime-text">Запись macros в Sublime Text</h2>
-
-<p>Запись и воспроизведение макросов (macros) в Sublime Text можно выполнить двумя способами.</p>
-
-<p>Первый - через панель инструментов по пути “Tools” - “Record Macro”, “Tools” - “Playback Macro”.</p>
-
-<p>Или же более правильным способом (ведь мы с вами настоящие кодеры?) - через сочетание клавиш. Запуск записи макроса (macros) - через <kbd>Ctrl+Q</kbd>. Остановка записи макроса (macros) - тоже через <kbd>Ctrl+Q</kbd>. Воспроизведение записанного макроса (macros) - через <kbd>Shift+Ctrl+Q</kbd>.</p>
-
-<p>Я создам макрос (macros) для вставки начального комментария для блока. После остановки записи макроса (macros) он сохраняется в буфере обмена и при закрытии программы Sublime Text он пропадет. Поэтому его нужно сохранить через меню “Tools” - “Save Macro”.</p>
-
-<p>Все пользовательские макросы (macros) сохраняются в директорию “Packages” - “User”. Показанный на видео макрос я сохранил под именем <code>comment.sublime-macro</code> в этой директории.</p>
-
-<p>В меню редактора Sublime Text сохраненный макрос (macro) можно найти по пути “Tools” - “Macros”. Там уже имеются дефолтные макросы (macros) самого редактора и плагинов, установленных в нем. В моем случае там есть макросы (macros) под плагин “MarkdownEditing”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/09/sublime_macros.png" alt="Sublime Text User Macros" /></p>
-
-<p>Ради любопытства можно посмотреть на содержимое сохраненного мною макроса (macros) <code>comment.sublime-macro</code>. Ничего сложного в нем нет - это простая запись последовательности выполненных мною действий, в формате JSON.</p>
-
-<p>Ниже привожу начальный отрывок этого файла - все мои действия легко читаются:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">[</span>
-<span class="p">{</span>
-  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;find_under_expand&quot;</span>
-<span class="p">},</span>
-<span class="p">{</span>
-  <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="kc">null</span><span class="p">,</span>
-  <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;upper_case&quot;</span>
-<span class="p">},</span>
-<span class="p">{</span>
-  <span class="nt">&quot;args&quot;</span><span class="p">:</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;extend&quot;</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
-    <span class="nt">&quot;to&quot;</span><span class="p">:</span> <span class="s2">&quot;bol&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;move_to&quot;</span>
-<span class="p">},</span>
-<span class="p">{</span>
-  <span class="nt">&quot;args&quot;</span><span class="p">:</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;characters&quot;</span><span class="p">:</span> <span class="s2">&quot;&amp;lt;!&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;insert&quot;</span>
-<span class="p">},</span>
-<span class="p">{</span>
-  <span class="nt">&quot;args&quot;</span><span class="p">:</span>
-  <span class="p">{</span>
-    <span class="nt">&quot;characters&quot;</span><span class="p">:</span> <span class="s2">&quot;--&quot;</span>
-  <span class="p">},</span>
-  <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;insert&quot;</span>
-<span class="p">},</span>
-<span class="err">...</span></code></pre></div>
-
-<h2 id="key-binding--macros">Создание key binding для macros</h2>
-
-<p>Теперь неплохо было бы “повесить” на этот макрос (macros) сочетание горячих клавиш (“забиндить”), чтобы почти мгновенно вызывать его на исполнение. Для этого понадобятся вкладки “Key Bindings - Default” и “Key Bindings - User”. Обе они располагаются в меню “Preferences”.</p>
-
-<p>Во вкладке “Key Bindings - Default” помещен список всех сочетаний клавиш по умолчанию, на которые повешены какие-либо действия в редакторе Sublime Text.</p>
-
-<p>Во вкладке “Key Bindings - User” можно задать свои собственные сочетания клавиш и повесить на них нужное действие.</p>
-
-<p>Мне захотелось повесить выполнение макроса <code>comment.sublime-macro</code> на сочетание клавиш <kbd>Shift+Ctrl+C</kbd>. Для этого я подстраховываю себя и проверяю, нет ли во вкладке “Key Bindings - Default” такого сочетания клавиш, чтобы не переопределить какое-либо действие.</p>
-
-<p>Такого не оказалось, поэтому во вкладке “Key Bindings - User” добавляю такую строку:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">[</span>
-  <span class="p">{</span> <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;alt+shift+c&quot;</span><span class="p">],</span> <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;run_macro_file&quot;</span><span class="p">,</span> <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;Packages/User/comment.sublime-macro&quot;</span><span class="p">}</span> <span class="p">}</span>
-<span class="p">]</span></code></pre></div>
-
-<p>Эта строка легко читается.</p>
-
-<p>Здесь:</p>
+<p>Второй атрибут в качестве своего значения имеет относительный путь к файлу изображения, которое будет устанавливаться в виде фона. В дополнение можно задать еще несколько атрибутов для ускорения загрузки изображений браузером:</p>
 
 <ul>
-  <li><code>"keys": ["alt+shift+c"]</code> - это записанное мною сочетание клавиш;</li>
-  <li><code>"command": "run_macro_file"</code> - говорит Sublime, что необходимо запустить выполнение именно макроса, а не какого-либо другого действия;</li>
-  <li><code>"args": {"file": "Packages/User/comment.sublime-macro"}</code> - указывает, какой именно макрос (macro) нужно выполнить.</li>
+  <li><code>data-natural-width</code> - реальная ширина изображения</li>
+  <li><code>data-natural-height</code> - реальная высота изображения</li>
 </ul>
 
-<p>Аналогично предыдущему макросу, создам еще один macros, который будет вставлять конечный комментарий для блока. На него во вкладке “Key Bindings - User” я повешу сочетание клавиш <kbd>Shift+Ctrl+E</kbd>:</p>
+<p>Ниже приведу созданные мною четыре блока <code>section</code> с содержимым:</p>
 
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span> <span class="nt">&quot;keys&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;alt+shift+e&quot;</span><span class="p">],</span> <span class="nt">&quot;command&quot;</span><span class="p">:</span> <span class="s2">&quot;run_macro_file&quot;</span><span class="p">,</span> <span class="nt">&quot;args&quot;</span><span class="p">:</span> <span class="p">{</span><span class="nt">&quot;file&quot;</span><span class="p">:</span> <span class="s2">&quot;Packages/User/end_comment.sublime-macro&quot;</span><span class="p">}</span> <span class="p">}</span></code></pre></div>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- begin one --&gt;</span>
+<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/one.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap one&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Welcome to Parallax!<span class="nt">&lt;/h1&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus consequatur, nulla neque voluptatum deserunt at voluptatibus eos. Magni sapiente rem, suscipit assumenda provident, quaerat doloribus libero? Eaque doloremque, quo sequi!<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint nemo cum, dignissimos blanditiis iusto quasi, quis! Ducimus aperiam sunt libero deleniti numquam rerum esse architecto, officiis amet, officia recusandae aut.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque reiciendis vitae, amet! Quas saepe consequuntur, nisi quia, cupiditate dignissimos laborum incidunt soluta repellat, libero id quibusdam mollitia maiores omnis tempore.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+<span class="c">&lt;!-- end one --&gt;</span>
 
-<h2 id="macros--sublime-text-1">Запуск макроса (macros) в Sublime Text</h2>
+<span class="c">&lt;!-- begin two --&gt;</span>
+<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/two.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap two&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>Parallax is great!<span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi accusamus deserunt ipsum nesciunt odit vero corporis eaque, quibusdam, enim, beatae, repellendus iusto. Amet corporis beatae, inventore officiis est aut. Ab!<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime possimus sint a facere dignissimos! Labore at, beatae consequuntur corporis perspiciatis! Asperiores illum esse repellat veniam vero totam debitis! Quos, consectetur.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla, totam maxime dolorum similique, ipsa a. Ea illo eligendi, ex, officia id eum sit sint nobis aperiam, error nihil ab dolorum.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+<span class="c">&lt;!-- end two --&gt;</span>
 
-<p>Теперь настало время проверить, как работают записанные мною макросы. Для этого в коде я воспользуюсь сочетаниями клавиш <kbd>Shift+Ctrl+C</kbd> и <kbd>Shift+Ctrl+E</kbd>:</p>
+<span class="c">&lt;!-- begin three --&gt;</span>
+<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/three.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap three&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h3&gt;</span>Parallax is easy!<span class="nt">&lt;/h3&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque quia ex doloremque et, eum soluta culpa ipsum placeat consectetur, error at, accusamus iure! Doloribus corporis, earum quo modi omnis hic.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ab distinctio omnis repellendus exercitationem maiores ad sed, deleniti dolorem tempore praesentium nobis suscipit nihil quidem qui nostrum debitis ipsam culpa.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit, repellendus, qui. Aspernatur reiciendis eligendi, totam eaque iusto illo officia. Facere dicta harum, dolore sit perferendis in neque mollitia eligendi dignissimos?<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+<span class="c">&lt;!-- end three --&gt;</span>
 
-<p>Отлично! Быстрота и легкость вставки комментариев впечатляет. А сколько времени и сил при этом экономится! Конечно, одними комментариями для макросов (macros) можно не ограничиваться - тут уж насколько хватит фантазии.</p>
+<span class="c">&lt;!-- begin four --&gt;</span>
+<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/four.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h4&gt;</span>Let&#39;s start use it!<span class="nt">&lt;/h4&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius ab voluptates alias corporis, laborum provident corrupti assumenda dignissimos vel repellendus obcaecati, aspernatur earum ipsum rem. Voluptatum ipsum nostrum in! Rerum.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit alias illum minus asperiores culpa, modi veritatis quibusdam, aperiam accusantium repellendus at possimus qui cupiditate dolorem quod accusamus a. Mollitia, repudiandae.<span class="nt">&lt;/p&gt;</span>
+    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio quo nulla officia sapiente a tenetur maxime sunt mollitia accusantium aut, eius minus maiores fugit necessitatibus obcaecati ex eos quibusdam sequi.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+<span class="c">&lt;!-- end four --&gt;</span></code></pre></div>
 
-<p>Главное - что инструмент нужный и полезный, макросы (macros) в Sublime Text.</p>
+<h2 id="parallaxjs----">Parallax.js - стилизация страницы</h2>
+
+<p>Стилизацию страницы буду выполнять на Sass/Compass с использованием вертикального ритма “Vertical Rhythm” - в данном случае он подойдет как раз к месту, как мне кажется:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+<span class="o">$</span><span class="nt">base-font-size</span><span class="o">:</span> <span class="nt">24px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">base-line-height</span><span class="o">:</span> <span class="nt">36px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">rhythm-unit</span><span class="o">:</span> <span class="s2">&quot;rem&quot;</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">rem-with-px-fallback</span><span class="o">:</span> <span class="nt">true</span><span class="o">;</span>
+
+<span class="k">@include</span> <span class="nt">establish-baseline</span><span class="p">;</span>
+
+<span class="nc">.parallax-window</span> <span class="p">{</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">1080px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">wrap</span><span class="err">{</span>
+    <span class="k">margin-top</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">1200px</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">leader</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">7</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">padding</span><span class="p">);</span>
+    <span class="n">p</span><span class="err">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="n">margins</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nt">h1</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">2</span><span class="o">.</span><span class="m">074</span><span class="n">rem</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nt">h2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">728</span><span class="n">rem</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nt">h3</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">44</span><span class="n">rem</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nt">h4</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="n">rem</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nc">.one</span><span class="p">{</span>
+      <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+      <span class="k">color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,.</span><span class="m">8</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nc">.two</span><span class="p">{</span>
+      <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+      <span class="k">color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="o">.</span><span class="m">8</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nc">.three</span><span class="p">{</span>
+      <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+      <span class="k">color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="o">,</span> <span class="m">255</span><span class="o">,</span> <span class="m">255</span><span class="o">,</span> <span class="o">.</span><span class="m">8</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>В этом коде наиболее важными строками являются две - без них скроллинга не получиться:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.parallax-window</span> <span class="p">{</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">1080px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<h2 id="parallaxjs----javascript">Parallax.js - добавление Javascript</h2>
+
+<p>Разметка и стили готовы - осталось подключить скрипт Parallax.js и библиотеку jQuery:</p>
+
+<pre>
+</pre>
+
+<p>jQuery “забираем” с Google, а скрипт Parallax.js - с GitHub-страницы проекта - <a href="http://pixelcog.com/parallax.js/" title="Simple Parallax Scrolling">Parallax.js</a>. Все это “добро” пихаем в самый низ, подвал HTML-документа - перед закрывающим тегом <code>&lt;/body&gt;</code>.</p>
+
+<p>В дальнейшие украшательства вдаваться не буду - это дело техники. Мне важен сам принцип создания parallax с эффектом вертикального скроллинга.</p>
+
+<p>В принципе, у меня все готово для того, чтобы полюбоваться результатом. Открываю страницу в браузере и любуюсь (не забывая скролить саму страницу):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/ParallaxJX-_Scrolling.png" alt="Страница на Parallax.js с вертикальным скроллингом" /></p>
+
+<p>Отлично! Получился прямо таки совсем неплохой parallax с вертикальным скроллингом. Готовый пример со всеми исходниками можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs_scroll" title="Parallax.js Scrolling">Parallax.js Scrolling</a>.</p>
 
 <hr />
+
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -645,83 +771,151 @@
   <header>
     
     <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-29T00:00:00+04:00"><a href="http://zencoder.ru/sublime/spell-check-sublime-text-3/">September 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      <span class="entry-date date published updated"><time datetime="2014-11-03T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js/">November 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
         <i class="fa fa-clock-o"></i>
         
-        Reading time ~3 minutes
+        Reading time ~5 minutes
       </span><!-- /.entry-reading-time -->
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/sublime/spell-check-sublime-text-3/" rel="bookmark" title="Проверка орфографии в Sublime Text" itemprop="url">Проверка орфографии в Sublime Text</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/parallax-js/" rel="bookmark" title="Parallax.js - создаем простой parallax" itemprop="url">Parallax.js - создаем простой parallax</a></h1>
     
   </header>
   <div class="entry-content">
     <blockquote>
-  <p>Вопрос настройки орфографии (spellcheck) в редакторе Sublime Text 3.</p>
+  <p>Небольшой обзор новой для меня темы - создание эффекта <code>parallax</code> на странице сайта. Вместе с вами буду учиться создавать такой эффект и начну с самого простого - Parallax.js.</p>
 </blockquote>
 
-<p>Сам вопрос подразумевает настройку проверки орфографии (spellcheck) русского текста в Sublime Text, ибо орфография английского языка включена в этом редакторе по умолчанию (точнее - есть встроенный словарь английского языка).</p>
+<p>Чтобы посмотреть, что примерно мы должны в результате получить, посмотрим на домашнюю страницу этого проекта - <a href="http://matthew.wagerfield.com/parallax/" title="Parallax.js">Parallax.js</a>. Исходный код скрипта и документация расположена на GitHub - <a href="https://github.com/wagerfield/parallax" title="Parallax.js">Parallax.js</a></p>
 
-<h2 id="section">Установка русского словаря</h2>
+<h2 id="parallax">Кратко о parallax</h2>
 
-<p>Чтобы включить возможность проверки (spellcheck) русскаго текста в редакторе Sublime Text, необходимо подключить словарь русского языка. Готовый к использованию под Sublime Text словарь русского языка можно скачать по ссылке - <a href="https://www.dropbox.com/s/rug0kg3gae8aha2/sublime_russian_english_dictonary.zip?dl=0" title="sublime_russian_english_dictonary.zip">sublime_russian_english_dictonary.zip</a>.</p>
+<p>Что такое <code>parallax</code> как эффект сам по себе, хорошо видно на самой страничке и расписывать его я не буду. В Интернет есть лучшее и более подробное описание эффекта <code>parallax</code>. Единственное, что можно сказать по поводу <code>parallax</code> - появился он в основном как необходимость, дань моде. Своим существованием практически полностью обязан популярным на сегодняшний день <code>landing page</code> и призван скрасить и разнообразить их относительную монотонность.</p>
 
-<p>После скачивания архива его нужно распаковать. В итоге получиться два файла:</p>
+<p>Способов реализации <code>parallax</code> на сегодня сушествует множество. Но практически все они основаны на одном принципе - изменении скорости прокрутки фонового изображения на странице относительно других объектов на ней (<em>поправьте меня, если я неправ</em>).</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span>
-  <span class="n">russian_english</span><span class="p">.</span><span class="n">aff</span>
-  <span class="n">russian_english</span><span class="p">.</span><span class="n">dic</span></code></pre></div>
+<p>Одним из преимуществ метода на основе скрипта Parallax.js является то, что в этом случае не требуется библиотеки jQuery. Скрипт может работать и с ней, но ее присутствие совсем необязательно. Получается выгода в весе страницы и скорости ее загрузки в браузере.</p>
 
-<p>Затем нужно переместить (или скопировать) оба файла в директорию с плагинами Sublime Text. Это можно сделать тремя способами.</p>
+<h2 id="parallaxjs----">Parallax.js - начальная разметка</h2>
 
-<p><strong>Первый способ</strong> - быстрый и простой, основан на использовании консоли Linux (я не забыл сказать, что пример приведен под Linux Mint 17 Cinnamon?). Для этого в текущей директории со словарями открываем терминал и выполняем всего одну команду:</p>
+<p>HTML-разметка для нашего будущего <code>parallax</code> удивительно простая - это маркированный список <code>ul</code> с идентификатором (<em>имя его произвольное</em>) и элементами списка <code>li</code> (<em>имя класса обязательно и неизменно</em>).</p>
 
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cp</span> <span class="p">*</span> <span class="p">~/.</span><span class="n">config</span><span class="p">/</span><span class="n">sublime-text</span><span class="p">-</span><span class="n">3</span><span class="p">/</span><span class="n">Packages</span><span class="p">/</span></code></pre></div>
+<p>Еще одним обязательным атрибутом для элементов списка <code>li</code> является атрибут <code>data-depth</code>, у которого значение может меняться в диапазоне от 0 до 1. Чем выше значение в 1, тем выше скорость перемещения объекта на странице.</p>
 
-<p>… которая произведет копирование всех файлов (в данном случае - двух) в директорию с плагинами под Sublime Text.</p>
+<p>Внутрь элементов списка помещается изображение, которое будет анимироваться с помощью эффекта <code>parallax</code>.</p>
 
-<p><strong>Второй способ</strong> - более медленный. Для этого в окне Nemo (в Linux Mint Cinnamon - это аналог Finder под Mac OS X или Проводник под Windows) в контекстном меню выбираем “Показать скрытые файлы”.</p>
+<p>Ниже приведен пример такой разметки:</p>
 
-<p>Отобразятся все скрытые (системные) файлы\директории системы Linux Mint и среди них нужная нам директория - “.config”:</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;scene&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.10&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/one.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/two.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.20&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/three.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/four.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
-<p><img src="http://zencoder.ru/images/uploads/2014/09/spellcheck_sublime_config.png" alt="Директория плагинов редактора Sublime Text" /></p>
+<h2 id="parallaxjs----parallax">Parallax.js - стилизация parallax</h2>
 
-<p>Переходим по пути <code>.config</code> - <code>sublime-text-3</code> - <code>Packages</code> и с помощью клавиш <kbd>Ctrl+C</kbd> + <kbd>Ctrl+V</kbd> производим вставку файлов русского словаря.</p>
+<p>Произведем небольшую стилизацию нашего будущего <code>parallax</code> с помощью Sass/Compass. Для элемента <code>ul</code> добавим фоновое изображение, чтобы был лучше виден эффект parallax.</p>
 
-<p><strong>Третий способ</strong> - с помощью редактора Sublime Text. Для этого в самом редакторе переходим по пути “Preferences” - “Browse Packages…”. Откроется окно с плагинами Sublime Text. Далее - действовать, как во втором примере.</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
 
-<h2 id="spellcheck--sublime-text">Spellcheck в Sublime Text</h2>
+<span class="nf">#scene</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">95%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">min-height</span><span class="o">:</span> <span class="m">775px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../images/bg.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+  <span class="n">img</span><span class="err">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/one.png&quot;</span><span class="o">]</span><span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">200px</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/two.png&quot;</span><span class="o">]</span><span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1000px</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/three.png&quot;</span><span class="o">]</span><span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">500px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">700px</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/four.png&quot;</span><span class="o">]</span><span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">600px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">300px</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
 
-<p>После помещения файлов словаря в директорию “Packages” желательно перезапустить редактор Sublime Text. Если все прошло успешно, то в меню “View” - “Dictionary” под пунктом “Language - English” появиться пункт “russian-english” - это и есть подключенный нами словарь русского языка.</p>
+<h2 id="parallaxjs----javascript">Parallax.js - добавляем javascript</h2>
 
-<p>Чтобы осуществить проверку (spellcheck) на ошибки в русско-язычном тексте в редакторе Sublime Text, нужно выбрать в меню вышеназванный пункт - “View” - “Dictionary” - “russian-english”, тем самым указав редактору, какой словарь использовать для проверки. А затем запустить проверку орфографии (spellcheck), нажав клавишу <kbd>F6</kbd>. Повторное нажатие клавиши отключает проверку орфографии.</p>
+<p>Наш <code>parallax</code> почти готов - осталось “вдохнуть в него жизнь” с помощью Javascript.</p>
 
-<h2 id="spellcheck--sublime-text-1">Настройка spellcheck в Sublime Text</h2>
+<p>Тут все просто. Первой строкой подключается файл скрипта Parallax.js. Второй строкой сначала в теле документа отыскивается элемент с идентификатором <code>scene</code>, который помещается внутрь переменной <code>scene</code>. Затем создается новый экземпляр <code>parallax</code> объекта Parallax и ему передается в качестве аргумента эта переменная <code>scene</code>.</p>
 
-<p>Рассмотренный выше способ проверки орфографии (spellcheck) в Sublime Text можно назвать ручным. Однако, для этого способа требуется много времени и телодвижений, чтобы включить его.</p>
+<p>Все - смотрим результат:</p>
 
-<p>Если в Sublime Text пишется в основном русско-язычный текст, то можно включить автоматическую проверку орфографии (spellcheck) в этом редакторе.</p>
+<p><img src="http://zencoder.ru/images/uploads/2014/11/ParallaxJS.png" alt="Готовый эффект на Parallax.js" /></p>
 
-<p>Для этого в пользовательских настройках “Preferences” - “Settings - User” достаточно прописать две строки:</p>
+<p>Достаточно подвигать мышью над фотографией красавчика на заднем плане, чтобы увидеть, как разноцветные кружки перемещаются с разной скоростью.</p>
 
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">//</span> <span class="err">Word</span> <span class="err">list</span> <span class="err">to</span> <span class="err">use</span> <span class="err">for</span> <span class="err">spellchecking</span>
-<span class="s2">&quot;dictionary&quot;</span><span class="err">:</span> <span class="s2">&quot;Packages/russian_english.dic&quot;</span><span class="err">,</span>
+<p>Мы получили эффект parallax.</p>
 
-<span class="err">//</span> <span class="err">Set</span> <span class="err">to</span> <span class="kc">true</span> <span class="err">to</span> <span class="err">turn</span> <span class="err">spellchecking</span> <span class="err">on</span> <span class="err">by</span> <span class="err">default</span>
-<span class="s2">&quot;spell_check&quot;</span><span class="err">:</span> <span class="kc">true</span></code></pre></div>
+<p>Ниже приведен полный код HTML и CSS рассмотренного нами примера:</p>
 
-<p>Первая строка указывает редактору Sublime Text месторасположение русского словаря, тем самым говоря ему, что для проверки орфографии (spellcheck) нужно использовать этот словарь, а не какой-нибудь другой.</p>
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;scene&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.10&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/one.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
+  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/two.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
+  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.20&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/three.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
+  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/four.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
+  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/ul&gt;</span><span class="c">&lt;!-- scripts --&gt;</span></code></pre></div>
 
-<p>Вторая строка включает автоматическую проверку орфографии (spellcheck) в Sublime Text. Если в тексте много англоязычных слов, или если необходимо на время отключить проверку, то достаточно нажать клавишу <kbd>F6</kbd>. Чтобы снова вернуть назад проверку, опять нажимаем <kbd>F6</kbd>.</p>
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
 
-<h2 id="section-1">Заключение</h2>
+<span class="nt">scene</span><span class="p">{</span>
+<span class="k">width</span><span class="o">:</span> <span class="m">95%</span><span class="p">;</span>
+ <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+ <span class="k">min-height</span><span class="o">:</span> <span class="m">775px</span><span class="p">;</span>
+ <span class="k">background</span><span class="o">:</span> <span class="sx">url(../images/bg.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+ <span class="n">img</span><span class="err">{</span>
+ <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+ <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+ <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+ <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
+ <span class="p">}</span>
+ <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/one.png&quot;</span><span class="o">]</span><span class="p">{</span>
+ <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">200px</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/two.png&quot;</span><span class="o">]</span><span class="p">{</span>
+ <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1000px</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/three.png&quot;</span><span class="o">]</span><span class="p">{</span>
+ <span class="k">margin</span><span class="o">:</span> <span class="m">500px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">700px</span><span class="p">;</span>
+ <span class="p">}</span>
+ <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/four.png&quot;</span><span class="o">]</span><span class="p">{</span>
+ <span class="k">margin</span><span class="o">:</span> <span class="m">600px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">300px</span><span class="p">;</span>
+ <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
 
-<p>Очень полезная штучка оказалась для меня, возможность проверки орфографии (spellcheck) в Sublime Text. Открыл для себя с удивлением, сколько же много я ошибок и опечаток делаю в тексте!</p>
-
-<p>Один вопрос в данной теме остался для меня открытым - как самому вносить правки в русский словарь? Как самому добавлять в него слова? К примеру, чтобы он не “ругался” на незнакомое ему слово “фреймворк” или “плагин”?</p>
+<p>Полный исходный код примера можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs" title="Parallax.js">Parallax.js</a></p>
 
 <hr />
 
@@ -986,6 +1180,12 @@
       <li>
         
           <a href="http://zencoder.ru/page42">42</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page43">43</a>
         
       </li>
     
