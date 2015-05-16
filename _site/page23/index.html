@@ -144,6 +144,138 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-03T00:00:00+04:00"><a href="http://zencoder.ru/css/playground-codepen/">March 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/playground-codepen/" rel="bookmark" title="Площадка для тестирования CodePen" itemprop="url">Площадка для тестирования CodePen</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Любому веб-мастеру необходима площадка для тестирования. На сегодняшний день таких проектов около десятка. Есть старые проекты, есть молодые; более “навороченные” или менее “навороченные”. Каждый из мастеров выбирает себе тот, который ему больше всего нравиться.</p>
+</blockquote>
+
+<p>Наиболее популярные сервисы такого рода это <a href="http://codepen.io" title="CodePen">CodePen</a> и <a href="http://jsfiddle.net/" title="jsFiddle">jsFiddle</a>. Лично мне больше нравиться jsFiddle, но у него есть один существенный для меня недостаток (<em>точнее - их два на самом деле</em>). В этом сервисе можно выполнить замену CSS на SCSS, но подключить библиотеку Compass - нельзя. И еще там нет автоматического обновления создаваемого проекта.</p>
+
+<p>Другой сервис - CodePen является идеальным инструментом для веб-мастера или верстальщика. В нем есть все, что нужно и ничего лишнего. Может быть, это потому, что проект был создан хорошо известным <a href="http://css-tricks.com/" title="Cris Coyier - CSS-TRICKS">Cris Coyier</a>?</p>
+
+<p>Данная статья, возможно, никогда не была бы написана, если не одна причина - я не знал, как в этом сервисе подключить поддержку SCSS + Compass. Решение лежало на поверхности, достаточно было “остановиться на бегу” - выделить немного времени на изучение этого проекта.</p>
+
+<p>Ниже привожу подробное и красочное описание работы с CodePen в картинках. Точнее - это будет описание основных, самых основных или ключевых моментов при написании кода в CodePen.</p>
+
+<h2 id="codepen">Главная страница CodePen</h2>
+
+<p>Первое, что необходимо, это конечно же зайти на данный ресурс по адресу <a href="http://codepen.io" title="Главная страница CodePen">http://codepen.io</a>. Тем, кто первый раз попал сюда, может зарябить в глазах, но это с непривычки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-main.jpg" alt="Главная страница CodePen" class="center-image" /></p>
+
+<p>Самое основное на главной странице - это окна с готовыми работами других веб-мастеров. То есть, люди работали в этом сервисе, написали и протестировали какой-то код; и этот код в готовом виде демонстрируется в различных окошках проекта CodePen. Выборка работ производится в случайном порядке, насколько я понимаю.</p>
+
+<p>Внизу каждого “окошка” с готовой работой показаны <em>метаданные</em> - информация об авторе. К примеру, рассмотрим код, созданный автором по имени Yaroslav. Видим, что веб-мастер экспериментировал с созданием на CSS различных продвинутых типов <code>background</code> (<em>насколько правильно я понял его работу чисто по внешнему виду, исходный код не смотрел</em>). Комментариев к его работе никто не пожелал оставить, хотя ознакомилось с ним уже 129 человек и семерым из них он даже понравился.</p>
+
+<p>При щелчке мыши на любом из заинтересовавших проектов (<em>прямо в окошко</em>) открывается его исходный код, с которым можно детально ознакомиться при желании.</p>
+
+<h2 id="codepen---">Настройка CodePen - начало</h2>
+
+<p>В принципе, больше ничего нас в главном окне CodePen не интересует - ведь нам необходимо самим создавать “нетленные” работы! Для этого сначала нужно зарегистрироваться на CodePen, после чего получаем свой личный кабинет с настройками. Так как первоначально задача стояла в подключении SCSS + Compass в CodePen, то будет решать ее с первых шагов. В правом верхнем углу есть синий значок-аватар, по которому нужно щелкнуть мышью. Раскроется список, в котором необходимо выбрать строку <strong>“Your Settings”</strong>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-settings.jpg" alt="Доступ к личному профилю на CodePen" class="center-image" /></p>
+
+<p>Все настройки CodePen уместились на одной странице и это замечательно! Окно разделено на четыре секции - <strong>Syntax Hightlighting</strong>, <strong>Fonts</strong>, <strong>Key Bindings</strong>, <strong>Preprocessor &amp; Library Defaults</strong>. В принципе, здесь все интуитивно понятно:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-profile-settings.jpg" alt="Настройки CodePen" class="center-image" /></p>
+
+<p>Секция <strong>Syntax Hightlighting</strong> служит для выбора цветовой схемы подсветки синтаксиса с предварительным просмотром. Можно выбрать одну из пяти, но первая (<em>по умолчанию</em>) самая лучшая.</p>
+
+<p>Секция <strong>Fonts</strong> помогает выбрать шрифт и размер шрифта. Выбор шрифтов небольшой, но лучше оставить <strong>Monaco</strong> - он лучше всех смотрится. Размер шрифта можете выбрать, какой вам нравиться.</p>
+
+<p>Секция <strong>Key Bindings</strong> совсем простенькая - здесь можно выбрать сочетание клавиш при работе в CodePen. <strong>Normal</strong> - это обычный набор сочетаний клавиш, а <strong>Vim</strong> для тех, кто привык и хорошо себя чувствует в линуксовом (<em>весьма своеобразном</em>) редакторе Vim.</p>
+
+<p>Секция <strong>Preprocessor &amp; Library Defaults</strong> самая большая и самая необходимая для нас, ведь ради нее мы и зашли в настройки. В этом разделе можно установить, какие препроцессоры для HTML, CSS и JavaScript будут использоваться в каждом новом проекте, создаваемом в CodePen. В строке <strong>HTML Preprocessor</strong> ничего не делаем, так как препроцессорами для HTML не пользуемся. В строке <strong>CSS Preprocessor</strong> выбираем из списка SCSS, а в следующей строке <strong>CSS Preprocessor Add-on</strong> выбираем библиотеку под SCSS - <strong>Compass (for Sass)</strong>. Строка <strong>CSS Reset</strong> служит для выбора “CSS-ластика”: <em>CSS Reset</em> или <em>Normalize</em>. Можно также обратить внимание на строчку <strong>Prefix Free?</strong>, в которой есть возможность поставить галочку:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-prefix_free.jpg" alt="JavaScript библиотека Prefix Free" class="center-image" /></p>
+
+<p><strong>Prefix Free</strong> - это JavaScript, созданный для того, чтобы работать с браузерными префиксами на самом современном уровне. Другими словами, этот скрипт фильтрует созданный CSS-код на предмет наличия в нем браузерных (вендорных) префиксов и проверяет, какие из них нужно использовать на сегодняшний день, а от каких уже можно отказаться. Польза <strong>Prefix Free</strong> в очистке CSS-кода от лишнего мусора и увеличение скорости загрузки в браузере.</p>
+
+<p>Но продолжим разбор секции <strong>Preprocessor &amp; Library Defaults</strong>. Три последние строчки относятся к поддержке JavaScript в CodePen. В строке <strong>JS Preprocessor</strong> выбирается препроцессор JavaScript, в строке <strong>JS Library</strong> - подключаем библиотеку JavaScript, а в строчке <strong>Modernizr?</strong> отмечаем, нужна ли нам встроенная поддержка JavaScript-библиотеки Modernizr.</p>
+
+<p>Последняя строчка <strong>Auto Run?</strong> очень полезна и по умолчанию она включена. Ее задача автоматически обновлять создаваемый проект в окне предпросмотра. Очень удобная функция. К примеру, в jsFiddle этого нет, там нужно самому нажимать кнопку <strong>Run</strong> каждый раз, когда нужно обновить окно предпросмотра после внесения изменений в исходный код.</p>
+
+<p>Вот и все, что можно или нужно сделать в настройках CodePen. Сохраняем изменения, нажав большую зеленую кнопку <strong>Save All Settings</strong> в нижнем правом углу окна.</p>
+
+<h2 id="css---codepen">Быстрая настройка CSS-препроцессоров в CodePen</h2>
+
+<p>Стоит также сказать, чтобы настройки, рассмотренные выше, можно внести в создаваемый проект “на лету”. Для этого нужно щелкнуть мышью на значке шестеренки в окне кода CSS. Появиться небольшое окошко с выбором одного из четырех CSS-препроцессоров: SASS, SCSS, LESS, Stylus. Также можно выбрать CSS-ластик: <em>Normalize</em>, <em>Reset</em> или вообще никакого (<em>Neither</em>). Включить библиотеку <strong>Prefix-Free</strong>; подключить внешнюю таблицу стилей CSS или же другой проект, указав в строке <strong>External CSS File or Another Pen</strong> абсолютный путь к этому файлу:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-quick_settings.jpg" alt="Окно быстрых настроек CSS в CodePen" class="center-image" /></p>
+
+<p>Кнопка <strong>Analyze CSS via CSS Lint</strong> служит для проверки CSS-кода в CodePen на синтаксические ошибки с помощью известного проекта <strong>CSS Lint</strong> (<em>под редактор Sublime Text также есть подобный плагин</em>). На рисунке “Основное окно CodePen” внимательный читатель может заметить ошибки, на которые обязательно “заругается” <strong>CSS Lint</strong>. В частности, <code>font-size: 62,5%</code> )):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-quick_select_preprocessor.jpg" alt="Выбираем CSS-препроцессор в CodePen" class="center-image" /></p>
+
+<h2 id="codepen-1">Основное окно CodePen</h2>
+
+<p>С настройками CodePen разобрались, теперь давайте вкратце рассмотрим основное окно в этом редакторе. Оно разбито на три части для написания кода на HTML, CSS и JavaScript. Внизу расположено окно предварительного просмотра. Не стоит даже упоминать, что можно легко изменить расположение и вид этих окон:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-pen.jpg" alt="Основное окно CodePen" class="center-image" /></p>
+
+<p>Вверху находятся четыре большие кнопки: <strong>Save</strong>, <strong>Fork</strong>, <strong>Info</strong>, <strong>Share</strong>. Кнопка <strong>Save</strong> - конечно же для сохранения проекта (Pen). Если имеются несохраненные изменения, то вверху этой кнопки появляется оранжевая полоска, как напоминание о необходимости сохранить изменения. Кстати, забыл упомянуть, что в CodePen проект называется Pen (&lt;/em&gt;вот так незатейливо&lt;/em&gt;). Кнопка <strong>Fork</strong> - для создания ответвления (<em>fork</em>) проекта. Кнопка <strong>Info</strong> - внести информацию о создаваемом Pen: <em>его заголовок, описание и мета-теги</em>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-info.jpg" alt="Информация о проекте на CodePen" class="center-image" /></p>
+
+<p>Кнопка <strong>Share</strong> весьма и весьма полезна. С помощью нее можно поделиться созданным проектом (кодом) с другими людьми. <em>Собственно, именно для этой цели сервис CodePen и создавался.</em> Там же можно скачать проект в виде zip-архива или выложить его на GitHub. И даже отправить ссылку в виде SMS на указанный номер телефона:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-share.jpg" alt="Публичная ссылка в CodePen" class="center-image" /></p>
+
+<p>На CodePen можно встраивать один проект (Pen) в другой проект (Pen). Более того, созданный Pen можно встраивать в виде готового куска кода в другие проекты (<em>не обязательно созданные в CodePen</em>), в том числе и под CMS WordPress. Это уже совсем круто!</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-embed.jpg" alt="Встраивание CodePen в другой проект" class="center-image" /></p>
+
+<h2 id="scss--compass--codepen">Работаем с SCSS + Compass в CodePen</h2>
+
+<p>Настройку подключения SCSS + Compass в CodePen мы выполнили, осталось посмотреть, реально ли все работает. Да, действительно все нормально! Собственно, сам код SCSS внимательный читатель мог увидеть уже на рисунке “Основное окно CodePen”, когда говорилось о трех основных окнах CodePen. Там же можно было заметить, что рядом с надписью CSS появилась еще одна - (SCSS), что говорит о включенной поддержке SCSS.</p>
+
+<p>На рисунке хорошо видны <strong>переменные SCSS</strong> и <strong>подключения mixin’ов из библиотеки Compass</strong> для создания радиуса скругления (<code>border-radius</code>), линейного градиента (<code>linear gradient</code>) и тени блока (<code>box-shadow</code>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">border-radius</span><span class="o">(...)</span>
+<span class="k">@include</span> <span class="nt">single-box-shadow</span><span class="o">(...)</span>
+<span class="k">@include</span> <span class="nt">background-image</span><span class="o">(...)</span></code></pre></div>
+
+<p>Двойной щелчок мыши на значке квадратика в правом верхнем углу окна CSS(SCSS) распахивает его на всю ширину окна браузера для большего удобства работы с кодом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-expand_pen.jpg" alt="Распахиваем окно кода в CodePen" class="center-image" /></p>
+
+<p>А щелчок мыши на самой надписи CSS переводит окно в <strong>режим компиляции</strong>, то есть перевода SCSS в готовый CSS-код:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-scss.jpg" alt="Создание SCSS-кода в CodePen" class="center-image" /></p>
+
+<h3 id="codepen-2">Клавиатурные сокращения CodePen</h3>
+
+<p>В заключение можно упомянуть горячие клавиши для работы в CodePen. В принципе, ничего неожиданного в списке сочетания клавиш для CodePen нет, кроме, может быть, единственного - новый проект (Pen) создается с помощью <kbd>Ctrl+P</kbd> (а ожидался стандартный <kbd>Ctrl+N</kbd>). Также заметно, что сочетания клавиш обозначены под Mac OS X (<em>это естественно - у автора проекта рабочий компьютер Mac</em>). Но это не значит, эти горячие клавиши не будут работать и под Windows:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/codepen-hotkeyes.jpg" alt="Список клавиатурных сокращений в CodePen" class="center-image" /></p>
+
+<h3 id="section">Заключение</h3>
+
+<p>На этом статья о сервисе CodePen завершена. Конечно, можно было бы упомянуть о добавлении проектов Pen в <strong>Коллекции</strong>, о кнопке удаления Pen. Но я оставлю это в качестве “домашнего задания” для тех, кому это нужно.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-02-27T00:00:00+04:00"><a href="http://zencoder.ru/css/pseudo-class-and-pseudo-element/">February 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -799,143 +931,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-02-23T00:00:00+04:00"><a href="http://zencoder.ru/css/negative-margin/">February 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/negative-margin/" rel="bookmark" title="Отрицательный margin в нормальном потоке" itemprop="url">Отрицательный margin в нормальном потоке</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Свойство <code>margin</code> очень хорошо для решения задачи установления дистанции между элементами, но знаете ли вы, что отрицательные <code>margin</code> могут не увеличивать, а сокращать расстояние между элементами, вплоть до того, что эти элементы будут перекрывать друг друга.</p>
-</blockquote>
-
-<p>Создадим простой пример и для этого предположим, что у нас есть страница, на которой элемент после заголовка <code>h2</code> всегда должен находиться непосредственно под ним. Самый распространенный пример из практики для этого случая, когда первый параграф, идущий сразу же после заголовка, не имеет пустого пространства (blank line) между собой и этим параграфом.</p>
-
-<p>Решения такого вопроса два.</p>
-
-<p><strong>Первый способ</strong> - это воспользоваться смежными селекторами.</p>
-
-<p><strong>Второй способ</strong>, представленный на рисунке ниже, это применить отрицательный <code>margin-bottom</code> для <code>h2</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/header-paragraph.png" alt="Между заголовком и параграфом нет промежутка" class="center-image" /></p>
-
-<p>Можно подумать, что у параграфа, который следует сразу за заголовком, отсутствует <code>margin-top</code>, но это не так. <code>Margin-top</code> никуда не пропадал.</p>
-
-<p>Он просто оказался перекрытым заголовком <code>h2</code>, у которого край <code>margin-bottom</code> находится в непосредственной близости от края текста самого заголовка. Параграф и его собственный <code>margin</code> располагаются сразу под ним, а не у нижнего края границы заголовка.</p>
-
-<p>Такой прием полезен на практике в случае, когда необходимо расположить часть контента “на одной линии”. Почему слово на одной линии заключено в кавычки - потому-что контент только визуально располагается на одной линии.</p>
-
-<p>Предположим, у нас есть список (HTML-разметка):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;jump&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;prev&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;ch03.html&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Salaries<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;next&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;ch05.html&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punching the Clock<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>В этом списке нам необходимо расположить оба пункта так, чтобы они находились на горизонтальной линии. Визуально это можно увидеть так, как изображено на рисунке ниже.</p>
-
-<p>Такую задачу можно выполнить обычным способом - через <code>float</code> (прим. переводчика - я бы так и поступил, разбросал оба <code>li</code> по разным углам блока <code>ul</code> через <code>float: left</code> и <code>float: right</code>) для обоих пунктов.</p>
-
-<p>Но можно решить такую задачу другим способом:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/on_the_same_line.png" alt="Два пункта меню на одной линии" class="center-image" /></p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.jump</span><span class="p">{</span>
-  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">25em</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">.25em</span> <span class="m">1em</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span><span class="p">;</span>
-<span class="p">}</span>
-  <span class="nc">.jump</span> <span class="nc">.next</span><span class="p">{</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-1em</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>В этом примере отрицательный <code>margin-top</code> величиной в <code>-1em</code> “поднимает” элемент <code>li.next</code> вверх ровно на высоту строки, установленную нами ранее в правиле <code>line-height: 1</code>.</p>
-
-<blockquote>
-  <p>Прим. переводчика: очень понравилось, о таком способе решения даже не подозревал!</p>
-</blockquote>
-
-<p>Другим полезным приемом является частичное выдвижение элемента изнутри наружу своего контейнера-родителя. Предположим, у нас стоит задача расположить блок заголовка точно по центру разделительной линии так, как это показано на рисунке ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/centering_heading_on_a_dividing_line.png" alt="Расположение заголовка по центру разделительной линии" class="center-image" /></p>
-
-<p>HTML-разметка такого заголовка будет следующей:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;entry&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;h2&gt;</span>
-    The Web Stack
-  <span class="nt">&lt;/h2&gt;</span>
-    ...
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.entry</span><span class="p">{</span>
-    <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nc">.entry</span> <span class="nt">h2</span><span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">-0.67em</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>C другой стороны, может потребоваться задача, когда блок заголовка не имеет фиксированной ширины, а ширина задается только его содержимым. В этом случае необходимо добавить всего несколько строк кода в HTML-разметку и CSS-правила, соответственно:</p>
-
-<p>HTML-разметка, в которой добавлен еще один элемент - <code>span</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;entry&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;h2&gt;</span>
-    <span class="nt">&lt;span&gt;</span>The Web Stack<span class="nt">&lt;/span&gt;</span>
-  <span class="nt">&lt;/h2&gt;</span>
-    ...
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.entry</span> <span class="nt">h2</span><span class="p">{</span>
-    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-0.67em</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-    <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nc">.entry</span> <span class="nt">h2</span> <span class="nt">span</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">.25em</span> <span class="m">1em</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/shrink_wraped_text.png" alt="Ширина блока заголовка задается его контентом" class="center-image" /></p>
-
-<p>В этом примере все хорошо работает до тех пор, пока длина текста внутри блока меньше, чем длина разделительной линии. Заголовок разбивается на две линии, сам блок заголовка вмещается вниз от разделительной линии и перестает быть расположенным по центру.</p>
-
-<p>Для этого случая решение с помощью отрицательного <code>margin-top</code> не является самым лучшим. Можно лишь посоветовать убрать верхнюю границу <code>border-top</code> у блока-родителя и сделать для него фоновую заливку белого цвета, также. Это будет не совсем то, что нужно; но все же достаточно хорошее решение.</p>
-
-<p>Автор статьи: Eric Meyer - “Smashing CSS Professional Techniques for Modern Layout”</p>
-
-<p>На этом все.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

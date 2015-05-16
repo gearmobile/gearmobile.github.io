@@ -144,6 +144,85 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-20T00:00:00+04:00"><a href="http://zencoder.ru/css/css3-font-smoothing/">November 20, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css3-font-smoothing/" rel="bookmark" title="Сглаживание шрифтов с помощью CSS3-свойства -webkit-font-smoothing" itemprop="url">Сглаживание шрифтов с помощью CSS3-свойства -webkit-font-smoothing</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В очередной раз возвращаюсь к видеокурсу от TutsPlus под названием “TutsPlus - PSD To WordPress Minimal Portfolio”, для себя нашел там много нового и интересного.</p>
+</blockquote>
+
+<p>На этот раз вопрос будем касаться свойства <code>-webkit-font-smoothing</code>. При создании и стилизации HTML-шаблона автор курса Adi Purdila “употребил” это свойство и вкратце сказал, что с ним шрифт будет смотреться лучше.</p>
+
+<p>Конечно, это не объяснение свойства <code>-webkit-font-smoothing</code>, поэтому я выкроил специально для этого вопроса время, чтобы разобраться подробнее. Первым делом отправился на htmlbook.ru - незаменимый источник знаний для html-верстальщика.</p>
+
+<p>Естественно, там нашлась подробная информация по поводу сглаживания шрифтов и управлению данным процессом через CSS. Статья называется “Сглаживание шрифтов в Safari” и она послужила основой для моей собственной статейки.</p>
+
+<p>Первое - что такое сглаживание шрифтов и зачем оно нужно. Для чего нужно, можно догадаться и так, без всяких ресурсов и статей, ибо само название говорит за себя. Сглаживание шрифтов - это чтобы сделать их начертание на устройстве вывода (монитор и любой другой экран) более плавным. То есть, границы шрифтов становятся гладкими и четкими. Конечно, текст созданный таким шрифтом, читать приятнее и глаза не так устают от подобного процесса.</p>
+
+<p>А вот способ (и это второй момент), с помощью которого достигается такое улучшение начертания шрифтов, не так очевиден. Можно даже сказать больше - он совсем неожиданный. Раньше я случайно пару раз наблюдал такую картину, но мне тогда казалось, что это “глюк” монитора, его неспособность правильно “отрисовать” буквы шрифта.</p>
+
+<p>Теперь-то я знаю, что такое отображение шрифта сделано намеренно, с помощью окрашивания пикселей, расположенных на краях букв, в разные цвета. То есть, получается, что цвет пикселей для всей буквы шрифта неоднородный (допустим - черный), а составлен из нескольких цветов.</p>
+
+<p>Но вот парадокс - человеческий глаз не замечает данного факта, а как раз наоборот - такое отображение букв шрифта ему кажется более четким и плавным. Чтобы дальше не расписывать, что к чему и почем, приведу картинку, которую я нагло “свистнул” с сайта htmlbook.ru, ибо самому не получилось создать подобную:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/windows-font.png" alt="Увеличенная буква шрифта с эффектом сглаживания" class="center-image responsive-image" /></p>
+
+<p>В популярных операционных системах такая технология используется достаточно давно под разными названиями, например в Windows она имеет запатентованное имя ClearType. Однако, с помощью свойства CSS <code>-webkit-font-smoothing</code> можно управлять способом отображения шрифтов по этой технологии в браузерах.</p>
+
+<p>Как видно из браузерного префикса, данное свойство будет работать только под движком WebKit (Chrome, Safari и с недавнего времени - Opera). Но, чтобы свойство <code>-webkit-font-smoothing</code> заработало в браузере, в его настройках нужно выставить отображение шрифтов, отличное от стандартов операционной системы Windows.</p>
+
+<p>Поэтому, в браузере Firefox такую настройку можно не искать - ее там просто нет. А вот в Safari такая настроечка есть (в Chrome мои попытки также оказались безуспешными):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/safari-settings-cleartype.png" alt="Настройка Safari для управления сглаживанием шрифта" class="center-image" /></p>
+
+<p>Ну, хватит про браузеры - перейдем к CSS и свойству <code>-webkit-font-smoothing</code>, ради которого и затеялась данная статья. Это свойство может принимать три значения:</p>
+
+<ul>
+  <li><code>none</code> - сглаживание вообще отключено;</li>
+  <li><code>antialiased</code> - средняя степень сглаживания;</li>
+  <li><code>subpixel-antialiased</code> - сильная степень сглаживания.</li>
+</ul>
+
+<p>И ниже приведу все три примера отображения текста в браузере Safari для каждого из значений свойства <code>-webkit-font-smoothing</code>. Но сначала установлю настройку сглаживания шрифта в этом браузере на “Среднее - оптимально для плоских экранов”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/safari-font-smoothing-test.jpg" alt="Три примера отображения -webkit-font-smoothing в Safari" class="center-image" /></p>
+
+<p>Для первого случая <code>-webkit-font-smoothing: none</code> это вообще жуть - ничего не читается совсем, поэтому отбрасываем и забываем о нем (в браузерах Firefox, Chrome и других все будет отображаться правильно, ибо они не имеют подобной настройки, как Safari).</p>
+
+<p>Второй случай <code>-webkit-font-smoothing: antialiased</code> выглядит очень привлекательно - начертание сглаженное и четкое одновременно, приятно читать.</p>
+
+<p>Третий случай <code>-webkit-font-smoothing: subpixel-antialiased</code> похож на второй, но текст выглядит немного жирным, что не так приятно, как в предыдущем случае.</p>
+
+<p>Вывод: <code>-webkit-font-smoothing: antialiased</code> - это наш выбор. Другое дело, что применение этого свойства ограничено только браузерами на движке WebKit. И помимо этого, мало кто из пользователей знает о возможности управления отображением сглаженного шрифта в браузерах такого типа.</p>
+
+<p>Из браузерного префикса <code>-webkit-</code> ясно, что основное свойство <code>font-smoothing</code> только в проекте. Конечно, статья “Сглаживание шрифтов в Safari” была написана в далеком 2011 году, за это время может все измениться. Но как обстоят дела на сегодняшний день, я сказать не могу, ибо времени выяснить такой вопрос у меня пока нет. Но, судя по тому, как добавлял свойство <code>-webkit-font-smoothing</code> в HTML-шаблон автор Adi Purdila:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-font-smoothing</span><span class="o">:</span> <span class="nt">antialiased</span><span class="o">;</span></code></pre></div>
+
+<p>… дела ушли не намного вперед.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-11-19T00:00:00+04:00"><a href="http://zencoder.ru/css/less-hat-mixin-less/">November 19, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -762,237 +841,6 @@
 <span class="p">}</span></code></pre></div>
 
 <p>Вот мы и познакомились со шрифтовыми иконками. Все оказалось просто и приятно в работе.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-11T00:00:00+04:00"><a href="http://zencoder.ru/css/css-search-field/">November 11, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-search-field/" rel="bookmark" title="Кнопка внутри поля поиска - как создать с помощью CSS" itemprop="url">Кнопка внутри поля поиска - как создать с помощью CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Интересный вопрос создания поля поиска с кнопкой внутри.</p>
-</blockquote>
-
-<p>Сейчас такой прием очень популярен в дизайне и используется повсеместно на сайтах. Почему популярен - просто очень красив такой способ передачи поля ввода в веб-приложении. Чтобы было более понятно, о чем идет речь, давайте посмотрим пример макета с подобной формой поиска:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/search-form-example.jpg" alt="Пример поля поиска с кнопкой внутри на макете" /></p>
-
-<p>Дизайн нарисован таким образом, что видим следующее. Поле ввода текста с текстом-заглушкой <code>placeholder</code>, справа внутри поля находиться кнопка отправки запроса в виде текста “Send”.</p>
-
-<p>Все вроде так и в чем же проблема? Трудность заключается в том, что на сегодняшний день возможности CSS не позволяют поместить кнопку внутри элемента <code>input</code>. Поэтому в данном случае выход один - разместить рядом два элемента: <code>input</code> и кнопку (<code>button type="submit"</code> или <code>input type="submit"</code>).</p>
-
-<p>Оба эти элемента обернуть в родительский элемент <code>form</code> (благо он является блочным) которому придать внешние свойства поля ввода - фоновую заливку, границу, внутренние отступы <code>padding</code>. А у настоящих элементов <code>input</code> или <code>button</code> убрать все визуальные признаки их присутствия внутри <code>form</code>.</p>
-
-<p>На авторитетном для меня сайте htmlbook есть статья, посвященная подобному вопросу. Но в ней описывается способ, когда внутрь элемента форм вставляется дополнительный блок <code>div</code>. Которому назначаются все внешние атрибуты поля ввода.</p>
-
-<p>Мне такой подход не совсем понятен - зачем плодить лишнюю разметку, когда с подобной задачей прекрасно справляется сам элемент <code>form</code>.</p>
-
-<p>Мне более нравиться способ, представленный на сайте Speckyboy.com автором Catalin Rosu, в котором как раз и используются только три элемента: <code>form</code>, <code>input type="text"</code>, <code>button type="submit"</code>. В самом конце статьи я приведу код этого примера также, ибо он мне понравился.</p>
-
-<p>Приступаем к первому примеру и начнем создавать поле поиска с кнопкой, как на картинке. Для начала придадим элементу <code>form</code> внешние признаки поля ввода: зададим границу с радиусом скругления, фоновую заливку и внутренние поля отступа <code>padding</code>.</p>
-
-<p>Помимо этого, явно установим ширину и высоту нашего будущего “поля” ввода и немного приукрасим ее, анимировав цвет границы при наведении <code>hover</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">form</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ad9d80</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">4px</span> <span class="m">20px</span> <span class="m">4px</span> <span class="m">24px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">254px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">25px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#e4d9c5</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">9px</span><span class="p">;</span>
-  
-  <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-    <span class="k">border-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#ad9d80</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Теперь уберем все, что делает <code>input</code> таковым в нашем случае - обнулим границу, переопределим <code>padding</code> и установим в ноль <code>margin</code>.</p>
-
-<p>Это основные свойства элемента <code>input</code>, назначаемые ему по умолчанию браузером. Затем немного поборемся с браузерами на WebKit (Chrome\Safari), которые создаются эффект свечения вокруг поля ввода при получении фокуса <code>outline</code> и рисуют тонкую линию-границу <code>-webkit-appearance: none</code> несмотря на то, что мы убрали ее, обнулив <code>border</code>.</p>
-
-<p>Фоновый цвет сделаем одинаковым с элементом <code>form</code>, чтобы создавалась иллюзия однородности. Все остальные свойства можно не упоминать - они очевидны (кегль, цвет текста, высота <code>input</code> и так далее).</p>
-
-<p>Практически также поступим для элемента <code>button</code>, за исключением характерных нюансов типа <code>text-transform: uppercase</code> или <code>color: #4f432e</code>.</p>
-
-<p>Кстати, у Catalin Rosu я перенял “фишку”, когда он применяет <code>button type="submit"</code> вместо <code>input type="submit"</code>. Это делается для дополнительной функциональности кнопки, так как <code>button</code> может перехватывать событие <kbd>Enter</kbd> (нажатие этой клавиши на клавиатуре) + событие мыши. А вот <code>input type="submit"</code> - только нажатие мыши на самом себе:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">input</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="s2">&quot;text&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">appearance</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#e4d9c5</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#beb19a</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">8px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">192px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">button</span><span class="o">[</span><span class="nt">type</span><span class="o">=</span><span class="s2">&quot;submit&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#4f432e</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#e4d9c5</span><span class="p">;</span>
-  <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
-  <span class="n">transition</span><span class="o">:</span> <span class="k">color</span> <span class="m">.2s</span><span class="p">;</span>
-  
-  <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-    <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="m">#4f432e</span><span class="o">,</span> <span class="m">10%</span><span class="p">);</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Ну и в конце приукрасим текст-заглушку <code>placeholder</code>. Здесь придется использовать браузерные префиксы, так как данное свойство не поддерживается в полной мере браузерами на сегодня:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">input</span><span class="o">:</span><span class="nd">:-webkit-input-placeholder</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#beb19a</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nt">input</span><span class="nd">:-moz-input-placeholder</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#beb19a</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nt">input</span><span class="nd">:-ms-input-placeholder</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#beb19a</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Совсем забыл привести HTML-код, на основе которого создавались все вышеприведенные стили:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;form</span> <span class="na">action=</span><span class="s">&quot;#&quot;</span> <span class="na">method=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">name=</span><span class="s">&quot;email&quot;</span> <span class="na">id=</span><span class="s">&quot;email&quot;</span> <span class="na">placeholder=</span><span class="s">&quot;enter your email address...&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span><span class="nt">&gt;</span>send<span class="nt">&lt;/button&gt;</span>
-<span class="nt">&lt;/form&gt;</span></code></pre></div>
-
-<p>Результат создания поля поиска показан ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/search-form-ready.jpg" alt="Созданное в коде поле ввода с кнопкой внутри" /></p>
-
-<p>Все хорошо.</p>
-
-<h2 id="section">Поле ввода и кнопка со стрелкой (псевдо-элемент) внутри.</h2>
-
-<p>На закуску привожу полный код (почти без объяснений - чего там объяснять) от Catalin Rosu, как и обещал.</p>
-
-<p>Здесь есть интересный атрибут <code>required</code>, который делает значение в поле ввода обязательным. Если оно будет пустым и нажать кнопку отправки, то появиться сообщение о необходимости сначала ввести данные.</p>
-
-<p>Также автором статьи намеренно используется элемент <code>input type="text"</code> вместо нового элемента <code>input type="search"</code>, который еще не до конца поддерживается всеми браузерами:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;form</span> <span class="na">class=</span><span class="s">&quot;catalin&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;input</span> <span class="na">type=</span><span class="s">&quot;text&quot;</span> <span class="na">placeholder=</span><span class="s">&quot;Search here ...&quot;</span> <span class="na">required</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">&quot;submit&quot;</span><span class="nt">&gt;</span>Send<span class="nt">&lt;/button&gt;</span>
-  <span class="nt">&lt;/form&gt;</span></code></pre></div>
-
-<p>Довольно объемный, но это связано с теми эффектами, которые применены к данной форме:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">form</span><span class="nc">.catalin</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">390px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">8px</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">8px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">3</span><span class="p">)</span> <span class="k">inset</span><span class="p">;</span>
-<span class="p">}</span>
-  <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">input</span><span class="p">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">border</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span> <span class="m">10px</span> <span class="m">2px</span> <span class="m">4px</span><span class="p">;</span>
-    <span class="k">font</span><span class="o">:</span> <span class="m">16px</span> <span class="n">Arial</span><span class="o">,</span> <span class="n">Helvetica</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">26px</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">306px</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">appearance</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
-    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">3px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">3px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">button</span><span class="p">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">border</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-    <span class="k">font</span><span class="o">:</span> <span class="k">bold</span> <span class="m">12px</span><span class="o">/</span><span class="m">30px</span> <span class="n">Arial</span><span class="o">,</span> <span class="n">Helvetica</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-    <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
-    <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
-    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">0</span> <span class="m">3px</span> <span class="m">3px</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="p">}</span>
-    <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">button</span><span class="nd">:hover</span><span class="p">{</span>
-      <span class="k">background-color</span><span class="o">:</span> <span class="m">#667788</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">button</span><span class="nd">:before</span><span class="p">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-    <span class="k">top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="k">left</span><span class="o">:</span> <span class="m">-5px</span><span class="p">;</span>
-    <span class="k">border-top</span><span class="o">:</span> <span class="m">5px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-    <span class="k">border-bottom</span><span class="o">:</span> <span class="m">5px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
-    <span class="k">border-right</span><span class="o">:</span> <span class="m">5px</span> <span class="k">solid</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="p">}</span>
-    <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">button</span><span class="nd">:hover:before</span><span class="p">{</span>
-      <span class="k">border-right</span><span class="o">-</span><span class="k">color</span><span class="o">:</span> <span class="m">#667788</span><span class="p">;</span>
-      <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-
-<span class="c">/* Placeholder</span>
-<span class="c">-----------------------------------------------------*/</span>
-  <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">input</span><span class="o">:</span><span class="nd">:-webkit-input-placeholder</span> <span class="p">{</span>
-     <span class="k">color</span><span class="o">:</span> <span class="m">#999</span><span class="p">;</span>
-     <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-     <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="p">}</span>
-   
-  <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">input</span><span class="nd">:-moz-placeholder</span> <span class="p">{</span>
-      <span class="k">color</span><span class="o">:</span> <span class="m">#999</span><span class="p">;</span>
-      <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-      <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="p">}</span>
-   
-  <span class="nt">form</span><span class="nc">.catalin</span> <span class="nt">input</span><span class="nd">:-ms-input-placeholder</span> <span class="p">{</span>
-      <span class="k">color</span><span class="o">:</span> <span class="m">#999</span><span class="p">;</span>
-      <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-      <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>И результат этого кода - красивое поле ввода с не менее красивой кнопкой отправки данных на сервер:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/search-form-catalin.jpg" alt="Поле ввода с кнопкой внутри" /></p>
-
-<p>На этом все.</p>
 
 <hr />
 

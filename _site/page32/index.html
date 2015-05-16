@@ -144,6 +144,88 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-17T00:00:00+04:00"><a href="http://zencoder.ru/css/css-image-shadow/">October 17, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-image-shadow/" rel="bookmark" title="CSS - два способа создания тени для картинки" itemprop="url">CSS - два способа создания тени для картинки</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Столкнулся с интересным примером или задачей - не знаю, как сказать.</p>
+</blockquote>
+
+<p>Состоит в том, чтобы сделать для картинки тень, причем внутреннюю тень. Казалось бы, задачу просто решить - с помощью <code>box-shadow</code> или <code>text-shadow</code>.</p>
+
+<p>Но не все так просто. В Интернете есть хорошие статьи на эту тему, в частности, на Хабре имеет очень детальный обзор данного способа.</p>
+
+<p>Но пример так мне понравился, что решил его описать у себя - повторение мать учения, как говорится.</p>
+
+<p>Данную задачу можно решить двумя способами. Ни один из них не является достаточно универсальным, это всего лишь выход из положения. Итак, имеется изображение, для которого нужно создать внутреннюю тень.</p>
+
+<p><strong>Первый способ</strong> - это “обернуть” ее в дополнительный блок, которому прописать внутреннюю тень. Главное тут - не забыть “опустить” изображение внутри блока, чтобы тень “легла” на нее.</p>
+
+<p>Код такого способа представлен ниже:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;block1&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/charlize_theron_1.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;480&quot;</span> <span class="na">height=</span><span class="s">&quot;300&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block1</span><span class="p">{</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="k">inset</span> <span class="m">0</span> <span class="m">0</span> <span class="m">6px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">7</span><span class="p">);</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">480px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
+<span class="p">}</span>
+  <span class="nc">.block1</span> <span class="nt">img</span><span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+    <span class="k">z-index</span><span class="o">:</span> <span class="m">-2</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>И результат работы этого кода:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/block-outer.png" alt="Картинка, обернутая в блок" /></p>
+
+<p>Все хорошо - просто и работает. Единственный минус - нарушение семантики HTML-кода. Ведь, чтобы добавить для картинки всего лишь тень, потребовалось создать лишний HTML-элемент, тем самым засоряя документ.</p>
+
+<p><strong>Второй способ</strong> - более правильный с точки зрения семантики. Чтобы “набросить” тень на изображение, нужно поместить его в блок в качестве фонового изображения.</p>
+
+<p>В остальном все остается точно таким же, как и в первом примере. Также создается внутренняя тень для блока, но при этом нет необходимости “опускать” картинку с помощью z-index.</p>
+
+<p>Код второго способа показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;block2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block2</span><span class="p">{</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="k">inset</span> <span class="m">0</span> <span class="m">0</span> <span class="m">12px</span> <span class="m">8px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">481px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">361px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(images/charlize_theron_2.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Картинка - результат работы этого кода:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/block-inside.png" alt="Картинка, вложенная в блок в качестве фонового изображения" /></p>
+
+<p>Код более краткий. Единственный минус - изображение должно быть только в качестве фона для блока.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-16T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-hotkeys/">October 16, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -484,69 +566,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-12T00:00:00+04:00"><a href="http://zencoder.ru/css/sliding-doors-css/">October 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/sliding-doors-css/" rel="bookmark" title="Sliding doors с помощью CSS" itemprop="url">Sliding doors с помощью CSS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Просматривал один из видеокурсов по верстке сайта и разворачиванию его на CMS Joomla.</p>
-</blockquote>
-
-<p>И столкнулся с такой вещью, как вложенность слоев. В видеокурсе был рассмотрен очень наглядный и интересный пример, как с помощью вложенных слоев можно создавать раздвижной фон сайта. Сперва было немного непонятно, но потом все встало на свои места. До этого момента, разбирая готовые примеры верстки, никогда не сталкивался с таким приемом.</p>
-
-<p>Конечно, можно сохранить где-нибудь этот видеоурок и просматривать его, если забыл какие-то моменты. Но показанный в нем прием мне так понравился, что я решил описать его сам, своими собственными словами. Более того, благодаря этому приему для меня “открылась” возможность работы с вложенными слоями. Оказалось, это достаточно простое и эфективное решение, которое можно применять при верстке на практике. И, как мне кажется, данное решение является 100%-но кроссбраузерным.</p>
-
-<p>И так. Имеется сайт с неоднородным фоном. Сайт планируется создавать с подвалом, прижатым книзу. Так как фон неоднородный, то необходимо сделать так, чтобы он подвижным. Он будет состоять из двух частей - верхней части, неподвижно закрепленной вверху страницы. И нижней части, которая будет всегда прижата книзу сайта и перемещаться вместе с подвалом вверх-вниз взависимости от величины контента в средней части:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/sliding-fon.png" alt="Неоднородный фон страницы" /></p>
-
-<p>Как будем поступать. Выделить и вырезать фон из psd-макета не составляет проблем. Затем сохраняем выделенный фон в виде jpeg-файла. После этого нужно разрезать полученную картинку пополам. В результате получиться две части одного фона - верхняя и нижняя. Верхнюю разместим вверху страницы и закрепим там. А нижнюю часть поместим вниз сайта и сделаем так, чтобы она была постоянно прижата к нему. И так, выделили, разрезали и сохранили. Все у нас получилось.</p>
-
-<p>Теперь начинается самое интересное. Будем создавать каркас сайта и в нем реализовывать нашу задумку. Но для начала набросаем схему-каркас сайта. Она очень проста и создана мною в качестве примера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/karkas.png" alt="Каркас будущей страницы" /></p>
-
-<p>Смотрим и видим пять слоев на div’ах, которые вложены один в другой. Первый слой с классом .wrap является оберткой, на которую возложена задача центрирования страницы и задания ей определенной ширины. Второй слой с классом <code>.fon-bot</code> предназначен для размещения нем фонового изображения, в частности - нижней части фонового изображения сайта. В этот слой вложен еще один слой с классом <code>.fon-top</code>, в котором расположена в качестве фона верхняя часть картинки. И, наконец, самый последний и глубоковложенный слой - это будущий контент сайта с классом <code>.content</code>.</p>
-
-<p>HTML-каркас создан. Теперь нужно прописать стили для него, чтобы он “ожил”. Делаю так:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-karkas.png" alt="Раздвижной фон страницы" /></p>
-
-<p>Слой <code>.wrap</code> - тут все понятно без лишних слов. Далее - слой <code>.fon-bot</code>. В нем задается фоновая картинка, которая прижимается с помощью свойства <code>background-position</code> в правый нижний угол блока. Посмотрите на значения этого свойства: <code>100% 100%</code>. Это как раз и задает фоновому изображению положение в правом нижнем углу. Фактически, теперь она будет постоянно прижата книзу блока <code>.fon-bot</code>, что нам и требовалось.</p>
-
-<p>С точностью до наоборот поступаем с блоком <code>.fon-top</code>. Также устанавливаем для него фоновое изображение, но позиционируем его в левом верхнем углу с помощью значений <code>0 0</code>. Теперь картинка будет всегда прижата кверху этого блока. Фактически, поставленная перед нами задача уже выполнена.</p>
-
-<p>Но для наглядности в пример добавлен еще один, пятый блок <code>.content</code>. На практике он выполняет функцию контейнера для всего содержимого страницы сайта. Вставим внутрь этого слоя фоновое изображение и зададим ему минимальную высоту, которая превышает высоту блоков <code>.fon-top</code> и <code>.fon-bot</code> в сумме (точнее - высоту фоновых картинок обоих слоев). Также отцентруем фоновую картинку блока <code>.content</code>.</p>
-
-<p>В итоге получим следующий результат (чтобы пример веселее смотрелся, в качестве фоновых картинок вставил красоток-сестренок Марианну и Камиллу Давалос):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/background-result.png" alt="Раздвижной фон страницы" /></p>
-
-<p>При увеличении значения <code>min-height</code> слоя <code>.content</code> верхняя и нижняя картинки будут разъезжаться, а при уменьшении - съезжаться. Если не ошибаюсь, описанный мною способ называется методом “раздвижных дверей” (сам такой метод не изучал, но встречал в книгах по CSS такое упоминание.)</p>
-
-<p>Полезным для себя вынес такой прием, как работа с неоднородным фоном страницы.</p>
-
-<p>На этом все.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
