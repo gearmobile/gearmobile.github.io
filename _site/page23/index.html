@@ -144,6 +144,223 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-05T00:00:00+04:00"><a href="http://zencoder.ru/css/calculate-width-block-box-sizing/">March 05, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/calculate-width-block-box-sizing/" rel="bookmark" title="Вычисление ширины блока через box-sizing" itemprop="url">Вычисление ширины блока через box-sizing</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В CSS3 появилось свойство <code>box-sizing</code>, смысл которого в способе вычисления ширины HTML-блока браузером. Но, прежде чем переходить к его рассмотрению, сначала давайте вспомним, как обычно браузер производит расчет ширины блока элемента в HTML-разметке?</p>
+</blockquote>
+
+<p>Вычисление всегда выполняется по формуле: <code>Width = Margin + Border + Padding + Content</code>. То есть, если ширина контента задана в 200px, <code>padding</code> равен 25px, <code>border</code> равен 10px, а <code>margin</code> равен 15px; то результирующая ширина блока будет равна 300px.</p>
+
+<p>Такой способ вычисления ширины блока делают все современные браузеры:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">200px</span> <span class="p">+</span> <span class="n">25px</span><span class="p">*</span><span class="n">2</span> <span class="p">+</span> <span class="n">10px</span><span class="p">*</span><span class="n">2</span> <span class="p">+</span> <span class="n">15px</span><span class="p">*</span><span class="n">2</span> <span class="p">=</span> <span class="n">300px</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/content-box.jpg" alt="Модель расчета ширины блока в браузере по умолчанию" class="center-image" /></p>
+
+<p>Однако, были времена, когда не все браузеры вычисляли размеры блока элемента подобным образом. Существовал Internet Explorer версии 5/6, который ширину блока считал несколько иначе: <strong>из заданной ширины блока вычитались padding и border, получалась результирующая ширина области content</strong>. В те времена веб-разработчики “показывали пальцем” на этот браузер и говорили, что это ошибка и недочет разработчиков IE5/6.</p>
+
+<p>Но теперь времена изменились благодаря появлению адаптивного (<code>responsive</code>) дизайна. Причины возникновения адаптивного дизайна - в огромном количестве устройств с разными размерами экранов, по большей части мобильных. Задача адаптивного дизайна в “подстраивании” одного и того же дизайна сайта под различные размеры мониторов. При таком “подстраивании” важной становиться задача вычисления ширины блоков элементов, чтобы верстка не “разваливалась”.</p>
+
+<p>Чтобы такого не произошло, как раз и становиться удобным “возврат” к той модели расчета ширины блока, какая присутствовала в IE5/6. Для этого было разработано свойство <code>box-sizing</code>, с помощью которого можно управлять подобной моделью расчета.</p>
+
+<table>
+  <tbody>
+    <tr>
+      <td>Свойство <code>box-sizing</code> принимает <strong>три значения</strong> (<em>три модели вычисления ширины блока</em>): **content-box</td>
+      <td> </td>
+      <td>padding-box</td>
+      <td> </td>
+      <td>border-box**.</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="box-sizing-content-box">Свойство box-sizing: content-box</h2>
+
+<p>Первая модель <code>content-box</code> является <em>способом вычисления ширины блока по умолчанию</em>, принятым в современных браузерах:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-sizing</span><span class="o">:</span> <span class="nt">content-box</span></code></pre></div>
+
+<p>Ширина блока равна сумме: <code>Width = Width (Content) + Padding + Border + Margin</code></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/content-box.jpg" alt="Свойство box-sizing со значением content-box" class="center-image" /></p>
+
+<h2 id="box-sizing-padding-box">Свойство box-sizing: padding-box</h2>
+
+<p>Вторая модель <code>padding-box</code> заключается в том, что ширина блока включает в себя ширину контента (<code>content</code>) и ширину <code>padding</code>. Остальные - <code>border-box</code> и <code>margin-box</code> - приплюсовываются к заданной ширине, как обычно. Данная модель, хоть и заявлена в спецификации CSS3, не поддерживается на сегодняшний день почти никакими браузерами; <em>так что о ней можно забыть (пока забыть)</em>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-sizing</span><span class="o">:</span> <span class="nt">padding-box</span></code></pre></div>
+
+<p>Ширина блока равна сумме: <code>Width = Width (Content + Padding) + Border + Margin</code></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/padding-box.jpg" alt="Свойство box-sizing со значением padding-box" class="center-image" /></p>
+
+<h2 id="box-sizing-border-box">Свойство box-sizing: border-box</h2>
+
+<p>Третья модель <code>border-box</code> очень похожа на предыдущую модель <code>padding-box</code>. Но, в данном случае, ширина блока включает в себя еще и <code>border-box</code>; то есть ширина блока включает в себя область <code>content-box</code>, <code>padding-box</code> и <code>border-box</code>. Область <code>margin-box</code> прибавляется к ширине блока элемента, как обычно.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-sizing</span><span class="o">:</span> <span class="nt">border-box</span></code></pre></div>
+
+<p>Ширина блока равна сумме: <code>Width = Width (Content + Padding + Border) + Margin</code></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/border-box.jpg" alt="Свойство box-sizing со значением border-box" class="center-image" /></p>
+
+<h2 id="box-sizing">Практический пример свойства box-sizing</h2>
+
+<p>Теперь не мешало бы продемонстрировать на практике, каким образом браузеры выполняют вычисления ширины блоков элементов под управлением свойства <code>box-sizing</code>. Допустим, у нас имеется блок-обертка <code>div class="wrap"</code>, внутри которого расположены два плавающих блока-потомка <code>div class="left"</code> и <code>div class="right"</code>.</p>
+
+<p>HTML-разметка представлена ниже:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;left&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;right&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>… и CSS-таблица, обычная для такого случая. Единственное “новое” правило в этом коде - это свойство <code>box-sizing</code>, указанное с вендорными префиксами. Обычно его можно не указывать, так как у браузеров по умолчанию свойство <code>box-sizing</code> установлено в значении <code>content-box</code> (<em>как уже упоминалось ранее</em>). Но в нашем случае понадобится <strong>явно указать</strong> это свойство. Для блоков-потомков здесь намерено мы не указываем (<em>пока не указываем</em>) <code>padding</code>, <code>border</code> и <code>margin</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">*</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">html</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#a7c5a8</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">body</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.wrap</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">800px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">3px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.left</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.right</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_default.jpg" alt="Свойство box-sizing со значением content-box" class="center-image" /></p>
+
+<p>Блоки-потомки четко вписываются в блок-родитель, так как у них нет <code>border</code>, <code>padding</code> и <code>margin</code>; ширина блоков-потомков точно равна половине ширине блока-родителя.</p>
+
+<p>Теперь добавим для блоков-потомков <code>padding: 5px</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">content</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Картина будет заранее предсказуемая - один из блоков-потомков опуститься вниз из-за добавления <code>padding: 5px</code> к обоим блокам:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding.jpg" alt="Свойство box-sizing со значением content-box и padding: 5px" class="center-image" /></p>
+
+<p>Настало время применить свойство <code>box-sizing</code> со значением <code>border-box</code>. Браузер сразу же <strong>пересчитает ширину обоих блоков</strong> и картина, как по волшебству, изменится:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding_border-box.jpg" alt="Свойство box-sizing со значением border-box и padding: 5px" class="center-image" /></p>
+
+<p>Даже если добавить к блокам-потомкам границу <code>border</code>, то картинка останется прежней:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">6px</span> <span class="k">solid</span> <span class="m">#0000ff</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.right</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">6px</span> <span class="k">solid</span> <span class="m">#00ff00</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding_border_border-box.jpg" alt="Свойство box-sizing со значением border-box и border: 6px" class="center-image" /></p>
+
+<p>Но если прибавить к блокам <code>div class="left"</code> и <code>div class="right"</code> правило <code>margin</code>, то наша разметка снова “сломается”:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span><span class="o">,</span> <span class="nc">.right</span><span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Это происходит потому, что в модель вычисления <code>border-box</code> поля <code>margin</code> не входят. Поле <code>margin-left</code> размером 5px прибавляется к ширине блока-потомка. Суммарная ширина обоих блоков-потомков превышает ширину блока-родителя и один из них выходит из его, опускаясь (<em>снова</em>) вниз:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/box-sizing_padding_border_margin_border-box.jpg" alt="Свойство box-sizing со значением border-box и margin-left: 5px" class="center-image" /></p>
+
+<p>В этом примере мы не применили к свойству <code>box-sizing</code> значения <code>padding-box</code>, потому что [браузеры не понимают этого значения][1] и свойство <code>box-sizing</code> работать не будет в этом случае.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Вот и все, что можно сказать о свойстве <code>box-sizing</code>. Понимание этого свойства понадобиться еще, когда придет время изучать адаптивный (<em>responsive</em>) дизайн.</p>
+
+<p>Основой для данной статьи послужила замечательная “Большая книга CSS3 Д. Макфарланд (<em>3-е издание</em>).</p>
+
+<hr />
+
+<table>
+  <tbody>
+    <tr>
+      <td>[1]: https://developer.mozilla.org/en-US/docs/Web/CSS/box-sizing “MDN</td>
+      <td>CSS - box-sizing”</td>
+    </tr>
+  </tbody>
+</table>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-03-03T00:00:00+04:00"><a href="http://zencoder.ru/css/playground-codepen/">March 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -618,323 +835,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-02-24T00:00:00+04:00"><a href="http://zencoder.ru/css/css-font-face/">February 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~14 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-font-face/" rel="bookmark" title="Подключение веб-шрифтов с помощью @font-face" itemprop="url">Подключение веб-шрифтов с помощью @font-face</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Выжимка из замечательной книги “Большая книга CSS3 3-е издание” Дэвида Макфарланда о веб-шрифтах и способе их подключения с помощью директивы <code>@font-face</code>.</p>
-</blockquote>
-
-<p>Узнал об этой теме массу нового для себя. В частности, два способа подключения шрифтов, особенность работы с сервисом Google Fonts и числовая шкала плотности шрифтов, ресурсы для поиска бесплатных шрифтов, тонкости работы с генератором FontSquirrel, ресурсы по шрифтовым иконкам. Для меня информация оказалась чрезвычайно полезной и интересной.</p>
-
-<p>Ниже привожу краткий конспект всех вопросов, показавшихся мне интересными и новыми в моей практике, пересказанный своими собственными словами. Надеюсь, данный материал окажется полезным не только для меня одного.</p>
-
-<h2 id="font-face">Подключение веб-шрифтов с помощью @font-face:</h2>
-
-<ul>
-  <li>подключение нестандартного шрифта с помощью директивы <code>@font-face</code></li>
-  <li>назначение подключенного шрифта с помощью свойства <code>font-family</code></li>
-</ul>
-
-<p>Директива <code>@font-face</code> указывает (название говорит само за себя - директива!) браузеру сделать две вещи:</p>
-
-<ul>
-  <li>создать указываемое имя шрифта</li>
-  <li>загрузить глифы для шрифта из указанного ею места</li>
-</ul>
-
-<p>Свойство <code>font-family</code> указывает браузеру применить шрифт с указанным именем выбранным элементам страницы.</p>
-
-<p>Существует несколько форматов веб-шрифтов. Наиболее распространенные из них: EOT, WOFF, OTF или TTF,</p>
-
-<p><strong>Формат EOT</strong>, который понимают браузеры IE вплоть до версии 8. Собственно, этот формат шрифта создан и существует только ради этого браузера и таких его версий. Чтобы получить шрифт формата EOT, необходимо специальное программное обеспечение для преобразования формата TTF в OET.</p>
-
-<p><strong>Формат WOFF</strong> (Web Open Font Format) является наилучшим на сегодняшний день для использования в Веб: самый маленький и легкий, поддерживается всеми современными браузерами (в том числе IE9 и выше); этот формат был создан специально для Веб. Фактически - это облегченная версия формата TTF или OTF.</p>
-
-<p><strong>Форматы OTF</strong> (Open Type Font) и TTF (True Type Font) - это самые обычные компьютерные шрифты, которые используются в большинстве операционных систем (Windows, Macintosh, Linux) и в приложениях под эти системы. Но, помимо этого, такие шрифты можно легко использовать и в Интернете.</p>
-
-<p><strong>Формат SVG</strong> - это даже не формат шрифта, а формат графики, графического изображения. Особенностью этого формата является то, что графика в этом формате создается исключительно с помощью векторов, то есть - математических формул.</p>
-
-<p>Благодаря этому изображения в таком формате масштабируются без потери качества - при увеличении размера картинки компьютеру достаточно пересчитать векторные точки. Особенность этого формата графики позволила применить его для создания “шрифтов”. То есть, обычный шрифт преобразуется в формат SVG, где каждый шрифт - это фактически картинка в масштабируемом формате SVG.</p>
-
-<p>Зачем потребовались такие трудности? Все дело в том, что браузеры под ОС Android (очень распространенная ОС под мобильные устройства) могут отображать веб-шрифты только в этом формате. Браузеры под iPhone (Safari 4.1 и ниже) также не умеют распознавать веб-шрифт. Вот этим “неумехам” и подсовывают картинки в виде шрифтов - “не умеешь кушать обычную пищу, так кушай хотя бы это!”.</p>
-
-<h2 id="section">Правовой вопрос использования шрифтов</h2>
-
-<p>Вопрос можно кратко cформулировать в следующих двух предложениях. Все шрифты делятся на <strong>платные</strong> или <strong>бесплатные</strong>.</p>
-
-<p><strong>Платные</strong> шрифты делятся на те, которые:</p>
-
-<ul>
-  <li><strong>можно</strong> использовать в Веб</li>
-  <li><strong>нельзя</strong> использовать в Веб</li>
-</ul>
-
-<p>Чтобы не заморачиваться решением запутанного вопроса лицензии на шрифты, можно воспользоваться веб-службами <a href="https://www.google.com/fonts" title="Google Fonts">Google Fonts</a> или <a href="https://typekit.com/" title="TypeKit">TypeKit</a>, на которых собраны все шрифты, <strong>которые можно использовать в Веб</strong>. Шрифты на этих серверах либо <strong>бесплатные</strong> (<a href="https://www.google.com/fonts" title="Google Fonts">Google Fonts</a>), либо <strong>платные</strong> (<a href="https://typekit.com/" title="TypeKit">TypeKit</a>).</p>
-
-<p>Краткий список <strong>источников бесплатных шрифтов</strong>, которые можно использовать в Веб:</p>
-
-<ul>
-  <li>The League of Movable Type (<a href="https://www.theleagueofmoveabletype.com/" title="The League of Movable Type">https://www.theleagueofmoveabletype.com/</a>)</li>
-  <li>FontSquirrel (<a href="http://www.fontsquirrel.com/" title="FontSquirrel">http://www.fontsquirrel.com/</a>)</li>
-  <li>Google Fonts (<a href="https://www.google.com/fonts" title="Google Fonts">https://www.google.com/fonts</a>)</li>
-  <li>The Open Font Library (<a href="http://openfontlibrary.org/ru" title="The Open Font Library">http://openfontlibrary.org/ru</a>)</li>
-  <li>Fontex.org (<a href="http://fontex.org/" title="Fontex.org">http://fontex.org/</a>)</li>
-  <li>Exljbris Font Foundry (<a href="http://www.exljbris.com/" title="Exljbris Font Foundry">http://www.exljbris.com/</a>)</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/theleagueofmovabletype.png" alt="The League of Movable Type" class="center-image" /></p>
-
-<p>Большинство веб-сервисов, которое предоставляет шрифты для Веб, “отдают” их в формате OTF или TTF. Поэтому нужно конвертировать этот шрифт в четыре формата, описанных выше, для того, чтобы максимальное число посетителей сайта смогло увидеть на своих устройствах содержимое данного сайта. Для конвертирования не нужно искать специальное программное обеспечение. Можно воспользоваться бесплатным генератором <a href="http://www.fontsquirrel.com/tools/webfont-generator" title="@font-face Generator">@font-face Generator</a>, находящемся на сервере FontSquirrel (<a href="http://www.fontsquirrel.com/" title="FontSquirrel">http://www.fontsquirrel.com/</a>).</p>
-
-<p>Единственное ограничение этого сервиса - он имеет свой собственный blacklist, в который помещены шрифты, запрещенные по лицензии для использования в Веб. Другими словам, если “подсунуть” этому генератору лицензионный шрифт, приобретенный пиратским способом, то он откажется от генерации последнего.</p>
-
-<p>Генератор <code>@font-face</code> Generator - не единственный в Веб сервис подобного рода. Существуют подобные ему генераторы, которые, в тому же, обладают “неразборчивостью” по отношению к лицензии конвертируемого шрифта.</p>
-
-<p>Порядок указания форматов шрифтов в директиве <code>@font-face</code> важен и должен быть следующим:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-    <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-    <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-    <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-<span class="p">}</span></code></pre></div>
-
-<ul>
-  <li><strong>EOT</strong> - формат только для Internet Explorer 8 и ниже</li>
-  <li><strong>WOFF</strong> - самый современный и маленький по размеру шрифт, который понимают большинство современных браузеров</li>
-  <li><strong>TTF</strong> - сравнительно большой по размеру шрифт и достаточно устаревший</li>
-  <li><strong>SVG</strong> - самый большой по размеру и объему шрифт, поэтому его необходимо размещать в самой последней строке. К тому же, этот формат шрифта используется только в браузерах ОС Android или в браузере Safari 4 (<em>то есть, iPhone</em>)</li>
-</ul>
-
-<p>Браузер читает тело директивы <code>@font-face</code> - каждую строку последовательно. Как только он обнаруживает понятный для него формат шрифта, то загружает его. Поэтому последовательность объявления форматов шрифтов в директиве <code>@font-face</code> является неслучайной и эмпирически выверенной на основе опыта предыдущих веб-разработчиков.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
-  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;League Gothic&#39;</span><span class="o">,</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Правильное применение подключенного web-шрифта League Gothic. Здесь указывается на первом месте имя подключенного шрифта, а затем - <em>резервные шрифты, которые заведомо установлены в системе пользователя</em> (имя шрифта, гарантировано имеющегося в системе и семейство шрифтов).</p>
-
-<p>Внимательный читатель обратит внимание на вторую строку и скажет: это здесь лишнее, бред какой-то. На самом деле не совсем так. Браузеры всегда пытаются отрисовать заголовки полужирным начертанием, по умолчанию. Поэтому, здесь мы говорим, чтобы браузер просто этого не делал, и все.</p>
-
-<p>Помимо букв, шрифты могут состоять из иконок или изображений. Ресурсы, посвященные теме шрифтовых иконок и значков:</p>
-
-<ul>
-  <li><a href="http://css-tricks.com/flat-icons-icon-fonts/" title="The Big List of Flat Icons &amp; Icon Fonts">The Big List of Flat Icons &amp; Icon Fonts</a></li>
-  <li><a href="http://css-tricks.com/html-for-icon-font-usage/" title="HTML for Icon Font Usage">HTML for Icon Font Usage</a></li>
-  <li><a href="http://css-tricks.com/examples/IconFont/" title="Icon Fonts are Awesome">Icon Fonts are Awesome</a></li>
-  <li><a href="http://goo.gl/Rhwrf6" title="Шрифтовые иконки и сервис IcoMoon">Шрифтовые иконки и сервис IcoMoon</a></li>
-</ul>
-
-<h2 id="section-1">Виды шрифтов</h2>
-
-<p>При подключении шрифтов, установленных на компьютере, обычно не возникает вопросов и мы не задумываемся о том, как так получается, что при указании браузеру отрисовать текст полужирным с помощью тега <code>strong</code> у нас действительно получается полужирный шрифт; при указании сделать текст курсивным через тег <code>em</code> текст действительно делается курсивным; а при полужирном курсиве через теги <code>strong em</code> он делается полужирным курсивом. Нам кажется, что браузер делает текст таким, каким мы указываем ему.</p>
-
-<p>На самом деле это не так. Или не совсем так. Браузер действительно отрисовывает шрифт указанным ему способом, но вот с самим шрифтом он ничего сделать не может. Он просто берет указанное тегом начертание шрифта и выводит его на экран. Дело в том, что дизайнеры или компании, занимающиеся разработкой шрифтов, создают шрифты таким образом: художник рисует четыре набора одного и того же шрифта. То есть, рисуется набор символов в обычном начертании (regular), затем рисуется набор символов в курсивном начертании (italic), потом набор символов в полужирном начертании (bold), и наконец набор символов в полужирном курсивном начертании (bold italic). Все эти четыре набора символов фактически являются отдельными шрифтами, хотя и носят одно общее название (Georgia, Tahoma, Helvetica и так далее).</p>
-
-<p>Когда браузеру указывается, какое начертание применить, он просто берет шрифт с указанным начертанием и отображает его. К примеру, шрифт Arial имеет четыре вида начертания. Если указывается, что нужно полужирное начертание, то браузер берет полужирное начертание Arial. Сам браузер преобразовать одно начертание в другое не может ни в коей мере. Он может выполнить только одну вещь - попытаться сделать и обычного начертания “курсивное”. Команда, говорящая браузеру выполнить такую задачу, имеет название <code>oblique</code>. В этом случае браузер просто тупо выполняет наклон всех букв шрифта на 45 градусов, и все. Получившийся результат может быть просто ужасным, поэтому такая команда используется очень редко.</p>
-
-<p>В случае с веб-шрифтами веб-дизайнеру <strong>нужно самому побеспокоиться от том, чтобы подключить все четыре вида начертания выбранного шрифта по отдельности</strong>. Из-за браузера IE8 подключение веб-шрифтов с помощью директивы <code>@font-face</code> значительно осложняется и может быть выполнено двумя способами: <strong>простым</strong>, который IE8 не понимает (но понимают все остальные браузеры) и <strong>сложным</strong>, который будет доступен и IE8 также.</p>
-
-<h2 id="section-2">Простой способ подключения веб-шрифта</h2>
-
-<p>Простой способ заключает в добавлении к директиве <code>@font-face</code> двух CSS-правил: <code>font-weight</code> и <code>font-style</code>. Обычно эти два правила задают браузеру команды отображать текст полужирным и курсивным начертанием. Но внутри директивы <code>@font-face</code> эти правила выполняют другую роль, они заставляют браузер загрузить веб-шрифт с указанным стилем и жирностью. Чтобы быть более понятным, приведем сразу пример подключения веб-шрифта PTSans с четырьмя вариантами его отображения:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
-  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
-  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">italic</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">bold</span><span class="o">;</span>
-  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.woof&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">bold</span><span class="o">;</span>
-  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">italic</span><span class="o">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Расскажу, как я понимаю данные CSS-правила. Директива <code>@font-face</code> является своего рода функцией наподобие функции в JavaScript (<em>а может это и есть функция на самом деле, уж больно похожа по своему функционалу?</em>). Эта функция (<em>я буду называть так здесь эту директиву</em>) объявляет имя переменной правилом <code>font-family: 'PTSans'</code>. Эта переменная является массивом, который заполняется значениями с помощью последующих правил:</p>
-
-<ul>
-  <li><code>src: url('PTSansBoldItalic.eot')</code> - местоположение шрифта;</li>
-  <li><code>font-weight: normal</code> - загрузить шрифт указанной жирности;</li>
-  <li><code>font-style: normal</code> - загрузить шрифт указанного стиля.</li>
-</ul>
-
-<p>CSS-правила требуют, чтобы при четырех вариантах отображения шрифта заполнение массива <code>PTSans</code> производилось каждый раз отдельным вызовом функции <code>@font-face</code>. После этого достаточно подключить переменную <code>PTSans</code> к выбранным элементам страницы:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSans</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>И затем HTML-тегами <code>strong</code> или <code>em</code> указать, какое начертание шрифта применить к указанным элементам:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">dolor</span> <span class="nt">ets</span> <span class="o">&lt;</span><span class="nt">strong</span><span class="o">&gt;</span><span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">dolor</span> <span class="nt">ets</span><span class="o">&lt;/</span><span class="nt">strong</span><span class="o">&gt;</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">ipsum</span> <span class="nt">dolor</span> <span class="nt">ets</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="o">&lt;</span><span class="nt">em</span><span class="o">&gt;</span><span class="nt">dolor</span> <span class="nt">ets</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">dolor</span><span class="o">&lt;/</span><span class="nt">em</span><span class="o">&gt;</span> <span class="nt">ets</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">dolor</span> <span class="nt">ets</span></code></pre></div>
-
-<p>Браузер “вытащит” из массива PTSans шрифт нужного начертания (bold или italic или bold italic) и применит его к указанным элементам страницы.</p>
-
-<p>Преимуществом данного способа подключения веб-шрифта является его универсальность. Достаточно один раз объявить шрифт с помощью директивы <code>@font-face</code> и правила:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="err">какой</span><span class="nt">-</span><span class="err">то</span> <span class="err">элемент</span> <span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSans</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… чтобы потом управлять отображением этого шрифта посредством семантически верных тегов <code>strong</code> и <code>em</code>.</p>
-
-<h2 id="section-3">Сложный способ подключения веб-шрифта</h2>
-
-<p>К сожалению, IE8 не понимает способа подключения веб-шрифта, описанного выше. Точнее, этот браузер не понимает способа подключения различных начертаний шрифта <strong>к одному и тому же имени этого шрифта</strong>. Если создать правила, описанные выше и попробовать загрузить полученную HTML-страницу в IE8, то весь текст будет отображен как: <code>font-family: PTSans; font-weight: normal; font-style: normal</code>.</p>
-
-<p>В тех местах, где применены теги <code>strong</code> или <code>em</code>, браузер IE8 будет сам делать из шрифта PTSans начертания <code>bold</code> и <code>italic</code>, а не подключать уже готовые шрифты в этих начертаниях. Результат такой “самодеятельности” будет плачевным.</p>
-
-<p>Выходом из положения будет применение различных имен шрифта в директиве <code>@font-face</code>. Пример варианта подключения веб-шрифта, понятного для IE8, показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansRegular&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-<span class="p">}</span>
-
-<span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansItalic&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-<span class="p">}</span>
-
-<span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansBold&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-<span class="p">}</span>
-
-<span class="k">@font-face</span><span class="p">{</span>
-  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansBoldItalic&#39;</span><span class="o">;</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot&#39;</span><span class="o">);</span>
-  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.woof&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
-  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Обратите внимание на отсутствие правил <code>font-weight</code> и <code>font-style</code> во всех четырех директивах <code>@font-face</code>. Такой код выглядит даже более понятным и логичным, нежели первый вариант. И вроде бы все хорошо, но задавайте теперь рассмотрим простой пример параграфа с тегами <code>strong</code> и <code>em</code>, к которому следует применить шрифт PTSans.</p>
-
-<p>Оцените этого CSS -“крокодила” ниже. Какой он громоздкий и неуклюжий! А если учесть, что на HTML-странице нужно будет применить шрифт PTSans не только к элементу p, а еще к заголовкам <code>h1</code>, <code>h2</code>, ссылке <code>a</code>? Насколько же “раздуются” таблицы стилей в этом случае! А если вдруг (не дай Бог!) придется вносить изменения в такой код?</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansRegular</span><span class="p">;</span>
- <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
- <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
- <span class="k">font-size</span><span class="o">:</span> <span class="m">36px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="nt">strong</span><span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansBold</span><span class="p">;</span>
- <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
- <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="nt">em</span><span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansItalic</span><span class="p">;</span>
- <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
- <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="nt">strong</span> <span class="nt">em</span><span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansBoldItalic</span><span class="p">;</span>
- <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
- <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Применять или не применять второй способ подключения веб-шрифтов - это вопрос того, насколько необходима поддержка IE8 для конкретного сайта. Следует учесть, что доля IE8 падает и будет продолжать падать.</p>
-
-<h2 id="google-fonts">Шрифты Google Fonts</h2>
-
-<p>Чтобы не заморачиваться с поиском шрифта, скачиванием его в формате TTF или OTF, конвертации на генераторе типа FontSquirrel Generator, подключения полученных CSS-стилей в проект с помощью многочисленных директив <code>font-face</code>, можно воспользоваться сервисом Google Fonts. Преимущество этого способа заключается в простоте способа и его надежности - достаточно получить на сервере Google одну строку ссылки и поместить ее в свой проект.</p>
-
-<p>Примечательный момент использования шрифтов Google - <strong>это способ подключения полученных шрифтов</strong>. Первый способ - с помощью тега <code>link</code>, второй в помощью директивы <code>@import</code>, третий с помощью скрипта JavaScript.</p>
-
-<p><strong>Первый способ</strong> прост, но имеет <em>один недостаток</em> - тег <code>link</code> нужно будет подключать к каждой из разрабатываемых HTML-страниц проекта.</p>
-
-<p>В тоже время, <strong>второй способ</strong> с помощью директивы <code>@import</code> более лаконичный - достаточно подключить ее в начало таблиц стилей, чтобы выбранные шрифты применялись ко всем HTML-страницам.</p>
-
-<p><strong>Третий способ</strong> с помощью JavaScript кроме сложности, никаких других преимуществ перед двумя другими не имеет.</p>
-
-<p>В Google плотность шрифта обозначается не с помощью ключевых слов <code>normal</code>, <code>bold</code> или <code>bolder</code>, а в числовой шкале - 100 до 900. Значение 400 соответствует <code>normal</code>, 700 - <code>bold</code>.</p>
-
-<p>К примеру, код может выглядеть следующим образом. Зададим для элемента <code>em</code> шрифт Gentium Book Basic нормальной плотности курсивного начертания:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">em</span><span class="p">{</span>
- <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;Gentium Book Basic&#39;</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
- <span class="k">font-weight</span><span class="o">:</span> <span class="m">400</span><span class="p">;</span>
- <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>На этом выжимка по веб-шрифтам заканчивается.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1198,6 +1098,12 @@
       <li>
         
           <a href="http://zencoder.ru/page43">43</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page44">44</a>
         
       </li>
     

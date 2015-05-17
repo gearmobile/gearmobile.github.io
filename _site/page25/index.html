@@ -144,6 +144,206 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-13T00:00:00+04:00"><a href="http://zencoder.ru/css/stih-css3/">December 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/stih-css3/" rel="bookmark" title="Стилизация стихотворения с помощью CSS3-селекторов" itemprop="url">Стилизация стихотворения с помощью CSS3-селекторов</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Селекторы стандарта CSS3 имеют поистине безграничные возможности для выделения HTML-элементов без создания дополнительной разметки (которая практически всегда применялась в предыдущих версиях CSS).</p>
+</blockquote>
+
+<p>В этой статье я собираюсь менее чем за 5 минут выполнить стилизацию популярного детского стихотворения “Мерцай, звездочка, мерцай!”, используя CSS3-селекторы.</p>
+
+<h2 id="section">Кодируем стихотворение</h2>
+
+<p>Не существует единого мнения в вопросе, как следует выполнять HTML-разметку для стихотворения: большинство полагает, что каждый стих из стихотворения должен быть параграфом (<code>p</code>), а каждая строка стиха должна быть отделена от другой с помощью элемента <code>br</code>.</p>
+
+<p>Некоторые возлагают надежды на грядущие элементы стандарта HTML5, предназначенные специально для форматирования стихотворений, такие как <code>&lt;poem&gt;</code>, <code>&lt;stanza&gt;</code> и <code>&lt;line&gt;</code>. Однако маловероятно, что это будущее наступит в скором времени (<em>если вообще наступит</em>).</p>
+
+<h2 id="section-1">Разметка</h2>
+
+<p>В будущей разметке имеются три основных элемента:</p>
+
+<ul>
+  <li>заголовок;</li>
+  <li>подзаголовок с информацией об авторе;</li>
+  <li>само стихотворение, собственно.</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
+  Twinkle Twinkle Little Star
+<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h2&gt;</span>
+  by Jane Taylor, 1806
+<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  Twinkle, twinkle, little star,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      How I wonder what you are!<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Up above the world so high,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Like a diamond in the sky!
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  When the blazing sun is gone,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      When he nothing shines upon,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Then you show your little light,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Twinkle, twinkle, all the night.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  Then the traveller in the dark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Thanks you for your tiny spark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      He could not see which way to go,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      If you did not twinkle so.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  In the dark blue sky you keep,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      And often through my curtains peep,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      For you never shut your eye,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Till the sun is in the sky.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  As your bright and tiny spark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Lights the traveller in the dark,<span class="ni">&amp;mdash;</span><span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Though I know not what you are,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Twinkle, twinkle, little star.
+<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<h2 id="section-2">Стилизация заголовков</h2>
+
+<p>Прежде чем приступать к стилизации элементов страницы, необходимо добавить базовый сброс стилей и некоторые значения по умолчанию в таблицу стилей:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#111</span><span class="p">;</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">14px</span> <span class="n">Baskerville</span><span class="o">,</span> <span class="s2">&quot;Palatino Linotype&quot;</span><span class="o">,</span> <span class="s2">&quot;Times New Roman&quot;</span><span class="o">,</span> <span class="n">Times</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+  <span class="nt">div</span><span class="o">,</span> <span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span><span class="o">,</span> <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Само стихотворение обернем в блок <code>div</code> и разместим его по центру окна браузера, для большей красоты:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">390px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Заголовки стихотворения также разместим по центру страницы и уберем полужирное начертание, присвоенное им по умолчанию:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span> <span class="p">{</span>
+    <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Установим размер шрифта для основного заголовка - тега <code>h1</code>; добавим небольшой <code>margin-bottom</code> и такой же <code>line-height</code> (потому что размер шрифта был задан слишком большой; если заголовок окажется достаточно длинным, то между его строками будет большое расстояние):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">34px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Для заголовка второго уровня <code>h2</code> с информацией об авторе и дате публикации будет использовать другой, более легкий цвет; меньший размер шрифта; сделаем его курсивным, чтобы он выглядел совсем уж по другому; а также небольшой отступ внизу с помощью <code>margin-bottom</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h2</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#666</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-3">Стихотворение</h2>
+
+<p>Для основного текста стихотворения добавим интерлиньяж <code>line-height</code> достаточно большого размера для того, чтобы расстояние между строками было большое и такой текст было удобно читать. Также для каждого стиха добавим <code>margin-bottom</code>, чтобы визуально отделить их друг от друга:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-4">Волшебные селекторы</h2>
+
+<p>А вот теперь начнем развлекаться! Первое - добавим декоративный элемент в начале и в конце информации об авторе. Для этого воспользуемся псевдо-элементами <code>:before</code> и <code>:after</code> в сочетании с CSS-свойством <code>content</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h2</span><span class="nd">:before</span> <span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;— &#39;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span><span class="nd">:after</span> <span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39; —&#39;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь увеличим первую букву стихотворения - так называемая <em>буквица</em> (<code>drop cap</code>). Для этого воспользуемся смежным селектором (<code>+</code>) и псевдо-элементом (<code>:first-child</code>).</p>
+
+<p>Смежный селектор позволяет выбрать селекторы, которые следуют сразу выбранным нами селектором внутри одного и того же элемента-родителя (например, внутри одного и того же блока <code>div</code>).</p>
+
+<p>Мы выделим первую букву каждого параграфа, который следует сразу за заголовком второго уровня <code>h2</code>, который в нашем примере только один:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">h2</span> <span class="o">+</span> <span class="nt">p</span><span class="nd">:first-letter</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">38px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">2px</span> <span class="m">5px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Буквицу смещаем влево, так чтобы остальной текст обтекал его вокруг; при увеличении размера шрифта междустрочный интервал <code>line-height</code> уменьшаем, чтобы последующие строки не были сдвинуты вниз; и слегка сместим буквицу внутри текста с помощью <code>margin</code>.</p>
+
+<p>Выделим первую строку каждого параграфа через <code>small-caps</code> и сделаем его более удобочитаемым, добавив немного расстояния между каждой строчкой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">p</span><span class="nd">:first-line</span> <span class="p">{</span>
+  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
+  <span class="k">letter-spacing</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Для того, чтобы еще как-то выделить стихотворение, добавим к последнему параграфу дополнительное пространство внизу, чтобы отделить его от всего остального контента, который будет идти следом за ним. Для этого воспользуемся псевдо-элементом <code>:last-child</code>, с помощью которого выделим последнего потомка элемента-родителя:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">p</span><span class="nd">:last-child</span> <span class="p">{</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">padding-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Вот стилизация стихотворения и закончена!</p>
+
+<h2 id="section-5">Некоторые заметки о поддержке браузерами</h2>
+
+<p>Не стоит ожидать, что весь созданный CSS-код будет одинаково работать во всех основных браузерах. Последние версии Safari, Firefox и Opera поддерживают все представленные здесь селекторы. Но Internet Explorer 8 не поддерживает псевдо-элемент <code>:last-child</code>; Internet Explorer 7 не поддерживает псевдо-элементы <code>:last-child</code>, <code>:before</code> и <code>:after</code>; Internet Explorer 6 также не поддерживает псевдо-элемент <code>:first-child</code>, помимо всего прочего.</p>
+
+<h2 id="section-6">Заключение</h2>
+
+<p>Эта статья является очень общим и кратким руководством, как использовать селекторы CSS3-стандарта для стилизации HTML-элементов без дополнительных классов, идентификаторов или чрезмерно раздутого кода. Селекторы CSS3 не работают в более старых версиях браузеров, таких как Internet Explorer 6, в которых генерируются только основные CSS-свойства (за редким исключением).</p>
+
+<p>Но это не означает, что текст в окне браузера делается нечитаемым - просто CSS3-селекторы добавляют дополнительное оформление в современных браузерах, которыми пользуются на сегодняшний день только небольшое количество людей.</p>
+
+<blockquote>
+  <p>Примечание переводчика: статья была написано довольно давно - в 2009 году. Что касается поддержки браузерами CSS3-селекторов, то на сегодняшний день изменений не так уже и много. Исключением является факт, что о браузере IE6 можно забыть.</p>
+</blockquote>
+
+<p>Оригинал статьи - “<a href="http://webdesignernotebook.com/css/styling-a-poem-with-advanced-css-selectors/" title="Styling a Poem with Advanced CSS Selectors">Styling a Poem with Advanced CSS Selectors</a>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-12-12T00:00:00+04:00"><a href="http://zencoder.ru/pseudo-class-empty/">December 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -744,180 +944,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-08T00:00:00+04:00"><a href="http://zencoder.ru/css/wonderful-function-calc/">December 08, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/wonderful-function-calc/" rel="bookmark" title="Замечательная функция calc()" itemprop="url">Замечательная функция calc()</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Как всегда случайно набрел в просторах Интернет на <a href="http://webdesignernotebook.com/" title="Web Designer Notebook">интересный блог</a> одной девушки-дизайнера с не менее интересным именем Inayaili de León Persson.</p>
-</blockquote>
-
-<p>Более того, эта девушка португальского происхождения родом из Панамы, но родилась она в СССР! С 2008 года живет в Лондоне и работает ведущим веб-дизайнеров в Canonical. Как все запутано!</p>
-
-<p>Но это было лирическое вступление. Переходим к главному. Мне на глаза уже давно попадались описания функции <code>calc()</code> - на CSSTricks (еще не успел прочитать) и на htmlbook (успел прочитать). Последний источник как-то не впечатлил, из-за сухости изложения материала, наверное.</p>
-
-<p>А вот на сайте девушки с таким необычным именем функция <code>calc()</code> описана кратко, но интересно, с примерами. И хоть написана статья была в далеком 2011 году, мне интересно было ее прочитать для себя (и фактически перевести).</p>
-
-<h2 id="calc">Что такое функция calc()</h2>
-
-<p>Функция <code>calc()</code> может быть использована для вычисления различных линейных размеров на странице. Например, с ее помощью можно рассчитывать значение границ, <code>margin</code>, <code>padding</code>, кегля и многое другое.</p>
-
-<p>Вычисление ширины объектов может быть чрезвычайно сложной задачей, особенно если макет сайта резиновый; функция <code>calc()</code> уникальная, потому что она позволяет выполнять расчеты внутри самих таблиц стилей CSS.</p>
-
-<p>Функция <code>calc()</code> умеет работать с простейшими математическими операторами:</p>
-
-<ul>
-  <li>сложением <code>+</code></li>
-  <li>вычитанием <code>-</code></li>
-  <li>умножением <code>*</code></li>
-  <li>делением <code>/</code></li>
-</ul>
-
-<p>Давайте рассмотрим простейший пример работы функции <code>calc()</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">div</span><span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="p">);</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Очень просто, не правда ли? В одной функции может использоваться не один, а несколько математических операторов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">div</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span> <span class="o">+</span> <span class="m">2px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В текущей спецификации говориться, что операции умножения и деления имеют приоритет над операциями сложения и вычитания. Это означает, что в примере выше сначала будет вычислено выражение <code>2px*2</code>, и только затем два оставшихся - сложение и вычитание. Также обратите внимание, что деление на 0 приведет (и должно привести) к ошибке.</p>
-
-<p>Спецификация по функции <code>calc()</code> еще не завершена, но ее основы уже готовы.</p>
-
-<h2 id="calc-1">Простой пример calc()</h2>
-
-<p>Для того, чтобы показать возможности функции <code>calc()</code>, была создана базовая разметка страницы с помощью этой функции.</p>
-
-<p>Разметка состоит из основного контейнера <code>div id="main"</code> (расположенного слева), колонки справа <code>div id="accessory"</code> и подвала, помещенного внизу <code>div id="footer"</code>.</p>
-
-<p>Ниже приведен код этой разметки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;main&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Far far away ...<span class="nt">&lt;/h1&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Far far away, behind the word mountains ...<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;accessory&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;ul&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Far far away ...<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Separated they live ...<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>A small river named ...<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>Visit the article ...<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>После применения не требующего объяснений (надо надеяться) простого сброса CSS-стилей (полный код CSS-сброса смотрите в исходном коде примера - <a href="http://webdesignernotebook.com/examples/calc-function.html" title="Calc Examples">Calc Examples</a>), установки базового шрифта и внешнего вида ссылок, стилизуем элемент <code>body</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#e8eadd</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#3c323a</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>После этого я говорю, что основной контейнер <code>div.wrapper</code> должен занимать всю ширину своего контейнера (100%) за вычетом 40 пикселей и располагаться горизонтально, по центру:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrapper</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">1024px</span><span class="p">;</span> <span class="c">/* Откат для браузеров, которые не поддерживают функцию calc() */</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">40px</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">40px</span><span class="p">);</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В коде выше была добавлена строка отката для браузеров, которые не поддерживают работу с функцией <code>calc()</code>, а также браузерный префикс <code>-moz-</code> для браузера Firefox 4.</p>
-
-<p>Затем устанавливается ширина, границы, плавание влево и <code>margin</code> для основного блока с контентом <code>div#main</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#main</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">8px</span> <span class="k">solid</span> <span class="m">#b8c172</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">20px</span> <span class="m">20px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">704px</span><span class="p">;</span> <span class="c">/* Откат для браузеров, которые не поддерживают функцию calc() */</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">75%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">75%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Давайте разберемся с функцией <code>calc()</code> в этом примере кода. Здесь я хочу, чтобы ширина контейнера <code>div#main</code> равнялась 75% (75% от ширины контейнера-родителя, не забывайте об этом!).</p>
-
-<p>Но из этой ширины мне необходимо вычесть <code>padding</code> слева и справа от контейнера - <code>20px*2</code>, а также ширину границы с обоих сторон - <code>8px*2</code>.</p>
-
-<p>Переходим к боковой панели <code>div#accessory</code> и говорим ей, что она должна занимать оставшуюся ширину контейнера-родителя в 25%. Но при этом также должны учитываться ширина границы этого блока, <code>margin-right: 20px</code> и <code>padding</code>. Блок будет “плавать” вправо:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#accessory</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">8px</span> <span class="k">solid</span> <span class="m">#b8c172</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">208px</span><span class="p">;</span> <span class="c">/* Откат для браузеров, которые не поддерживают функцию calc() */</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">25%</span> <span class="o">-</span> <span class="m">10px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span> <span class="m">-20px</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">25%</span> <span class="o">-</span> <span class="m">10px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span> <span class="m">-20px</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Если более подробно разобрать выражение <code>calc(25% - 10px*2 - 8px*2 -20px)</code>, то увидим, что из первоначальной ширины 25% вычитается padding справа и слева <code>10px*2</code>, ширина правой и левой сторон границы этого блока <code>8px*2</code>, а также правый <code>margin</code> для блока-контейнера <code>div#main</code>.</p>
-
-<p>Блок-подвал <code>footer</code> просто имеет ширину, равную всей ширине блока-родителя. Я думаю, что описывать стили для этого блока излишне.</p>
-
-<p>Если уменьшать размер окна браузера, то при достижении им определенной величины ширина боковой панели <code>div#accessory</code> становиться слишком маленькой, что нарушает дизайн страницы.</p>
-
-<p>Поэтому в код ниже был добавлен простой <code>media query</code>, с помощью которого у блоков <code>div#main</code> и <code>div#accessory</code> убирается плавание влево-вправо и пересчитывается ширина обоих блоков так, чтобы они занимали 100% ширины блока-родителя за минусом ширины границ и соответствующих <code>padding</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">768px</span><span class="o">)</span><span class="p">{</span>
-
-  <span class="nf">#main</span><span class="o">,</span> <span class="nf">#accessory</span><span class="p">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nf">#main</span><span class="p">{</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-    <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="nf">#accessory</span><span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-    <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Приведенный выше пример разметки страницы является очень упрощенным. Но есть надежда, что он заинтересует вас и подтолкнет к дальнейшим экспериментам с замечательной функцией <code>calc()</code>.</p>
-
-<h2 id="section">Поддержка браузерами</h2>
-
-<p>Функция <code>calc()</code> поддерживается браузером IE9 и Firefox 4 (для которого необходимо указать браузерный префикс <code>-moz-calc()</code>). Я понимаю, однако, что применение этой функции в устаревших браузерах к таким вещам, как анимация, может быть большой проблемой. Но в тоже время, анимация не является жизненно важной необходимостью сайта.</p>
-
-<p>Это не означает, что вы не должны пробовать эту функцию на практике. Ведь разработчики браузеров Firefox и IE предприняли усилия для того, чтобы внести поддержку данной функции в свои браузеры. Доля этих браузеров на мировом рынке самая большая, поэтому, я полагаю, что остальные производители браузеров не останутся долго в стороне.</p>
-
-<p>В своих примерах я предпочла использовать откат в виде абсолютной величины (ширина блока) для браузеров, которые не поддерживают данную функцию.</p>
-
-<blockquote>
-  <p>Дальше переводить не стал, ибо идет сплошная “вода” в виде заключения и всяческих пожеланий, не относящаяся к делу.</p>
-</blockquote>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1181,6 +1207,12 @@
       <li>
         
           <a href="http://zencoder.ru/page43">43</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page44">44</a>
         
       </li>
     

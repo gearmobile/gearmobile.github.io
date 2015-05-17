@@ -18,7 +18,7 @@ share: true
 
 Простой пример:
 
-{% highlight javacript %}
+{% highlight javascript %}
 $('li').has('a').addClass('active');
 {% endhighlight %}
 
@@ -28,7 +28,7 @@ $('li').has('a').addClass('active');
 
 Этот метод чем-то похож на метод `parent()`. В качестве примера рассмотрим такой вариант:
 
-{% highlight javacript %}
+{% highlight javascript %}
 $('a').parent('li').addClass('active');
 {% endhighlight %}
 
@@ -36,7 +36,7 @@ $('a').parent('li').addClass('active');
 
 Напомню, что метод `has()` работает именно с селекторами и имеет такой синтаксис:
 
-{% highlight javacript %}
+{% highlight javascript %}
 .has(selector)
 {% endhighlight %}
 
@@ -48,7 +48,7 @@ $('a').parent('li').addClass('active');
 
 То есть, синтаксис метода `.hasClass()` таков:
 
-{% highlight javacript %}
+{% highlight javascript %}
 .hasClass('class')
 {% endhighlight %}
 
@@ -56,7 +56,7 @@ $('a').parent('li').addClass('active');
 
 Простой пример:
 
-{% highlight javacript %}
+{% highlight javascript %}
 if ($('li').hasClass('active')) {
   $('li').find('a').addClass('activeLink');
 } else {
