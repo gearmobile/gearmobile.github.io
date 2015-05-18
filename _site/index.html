@@ -144,6 +144,287 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-22T00:00:00+03:00"><a href="http://zencoder.ru/jquery/siblings-jquery/">May 22, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/siblings-jquery/" rel="bookmark" title="Метод siblings библиотеки jQuery" itemprop="url">Метод siblings библиотеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Небольшое отступление - в одних постах я говорю о функциях jQuery, в других - о методах jQuery. Где же правильно? В принципе, и то и то правильно. И функция jQuery, и метод jQuery. Но последний вариант более правильный, поэтому в дальнейшем буду “обзывать” подобные вещи методами.</p>
+
+<p>Метод <code>.siblings()</code> предназначен для выборки соседних элементов. С помощью этого метода выбираются все элементы, находящиеся на одном уровне DOM с элементом, служащим в качестве критерия отбора.</p>
+
+<p>Метод имеет один вариант использования (синтаксис):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">.parent([selector])</code></pre></div>
+
+<p>Все очень похоже на то, как эти дела <a href="https://css-tricks.com/child-and-sibling-selectors/" title="Child and Sibling Selectors">обстоят в CSS</a>, но приведу простой пример для иллюстрации:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link proba&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/nav&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.proba&#39;</span><span class="p">).</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>… <strong>читается это так</strong> - добавить класс <code>.selected</code> для всех элементов, соседних (sibling) с элементом, имеющим класс <code>.proba</code>. То есть, класс <code>.selected</code> будет добавлен всем элементам <code>a</code>, так как они находятся на одном уровне DOM с элементом <code>.proba</code> и являются соседними по отношению к нему.</p>
+
+<p>По умолчанию можно не передавать методу <code>.siblings()</code> аргумент в виде селектора - <code>.siblings('a')</code>, так как подразумеваются элементы, которые являются соседними в текущей HTML-разметке. Но можно передавать методу в качестве аргумента имя класса  - <code>.siblings('.test__link')</code>; или элемент с именем класса (идентификатора) - <code>.siblings('a.test__link')</code>.</p>
+
+<p>Краткие примеры использования метода <code>.siblings()</code>, взятые с ресурса <a href="http://jquery.page2page.ru/" title="Siblings jQuery">jQuery Page2Page</a>:</p>
+
+<ul>
+  <li><code>$("#block").siblings()</code> - найдет элементы, которые имеют общего родителя с элементом, обладающим идентификатором <code>#block</code></li>
+  <li><code>$(".lBlock").siblings()</code> - найдет элементы, которые имеют общих родителей с элементами класса <code>.lBlock</code></li>
+  <li><code>$(".lBlock").siblings(".cont")</code> - найдет элементы класса <code>.cont</code>, которые имеют общих родителей с элементами класса <code>.lBlock</code></li>
+</ul>
+
+<p>Важный момент - в этом случае класс <code>.selected</code> не будет добавлен к элементу <code>.proba</code>. Другими словами, в методе <code>.siblings()</code> к элементу, служащему в качестве критерия, не применяются действия этого метода.</p>
+
+<p>Чтобы было еще понятнее, о чем идет речь, представлю ниже результат работы описанного выше javascript-кода:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link proba&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
+<span class="nt">&lt;/nav&gt;</span></code></pre></div>
+
+<p>Метод <code>.siblings()</code> прост и понятен. Единственным “подводным камнем” при работе с ним является такой момент - нужно быть внимательным с <strong>уровнями вложения элементов</strong>. Другими словами, в дереве DOM элементы не расположены на одном уровне (не являются sibling), однако разработчик упрямо пытается применить к этим элементам метод <code>.sibling()</code>. И потом сильно недоумевает, почему ничего не работает, хотя код то правильный!</p>
+
+<p>Приведу простой пример такой ошибки, с которой один раз сам столкнулся. Здесь пример кристально ясный и понятный, однако на деле все было не так прозрачно (в совокупности с другим кодом):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link proba&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;javascript:void(0);&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.proba&#39;</span><span class="p">).</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>Представленный выше javascript-код <strong>работать не будет</strong>, так как элементы <code>a</code> (а код был сделан в расчете на эти элементы) соседними (siblings) не являются. Это хорошо заметно, если внимательно рассмотреть HTML-код примера.</p>
+
+<p>Вот, в принципе, и все, что можно сказать о методе <code>.siblings()</code>.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-21T00:00:00+03:00"><a href="http://zencoder.ru/jquery/parent-jquery/">May 21, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/parent-jquery/" rel="bookmark" title="Метод parent и children библиотеки jQuery" itemprop="url">Метод parent и children библиотеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Два метода-антагониста, принцип работы которых ясен из имени самих методов.</p>
+
+<h2 id="children">Метод children</h2>
+
+<p>Метод <code>.children()</code> возвращает все элементы, которые являются дочерними по отношению к элементу, указанному в качестве аргумента метода.</p>
+
+<p>Примеры использования:</p>
+
+<ul>
+  <li><code>$('div').children()</code> - вернет элементы, которые лежат непосредственно внутри div-элементов</li>
+  <li><code>$('div').children('.block')</code> - вернет элементы класса <code>.block</code>, которые лежат непосредственно внутри div-элементов</li>
+  <li><code>$('#area').children('.block') - вернет элементы класса .</code>block<code>, которые лежат непосредственно внутри элемента с идентификатором </code>#area`</li>
+</ul>
+
+<p>Метод <code>.children()</code> в чем-то похож на метод <code>.find()</code>, рассмотренный мною ранее. Но между двумя этими методами существует одно большая разница.</p>
+
+<p>Метод <code>.children()</code> возвращает (другими словами - ищет) все элементы, расположенные на DOM-уровне ниже указанного элемента; и только на этом уровне. Другими словами - возвращаются все непосредственные <a href="https://css-tricks.com/child-and-sibling-selectors/" title="Child and Sibling Selectors">children-элементы</a>.</p>
+
+<p>Метод <code>.find()</code> производит поиск указанных элементов на всех уровнях DOM-дерева. Другими словами, будет производиться поиск элементов на всех уровнях, вне зависимости от глубины вложенности этих уровней.</p>
+
+<h2 id="parent">Метод parent</h2>
+
+<p>Метод <code>.parent()</code> возвращает все элементы, являющиеся непосредственными родителями элемента(ов), указанных в качестве аргументов данного метода.</p>
+
+<p>Примеры использования:</p>
+
+<ul>
+  <li><code>$('#block').parent()</code> - вернет <strong>родителя элемента</strong> с идентификатором <code>#block</code></li>
+  <li><code>$('div').parent()</code> - вернет <strong>родительские элементы</strong> всех div-ов</li>
+  <li><code>$('div').parent('.block')</code> - вернет элементы класса <code>.block</code>, которые являются родительскими для div-элементов на странице</li>
+</ul>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-20T00:00:00+03:00"><a href="http://zencoder.ru/jquery/index-jquery/">May 20, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/index-jquery/" rel="bookmark" title="Метод eq и index библиотеки jQuery" itemprop="url">Метод eq и index библиотеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Достаточно интересные методы - <code>.eq()</code> и <code>.index()</code>, особенно в сочетании друг с другом. Поэтому и решил объединить рассмотрение этих методов. Каждый по отдельности - методы просты и мало показательны.</p>
+
+<p>Но для начала вкратце (по другому и не получиться) опищу каждый из методов, по возможности своими словами.</p>
+
+<h2 id="index">Метод index</h2>
+
+<p>Работа метода <code>.index()</code> проста - он возвращает индекс (порядковый номер) указанного элемента среди группы ему подобных.</p>
+
+<p>Синтаксис метода <code>.index()</code> также простой:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">index</span><span class="p">([</span><span class="nx">element</span><span class="p">])</span></code></pre></div>
+
+<p>или</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">index</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span></code></pre></div>
+
+<p>И пример для иллюстрации:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;primo&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;secondo&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;tetro&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;quattro&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;cinque&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;sei&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;sedici&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;ten&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Сделать выборку всех элементов <code>li</code> и вернуть индекс элемента <code>li</code> с классом <code>.cinque</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">listIndex</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.cinque&#39;</span><span class="p">);</span>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Index of &#39;</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">index</span><span class="p">(</span><span class="nx">listIndex</span><span class="p">));</span></code></pre></div>
+
+<p>Найти элемент с классом <code>.sei</code> среди соседних элементов и вернуть его индекс:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s1">&#39;Index of &#39;</span> <span class="o">+</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.sei&#39;</span><span class="p">).</span><span class="nx">index</span><span class="p">());</span></code></pre></div>
+
+<p>Как видим, способы получения индекса элемента разные, а результат один.</p>
+
+<h2 id="eq">Метод eq</h2>
+
+<p>Метод <code>.eq()</code> прямопротивоположен методу <code>.index()</code>. Этот метод возвращает элемент (как объект) по его индексу (порядковому номеру).</p>
+
+<p>Если взять предыдущую HTML-разметку, то такой javascript-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">1</span><span class="p">).</span><span class="nx">html</span><span class="p">(</span><span class="s2">&quot;Secondo&quot;</span><span class="p">);</span></code></pre></div>
+
+<p>… изменит содержимое второго по счету элемента <code>li</code> на “Secondo”. Почему второго? Как можно догадаться, результатом выборки <code>$('li')</code> является массив элементов; а в массиве индексирование элементов начинается с нуля (0).</p>
+
+<h2 id="eq--index">Методы eq и index</h2>
+
+<p>Рассмотренные выше примеры использования методов <code>.eq()</code> и <code>.index()</code> просты и понятны. И неинтересны.</p>
+
+<p>Гораздо более интеерсным примером является случай объединения обоих методов в jQuery-цепочке.</p>
+
+<p>Приведу такой гипотетический пример:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item primo&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item secondo&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item tetro&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item quattro&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item cinque&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item sei&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item sedici&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test__item&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">index</span><span class="p">()).</span><span class="nx">html</span><span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">index</span><span class="p">()).</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">html</span><span class="p">(</span><span class="s2">&quot;test item link&quot;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Javascript-код, написанный выше, читается таким образом:</p>
+
+<ul>
+  <li>сделать выборку всех элементов с классом <code>.test__item</code></li>
+  <li>при клике мыши на любом из этих элементов выполнить функцию</li>
+  <li>сделать выборку всех элементов <code>li</code></li>
+  <li>вернуть индекс активного элемента из выборки - <code>$(this).index()</code></li>
+  <li>вернуть активный элемент по его индексу - <code>.eq($(this).index())</code></li>
+  <li>для возвращенного элемента <code>.eq($(this).index())</code> изменить его содержимое на значение его индекса - <code>html($(this).index())</code></li>
+  <li>всем соседним (sibling) элементам установить значение в - <code>.siblings().html("test item link")</code></li>
+</ul>
+
+<p>Пример рабочий, поэтому его можно свободно попробовать.</p>
+
+<p>В принципе, на этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-05-19T00:00:00+03:00"><a href="http://zencoder.ru/jquery/has-jquery/">May 19, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -160,13 +441,11 @@
   <div class="entry-content">
     <p>Два очень похожих метода библиотеки jQuery, служащих для фильтрации выборки - метод <code>.has()</code> и метод <code>.hasClass()</code>.</p>
 
-<p>И действительно, оба этих метода похожи между собой по принципу действия. А он заключается (буду говорить своими словами) в обратной фильтрации.</p>
-
-<p>Чтобы было понятно, лучше сразу перейду к примерам.</p>
+<p>И действительно, оба этих метода похожи между собой. Чтобы было понятно, лучше сразу перейду к примерам.</p>
 
 <h2 id="has">Метод .has()</h2>
 
-<p>Метод <code>.has()</code> фильтрует элементы, имеющие в своем составе указанные в <code>has()</code> <strong>селекторы</strong>.</p>
+<p>Метод <code>.has()</code> фильтрует элементы, имеющие в своем составе указанные в <code>.has()</code> <strong>селекторы</strong>.</p>
 
 <p>Простой пример:</p>
 
@@ -176,27 +455,27 @@
 
 <p>На лицо, как бы это сказать, обратная фильтрация - <em>справа налево</em>. Обычно все методы библиотеки jQuery работают <em>слева направо</em>.</p>
 
-<p>Этот метод чем-то похож на метод <code>parent()</code>. В качестве примера рассмотрим такой вариант:</p>
+<p>Этот метод чем-то похож на метод <code>.parent()</code>. В качестве примера рассмотрим такой вариант:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span></code></pre></div>
 
 <p>… что читается таким образом: всем элементам <code>li</code>, являющимся родителями элементов <code>a</code>, присвоить класс <code>.active</code>.</p>
 
-<p>Напомню, что метод <code>has()</code> работает именно с селекторами и имеет такой синтаксис:</p>
+<p>Напомню, что метод <code>.has()</code> работает именно с селекторами и имеет такой синтаксис:</p>
 
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="nx">selector</span><span class="p">)</span></code></pre></div>
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">)</span></code></pre></div>
 
 <h2 id="hasclass">Метод .hasClass()</h2>
 
 <p>Метод <code>.hasClass()</code> очень похож по принципу действия на предыдущий метод <code>has()</code> - но это только кажущееся впечатление.</p>
 
-<p>Во-первых, как понятно из имени метода, он работает с классами, а не с селекторами.</p>
+<p>Во-первых, как понятно из имени метода <code>.hasClass()</code>, что он работает с <strong>классами</strong>, а не <strong>селекторами</strong>.</p>
 
 <p>То есть, синтаксис метода <code>.hasClass()</code> таков:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;class&#39;</span><span class="p">)</span></code></pre></div>
 
-<p>Во-вторых, метод <code>hasClass()</code> возвращает логическое <code>true</code> или <code>false</code>, в отличие от метода <code>has()</code>, который возвращает массив объектов, доступных для дальнейшей обработки.</p>
+<p>Во-вторых, метод <code>.hasClass()</code> возвращает логическое <code>true</code> или <code>false</code>, в отличие от метода <code>.has()</code>, который возвращает <strong>массив объектов</strong>, доступных для дальнейшей обработки.</p>
 
 <p>Простой пример:</p>
 
@@ -206,11 +485,11 @@
   <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;inactiveLink&#39;</span><span class="p">);</span>
 <span class="p">}</span></code></pre></div>
 
-<p>… что читается таким образом: если элементы <code>li</code> имеют класс <code>active</code>, то всем элементам <code>a</code>, являющимся потомками элементов <code>li</code>, присвоить класс <code>.activeLink</code>; иначе всем элементам <code>a</code> присвоить класс <code>inactiveLink</code>.</p>
+<p>… что читается таким образом: если элементы <code>li</code> имеют класс <code>.active</code>, то всем элементам <code>a</code>, являющимся потомками элементов <code>li</code>, присвоить класс <code>.activeLink</code>; иначе всем элементам <code>a</code> присвоить класс <code>.inactiveLink</code>.</p>
 
-<p>Стоит обратить внимание, что в случае метода <code>hasClass()</code> имеет место быть обычный способ фильтрации элементов - слева направо; выборка сужается по мере появления новых условий.</p>
+<p>Стоит обратить внимание, что в случае метода <code>.hasClass()</code> имеет место быть обычный способ фильтрации элементов - слева направо; выборка сужается по мере появления новых условий.</p>
 
-<p>Вот такая картина получается, с двумя этими методами - <code>has()</code> и <code>hasClass</code>.</p>
+<p>Вот такая картина получается, с двумя этими методами - <code>.has()</code> и <code>.hasClass</code>.</p>
 
 <p>На этом все.</p>
 
@@ -317,299 +596,6 @@
 <hr />
 
 <p>Материал статьи полностью основан на <a href="http://jquery.page2page.ru/" title="jQuery page2page2Page">http://jquery.page2page.ru</a> и не претендует на оригинальность.</p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-17T00:00:00+03:00"><a href="http://zencoder.ru/jquery/hideshow-jquery/">May 17, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/hideshow-jquery/" rel="bookmark" title="Функции .hide и .show библиотеки jQuery" itemprop="url">Функции .hide и .show библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Две функции-близнеца, предназначенные для управления видимостью элементов на странице. Это осуществляется через CSS-свойство <code>display</code> (замечание: по внимательном перечтении оказалось не все так просто - в этой “магии” задействованы не только CSS-свойство <code>display</code>, но также <code>width</code>, <code>height</code>, <code>opacity</code>; и даже <code>margin</code> и <code>padding</code>!).</p>
-
-<p>После скрытия элемента значение его CSS-свойство становится равным <code>dispaly: none</code>. Перед появлением элемента его CSS-свойство <code>display</code> изменяет свое значение на противоположное от <code>none</code>.</p>
-
-<p><code>duration</code> — продолжительность выполнения анимации (появления или скрытия). Может быть задана в миллисекундах или строковым значением ‘fast’ или ‘slow’ (200 и 600 миллисекунд). Если этот параметр не задан, анимация будет происходить мгновенно, элемент просто появится/исчезнет.</p>
-
-<p><code>callback</code> — функция, заданная в качестве обработчика завершения анимации (появления или скрытия).</p>
-
-<h2 id="section">Примеры использования:</h2>
-
-<ul>
-  <li>мгновенно скроет элемент с идентификатором <code>#leftFit</code>.</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#leftFit&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">();</span></code></pre></div>
-
-<ul>
-  <li>мгновенно покажет элемент с идентификатором <code>#leftFit</code>:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#leftFit&quot;</span><span class="p">).</span><span class="nx">show</span><span class="p">();</span></code></pre></div>
-
-<ul>
-  <li>в течении 1/3 секунды скроет элемент с идентификатором <code>#leftFit</code>:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#leftFit&quot;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="mi">300</span><span class="p">);</span></code></pre></div>
-
-<ul>
-  <li>в течении 600 миллисекунд вернет видимость элементу с идентификатором <code>#leftFit</code>:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s2">&quot;#leftFit&quot;</span><span class="p">).</span><span class="nx">show</span><span class="p">(</span><span class="s2">&quot;slow&quot;</span><span class="p">)</span></code></pre></div>
-
-<p>Можно скрывать и показывать элементы с помощью <strong>сворачивания/разворачивания</strong> (<em>за счет изменения высоты</em>). Это делают функции <code>slideUp()</code>, <code>slideDown()</code>.</p>
-
-<p>Медленно скрывает и раскрывает все видимые параграфы, длительность анимационных эффектов — 600 миллисекунд:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;button&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Использование callback-функции:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#clickme&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#book&#39;</span><span class="p">).</span><span class="nx">hide</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Animation complete.&#39;</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">});</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#clickme&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#book&#39;</span><span class="p">).</span><span class="nx">show</span><span class="p">(</span><span class="s1">&#39;slow&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Animation complete.&#39;</span><span class="p">);</span>
-  <span class="p">});</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Материал данной статьи основан на ресурсах:</p>
-
-<ul>
-  <li><a href="http://jquery.page2page.ru" title="Hide and Show">http://jquery.page2page.ru</a></li>
-  <li><a href="http://jquery-docs.ru" title="Hide and Show">http://jquery-docs.ru</a></li>
-  <li><a href="http://api.jquery.com" title="API jQuery">http://api.jquery.com</a></li>
-</ul>
-
-<p>… и не претендует на оригинальность.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-16T00:00:00+03:00"><a href="http://zencoder.ru/juery/on-jquery/">May 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/juery/on-jquery/" rel="bookmark" title="Функция on() библитеки jQuery" itemprop="url">Функция on() библитеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Маленькое вступление. Этой статьей я начинаю серию, посвященную работе с библиотекой jQuery. Точнее, я буду с помощью этих микро-статей самостоятельно изучать jQuery. И хотя при этом меня не оставляет постоянная мысль, что я делаю глупую и пустую работу (<em>есть масса куда более лучших по объему и качеству ресурсов на эту тематику</em>), все же мне так хочется. И это желание также продолжает основную идею этого бложика, его цель и смысл существования.</p>
-
-<p>Смысл жизни данного бложика - быть записной книжкой для своего хозяина. Помогать ему в освоении безбрежных просторов Web по принципу “прочитал-усвоил-пересказал”. Ибо такой принцип мне кажется наиболее эффективным в деле изучения чего-то нового, особенно - если этого нового очень много.</p>
-
-<p>Кроме того, мне работа с библиотекой jQuery нравиться! Она для меня - легкая и увлекательная игра; тот редкий случай, когда изучение программирования для меня дается одновременно очень легко и увлекательно. Чаще - что-то одно из двух.</p>
-
-<p>Хватит лирики - переходим к практике.</p>
-
-<h2 id="on">Функция on()</h2>
-
-<p>Функция <code>.on()</code> является <strong>универсальным способом</strong> обработки событий на странице с помощью библиотеки jQuery. Почему универсальным? Давайте взглянем на синтаксис функции <code>.on()</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">eventHandler</span><span class="p">);</span></code></pre></div>
-
-<p>… здесь <code>event</code> - это стандартное событие языка JavaScript: <code>blur</code>, <code>focus</code>, <code>focusin</code>, <code>focusout</code>, <code>load</code>, <code>resize</code>, <code>scroll</code>, <code>unload</code>, <code>click</code>, <code>dblclick</code>, <code>mousedown</code>, <code>mouseup</code>, <code>mousemove</code>, <code>mouseover</code>, <code>mouseout</code>, <code>mouseenter</code>, <code>mouseleave</code>, <code>change</code>, <code>select</code>, <code>submit</code>, <code>keydown</code>, <code>keypress</code>, <code>keyup</code>, <code>error</code>.</p>
-
-<p>… <code>eventHandler</code> - это функция, обработчик события. Она создается для указанного события.</p>
-
-<p>Хватит слов - краткий пример все “расскажет” лучше всяких слов.</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>… или так -</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">(){</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">myFunction</span><span class="p">);</span></code></pre></div>
-
-<p>То есть, при клике мыши (событие <code>click</code>) на элементе с идентификатором <code>#foo</code> запускается обработчик этого события - функция, которая в данном случае является всего лишь командой <code>alert</code>. Но эта функция может быть и более сложной, конечно.</p>
-
-<p>Другими словами, вызывая функцию <code>.on()</code>, мы передаем ей два аргумента - событие (которое нужно отслеживать) и обработчик этого события. Поэтому функция <code>.on()</code> и называется <strong>универсальной функцией</strong>.</p>
-
-<p>Существуют менее универсальные функции - одноименные (<em>событиям</em>) функции под каждое конкретное событие. Для сравнения, таких два примера абсолютно равнозначны, но имеют разный синтаксис:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
-<span class="p">})</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p><strong>Важное замечание</strong>: функция <code>.on()</code> была введена в jQuery взамен трех функций <code>.live()</code>, <code>.bind()</code>, <code>.delegate()</code>, которые считаются <strong>устаревшими</strong> и не поддерживаются современными версиями jQuery, начиная с версии 1.8.0.</p>
-
-<p>В принципе, на этом можно остановиться, говоря о функции <code>.on()</code>. Для начала - этого достаточно.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-15T00:00:00+03:00"><a href="http://zencoder.ru/javascript/ifelse/">May 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/ifelse/" rel="bookmark" title="Тернарный оператор JavaScript" itemprop="url">Тернарный оператор JavaScript</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>В JavaScript имеется обычный оператор условия <code>if-else</code>, с которым я был знаком уже давно. Но вот недавно познакомился с его разновидностью - тернарным оператором <code>?</code>. Да, именно так - оператор восклицательный знак.</p>
-
-<p>На первый взгляд, такой тернарный оператор выглядит запутанно и совершенно непонятно. Но стоит вникнуть в суть, как все становится просто.</p>
-
-<p>Сначала - что значит тернарный оператор? В JavaScript существуют <em>унарные</em> операторы, <em>бинарные</em> операторы и вот теперь, оказывается, есть <em>тернарный</em> оператор. Опять-таки, все просто. Унарный оператор оперирует с одним операндом, бинарный оператор - с двумя операндами, тернарный оператор - с тремя операндами.</p>
-
-<p>Синтаксис тернарного оператора <code>?</code> таков:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span><span class="err">условие</span><span class="p">)</span> <span class="o">?</span> <span class="nx">alpha</span> <span class="o">:</span> <span class="nx">beta</span></code></pre></div>
-
-<p>Читается такой оператор условия следующим образом: если выполняется условие <code>(условие)</code>, то переменной <code>result</code> присвоить значение <code>alpha</code>; если условие <code>(условие)</code> не выполняется, то переменной <code>result</code> присвоить значение <code>beta</code>.</p>
-
-<p>Тернарный оператор условия очень похож на обычный оператор условия <code>if-else</code>. Можно сказать, что это сокращенная версия обычного оператора условия <code>if-else</code>.</p>
-
-<p>Давайте сравним оба условия:</p>
-
-<ul>
-  <li>оператор условия <code>if-else</code>:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">result</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">){</span>
-  <span class="nx">result</span> <span class="o">=</span> <span class="kc">true</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="nx">result</span> <span class="o">=</span> <span class="kc">false</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<ul>
-  <li>тернарный оператор условия <code>?</code>:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">result</span> <span class="o">=</span> <span class="p">(</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">)</span> <span class="o">?</span> <span class="kc">true</span> <span class="o">:</span> <span class="kc">false</span><span class="p">;</span></code></pre></div>
-
-<p>Очень похоже, не правда ли? Здесь есть один важный момент - в данном случае у обоих операторов есть одна общая черта. И в первом, и во-втором случае переменной <code>result</code> присваивается значение в зависимости от выполнения условия.</p>
-
-<p>А вот такой вариант уже будет непохож на предыдущий:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">summOne</span><span class="p">;</span>
-<span class="kd">var</span> <span class="nx">summTwo</span><span class="p">;</span>
-<span class="k">if</span> <span class="p">(</span> <span class="nx">a</span> <span class="o">&gt;</span> <span class="mi">0</span> <span class="p">){</span>
-  <span class="nx">summOne</span> <span class="o">=</span> <span class="nx">a</span> <span class="o">+</span> <span class="nx">b</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="nx">summTwo</span> <span class="o">=</span> <span class="nx">a</span> <span class="o">*</span> <span class="nx">b</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Обратите внимание, что в этом условии результат присваивается <strong>разным переменным</strong>. В данном случае тенарный оператор условия <code>?</code> уже не подойдет; он не применим в данном случае.</p>
-
-<p><strong>Отсюда вывод</strong>: тернарный оператор применим для случая, когда <strong>одной переменной</strong> присваивается <strong>разный результат</strong> в зависимости от условия.</p>
-
-<p>Условие на тернарном операторе можно сделать разветвленными и тогда вид такого оператора дейсвительно будет выглядеть достаточно запутанным:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">login</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s1">&#39;Enter your login&#39;</span><span class="p">,</span><span class="s1">&#39;&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">pass</span> <span class="o">=</span> <span class="p">(</span><span class="nx">login</span> <span class="o">==</span> <span class="s1">&#39;black&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;Welcome!&#39;</span> <span class="o">:</span>
-  <span class="p">(</span><span class="nx">login</span> <span class="o">=</span> <span class="s1">&#39;white&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;Good bay!&#39;</span> <span class="o">:</span>
-  <span class="p">(</span><span class="nx">login</span> <span class="o">=</span> <span class="s1">&#39;green&#39;</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;See you next week!&#39;</span> <span class="o">:</span>
-  <span class="s1">&#39;I don\&#39;t know you!&#39;</span><span class="p">;</span></code></pre></div>
-
-<p>Хотя тут все просто на самом деле, если разобраться. Если прочитать это условие, то оно будет выглядеть таким образом.</p>
-
-<ul>
-  <li>Переменной <code>login</code> присвоить значение, полученное от пользователя.</li>
-  <li>Если значение переменной <code>login</code> равно <code>black</code>, то переменной <code>pass</code> присвоить значение <code>Welcome!</code>.</li>
-  <li>Иначе, если значение переменной <code>login</code> равно <code>white</code>, то переменной <code>pass</code> присвоить значение <code>Good bay!</code>.</li>
-  <li>Иначе, если значение переменной <code>login</code> равно <code>green</code>, то переменной <code>pass</code> присвоить значение <code>See you next week!</code>.</li>
-  <li>Иначе переменной <code>pass</code> присвоить значение <code>I don\'t know you!</code>.</li>
-</ul>
-
-<p>Приведу еще один пример нескольких операторов <code>?</code>, нагло скопированный с ресурса <a href="http://learn.javascript.ru/" title="JavaScript">learn.javascript.ru</a> вместе с описанием его работы (все в угоду доходчивости изложения материала):</p>
-
-<hr />
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">age</span> <span class="o">=</span> <span class="nx">prompt</span><span class="p">(</span><span class="s1">&#39;возраст?&#39;</span><span class="p">,</span> <span class="mi">18</span><span class="p">);</span>
-
-<span class="kd">var</span> <span class="nx">message</span> <span class="o">=</span> <span class="p">(</span><span class="nx">age</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;Здравствуй, малыш!&#39;</span> <span class="o">:</span>
-  <span class="p">(</span><span class="nx">age</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;Привет!&#39;</span> <span class="o">:</span>
-  <span class="p">(</span><span class="nx">age</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span> <span class="o">?</span> <span class="s1">&#39;Здравствуйте!&#39;</span> <span class="o">:</span>
-  <span class="s1">&#39;Какой необычный возраст!&#39;</span><span class="p">;</span>
-
-<span class="nx">alert</span><span class="p">(</span> <span class="nx">message</span> <span class="p">);</span></code></pre></div>
-
-<p>Поначалу может быть сложно понять, что происходит. Однако, внимательно приглядевшись, мы замечаем, что это обычная последовательная проверка!</p>
-
-<p>Вопросительный знак проверяет сначала <code>age &lt; 3</code>, если верно — возвращает ‘Здравствуй, малыш!’, если нет — идет за двоеточие и проверяет <code>age &lt; 18</code>. Если это верно — возвращает ‘Привет!’, иначе проверка <code>age &lt; 100</code> и ‘Здравствуйте!’… И наконец, если ничего из этого не верно, то ‘Какой необычный возраст!’.</p>
-
-<p>То же самое через <code>if-else</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">age</span> <span class="o">&lt;</span> <span class="mi">3</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">message</span> <span class="o">=</span> <span class="s1">&#39;Здравствуй, малыш!&#39;</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">a</span> <span class="o">&lt;</span> <span class="mi">18</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">message</span> <span class="o">=</span> <span class="s1">&#39;Привет!&#39;</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="nx">age</span> <span class="o">&lt;</span> <span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
-  <span class="nx">message</span> <span class="o">=</span> <span class="s1">&#39;Здравствуйте!&#39;</span><span class="p">;</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="nx">message</span> <span class="o">=</span> <span class="s1">&#39;Какой необычный возраст!&#39;</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<hr />
-
-<p>Вот так работает тернарный оператор <code>?</code> в JavaScript. Ресурс <a href="http://learn.javascript.ru/" title="JavaScript">learn.javascript.ru</a> советует использовать тернарный оператор <code>?</code> <strong>по назначению</strong> и не заменять им обычный оператор условия <code>if-else</code>.</p>
-
-<p>Данный материал основан на ресурсе <a href="http://learn.javascript.ru/" title="JavaScript">learn.javascript.ru</a> и не претендует на оригинальность.</p>
-
-<hr />
 
 
   </div><!-- /.entry-content -->

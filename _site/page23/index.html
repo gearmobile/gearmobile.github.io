@@ -144,6 +144,468 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-24T00:00:00+04:00"><a href="http://zencoder.ru/css/breakpoint-sass/">March 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/breakpoint-sass/" rel="bookmark" title="Медиа-запросы Breakpoint в Sass" itemprop="url">Медиа-запросы Breakpoint в Sass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Прочитал одну статью, посвященную проблеме создания кода в CSS и Sass.</p>
+</blockquote>
+
+<p>Статья мне чрезвычайно понравилась - можно даже сказать, я был в восхищении о нее и от того, что написал ее автор. В ней вкратце описывались основные “опорные” моменты при написании кода в CSS/Sass. Одним из таких “опорных” моментов упоминались Breakpoint в Sass.</p>
+
+<p>Так как я большой поклонник этого препроцессора, то мне интересны все вопросы, связанные с ним. Поэтому мимо такой технологии, как Breakpoint - я просто не мог пройти мимо.</p>
+
+<p>Итак, давайте знакомиться с Breakpoint в препроцессоре Sass. Прежде всего, Breakpoint - это расширение (модуль) для хорошо известной и популярной библиотеки-фреймворка Compass. Создан он двумя web-разработчиками Mason Wendell и Sam Richard.</p>
+
+<p>Основная идея и цель создания этого модуля - сократить к одной строке создание медиа-запроса и возможность задавать для медиа-запросов осмысленные имена.</p>
+
+<h2 id="breakpoint">Установка модуля Breakpoint</h2>
+
+<p>Первое, что необходимо сделать, это установить в систему сам модуль <code>breakpoint</code>. Делается это обычной командой Ruby-окружения:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
+
+<p>Но тут могут быть несколько подводных камней, с которыми лично мне пришлось столкнуться (не знаю, как уж читателям). Первое - если у вас уже установлены <code>sass</code> и <code>compass</code> обычным способом, через команды:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
+<span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span></code></pre></div>
+
+<p>… то велика вероятность, что у вас в системе стоят Sass версии 3.2.18 и Compass версии 0.12.4. Поверить этот факт можно командой в терминале:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">list</span></code></pre></div>
+
+<p>Однако, на момент написания статьи разрабатывается библиотека Compass под версией <code>1.0.0.alpha.19</code>, которую уже можно использовать несмотря на ее экспериментальный вид. Более того, модуль <code>breakpoint</code> совместим только с библиотекой Compass этой версии (1.0.0.alpha.19).</p>
+
+<p>Поэтому, при запуске команды:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
+
+<p>… будет произведено автоматическое обновление пакетов <code>sass</code> и <code>compass</code> до версий Sass 3.3.4 и Compass 1.0.0.alpha.19. После успешной установки модуля <code>breakpoint</code> можно создать через Compass новый проект, указав при этом, что в проекте требуется поддержка (required) модуля <code>breakpoint</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">newProject</span> <span class="n">-r</span> <span class="n">breakpoint</span></code></pre></div>
+
+<p>Заходим в созданную директорию и пробуем запустить Compass на мониторинг изменений во всех файлах проекта. Но не тут то было:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/sass_wdm.png" alt="Ошибка при запуске библиотеки Compass - нет модуля wdm" class="center-image" /></p>
+
+<p>Compass пишет в терминале, что ему не хватает модуля <code>wdm</code> и не запускается в режим мониторинга. Что такое <code>wdm</code>, я не знаю (я не Ruby-разработчик), но подозреваю, что это какой-то модуль. И его придется установить.</p>
+
+<p>Для этого необходимо скачать с оф. сайта Ruby пакет разработчика Development Kit (Device). Мною скачивалась версия <code>DevKit-tdm-32-4.5.2-20111229-1559-sfx.exe</code>. Ее нужно распаковать в любое (постоянное) место - папку, но при этом не туда же, где уже стоит у вас Ruby. Затем в терминале зайти в эту папку и запустить последовательно три команды (не обращая внимание, что они там пишут в ответ):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">init</span>
+<span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">review</span>
+<span class="n">ruby</span> <span class="n">dk</span><span class="p">.</span><span class="n">rb</span> <span class="n">install</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/ruby_devkit.png" alt="Установка пакета DevKit" class="center-image" /></p>
+
+<p>А затем в этом же терминале снова запустить установку загадочного (для меня) модуля <code>wdm</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">gem</span> <span class="n">install</span> <span class="n">wdm</span></code></pre></div>
+
+<p>После этого процесс пройдет успешно и Compass, наконец-то, “заткнется” и станет делать то, что от него требуют - мониторинг содержимого папки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/sass_install_wdm.png" alt="Успешная установка пакета wdm" class="center-image" /></p>
+
+<p>Теперь открывает уже созданный Compass файл <code>screen.scss</code> и дописываем в его начало строчку:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>… говоря те самым, что в наш проект необходимо включить модуль <code>breakpoint</code>. Если проект создавался не с нуля, а уже был готовым, то поддержку Breakpoint в него можно добавить, дописав в конфигурационный файл <code>config.rb</code> строчку:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
+
+<h2 id="breakpoint-1">Дальнейшее знакомство с Breakpoint</h2>
+
+<p>Можно приступать к дальнейшему знакомству с Breakpoint.</p>
+
+<p>Breakpoint - дословно с английского языка переводится как “опорная точка”. Медиа-запросы фактически и являются такими опорными точками. В правилах CSS мы указываем браузеру - при ширине <code>viewport</code> равной 480px сделать такой-то элемент таким-то; а при ширине <code>viewport</code> равной 768px сделать такой элемент другим! То есть, мы через CSS-правила определяем для браузера подобные опорные точки. Модуль Breakpoint позволяет создавать опорные точки в коде SCSS с помощью одной строки - через миксин (mixin) <code>breakpoint</code>.</p>
+
+<p>Простейший пример применения миксина <code>breakpoint</code> приведен ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">high-tide</span><span class="o">:</span> <span class="nt">500px</span><span class="o">;</span>
+
+<span class="nc">.johnny-utah</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="k">high</span><span class="o">-</span><span class="n">tide</span><span class="p">)</span> <span class="err">{</span>
+    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Whoa.&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>То есть, сначала инициализируется переменная <code>$high-tide</code> со значением 500px. Затем селектору класса <code>.johnny-utah</code> задается CSS-правило через подключение миксина <code>@include breakpoint</code>, аргументом которому передается значение переменной <code>$high-tide</code>. В теле миксина пишется, что нужно сделать браузеру - создать контент <code>Whoa.</code> (в данном случае).</p>
+
+<p>Результатом генерации в CSS будет следующий код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">500px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.johnny-utah</span> <span class="p">{</span>
+    <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Whoa.&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Предельно просто! ОК, немного усложним задачу и продвинемся дальше, чтобы на примере лучше понять, что из себя представляют Breakpoint:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">bkpt-login-small</span><span class="o">:</span> <span class="nt">370px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">bkpt-login-medium</span><span class="o">:</span> <span class="nt">490px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">bkpt-login-large</span><span class="o">:</span> <span class="nt">865px</span><span class="o">;</span>
+
+<span class="nt">body</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">25%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-small</span><span class="o">)</span><span class="p">{</span>
+  <span class="nt">body</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">30</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-medium</span><span class="o">)</span><span class="p">{</span>
+  <span class="nt">body</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">($</span><span class="nt">bkpt-login-large</span><span class="o">)</span><span class="p">{</span>
+  <span class="nt">body</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsl</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Здесь мы создали три переменные <code>$bkpt-login-small</code>, <code>$bkpt-login-medium</code>, <code>$bkpt-login-large</code> с помощью которых установили три опорные точки для адаптивного дизайна. А затем в SCSS-правилах через подключение миксина <code>@include breakpoint</code> для каждой опорной точки задаем правило для элемента <code>body</code>, последовательно указывая этому миксину переменные в качестве аргументов. Результат работы этого кода приводить не буду - вы можете сами набрать его в редакторе и проверить!</p>
+
+<h2 id="breakpoint-2">Варианты аргументов миксина Breakpoint</h2>
+
+<p>Миксин <code>breakpoint</code> в качестве аргумента может принимать <strong>не только одно значение</strong>, как в примере выше.</p>
+
+<h3 id="section">Два числа в качестве значений</h3>
+
+<p>Переменной можно задать <strong>два числа в качестве значений</strong>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">ex-presidents</span><span class="o">:</span> <span class="nt">600px</span> <span class="nt">800px</span><span class="o">;</span></code></pre></div>
+
+<p>В этом случае модуль Breakpoint автоматически распознает и преобразует их в пару значений <strong>min-width/max-width</strong>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nixon</span> <span class="p">{</span>
+   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">ex</span><span class="o">-</span><span class="n">presidents</span><span class="p">)</span> <span class="err">{</span>
+   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Ex-Presidents&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="err">}</span>
+
+<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">800px</span><span class="o">)</span> <span class="p">{</span>
+   <span class="nc">.nixon</span> <span class="p">{</span>
+     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Ex-Presidents&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">}</span></code></pre></div>
+
+<h3 id="section-1">Имя и значение этого имени</h3>
+
+<p>Переменной можно задать <strong>имя и значение этого имени</strong>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">surfboard-width</span><span class="o">:</span> <span class="nt">max-width</span> <span class="nt">1000px</span><span class="o">;</span></code></pre></div>
+
+<p>Модуль Breakpoint распознает его следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.johnson</span> <span class="p">{</span>
+   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">surfboard</span><span class="o">-</span><span class="k">width</span><span class="p">)</span> <span class="err">{</span>
+     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Width&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="err">}</span>
+
+ <span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">1000px</span><span class="o">)</span> <span class="p">{</span>
+   <span class="nc">.johnson</span> <span class="p">{</span>
+     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Width&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">}</span></code></pre></div>
+
+<h3 id="section-2">Расширенный вариант имени и значения</h3>
+
+<p>И можно пойти еще дальше:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">surfboard-height</span><span class="o">:</span> <span class="o">(</span><span class="nt">min-height</span> <span class="nt">1000px</span><span class="o">)</span> <span class="o">(</span><span class="nt">orientation</span> <span class="nt">portrait</span><span class="o">);</span></code></pre></div>
+
+<p>Breakpoint воспримет это таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.carter</span> <span class="p">{</span>
+   <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="err">$</span><span class="n">surfboard</span><span class="o">-</span><span class="k">height</span><span class="p">)</span> <span class="err">{</span>
+     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Height, Portrait&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="err">}</span>
+
+<span class="k">@media</span> <span class="o">(</span><span class="nt">min-height</span><span class="o">:</span> <span class="nt">1000px</span><span class="o">)</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">orientation</span><span class="o">:</span> <span class="nt">portrait</span><span class="o">)</span> <span class="p">{</span>
+   <span class="nc">.carter</span> <span class="p">{</span>
+     <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;Surfboard Height, Portrait&#39;</span><span class="p">;</span>
+   <span class="p">}</span>
+ <span class="p">}</span></code></pre></div>
+
+<h2 id="breakpoint-3">Настройки модуля Breakpoint</h2>
+
+<p>Модуль Breakpoint имеет совсем немного настроек, которые выражаются <strong>в четырех переменных</strong>, которые можно легко переопределить в рамках разрабатываемого проекта:</p>
+
+<ul>
+  <li><code>$breakpoint-default-media</code> - <strong>тип медиа-запроса</strong>. По умолчанию его значение равно <code>all</code>, то есть медиа-запрос применим ко всем типам устройств: мониторы, телефизоры и так далее.</li>
+  <li><code>$breakpoint-default-feature</code> - по умолчанию установлено в значение <code>min-width</code> как наиболее часто используемое на практике. То есть, это запрашиваемая <strong>характеристика типа устройства</strong>.</li>
+  <li><code>$breakpoint-default-pair</code> - установлено в значение <code>min-width/max-width</code> по умолчанию. То есть, при передаче миксину <code>breakpoint</code> пары чисел (к примеру - 400px и 500px) он распознает их как <code>min-width: 400px</code> и <code>max-width: 500px</code>.</li>
+  <li><code>$breakpoint-to-ems</code> - по умолчанию установлено в значение <code>false</code>. Если перевести этот параметр в значение <code>true</code>, то при передаче миксину <code>breakpoint</code> аргументов в любых единицах измерения (<code>px</code>, <code>pt</code>, <code>%</code>) они будут автоматически переконвертированы в <code>em</code>! Круто!</li>
+</ul>
+
+<p>Чтобы не быть голословным, приведу пример настройки последнего параметра - <code>$breakpoint-to-ems</code>:</p>
+
+<p><img src="http://zencoder.ru/images/2014/03/breakpoint-to-ems.png" alt="Параметр модуля Breakpoints - breakpoint-to-ems" class="center-image" /></p>
+
+<p>Авторами модуля Breakpoint была сделана еще одна дополнительная “плюшка” - поддержка кроссбраузерности для экранов повышенного разрешения (так называемых Retina-экранов). Чтобы не писать по отдельности медиа-запрос для каждого из движков браузеров:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-device-pixel-ratio</span>
+<span class="nt">-moz-device-pixel-ratio</span>
+<span class="nt">-o-device-pixel-ratio</span></code></pre></div>
+
+<p>… можно писать краткий медиа-запрос:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">device-pixel-ratio</span></code></pre></div>
+
+<p>… который преобразует полученное браузером значение в стандартное разрешение экрана.</p>
+
+<h2 id="section-3">Заключение</h2>
+
+<p>Перечисленные возможности модуля Breakpoint являются основными, <a href="http://breakpoint-sass.com/#advanced" title="Breakpoint - Advanced Features">но не единственными</a>. Однако, как мне кажется, этих основных возможностей хватит для 90% случаев на практике. Если же кто желает углубить свои познания в модуле Breakpoint, это легко можно сделать на оф. сайте проекта.</p>
+
+<p>При написании этой статьи активно использовались два бесценных источника (<em>а примеры кода вообще были скопированы оттуда самым наглым образом</em>):</p>
+
+<ul>
+  <li><a href="http://snugug.com/musings/introducing-breakpoint-media-queries-made-easy" title="INTRODUCING BREAKPOINT; MEDIA QUERIES MADE EASY">INTRODUCING BREAKPOINT; MEDIA QUERIES MADE EASY</a></li>
+  <li><a href="http://breakpoint-sass.com/" title="Breakpoint Really Simple, Organized, Media Queries with Sass">Breakpoint Really Simple, Organized, Media Queries with Sass</a></li>
+</ul>
+
+<p>Очень вольный перевод и компиляция этих двух статей была сделана с энтузиазмом и на одном дыхании.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-22T00:00:00+04:00"><a href="http://zencoder.ru/css/chrome-emulate/">March 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/chrome-emulate/" rel="bookmark" title="Режим эмуляции мобильных устройств в Chrome" itemprop="url">Режим эмуляции мобильных устройств в Chrome</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>На сегодняшний день тестирование страниц становиться непростой задачей. Времена, когда проверка работоспособности сайта ограничивалась парой браузеров, давно прошли.</p>
+</blockquote>
+
+<p>Сегодня ваше творение необходимо тщательно проверять в целом диапазоне мобильных телефонов, планшетов и настольных систем с различными операционными системами, разрешениями экранов и возможностями. В особо серьезных случаях процесс тестирования может занять столько же времени, сколько и разработка проекта.</p>
+
+<p>Процесс тестирования также усложняется благодаря устройствам с сенсорным экраном и мониторов с высоким разрешением. Если вы ведете разработку проекта на обычном PC с помощью таких же обычных мыши и клавиатуры, то вам будет трудно оценить работоспособность вашего кода в реальных условиях (на всех вышеперечисленных устройствах). Такая возможность, как событие мыши <code>hover</code> может не работать и ваше приложение становиться неработоспособным. Но тогда каким же образом можно протестировать программу и избежать при этом необходимости переключения между различными устройствами?</p>
+
+<p>К счастью, сегодня выход из этой ситуации есть. В браузер Chrome версии 32 был добавлен <strong>режим эмуляции</strong>. С помощью него можно решить многие вышеназванные проблемы, не покидая комфортного окружения PC.</p>
+
+<p>Первое, что необходимо сделать, это заполучить сам браузер Chrome v.32. Если последние шесть лет вы жили на обратной стороне Луны, то тогда вы можете сделать это по ссылке <a href="google.com/chrome" title="Google Chrome">google.com/chrome</a>.</p>
+
+<p>Запустите установленный Chrome, откройте в нем страницу, которую хотите протестировать и откройте <strong>Developer Tools</strong> (<strong>Menu - Tools - Developer Tools</strong>, <kbd>Cmd+Opt+I</kbd> на Mac или <kbd>F12/Ctrl+Shift+I</kbd> под Windows и Linux). Кликните мышью на значке-шестеренке <strong>Settings</strong> в правом верхнем углу окна браузера, затем откройте раздел <strong>Overrides</strong> для того, чтобы включить показ эмуляции в браузере - <strong>Show Emulation view in console drawer</strong> (<em>в версии 33 эта возможность активирована по умолчанию</em>):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/settings.png" alt="Режим Settings в браузере Chrome" class="center-image" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_show.png" alt="Show Emulation view in console drawer" class="center-image" /></p>
+
+<p>Закрываем окно <strong>Settings</strong> и открываем “Console Drawer” (это не тоже самое, что общая “Console”) - для этого кликаем мышью на иконке (расположенной слева от иконки <strong>Settings</strong>) или нажав клавишу <kbd>Esc</kbd>. У вас должна открыться вкладка <strong>Emulate</strong> в “Console Drawer” (если этого не произошло, перезапустите браузер Chrome):</p>
+
+<h2 id="device">Режим эмуляции - раздел Device</h2>
+
+<p>Раздел <strong>Device</strong> предоставляет несколько дюжин готовых предустановок для большинства популярных мобильных устройств, включая iPhone, iPad, Kindles, планшеты Nexus, смартфоны Samsung Galaxy и т. д. Выбор одного из устройств приводит к изменениям настроек в остальных разделах.</p>
+
+<p>Выбираем из списка нужное устройство и жмем кнопочку “Emulate” внизу этого списка:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_device.png" alt="Выбор эмулируемого устройства" class="center-image" /></p>
+
+<blockquote>
+  <p>Обратите внимание! Инструкция, представленная выше, описывает включение режима эмуляции в стабильной версии v.32 браузера Chrome. Если вы используете последнюю версию браузера Chrome Canary, эта опция будет располагаться в разделе “Settings” во вкладке “General” под вкладкой “Appearance”. (<em>прим. переводчика: кто не знает, браузер Chrome Canary - это самая свежая и нестабильная версия браузера Chrome.</em>)</p>
+</blockquote>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_chrome_canary.png" alt="Режим эмуляции в Chrome Canary" class="center-image" /></p>
+
+<h2 id="screen">Режим эмуляции - раздел Screen</h2>
+
+<p>В разделе <strong>Screen</strong> можно самостоятельно установить настройки экрана эмулируемого устройства:</p>
+
+<ul>
+  <li><strong>Resolution</strong> - произвольный размер экрана устройства</li>
+  <li><strong>Device pixel ratio</strong> - то есть для дисплеев Retina от Apple нужно ставит 2, чтобы производилось удваивание размера объектов в области просмотра</li>
+  <li>font-scaling factor (<em>прим. переводчика: неизвестный для меня параметр</em>)</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_screen.png" alt="Настройка экрана в режиме эмуляции" class="center-image" /></p>
+
+<h2 id="user-agent">Режим эмуляции - раздел User Agent</h2>
+
+<p>В этом разделе настраивается режим агента пользователя. То есть, устанавливается модель взаимодействия между эмулируемыми клиентом и сервером:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_user_agent.png" alt="Эмуляция агента пользователя" class="center-image" /></p>
+
+<h2 id="sensors">Режим эмуляции - раздел Sensors</h2>
+
+<p>В этом разделе настраивается режим эмуляции сенсорного экрана:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_touch_screen.png" alt="Эмуляция сенсорного экрана устройства" class="center-image" /></p>
+
+<p>В режиме эмуляции сенсорного экрана курсор мыши приобретает вид отпечатка пальца на экране устройства:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/emulation_touch_screen_finger.png" alt="Эмуляция отпечатка пальца на экране устройства" class="center-image" /></p>
+
+<p>Эмуляция multi-touch может быть выполнена при помощи зажатой клавиши <kbd>Shift</kbd> и движения мыши в нужную сторону. Этот режим задействует соответствующие JavaScript-события, такие как <code>touchstart</code>, <code>touchend</code>, <code>touchmove</code>. Также делается попытка полностью соответствовать мобильным браузерам благодаря реализации JavaScript-события <code>mouseover</code>, но это событие возникает только тогда, когда будет произведено “нажатие” на элемент интерфейса. Эмулятор корректно игнорирует событие <code>mouseover</code>, возникающее, когда курсор сенсорного устройства просто движется поверх элемента интерфейса.</p>
+
+<h2 id="section">Возвращение браузера в обычный режим</h2>
+
+<p>Для того, чтобы завершить режим эмуляции и возвратиться в обычный режим просмотра, нужно перейти обратно в раздел <strong>Device</strong> и нажать кнопку <kbd>Reset</kbd>.</p>
+
+<h2 id="section-1">Мне больше не нужны устройства</h2>
+
+<p>Рассмотренный выше эмулятор браузера Chrome является полезным инструментом, но он не может в точности реализовать поведение настоящих устройств с сенсорным экраном, во всех их тонкостях.</p>
+
+<p>Стоит также обратить внимание, что эмулятор несовершенен в следующих вопросах:</p>
+
+<ul>
+  <li>вы можете столкнуть с некоторыми необъяснимыми ошибками в работе эмулятора</li>
+  <li>CSS-событие <code>:hover</code> все еще в действии и</li>
+  <li>для него нет механизма эмуляции; страница будет сгенерирована браузером Chrome вне зависимости от того, все ли устройства поддерживают возможности, заложенные в ней</li>
+</ul>
+
+<p>Будем надеяться, что команда Google обратит внимание на эти недостатки и исправит их в последующих релизах.</p>
+
+<p>Если подвести итог, то можно сказать, что режим эмуляции в браузере Google Chrome является простым и быстрым способом протестировать страницу, без необходимости проверки на реальных устройствах, таких как смартфоны или планшеты. Кроме того, у вас есть полный набор инструментов разработчика, что может сэкономить несколько часов вашего труда.</p>
+
+<p>Автор статьи: Craig Buckler, <a href="http://www.sitepoint.com/use-mobile-emulation-mode-chrome/" title="How to Use Mobile Emulation Mode in Chrome">How to Use Mobile Emulation Mode in Chrome</a></p>
+
+<h2 id="section-2">От переводчика</h2>
+
+<p>Хочется от себя немного добавить в эту тему. В книге Б. Фрейна “HTML5 и CSS3. Разработка сайтов для любых браузеров и устройств” автор приводит краткий список плагинов для тестирования страниц в различных браузерах. Эти плагины не такие “продвинутые”, как режим эмуляции в браузере Chrome. Их задача сводиться только к одному - проверке работоспособности страниц на экранах различных устройств, с разными размерами области просмотра. Цель такой проверки - создание полностью рабочего <strong>адаптивного дизайна сайта</strong>.</p>
+
+<p>Для браузера Safari автор рекомендует расширение <strong>Resize</strong> или <strong>ResizeMe</strong>. Под браузер Mozilla Firefox имеется плагин <strong>Firesizer</strong>. А под браузер Google Chrome автором рекомендуется использовать расширение <strong>Windows Resizer</strong>.</p>
+
+<p>Например, после установки и активизации расширения <strong>Windows Resizer</strong> под Chrome при щелчке мыши на иконке появиться окно с предустановленными размерами экранов устройств:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/windows-_resizer_chrome.png" alt="Расширение Windows Resizer под Chrome" class="center-image" /></p>
+
+<p>В дальнейших объяснениях работа с плагином не нуждается, как мне кажется.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-03-19T00:00:00+04:00"><a href="http://zencoder.ru/css/wireframes/">March 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/wireframes/" rel="bookmark" title="Wireframes - визуальный эскиз HTML-разметки" itemprop="url">Wireframes - визуальный эскиз HTML-разметки</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Перед созданием HTML-разметки часто бывает необходимым и полезным сделать визуальный набросок будущего макета сайта (<code>wireframes</code>).</p>
+</blockquote>
+
+<p>Особенно это необходимо для начинающих HTML-верстальщиков, так как такой эскиз помогает понять, какие блоки и каким образом должны располагаться внутри будущей HTML-разметки. Когда я только начинал самостоятельно изучать практику верстки, я просто не мог обойтись без того, чтобы не нарисовать схематичное расположение будущих блоков.</p>
+
+<p>Рисовал их где придется и как придется - в простом Paint или на листе бумаги карандашом или ручкой. Тут главное не до красоты - чтобы схема была доступной и понятной, это основное. Если схема не нарисована, то я элементарно не мог приставить себе “в голове”, как должна выглядеть блочная структура будущего сайта. А если я не мог представить, как должен выглядеть каркас здания, то о каком дальнейшем строительстве могла идти речь?</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/mockup_notepad.jpg" alt="Wireframe в Notepad" class="center-image" /></p>
+
+<p>Но вот когда блок-схема нарисована, то уже становится ясным, что делать дальше с точки зрения HTML-программирования. Я уже видел, что здесь нужно создать блок-обертку <code>div.wrap</code>, вверху поместить блок-шапку <code>div.header</code>, по центру должен располагаться большой блок <code>div.main</code> с основным контентом и внутренними блоками <code>div.sidebar</code> + <code>div.content</code>. Ну, а внизу должен находиться блок-подвал <code>div.footer</code>.</p>
+
+<p>Другими словами, я просто повторял свои действия, выполненные на бумаге; но уже на компьютере и с помощью программного кода, в HTML-редакторе. Конечно, когда опыта у меня появилось немного побольше, я смог чисто “на глаз” определять основную структуру будущей HTML-разметки. Открывал готовый PSD-макет в Photoshop, “пробегал” его глазами и сразу “вычленял” составные части; которые должны были становиться основными блоками будущей HTML-страницы.</p>
+
+<p>Но один я знаю, сколько времени у меня ушло на то, чтобы так “с лету” видеть структуру сайта. Я не хочу сказать, что это трудное дело. Совсем нет! Но в каждом деле нужен опыт и сноровка; а если ее нет, то дело движется тяжело и медленно (<em>сразу вспомнилась любимая книжка детства - Робинзон Крузо</em>).</p>
+
+<p>К тому же, речь идет только о дизайне сайтов с простой структурой. Если же это сложный и большой сайт, то тут и опыт не поможет, так как одновременно держать “в голове” структуру и “ваять” код будет затруднительно. Тут без предварительной блок-схемы, разработанной на чем угодно и где угодно, не обойтись. Например, оцените вот такой пример готового наброска, сделанный на сайте <a href="http://mockupbuilder.com/" title="Mockup Builder">Mockup Builder</a>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/mockup_silverlight.jpg" alt="Mockup Builder" class="center-image" /></p>
+
+<p>Чуть позже, по мере чтения статей и книг, посвященных верстке, я познакомился с <strong>тремя способами создания эскиза</strong> HTML-разметки.</p>
+
+<h2 id="section">Первый подход - аскетичный</h2>
+
+<p>Одни верстальщики идут по минималистичному пути и используют <strong>стандартный лист бумаги и карандаш</strong>. На бумаге делается набросок будущей схемы сайта, в котором расположены основные и дополнительные блоки HTML-страницы. Быстро, просто и со вкусом, что называется.</p>
+
+<h2 id="wireframes">Второй подход - wireframes</h2>
+
+<p>Другие верстальщики используют специальные программы для создания эскизов HTML-разметки. Такие программы относятся к классу <em>wireframes</em>. Они бывают разных типов: <strong>online-сервисы</strong> (<em>платные или бесплатные</em>) или <strong>desktop-приложения</strong> (<em>платные или бесплатные</em>). Мое личное предпочтение к использованию именно таких программ, ибо мне кажется смешным рисовать карандашом на бумаге, сидя перед компьютером.</p>
+
+<p>Вообще-то, существуют <strong>три класса программ для создания эскиза</strong> будущего сайта: <strong>wireframes</strong>, <strong>mockup</strong>, <strong>prototype</strong>. <strong>Wireframes</strong> - для создания простого эскиза дизайна, ничего больше. <strong>Mockup</strong> - это тот же wireframes, но в нем добавлены визуальные отрисовки для всех элементов управления (кнопки, картинки и т. д.). <strong>Prototype</strong> - это самый продвинутый тип; это mockup с возможностью программирования элементов интерфейса (кнопок) прямо в программе.</p>
+
+<p>Преимущество <em>wireframes</em> в том, что у них есть уже готовый набор инструментов для создания набросков HTML-разметки - блоки, кнопки, текстовые поля. Результат получается быстро, просто и красиво. Продвинутые программы этого класса используются разработчиками даже для создания набросков, которые можно предоставлять заказчику в качестве предварительно выполненной работы.</p>
+
+<h2 id="photoshop--illustrator">Третий подход - Photoshop или Illustrator</h2>
+
+<p>Промежуточным звеном между первыми и вторыми верстальщиками являются кодеры, которые умеют и любят использовать для создания визуального HTML-макета программы редактирования графики, такие как Adobe Photoshop, Adobe Illustrator или Adobe Firework. И они в чем-то правы - в этих программах есть все необходимое для создания эскиза сайта и ничего лишнего.</p>
+
+<h2 id="wireframes----">Wireframes - выбор инструмента</h2>
+
+<p>Что выбрать для работы - целиком зависит от предпочтений. Если в поисковой строке Google (Yandex) набрать <code>wireframes</code>, то результат превзойдет все ожидания - выбор просто огромен! На любой вкус и цвет - мощные программы для прототипирования (например, старейшая и известнейшая <a href="http://www.axure.com/" title="Axure">Axure</a>), популярный <a href="http://balsamiq.com/" title="Balsamiq">Balsamiq</a>, готовый PNG-набор под Photoshop под названием <a href="http://developer.yahoo.com/ypatterns/about/stencils/" title="Stencil Kit">Stencil Kit</a> от команды Yahoo. Этот список можно продолжать и продолжать.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/axure_pr_prototype.jpg" alt="Axure PR - пример создания макета" class="center-image" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/balsamiq_mockup_web.jpg" alt="Официальный пример от Balsamiq" class="center-image" /></p>
+
+<p>Лично для меня интерес представляют программы класса <code>wireframes</code>, бесплатные online-версии с минималистичным интерфейсом и возможностями. Чтобы открыл ее, за пару минут разобрался, как работать и создавать. И только <code>wireframes</code>, ничего больше.</p>
+
+<p>Наверное, в этом плане можно упомянуть online-сервисы <a href="http://cacoo.com/" title="Cacoo">Cacoo</a> или <a href="http://www.mockflow.com/" title="MockFlow">MockFlow</a>. Очень нравиться Balsamiq, но он платный (хотя есть бесплатная online-demo версия - <a href="http://builds.balsamiq.com//b/mockups-web-demo/" title="Balsamiq Demo">Balsamiq Demo</a>).</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/03/cacoo.jpg" alt="Cacoo" class="center-image" /></p>
+
+<h2 id="section-1">Источники вдохновения</h2>
+
+<ul>
+  <li><a href="http://psd.fanextra.com/tutorials/wireframes/" title="Wireframes: A Beginner’s Guide">Wireframes: A Beginner’s Guide</a></li>
+  <li><a href="http://webdesign.tutsplus.com/articles/a-beginners-guide-to-wireframing--webdesign-7399" title="A Beginner's Guide to Wireframing">A Beginner’s Guide to Wireframing</a></li>
+</ul>
+
+<p>Вот такая получилась статья. На мой взгляд, не совсем информативная, наполовину - свои собственные мысли. Но может быть, кому и понадобиться, понравиться.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-03-05T00:00:00+04:00"><a href="http://zencoder.ru/css/calculate-width-block-box-sizing/">March 05, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -482,352 +944,6 @@
 <h3 id="section">Заключение</h3>
 
 <p>На этом статья о сервисе CodePen завершена. Конечно, можно было бы упомянуть о добавлении проектов Pen в <strong>Коллекции</strong>, о кнопке удаления Pen. Но я оставлю это в качестве “домашнего задания” для тех, кому это нужно.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-02-27T00:00:00+04:00"><a href="http://zencoder.ru/css/pseudo-class-and-pseudo-element/">February 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/pseudo-class-and-pseudo-element/" rel="bookmark" title="Pseudo-class и pseudo-element - что это?" itemprop="url">Pseudo-class и pseudo-element - что это?</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В CSS существует два типа псевдо-сущностей: псевдо-классы (<code>pseudo-class</code>) и псевдо-элементы (<code>pseudo-element</code>). В спецификации CSS2.1 имеются следующие псевдо-классы и псевдо-элементы (<code>pseudo-element</code>):</p>
-</blockquote>
-
-<h2 id="pseudo-class">Псевдо-классы (<code>pseudo-class</code>):</h2>
-
-<ul>
-  <li><code>:link</code> - непосещенная ссылка (<em>ни разу не щелкали мышью по ней</em>)</li>
-  <li><code>:visited</code> - посещенная ссылка (<em>уже щелкнули мышью на ссылке</em>)</li>
-  <li><code>:hover</code> - наведенная ссылка (<em>навели курсор мыши на ссылку</em>)</li>
-  <li><code>:focus</code> - элемент в фокусе (<em>кнопка или поле ввода получили фокус при нажатии клавиши <kbd>Tab</kbd></em>)</li>
-  <li><code>:active</code> - активный элемент (<em>например, ссылка, на которой произведен щелчок мыши</em>)</li>
-  <li><code>:first-child</code> - элемент, являющийся первым ребенком своего элемента-родителя</li>
-  <li><code>:lang()</code> - элемент, основанный на значении его аттрибута <code>lang</code></li>
-</ul>
-
-<h2 id="pseudo-element">Псевдо-элементы (<code>pseudo-element</code>):</h2>
-
-<p><strong>Псевдо-элементы</strong>, существующие в спецификации CSS2.1:</p>
-
-<ul>
-  <li><code>::first-line</code></li>
-  <li><code>::first-letter</code></li>
-  <li><code>::before</code></li>
-  <li><code>::after</code></li>
-</ul>
-
-<p>Так в чем же разница между псевдо-классом (<code>pseudo-class</code>) и псевдо-элементом (<code>pseudo-element</code>)? Все различие заключается в способе, которым эти две псевдо-сущности осуществляют воздействие на HTML-документ.</p>
-
-<p>Псевдо-классы (<code>pseudo-class</code>) ведут себя так, как если бы они добавлялись в виде обычных классов элементам HTML-страницы при выполнении определенных событий. Псевдо-элементы (<code>pseudo-element</code>) ведут себя так, как если бы они были обычными элементами HTML-страницы, но добавляемыми на нее при выполнении определенных событий.</p>
-
-<blockquote>
-  <p>Прим. переводчика: заметили одну особенность? Обе псевдо-сущности появляются на HTML-странице только при одном условии - выполнении какого-то (не важно, какого) события. Просто одна сущность появляется на странице в виде класса (<code>pseudo-class</code>), а вторая в виде элемента (<code>pseudo-element</code>). Каким образом появляются? Только одним способом - браузер сам создает (генерирует) псевдо-сущность при выполнении указанного события. Поэтому псевдо-сущности иногда называют генерируемым содержимым. Название “псевдо” в точности говорит само за себя - “как-будто”. То есть - “как-будто класс”, “как-будто элемент”. Название дано не случайно - в исходном коде HTML-страницы не существуют таких классов или элементов; но они появляются (генерируются) там с помощью браузера при определенном событии.</p>
-</blockquote>
-
-<p>Возьмем в качестве примера псевдо-элемент (<code>pseudo-element</code>) <code>::first-letter</code>. Предположим, необходимо сделать каждую первую букву заголовка <code>h1</code> вдвое большего размера, чем остальной текст в этом заголовке.</p>
-
-<p>Легко:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="o">:</span><span class="nd">:first-letter</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">250%</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/first-letter.jpg" alt="Псевдо-элемент ::first-letter" class="center-image" /></p>
-
-<p>Такое впечатление, что внутри HTML-разметки и CSS-таблицы произошли следующие изменения:</p>
-
-<p>HTML-разметка:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
-  <span class="nt">&lt;first-letter&gt;</span>H<span class="nt">&lt;/first-letter&gt;</span>owdy, y&#39;all
-<span class="nt">&lt;/h1&gt;</span></code></pre></div>
-
-<p>CSS-правило:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="nt">first-letter</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">250%</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Выглядит это так, словно в действительно все так (как создается впечатление) и происходит внутри браузера, не правда ли? Кто знает? Все, что вы знаете, что это работает так, как будто на самом деле так и выглядит. Имя всему этому “псевдо-элемент”.</p>
-
-<p>Аналогично, псевдо-класс работает так, если обычный класс добавляется к элементам внутри HTML-документа.</p>
-
-<p>Например, представим себе, что браузер добавляет класс <code>first-child</code> к каждому элементу <code>li</code>, который является первым ребенком своего родителя <code>ul</code>. Тогда эти элеиенты можно оформить в виде следующего CSS-правила:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="nc">.first-child</span><span class="p">{</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Простая замена точки на двоеточие (получается <code>li:first-child</code>) и мы имеем тот же самый конечный результат, без необходимости добавления вручную классов к элементам внутри всей HTML-разметки.</p>
-
-<p>Вы могли уже догадаться относительно использования в псевдо-элементах <em>двойного двоеточия</em>. Такой синтаксис появился уже позже спецификации CSS2.1 (в спецификации CSS3).</p>
-
-<p>Ни у одного браузера нет строго условия использования двойного двоеточия в псевдо-элементах: одинарное двоеточие прекрасно понимается всеми браузерами.</p>
-
-<h2 id="css3---pseudo-class">CSS3 псевдо-классы (pseudo-class):</h2>
-
-<p>Спецификация CSS3 добавляет еще несколько псевдо-классов (<code>pseudo-class</code>), большинство из которых не имеет всеобщей поддержки в браузерах (на момент написания статьи):</p>
-
-<ul>
-  <li><code>:target</code></li>
-  <li><code>:root</code></li>
-  <li><code>:nth-child()</code></li>
-  <li><code>:nth-of-type()</code></li>
-  <li><code>:nth-last-of-type()</code></li>
-  <li><code>:first-of-type</code></li>
-  <li><code>:last-of-type</code></li>
-  <li><code>:only-of-type</code></li>
-  <li><code>:only-child</code></li>
-  <li><code>:last-child</code></li>
-  <li><code>:empty</code></li>
-  <li><code>:not()</code></li>
-  <li><code>:enabled</code></li>
-  <li><code>:disabled</code></li>
-  <li><code>:checked</code></li>
-</ul>
-
-<p>Автор статьи: Eric Meyer - “Smashing CSS Professional Techniques for Modern Layout”</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-02-26T00:00:00+04:00"><a href="http://zencoder.ru/css/brief-about-first-of-type-and-nth-of-type-and-not/">February 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/brief-about-first-of-type-and-nth-of-type-and-not/" rel="bookmark" title="Кратко о :first-of-type, :nth-of-type и :not" itemprop="url">Кратко о :first-of-type, :nth-of-type и :not</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <h2 id="first-of-type--last-child">Псевдоэлементы <code>:first-of-type</code> и <code>:last-child</code></h2>
-
-<blockquote>
-  <p>Псевдоэлемент <code>:first-of-type</code> служит для выборки дочернего элемента определенного типа.</p>
-</blockquote>
-
-<p>Можно сказать, что псевдоэлемент <code>:first-of-type</code> является частным случаем псевдоэлемента <code>:first-child</code>. Если псевдоэлемент <code>:first-child</code> выполняет выборку первого дочернего элемента вне зависимости от его типа, то псевдоэлемент <code>:first-of-type</code> осуществляет выборку первого дочернего элемента только указанного типа (если этот элемент отвечает заданному условию - типу элемента).</p>
-
-<p>Аналогично работает псевдоэлемент <code>:last-of-type</code>, только применяется к последнему дочернему элементу определенного типа. Более общим случаем является псевдоэлемент <code>:last-child</code>.</p>
-
-<p>Псевдоэлементы <code>:last-child</code>, <code>:nth-child()</code>, <code>:first-of-type</code> НЕ ПОДДЕРЖИВАЮТСЯ IE8.</p>
-
-<p>Пример:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.fofo</span> <span class="nt">p</span><span class="nd">:first-of-type</span><span class="p">{}</span></code></pre></div>
-
-<p>… в примере тег <code>p</code> является указанием типа дочернего элемента. То есть, будет выбран первый дочерний элемент типа <code>p</code>, родителем которого является элемент с классом <code>.fofo</code>.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wowo</span> <span class="nt">p</span><span class="nd">:last-of-child</span><span class="p">{}</span></code></pre></div>
-
-<p>Выбрать последний дочерний элемент типа <code>p</code>, родителем которого является элемент с классом <code>.wowo</code>.</p>
-
-<p>Рабочий пример приведен ниже. Два одинаковых списка. К первому применен псевдоэлемент <code>:first-of-type</code>, ко второму - псевдоэлемент <code>:first-child</code>.</p>
-
-<p>В первом случае выбран первый параграф списка, так как в выражении указано выбрать именно первый дочерний элемент списка, являющийся параграфом <code>p</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.fofo</span> <span class="nt">p</span><span class="nd">:first-of-type</span><span class="p">{</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#222</span><span class="p">;</span>
-  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#999</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Во втором случае к списку применен псевдоэлемент <code>:first-child</code> и в этом случае был отобран первый элемент указанного списка - ссылка <code>a</code>! А то, что этот элемент является ссылкой, а не параграфом <code>p</code>, роли не играет - тип элемента не был указан:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wowo</span> <span class="nd">:first-child</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
-  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="nb">green</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/first-of-type1.jpg" alt="Псевдоэлемент :first-of-type" class="center-image" /></p>
-
-<p>Псевдоэлемент <code>:last-of-child</code> и его общий случай <code>:last-child</code> разбирать смысла нет, так как выборка элемента из HTML-документа осуществляется аналогично с тем лишь различием, что применяется не к первому, а последнему дочернему элементу.</p>
-
-<h2 id="nth-of-type">Псевдоэлемент <code>:nth-of-type</code></h2>
-
-<p>Псевдоэлемент <code>:nth-of-type</code> является частным случаем псевдоэлемента <code>:nth-child</code>. В случае с <code>:nth-of-type</code> выборка элементов производится не только по порядковому номеру, но и по типу элемента.</p>
-
-<p>Например, <code>p img:nth-of-type(odd){float: left}</code> и <code>p img:nth-of-type(even){float: right}</code> делает выборку четных и нечетных порядковых номеров только элементов <code>img</code>.</p>
-
-<p>Отбираются все дочерние по отношению к <code>.nthOfType</code> элементы типа <code>img</code>, нечетные по порядковому номеру. И применяются к нему правила - смещение влево, <code>margin-right</code> и тень справа:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nthOfType</span> <span class="nt">img</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">odd</span><span class="o">)</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">10px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">3px</span> <span class="m">3px</span> <span class="m">3px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">65</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Отбираются все дочерние по отношению к <code>.nthOfType</code> элементы типа <code>img</code>, четные по порядковому номеру. И применяются к нему правила - смещение право, <code>margin-left</code> и тень слева:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nthOfType</span> <span class="nt">img</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span><span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-3px</span> <span class="m">3px</span> <span class="m">3px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">65</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/nth-of-type.jpg" alt="Псевдоэлемент :nth-of-type" class="center-image" /></p>
-
-<h2 id="not">Псевдокласс :not</h2>
-
-<p>Псевдокласс <code>:not</code> (псевдокласс отрицания) - выбрать все элементы <code>p</code>, у которых НЕТ класса <code>.classy</code> и применить к ним следующие свойства: цвет и тень. Другими словами, выборка элементов с помощью псевдокласса <code>:not</code> производится от обратного - “выбрать все элементы, которые НЕ ОТВЕЧАЮТ следующему условию.”</p>
-
-<p>Этот псевдокласс является антагонистом обычного условия - “если удовлетворяет условию, то примени такое-то свойство”:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;classy&quot;</span><span class="nt">&gt;</span>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-  consequat.
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-  consequat.
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-  consequat.
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-  quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-  consequat.
-<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.dodo</span> <span class="nt">p</span><span class="nd">:not</span><span class="o">(</span><span class="nc">.classy</span><span class="o">)</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="nb">blue</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">255</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/not.jpg" alt="Псевдоэлемент :not" class="center-image" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-02-25T00:00:00+04:00"><a href="http://zencoder.ru/css/how-to-read-pseudo-element-nth-child/">February 25, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/how-to-read-pseudo-element-nth-child/" rel="bookmark" title="Как правильно читать псевдо-элемент nth-child" itemprop="url">Как правильно читать псевдо-элемент nth-child</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Псевдо-элемент <code>nth-child()</code> полезен и удобен в применении.</p>
-</blockquote>
-
-<p>Единственный момент, который мне всегда давался с трудом (а потом быстро забывался) - это запомнить тот алгоритм, по которому данный псевдо-элемент производил свои вычисления.</p>
-
-<p>С ключевыми словами все более или менее ясно и просто - их всего два, одно отвечает за счет четных чисел, другое - за счет нечетных чисел. Нумерация в списках начинается с 1, а не с нуля. Поэтому при выборке с помощью ключевого слова <code>odd</code> - выбираются все нечетные позиции (<code>1, 2, 3, 5, 7, ...</code>). С помощью ключевого слова <code>even</code> - выбираются четные позиции (<code>2, 4, 6, 8, ...</code>).</p>
-
-<p>Например, так:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">odd</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>или так:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/02/nth-child_element.png" alt="Псевдо-элемент nth-child(even)" class="center-image" /></p>
-
-<p>А вот с общей формулой примерного вида <code>2n+2</code> было несколько сложнее. Пока я в “Большой книге CSS3” не нашел простого и краткого объяснения, как “читать” это выражение.</p>
-
-<p>Все просто на самом деле. Допустим, у нас есть такое выражение:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">2n</span><span class="o">+</span><span class="nt">3</span><span class="o">)</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… здесь мы говорим браузеру - применить цвет <code>#778899</code> и убрать подчеркивание <code>text-decoration: none;</code> к тексту каждого второго (<code>2n</code>) элемента <code>li</code>, начиная с третьего (<code>3</code>).</p>
-
-<p>Еще примеры:</p>
-
-<ul>
-  <li><code>.third li:nth-child(3n+2)</code> - выбрать каждый третий элемент, начиная со второго по порядку;</li>
-  <li><code>.fifth li:nth-child(5n+3)</code> - выбрать каждый пятый элемент, начиная с третьего элемента;</li>
-  <li><code>.forth li:nth-child(4n+2)</code> - выбрать каждый четвертый элемент, начиная со второго.</li>
-</ul>
-
-<p>То есть, видя выражение типа <code>3n+4</code>, мы читаем его так: каждый третий элемент, начиная с четвертого. Вопрос остается открытым в отношении загадочной буквы <code>n</code>.</p>
-
-<p>Как уже можно было догадаться, это всего лишь <em>счетчик</em>. Это объяснение выражения было “подсмотрено” мною на CSS-Tricks (<a href="http://css-tricks.com/how-nth-child-works/" title="How nth-child Works">How nth-child Works</a>).</p>
-
-<p>Буква <code>n</code> в этом выражении - <em>счетчик</em>, начинающийся с <code>0</code>. То есть, если взять первое выражение - <code>.third li:nth-child(3n+2)</code>, то вычисление внутри него будет производиться следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">3</span> <span class="o">*</span> <span class="nt">0</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">2</span>
-<span class="nt">3</span> <span class="o">*</span> <span class="nt">1</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">5</span>
-<span class="nt">3</span> <span class="o">*</span> <span class="nt">2</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">8</span>
-<span class="nt">3</span> <span class="o">*</span> <span class="nt">3</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">11</span>
-<span class="nt">3</span> <span class="o">*</span> <span class="nt">4</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">14</span>
-<span class="nt">3</span> <span class="o">*</span> <span class="nt">5</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">17</span>
-<span class="nt">3</span> <span class="o">*</span> <span class="nt">6</span> <span class="o">+</span> <span class="nt">2</span> <span class="o">=</span> <span class="nt">20</span>
-<span class="o">...</span></code></pre></div>
-
-<p>То есть, как и говорилось выше - каждый третий элемент, начиная со второго. Совершенно ничего сложного, как видим. Простая математика и запоминать ничего не нужно. Главное - понять алгоритм вычисления в этом выражении.</p>
-
-<p>Тогда ключевое слово <code>odd</code> можно записать в виде выражения <code>3n</code>, а ключевое слово <code>even</code> как выражение <code>2n</code>. Ключевые слова были введены в употребление для удобства ввиду частого использования выражений <code>2n</code> и <code>3n</code>.</p>
-
-<p>На этом все.</p>
 
 <hr />
 

@@ -144,6 +144,274 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-09-02T00:00:00+04:00"><a href="http://zencoder.ru/git/git-rm-and-git-mv/">September 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-rm-and-git-mv/" rel="bookmark" title="git rm и git mv - удаление и переименование в Git" itemprop="url">git rm и git mv - удаление и переименование в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Еще один важный практический вопрос при работе с Git - это операции с файлами.</p>
+</blockquote>
+
+<p>В частности, это операции удаления и переименования файлов. В системе <a href="http://git-scm.com/" title="Git">Git</a> имеются специальные команды, которые очень похожи на консольные команды <code>rm</code> и <code>mv</code> в Linux/Mac OS. Но для Git они выглядят несколько иначе: <code>git rm</code> - для удаления файлов и <code>git mv</code> - для переименования файлов. Ниже я рассмотрю обе эти комадны более подробно.</p>
+
+<h2 id="git-rm">Команда git rm</h2>
+
+<p>Для удаления файлов в системе Git, как уже упоминалось выше, имеется специальная команда <code>git rm</code>. Ее отличие от обычной консольной команды <code>rm</code> (в том же Linux) заключается в особенности самой системы Git.</p>
+
+<p>Как хорошо известно, в системе Git файл может одновременно существовать в трех ипостасях: в области “Working Directory”, в области “Staging Area”, в области “Repository”. Удаление файла из области “Working Directory” не приведет к его удалению из областей “Staging Area” и “Repository”.</p>
+
+<p>Поэтому, чтобы удалить файл, нужно (в идеале) выполнить три команды подряд для удаления файла из Рабочей области “Working Directory”, затем из области индекса “Staging Area” и потом из области репозитория “Repository”:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Delete file index.html&#39;</span></code></pre></div>
+
+<p>Команда <code>git rm</code> является ни чем иным, как “вшитым” в Git сокращением двух первых команд:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">rm</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span></code></pre></div>
+
+<p>Сделано это всего лишь для удобства пользования системой Git. Давайте на примере посмотрим работу команды <code>git rm</code>. Предположим, что имеется файл <code>index.html</code>, который проиндексирован и зафиксирован.</p>
+
+<p>Удалим его командой <code>git rm</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm.png" alt="Команда git rm - удаление файлов в Git" /></p>
+
+<p>Видим, что файл <code>index.html</code> был сразу удален из двух областей: рабочего каталога “Working Directory” и области индексации “Staging Area”. Но в репозитории файл все же остался, о чем говорит вывод команды <code>git status</code>.</p>
+
+<p>Любой последующий commit зафиксирует удаление этого файла:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_commit_deletion.png" alt="Фиксация удаления файла командой git rm" /></p>
+
+<h2 id="git-rm--cached">Команда git rm -cached</h2>
+
+<p>У команды <code>git rm</code> имеется пара полезных ключей, одним из которых является ключ <code>--cached</code>. Задача этого ключа - позволить команде <code>git rm</code> удалить файл из области индексирования “Staging Area”, но при этом оставить его в области рабочего проекта “Working Directory”. Давайте рассмотрим пример, когда создан файл <code>second.html</code> и произведена его индексация (но не фиксация):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_second-html.png" alt="Созданный файл second.html" /></p>
+
+<p>Удалим его командой <code>git rm --cached</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_cached.png" alt="Команда git rm -cached" /></p>
+
+<p>Отлично! Видим, что произошло удаление файла <code>second.html</code>. Кроме того, команда <code>git status</code> показывает, что в рабочей области “Working Directory” имеется неотслеживаемый (untracked) файл по имени <code>second.html</code>.</p>
+
+<h2 id="git-rm--f">Команда git rm -f</h2>
+
+<p>В предыдущем разделе я рассмотрел вариант, когда созданный и проиндексированный файл удаляется из области индексирования “Staging Area”, но остается в области “Working Directory”. Выполняется это с помощью команды <code>git rm --cached</code>.</p>
+
+<p>Логическим продолжением этой команды является та же самая команда <code>git rm</code>, но с ключом <code>-f</code> - <code>git rm -f</code>. Такая команда удаляет проиндексированный (но еще не зафиксированный) файл как из области “Staging Area”, так и из области “Working Directory”.</p>
+
+<p>Давайте рассмотрим на примере созданного и проиндексированного файла <code>third.html</code> его удаление с помощью команды <code>git rm -f</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_third-html.png" alt="Созданный файл third.html" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-rm_f.png" alt="Команда git rm -f" /></p>
+
+<p>Файл <code>third.html</code> удален как из области “Staging Area”, так и из области “Working Directory”. В итоге можно сказать, что между командой <code>git rm -f</code> и командой <code>git rm</code> практически нет никакой разницы.</p>
+
+<h2 id="git-mv------">Команда git mv - перемещение или переименование файлов</h2>
+
+<p>В системе Git имеется “своя” команда для перемещения или переименования файлов. Слово “своя” здесь не даром взято в кавычки - аналогия с командой <code>git rm</code> полная. Команда <code>git mv</code> перемещает или переименовывает файлы, автоматически “уведомляя” об этих событиях область “Staging Area”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv.png" alt="Команда git mv - перемещение файла в Git" /></p>
+
+<p>Остается только зафиксировать эти изменения любым коммитом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Move index.html to papka&#39;</span>
+  <span class="no">[master 868d428]</span> <span class="n">Move</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="n">to</span> <span class="n">papka</span>
+   <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">0</span> <span class="n">insertions</span><span class="p">(+),</span> <span class="n">0</span> <span class="n">deletions</span><span class="p">(-)</span>
+   <span class="n">rename</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">=&gt;</span> <span class="n">papka</span><span class="p">/</span><span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span></code></pre></div>
+
+<p>Переименуем файл <code>index.html</code> с помощью команды <code>git mv</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv_index.png" alt="Команда git mv - переименование файла в Git" /></p>
+
+<p>Вот и все несложные операции по перемещению\переименованию или удалению файлов с помощью команд <code>git rm</code> и <code>git mv</code>, под всевидящим оком Git.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-09-01T00:00:00+04:00"><a href="http://zencoder.ru/git/github-push-and-pull/">September 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-push-and-pull/" rel="bookmark" title="GitHub - команды push и pull" itemprop="url">GitHub - команды push и pull</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Продолжаю открывать для себя возможности системы Git и сервиса GitHub.</p>
+</blockquote>
+
+<p>Уже сейчас, обладая минимальными базовыми знаниями Git и владея учетной записью на сервере GitHub, я не представляю, как я мог жить раньше без обоих этих вещей. Это действительно удобно и надежно!</p>
+
+<p>Благодаря им я знаю, что у меня никогда и ничто не потеряется; и все, что нужно - у меня всегда под рукой. На работе поработал над чем-либо - отправил на GitHub; домой пришел - “стянул” наработки с GitHub и продолжил работу с прерванного места.</p>
+
+<p>Вот на последнем я хотел бы остановиться подробнее. Конечно, веб-разработчик, давно и хорошо знакомый с Git и GitHub, может только улыбнуться насчет того, чем я собираюсь поделиться. Настолько все это просто и понятно. Но это просто и понятно для него, опытного web-разработчика. А для начинающего веб-программиста - это новое и неизведанное. Впрочем, достаточно лирики - переходим к практике.</p>
+
+<h2 id="github----push">GitHub - команда push</h2>
+
+<p>В предыдущей статье я познакомился с возможностью создания репозитория на сервисе GitHub. И возможностью клонирования этого репозитория на локальную машину - “GitHub и Git - создание и работа с репозиторием”.</p>
+
+<p>Напомню, что в том примере было произведено клонирование репозитория с помощью команды:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">arbeit</span><span class="p">.</span><span class="n">git</span></code></pre></div>
+
+<p>Другими словами, было произведено копирование существующего репозитория с удаленного сервера на локальную машину. Причем, копирование как есть - полностью весь репозиторий, со всеми его файлами, коммитами, индексами и тому подобным.</p>
+
+<p>После внесений изменений в локальный репозиторий - индексации и фиксации - необходимо было отправить произведенные изменения на удаленный сервер, на GitHub.</p>
+
+<p>Для этой цели существует (и я ею воспользовался) команда <code>push</code> (отправить). К примеру, давайте я внесу еще кое-какие изменения в локальном репозитории, затем проиндексирую и зафиксирую их, а затем отправлю на GitHub:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Continue write article about push and pull in GitHub&#39;</span>
+<span class="no">[master 5af3abc]</span> <span class="k">Continue</span> <span class="n">write</span> <span class="n">article</span> <span class="n">about</span> <span class="n">push</span> <span class="n">and</span> <span class="n">pull</span> <span class="k">in</span> <span class="n">GitHub</span>
+ <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">18</span> <span class="n">insertions</span><span class="p">(+)</span>
+
+<span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+<span class="n">Your</span> <span class="n">branch</span> <span class="n">is</span> <span class="n">ahead</span> <span class="n">of</span> <span class="s1">&#39;origin/master&#39;</span> <span class="n">by</span> <span class="n">1</span> <span class="n">commit</span><span class="p">.</span>
+  <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git push&quot;</span> <span class="n">to</span> <span class="n">publish</span> <span class="n">your</span> <span class="n">local</span> <span class="n">commits</span><span class="p">)</span>
+<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span>
+
+<span class="p">$</span> <span class="n">git</span> <span class="n">push</span>
+<span class="p">...</span>
+<span class="n">Counting</span> <span class="n">objects</span><span class="err">:</span> <span class="n">7</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+<span class="n">Delta</span> <span class="n">compression</span> <span class="n">using</span> <span class="n">up</span> <span class="n">to</span> <span class="n">4</span> <span class="n">threads</span><span class="p">.</span>
+<span class="n">Compressing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+<span class="n">Writing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">1</span><span class="p">.</span><span class="n">65</span> <span class="n">KiB</span> <span class="p">|</span> <span class="n">0</span> <span class="n">bytes</span><span class="p">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+<span class="n">Total</span> <span class="n">4</span> <span class="p">(</span><span class="n">delta</span> <span class="n">1</span><span class="p">),</span> <span class="n">reused</span> <span class="n">0</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">)</span>
+<span class="n">To</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">semenencko</span><span class="p">/</span><span class="n">articles</span>
+   <span class="n">022b756</span><span class="p">..</span><span class="n">5af3abc</span>  <span class="n">master</span> <span class="p">-&gt;</span> <span class="n">master</span></code></pre></div>
+
+<p>Вот - все наработки, которые я сделал на домашнем компьютере, оказались с считанные секунды помещенными на сервере GitHub, под бдительным оком Git.</p>
+
+<h2 id="github----pull">GitHub - команда pull</h2>
+
+<p>Продолжим логическую картину моего рабочего процесса (workflow). На следующий день я прихожу на работу и у меня есть время и возможность поработать над своим проектом. Естественно, я хочу продолжить с того места, на котором остановился дома. Для этого я воспользуюсь командой <code>pull</code>, чтобы “стянуть” с GitHub последние изменения.</p>
+
+<p>В данном случае команда <code>pull</code> будет выглядеть так:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-pull.png" alt="GitHub - команда pull" class="center-image" /></p>
+
+<p>В выводе консоли (на картинке) видно, что было произведено добавление одного измененного файла по имени README.md, в котором были добавлены две строки.</p>
+
+<p>Обратите внимание на разницу между командами <code>clone</code> и <code>pull</code> в данном случае. Команда <code>clone</code> копирует весь репозиторий целиком, как есть - со всеми его файлами. Команда <code>pull</code> копирует разницу между удаленным и локальным репозиторием. Эту разницу можно назвать дельта или patch.</p>
+
+<p>В результате вышеприведенной команды в считанные секунды я получаю на рабочем компьютере точную копию того проекта, над которым работал дома. И могу продолжать с того места, на котором остановился.</p>
+
+<h2 id="github----fetch">GitHub - команда fetch</h2>
+
+<p>Существует разновидность команды <code>pull</code> - это команда <code>fetch</code>. И одна, и вторая команда выполняют одинаковые задачи - получение patch удаленного репозитория. Но делают они это по разному.</p>
+
+<p>Команда <code>pull</code> получает patch репозитория и автоматически производит слияние удаленной и локальной ветвей репозитория. Если произойдет конфликт слияния, то только в этом случае слияния не произойдет и решать конфликт придется вручную.</p>
+
+<p>Команда <code>fetch</code> также производит получение patch удаленного репозитория. Но при этом автоматического слияния ветвей удаленного и локального репозиториев не происходит:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-fetch.png" alt="GitHub - команда fetch" class="center-image" /></p>
+
+<p>На картинке выше показано, что была выполнена команда <code>git fetch</code> после того, как на стороне сервиса GitHub было произведено редактирование файла README.md. Однако, последующая команда <code>git status</code> показала, что изменения есть, но они не слиты с локальной ветвью репозитория. И порекомендовала выполнить команду <code>git pull</code>, чтобы произвести такое слияние.</p>
+
+<p>Помимо этого, имеются изменения в локальном репозитории, которые не проиндексированы и не зафиксированы. Что же, исправляю ситуацию - последовательно ввожу команды:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">pull</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Added fetch image&#39;</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
+
+<p>Производить слияние и разрешение конфликтов при слиянии я еще не умею, поэтому вопрос, как произвести слияние ветвей после команды <code>git fetch</code> я опущу в данной статье.</p>
+
+<p>Вернувшись к вышесказанному, можно сделать вывод, что команда <code>pull</code> более универсальная, нежели команда <code>fetch</code>. Именно команду <code>pull</code> имеет смысл применять в практической работе.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-31T00:00:00+04:00"><a href="http://zencoder.ru/git/github-how-to-delete-repository/">August 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-how-to-delete-repository/" rel="bookmark" title="Как удалить репозиторий на GitHub" itemprop="url">Как удалить репозиторий на GitHub</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Как новичок в работе с системой <a href="https://github.com/" title="GitHub">GitHub</a>, столкнулся с вопросом - как удалить созданный на GitHub репозиторий?</p>
+</blockquote>
+
+<p>Оказалось, что ничего сложного в этом нет. Однако, задача эта и не такая простая, как может показаться. По крайней мере, чисто интуитивно у меня не получилось ее выполнить - пришлось искать ответ в Сети.</p>
+
+<p>Итак, у меня есть учетная запись на GitHub, под которой создана пара репозиториев. Один из этих репозиториев был создан в учебных целях, поэтому для моей дальнейшей работы он мне не пригодиться и его можно удалить.</p>
+
+<h2 id="github">Список репозиториев на GitHub</h2>
+
+<p>Для начала открою свою страничку на GitHub и посмотрю, какие репозитории у меня уже есть:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-list_of_repos.png" alt="Список репозиториев на GitHub" /></p>
+
+<p>Один из репозиторев - <code>arbeit</code> - можно удалить.</p>
+
+<p>Для этой цели нужно просто зайти в него по ссылке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit.png" alt="Репозиторий arbeit на GitHub" /></p>
+
+<p>В правом нижнем углу окна браузера, в списке, имеется строка <code>Settings</code>. Открываем ее, сразу же копируем имя репозитория в поле <code>Repository name</code> (оно нам понадобиться еще здесь) и прокручиваем страницу вниз, пока не находим раздел с устрашающим названием <code>Danger Zone</code>. В этой опасной зоне находим подраздел <code>Delete this repository</code> с одноименной кнопкой <code>Delete this repository</code>.</p>
+
+<p>Жмем на эту кнопку и получаем в результате окно с предупреждением об удаленни репозитория. В окне запроса имени удаляемого репозитория вводим (или вставляем из буфера обмена) - <code>arbeit</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-delete_repo_arbeit.png" alt="Запрос имени удаляемого репозитория" /></p>
+
+<p>Снова жму на кнопку, на этот раз с еще более страшным напоминанием о последствиях совершаемого мною шага. И все! Репозиторий <code>arbeit</code> удален:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit_deleted.png" alt="Удаленный репозиторий на GitHub" /></p>
+
+<p>Ничего сложного, но так сразу и не догадаешься, что нужно делать. Разработчики GitHub постарались и обезопасили пользователей от случайного удаления репозиториев с данными.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-30T00:00:00+04:00"><a href="http://zencoder.ru/git/github-and-git/">August 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -434,464 +702,6 @@
 <h2 id="gitignore-2">Шаблоны в файле .gitignore</h2>
 
 <p>Для файла <code>.gitignore</code> доступны шаблоны, с помощью которых можно задать маски для выборки необходимых типой файлов. Однако, обширная тема шаблонов выходит за рамки данной статьи. При желании можно почитать по теме шаблонов в книге “<a href="http://git-scm.com/book/ru" title="Pro Git - профессиональный контроль версий">Pro Git - профессиональный контроль версий</a>”.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-livereload/" rel="bookmark" title="Gulp - плагин gulp-livereload" itemprop="url">Gulp - плагин gulp-livereload</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке.</p>
-</blockquote>
-
-<p>Суть плагина <code>gulp-livereload</code> в автоматизации обновления страниц в окне браузера. Это тоже самое, что и связка - плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка - плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
-
-<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье - “Установка LiveReload в Sublime Text 2” меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда - почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
-
-<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер работает стабильно. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
-
-<h2 id="gulp-livereload">Установка плагина gulp-livereload</h2>
-
-<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу - <a href="https://www.npmjs.org/package/gulp-livereload" title="Gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-livereload</span></code></pre></div>
-
-<p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
- <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
- <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
- <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
-  <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
-  <span class="nt">&quot;gulp-livereload&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.1.1&quot;</span>
- <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span></code></pre></div>
-
-<h2 id="livereload--">Установка плагина LiveReload под браузер</h2>
-
-<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера - Google Chrome и Safari.</p>
-
-<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla - <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится устаревшая версия плагина, которая наверняка не подойдет для вашего браузера.</p>
-
-<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров - <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
-
-<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин - он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
-
-<h2 id="gulp-livereload-1">Создание задачи под gulp-livereload</h2>
-
-<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него - это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас - устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
-
-<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_error_start_server.png" alt="Ошибка запуска сервера LiveReload" /></p>
-
-<p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Все - мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Complie Task</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">sassSCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
-    <span class="nx">minifyHTML</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-html&#39;</span><span class="p">),</span>
-    <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
-    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span>
-
-<span class="c1">// Default Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
-
-<span class="c1">// Watch Task</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
-<span class="p">});</span>
-
-<span class="c1">// Sass Complie Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
- <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
-
-<h2 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h2>
-
-<p>Осталось выполнить две маленькие вещи. Первая - включаю плагин LiveReload в браузере. Вторая - запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">17</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">19</span> <span class="err">μ</span><span class="n">s</span>
-<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span></code></pre></div>
-
-<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию - 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">figure</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
- <span class="p">}</span></code></pre></div>
-
-<p>… и смотрю на вывод в консоли:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
-<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
-<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span></code></pre></div>
-
-<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> - он тоже подхватил изменения?</p>
-
-<p>Смотрим:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_01.png" alt="Изменения в gulp-livereload" /></p>
-
-<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> - “картинка” в окне браузера изменилась без перезагрузки последнего.</p>
-
-<p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
-<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
-<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
-<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span>
-<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
-<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">97</span> <span class="n">ms</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_02.png" alt="Изменения в gulp-livereload" /></p>
-
-<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp - использование плагина <code>gulp-livereload</code>.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-26T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-imagemin/">August 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-imagemin/" rel="bookmark" title="Gulp-imagemin - оптимизация изображений в Gulp" itemprop="url">Gulp-imagemin - оптимизация изображений в Gulp</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Крайне необходимая задача, возникающая в работе каждого верстальщика - это оптимизация графики, нарезанной из psd-макета или используемой в HTML-шаблоне.</p>
-</blockquote>
-
-<p>Для этой цели существует много разных инструментов, начиная с RIOT и заканчивая утилитами Linux. Но гораздо более удобной возможностью является автоматизация процесса сжатия картинок с помощью плагина под Gulp.</p>
-
-<p>Таким плагином является <a href="https://www.npmjs.org/package/gulp-imagemin" title="Gulp-imagemin">gulp-imagemin</a>. Он умеет сжимать картинки форматов PNG, JPEG, GIF и SVG. Все остальные (не поддерживаемые) форматы графических файлов просто игнорируются плагином <code>gulp-imagemin</code>.</p>
-
-<h2 id="gulp-imagemin">Установка gulp-imagemin</h2>
-
-<p>Установка плагина <code>gulp-imagemin</code> стандартная и производиться командой <code>npm install</code> с ключом <code>--save-dev</code> для внесения пакета в список зависимостей проекта:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-imagemin</span></code></pre></div>
-
-<h2 id="gulp-imagemin-1">Создание задачи под gulp-imagemin</h2>
-
-<p>После установки плагина <code>gulp-imagemin</code> необходимо создать задачу сжатия картинок под этот плагин. Ничего необычного в этом нет и задача создается стандартно. Сначала создаем переменную <code>imagemin</code>, в которую помещаем сам плагин <code>gulp-imagemin</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-imagemin&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>А затем создаем задачу с произвольным именем <code>compress</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Compress Task</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/images&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Задачу <code>compress</code> можно запускать однократно вручную или автоматически, доверив это дело Gulp и поместив ее внутрь встроенной функции <code>gulp.watch</code>.</p>
-
-<p>Создаю в проекте <code>gulp_test</code> директорию <code>images</code> и размещаю в ней несколько изображений формата <code>.jpg</code>, но достаточно большого размера:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">images</span><span class="p">/</span>
-<span class="n">black</span> <span class="p">(</span><span class="n">22</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">23</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">28</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">31</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">36</span><span class="p">).</span><span class="n">jpg</span>  <span class="n">black</span> <span class="p">(</span><span class="n">41</span><span class="p">).</span><span class="n">jpg</span></code></pre></div>
-
-<p>Цель - проверить, действительно ли происходит сжатие графических файлов. Давайте опробуем работу плагина <code>gulp-imagemin</code> однократно, запустив в консоли команду <code>gulp compress</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">compress</span>
-<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-<span class="n">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
-<span class="n">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">56</span> <span class="n">ms</span>
-<span class="n">gulp-imagemin</span><span class="err">:</span> <span class="n">Minified</span> <span class="n">6</span> <span class="n">images</span> <span class="p">(</span><span class="n">saved</span> <span class="n">83</span><span class="p">.</span><span class="n">02</span> <span class="n">kB</span> <span class="p">-</span> <span class="n">7</span><span class="p">.</span><span class="n">2</span><span class="p">%)</span></code></pre></div>
-
-<p>Отлично! Задача <code>compress</code> запустилась и выполнилась за 8.56 миллисекунд. При этом было обработано 6 изображений, над которыми была произведена операция сжатия. Экономия размера в результате компресии составила <code>7.2%</code>.</p>
-
-<p>Давайте посмотрим на изображения в оригинале, расположенные в директории <code>images</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_origin_images.png" alt="Оригинальные изображения в проекте" /></p>
-
-<p>… запомним примерные размеры каждого из файлов. А затем взглянем на содержимое директории <code>build/images/</code>, в которой располагаются сжатые плагином <code>gulp-imagemin</code> изображения:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-imagemin_pictures.png" alt="Обработанные плагином gulp-imagemin изображения" /></p>
-
-<p>Видно при сравнении, что размер графических файлов, пускай и ненамного, но уменьшился.</p>
-
-<h2 id="gulp-imagemin----">Gulp-imagemin - автоматический мониторинг</h2>
-
-<p>Давайте доведем нашу задачу до логического завершения и настроим Gulp таким образом, чтобы он автоматически отслеживал добавление в директории <code>images</code> новых изображений.</p>
-
-<p>И как только они появляются там, то немедлено производил бы их сжатие при помощи плагина <code>gulp-imagemin</code>.</p>
-
-<p>Для этого создам задачу мониторинга <code>watch</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;compress&#39;</span><span class="p">]);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>… которую добавлю в очередь на выполнение для дефолтной задачи <code>default</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
-
-<p>Полностью листниг файла <code>gulpfile.js</code> для данного случая выглядит следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-    <span class="nx">imagemin</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-imagemin&#39;</span><span class="p">);</span>
-
-<span class="c1">// Default Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
-
-<span class="c1">// Watch Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;compress&#39;</span><span class="p">]);</span>
-<span class="p">});</span>
-
-<span class="c1">// Compress Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/images&#39;</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Запускаю в консоли команду <code>gulp</code>, а затем по одному добавлю в директорию <code>images</code> два файла-скриншота, созданных мною для этой статьи.</p>
-
-<p>Видим, что каждый раз, как в директорию <code>images</code> был добавлен файл, Gulp запускал задачу <code>compress</code> на выполнение:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span> <span class="nx">gulp</span>
-  <span class="nx">Using</span> <span class="nx">gulpfile</span> <span class="o">~</span><span class="err">/Projects/gulp_test/gulpfile.js</span>
-  <span class="nx">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-  <span class="nx">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="nx">after</span> <span class="mf">8.42</span> <span class="nx">ms</span>
-  <span class="nx">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-  <span class="nx">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="nx">after</span> <span class="mi">12</span> <span class="err">μ</span><span class="nx">s</span>
-  <span class="nx">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
-  <span class="nx">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="nx">after</span> <span class="mi">13</span> <span class="nx">ms</span>
-  <span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">7</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">93.43</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mf">7.7</span><span class="o">%</span><span class="p">)</span>
-  <span class="nx">Starting</span> <span class="s1">&#39;compress&#39;</span><span class="p">...</span>
-  <span class="nx">Finished</span> <span class="s1">&#39;compress&#39;</span> <span class="nx">after</span> <span class="mf">2.13</span> <span class="nx">ms</span>
-  <span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">8</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">103.77</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mi">8</span><span class="o">%</span><span class="p">)</span></code></pre></div>
-
-<p>На выполнение первой задачи ушло 7 миллисекунд:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">7</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">93.43</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mf">7.7</span><span class="o">%</span><span class="p">)</span></code></pre></div>
-
-<p>… на вторую задачу - 2.13 миллисекунд:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="o">-</span><span class="nx">imagemin</span><span class="o">:</span> <span class="nx">Minified</span> <span class="mi">8</span> <span class="nx">images</span> <span class="p">(</span><span class="nx">saved</span> <span class="mf">103.77</span> <span class="nx">kB</span> <span class="o">-</span> <span class="mi">8</span><span class="o">%</span><span class="p">)</span></code></pre></div>
-
-<p>При этом я “выиграл” <code>7.7%</code> и <code>8%</code> размера, что скажется на скорости загрузки страницы в браузере. Также обратите внимание, что Gulp продолжает работать, находясь в фоновом режиме.</p>
-
-<h2 id="gulp-imagemin-2">Усложним задачу для gulp-imagemin</h2>
-
-<p>Можно немного усложнить и усовершенствовать процесс оптимизации изображений. Для этого немного перепишу задачу <code>compress</code> таким образом:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Compress Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;compress&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;images/*&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">imagemin</span><span class="p">({</span>
-      <span class="nx">progressive</span><span class="o">:</span> <span class="kc">true</span>
-    <span class="p">}))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;images/&#39;</span><span class="p">));</span>
-  <span class="p">});</span></code></pre></div>
-
-<p>Первое изменение - это добавлена опция <code>progressive: true</code> к плагину <code>gulp-imagemin</code>. Эта опция управляет <em>методом сжатия графических файлов</em> и приведена мною для наглядности примера.</p>
-
-<p>Второе изменение - изменена директория назначения. Теперь директория-источник изображений <code>gulp.src('images/*')</code> и директория-“выхлоп” <code>gulp.dest('images/')</code>, куда помещаются обработанные изображения - одна и та же.</p>
-
-<p>Таким образом, достаточно положить в директорию <code>images</code> какое-либо изображение и оно тут же преобразуется в точно такое же изображение, но меньшего размера! Удобно, не правда ли?</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-24T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-plumber/">August 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-plumber/" rel="bookmark" title="Gulp-plumber - отслеживание ошибок в Gulp" itemprop="url">Gulp-plumber - отслеживание ошибок в Gulp</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Кто не знаком с тем, что при написании кода очень часто возникают ошибки или банальные опечатки?</p>
-</blockquote>
-
-<p>И даже если установлены такие палочки-выручалочки, как Emmet, это не всегда спасает из ситуации. А если представить, что вы пишете большой проект и в нем закралась ошибка, то нелегко будет ее найти в куче кода.</p>
-
-<p>При использовании Gulp, который автоматически отслеживает события и выполняет соотвествующие задачи, ситуация несколько “облегчается” тем, что при возникновении ошибки можно увидеть тот момент, когда она произошла.</p>
-
-<p>Например, Gulp настроен на автоматическое фиксирование изменений через <code>gulp.watch</code>. Если возникла ошибка, то выполнение мониторинга в Gulp прерывается:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_error.png" alt="Прерванная работа Gulp" /></p>
-
-<p>Но даже в этом случае довольно трудно разобраться, где именно закралась ошибка. В этой ситуации может помочь плагин <a href="https://www.npmjs.org/package/gulp-plumber" title="Gulp-plumber">gulp-plumber</a>, который формирует вывод об ошибке. Но при этом работа Gulp не прерывается.</p>
-
-<p>Давайте установим и попробуем в работе плагин <code>gulp-plumber</code>.</p>
-
-<h2 id="gulp-plumber">Установка плагина gulp-plumber</h2>
-
-<p>Установка плагина <code>gulp-plumber</code> стандартная, через менеджер пакетов <code>npm</code> с ключом <code>--save-dev</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-plumber</span></code></pre></div>
-
-<h2 id="gulp-plumber-1">Использование плагина gulp-plumber</h2>
-
-<p>Для применения плагина <code>gulp-plumber</code> в проекте необходимо создать переменную <code>plumber</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">plumber</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-plumber&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>А затем дописать строку <code>.pipe(plumber())</code> в ту задачу, в которой необходимо включить возможность отслеживания ошибок. Например, пусть это будет задача минификации всех js-файлов проекта <code>uglify</code>. Тогда в ней сразу после строки <code>gulp.src('js/*.js')</code> добавляем строку <code>.pipe(plumber())</code>, чтобы отслеживались возможные ошибки во всех нижеследующих задачах, таких как <code>.pipe(uglify())</code> или <code>.pipe(gulp.dest('build/js'))</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span> <span class="c1">// plumber</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Точно также можно поступить, если необходим контроль ошибок в другой задаче, к примеру конкатенации CSS-файлов:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concatCSS</span><span class="p">(</span><span class="s1">&#39;concatenate.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minifyCSS</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<h2 id="gulp-plumber-2">Запуск мониторинга ошибок gulp-plumber</h2>
-
-<p>Для удобства проверки работы плагина <code>gulp-plumber</code> создам задачу <code>gulp.watch</code> и помещу ее в задачу по умолчанию <code>default</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
-<span class="p">});</span>
-
-<span class="c1">// Default Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
-
-<p>Запускаю в консоли процесс мониторинга в Gulp командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span></code></pre></div>
-
-<p>… и смотрю на вывод в консоли:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_watch.png" alt="Gulp в фоновом режиме" /></p>
-
-<p>Теперь намеренно вношу ошибку в файл <code>jquery-1.11.1.js</code> и снова перевожу взгзляд на консоль:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-error.png" alt="Плагин gulp-plumber отследил ошибку" /></p>
-
-<p>Отлично! Плагин <code>gulp-plumber</code> выполнил свою задачу - сформировал ясный и четкий отчет об ошибке. И при этом не прервал работу самого Gulp.</p>
-
-<p>Возвратим все назад и исправим ошибку, допущенную ранее. Снова взглянем на консоль:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-success.png" alt="Плагин gulp-plumber - ошибка исправлена" /></p>
-
-<p>Плагин <code>gulp-plumber</code> снова справился со своей задачей - ошибка нами исправлена и он прилежно ее зафиксировал.</p>
 
 <hr />
 

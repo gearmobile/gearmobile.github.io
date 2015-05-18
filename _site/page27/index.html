@@ -144,6 +144,362 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-27T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/ssl-wordpress/">November 27, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/wordpress/ssl-wordpress/" rel="bookmark" title="Использование SSL в административной панели WordPress" itemprop="url">Использование SSL в административной панели WordPress</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Со времен, когда я увлекался изучением операционных систем семейства Linux, для меня небезразличной была тема цифровой безопасности. Благо, системы Linux имеют богатый набор инструментов в этой области.</p>
+</blockquote>
+
+<p>С того времени ничего не изменилось и при любом удобном случае я всегда поступаю по принципу - “безопасности много не бывает”. Особенно, когда это касается сайтов, выложенных во всеобщем доступе и работающих на такой мега-популярной CMS, как WordPress (со всеми вытекающими отсюда последствиями).</p>
+
+<p>Поэтому неудивительно, что рано или поздно у меня возник вопрос: “А как так происходит, что я могу часами “висеть” подключенным к административной панели WordPress, передавая при этом на хостинг самую различную информацию: текст, изображения и пароли в том числе. И все это происходит по незащищенному, незашифрованному каналу?”</p>
+
+<p>То есть - я подключаюсь к панели, она у меня запрашивает пароль и я отсылаю его в открытом виде. Но ведь тогда любой желающий может подключиться и перехватить этот пароль в готовом виде, ему даже не потребуются всякие брутфорсы со словарями. Однако, так дело не пойдет!</p>
+
+<p>Логичным для меня шагом было найти доступный мануальчик по созданию безопасного канала связи с административной панелью WordPress. Но вот незадача - на русском языке я такового не нашел. Пришлось перевести англоязычную статью, вольный перевод которой привожу ниже.</p>
+
+<p>Перед установкой WordPress у вас уже должен быть SSL-сертификат, который подключается к учетной записи хостинга, на котором будет располагаться ваш сайт. Если у вас нет сертификата SSL, вам необходимо приобрести его.</p>
+
+<p>Эта услуга платная и существуют различные службы для предоставления таких сертификатов. В том числе, вы можете воспользоваться регистратором доменных имен, так как многие из них также предоставляют подобные услуги.</p>
+
+<p>Для того, чтобы активировать сертификат SSL в WordPress, необходимо отредактировать файл <code>wp-config.php</code>. Можете поступить двумя способами:</p>
+
+<ol>
+  <li>скачать этот файл на локальную машину, используя файловый менеджер FTP</li>
+  <li>воспользоваться встроенным редактором файлов в файловом менеджере FTP (например, FileZilla)</li>
+</ol>
+
+<h2 id="ssl----wordpress">Подключение SSL к административной панели WordPress</h2>
+
+<ol>
+  <li>
+    <p>Открываем для редактирования файл <code>wp-config.php</code></p>
+  </li>
+  <li>
+    <p>Находим в этом файле строку:</p>
+  </li>
+</ol>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/*</span> <span class="n">That</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">all</span><span class="p">,</span> <span class="n">stop</span> <span class="n">editing</span><span class="p">!</span> <span class="n">Happy</span> <span class="n">blogging</span><span class="p">.</span> <span class="p">*/</span></code></pre></div>
+
+<ol>
+  <li>Выше этой строки добавляем в файл две строки:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_ADMIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_LOGIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span></code></pre></div>
+
+<ol>
+  <li>В результате файл <code>wp-onfig.php</code> должен выглядеть следующим образом:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_ADMIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<span class="n">define</span><span class="p">(</span><span class="s1">&#39;FORCE_SSL_LOGIN&#39;</span><span class="p">,</span> <span class="n">true</span><span class="p">);</span>
+<span class="p">/*</span> <span class="n">That</span><span class="err">&#39;</span><span class="n">s</span> <span class="n">all</span><span class="p">,</span> <span class="n">stop</span> <span class="n">editing</span><span class="p">!</span> <span class="n">Happy</span> <span class="n">blogging</span><span class="p">.</span> <span class="p">*/</span></code></pre></div>
+
+<p>Теперь каждый раз, когда вы подключитесь к административной панели WordPress, в адресной строке браузера вы увидите, что url начинается с <code>https://</code> вместо <code>http://</code>.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Все хорошо, но теперь осталось выкроить “немного” маленьких зеленых бумажечек, чтобы приобрести SSL-сертификат.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-26T00:00:00+04:00"><a href="http://zencoder.ru/css/markdown/">November 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/markdown/" rel="bookmark" title="Язык Markdown - обзор редакторов для работы" itemprop="url">Язык Markdown - обзор редакторов для работы</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Начал создавать серию статей по Bootstrap, чтобы основательно изучить для себя данный вопрос. Но вот незадача - придется на время отложить его в сторону и отвлечься на пару моментов.</p>
+</blockquote>
+
+<p>Первый из них - это язык Markdown, а второй - модульные сетки. И если без первого вопроса изучение Bootstrap можно продолжить без какого-либо ущерба (до этого же как-то обходился без него?), то вот со вторым вопросом посложнее будет.</p>
+
+<p>Дело в том, что фреймворк Bootstrap в основе своей работы использует <em>модульную сетку</em>. А вы хорошо себе представляете (и знаете ли вообще?), что такое модульная сетка?</p>
+
+<h2 id="markdown">Начнем с языка Markdown</h2>
+
+<p>Совсем недавно узнал о существовании языка Markdown. Мне стало интересно, что это за язык такой и зачем он нужен. Оказалось все просто и практично, как раз для меня, так как я довольно часто пишу статьи для своего бложика.</p>
+
+<p>Язык Markdown - по мне, так его языком даже назвать нельзя. Это просто специальный синтаксис, призвание которого - облегчить и убыстрить написание HTML-документов. Это важно для людей, которые или сами ведут блоги\сайты или профессия которых называется контент-менеджер. Другими словами, это люди, которые часто пишут статьи с форматированием в виде HTML-документов.</p>
+
+<p>Если вы хотя бы раз писали статьи с таким форматированием, то прекрасно знаете, что необходимо делать бесчисленное число раз в редакторе - ввод HTML-тегов для форматирования текста. Поверьте (если не знаете) - это очень неудобно и утомительно.</p>
+
+<p>Конечно, для браузера HTML-теги необходимы, иначе он не сможет правильно прочитать HTML-документ. Но вот нам, человекам, эти теги, по большому счету, ни к чему.</p>
+
+<p>Язык Markdown был создан именно для того, чтобы позволить человеку, набирающему текст в HTML-формате, забыть об HTML-тегах. Вместо этих тегов в Markdown применяются символы-заменители, которые гораздо легче набирать вручную. В этом заключается смысл создания и использования языка Markdown.</p>
+
+<p>Конечно, как любой другой язык-надстройка (например, тот же SASS\SCSS или LESS для CSS), Markdown нуждается в компиляторе, который “переводил” бы текст в формате этого языка в стандартный формат HTML-документа.</p>
+
+<p>В терминологии Markdown такой компилятор называется транслятором и их существует достаточное количество. Существуют платные или бесплатные Markdown-редакторы, в которых уже встроен такой транслятор.</p>
+
+<p>Ниже я рассмотрю два варианта использования языка Markdown - один с помощью специализированных редакторов, второй - с помощью плагина под редактор Sublime Text 2, расширяющего его возможности в плане написания статей с таким синтаксисом.</p>
+
+<h2 id="markdownpad2">Редактор MarkdownPad2</h2>
+
+<p>Редактор MarkdownPad2 - это герой моего дня сегодня! Бесплатный, интуитивно понятный и простой. Под Windows XP у меня на работе он установился и запустился без проблем. А вот дома на ноутбуке HP Pavilion g6 с Windows 7 установился, но запуститься отказался. Выдал какую-то ошибку, которую мне неохота было выискивать в Google.</p>
+
+<p>В версии MarkdownPad2 (бесплатная) нет многих удобных фишек, которые есть в версии MarkdownPad2 Pro (платная). Но и без них можно прожить, это не так уж “страшно”.</p>
+
+<p>Текст, который вы читаете в данный момент (нетрудно догадаться) набран в этом редакторе с использованием синтаксиса Markdown (как ни странно). Сам синтаксис мне описывать совсем неохота по нескольким причинам.</p>
+
+<ol>
+  <li>Первая - там описывать нечего. Он настолько прост и лаконичен, что ему можно и нужно выучиться за полчаса, просто набирая текст в редакторе. Глупо было бы - ведь для цели упрощения написания статей в HTML-разметке язык Markdown и создавался.</li>
+  <li>Вторая - если у вас все же есть желание почитать статью-описание этого языка, то есть прекрасный вариант - “Технический блог” Владимира Старкова, где помещен материал <a href="http://vstarkov.ru/markdown-basics/" title="Markdown Basics">Основы markdown</a>. Статья совсем свежая, написана автором 13 февраля этого года. Кроме этого, малоизвестная поисковая система Google поможет вам найти целую кучу разнообразных <code>cheatsheet</code>‘ов по этому языку.</li>
+</ol>
+
+<p>Чтобы не быть голословным, приведу небольшое изображение редактора MarkdownPad2 после первого запуска программы:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/markdownpad_first-launch.jpg" alt="MarkdownPad2 после первого запуска" class="center-image" /></p>
+
+<p>Левая половина окна - это пример синтаксиса Markdown. Правая половина окна - это предварительный просмотр текста, набранного в левой половине. Точно также текст будет выглядеть в окне браузера. Включить или отключить предварительный просмотр можно по клавише <kbd>F5</kbd>.</p>
+
+<p>Если хотите точно в этом удостовериться, нажмите клавишу <kbd>F6</kbd> (или самую последнюю иконку на панели инструментов редактора). Создаваемая страница откроется в окне браузера, являющегося браузером по умолчанию в системе.</p>
+
+<p>Давайте быстро пробежимся, как использовать программу и создавать документы в ней:</p>
+
+<ul>
+  <li>создаем новый документ <kbd>Ctrl+N</kbd></li>
+  <li>вносим в него изменения: текст, изображения и так далее</li>
+  <li>сохраняем файл с расширением <code>.md</code></li>
+  <li>экспортируем в HTML-файл <kbd>Ctrl+Shift+1</kbd></li>
+</ul>
+
+<p>Как видим, все просто до предела. Но хочу сказать о паре моментов по работе в этой программе:</p>
+
+<ul>
+  <li>при форматировании текста лучше использовать панель инструментов редактора, так как синтаксис в редакторе слегка отличается от “официального”;</li>
+  <li>опция экспорта в pdf-формат <kbd>Ctrl+Shift+2</kbd> доступна только в платной версии (<em>а оно нам надо?</em>).</li>
+</ul>
+
+<h2 id="markdowneditor">Редактор MarkDown#Editor</h2>
+
+<p>Еще один редактор для написания текстов в синтаксисе Markdown - “MarkDown#Editor”. Он также бесплатный, но на моем ноутбуке он запустился без ошибок.</p>
+
+<p>Программа создана автором из Страны Восходящего Солнца по имени Mitsuhiro Hibara. Проект проживает по запоминающемуся адресу <a href="http://www.hibara.org" title="MarkDown#Editor">http://www.hibara.org</a> (думаю, жители Восточной Украины и юга России меня поймут).</p>
+
+<p>Редактор мне понравился как внешним видом, так и своими возможностями. В нем все просто и интуитивно понятно. Ниже представлен внешний вид программы после первого ее запуска:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/markdowneditor_first-launch.jpg" alt="MarkdownSharpEditor - первый запуск редактора" class="center-image" /></p>
+
+<p>Программа умеет экспортировать только в один формат - HTML. Но больше и не нужно, правда?</p>
+
+<h2 id="markdownediting">Плагин MarkdownEditing</h2>
+
+<p>Готовые редакторы под Markdown - это прекрасная вещь, но меня не устраивает одно. Я не люблю держать на компьютере целую кучу программ, каждая из которых выполняет только одну задачу.</p>
+
+<p>Я говорю это к тому, что под мой любимый редактор Sublime Text имеется плагин MarkdownEditing, который позволяет создавать документы формата Markdown в этой программе.</p>
+
+<p>Давайте рассмотрим установку, настройку и работу этого плагина в ST2. Надо сказать, что вопрос с плагином под Sublime потратил у меня достаточно времени. Я не знал, как выполнять экспорт готового md-файла в html-файл. Ни Stackoverflow, ни Toster не помогли мне разобраться с данным вопросом. Только прямая свзяь с maintainer’ом плагина помогла разрешить ситуацию.</p>
+
+<ol>
+  <li>Установка плагина MarkdownEditing в Sublime Text 2 стандартная - через менеджер пакетов</li>
+  <li>Перезапускаем редактор Sublime Text 2</li>
+  <li>Создаем новый документ и устанавливаем для него синтаксис Markdown <kbd>Shift+Ctrl+P</kbd></li>
+  <li>Пишем в новом документе текст</li>
+  <li>Сохраняем отредактированный документ как файл с расширением <code>.md</code></li>
+</ol>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/markdownediting_first-launch.jpg" alt="Плагин MarkdownEditing в Sublime Text 2" class="center-image" /></p>
+
+<p>А теперь немного внимания! Для меня данный вопрос был камнем преткновения, который заставил добраться с просьбой о помощи до самого maintainer’а плагина - Ali Ayas. Я долго не мог понять простой вещи - MarkdownEditing предназначен только для редактирования файлов с синтаксисом Markdown, о чем говорит само название этого плагина.</p>
+
+<p>Плагин MarkdownEditing не умеет сам конвертировать .md-файлы в файлы формата html. Поэтому, если вы пишите статьи для сайта под управлением WordPress (как в моем случае), вам необходимо поставить на эту CMS плагин для конвертации - WP-Markdown. Затем закидываете статьи в формате <code>.md</code> под эту CMS, а там уже плагин WP-Markdown автоматически превратит их в html-файлы.</p>
+
+<p>Не знаю, кого как, а меня разочаровал такой подход к делу создания markdown-файлов в Sublime Text 2 с плагином MarkdownEditing.</p>
+
+<h2 id="ps">P.S.</h2>
+
+<p>Эмоции немного остыли и я пришел к выводу, что не все так плохо, как казалось с первого взгляда. Более того, имеется плагин MarkdownBuild под Sublime Text 2, который прекрасно справляется с задачей компиляции файла <code>markdown</code> в html-файл. Устанавливается этот плагин как обычно, через менеджер пакетов.</p>
+
+<p>Настройки плагина минимальные и их можно привести здесь целиком:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">{</span>
+  <span class="s2">&quot;output_html&quot;</span> <span class="err">:</span> <span class="n">true</span><span class="p">,</span> <span class="p">//</span> <span class="err">сохранить</span> <span class="err">выходной</span> <span class="err">файл</span> <span class="n">html</span> <span class="err">в</span> <span class="err">ту</span> <span class="err">же</span> <span class="err">папку</span><span class="p">,</span> <span class="err">в</span> <span class="err">которой</span> <span class="err">находиться</span> <span class="err">входной</span> <span class="err">файл</span> <span class="n">markdown</span>
+  <span class="s2">&quot;open_html_in&quot;</span> <span class="err">:</span> <span class="s2">&quot;browser&quot;</span><span class="p">,</span>  <span class="p">//</span> <span class="err">открыть</span> <span class="err">файл</span> <span class="n">html</span> <span class="err">в</span> <span class="err">браузере</span>
+  <span class="s2">&quot;use_css&quot;</span> <span class="err">:</span> <span class="n">true</span><span class="p">,</span>
+  <span class="s2">&quot;charset&quot;</span> <span class="err">:</span> <span class="s2">&quot;UTF-8&quot;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Единственный момент заключается в том, что настройки плагина MarkdownBuild находятся в файле <code>MarkdownBuild.sublime-settings</code>, добраться до которого можно только через файловый менеджер или Проводник. В редакторе Sublime Text 2 я не нашел способа открыть настройки этого плагина.</p>
+
+<p>Кроме того, компиляция в этом плагине производится через сочетание клавиш <kbd>Shift+Ctrl+B</kbd>, а не <kbd>Ctrl+B</kbd>, как описано в документации.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Я доволен тем, что познакомился с языком Markdown. С ним действительно создавать статьи под сайт гораздо легче, быстрее и удобнее. Писать статьи или обзоры с помощью Markdown - одно удовольствие.</p>
+
+<p>Редактором-победителем для меня стала программа MarkdownPad - быстрая, удобная и надежная. Тот момент, что она отказалась установиться на моем ноуте под Windows 7 роли не играет, как мне кажется.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-23T00:00:00+04:00"><a href="http://zencoder.ru/css/bootstrap-part-1/">November 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/bootstrap-part-1/" rel="bookmark" title="Начало с Bootstrap Twitter - Часть 1" itemprop="url">Начало с Bootstrap Twitter - Часть 1</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Приступаем к изучению Bootstrap Twitter.</p>
+</blockquote>
+
+<p>Лично мое мнение, что любой веб-мастер, какого-бы он класса и квалификации он не был, обязан иметь о нем представление. И должен уметь создавать проекты с помощью этого продукта.</p>
+
+<p>Итак, Bootstrap Twitter. Прежде всего - почему двойное название и почему Twitter? На оба вопроса одно объяснение - этот фреймворк создала команда, которая ранее создала еще один проект - Twitter. Хорошо, тогда еще один вопрос - а что такое фреймворк? Как говорит всезнающая Википедия, фреймворк, это:</p>
+
+<blockquote>
+  <p>… программное обеспечение, облегчающее разработку и объединение разных компонентов большого программного проекта.</p>
+</blockquote>
+
+<p>Если сказать простым языком, то фреймворк - фундамент, минимальная база, которая может одинаково успешно применяться для создания любого сайта или веб-приложения. Как это часто бывает, в любой работе можно найти часть рутинного процесса, который выполняется снова и снова, без изменений.</p>
+
+<p>Так вот, чтобы не повторять написание одинакового кода опять и снова, были созданы такие базовые наборы, которые можно взять за основу и потом наращивать и видоизменять. В этом суть фреймворков, но есть один момент.</p>
+
+<p>C английского языка фреймворк переводиться как “каркас”. И этим уже можно все сказать, в принципе. Но, еще раз внимательно почитаем Википедию:</p>
+
+<blockquote>
+  <p>… каркас диктует правила построения архитектуры приложения, задавая на начальном этапе разработки поведение по умолчанию, каркас, который нужно будет расширять и изменять согласно указанным требованиям.</p>
+</blockquote>
+
+<p>Вот почему некоторые веб-дизайнеры не любят этот фреймворк, но это дела не меняет. Продолжим знакомиться с Bootstrap.</p>
+
+<p>На момент написания статьи имелось две версии этого фреймворка - v3.0.2 и v2.3.2. Здесь мы начнем изучение с версии <a href="http://getbootstrap.com/2.3.2/" title="Bootstrap 2">v2.3.2</a>, а потом плавно (я надеюсь) перейдем к более свежей и современной <a href="http://getbootstrap.com/getting-started/" title="Bootstrap 3">v3.0.2</a>. Кстати, сразу стоит упомянуть, что в Сети есть несколько русскоязычных ресурсов, посвященных Bootstrap.</p>
+
+<p>Но, насколько я понял, оба они являются локализованными (с разной степенью кривизны) версиями одного сайта-первоисточника - <a href="http://getbootstrap.com/" title="Bootstrap">http://getbootstrap.com/</a>. Видно, авторы этих проектов сильно торопились со своими детищами. Я рекомендую пользоваться оригиналом и в данной статье мы так и будем поступать, по мере сил.</p>
+
+<p>Скачать готовый фреймворк Bootstrap можно со страницы домашнего проекта (откуда же еще?) в виде архива. Если распаковать скачанный архив на локальном компьютере, то увидим, что он состоит из трех папок: <code>css</code>, <code>js</code>, <code>img</code>. Первые две папки обязательны при создании любого нового проекта на Bootstrap.</p>
+
+<p>Содержимое папки CSS:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">bootstrap</span><span class="p">.</span><span class="n">css</span>
+<span class="n">bootstrap</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">css</span>
+<span class="n">bootstrap-responsive</span><span class="p">.</span><span class="n">css</span>
+<span class="n">bootstrap-responsive</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">css</span></code></pre></div>
+
+<p>Здесь расположены четыре CSS-файла, но на самом деле их два. Различия между <code>bootstrap.css</code> и <code>bootstrap.min.css</code>, <code>bootstrap-responsive.css</code> и <code>bootstrap-responsive.min.css</code> только в том, что первый вариант - это <code>development</code>-версия файла, которая предназначена для внесения в нее изменений при соответствующей квалификации программиста.</p>
+
+<p>А второй вариант - это <code>production</code>-версия файла, в которую изменений вносить не планируется и практически этого невозможно сделать, так как в этом файле убраны все комментарии, отступы, табуляции и тому подобное, что делает этот файл трудночитаемым для человека. Зато размер данного файла намного меньше, чем у <code>development</code>-версии, поэтому главная цель этого файла - просто подключить его к проекту для дальнейшей работы.</p>
+
+<p>Кстати, стоит упомянуть, что в фреймворке Bootstrap вместо сброса стилей через файл <code>reset.css</code> от Эрика Мейера используется приведение всех браузеров к одному общему знаменателю с помощью файла <code>normalize.css</code>. Помимо этого, используются компоненты известного <a href="http://html5boilerplate.com/" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
+
+<p>Файл <code>bootstrap.css</code> - это главный файл стилевых правил CSS для фреймворка Bootstrap, без него этот фреймворк - просто не фреймворк. В этом файле находится коллекция готовых CSS-классов, которые подключаются к элементам HTML-документа по мере необходимости и тем самым форматируют HTML-страницу.</p>
+
+<p>Файл <code>bootstrap-responsive.css</code> - единственная задача данного файла сделать HTML-страницу, к которой подключается этот файл, адаптивной (<code>responsive</code>). Что такое адаптивный дизайн, вы можете легко найти в Интернете, на сегодняшний день это тема №1 в веб-дизайне.</p>
+
+<p>Содержимое папки JS:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">bootstrap</span><span class="p">.</span><span class="n">js</span>
+<span class="n">bootstrap</span><span class="p">.</span><span class="n">min</span><span class="p">.</span><span class="n">js</span></code></pre></div>
+
+<p>Также, как и в случае со стилевыми правилами, в этой папке присутствует только один файл - <code>bootstrap.js</code>, тогда как <code>bootstrap.min.js</code> - это его минимизированная <code>production</code>-версия. Файл <code>bootstrap.js</code> - это набор готовых js-сценариев, задача которых является вспомогательной в деле создания HTML-компонентов.</p>
+
+<p>Дело в том, что фреймворк Bootstrap это не только набор CSS-правил, но и компонентов. Готовая панель навигации (<code>html+css+js</code>), форма поиска с кнопкой внутри (<code>html+css+js</code>), рабочая панель вкладок (html+css+js) и так далее - это все HTML-компоненты. И как уже должно быть понятно, роль js-сценариев здесь - помочь сделать эти компоненты полностью готовыми к работе.</p>
+
+<p>Содержимое папки IMG:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">glyphicons-halflings</span><span class="p">.</span><span class="n">png</span>
+<span class="n">glyphicons-halflings-white</span><span class="p">.</span><span class="n">png</span></code></pre></div>
+
+<p>Единственная папка с изображениями в проекте Bootstrap. Если вы ее откроете (предпочтительно в Adobe Photoshop), то увидите, что это обычный спрайт (sprite) - набор готовых стилизованных иконок.</p>
+
+<p>Первый файл <code>glyphicons-halflings.png</code> - там иконки черные, а второй файл <code>glyphicons-halflings-white.png</code> - там иконки точно такие же, но только белого цвета (контраст).</p>
+
+<p>Что такое CSS-спрайт, я тоже объяснять не буду - в Интернете есть подробная информация по этой технологии. Хотя, когда я впервые с ней познакомился, у меня было желание ее описать у себя - это интересно. Но потом время ушло, для меня все стало просто и обыденно в этом плане типа “да чего там писать - и так все просто и понятно.”</p>
+
+<p>C содержимым архива и проекта Bootstrap Twitter познакомились. Теперь рассмотрим, как подключать данный фреймворк к своему рабочему проекту и пользоваться всеми его “вкусностями”.</p>
+
+<p>Создаем папку с новым проектом и туда распаковываем архив с Bootstrap. Первое - нам необходим HTML-шаблон с обязательным условием - <code>DOCTYPE HTML 5</code>, то есть, так:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;head&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content=</span><span class="s">&quot;IE=edge&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --&gt;</span>
+    <span class="nt">&lt;title&gt;</span>Bootstrap 101 Template<span class="nt">&lt;/title&gt;</span>
+
+    <span class="c">&lt;!-- Bootstrap --&gt;</span>
+    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;css/bootstrap.min.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span><span class="nt">&gt;</span>
+
+    <span class="c">&lt;!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --&gt;</span>
+    <span class="c">&lt;!-- WARNING: Respond.js doesn&#39;t work if you view the page via file:// --&gt;</span>
+    <span class="c">&lt;!--[if lt IE 9]&gt;</span>
+<span class="c">      &lt;script src=&quot;https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js&quot;&gt;&lt;/script&gt;</span>
+<span class="c">      &lt;script src=&quot;https://oss.maxcdn.com/respond/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;</span>
+<span class="c">    &lt;![endif]--&gt;</span>
+  <span class="nt">&lt;/head&gt;</span>
+  <span class="nt">&lt;body&gt;</span>
+    <span class="nt">&lt;h1&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
+
+    <span class="c">&lt;!-- jQuery (necessary for Bootstrap&#39;s JavaScript plugins) --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+    <span class="c">&lt;!-- Include all compiled plugins (below), or include individual files as needed --&gt;</span>
+    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/bootstrap.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/body&gt;</span>
+<span class="nt">&lt;/html&gt;</span></code></pre></div>
+
+<p>К нему подключаем CSS и JS-файлы из распакованного архива и сохраняем в ту же папку с будущим проектом. В принципе, все готово для дальнейшей работы …</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-11-22T00:00:00+04:00"><a href="http://zencoder.ru/sublime/sublime-text-colorpicker/">November 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -275,496 +631,6 @@
 <p>… дела ушли не намного вперед.</p>
 
 <p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-19T00:00:00+04:00"><a href="http://zencoder.ru/css/less-hat-mixin-less/">November 19, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/less-hat-mixin-less/" rel="bookmark" title="LESS Hat - коллекция готовых mixin'ов под LESS" itemprop="url">LESS Hat - коллекция готовых mixin'ов под LESS</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжение темы препроцессоров для CSS, которая для меня намного интереснее всех остальных.</p>
-</blockquote>
-
-<p>На этот раз остановимся на препроцессоре LESS, ибо было бы странно рассказать о SASS (SCSS) и не упомянуть о не менее популярном его аналоге. Преимуществ у LESS столько же, сколько и недостатков.</p>
-
-<p>Эта статья является моей попыткой на личном опыте познакомиться с LESS Hat и сравнить ее с Compass. Про сам LESS и его синтаксис я рассказывать не буду - это глупо, ибо документация для этого препроцессора прекрасно оформлена и переведена на русский язык на оф. сайте проекта.</p>
-
-<p>Плюсы - этот препроцессор развивается более динамично, это более молодой проект. Синтаксис LESS интуитивно понятный и максимально приближен к CSS, поэтому новички могут освоить его совсем без труда. Документация для LESS гораздо более подробная, с примерами и переведена на множество языков, что облегчает его изучение (для SASS это серьезный недостаток, я сам с этим сталкиваюсь постоянно, когда изучаю Compass).</p>
-
-<p>Ну и последний немаловажный момент, который оказывает существенное влияние на распространенность LESS, это тот факт, что он включен в состав модного и известного фреймворка Bootstrap. То есть, все компоненты этого фреймворка созданы с использованием данного препроцессора. А если учесть, что один из трех китов CMS - Joomla 3 - создана на Bootstrap, то можно только гадать, куда заведет этот процесс.</p>
-
-<p>К недостаткам LESS лично я могу отнести такой факт, как большое время для компиляции (хотя на оф. сайте один из создателей Bootstrap отвечал на вопрос, что им выбран препроцессор LESS как раз из-за высокой скорости компиляции, ибо он написан на языке Javascript). Еще один момент в минус LESS - файл с расширением .less компилируется каждый раз при обращении к нему браузера.</p>
-
-<p>В SASS производится создание файла <code>.css</code> из <code>.scss</code> “раз и навсегда”, там не нужно что-то собирать на лету, а он уже готовый подключается в HTML-документ. И последнее - LESS не имеет на сегодня такой продвинутой библиотеки миксинов, как Compass для SASS (SCSS). Точнее - подобная библиотека уже есть и ее название <a href="www.csshat.com" title="CSS Hat">LESS Hat</a> (глупо было бы, если бы такая библиотека не появилась). Однако она уступает по своим возможностям Compass.</p>
-
-<p>Итак, мы уже выяснили, что LESS Hat - аналог Compass под SASS (SCSS). Библиотека LESS Hat была создана командой, которая разработала плагин под Adobe Photoshop с названием <a href="www.csshat.com" title="CSS Hat">CSS Hat</a>. Этот плагин выполняет автоматизированные операции по переводу свойств любого элемента на psd-макете в свойства CSS.</p>
-
-<p>То есть, он старается упростить и ускорить задачу верстальщика, которую тот обычно выполняет вручную. Плагин CSS Hat не бесплатный, цену его я не знаю (это нетрудно узнать) и сам им не пользовался ни разу, поэтому ничего не могу сказать по этому поводу.</p>
-
-<p>Проект <a href="http://lesshat.com" title=" LESS Hat">LESS Hat</a> на сегодняшний момент является самой большой и популярной библиотекой готовых миксинов под препроцессор LESS. В отличие от плагина <a href="www.csshat.com" title="CSS Hat">CSS Hat</a>, библиотека <a href="http://lesshat.com" title=" LESS Hat">LESS Hat</a> бесплатная для использования. На момент написания статьи самая свежая версия этой библиотеки - v2.0.7, которую я и забираю со страницы проекта для своих собственных экспериментов. Архивчик .zip весит около 200Kb, что прилично для подобной библиотеки. Но пугаться не стоит - из всего архива нам потребуется только один файлик, а все остальное - это сопутствующая информация. Если распаковать архив, то увидим следующий список файлов и папок:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">build</span><span class="p">\</span>
-  <span class="n">mixins</span><span class="p">\</span>
-  <span class="p">.</span><span class="n">gitignore</span>
-  <span class="p">.</span><span class="n">travis</span><span class="p">.</span><span class="n">yml</span>
-  <span class="n">bower</span><span class="p">.</span><span class="n">json</span>
-  <span class="n">Gruntfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="n">LICENSE</span>
-  <span class="n">package</span><span class="p">.</span><span class="n">json</span>
-  <span class="n">README</span><span class="p">.</span><span class="n">md</span>
-  <span class="n">README-template</span><span class="p">.</span><span class="n">md</span></code></pre></div>
-
-<p>Первая папка <code>build</code> - самая нужная, там находятся два файла <code>lesshat.less</code> и <code>lesshat-prefixed.less</code> (не успел разобраться, для чего нужен этот файл), которые являются готовыми к использованию коллекциями LESS-миксинов.</p>
-
-<p>Вторая папка <code>mixins</code> - также содержит всю коллекцию миксинов, но предназначена для разработчиков. Другими словами, если у вас есть соответствующая квалификация и желание что-то подправить в любом из миксинов, то вам сюда. Все остальные файлы можно смело пропустить, они для работы не нужны.</p>
-
-<p>Теперь создаю шаблон для будущей площадки экспериментов под LESS и LESS Hat. Все как обычно - подключаю файл стилей в формате <code>.less</code> и файл для автоматической компиляции в CSS на лету - <code>less-1.3.3.min.js</code>.</p>
-
-<p>Затем вытаскиваю из папки файлик lesshat.less и кидаю его в папочку <code>css</code>, где также расположен файл <code>style.less</code> (все до кучи). Кстати, сразу оговорюсь, что все файлы и пример в целом (для этой статьи) у меня крутился под управлением локального сервера XAMPP. С ним у меня отношения сложились с первого раза, в отличие от других популярных серверов, таких как OpenServer, Endels(Denwer), WAMP.</p>
-
-<p>Файл <code>lesshat.less</code> подключаю к <code>style.less</code> через директиву <code>@import</code>. Как говориться в оф. документации к LESS, расширение <code>.less</code> можно и не указывать, но оставлю “как есть”:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="c">/* Imports</span>
-<span class="c">------------------*/</span>
-<span class="k">@import</span> <span class="s2">&quot;lesshat.less&quot;</span><span class="p">;</span>
-
-<span class="o">...</span></code></pre></div>
-
-<p>Все готово для того, чтобы опробовать библиотеку LESS Hat. Применю оттуда готовый миксин <code>.border-radius(10)</code> для создания скругленных углов у блока с помощью CSS-свойства <code>border-radius</code>. В документации к этому миксину говориться, что он может принимать значения без указания единиц измерения, так как допишет их сам (<code>px</code> по умолчанию).</p>
-
-<p>Также вспомним функции для работы с цветами в LESS. И воспользуемся еще двумя миксинами из LESS Hat: <code>.background-image()</code> для создания градиентов у блока и <code>.box-shadow()</code> для придания внешней тени.</p>
-
-<p>Рабочий файлик <code>style.less</code> получиться следующим:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Imports</span>
-<span class="c">  ------------------*/</span>
-  <span class="k">@import</span> <span class="s2">&quot;lesshat.less&quot;</span><span class="p">;</span>
-
-  <span class="c">/* Variables</span>
-<span class="c">  ------------------*/</span>
-  <span class="k">@width</span><span class="o">:</span> <span class="nt">200px</span><span class="p">;</span>
-  <span class="k">@color</span><span class="o">:</span> <span class="nf">#778899</span><span class="p">;</span>
-
-  <span class="c">/* Block</span>
-<span class="c">  ------------------*/</span>
-  <span class="nt">div</span><span class="p">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="o">@</span><span class="k">width</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="o">@</span><span class="k">width</span><span class="o">/</span><span class="m">2</span><span class="p">;</span>
-    <span class="o">.</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">10</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Colors</span>
-<span class="c">  ------------------*/</span>
-  <span class="nc">.color</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="o">@</span><span class="k">color</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nc">.lighten</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.darken</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.saturate</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">saturate</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.desaturate</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">desaturate</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.fadein</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">fadein</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.fadeout</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">fadeout</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.spin-plus</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">spin</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.spin-minus</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">spin</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">-20</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.gradient</span><span class="p">{</span>
-    <span class="o">.</span><span class="k">background-image</span><span class="p">(</span><span class="n">linear</span><span class="o">-</span><span class="n">gradient</span><span class="p">(</span><span class="n">to</span> <span class="k">bottom</span><span class="o">,</span> <span class="n">lighten</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">)</span> <span class="m">0%</span><span class="o">,</span> <span class="n">darken</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">20%</span><span class="p">)</span> <span class="m">100%</span><span class="p">));</span>
-    <span class="o">.</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="p">(</span><span class="m">2</span><span class="o">,</span> <span class="m">2</span><span class="o">,</span> <span class="m">3</span><span class="o">,</span> <span class="n">lighten</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">10%</span><span class="p">));</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Результат работы препроцессора LESS и его библиотеки миксинов LESS Hat показан ниже. Вот это да - работает!</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/LESSHat_border-radius.png" alt="LESS Hat - миксин .border-radius()" /></p>
-
-<p>Список всех миксинов, доступных в этой библиотеке, представлен в начале файла <code>lesshat.less</code>, в разделе “TABLE OF MIXINS”. Количество mixin’ов немаленькое (86 штук), но мне кажется, что у Compass оно будет намного больше.</p>
-
-<p>Подробное описание и примеры использования каждого из миксинов библиотеки LESS Hat доступно на GitHub в файле <code>README.md</code>. Добро пожаловать ознакомиться - там все хорошо описано.</p>
-
-<p>В принципе - больше и сказать нечего. Подключайте и используйте LESS Hat - только так можно освоить и оценить эту библиотеку. Для себя я сделал вывод, что мне пока удобнее работать с SASS/Compass и возможностей у последнего больше, чем у LESS/LESS Hat.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-18T00:00:00+04:00"><a href="http://zencoder.ru/css/css-columns-via-ul/">November 18, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-columns-via-ul/" rel="bookmark" title="Маркированный список ul в две колонки через CSS2" itemprop="url">Маркированный список ul в две колонки через CSS2</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Достаточно интересный способ организации обычного маркированного списка в две колонки.</p>
-</blockquote>
-
-<p>Имеется определенное количество элементов <code>li</code> списка <code>ul</code>. Нужно организовать все <code>li</code> в две колонки. Первое, что приходит на ум - это воспользоваться новыми правилами CSS3.</p>
-
-<p>Но проблема в том, они новые и не всеми браузерами поддерживаются. Тогда смысл их применять? Но можно воспользоваться CSS2 и этот способ был случайно мною “подсмотрен” на сайте <a href="http://loco.ru" title="Loco">Loco.ru</a> у автора dIrm. Мною этот способ был немного доработан и помещен у себя в качестве копилки.</p>
-
-<p>Итак, имеется обычный маркированный список в виде HTML-разметки. Количество элементов <code>li</code> я специально сделал нечетным:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 1<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 2<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 3<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 4<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 5<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 6<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 7<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 8<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 9<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 10<span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;</span>Колонка 11<span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Сделаем CSS-стилизацию списка, ничем не примечательную. Класс <code>.clearfix</code> добавим в HTML-разметку для элемента <code>ul</code> - это классическая очистка потока для плавающих потомков внутри блока-родителя. Элементы <code>li</code> у нас будут плавать внутри <code>ul</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">ul</span><span class="p">{</span>
-  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">398px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">font</span><span class="o">:</span> <span class="k">bold</span> <span class="k">italic</span> <span class="m">16px</span><span class="o">/</span><span class="m">30px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">8</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.clearfix</span><span class="nd">:before</span><span class="o">,</span>
-<span class="nc">.clearfix</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="n">table</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.clearfix</span><span class="nd">:after</span><span class="p">{</span>
-  <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот теперь немного интереснее, когда приступим к элементу <code>li</code>. Вся “фишка” в организации их в два столбца благодаря двум CSS-правилам - <code>display: block</code> и <code>width: 45%</code>.</p>
-
-<p>Все элементы сделаем плавающими влево <code>float: left</code>, поэтому CSS-правило <code>display: block</code> можно опустить за ненадобностью, но оставим его для наглядности примера. Получается, что каждый из элементов <code>li</code> является блочным, с фиксированной шириной и плавает влево.</p>
-
-<p>В результате все эти элементы располагаются “по порядку”. “Колонка 1” в левом верхнем углу, следом за ним - “Колонка 2”. “Колонка 3” не вмещается по ширине в область блока-родителя, поэтому располагается под “Колонка 1”. Далее - опять все по порядку. Три правила <code>padding-bottom: 10px</code>, <code>text-align: center</code>, <code>background-color: #556677</code> - для красоты добавляем:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">ul</span> <span class="nt">li</span><span class="p">{</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">45%</span><span class="p">;</span>
-  <span class="k">padding-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#556677</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Ну и в конце еще несколько штрихов для придания полной иллюзии двухколоночного текста. Здесь воспользуемся правилом <code>nth-child</code> с аргументом <code>even</code>, чтобы избежать дополнительной нагрузки на разметку в виде классов, которые придется добавлять в противном случае:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span><span class="p">{</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#667788</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-13T00:00:00+04:00"><a href="http://zencoder.ru/css-rem/">November 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~9 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css-rem/" rel="bookmark" title="Rem - масштабируемые единицы измерения" itemprop="url">Rem - масштабируемые единицы измерения</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Статья написана в далеком 2011 году одним товарищем по имени Jonathan Snook.</p>
-</blockquote>
-
-<p>Статейка мне понравилась и пришлась в пору - мне как раз нужно было ознакомиться с вопросом масштабируемого размера шрифта и возможности единообразного задания его размера для всего документа.</p>
-
-<p>Материальчик понравился и я решил, что я лучше не смогу его написать, чем как просто перевести. Вопрос хорошо освещен - кратко и по делу, с необходимыми примерами.</p>
-
-<p>Думаю, в следующих своих верстках я буду применять именно тот подход, который описан здесь. Ниже - мой вольный перевод.</p>
-
-<h2 id="rem">Размер шрифта в rem</h2>
-
-<p>Определение единиц измерения текста всегда было темой горячих споров, даже в наши дни. К сожалению, на сегодняшний день все еще существуют многочисленные “за” и “против” для каждого из методов определения универсальной единицы измерения шрифта. Вопрос заключается в том, чтобы выбрать наиболее приемлемую из всех приемлемых.</p>
-
-<p>Наиболее популярны два метода определения размера шрифта:</p>
-
-<ul>
-  <li>размер шрифта в пикселях <code>px</code></li>
-  <li>размер шрифта в <code>em</code></li>
-</ul>
-
-<p>Давайте сделаем краткий обзор обоих методов, прежде чем я представлю еще один - волшебный третий способ.</p>
-
-<h2 id="px">Размер шрифта в <code>px</code></h2>
-
-<p>С самого первого дня, когда зародился Интернет, мы (<em>веб-мастера</em>) использовали пиксели для задания размеров текста. Это надежный и понятный способ.</p>
-
-<p>К сожалению, пользователи Internet Explorer - даже IE9 - не имеют возможности изменять размер текста, используя для этого встроенную функцию браузера.</p>
-
-<p>Для веб-мастеров, которые озабочены такой возможностью, это большая проблема. Последние свежие версии браузера IE имеют встроенную функцию масштабирования, которая увеличивает размер ВСЕГО на странице - эта возможность присутствует во всех остальных браузерах, поддерживающих веб-стандарты. Это несколько сглаживает недостатки браузеров и данного метода, в частности.</p>
-
-<p>Исходя из своего личного опыта, могу сказать, что использование пикселей предоставляет для меня надежную структуру будущего сайта. Пользователи браузеров имеют достаточно средств, чтобы подстроить сайт под свои предпочтения. Но я отвлекся от темы. Что еще у нас есть в наличии?</p>
-
-<h2 id="em">Размер шрифта в <code>em</code></h2>
-
-<p>Невозможность изменения размеров текста в браузере IE постоянно вызывало чувство разочарования у веб-разработчиков. Чтобы обойти эту проблему, можно использовать единицы измерения <code>em</code>.</p>
-
-<p>Впервые об этом способе написал в далеком 2004-м году Richard Rutter в своей статье <a href="http://clagnut.com/blog/348/" title="How to size text using ems">How to size text using ems</a>.</p>
-
-<p>Этот способ основан на задании основного размера шрифта для <code>body</code> в процентах. В этом случае <code>1em</code> равен <code>10px</code>, вместо <code>16px</code> по-умолчанию.</p>
-
-<p>Теперь, чтобы установить размер шрифта для элемента страницы в единицах, эквивалентных <code>14px</code>, нужно установить его в <code>1.4em</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span>
-  <span class="nt">h1</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span>
-  <span class="nt">p</span>  <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
-  <span class="nt">li</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px? */</span></code></pre></div>
-
-<p>Проблема с размерами шрифта в <code>em</code> заключается в том, что такая система достаточно <em>сложна при применении ее на практике</em>. В примере, приведенном выше, размер шрифта элемента <code>li</code> равен не 14px, а 20px.</p>
-
-<p>Если добавить еще один вложенный уровень, то размер шрифта будет 27px! Происходит это вследствие наследования свойств в CSS-таблицах.</p>
-
-<p>Чтобы избежать такого эффекта, нужно явно прописать для каждого дочернего элемента размер шрифта в 1em:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span><span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span>
-  <span class="nt">h1</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span>
-  <span class="nt">p</span>  <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
-  <span class="nt">li</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px? */</span>
-  <span class="nt">li</span> <span class="nt">li</span><span class="o">,</span> <span class="nt">li</span> <span class="nt">p</span> <span class="c">/* etc */</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span> <span class="p">}</span></code></pre></div>
-
-<p>Проблема наследования при системе задания размеров шрифта в em достаточно неудобна. Что же можно еще предложить для решения проблемы?</p>
-
-<h2 id="rem-1">Размер шрифта в <code>rem</code></h2>
-
-<p>Стандарт CSS3 вводит в обиход несколько новых единиц измерения, одной из которых является <code>rem</code>, что является сокращением от “root em”. Давайте немного разберемся, что из себя представляет эта единица измерения.</p>
-
-<p>Единица измерения <code>em</code> является относительной к размеру шрифта элемента родителя, что приводит к <em>эффекту наследования</em>. Единица измерения <code>rem</code> является относительной к основному корневому элементу, то есть к html.</p>
-
-<p>Это означает, что можно установить размер шрифта только один раз, для элемента html. Для всех остальных элементов, которые являются потомками этого элемента, достаточно установить размер шрифта в процентах (<code>rem</code>) относительно корневого элемента:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span>
-  <span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
-  <span class="nt">h1</span>   <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span></code></pre></div>
-
-<p>В примере, показанном выше, базовый размер шрифта установлен в процентах <code>62,5%</code>, что очень похоже, как мы поступали с единицами <code>em</code>. Другими словами, единица измерения <code>rem</code> лишена недостатков <code>em</code> с ее <em>каскадностью</em> и <em>наследованием правил</em>.</p>
-
-<p>Но как насчет скудной поддержки этой единицы измерения в браузерах?</p>
-
-<p>Вы будете сильно удивлены, но поддержка <code>rem</code> в браузерах достойная: Safari 5, Chrome, Firefox 3.6+ и даже Internet Explorer 9. Хорошая новость заключается в том, что в IE9 поддерживается изменение размера текста, установленного в единицах измерения <code>rem</code>. Увы, бедная Opera (вплоть до версии 11.10, по крайней мере), не имеет поддержки единиц измерения <code>rem</code>.</p>
-
-<p>Как же нам поступить с браузерами, которые не поддерживают единицы измерения <code>rem</code>? Для них мы можем выполнить откат <code>fallback</code> в виде пикселей <code>px</code>. То есть, мы одновременно будем задавать размер шрифта в <code>px</code> и в <code>rem</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span> 
-  <span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
-  <span class="nt">h1</span>   <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">24px</span><span class="p">;</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span></code></pre></div>
-
-<p>И пожалуйста, теперь мы имеем прочную и предсказуемую структуру во всех браузерах.</p>
-
-<p>Декабрь 13 2011 - Opera 11.60 теперь поддерживает единицы измерения <code>rem</code>.</p>
-
-<hr />
-
-<p>Конец статьи и перевода. В дополнение я могу сказать, что на сайте CSS Tricks также есть интересный материал по поводу <code>rem</code>.</p>
-
-<p>В частности, на нем приведены удобные <code>mixin</code>‘ы для SASS, с помощью которых можно быстро задать размер шрифта в <code>rem</code> (с <code>fallback</code> в <code>px</code>):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">62</span><span class="o">,</span><span class="m">5%</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">@mixin</span> <span class="nt">font-size</span><span class="o">($</span><span class="nt">sizeValue</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.6</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">font-size</span><span class="o">:</span> <span class="o">($</span><span class="nt">sizeValue</span> <span class="o">*</span> <span class="nt">10</span><span class="o">)</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span>
-  <span class="nt">font-size</span><span class="o">:</span> <span class="o">$</span><span class="nt">sizeValue</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Пример использования этого SASS-mixin’а:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">font-size</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… что при компиляции в CSS будет выглядеть следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="n">rem</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>И еще несколько разновидностей SASS-mixin’ов, которые могут пригодиться. Подмешивания используются для задания размера шрифта и интерлиньяжа (высоты строки):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">fontSize</span><span class="o">($</span><span class="nt">sizeValue</span><span class="o">:</span> <span class="nt">12</span> <span class="o">)</span><span class="p">{</span>
-    <span class="nt">font-size</span><span class="o">:</span> <span class="o">$</span><span class="nt">sizeValue</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span> <span class="o">//</span><span class="nt">fallback</span> <span class="nt">for</span> <span class="nt">old</span> <span class="nt">browsers</span>
-    <span class="nt">font-size</span><span class="o">:</span> <span class="o">(</span><span class="nt">0</span><span class="nc">.125</span> <span class="o">*</span> <span class="o">$</span><span class="nt">sizeValue</span><span class="o">)</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Как подключать</span>
-<span class="c">  --------------------*/</span>
-  <span class="nt">p</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">mixin</span> <span class="n">fontSize</span><span class="p">(</span><span class="m">20</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Результат компиляции в CSS</span>
-<span class="c">  -------------------------------*/</span>
-  <span class="nt">p</span><span class="p">{</span>
-    <span class="k">font-size</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-    <span class="k">font-size</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">5</span><span class="n">rem</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">lineHeight</span><span class="o">($</span><span class="nt">heightValue</span><span class="o">:</span> <span class="nt">12</span> <span class="o">)</span><span class="p">{</span>
-    <span class="nt">line-height</span><span class="o">:</span> <span class="o">$</span><span class="nt">heightValue</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span> <span class="o">//</span><span class="nt">fallback</span> <span class="nt">for</span> <span class="nt">old</span> <span class="nt">browsers</span>
-    <span class="nt">line-height</span><span class="o">:</span> <span class="o">(</span><span class="nt">0</span><span class="nc">.125</span> <span class="o">*</span> <span class="o">$</span><span class="nt">heightValue</span><span class="o">)</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Как подключить</span>
-<span class="c">  -------------------*/</span>
-  <span class="nt">p</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">mixin</span> <span class="n">lineHeight</span><span class="p">(</span><span class="m">18</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Результат компиляции в CSS</span>
-<span class="c">  --------------------------------*/</span>
-  <span class="nt">p</span><span class="p">{</span>
-    <span class="k">line-height</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-    <span class="k">line-height</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">25</span><span class="n">rem</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>А здесь представлен “полный” <code>mixin</code>, с помощью которого можно одновременно задать кегль и <code>line-height</code>. Удобная штучка - можно задать только размер шрифта и получить на выходе интерлиньяж и кегль в пикселях (и <code>rem</code>‘ах):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">fontsize</span><span class="o">($</span><span class="nt">size</span><span class="nd">:1</span><span class="nc">.6</span><span class="o">,</span> <span class="o">$</span><span class="nt">line</span><span class="o">:</span> <span class="o">$</span><span class="nt">size</span> <span class="o">*</span> <span class="nt">1</span><span class="nc">.5</span><span class="o">)</span><span class="p">{</span>
-    <span class="nt">font-size</span><span class="o">:</span>   <span class="o">($</span><span class="nt">size</span> <span class="o">*</span> <span class="nt">10</span><span class="o">)</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span>
-    <span class="nt">line-height</span><span class="o">:</span> <span class="o">($</span><span class="nt">line</span> <span class="o">*</span> <span class="nt">10</span><span class="o">)</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span>
-    <span class="nt">font-size</span><span class="o">:</span>   <span class="o">$</span><span class="nt">size</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
-    <span class="nt">line-height</span><span class="o">:</span> <span class="o">$</span><span class="nt">line</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Как подключить</span>
-<span class="c">  -------------------*/</span>
-  <span class="nt">p</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">mixin</span> <span class="n">fontsize</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="c">/* Результат компиляции в CSS</span>
-<span class="c">  -------------------------------*/</span>
-  <span class="nt">p</span><span class="p">{</span>
-    <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-    <span class="k">line-height</span><span class="o">:</span> <span class="m">27px</span><span class="p">;</span>
-    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="n">rem</span><span class="p">;</span>
-    <span class="k">line-height</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">7</span><span class="n">rem</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<h2 id="ps">P.S.</h2>
-
-<p>Постепенно изучаю вопрос создания тем под WordPress. Скачал версию 3.7.1, установил под локальный сервер XAMPP и открыл файл <code>style.css</code> стандартной темы “Twenty Twelve”. И в заголовке этого файла сразу же наткнулся на следующие интересные строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">/*</span> <span class="o">=</span><span class="nt">Notes</span>
-<span class="nt">--------------------------------------------------------------</span>
-<span class="nt">This</span> <span class="nt">stylesheet</span> <span class="nt">uses</span> <span class="nt">rem</span> <span class="nt">values</span> <span class="nt">with</span> <span class="nt">a</span> <span class="nt">pixel</span> <span class="nt">fallback</span><span class="o">.</span> <span class="nt">The</span> <span class="nt">rem</span>
-<span class="nt">values</span> <span class="o">(</span><span class="nt">and</span> <span class="nt">line</span> <span class="nt">heights</span><span class="o">)</span> <span class="nt">are</span> <span class="nt">calculated</span> <span class="nt">using</span> <span class="nt">two</span> <span class="nt">variables</span><span class="o">:</span>
-
-<span class="o">$</span><span class="nt">rembase</span><span class="o">:</span>     <span class="nt">14</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">line-height</span><span class="o">:</span> <span class="nt">24</span><span class="o">;</span>
-
-<span class="nt">----------</span> <span class="nt">Examples</span>
-
-<span class="o">*</span> <span class="nt">Use</span> <span class="nt">a</span> <span class="nt">pixel</span> <span class="nt">value</span> <span class="nt">with</span> <span class="nt">a</span> <span class="nt">rem</span> <span class="nt">fallback</span> <span class="nt">for</span> <span class="nt">font-size</span><span class="o">,</span> <span class="nt">padding</span><span class="o">,</span> <span class="nt">margins</span><span class="o">,</span> <span class="nt">etc</span><span class="o">.</span>
-	<span class="nt">padding</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">0</span><span class="o">;</span>
-	<span class="nt">padding</span><span class="o">:</span> <span class="nt">0</span><span class="nc">.357142857rem</span> <span class="nt">0</span><span class="o">;</span> <span class="o">(</span><span class="nt">5</span> <span class="o">/</span> <span class="o">$</span><span class="nt">rembase</span><span class="o">)</span>
-
-<span class="o">*</span> <span class="nt">Set</span> <span class="nt">a</span> <span class="nt">font-size</span> <span class="nt">and</span> <span class="nt">then</span> <span class="nt">set</span> <span class="nt">a</span> <span class="nt">line-height</span> <span class="nt">based</span> <span class="nt">on</span> <span class="nt">the</span> <span class="nt">font-size</span>
-	<span class="nt">font-size</span><span class="o">:</span> <span class="nt">16px</span>
-	<span class="nt">font-size</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.142857143rem</span><span class="o">;</span> <span class="o">(</span><span class="nt">16</span> <span class="o">/</span> <span class="o">$</span><span class="nt">rembase</span><span class="o">)</span>
-	<span class="nt">line-height</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.5</span><span class="o">;</span> <span class="o">($</span><span class="nt">line-height</span> <span class="o">/</span> <span class="nt">16</span><span class="o">)</span>
-
-<span class="nt">----------</span> <span class="nt">Vertical</span> <span class="nt">spacing</span>
-
-<span class="nt">Vertical</span> <span class="nt">spacing</span> <span class="nt">between</span> <span class="nt">most</span> <span class="nt">elements</span> <span class="nt">should</span> <span class="nt">use</span> <span class="nt">24px</span> <span class="nt">or</span> <span class="nt">48px</span>
-<span class="nt">to</span> <span class="nt">maintain</span> <span class="nt">vertical</span> <span class="nt">rhythm</span><span class="o">:</span>
-
-<span class="nc">.my-new-div</span> <span class="p">{</span>
-	<span class="k">margin</span><span class="o">:</span> <span class="m">24px</span> <span class="m">0</span><span class="p">;</span>
-	<span class="k">margin</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">714285714</span><span class="n">rem</span> <span class="m">0</span><span class="p">;</span> <span class="p">(</span> <span class="m">24</span> <span class="o">/</span> <span class="err">$</span><span class="n">rembase</span> <span class="p">)</span>
-<span class="p">}</span>
-
-<span class="nt">----------</span> <span class="nt">Further</span> <span class="nt">reading</span>
-<span class="nt">http</span><span class="o">://</span><span class="nt">snook</span><span class="nc">.ca</span><span class="o">/</span><span class="nt">archives</span><span class="o">/</span><span class="nt">html_and_css</span><span class="o">/</span><span class="nt">font-size-with-rem</span>
-<span class="nt">http</span><span class="o">://</span><span class="nt">blog</span><span class="nc">.typekit.com</span><span class="o">/</span><span class="nt">2011</span><span class="o">/</span><span class="nt">11</span><span class="o">/</span><span class="nt">09</span><span class="o">/</span><span class="nt">type-study-sizing-the-legible-letter</span><span class="o">/</span></code></pre></div>
-
-<p>То есть, что нам сообщают разработчики WordPress в этих строках? Что данный файл стилевых правил использует для построения дизайна сайта два значения в качестве переменных:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">rembase</span><span class="o">:</span>     <span class="nt">14</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">line-height</span><span class="o">:</span> <span class="nt">24</span><span class="o">;</span></code></pre></div>
-
-<p>… в единицах измерения <code>rem</code> с откатом <code>fallback</code> в пиксели <code>px</code>. И далее приводятся примеры того, как применяются обе эти переменные для построения стилевых правил и как производится вычисление нужных величин, являющихся производными от этих переменных.</p>
-
-<p>В самом конце две ссылки по тематике <code>rem</code> для любознательных, первой из которых является вольный перевод, который вы читаете! Значит, я на правильном пути.</p>
 
 <hr />
 

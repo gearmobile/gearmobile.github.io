@@ -144,6 +144,284 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-21T00:00:00+04:00"><a href="http://zencoder.ru/css/css-side-lined-headline/">October 21, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-side-lined-headline/" rel="bookmark" title="Создать зачеркнутый заголовок на CSS" itemprop="url">Создать зачеркнутый заголовок на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Создать заголовок с эффектом зачеркивания. Создается с помощью псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+</blockquote>
+
+<p>Оба псевдо-элемента применяются только к одному элементу - заголовку определенного уровня и дополнительной разметки не требуется, все семантично. Линии подчеркивания имеют фиксированную ширину с обеих сторон, что упрощает задачу. Положение линий по вертикали - точно по центру.</p>
+
+<p>Создание такого эффекта выполняется простым кодом. Первоначально задаем HTML-разметку с использованием заголовка первого уровня <code>h1</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
+  about me
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<p>И прописываем для него CSS-правила, чтобы привести его к тому виду, который нам необходим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Выравнивание по центру, размер шрифта (кегль) и высота блока через интерлиньяж <code>line-height</code>, делаем все буквы заглавными - все стандартно. Но не забываем о позиционировании, которое устанавливаем относительным, ибо оно потребуется нам для псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+
+<p>Теперь создаем общие правила для обоих псевдо-элементов <code>:before</code> и <code>:after</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Единственным примечательным моментом в этом коде является свойство <code>top: 50%</code>, которое размещает линию точно по центру вертикали блочного элемента. В нашем случае таким блочным элементом является заголовок первого уровня <code>h1</code>. Кроме того, нужно установить еще одно правило - <code>margin-top: -2px</code>.</p>
+
+<p>Этим правилом мы поднимаем сгенерированные линии вверх на половину их высоты. Почему это нужно делать, можно догадаться и так.</p>
+
+<p>Так как правила мы прописали для обоих элементов, то следуют переписать некоторые из них для элемента <code>:after</code>. Точнее - нам нужно только правило <code>right</code>, чтобы “сдвинуть” его вправо:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результат работы кода показан на рисунке ниже. Граница для заголовка задана мною для наглядности:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/header-stroke.jpg" alt="Зачеркнутый заголовок на CSS" /></p>
+
+<p>Полностью весь код для создания такого эффекта приведен ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">900px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">40px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">60px</span><span class="p">;</span>
+  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="nd">:before</span><span class="o">,</span> <span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">320px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h1</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="upd-19012014">UPD 19\01\2014</h2>
+
+<p>Для быстроты, удобства и краткости можно воспользоваться готовым миксином из библиотеки Scut - <a href="http://davidtheclark.github.io/scut/side-lined.html" title="Scut Side Line">Side-Lined</a>.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-20T00:00:00+04:00"><a href="http://zencoder.ru/css/css-center-in-block/">October 20, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-center-in-block/" rel="bookmark" title="CSS - разместить объект точно по центру блока" itemprop="url">CSS - разместить объект точно по центру блока</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Перевод небольшой статьи с замечательного сайта для веб-дизайнеров CSS-Tricks.</p>
+</blockquote>
+
+<p>Статья посвящена одному интересному моменту - как правильно точно отцентрировать один объект с фиксированными размерами внутри другого. В принципе ничего сложного (и большого секрета) в этом нет, но статья мне понравилась, поэтому решил перевести и разместить у себя. Особенно хороши картинки - глядя на них, можно и текст не писать - все наглядно понятно. Далее - вольный перевод статьи Криса Койера:</p>
+
+<p>На днях мне потребовалось создать страницу-заглушку для сайта. Мне необходимо было разместить изображение логотипа точно по центру экрана, а именно - отцентрированную по вертикали и горизонтали. Немного подумав, я задал для изображения класс centered и прописал для него правила:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.centered</span> <span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+    <span class="k">left</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Примечание переводчика:</p>
+
+<blockquote>
+  <p>Свойство <code>fixed</code> здесь задается по двум причинам. Первая - необходимо, чтобы изображение имело фиксированное положение на странице и не изменяло его при прокрутке в окне браузера. Второе - изображение должно располагаться точно по центру окна. Одновременно соответствовать обоим критериям может только одно свойство - <code>fixed</code>. Оно очень похоже на более известное <code>absolute</code>, но с одним отличием - объект с этим свойством не меняет своего положения при прокрутке страницы.</p>
+</blockquote>
+
+<p>Но я уверен, что вы скажете - это еще не все, что необходимо сделать. Тот код, который я прописал, помещает верхний левый угол изображения посередине страницы, но не центр изображения по центру страницы:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/css-not-centered-block.gif" alt="Изображение, размещенное не по центру блока" /></p>
+
+<p>Для того чтобы расположить картинку точно по центру, необходимо сместить ее влево на величину, равную половине ширины изображения и сместить вверх на величину, равную половине высоты изображения.</p>
+
+<p>Оба смещения нужно сделать с помощью свойства <code>margin-left</code> и <code>margin-top</code> с отрицательными значениями. Код в итоге будет следующим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.centered</span> <span class="p">{</span>
+<span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
+<span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+<span class="k">left</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+<span class="k">margin</span><span class="o">:</span> <span class="m">-50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">-100px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате изображение разместиться точно по центру экрана:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/css-centered-block.gif" alt="Изображение, размещенное точно по центру блока" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-19T00:00:00+04:00"><a href="http://zencoder.ru/sport/calculate-weight-of-disks/">October 19, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/sport/calculate-weight-of-disks/" rel="bookmark" title="Расчет веса блинов для самодельных гантелей" itemprop="url">Расчет веса блинов для самодельных гантелей</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Стоит задача рассчитать по формуле вес блинов, исходя из заданных размеров. Ими являются внутренний диаметр блина - это посадочное место на гриф гантели.</p>
+</blockquote>
+
+<p>Как правило, диаметр грифа гантели равен 25мм. С учетом допуска (<em>чтобы диск свободно надевался на гриф</em>), внутренний диаметр блина будет равен 26мм. То есть, делаем допуск в 1мм.</p>
+
+<p>Вторая величина - это толщина блина, так как блины будут изготавливаться из стального листового материала стандартной толщины. Листовой материал имеет толщину 4мм, 6мм, 8мм, 10мм, 12мм и так далее, с шагом в 2мм. В зависимости от получаемого размера блина будет подбираться толщина листа, из которого он будет изготавливаться, с тем, чтобы блин получался не слишком большой.</p>
+
+<p>Третья величина - это плотность стали. Она постоянна и равна 7800кг/м<sup>3</sup>.</p>
+
+<p>И так, имеем только три заранее известные величины - диаметр посадочного места, толщина блина и плотность стали, из которой будут изготавливаться диски. Необходимо рассчитать внешний диаметр диска, чтобы получить в результате блины весом 0,75кг, 1,5кг, 2,5кг, 5кг и 10кг.</p>
+
+<p>Стоит оговориться. Из-за чего весь этот сыр-бор нужен? Нужен для того, чтобы иметь дома нормальные гантели и по разумной цене. Кто не заходил в спортивные магазины и не видел цены на те же гантели или блины к ним, тот не представляет, насколько они космические и далекие от реальности. К примеру, одна наборная гантеля весом 15кг стоит 4500руб. Это уму непостижимо - откуда такая стоимость куска железа?!</p>
+
+<p>Но достаточно договориться со знакомым слесарем или токарем и они сделают набор почти такого же качества, но по разумной цене.</p>
+
+<h2 id="section">Приступаем к задаче. Как будем ее решать?</h2>
+
+<p>Немного отклонимся от темы и представим себе, что такое диск гантели с геометрической точки зрения? Это не что иное, как цилиндр. Только очень “широкий и “низкий”. Объем цилиндра вычисляется по коротенькой формуле: площадь основания цилиндра умножается на высоту цилиндра.</p>
+
+<p>Площадь основания цилиндра равна:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">S</span><span class="p">=</span><span class="err">ПИ</span><span class="p">*</span><span class="n">R</span><span class="p">&lt;</span><span class="n">sup</span><span class="p">&gt;</span><span class="n">2</span><span class="p">&lt;/</span><span class="n">sup</span><span class="p">&gt;</span></code></pre></div>
+
+<p>то есть, число ПИ умножается на радиус основания, возведенного в степень 2.</p>
+
+<p>Тогда объем цилиндра равен:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">V</span><span class="p">=</span><span class="n">S</span><span class="p">*</span><span class="n">h</span></code></pre></div>
+
+<p>где <code>h</code> - высота цилиндра. В нашем случае высота <code>h</code> - это толщина листового материала, равная 4мм, 6мм, 8мм и так далее.</p>
+
+<p>Но, диск гантели не является полным цилиндром. Внутри диска есть посадочное отверстие известного диаметра, которое с точки зрения геометрии также является цилиндром. Поэтому, объем диска гантели будет равен полному объему цилиндра по внешнему радиусу минус объем цилиндра по внутреннему радиусу (внутренний посадочный диаметр).</p>
+
+<p>То есть:</p>
+
+<ul>
+  <li><code>V&lt;sub&gt;1&lt;/sub&gt; = ПИ*R&lt;sup&gt;2&lt;/sup&gt;*h</code> - объем цилиндра по внешнему радиусу R</li>
+  <li><code>V&lt;sub&gt;2&lt;/sub&gt; = ПИ*r&lt;sup&gt;2&lt;/sup&gt;*h</code> - объем цилиндра по внутреннему радиусу r</li>
+  <li><code>V = V&lt;sub&gt;1&lt;/sub&gt; - V&lt;sub&gt;2&lt;/sub&gt;</code></li>
+</ul>
+
+<p>Все, объем блина гантели рассчитали. Теперь осталось высчитать вес этого объема.</p>
+
+<p>Тут еще проще - достаточно умножить полученный объем на удельную плотность стали. При этом нужно соблюдать единицы измерения, чтобы они совпадали. То есть, если объем рассчитывался в кубических мм, то и объем также должен быть в граммах на кубический мм.</p>
+
+<p>Результатом будет формула:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">M</span> <span class="p">=</span> <span class="p">(</span><span class="n">V</span><span class="p">*</span><span class="n">p</span><span class="p">)/</span><span class="n">10</span><span class="p">&lt;</span><span class="n">sup</span><span class="p">&gt;</span><span class="n">6</span><span class="p">&lt;/</span><span class="n">sup</span><span class="p">&gt;</span></code></pre></div>
+
+<p>где <code>p</code> - плотность стали, равная 7800кг/м<sup>3</sup>; 10<sup>6</sup> - переводим из г/мм<sup>3</sup> в кг/м<sup>3</sup>.</p>
+
+<p>С теоретическими расчетами закончено. Так как являюсь поклонником программы Excel, то преобразовал ее в небольшую табличку, с помощью которой можно быстро и легко подобрать нужные веса блинов гантели:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/table.png" alt="Таблица расчета весов в Excel" /></p>
+
+<p>Табличка доступна для скачивания всем желающим. Архив находится здесь - <a href="https://db.tt/LCvf5pgf" title="Таблица расчета блинов для гантели">Таблица расчета блинов для гантели</a>. Пользуясь ею, можно подобрать толщину листа, чтобы на выходе получить массу и внешний диаметр блина гантели.</p>
+
+<p>Ну, а нарисовать эскиз блина с указанием внутреннего и внешнего диаметров, толщины и фаски (по возможности) не составит труда в том же AutoCAD.</p>
+
+<p>Данная таблица будет еще мою дорабатываться, но незначительно, так как основная работа была сделана.</p>
+
+<h2 id="ps">P.S.</h2>
+
+<p>Как результат вычислений по данной таблице, привожу ниже фотографии готовых гантелей. Обе получились весом по 20кг в полном сборе. Работа токаря по вытачиванию грифов (отдельная благодарность ему за накатку), обтачиванию самих блинов, бесплатное изготовление зажимов к гантелям - все это обошлось мне в 800 рублей.</p>
+
+<p>Вес почти всех блинов получился меньше расчитанного на 100г, что является результатом токарной обработки. Вырезание блинов из листового материала производилось на обычной газорезке, а не на плазме.</p>
+
+<p>Поэтому края получились грубыми, пришлось основательно их обрабатывать на токарном станке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/gantel01.jpg" alt="Гантель" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/gantel02.jpg" alt="Гантель" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-18T00:00:00+04:00"><a href="http://zencoder.ru/css/css-line-shorter-than-box/">October 18, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -281,280 +559,6 @@
 <p><img src="http://zencoder.ru/images/uploads/2013/11/block-inside.png" alt="Картинка, вложенная в блок в качестве фонового изображения" /></p>
 
 <p>Код более краткий. Единственный минус - изображение должно быть только в качестве фона для блока.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-16T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-hotkeys/">October 16, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-hotkeys/" rel="bookmark" title="Photoshop - магия горячих клавиш (hotkeys)" itemprop="url">Photoshop - магия горячих клавиш (hotkeys)</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В этом обзоре мною собраны описания “горячих” клавиш в Photoshop.</p>
-</blockquote>
-
-<p>Если быть более точным - здесь описаны “горячие” клавиши, которые необходимы для повседневной работы верстальщика в этой программе. О преимуществах использования hotkeys мне кажется, не стоит даже упоминать.</p>
-
-<p>Они значительно ускоряют и упрощают работу в Photoshop. Конечно, перед этим необходимо их заучить - это единственная трудность. Но как только сочетания клавиш будут запомнены, результаты на практике будут сразу видны. Это можно ощутить на собственном опыте.</p>
-
-<p>Описания приемов работы с “горячими” клавишами собраны мною постепенно, по частям. Те “секреты”, которые я узнавал в своей работе с программой Photoshop, я постепенно объединял в данном небольшом руководстве, которое можно скорее назвать памяткой верстальщика в Photoshop.</p>
-
-<h2 id="photoshop">Горячие клавиши панели инструментов Photoshop</h2>
-
-<p>С левой стороны рабочего окна Photoshop имеется плавающая панель инструментов, которая является незаменимым способом выбора нужного набора инструментов.</p>
-
-<p>Если нужно вырезать часть изображения - пользуемся инструментом “Рамка”, выделить нужный слой или группу слоев - инструмент “Перемещение”, определить цвет определенного слоя - инструмент “Пипетка”.</p>
-
-<p>Этот список я продолжать не буду. Описание всех инструментов Photoshop в Интернете хоть отбавляй и созданы они куда более красочно и подробно.</p>
-
-<p>Я остановлюсь на другом моменте. Для каждого инструмента на этой панели имеется “привязанная” к нему “горячая клавиша”. С помощью этих hotkeys выбирать или переключаться между инструментами панели можно очень быстро.</p>
-
-<p>Не говоря уже об удобстве. Ниже приведу список таких “горячих клавиш” панели инструментов, применительно к работе верстальщика:</p>
-
-<ul>
-  <li>“Перемещение” - <kbd>V</kbd></li>
-  <li>“Прямоугольная область” - <kbd>M</kbd></li>
-  <li>“Рамка” - <kbd>C</kbd></li>
-  <li>“Пипетка” - <kbd>I</kbd></li>
-  <li>“Горизонтальный текст” - <kbd>T</kbd></li>
-  <li>“Рука” - <kbd>H</kbd></li>
-  <li>“Масштаб” - <kbd>Z</kbd></li>
-</ul>
-
-<p>Стоит только упомянуть, что выбор инструментов на панели с помощью “горячих клавиш” возможно производить при <em>английской раскладке</em> клавиатуры. Другими словами, “горячие клавиши” должны быть <em>латинскими</em>.</p>
-
-<p>Запомнить эти немногочисленные сочетания очень просто. Они являются сокращениями от английского названия соответствующих инструментов:</p>
-
-<ul>
-  <li><kbd>V</kbd> - MoVe</li>
-  <li><kbd>M</kbd> - Marquee</li>
-  <li><kbd>C</kbd> - Crop</li>
-  <li><kbd>I</kbd> - Invert</li>
-  <li><kbd>T</kbd> - Transform</li>
-  <li><kbd>H</kbd> - Hand</li>
-  <li><kbd>Z</kbd> - Zoom</li>
-</ul>
-
-<h2 id="section">Особенность работы с инструментом “Текст”</h2>
-
-<p>При верстке шаблона сайта из PSD-макета одним из моментов является работа со шрифтами. То есть, когда дело доходит до передачи и оформления шрифтов через правила CSS.</p>
-
-<p>Для точного соответствия шаблона сайта PSD-макету необходимо однозначно знать все свойства шрифтов, использованных дизайнером при создании макета. Это семейство шрифтов, насыщенность шрифта, его размер и цвет.</p>
-
-<p>Естественно, для этого нужно воспользоваться инструментом “Текст”. Но имеется один момент. Например, стоит задача определить свойства шрифтов, расположенных в разных блоках макета, подряд.</p>
-
-<p>То есть, сперва один шрифт, затем другой, потом третий и так далее. При выборе одного шрифта и определения его свойств инструмент “Текст” как бы “зависает” (говорю своими словами, как понимаю и как вижу). Если вы выделили этот шрифт, то затем не сможете определить другой. Для этого необходимо “сбросить” запомненное инструментом “Текст” состояние.</p>
-
-<p>Выполняется это просто. Для этого нажимаем клавишу <kbd>Esc</kbd>. Инструмент “Текст” выходит из “запомненного” состояния, но остается активированным. Теперь можно выделять следующий шрифт и определять его параметры. Используя клавишу <kbd>Esc</kbd>, можно легко и быстро узнать свойства всех шрифтов макета за один шаг.</p>
-
-<h2 id="section-1">Горячие клавиши при работе со слоями</h2>
-
-<p>Несколько моментов, связанных с работой со слоями. А именно, при объединении и выделении слоев.</p>
-
-<p>Имеется объект макета, состоящий из нескольких слоев. Давайте покажем, из каких именно он состоит:</p>
-
-<figure id="attachment_176" style="width: 375px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/several-layers.png" alt="Несколько слоев изображения в Photoshop" width="375" height="228" class="size-full wp-image-176" />][1]<figcaption class="wp-caption-text">Несколько слоев изображения в Photoshop</figcaption></figure>
-
-<p>Первоначально необходимо удостовериться, что именно эти слои отвечают за прорисовку данного изображения. Для этого в Photoshop имеется очень удобное сочетание горячей клавиши <kbd>Alt</kbd> и левой кнопки мыши (ЛКМ). Нажимаем и держим зажатой клавишу <kbd>Alt</kbd>.</p>
-
-<p>А затем щелкаем ЛКМ на значке “глаза” напротив слоя “Layer 5”. При этом все остальные слои макета отключаются и мы видим только то изображение (точнее - слои), которое “рисует” данный слой:</p>
-
-<figure id="attachment_177" style="width: 346px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/deactivated-layers-346x600.png" alt="Отключенные слои Photoshop" width="346" height="600" class="size-medium wp-image-177" />][2]<figcaption class="wp-caption-text">Отключенные слои Photoshop</figcaption></figure>
-
-<p>Это чрезвычайно удобный способ отключения ненужных слоев. Чтобы вернуть назад в “как было”, поступаем точно также. Опять нажимаем и держим зажатой клавишу <kbd>Alt</kbd> и кликаем по “глазику” напротив слоя “Layer 5”. Все остальные слои автоматически возвращаются в исходное состояние, при этом слой “Layer 5” также остается активным.</p>
-
-<p>Вернемся к предыдущему шагу, когда “лишние” слои у нас были отключены. У нас имеются только два слоя, оставшихся после действий <kbd>Alt</kbd> + ЛКМ. Нам нужно объединить (свести) все оставшиеся слои в один, чтобы потом можно было сохранить изображение одним файлом.</p>
-
-<p>Выделяем два оставшихся слоя. Для этого зажимаем клавишу <kbd>Ctrl</kbd> и левой кнопкой мыши (ЛКМ) последовательно выделяем каждый из слоев, кликая одинарным щелчком мыши на этих слоях.</p>
-
-<p>Объединяем выделенные слои. Тут еще проще - для этого служит сочетание “горячих” клавиш <kbd>Ctrl + E</kbd>. Нажимаем их и видим результат:</p>
-
-<figure id="attachment_178" style="width: 361px;" class="wp-caption aligncenter">
-[<img src="http://localhost:7788/third/wp-content/uploads/2013/11/merged-layer.png" alt="Сведенный в один слой" width="361" height="309" class="size-full wp-image-178" />][3]<figcaption class="wp-caption-text">Сведенный в один слой</figcaption></figure>
-
-<p>Теперь можно сохранять полученное изображение как обычно, через “Файл - Сохранить для Web и устройств” с помощью длинного сочетания клавиш <kbd>Alt + Shift + Ctrl + S</kbd>. Также стоит упомянуть, что при работе со слоями всегда можно вернуться назад, нажав стандартную комбинацию клавиш <kbd>Ctrl + Z</kbd>.</p>
-
-<p>На этом все. Думаю, данный небольшой обзор будет пополняться описаниями тех возможностей, о которых я пока не знаю на данный момент.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-15T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-ruler/">October 15, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-ruler/" rel="bookmark" title="Ruler для измерения расстояний объектов на макете" itemprop="url">Ruler для измерения расстояний объектов на макете</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Одним из самых необходимых инструментов в программе Photoshop для верстальщика является линейка (Ruler). Назначение ее просто и полностью отвечает своему названию. С помощью нее можно измерять расстояния между объектами макета.</p>
-</blockquote>
-
-<p>Необходима линейка потому, что задача верстальщика состоит в верстке макета сайта с максимальной точностью. Точнее, чтобы сайт был максимально приближен к своему первоначальному виду - макету, который нарисовал дизайнер. Поэтому при нарезке макета верстальщик постоянно измеряет расстояния между объектами макета.</p>
-
-<p>Чтобы вызвать инструмент “Линейка” (Ruler), нужно щелкнуть правой кнопкой мыши на значке “Пипетка” в панели инструментов. Появится небольшое констекстное меню, в котором присутствует “Линейка” (Ruler Tool):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/ruler-context-menu.png" alt="Контекстное меню Photoshop" /></p>
-
-<p>Курсор мыши изменится - рядом с ним будет <em>стилистическое изображение линейки</em>. Теперь давайте попрактикуемся и измерим расстояние между двумя объектами на макете.</p>
-
-<p>Для этого подведем курсор мыши к одной из направляющих. Зажмем левую кнопку мыши. И одновременно зажмем клавишу <kbd>Shift</kbd> на клавиатуре. Это необходимо для того, чтобы при проведении линии последняя была строго горизонтальной или вертикальной. И протянем линию от первой направляющей до второй:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/line-ruler.png" alt="Проведенная линия линейки" /></p>
-
-<p>Перекрестия на концах линии обозначают начальную и конечную точку отсчета. Осталось узнать, а какое же расстояние между этими двумя направляющими. Переводим взгляд в правый верхний угол окна, на панель “Инфо”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/panel-info.png" alt="Панель Инфо Photoshop" /></p>
-
-<p>Обведенная область как раз и показывает расстояние, вычисленное Photoshop. Это линейные размеры. <code>W</code> - ширина (горизонталь), а <code>H</code> - высота (вертикаль). Мы измеряли горизонтальный размер (расстояние) при зажатой клавише <kbd>Shift</kbd>, поэтому по вертикали стоит <code>0</code> пикселей.</p>
-
-<p>Так и должно быть. А по горизонтали стоит 940 пикселей. Это и есть расстояние между двумя направляющими. Точнее сказать, в данном случае это будет ширина графического баннера, изображенного на макете.</p>
-
-<p>Аналогично измерим высоту этого баннера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/vertical-line-ruler.png" alt="Вертикальная измерительная линия" /></p>
-
-<p>И посмотрим, сколько она составляет в пикселах:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/vertical-size.png" alt="Вертикальный размер баннера" /></p>
-
-<p>Высота равна 339 пиксела. Теперь у нас есть оба размера - высота и ширина, которые можно использовать при последующей верстке макета. Точно также производится измерение расстояния или размеров для любых объектов макета.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-14T00:00:00+04:00"><a href="http://zencoder.ru/auto/chevrolet-aveo/">October 14, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/auto/chevrolet-aveo/" rel="bookmark" title="Chevrolet Aveo 2013 - установка чехлов ателье B&M" itemprop="url">Chevrolet Aveo 2013 - установка чехлов ателье B&M</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Стал счастливым обладателем чехлом из эко-кожи на авто Chevrolet Aveo (модель 2013 года).</p>
-</blockquote>
-
-<p>До этого стояли обычные тряпочные мешки (чехлы), которые и смотрелись плохо (как может смотреться мешок?) и сидеть на них было не особо приятно. Постоянно сползали, забивались куда-то в угол.</p>
-
-<p>При установке пришлось немного помучиться поначалу, пока не приноровился - потом дело быстро пошло. Чехлы - правда очень хорошие. Качество пошива - на уровне. По ощущениям - приятные на ощупь, неприхотливые. Когда натягивал - тянул что есть силы, им хоть бы что. Сидеть в креслах с такими чехлами - одно удовольствие.</p>
-
-<p>С цветом - не прогадал (у меня серебристый металлик). Под расцветку салона подходят идеально, на 100% встали в этом плане. Цвет боковин (он не чисто-серый, а с еле заметным зеленым оттенком) сочетается с цветом торпедо и вставками в дверях.</p>
-
-<p>Когда устанавливал, то столкнулся с такой проблемой, что нет подробной инструкции. Как и что откручивать, что надо снимать, а что нет. Та инструкция, что вложена в чехлы - ее можно смело выкинуть, к Chevrolet Aveo 2013 она практически полностью неприменима. Да и расписано там плохо.</p>
-
-<p>На форуме Chevrolet еще год назад видел подробный фотоотчет одного из одноклубников, как он производил установку чехлов. Но вот когда столкнулся сам с такой необходимостью, сразу его не нашел. После поисков все же его обнаружил и решил разместить у себя - вдруг кому еще понадобиться?</p>
-
-<p>Ниже привожу фотоотчет, немного дополненный мною:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/01.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/02.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>Отвертка должна быть широкой и достаточно длинной. Заводим левую руку под лежащую спинку в месте крепления, а правой отжимаем конусообразную шайбу внутрь. И толкаем спинку вверх - она легко выходит из крепления:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/03.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/04.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/05.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>На самом деле там два пластмассовых кольца. Одно черное большое - со стороны малой спинки. Второе маленькое белое - со стороны большой спинки. Естественно, потерять их не желательно:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/06.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>У меня не получилось снять заднее сиденье, хотя и тянул вверх со всем старанием. Прочитал на форуме Chevrolet Cruze, как один товарищ тоже так тянул изо всех сил, пока не вытянул защелки вместе с пластмассовым креплением (а потом покупал новые). Я передумал снимать заднюю сидушку. Просто приподнял слегка вверх ее заднюю часть и руками завел внутрь тесемочки с крючками от чехла.</p>
-
-<p>Там действительно нет ничего сложного (вот только “когти” настоятельно рекомендуется постричь перед натягиванием чехлов - иначе пострадает одно из двух, или чехлы или ваши “когти”). При отгибании сидушки вверх в районе ее крепления слышалось подозрительное пощелкивание, но этим все и обошлось:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/07.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>Снимание передних кресел. Удобнее натягивать чехлы на столе - не надо набигаться и можно вертеть сиденье, как необходимо:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/012.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/013.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>На фото показан правый болт. Второй болт находится слева, под пластмассовой пластинкой, которая прикрывает небольшую металлическую косынку. Она на клипсах, достаточно слегка поддеть ее отверткой. После того, как болты откручены, нужно приподнять сиденье и потянуть на себя. Полозья выйдут из стопоров (там же, где и болты расположены) и из зацепов спереди (показаны на следующем рисунке):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/014.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/015.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>Отсоединять разъем можно очень легко и быстро - достаточно потянуть на себя защелку, которая видна на фото в выдвинутом состоянии. Когда она тянется на себя, то разъем проводов сам выходит из гнезда крепления. Аналогично и вставка его на место - слегка приткнуть разъем к гнезду и нажать защелку от себя. Разъем сам встанет на место:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/016.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>На обоих передних сидениях есть боковые пластмассовые пластины, внутри которых находится механизм регулировки наклона спинки. Ее снимать полностью не надо, да и не получиться. Достаточно открутить два самореза, расположенных спереди и сзади боковинки в нижней ее части. И снять ручку регулировки наклона - просто поддеть аккуратно отверткой, она на клипсах сидит.</p>
-
-<p>После этого лучше всего деревянной линейкой заправить чехол под пластмассу. Сами чехлы пошиты с учетом этих боковин, так что много возиться не придется:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/017.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/019.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/020.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/021.jpg" alt="Чехлы Aveo Chevrolet 2013" /></p>
-
-<p>Как результат - фото моих чехлов, установленных на свой Chevrolet Aveo. Маленькая фотосессия. Фотографии есть фотографии, всего передать они не могут. Вживую чехлы смотряться еще лучше. Если одним словом - офигенно!</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/AveoChevrolet01.jpg" alt="Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/AveoChevrolet06.jpg" alt="Aveo Chevrolet 2013" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/AveoChevrolet08.jpg" alt="Aveo Chevrolet 2013" /></p>
-
-<p>В ателье B&amp;M зачем-то пошили для меня чехол на центральный подголовник, хотя его нет на моей машине и я его не заказывал. Ну да ладно - общий вид они не портят. Может, когда-нибудь куплю этот самый подголовник и поставлю.</p>
 
 <p>На этом все.</p>
 

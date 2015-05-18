@@ -144,6 +144,217 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-09-11T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-stroke-css/">September 11, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-stroke-css/" rel="bookmark" title="Photoshop - преобразовываем обводку в CSS" itemprop="url">Photoshop - преобразовываем обводку в CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При верстке из psd-макета можно столкнуться с такой ситуацией. Имеется какое-либо изображение, для кот&gt; орого в Photoshop создана обводка. Внешне это напоминает простую рамку для изображения. Но только внешне обводка похожа на рамку. На самом деле она накладывается на изображение поверх него.</p>
+</blockquote>
+
+<p>У нас стоит задача преобразовать изображение с обводкой из psd-макета в html-код, используя при этом стилевые правила, где это допустимо. Само изображение преобразовать с помощью стилей невозможно - это картинка. А вот создать рамку (<em>в данном случае это обводка</em>) в помощью правил будет легко выполнить.</p>
+
+<p>Осталось решить вопрос, как вырезать картинку из psd-макета, не трогая при этом обводку. Давайте посмотрим на фрагмент макета с интересующей нас картинкой и на панель слоев, отвечающих за ее прорисовку:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment.png" alt="Изображение с обводкой в Photoshop" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-layer.png" alt="Слои, отвечающие за изображение и обводку в Photoshop" /></p>
+
+<p>На панели слоев видим два слоя - “Layer 16” и “Shape 14 copy”. Именно они выполняют прорисовку картинки футболиста. На слое “Shape 14 copy” также видим эффекты, применяемые к этому слою.</p>
+
+<p>Если внимательно присмотреться к эффектам, то увидим надписи “Эффекты - Выполнить обводку”. Это как раз обводка, от которой нам необходимо избавиться, чтобы вырезать только саму фотографию.</p>
+
+<p>Отлючаем эффект обводки. Для этого щелкаем мыщью на “глазике” “Эффекты” на слое “Shape 14 copy”. “Глазик” “потухает”, то есть эффект отключен. Смотрим на фотографию и видим, что обводка пропала:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-layer-disabled.png" alt="Слой с отключенным эффектом обводки в Photoshop" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-disabled.png" alt="Outline Fragment Disabled" /></p>
+
+<p>Теперь осталось вырезать изображение. Воспользуемся инструментом Photoshop под названием “Crop”.</p>
+
+<p>Выбираем его и вырезаем изображение. Затем сохраняем его для “Web и устройств” в формате <code>.jpg</code> (<em>наилучший вариант для фотографий</em>).</p>
+
+<p>Однако, нам еще необходимо узнать точные размеры и цвет обводки. Для этого опять воспользуемся слоями в Photoshop. Точнее - выберем слой “Shape 14 copy’ и откроем его свойства. В списке эффектов выбираем “Обводка” и смотрим на правую часть, где представлены параметры, с помощью которых она выполнена:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-layer-properties.png" alt="Свойства обводки в Photoshop" /></p>
+
+<p>Нам потребуются только два из них. Это толщина линии обводки “Размер” и цвет линии обводки “Цвет”. Также проверяем, что прозрачность (альфа-канал) для цвета обводки не используется, так как стоит “Непрозр.” равная <code>100%</code>.</p>
+
+<p>Обводка выполнена сплошным цветом, так как на это указывает значение “Режим наложения: Нормальный”. Цвет обводки должен быть белым, но уточняем этот факт.</p>
+
+<p>Щелкаем на окошке “Цвет”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-layer-properties-color.png" alt="Цвет обводки в Photoshop" /></p>
+
+<p>Так все и есть - цвет равен <code>#fff</code>. Все готово для написания стилей CSS:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">img</span><span class="nc">.football</span> <span class="p">{</span>
+	<span class="k">border</span><span class="o">:</span><span class="m">2px</span> <span class="k">solid</span> <span class="m">#fff</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-result.png" alt="Outline Fragment Result" /></p>
+
+<p>В результате получил иззображение с обводкой. Однако, в случае исполнения через стилевые правила CSS это будет не обводка, а чистая рамка. Размер изображения равен <code>62px х 59px</code>. Добавляем к нему рамку размером <code>2px</code>. Получаем реальный размер картинки на сайте <code>64px x 61px</code>.</p>
+
+<p>Средствами CSS на данный момент невозможно выполнить обводку, как на макете в Photoshop. Поэтому, если размер изображения критичен для шаблона, лучшим вариантом будет вырезание картинки вместе с обводкой.</p>
+
+<h2 id="ps">P.S.</h2>
+
+<p>Может быть так, что на самом слое в панели слоев эффект обводки не будет отображен:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/outline-fragment-layer-without-effects.png" alt="Отсутствие эффектов на слое в Photoshop" /></p>
+
+<p>В этом случае, для получения параметров обводки необходимо зайти в свойства слоя и дальше действовать также, как было описано в предыдущих шагах.</p>
+
+<blockquote>
+  <p>Данное высказывание является несколько неточным. Эффекты слоя никуда не пропадают - они просто скрыты. Более подробное описание, как развернуть или скрыть отображение эффектов слоя в Photoshop можно почитать в статье “Photoshop - скрытие и отображение эффектов слоя в палитре слоев”</p>
+</blockquote>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-09-10T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-hide-and-show-effect-in-layer/">September 10, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-hide-and-show-effect-in-layer/" rel="bookmark" title="Photoshop - скрытие и отображение эффектов слоя в палитре слоев" itemprop="url">Photoshop - скрытие и отображение эффектов слоя в палитре слоев</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье “Photoshop - преобразовываем обводку в CSS” была высказана неточность.</p>
+</blockquote>
+
+<p>Заключалась она в том, что бывает ситуация, когда в панели слоев Photoshop на некоторых слоях не отображаются эффекты, которые применяются к ним. Мною предлагалось зайти в свойства слоя двойным щелчком мыши на нем. И в диалоговом окне свойств уже выбирать те, которые установлены.</p>
+
+<p>Однако, на самом деле эффекты слоя никуда не пропадают, просто они скрыты (точнее - свернуты). Если к слою применены эффекты, то на слое отображается буква <code>fx</code>. И стрелка в виде треугольника справа от этой буквы. Щелчок мыши на этой стрелке раскрывает или скрывает эффекты слоя. Если стрелка направлена вниз, свойства слоя скрыты. Если стрелка направлена вверх, то свойства слоя развернуты.</p>
+
+<p>Давайте на примере рассмотрим, как можно скрывать или раскрывать свойства слоя.</p>
+
+<p>Имеется фрагмент панели слоев Photoshop, на которой к одному из слоев применены эффекты. Смотрим на изображение. На слое есть буква <code>fx</code>, что означает, что у него есть свойства. Но на слое мы их не видим. Однако справа от символов <code>fx</code> есть стрелка, направленная вниз:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/layer-effects-collapsed.png" alt="Свойства фоновой заливки в Photoshop" /></p>
+
+<p>Щелкнем на этой стрелке одинарным щелчком мыши. И “картина” сразу поменяется:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/09/layer-effects-uncollapsed.png" alt="Слой с развернутыми эффектами в Photoshop" /></p>
+
+<p>Эффекты слоя развернулись и теперь видно, какие именно применены к слою.</p>
+
+<p>Данный способ очень удобен и нагляден. С помощью него можно быстро и удобно просматривать эффекты слоев. И видеть, какие именно используются для определенного слоя. К примеру, в нашем случае к слою был применен эффект обводки.</p>
+
+<p>Теперь можно легко сворачивать или разворачивать эффекты слоя, в зависимости от необходимости. Если щелкнуть мышью на “глазе” эффекта, то эффект отключается. Например, если щелкнуть на “глазике” напротив надписи “Эффекты”, то будут отключены все эффекты, используемые для данного слоя (<em>в нашем случае он только один</em>). Если же щелкнуть на “глазике” напротив надписи “Выполнить обводку”, то будет отключен только этот конкретный эффект (<em>в нашем случае это обводка</em>).</p>
+
+<p>Еще раз вернувшись к вопросу скрытия и разворачивания эффектов слоя, мне хотелось бы упомянуть, что это очень удобная вещь при верстке сайта из макета. С помощью этого приема можно быстро и точно определять, какие эффекты применены к конкретному объекту макета. Или - применены ли они вообще.</p>
+
+<p>К стыду своему стоит сказать, до того момента, когда мне подсказали о данном приеме, эффекты, примененные к объектам я выискивал на самом макете. Просматривал внимательно макет и старался отмечать, что, допустим, к боксу применен градиент, внутренняя и внешняя тень.</p>
+
+<p>Такой способ является очень неэффективным - можно легко не заметить или забыть о каком-либо эффекте.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-09-09T00:00:00+04:00"><a href="http://zencoder.ru/joomla/kareebu-secure-joomla/">September 09, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/joomla/kareebu-secure-joomla/" rel="bookmark" title="Плагин Kareebu Secure - защищаем Joomla от злонамеренного доступа" itemprop="url">Плагин Kareebu Secure - защищаем Joomla от злонамеренного доступа</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Узнать, на каком CMS работает тот или иной сайт можно различными способами. Это делается в автоматическом режиме с помощью плагинов или сервисов.</p>
+</blockquote>
+
+<p>Или в ручном режиме, просмотром исходного кода страницы. Помимо этого, существуют еще определенное количество уловок, специфичных для каждой CMS в отдельности.</p>
+
+<p>Чем грозит для владельца сайта утечка такой информации? Потенциальный злоумышленник, зная движок, на котором работает данный сайт, также в курсе обо всех уязвимых местах CMS, на которой он работает. Это позволит ему предпринять попытки взломать сайт со всеми вытекающими последствиями для его владельца.</p>
+
+<p>Каким же образом можно обезопасить себя? Понятно, что панацеи от всех бед не существует и существовать не может. Но настроить номинальную защиту сайта всегда не помешает.</p>
+
+<p>Одной из возможностей укрепить оборону сайта является плагин kareebu Secure. Этот плагин написан два года назад и до сих пор пользуется популярностью на ресурсе Joomla! Extensions. Плагин поддерживается версиями Joomla 1.5 и 2.5, так что выбор для сайтовладельцев не ограничен.</p>
+
+<p>Принцип работы kareebu Secure достаточно прост. Плагин устанавливает пароль на директорию <code>/administrator</code> в корневой директории сайта. Благодаря этому закрывается доступ извне и теперь без пароля невозможно просмотреть содержимое этой папки и узнать, что сайт-то работает на Joomla!</p>
+
+<p>Установка плагина kareebu Secure выполняется стандартным способом, через менеджер расширений Joomla. После успешной установки необходимо перейти в раздел Менеджер плагинов и включить “kareebu Secure’. Выполняется это в поле “Состояние”. На изображении приведено изначальное состояние плагина, когда он еще не включен:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/kareebu-Secure-plugin.png" alt="Плагин kareebu-Secure" /></p>
+
+<p>Затем переходим к настройкам kareebu Secure. Они очень просты, запутаться тут невозможно:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/kareebu-Secure-settings.png" alt="Настройки плагина kareebu Secure" /></p>
+
+<p>Первое поле “Enable” включает или выключает настройки плагина. Понятно, что если настройки введены, но отключены, то плагин работать не будет.</p>
+
+<p>Второе поле “Password” позволяет задать произвольный пароль, устанавливаемый на папку /administrator . Пароль может состоять из комбинации заглавных и строчных букв, а также цифр.</p>
+
+<p>Третье поле “Mode” позволяет выбрать два режима авторизации на сайте с помощью плагина kareebu Secure. Первый (устаревший) режим “HTTP Authentication” работает следующим образом. В адресной строке браузера для входа в административную панель Joomla вводится:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">http://localhost:7788/third/administartor?password</code></pre></div>
+
+<p>где <code>password</code> - это тот самый пароль, который был задан во втором поле. Браузер переадресовывается в back-end сайта и открывается стандартное окно Joomla для входа в административную часть. Необходимо ввести только пароль в соответствующем поле.</p>
+
+<p>Поле с именем пользователя можно оставить пустым. Второй режим “Compatibility” похож на первый, но для входа в админку сайта потребуется указать как логин, так и пароль. Кстати, пароль для входа на сайт и пароль, устанавливаемый в плагине, могут и должны различаться.</p>
+
+<p>Кстати, если вы обратили внимание, стандартная строка:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">http://localhost:7788/third/administrator</code></pre></div>
+
+<p>… для входа в административную часть Joomla после установки плагина kareebu Secure изменилась и теперь представляет из себя:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">http://localhost:7788/third/administartor?password</code></pre></div>
+
+<p>Об этом не стоит забывать. Теперь не зная секретного пароля, невозможно получить доступ к back-end Joomla и войти в нее. На этом обзор плагина kareebu Secure можно закончить.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-09-08T00:00:00+04:00"><a href="http://zencoder.ru/html/strong-html/">September 08, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -382,178 +593,6 @@
 <p>И, наконец, результат всего - готовая шапка сайта:</p>
 
 <p><img src="http://zencoder.ru/images/uploads/2013/09/result-header.png" alt="Готовая шапка сайта" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-09-01T00:00:00+04:00"><a href="http://zencoder.ru/css/css-html-logo/">September 01, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-html-logo/" rel="bookmark" title="CSS - текст в логотипе HTML-шаблона" itemprop="url">CSS - текст в логотипе HTML-шаблона</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Совсем коротенькая заметка, посвященная такому приему, как помещение текста в логотип.</p>
-</blockquote>
-
-<p>В чем заключается вопрос? В каждом psd-макете имеется логотип для будущего сайта. Как правило, дизайнер старается сделать его запоминающимся, неординарным. Чтобы пользователю он бросался в глаза, оставил в его мозгу память о посещенном сайте. Поэтому подобные логотипы делаются вычурными, с графикой, нестандартными шрифтами.</p>
-
-<p>При верстке подобный логотип можно сделать почти полностью на CSS, но это займет много времени. И, как правило, верстальщики так не делают.</p>
-
-<p>Обычно логотип сайта вырезается из psd-макета одной картинкой и вставляется в код или как фоновое изображение (предпочтительный вариант, так как логотип меняется очень редко), или же, как картинка в самом HTML-документе (такой подход на сегодняшний день не приветствуется из-за правил семантики).</p>
-
-<p>Однако помимо правил семантики HTML, существует еще и такая вещь, как SEO. Без этой технологии не проживет ни один сайт на сегодняшний день, если он хочет быть известным, конечно. А если ему достаточно быть широко известным в узких кругах - тогда можно и забыть о ней.</p>
-
-<p>Поэтому, при верстке HTML-шаблона вырезанную картинку-логотип верстальщик оборачивает в ссылку (<em>ибо логотип всегда должен быть ссылкой</em>), которую в свою очередь оборачивает в заголовок первого уровня <code>H1</code>. Тег <code>h1</code> должен быть один на всей странице, и это один из самых главных тегов для SEO - по нему поисковые машины находят сам сайт.</p>
-
-<p>Но для Google, Yandex и других систем наиболее важной составляющей сайта является текст. Поэтому внутрь конструкции <code>заголовок + ссылка + картинка</code> нужно вставить сам тест, который дублирует название сайта в логотипе. Например, таким образом:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/09/text-in-logo.png" alt="Текст в логотипе сайта" /></p>
-
-<p>Но тогда возникает небольшая проблема - текст ссылки появляется в логотипе, когда браузер отрисовывает картинку. Чтобы было понятно, о чем идет речь, привожу картинку ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/09/text-in-logo-shablon.png" alt="Текст ссылки внутри логотипа" /></p>
-
-<p>Некрасиво, конечно. И совсем не то, что требуется. Как же убрать эту ссылку? Выход решается одной строчкой, с помощью свойства text-indent. Тексту задаем это свойство так, чтобы спрятать его из видимой части окна браузера.</p>
-
-<p>Пример кода, решающего такую задачу, показан ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/09/text-indent.png" alt="Убрать текст из окна браузера" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-08-30T00:00:00+04:00"><a href="http://zencoder.ru/css/css-vertical-align/">August 30, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-vertical-align/" rel="bookmark" title="CSS - центрирование текста по вертикали в логотипе" itemprop="url">CSS - центрирование текста по вертикали в логотипе</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>При верстке макета столкнулся с такой задачей. Имеется логотип, внутри которого необходимо разместить текст.</p>
-</blockquote>
-
-<p>Логотип создается с помощью элемента - заголовка первого уровня <code>h1</code>. Внутри этого блочного элемента размещается ссылка. Решений подобной задачи в Интернете вроде бы много, но вот конкретно не нашел под себя. Решил с помощью форума <code>forum.htmlbook.ru</code>.</p>
-
-<p>Необходимо сделать также, как и на psd-макете. Чтобы текст располагался по-вертикали по-центру, и был смещен при этом вправо. Часть html-кода, в котором создается логотип со ссылкой, показана ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/psd-maket.png" alt="Логотип на psd-макете" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/html-schema.png" alt="Логотип сайта" /></p>
-
-<p>С установкой фонового изображения проблем не возникает. Задаю ширину и высоту для блока h1 равной ширине и высоте логотипа. И прописываю для него картинку в качестве фона.</p>
-
-<p>Текст-ссылку внутри блока также стилизую в соотвествии с тем, как она изображена на макете. А вот центрование текста - здесь есть некоторая тонкость. Спасибо SelenIT, что кратко и точно объяснил, как поступать в данном случае.</p>
-
-<p>Итак. С помощью свойства <code>display: table</code> превращаю блочный элемент <code>h1</code> в табличный. Это делается для того, чтобы можно было разместить текст строго по центру вертикали, так как только таблица имеет свойство <code>vertical-align</code>.</p>
-
-<p>Строчный элемент <code>а</code>, то есть ссылка, теперь расположена внутри таблицы. Поэтому превращаю ее в ячейку таблицы с помощью правила <code>display: table-cell</code>. Теперь можно применить к содержимому этой ячейки свойство <code>vertical-align: middle</code>, тем самым размещая ее по-центру по-вертикали.</p>
-
-<p>Осталось сместить текст вправо на заданную величину. Это выполняется с помощью правила <code>padding-left: 80px</code>.</p>
-
-<p>Ниже привожу кусок кода, отвечающего за стилизацию логотипа сайта:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.logo</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/logo.gif)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">180px</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="n">table</span><span class="p">;</span> <span class="c">/*!*/</span>
-
-<span class="p">}</span>
-<span class="nc">.logo</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;webfontbold&#39;</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#090909</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">display</span><span class="o">:</span> <span class="k">table-cell</span><span class="p">;</span> <span class="c">/*!*/</span>
-  <span class="k">vertical-align</span><span class="o">:</span> <span class="k">middle</span><span class="p">;</span> <span class="c">/*!*/</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="m">80px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот задача и решена. Разобрался с центрирование текста по-вертикали с помощью правил <code>display: table</code>, <code>display: table-cell</code>, <code>vertical-align: middle</code>.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-08-22T00:00:00+04:00"><a href="http://zencoder.ru/photoshop/photoshop-pt-in-px/">August 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/photoshop/photoshop-pt-in-px/" rel="bookmark" title="В Photoshop шрифт в пунктах - как перевести в пикселы" itemprop="url">В Photoshop шрифт в пунктах - как перевести в пикселы</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Есть небольшая проблема. Столкнулся с тем, что при верстке макета необходимо получить размер шрифта, которым выполнена надпись.</p>
-</blockquote>
-
-<p>Однако, при выделении текста инструментом “Horizontal Type Tool” в панели Photoshop показывает мне размер шрифта в <code>points</code>. А мне необходимо в правилах CSS записать размер шрифта в пикселях.</p>
-
-<p>Чтобы заставить Photoshop показывать размеры шрифтов в пикселях, нужно выполнить несложные настройки.</p>
-
-<p>Переходим в меню Photoshop по пути “Edit - Preferences - Units &amp; Rulers”. Откроется окно, в котором неодходимо перейти в пункт “Units &amp; Rulers”.</p>
-
-<p>В верхнем разделе правой части окна находим “Units” с двумя полями - “Rulers &amp; Type”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/points_to_pixels1.png" alt="Окно настроек единиц измерения в Photoshop" /></p>
-
-<p>В выпадающем списке поля “Type” меняем значения с “Points” на “Pixels”. Сохраняем изменения кнопкой ОК и и выходим из настроек. Проверим результат изменений. Снова выбираем инструмент “Horizontal Type Tool” и выделяем мышью текст в макете.</p>
-
-<p>Смотрим на панель:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/pixels1.png" alt="Размер шрифта в пикселях" /></p>
-
-<p>Что и требовалось. Теперь Photoshop автоматически показывает размер шрифта в пикселях, что удобно при написании правил в CSS.</p>
-
-<p>Другой вопрос, что такой перевод из одних единиц измерения в другой весьма условный, так как многое зависит от разрешения, в котором был нарисован макет.</p>
 
 <p>На этом все.</p>
 

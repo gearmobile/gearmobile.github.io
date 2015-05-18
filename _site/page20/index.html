@@ -144,6 +144,942 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-20T00:00:00+04:00"><a href="http://zencoder.ru/css/compass-color-functions/">May 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~10 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/compass-color-functions/" rel="bookmark" title="Функции работы с цветом в Sass и Compass" itemprop="url">Функции работы с цветом в Sass и Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Приступаем к очередной интересной и обширной теме - как с помощью Sass/Compass облегчить себе жизнь при работе с цветами во время верстки.</p>
+</blockquote>
+
+<p>Каждый верстальщик хорошо знает, как часто ему приходиться при верстке определять и манипулировать цветами в CSS-коде. Препроцессор Sass и его библиотека Compass обладают богатым набором функций, предназначеных для всевозможных операций с цветом в SCSS-коде.</p>
+
+<p>Эта статья посвящена обзору функций Sass и Compass для работы с цветом. Начнем, как обычно, с самой простой функции и будем плавно продвигаться от простого к сложному.</p>
+
+<h2 id="compass">Первоначальная настройка проекта Compass</h2>
+
+<p>Для начала создадим пустойй проект Compass и настроим его. Инициализируем несколько переменных <code>$color</code> и <code>$color1</code>, которым определим цвет. Эти переменные понадобятся нам в дальнейшем.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+<span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nt">hsla</span><span class="o">(</span><span class="nt">120</span><span class="o">,</span><span class="nt">100</span><span class="o">%,</span><span class="nt">50</span><span class="o">%,</span><span class="nc">.5</span><span class="o">);</span>
+<span class="o">$</span><span class="nt">color1</span><span class="o">:</span> <span class="nt">hsla</span><span class="o">(</span><span class="nt">240</span><span class="o">,</span><span class="nt">100</span><span class="o">%,</span><span class="nt">50</span><span class="o">%,</span><span class="nc">.5</span><span class="o">);</span>
+<span class="o">$</span><span class="nt">unit</span><span class="o">:</span> <span class="nt">180px</span><span class="o">;</span>
+
+<span class="nt">div</span><span class="p">{</span>
+  <span class="k">height</span><span class="o">:</span> <span class="err">$</span><span class="n">unit</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="n">unit</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">3</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80%</span><span class="p">);</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="err">$</span><span class="n">unit</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.origin</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="lighten--darken">Фунции lighten и darken</h2>
+
+<p>Начнем с самых простых функций - <code>lighten</code> и <code>darken</code>. Кто маломальски знаком с английским языком, должен сам догадаться о их предназначении. Функция <code>lighten</code> осветляет исходный цвет, а функция <code>darken</code> затемняет его.</p>
+
+<p>Синтаксис функций <code>lighten</code> и <code>darken</code> одинаков. Первым аргументом задается начальное значение цвета - передадим его функции в виде переменной <code>$color</code>. Вторым аргументом является значение в процентах, на которое нужно осветлить или затемнить исходный цвет:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lighten</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.darken</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-lighten_darken.png" alt="Функции lighten и darken" /></p>
+
+<p>Функции lighten и darken могут использоваться в любом месте SCSS-кода - везде, где применяется цвет. Например, видоизменим показанный выше пример. Применим функции lighten и darken для изменения цвета шрифта, границы и фона:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.mixin</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="o">.</span><span class="m">95</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">);</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">30%</span><span class="p">);</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">60%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-mixin.png" alt="Функции lighten и darken для цвета шрифта и границы" /></p>
+
+<h2 id="complement--invert">Функции complement и invert</h2>
+
+<p>Переходим к функциям обратного преобразования цвета. Первая функция <code>complement</code> преобразует исходный цвет на прямо противоположный. Допустим, у нас имеется переменная <code>$color</code> c заданным в ней цветом. Передадим эту переменную функции <code>complement</code> в качестве аргумента:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.complement</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">complement</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате на выходе получим цвет, расположенный на 180 градусов по отношению к исходному цвету. Чтобы было понятнее, посмотрим на “HSLA wheel”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/hsl-color-wheel.png" alt="HSLA wheel" /></p>
+
+<p>Исходным цветом у нас является <code>hsla(120,100%,50%,.5)</code>. На 180 градусов по отношению к исходному цвету расположен <code>hsla(300,100%,50%,.5)</code>, иначе называемый Magenta. Вот его и получаем от функции <code>complement</code>.</p>
+
+<p>Функция <code>invert</code> практичеси аналогична функции <code>complement</code>. Она также производит инвертирование цвета от исходного. Но функция <code>invert</code> отличается от функции <code>complement</code> тем, что с помощью нее производится инвертирование цветов (красного, зеленого, синего), но прозрачность <code>opacity</code> остается неизменной.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.invert</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="k">invert</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-complement_invert.png" alt="Функции complement и invert" /></p>
+
+<h2 id="adjust-hue">Функция adjust-hue</h2>
+
+<p>Функция <code>adjust-hue</code> практически аналогична функции <code>complement</code> - она инвертирует исходный цвет. Но в отличие от последней обладает большей гибкостью. Если функция <code>complement</code> возвращает цвет, расположенный точно на 180 градусов от исходного (противоположный), то функция <code>adjust-hue</code> может управлять градусом расположения “выходного цвета.”</p>
+
+<p>Другими словами, можно задать угол, отличный от 180 градусов. Кроме того, значение угла может быть как положительным, так и отрицательным:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjusthue_plus</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="n">hue</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.adjusthue_minus</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="n">hue</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,-</span><span class="m">80</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-hue.png" alt="Функция adjust-hue" /></p>
+
+<h2 id="saturate--desaturate">Функции saturate и desaturate</h2>
+
+<p>В препроцессоре Sass имеется пара функций для управления насыщеностью цвета.</p>
+
+<p>Функция <code>saturate()</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.saturate</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">saturate</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… увеличивает насыщенность цвета от исходного.</p>
+
+<p>А функция <code>desaturate()</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.desaturate</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">desaturate</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… наоборот, уменьшает насыщенность цвета от исходного.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-saturate_desaturate.png" alt="Функции saturate и desaturate" /></p>
+
+<h2 id="transparentize--fade-out">Функции transparentize и fade-out</h2>
+
+<p>Функция <code>transparentize</code> добавляет к исходному цвету альфа-канал и, тем самым, управляет прозрачностью исходного цвета. Особая прелесть этой функции заключается в том, что даже если исходный цвет не имеет альфа-канала, то на выходе к этому цвету будет добавлен альфа-канал с заданым уровнем прозрачности. То есть, будет выполнено преобразование в формат RGBA.</p>
+
+<p>Значение прозрачности может находиться в диапазоне от 0 (полностью прозрачный) до 1 (полностью непрозрачный):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.transparentize</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">transparentize</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Функция <code>fade-out</code> аналогична функции <code>transparentize</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.fadeout</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">fade</span><span class="o">-</span><span class="n">out</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-transparentize_fade-out.png" alt="Функции transparentize и fade-out" /></p>
+
+<h2 id="opacify--fade-in">Функции opacify и fade-in</h2>
+
+<p>Функции <code>opacify</code> и <code>fade-in</code> являются прямой противоположностью функций <code>transparentize</code> и <code>fade-out</code>. В помощью этих функций цвет делается менее прозрачным:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.opacify</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">opacify</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.fadein</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">fade</span><span class="o">-</span><span class="n">in</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-opacify_fade-in.png" alt="Функции opacify и fade-in" /></p>
+
+<h2 id="grayscale">Функция grayscale</h2>
+
+<p>Функция преобразования исходного цвета в оттенки серого чрезвычайно проста в использовании. В принципе, тут и рассказывать особенно нечего:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.grayscale</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-grayscale.png" alt="Функция grayscale" /></p>
+
+<h2 id="rgba">Функция rgba</h2>
+
+<p>Если стоит задача преобразования исходного цвета (заданного в виде переменной, в формате HEX или HSLA) в формат RGBA, в этом случае на помощь придет функция <code>rgba</code>. При этом к выходному цвету добавляется альфа-канал для задания прозрачности цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rgba</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-rgba.png" alt="Функция rgba" /></p>
+
+<p>С практической точки зрения функция rgba равносильна функции transparentize/fade-out или opacify/fade-in.</p>
+
+<h2 id="mix">Функция mix</h2>
+
+<p>В препроцессоре Sass имеется функция смешивания цветов для получения на выходе одного, результирующего цвета. Другими словами, у нас имеются два цвета, представленные переменными <code>$color</code> и <code>$color1</code>. C помощью функции <code>mix</code> можно смешать эти два цвета в определенной пропорции, чтобы получить на выходе один результирующий цвет.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.mix</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="k">mix</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">color1</span><span class="o">,</span><span class="m">70%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В показанном выше примере у функции <code>mix</code> имеются два аргумента в виде переменных (два цвета). Последний третий аргумент в виде процентов задает пропорцию, в которой один цвет будет смешан с другим. В нашем случае цвет <code>$color</code> смешан с цветом <code>$color1</code> в пропорции - 70% от первого цвета <code>$color</code> добавляется ко второму цвету <code>$color1</code>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-mix.png" alt="Функция mix" /></p>
+
+<h2 id="adjust-color">Функция adjust-color</h2>
+
+<p>Вот мы и подошли к более сложным функциям препроцессора Sass. Первой из таких функций является <code>adjust-color</code>, c помощью которой можно управлять любым значением цвета - красным, зеленым, синим (для цветовой модели RGB) или же цветом, насыщеностью и светлотой (для цветовой модели HSL). Функции <code>adjust-color</code> также доступно управление альфа-каналом (прозрачностью) цвета.</p>
+
+<p>Функция <code>adjust-color</code> достаточно сложная, но с помощью нее можно управлять практически всем, что относится к цвету в SCSS-коде. Давайте последовательно разберемся во всех ее возможностях.</p>
+
+<p>Каждому цвету в этой функции соответствует одноименный аргумент:</p>
+
+<ul>
+  <li><code>$red</code>, <code>$green</code>, <code>$blue</code> - значения красного, зеленого и синего цветов в диапазоне от 0 до 255;</li>
+  <li><code>$hue</code> - значение от 0 до 359 градусов, обозначающих цвет на HSL-диаграме; значение может быть как положительным, так и отрицательным;</li>
+  <li><code>$saturation</code>, <code>$lightness</code> - значения насыщенности и светлоты для цветовой модели HSL; находятся в диапазоне от 0 до 100%; могут быть отрицательными или положительными;</li>
+  <li><code>$alpha</code> - значение альфа-канала в диапазоне от 0 до 1.</li>
+</ul>
+
+<p>Хватит теории, давайте рассмотрим работу функции adjust-color на примерах.</p>
+
+<ol>
+  <li>Изменение цвета от исходного <code>$color</code> для цветовой модели HSLA. Первым аргументом передается цвет в виде переменной <code>$color</code>; вторым аргументом задается изменение цвета через переменную <code>$hue</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorHue</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">hue</span><span class="o">:</span><span class="m">40</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_hue.png" alt="Функция adjust-color с аргументом $hue" /></p>
+
+<ol>
+  <li>Изменение цвета и светлоты одновременно. Первым аргументом $color задается исходный цвет, вторым аргументом устанавливается цвет $hue, третьим аргументом задается изменение светлоты $lightness:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorHueLightness</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">hue</span><span class="o">:</span><span class="m">40</span><span class="o">,</span><span class="err">$</span><span class="n">lightness</span><span class="o">:</span><span class="m">30</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_hue_lightness.png" alt="Функция adjust-color с аргументом $hue и $lightness" /></p>
+
+<ol>
+  <li>Изменение двух каналов цвета одновременно для цветовой модели RGB. Функции <code>adjust-color</code> передаются три аргумента: исходный цвет <code>$color</code>, канал красного цвета <code>$red</code>, канал зеленого цвета <code>$green</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorRedGreen</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="nb">red</span><span class="o">:</span><span class="m">40</span><span class="o">,</span><span class="err">$</span><span class="nb">green</span><span class="o">:</span><span class="m">30</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_red_green.png" alt="Функция adjust-color с аргументом $red и $green" /></p>
+
+<ol>
+  <li>Смешивание аргументов цветовых моделей RGB и HSL в функции adjust-color. Передадим функции adjust-color аргументы исходного цвета $color, аргумент красного канала $red модели RGB и аргумент $hue модели HSL:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorError</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="nb">red</span><span class="o">:</span><span class="m">40</span><span class="o">,</span><span class="err">$</span><span class="n">hue</span><span class="o">:</span><span class="m">20</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате компиляции данного кода в CSS получим такую ошибку:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">Syntax</span> <span class="nt">error</span><span class="o">:</span> <span class="nt">Cannot</span> <span class="nt">specify</span> <span class="nt">HSL</span> <span class="nt">and</span> <span class="nt">RGB</span> <span class="nt">values</span> <span class="nt">for</span> <span class="nt">a</span> <span class="nt">color</span> <span class="nt">at</span> <span class="nt">the</span> <span class="nt">same</span> <span class="nt">time</span> <span class="nt">for</span> <span class="err">`</span><span class="nt">adjust-color</span><span class="err">&#39;</span>
+<span class="nt">on</span> <span class="nt">line</span> <span class="nt">38</span> <span class="nt">of</span> <span class="o">.../</span><span class="nt">sass</span><span class="o">/</span><span class="nt">style</span><span class="nc">.scss</span></code></pre></div>
+
+<p>… которая говорит о том, что в функции <code>adjust-color</code> недопустимо смешивание аргументов разных цветовых моделей - RGB и HSL.</p>
+
+<p>Поэтому нужно быть внимательным при работе с функцией adjust-color и не допускать одновременной передачи функции аргументов разных цветовых моделей RGB и HSL.</p>
+
+<h2 id="scale-color">Функция scale-color</h2>
+
+<p>Рассмотренная выше функция <code>adjust-color</code> производила изменение цвета на основе занчений передаваемых ей аргументов. Функция <code>scale-color</code> работает несколько иначе - она изменяет цвет на основе исходного цвета. Чтобы было сразу понятно, о чем идет речь, давайте рассмотрим несколько примеров:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.origin</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.adjustcolor</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">lightness</span><span class="o">:-</span><span class="m">20%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.scalecolor</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">scale</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">lightness</span><span class="o">:-</span><span class="m">20%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_scale-color.png" alt="Разница между функциями adjust-color и scale-color" /></p>
+
+<p>В данном примере функция <code>adjust-color</code> берет за основу цвет в переменной <code>$color</code> и делает его светлее на фиксированные <code>20%</code>. Функция <code>scale-color</code>, c другой стороны, поступает несколько иначе. Ею строиться шкала светлоты от 1 до 100%, в которой 1 соответствует светлоте цвета, заданной в переменной <code>$color</code>. Значение <code>100%</code> соответствует полной прозрачности. И на основе этой шкалы функция <code>scale-color</code> вычисляет светлоту в <code>20%</code>.</p>
+
+<p>Неудивительно, что в показанном выше примере результат функции <code>scale-color</code> оказался светлее, чем результат функции <code>adjust-color</code>.</p>
+
+<h2 id="shade--tint">Функции shade и tint</h2>
+
+<p>Фреймворк Сompass также, как и препроцессор Sass, имеет в своем составе некоторое количество функций для работы с цветом. Наиболее интересными среди них могу показаться две функции - <code>shade</code> и <code>tint</code>.</p>
+
+<p>Функция <code>shade</code> выполняет смешивание заданного цвета с черным цветом в указанной пропорции. Пропорция указывется в процентах от черного цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.shade</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">shade</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">40%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-shade.png" alt="Результат работы функции shade" /></p>
+
+<p>Функция <code>tint</code>, напротив, выполняет смешивание исходного цвета с белым цветом в заданном соотношении. Код ниже создаст цвет на основе смешения цвета в переменной <code>$color</code> и <code>30%</code> белого цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.tint</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">tint</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">30%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-tint.png" alt="Результат работы функции tint" /></p>
+
+<h2 id="section">Заключение</h2>
+
+<p>На этом обзор “цветовых” функций препроцессора Sass и библиотеки Compass можно считать завершенным. В качестве вывода можно сказать, что благодаря подобным функциям упрощается и убыстряется работа при верстке дизайна сайта.</p>
+
+<p>Более того, с помощью данных функций, имея в качестве входного значения всего один цвет, можно создать отличный дизайн в профессиональной цветовой палитре. И не прибегнуть ни к одному из графических инструментов.</p>
+
+<p>Помимо использования рассмотренных выше цветовых функций каждой по отдельности, можно комбинировать их в одном выражении, создавая достаточно сложные конструкции.</p>
+
+<p>Данная статья является вольным переводом главы “Manipulate Color with Ease” замечательной книги “Sass and Compass for Designers” автора Ben Frain.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-17T00:00:00+04:00"><a href="http://zencoder.ru/compass-hide-text/">May 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/compass-hide-text/" rel="bookmark" title="Замена текста изображением в Compass" itemprop="url">Замена текста изображением в Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При верстке макета довольно часто возникает задача создания кликабельного логотипа страницы.</p>
+</blockquote>
+
+<p>Но логотип страницы, как правило, создается с использованием на все 100% фантазии дизайнера - тут и необычный декоративный шрифт, и всякие добавленные в него изображения. Поэтому на практике обычно такой логотип вырезается из psd-макета целиком, в виде картинки.</p>
+
+<p>В HTML-разметке в заголовке страницы помещается текст-логотип сайта в теге первого уровня <code>h1</code> - все по правилам SEO. А в таблицах стилей производится подмена текста на вырезанное из макета изображение.</p>
+
+<p>В результате удается выйти из положения, когда и овцы целы и волки сыты. В этой статье будут рассмотрены несколько способов, с помощью которых можно решить данную задачу. Причем, решить наиболее простым и быстрым способом, с помощью миксинов благодаря волшебной библиотеке Compass.</p>
+
+<p>Первоначально произведем подключение неоходимого модуля в библиотеке Compass, добавив строку импортирования в проект:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/typography/text/replacement&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>… а затем приступим к изучению миксинов.</p>
+
+<h2 id="hide-text">Миксин hide-text</h2>
+
+<p>Первым миксином, который решает задачу замены текста изображением, является <code>hide-text</code>.</p>
+
+<p>Синтаксис этого миксина таков:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">hide-text</span><span class="o">([$</span><span class="nt">direction</span><span class="o">])</span></code></pre></div>
+
+<p>… где необязательный аргумент <code>$direction</code> определяет направление скрытия текста.</p>
+
+<p>Пример использования данного миксина:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;hidetext&quot;</span><span class="nt">&gt;</span>
+  mixin hide-text
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">426px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/cat.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_01.jpg" alt="Текст с фоновым изображением" /></p>
+
+<p>Подключим к вышеприведенному коду миксин <code>hide-text</code> и посмотрим на результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
+<span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">hide</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_hide-text.jpg" alt="Результат замещения текста с помощью миксина hide-text" /></p>
+
+<p>Результирующий CSS-код будет выглядеть таким образом. Добавляются смещение текста с помощью свойства <code>text-indent</code> с отрицательным значением; предотвращается случайное “схлопывание” блока через свойство <code>overflow: hidden</code>, если в нем вдруг окажутся плавающие элементы; задается расположение текста с левого края блока через свойство <code>text-align: left</code>, чтобы гарантировать его смещение за левый край блока через свойство <code>text-indent</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-119988px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="squish-text">Миксин squish-text</h2>
+
+<p>В библиотеке Compass также имеется миксин <code>squish-text</code> для замещения текста изображением с помощью <strong>эффекта скрытия</strong> данного текста. Другими словами, текст остается на своем месте, просто с помощью определенных CSS-свойств он делается визуально невидимым. Это может быть удобно для браузеров-читалок, которые проговаривают текст вслух для слабовидящих людей.</p>
+
+<p>Синтаксис миксина <code>squish-text</code> таков:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">squish-text</span><span class="p">;</span></code></pre></div>
+
+<p>Пример использования миксина <code>squish-text</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;squishtext&quot;</span><span class="nt">&gt;</span>
+  Mixin squish-text
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="nc">.squishtext</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">480px</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/girl.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_02.png" alt="Текст с фоновым изображением" /></p>
+
+<p>Подключим миксин <code>squish-text</code> и посмотрим на результат его работы:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squishtext</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_squish-text.png" alt="Результат замещения текста с помощью миксина squish-text" /></p>
+
+<p>Результат компилирования представленного выше SCSS-кода в CSS-код показан ниже. Довольно интересный способ скрытия текста, который стоит рассмотреть более подробно. С помощью CSS-свойства <code>font</code> сбрасывается на ноль размер шрифта (<em>кегль</em>) и межстрочное расстояние (интерлиньяж) для текста. Цвет текста через CSS-свойство <code>color</code> устанавливается прозрачным. В добавок гарантированно убирается тень у текста, если она у него есть (вдруг сработает наследование).</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squishtext</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">0</span><span class="o">/</span><span class="m">0</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">text-shadow</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Несмотря на то, что визуально результат работы миксина <code>squish-text</code> аналогичен работе миксина <code>hide-text</code>, принцип последнего более эффективен для большинства современных браузеров в вопросе замещения inline-текста.</p>
+
+<p>В показанном ниже примере можно улучшить разметку, “обернув” отдельные участки текста в любой из inline-элементов (<code>span</code>, <code>b</code> или <code>i</code>) и добавив к нему ноебходимый класс:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;squish&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet,<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span> consectetur adipisicing elit,<span class="nt">&lt;/span&gt;</span> sed do eiusmod
+  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span>in reprehenderit in voluptate velit esse<span class="nt">&lt;/span&gt;</span> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span>cupidatat non proident<span class="nt">&lt;/span&gt;</span>, sunt in culpa qui officia deserunt mollit anim id est laborum.<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squish</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;PT Sans&#39;</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="err">{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
+    <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_03.png" alt="Текст с отдельными участками, подлежащими скрытию" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squish</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">.</span><span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="err">{</span>
+    <span class="o">...</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>В то время, как экранные программы-читалки и другие подобные инструменты могут свободно прочитать “спрятанный” текст, в окне обычного браузера он ни как не отображен:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_squish-text_text.png" alt="Скрытие текста с помощью миксина squish-text" /></p>
+
+<h2 id="section">Замещение текста изображением с фиксированными размерами</h2>
+
+<p>Если не принимать во внимание технологию спрайтов для фонового изображения, в Compass существует другой миксин, который также позволяет удобно замещать текст изображением. Это полезно, например, когда нужно поместить изображение логотипа в тег заголовка.</p>
+
+<p>Преимущество данного миксина заключается в автоматизированном способе установки размеров для элемента в соответствии с размерами используемого изображения. Для этой цели в библиотеке Compass имеется миксин с говорящим названием <code>replace-text-with-dimensions</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">replace-text-with-dimensions</span><span class="o">()</span><span class="p">;</span></code></pre></div>
+
+<p>Проиллюстрируем применение миксина <code>replace-text-with-dimensions</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;replace_dimensions&quot;</span><span class="nt">&gt;</span>
+  replace-text-with-dimensions
+<span class="nt">&lt;/h1&gt;</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_04.png" alt="Текст с непримененным миксином replace-text-with-dimensions" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.replace_dimensions</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">replace</span><span class="o">-</span><span class="k">text</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">dimensions</span><span class="p">(</span><span class="s1">&#39;alsatian.jpg&#39;</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Не забудьте активировать строку <code>relative_assets = true</code> в конфигурационном файле <code>config.rb</code>, чтобы сработали относительные пути для изображений!</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_replace-text-with-dimensions.png" alt="Текст с примененным миксином replace-text-with-dimensions" /></p>
+
+<p>Мне кажется, было бы очень любопытно взглянуть на результирующий код компиляции в CSS. Видим, что на изображение указывает корректная ссылка; а также, что у изображения установлены правильные ширина (<code>width</code>) и высота (<code>height</code>). Все это благодаря Compass!</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.replace_dimensions</span> <span class="p">{</span>
+  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-119988px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;../img/alsatian.jpg?1400248446&#39;)</span><span class="p">;</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="k">no-repeat</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">50%</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">470px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="html5-boilerplate">Замена текста изображением в HTML5 Boilerplate</h2>
+
+<p>За годы существования веб-разработки было создано немало оригинальных способов замещения текста изображением. На сегодняшний день наиболее лучшим способом является техника, представленная в хорошо известном проекте <a href="http://html5boilerplate.com" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
+
+<p>Ниже показан пример исходного CSS-кода, взятого из “HTML5 Boilerplate”, в котором показаны в виде классов различные способы замещения текста изображением. В каждом случае кратко описываются преимущества каждого из способов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.ir</span> <span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="c">/* IE 6/7 fallback */</span>
+    <span class="o">*</span><span class="k">text-indent</span><span class="o">:</span> <span class="m">-9999px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.ir</span><span class="nd">:before</span> <span class="p">{</span>
+    <span class="k">content</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">150%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">от</span> <span class="err">экранных</span> <span class="err">читалок</span> <span class="err">и</span> <span class="err">браузеров</span>
+
+<span class="nc">.hidden</span> <span class="p">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">none</span> <span class="cp">!important</span><span class="p">;</span>
+    <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">только</span> <span class="err">визуально</span><span class="o">,</span> <span class="err">но</span> <span class="err">оставить</span> <span class="err">доступным</span> <span class="err">для</span> <span class="err">экранных</span> <span class="err">читалок</span>
+
+<span class="nc">.visuallyhidden</span> <span class="p">{</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">clip</span><span class="o">:</span> <span class="n">rect</span><span class="p">(</span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span><span class="p">);</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">-1px</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Расширение</span> <span class="err">класса</span> <span class="nc">.visuallyhidden</span> <span class="err">благодаря</span> <span class="err">возможности</span> <span class="err">для</span> <span class="err">элементов</span> <span class="err">получать</span> <span class="err">фокус</span> <span class="err">с</span> <span class="err">клавиатуры</span>
+
+<span class="nc">.visuallyhidden.focusable</span><span class="nd">:active</span><span class="o">,</span>
+<span class="nc">.visuallyhidden.focusable</span><span class="nd">:focus</span> <span class="p">{</span>
+    <span class="k">clip</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">visible</span><span class="p">;</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">static</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">визуально</span> <span class="err">и</span> <span class="err">от</span> <span class="err">экранных</span> <span class="err">читалок</span><span class="o">,</span> <span class="err">но</span> <span class="err">оставить</span> <span class="err">нетронутой</span> <span class="nt">HTML-</span><span class="err">разметку</span>
+
+<span class="nc">.invisible</span> <span class="p">{</span>
+    <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На этом все. Данная статья является вольным переводом отдельной главы из книги <strong>Ben Frain “Sass and Compass for Designers</strong>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-15T00:00:00+04:00"><a href="http://zencoder.ru/css/compass-make-sprite/">May 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~9 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/compass-make-sprite/" rel="bookmark" title="Создание спрайтов в Compass" itemprop="url">Создание спрайтов в Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Как часто верстальщику в своей работе требуется создавать спрайты?</p>
+</blockquote>
+
+<p>Мне кажется, что почти в каждом проекте стоит такая задача. Ведь сегодня на каждом из сайтов имеется либо панель навигации с иконками, либо ссылки на социальные сети также с иконками.</p>
+
+<p>Что такое CSS-спрайты, не буду вдаваться в подробности. В чем их преимущество и в чем профит их использования. А также, каким образом они создаются и используются. Мне кажется, читатель, которого заинтересовала тема создания спрайтов на Compass, и без того знает, что это такое.</p>
+
+<p>В данной статье будет рассматриваться вопрос, каким образом можно автоматизировать и ускорить процесс создания спрайтов. Не знаю, как кто другой, но я использовал ручной метод создания спрайтов, с помощью Photoshop.</p>
+
+<p>Также стоит сказать, что данная статья не претендует на полноту и точность. Материал дался автору с удивительным трудом, буквально по крупицам (хотя в Сети есть много хороших материалов по этой теме на английском языке).</p>
+
+<h2 id="compass">Создание нового проекта в Compass</h2>
+
+<p>Создаем чистый Compass-проект с нуля, как обычно:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">sprites</span></code></pre></div>
+
+<p>… и настраиваем конфигурационный файл <code>config.rb</code> этого проекта, приведя к следующему виду:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">http_path</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
+  <span class="n">css_dir</span> <span class="o">=</span> <span class="s2">&quot;css&quot;</span>
+  <span class="n">sass_dir</span> <span class="o">=</span> <span class="s2">&quot;sass&quot;</span>
+  <span class="n">images_dir</span> <span class="o">=</span> <span class="s2">&quot;img&quot;</span>
+  <span class="n">javascripts_dir</span> <span class="o">=</span> <span class="s2">&quot;js&quot;</span>
+
+  <span class="n">output_style</span> <span class="o">=</span> <span class="ss">:expanded</span>
+  <span class="n">relative_assets</span> <span class="o">=</span> <span class="kp">true</span>
+  <span class="n">line_comments</span> <span class="o">=</span> <span class="kp">false</span></code></pre></div>
+
+<p>Особенно стоит обратить внимание на предпоследнюю строку:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">relative_assets</span> <span class="p">=</span> <span class="n">true</span></code></pre></div>
+
+<p>… с помощью которой устанавливаются относительные пути к файлам изображений в проекте. Если не активировать данную строку, то спрайт не сможет подключиться к элементам в документе.</p>
+
+<h2 id="section">Подключение плагина спрайтов</h2>
+
+<p>Делается это как обычно в библиотеке Compass, одной строкой импортирования:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/utilities/sprites&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Далее, как правило, следует долгий и нудный процесс вырезания изображений из psd-макета. В данном примере этот процесс будет заменен на более быстрый и красивый. Мы воспользуемся готовым бесплатным набором иконок, который скачаем из бескрайних просторов Интернета.</p>
+
+<p>Затем создадим в каталоге <code>img</code> подкаталог <code>webicons</code> (<code>img/webicons</code>) и распакуем в него скачанный архив.</p>
+
+<p>Также стоит отметить, что плагин для работы со спрайтами в библиотеке Compass может работать только с изображениями формата <code>.png</code>. Поэтому перед созданием спрайтов необходимо создать отдельный каталог, в котором будут размещены все изображения, из которых будут создаваться спрайт.</p>
+
+<h2 id="section-1">Скачивание библиотеки с иконками</h2>
+
+<p>Набор темных иконок в формате <code>.png</code> подойдет любой, главное, чтобы он был бесплатным. Например, такой - <a href="http://www.wpzoom.com/wpzoom/new-freebie-wpzoom-developer-icon-set-154-free-icons/">WPZOOM Developer Icon Set</a>.</p>
+
+<p>Далее создаем отдельную директорию, в которой будет размещен полученный набор иконок:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">img</span><span class="p">/</span><span class="n">webicons</span></code></pre></div>
+
+<h2 id="section-2">Подключение набора иконок в проект</h2>
+
+<p>Подключение набора изображений (иконок в нашем случае) в проект производится директивой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;webicons/*.png&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Точнее, этой директивой создается карта изображений <code>map</code>.</p>
+
+<h2 id="section-3">Создание спрайта</h2>
+
+<p>Спрайт создается в библиотеке Compass c помощью миксина <code>@include all-[folder-name]-sprites;</code>, где [folder-name] - имя каталога с изображениями. В нашем случае данный миксин будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">all-webicons-sprites</span><span class="p">;</span></code></pre></div>
+
+<p>Если теперь взглянуть на директорию с проектом в файловом менеджере, то увидим, что в каталоге добавился новый файл-картинка в формате <code>.png</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/img_001.png" alt="Созданный в Compass спрайт" /></p>
+
+<p>В файле <code>style.css</code> сгенерируется код, в котором появятся имена классов для каждого из изображений. Также для каждого из изображений будет добавлено позиционирование (точнее - оно будет вычислено). Также стоит обратить внимание на CSS-свойство <code>background</code>.</p>
+
+<p>Значение его имеет правильный относительный путь - <code>../img/...</code>, это сработала переменная <code>relative_assets = true</code> в конфигурационном файле <code>config.rb</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="nc">.webicons-sprite</span><span class="o">,</span> <span class="nc">.webicons-agenda</span><span class="o">,</span> <span class="nc">.webicons-arrow-down</span><span class="o">,</span> <span class="nc">.webicons-arrow-left-down</span><span class="o">,</span> <span class="nc">.webicons-arrow-left-up</span><span class="o">,</span> <span class="nc">.webicons-arrow-left</span><span class="o">,</span> <span class="nc">.webicons-arrow-right-down</span><span class="o">,</span> <span class="nc">.webicons-arrow-right-up</span><span class="o">,</span> <span class="nc">.webicons-arrow-right</span><span class="o">,</span> <span class="nc">.webicons-arrow-up</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(&#39;../img/webicons-sf124b45856.png&#39;)</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-agenda</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-172px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-266px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-43px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-arrow-left-up</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">...</span></code></pre></div>
+
+<h2 id="section-4">Создание списка</h2>
+
+<p>В HTML-документе создаем обычный маркированный список:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 4<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 5<span class="nt">&lt;/a&gt;</span>
+    <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>… и выполняем его легкое форматирование на SCSS:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrap</span><span class="p">{</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="n">ul</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">horizontal</span><span class="o">-</span><span class="n">list</span><span class="p">(</span><span class="err">$</span><span class="k">padding</span><span class="p">);</span>
+    <span class="n">li</span><span class="err">{</span>
+      <span class="n">a</span><span class="err">{</span>
+        <span class="k">padding-left</span><span class="o">:</span> <span class="err">$</span><span class="n">base</span><span class="o">-</span><span class="k">line-height</span><span class="p">;</span>
+        <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Преобразуем маркированный список с помощью магии Compass в горизонтальный список, воспользовавшись миксином <code>horizontal-list($padding, $direction)</code>. Аргумент <code>$direction</code> опустим за ненадобностью, а в качестве аргумента <code>$padding</code> передадим отступ, равный переменной:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="o">$</span><span class="nt">base-line-height</span><span class="o">:</span> <span class="nt">33px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">padding</span><span class="o">:</span> <span class="o">$</span><span class="nt">base-line-height</span><span class="o">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<h2 id="section-5">Добавление иконок в список</h2>
+
+<p>Можно воспользоваться готовыми именами классов, созданными библиотекой Compass. То есть, открыть (в нашем случае) файл <code>style.css</code>, взять оттуда нужные имена классов (<code>.webicons-agenda</code>, <code>.webicons-arrow-down</code>, <code>.webicons-arrow-left-down</code>, <code>.webicons-arrow-left-up</code>, …) и добавить их в HTML-разметку.</p>
+
+<p>Но такой способ будет не совсем правильным, так как HTML-разметка будет “загрязнена” избыточными именами классов. Когда как можно легко избежать этого недостатка, применив директиву <code>@extend</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">1</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">4</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">agenda</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Оцените чистоту этого способа - HTML-разметка не тронута, а в HTML-документе все работает так, как и было задумано.</p>
+
+<h2 id="section-6">Управлением расположения иконок на спрайте</h2>
+
+<p>Иногда при создании спрайта может появиться задача расположить изображения внутри создаваемого спрайта определенным образом - по-горизонтали, по-вертикали или каким-то еще образом. Библиотека Compass может помощь в этом случае и легко решить поставленную задачу.</p>
+
+<p>Переменная <code>[folder-name]-layout: vertical | horizontal | diagonal | smart</code> управляет расположением иконок в создаваемом библиотекой Compass спрайте.</p>
+
+<p>Имя переменной состоит из двух значений, первое из которых - это имя каталога, в котором расположены изображения. Таким образом, в случае данного примера переменная будет иметь вид:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">webicons-layout</span><span class="o">:</span> <span class="nt">vertical</span><span class="o">;</span></code></pre></div>
+
+<p>По умолчанию в переменной <code>[folder-name]-layout</code> используется значение <code>vertical</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_vertical_layout.png" alt="Вертикальное расположение иконок" /></p>
+
+<p>… которое можно поменять на <strong>три других</strong>:</p>
+
+<ul>
+  <li><code>горизонтальное</code> - <code>horizontal</code>:</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_horizontal_layout.png" alt="Горизонтальное расположение иконок" /></p>
+
+<ul>
+  <li><code>диагональное</code> - <code>diagonal</code>:</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_diagonal_layout.png" alt="Диагональное расположение иконок" /></p>
+
+<ul>
+  <li>стоит особо отметить “умное” расположение - <code>smart</code>, которое умеет экономить место на спрайте (сравните в почти точно таким же расположением изображений при вертикальном <code>layout</code> и почувствуйте разницу!):</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_smart_layout.png" alt="Умное расположение иконок" /></p>
+
+<p>Добавлять переменную <code>[folder-name]-layout</code> нужно перед объявлением каталога с иконками:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="o">$</span><span class="nt">webicons-layout</span><span class="o">:</span> <span class="s1">&#39;smart&#39;</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="k">@import</span> <span class="s2">&quot;webicons/*.png&quot;</span><span class="p">;</span></code></pre></div>
+
+<h2 id="section-7">Управление расстоянием между изображениями на спрайте</h2>
+
+<p>На создаваемом спрайте все изображения расположены таким образом, чтобы быть максимально тесно прижатыми друг к другу. Таким образом убирается лишнее пустое пространство и уменьшается общий размер спрайта в целом.</p>
+
+<p>Но может потребоваться задача увеличить расстояние между изображениями на спрайте. С помощью библиотеки Compass это можно выполнить при помощи переменной <code>[folder-name]-spacing</code>.</p>
+
+<p>В имени этой переменной <code>folder-name</code> - это имя каталога с расположенными в нем изображениями. В нашем случае имя каталога <code>webicons</code>, поэтому имя переменной будет - <code>$webicons-spacing</code>.</p>
+
+<p>Для примера зададим расстояние в 10px между изображениями на спрайте:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">webicons-spacing</span><span class="o">:</span> <span class="nt">10px</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="k">@import</span> <span class="s2">&quot;webicons/*.png&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>В результате между изображениями появиться промежуток, равный 10px:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_spacing.png" alt="Увеличенное расстояние между изображениями на спрайте" /></p>
+
+<h2 id="section-8">Управление именами создаваемых классов в спрайте</h2>
+
+<p>Можно изменить тот способ, каким библиотека Compass создает имена классов в спрайте.</p>
+
+<p>Первоначальный (по умолчанию) вид имен классов имеет представление:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-326px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-53px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-arrow-left-up</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">...</span></code></pre></div>
+
+<p>Можно отделить имя директории с расположенными в нем изображениями от имени каждого из изображений, по отдельности. Чтобы было более понятно, сразу выполним такое преобразование:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.webicons</span><span class="p">{</span>
+  <span class="o">.</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span> <span class="err">{</span><span class="o">@</span><span class="n">include</span> <span class="n">webicons</span><span class="o">-</span><span class="n">sprite</span><span class="p">(</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span><span class="p">);}</span>
+  <span class="nc">.arrow-right-down</span> <span class="p">{</span><span class="o">@</span><span class="n">include</span> <span class="n">webicons</span><span class="o">-</span><span class="n">sprite</span><span class="p">(</span><span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">down</span><span class="p">);}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>… и посмотрим на конечный результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.webicons</span> <span class="nc">.arrow-left-up</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons</span> <span class="nc">.arrow-right-down</span> <span class="p">{</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-106px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Видно, что вместо одного длинного имени появилось два класса. Преимуществом такого способа мне кажется отсутствие необходимости “городить” длинные имена, как в примере с подключением:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">1</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="o">...</span></code></pre></div>
+
+<h2 id="section-9">Получение размеров создаваемого спрайта</h2>
+
+<p>Иногда может потребоваться так, чтобы при генерации спрайта библиотекой Compass автоматически были “отображены” в файле <code>.css</code> размеры каждого изображения. Входящего в состав этого спрайта.</p>
+
+<p>По умолчанию размеры изображений не отображаются в готовом CSS-коде:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+
+<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
+<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-326px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">...</span>
+
+<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
+<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-53px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">...</span></code></pre></div>
+
+<p>Но при включении переменной <code>[folder-name]-sprite-dimensions: true;</code> (по умолчанию ее значение равно <code>false</code>) размеры каждого из изображений будут отображены в CSS-коде:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
+<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
+<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-326px</span><span class="p">;</span>
+<span class="k">height</span><span class="o">:</span> <span class="m">46px</span><span class="p">;</span>
+<span class="k">width</span><span class="o">:</span> <span class="m">42px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
+<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-53px</span><span class="p">;</span>
+<span class="k">height</span><span class="o">:</span> <span class="m">43px</span><span class="p">;</span>
+<span class="k">width</span><span class="o">:</span> <span class="m">43px</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="o">...</span></code></pre></div>
+
+<p>Как и в предыдущих случаях с переменными в спрайте библиотеки Compass, вместо <code>folder-name</code> необходимо подставить имя каталога, в котором размещены файлы изображений. В нашем случае имя переменной будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">webicons-sprite-dimentions</span><span class="o">:</span> <span class="nt">true</span><span class="o">;</span>
+  <span class="o">...</span>
+<span class="k">@include</span> <span class="s1">&#39;webicons/*.png&#39;</span><span class="p">;</span></code></pre></div>
+
+<p>Пока на этом все …</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-05-11T00:00:00+04:00"><a href="http://zencoder.ru/css/how-to-check-version-sass-or-compass/">May 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -371,904 +1307,6 @@
 <p>На этом серия статей по Susy 2 завершена.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-03T00:00:00+04:00"><a href="http://zencoder.ru/css/playground-sassmeister/">May 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/playground-sassmeister/" rel="bookmark" title="Знакомимся с редактором SassMeister" itemprop="url">Знакомимся с редактором SassMeister</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Решил написать небольшой обзор по online-инструменту для front-end’щика под названием SassMeister.</p>
-</blockquote>
-
-<p>На русском языке не встречал хотя бы краткого описания, поэтому решил, что не помешает познакомиться в ним поближе.</p>
-
-<p>Итак, что это за инструмент? Если сказать кратко - это online-редактор для кода, наподобие известного CodePen, который уже описывался на страницах данного блога - “Площадка для тестирования CodePen”. Другими словами, SassMeister является площадкой для тестирования (playground) для людей, связанный с веб-разработкой.</p>
-
-<h2 id="codepen--sassmeister">Различие между CodePen и SassMeister</h2>
-
-<p>Также, как и CodePen, данный редактор предназначен исключительно для front-end разработчиков, так как понимает только два языка - HTML и CSS. А также всевозможные препроцессоры к этой паре языков. Как и CodePen, SassMeister позволяет сохранять созданный в нем код и делать еще пару вещей.</p>
-
-<p>Но в чем же тогда отличие SassMeister от CodePen, что заставило упомянуть этот <code>playground</code>? Отличие есть и оно существенное. Площадка CodePen - это универсальный инструмент для веб-разработчика. В нем есть все необходимое для работы - зарегистрировался, открыл и работай!</p>
-
-<p>SassMeister - это площадка, созданная исключительно для работы с препроцессором Sass и его библиотеками. Получается, что у последнего специализация более узкая; за счет этого SassMeister выполняет свою задачу лучше, чем CodePen.</p>
-
-<p>Итак, в двух словах. Вам нужен хороший универсальный инструмент front-end разработки? Это CodePen. Вам нужен хороший инструмент для работы только с препроцессором Sass? Это SassMeister.</p>
-
-<p>Давайте попробуем создать пример кода в этом инструменте и на его примере поймем, как с ним работать. Итак, открываем главную страницу SassMeister - <a href="http://sassmeister.com/" title="SassMeister">SassMeister</a> и видим основное окно с вкладками вверху. (<em>Сразу стоит сказать, что редактор SassMeister имеет тесную интеграцию с сервисом GitHub, поэтому зайти в редактор можно, используя учетную запись последнего.</em>) Самая главная и нужная среди них - вкладка с настройками редактора, которая называется Control Panel.</p>
-
-<h2 id="sassmeister">Панель управления SassMeister</h2>
-
-<p>Открываем ее и разберемся с ней:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/sassmeister_control_panel.jpg" alt="Панель управления редактора SassMeister" /></p>
-
-<p>Во-первых, надпись “Sass” не дает нам забыть о том, что мы собираемся работать с препроцессором Sass (<em>это типа шутки</em>).</p>
-
-<p>Вторая строка “Compiler” с тремя переключателями позволяет выбрать, какую версию препроцессора Sass мы хотим использовать: свежую 3.3.6, более раннюю 3.2.19 или же LibSass (<em>портированный на С препроцессор Sass</em>).</p>
-
-<p>В третьей строке выбираем, с каким <em>синтаксисом</em> препроцессора Sass мы будем работать - с новым SCSS или же со старым Sass (<em>на котором почти никто не пишет на сегодняшний день</em>).</p>
-
-<p>Отлично, идем дальше!</p>
-
-<p>Опускаем взгляд еще ниже на окно с заголовком “Extensions” и останавливаемся, затаив дыхание. Да-да, вы не ошиблись! Это именно то, о чем вы подумали! Это список плагинов на выбор, которые можно подключить в наш проект один щелчком мыши.</p>
-
-<p>А теперь напомните мне, с каким списком расширений под Sass может работать CodePen? Не помните? Я подскажу - с двумя! Это Compass и Bourbon.</p>
-
-<p>Конечно, в CodePen можно подключить на выбор не один препроцессор, а несколько - Sass, LESS, Stylus. Но вот с выбором плагинов под эти препроцессоры будет слабовато. В этом и заключается преимущество SassMeister - он делает одну вещь, но делает ее хорошо, основательно, до конца!</p>
-
-<p>ОК, для нашего примера работы в SassMeister выберем из этого списка три расширения: Breakpoint, Compass, Susy. Это делается одинарным щелчком мыши на названии расширения, как будто это простая ссылка на веб-странице. Выбранное расширение автоматически добавляется в проект строкой:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Четвертая строка “CSS” предлагает опции, с которыми внимательный читатель уже должен быть знаком. Это стандартные опции компилирования препроцессора Sass из SCSS-кода в CSS-код. Точно такие же настройки имеются в конфигурационном файле <code>config.rb</code> любого Sass/Compass-проекта.</p>
-
-<p>Пятая строка “HTML” предлагает выбрать способ, которым мы будем писать код HTML. Это будет или чистый HTML, или же с помощью HTML-препроцессоров: Haml, Markdown, Textile, Jade.</p>
-
-<p>В строке Editor можно выбрать визуальную тему оформления для редактора SassMeister. Допустим, выберу для себя тему Monokai, так как люблю работать с редактором Sublime Text (здесь нет темы Twilight, а то бы однозначно выбрал ее).</p>
-
-<p>Чекбоксы “Enable Emmet support” и “Use Vim keybindings” предназначены для любителей работать с плагином Emmet под Sublime Text и совсем крутых парней, которые предпочитают стиль редактора Vim.</p>
-
-<p>Вот и все настройки одновременно с обзором возможностей редактора SassMeister. Пора переходить к написанию кода. Для этого закрываем Control Panel и щелкаем мышью на вкладках CSS и HTML вверху. Добавятся еще два окошка CSS и HTML, соответственно. Накидаем в окне HTML совсем простенький код, немного оформим его в окне SCSS, проверим скомпилированный результат в окне CSS и полюбуемся на творение рук своих в четвертом, самом нижнем окне визуального предпросмотра:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/sassmeister_result.jpg" alt="Результат работы в редакторе SassMeister" /></p>
-
-<h2 id="sassmeister--github-gist">Сохранение кода в SassMeister через GitHub Gist</h2>
-
-<p>Отлично! Мы успешно справились с задачей и создали великолепный образец кода в SassMeister. Теперь осталось самое малое - сохранить на века этот образец, чтобы потомки смогли восхищаться им. Нетрудно догадаться, что для этой цели служит вкладка в виде облачка. Наводим на нее мышь и видим надписи - “Save Gist” и Reset. Напрягаем все извилины своего мозга и щелкаем мышью по ссылке “Save Gist”. Редактор SassMeister радостно (зелененькой надписью) сообщает, что наш “Gist is saved”.</p>
-
-<p>А что такое <strong>Gist</strong> и где оказался наш кусочек кода (куда он сохранился)? Еще раз наводим мышь на облачко и видим, что вкладочка то поменялась! Вместо двух там теперь появилось еще несколько ссылок: “Update Gist”, “View on GitHub”, “Fork Gist”, наша старая знакомая Reset. Вау, знакомые слова - GitHub, Fork! А давайте пройдем по ссылочке “View on GitHub”?</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/sassmeister_github_gist.jpg" alt="Сохраненный код с SassMeister на сервисе GitHub Gist" /></p>
-
-<p>Ну конечно же! Мы оказались на GitHub, а точнее - на его сервисе <strong>Gist</strong>. Кто не знаком с этим сервисом, может уже догадаться о его предназначении. Он служит для хранения таких вот (<em>и не обязательно именно таких</em>) кусочков кода (<em>snippets</em>). Более того, у сервиса <strong>Gist</strong> имеется интеграция через плагин с редактором Sublime Text, которая позволяет буквально по волшебству вставлять код из <strong>Gist</strong> прямо в ST!</p>
-
-<p>После сохранения кода на GitHub Gist в панели SassMeister появляется еще одна вкладочка - стрелка. Назначение ее предельно понятно - с помощью нее можно встраивать (<em>embed</em>) созданный здесь код в другой проект, в виде объекта.</p>
-
-<h2 id="sassmeister---">SassMeister - заключение</h2>
-
-<p>Вот, в принципе, и все, что можно рассказать об online-редакторе SassMeister. Единственный момент, с которым я не разобрался, это вкладка <strong>Bookmark</strong> - для чего она нужна и как с ней работать, в чем прикол ее существования в этом редакторе. Может быть, внимательный читатель подскажет, для чего она нужна?</p>
-
-<p>Думаю, для кодеров, которые любят и активно используют препроцессор Sass совместно с великолепной библиотекой Compass и плагинами в ней, площадка для тестирования SassMeister понравиться однозначно!</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-02T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/">May 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~11 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/" rel="bookmark" title="Краткое введение в Susy 2 (Часть 2)" itemprop="url">Краткое введение в Susy 2 (Часть 2)</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье были рассмотрены краткие основы плагина Susy 2 и на примере создана с помощью Susy довольно сложная HTML-разметка.</p>
-</blockquote>
-
-<p>В этой статье будет углубленное изучение плагина Susy 2. Сегодня предстоит изучить вопрос, каким образом можно легко и быстро создавать RWD (Responsive Web Design) с помощью Susy 2.</p>
-
-<p>Если вы начали читать эту статью, но представления не имеете, что такое Susy 2 вообще, то вам стоит обратиться к предыдущей статье “Краткое руководство по Susy 2” - это стоит затраченного времени!</p>
-
-<h2 id="breakpoints">Контрольные точки (breakpoints)</h2>
-
-<p>По умолчанию, плагин Susy 2 не имеет в своем составе миксина для создания контрольных точек <code>breakpoints</code>. Наоборот, разработчики рекомендуют установить отдельно плагин <a href="http://breakpoint-sass.com/" title="Breakpoint">Breakpoint</a> и использовать его для создания медиа-запросов <code>media-queries</code>.</p>
-
-<p>Поэтому сначала произведем установку и импортирование этого плагина.</p>
-
-<blockquote>
-  <p>Прим. переводчика - имеется отдельная статья по установке и работе с плагином Breakpoint в Sass, расположенная по этому адресу - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Медиа-запросы Breakpoint в Sass</a>.</p>
-</blockquote>
-
-<p>Плагин Breakpoint требует для своей работы наличия библиотеки Compass. Поэтому, сначала необходимо выполнить две команды по установке Compass и затем Breakpoint:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span>
-<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
-
-<blockquote>
-  <p>Прим. переводчика: непонятно, что автор имел ввиду, но плагин Breakpoint для своей работы не нуждается в наличии библиотеки Compass. А вот препроцессор Sass ему необходим однозначно.</p>
-</blockquote>
-
-<p>Затем необходимо подключить плагин Breakpoint в конфигурационном файле <code>config.rb</code> и в файле <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="n">config</span><span class="o">.</span><span class="n">rb</span>
-<span class="c1"># Require any additional compass plugins here.</span>
-<span class="nb">require</span> <span class="s1">&#39;susy&#39;</span>
-<span class="nb">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">style</span><span class="nc">.scss</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Теперь все готово для того, чтобы двигаться дальше.</p>
-
-<h2 id="breakpoint">Работаем с плагином Breakpoint</h2>
-
-<p>Если сказать одним предложением, что мне нравиться в использовании плагина Breakpoint, то это легкость, с которой можно создавать контрольные точки в веб-дизайнах под мобильные устройства. Давайте посмотрим, как это делается.</p>
-
-<p>Для того, чтобы воспользоваться плагином Breakpoint, необходимо вызвать одноименный миксин и вставить его в код, передав требуемые аргументы. Эти аргументы преобразуются плагином Breakpoint в соответствующие медиа-запросы. Общий синтаксис миксина таков:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">(&lt;</span><span class="nt">args</span><span class="o">&gt;)</span><span class="p">{</span>
-  <span class="o">//</span> <span class="nt">content</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Прелесть плагина Breakpoint в том, что если вы передаете ему только один аргумент, то он автоматически преобразуется в <code>mobile-first</code>. Этот аргумент должен быть значением минимальной ширины (<code>min-width</code>) разрабатываемого вами сайта, его контрольной точкой:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">1200px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">//</span> <span class="k">content</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>… что при компиляции в CSS-код даст результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">1200px</span><span class="o">)</span><span class="p">{</span>
-  <span class="nc">.container</span><span class="p">{</span>
-    <span class="o">//</span> <span class="k">content</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Миксин Breakpoint очень гибкий и с помощью него при необходимости можно создавать <a href="http://breakpoint-sass.com/#get_started" title="Сложные медиа-запросы">сложные медиа-запросы</a>.</p>
-
-<h2 id="breakpoint---susy-2">Использование Breakpoint совместно с Susy 2</h2>
-
-<p>Предположим, необходимо создать CSS-сетку, которая будет меняться в определенной контрольной точке <code>breakpoint</code>. Изначально все блоки CSS-сетки должны занимать всю ширину окна браузера в 900px. При превышении значения ширины окна в 900px CSS-сетка должна преобразовываться в 10-колоночный макет сайта, который был рассмотрен и создан в предыдущей статье.</p>
-
-<blockquote>
-  <p>Прим. переводчика - все в точности с принципом MobileFirst.</p>
-</blockquote>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_1.jpg" alt="Преобразование дизайна из Mobile View в Desktop View в Susy 2" /></p>
-
-<p>Для того, чтобы осуществить такую задачу, достаточно просто добавить нужную контрольную точку <code>breakpoint</code> в уже существующую таблицу стилей SCSS.</p>
-
-<p>В конкретном случае это будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-<span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-<span class="o">...</span>
-<span class="nc">.column_2</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_1_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_1</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_3_2</span><span class="p">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_4</span><span class="p">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
-        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span></code></pre></div>
-
-<p>То есть, для контрольной точки <code>min-width: 900px</code> создаются правила построения CSS-сетки с использованием плагина Susy 2. Если ширина окна браузера будет меньше 900px, все блоки будут располагаться на всю ширину вертикально (по умолчанию - ведь это и есть нормальный поток). При ширине окна больше 900px подключиться плагин Susy 2 и преобразует CSS-шаблон в 10-колоночный вид для Desktop. Все сделано с учетом принципа MobileFirst.</p>
-
-<p>Готовый пример переработанного кода можно посмотреть здесь - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Susy 2 + Breakpoint</a>.</p>
-
-<p>Все выглядит достаточно просто и работает нормально. Но что, если требуется решить чуть более сложную задачу?</p>
-
-<blockquote>
-  <p>Примечание автора: Если вам не нравиться использовать контрольные точки с помощью плагина Breakpoint, вы можете свободно применять старые добрые медиа-запросы <code>media queries</code>, как это делается в CSS.</p>
-</blockquote>
-
-<h2 id="susy-2">Добавляем несколько контрольных точек в Susy 2</h2>
-
-<p>Допустим, стоит задача создать еще одно состояние шаблона, промежуточное между состоянием “Mobile View” и состоянием “Desktop View”. Необходимо, чтобы при переходе от мобильного экрана к экрану монитора появилось еще одно состояние для планшетных компьютеров “Tablet View”, с отдельной информационной колонкой справа:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_2.jpg" alt="Промежуточный дизайн Tablet View для планшетных компьютеров" /></p>
-
-<p>Этот случай выглядит немного сложнее, чем предыдущий. Главным образом потому, что блок <code>column_1</code> меняет свое положение и перемещается слева направо. Каким же образом можно осущесвить подобный маневр? Здесь необходимо применить небольшую хитрость.</p>
-
-<p>Немного проанализируем будущий шаблон Tablet View для планшетного дизайна. В нем блоки <code>column_1</code> и <code>column_3</code> будут занимать 2 колонки из общих 6 колонок; в тоже время как блок <code>column_2</code> будет занимать 4 колонки из 6. Кроме того, блок <code>column_1</code> будет располагаться над блоком <code>column_3</code>.</p>
-
-<p>Вся хитрость заключается в миксине <code>last</code> (прим. переводчика: логично предположить, если до этого момента внимательно изучался результирующий CSS-код работы плагина Susy 2. Вот и profit чтения исходных кодов страницы!).</p>
-
-<p>Давайте взглянем на готовый SCSS-код и сразу многое станет понятно:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Tablet View</span>
-<span class="c">----------------------------*/</span>
-<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-<span class="nc">.column_2</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_1_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_1</span><span class="o">,</span> <span class="nc">.column_2_2_2</span><span class="o">,</span> <span class="nc">.column_2_4</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nc">.column_2_2_2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_3_2</span><span class="p">{</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="nc">.column_2_4</span><span class="p">{</span>
-        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Обратите внимание, что для блоков <code>.column_1</code> и <code>.column_3</code> изменилась их ширина и добавился миксин <code>last</code>. Если взглянуть на скомпилированный CSS-код, то увидим, что для этих блоков задано “плавание” вправо и убран правый <code>margin</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В то же время, для блока <code>.column_2</code> изменилась только его ширина, а “плавание” осталось прежним - влево. Вот в этом и заключается маленький секрет изменения раскладки блоков в шаблоне:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>В блоке <code>.column_2</code> также были произведены изменения ширины некоторых блоков с тем, чтобы шаблон в этом виде максимально соответсвовал своему предназначению - использованию на планшетных компьютерах. В частности, была увеличена ширина блоков <code>.column_2_2_1</code>, <code>.column_2_2_2</code>, <code>.column_2_4</code> для того, чтобы ими было удобно пользоваться на небольшом экране.</p>
-
-<p>Полный код получившегося примера можно посмотреть здесь - <a href="https://gist.github.com/roowa/11472003" title="Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View">Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View</a>.</p>
-
-<h2 id="susy-breakpoint">Миксин Susy-Breakpoint</h2>
-
-<p>Плагин Susy 2 имеет в своем составе дополнительный миксин <code>susy-breakpoint</code>. Цель создания и применения этого миксина - сокращенная форма записи кода контрольных точек в Sass, в точности следуя принципу этого препроцессора - DRY.</p>
-
-<p>Чтобы быть более понятным, приведу ниже кусочек кода, написанный с помощью миксина <code>susy-breakpoint</code> и точно такой же кусочек кода, написаный без этого миксина, как это делалось ранее в этой статье:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">C</span> <span class="err">использованием</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
-<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-
-<span class="o">//</span> <span class="err">Без</span> <span class="err">использования</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
-<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Видим, что миксин <code>susy-breakpoint</code> действительно использует сокращенную запись, в которой первый аргумент - это значение <code>breakpoint</code> (контрольной точки), а второй аргумент - число колонок, на которое разбита ширина шаблона.</p>
-
-<p>Тогда в миксине <code>span</code> достаточно указать число колонок из общего числа (которое равно 6), которое должен занимать указанный элемент. И что он является последним <code>last</code> с своем ряду (как дополнение).</p>
-
-<p>Приведем ниже измененый SCSS и CSS-код нашего разрабатываемого примера, с учетом использования миксина <code>susy-breakpoint</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="err">}</span>
-
-<span class="nc">.column_2</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">...</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="p">}</span>
-
-<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>Лично я предпочитаю использовать первый метод, с применением плагина Breakpoint (прим. переводчика: мне он также кажется более наглядным и интуитивно понятным). Естественно, можно с одинаковым успехом пользоваться обоими сопособами. Все зависит от того, какой вам больше нравиться и легче применять на практике.</p>
-
-<p>В этом участке примеры вы, внимательный читатель, могли заметить, что допущена маленькая неточность, упущение. Связано оно с тем, что плавающему контейнеру разрешено занимать всю ширину окна браузера, даже если оно слишком большое. Давайте исправим этот недостаток.</p>
-
-<h2 id="section">Ограничение блока-контейнера по ширине</h2>
-
-<p>Так как в этом примере используется плавающий контейнер, то ограничить его по ширине очень просто:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>В результате будет произведено ограничение блока с классом <code>.container</code> по максимальной ео ширине:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>Точно такого же результата можно добиться, если просто записать:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>К сожалению, точно также нельзя поступить в случае с CSS-сетками фиксированной ширины <code>static grid</code>, потому что плагин Susy 2 производит все необходимые математические вычисления в CSS-сетке и расчет максимальной ширины блока-контейнера этой же CSS-сетки одновременно. Для построения CSS-сетки с фиксированной шириной необходим другой способ.</p>
-
-<p>Но рассмотрение этого способа оставим на следующий раз, так как на сегодня уже достаточно.</p>
-
-<p>Окончательный результат рассмотренного в этой статье шаблона можно посмотреть здесь - <a href="https://gist.github.com/roowa/11473471" title="Susy + Breakpoint = Final">Susy + Breakpoint = Final</a>.</p>
-
-<p>Данная статья является вольным переводом и обработкой оригинала - <a href="http://www.zell-weekeat.com/susy2-tutorial-2/" title="A Complete Tutorial to Susy 2 (Part 2)">A Complete Tutorial to Susy 2 (Part 2)</a>.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-01T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-2/">May 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~14 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/susy/brief-tutorial-susy-2/" rel="bookmark" title="Краткое руководство по Susy 2" itemprop="url">Краткое руководство по Susy 2</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Susy является вспомогательным инструментом, с помощью которого можно создавать гибкие настраиваемые CSS-сетки буквально на лету.</p>
-</blockquote>
-
-<p>На момент написания статьи состоялся релиз Susy 2. Если у вас есть опыт работы с предыдущей версией этого фреймворка - Susy 1, то вам наверняка еще больше понравиться работа в Susy 2, так как эта версия предоставляет веб-разработчику еще большую гибкость.</p>
-
-<p>Данное руководство по Susy 2 состоит из двух частей; в этой первой части будет показан процесс создания шаблона в фреймворке Susy 2.</p>
-
-<h2 id="susy-2">Почему именно Susy 2</h2>
-
-<p>Как я уже упоминал ранее, Susy является вспомогательным инструментом, благодаря которому можно создавать гибкие сетки практически любого вида, без необходимости производить многочисленные рутинные вычисления. Преимуществом Susy в отделении CSS от HTML.</p>
-
-<p>Если у вас до прочтения этой статьи был опыт работы с такими традиционными фреймворками, как Foundation или Bootstrap, то вы должны знать, что в этих фреймворках ширина колонок и контрольные точки <code>breakpoints</code> имеют фиксированные значения. Для изменения разметки необходимо добавлять классы к элементам в HTML-код (<em>прим. переводчика - забыл, как называется случай, когда HTML-структура засорена чрезмерным количеством классов</em>).</p>
-
-<p>Фреймворк Susy лишен такого недостатка - классы создаются непосредственно под необходимый случай и применяются к конкретной сетке.</p>
-
-<p>Как мне кажется, этот момент довольно трудно понять сразу, так как является достаточно абстрактным понятием. Вместо того, чтобы пытаться бесконечно объяснять теорию, мне кажется гораздо лучшим для понимания воспользоваться практическим примером. Для этого создадим с помощью Susy 2 10-колоночный тестовый макет, нарисованный Arnaud Guera (AG) для официального сайта Susy 2:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/susy2-1.png" alt="Тестовый шаблон Arnaud Guera" class="center-image" /></p>
-
-<h2 id="susy-2-1">Установка Susy 2</h2>
-
-<h3 id="susy---">Если Susy вообще не установлен</h3>
-
-<p>Фреймворк Susy для своей работы нуждается в препроцессоре Sass. Поэтому, если у вас на локальном компьютере еще не установлены как Sass, так и Susy, то необходимо это сделать:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
-<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">susy</span></code></pre></div>
-
-<h3 id="susy--">Если Susy уже установлен</h3>
-
-<p>Если фреймворк Susy уже установлен на вашем компьютере и также имеется Ruby RVM (Ruby Version Manager), то можно произвести обновление с помощью команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">update</span></code></pre></div>
-
-<p>Если у вас эта команда не сработала, то это означает, что нужно попробовать другой способ или же сначала <a href="http://rvm.io/rvm/install" title="установить Ruby RVM">установить Ruby RVM</a>.</p>
-
-<p>Второй способ установки фреймворка Susy версии 2 несколько более “ручной”. Он предполагает, что сначала нужно деинсталлировать предыдущие версии Sass\Susy, а затем установить их снова. Этот способ является наилучшим, если необходимо избежать ошибок при обновлении (как в первом случае).</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">uninstall</span> <span class="n">susy</span>
-<span class="n">sudo</span> <span class="n">gem</span> <span class="n">uninstall</span> <span class="n">sass</span>
-
-<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
-<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">susy</span></code></pre></div>
-
-<p>После успешной установки фреймворка Susy 2 на локальной машине, приступим к его базовой настройке.</p>
-
-<h2 id="susy-2-2">Базовая настройка Susy 2</h2>
-
-<p>Точно также, как и в первой версии, необходимо в конфигурационном файле <code>config.rb</code> указать, что фреймворк Susy должен быть включен в текущий проект:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="err">#</span> <span class="nt">Require</span> <span class="nt">any</span> <span class="nt">additional</span> <span class="nt">compass</span> <span class="nt">plugins</span> <span class="nt">here</span><span class="o">.</span>
-<span class="nt">require</span> <span class="s1">&#39;susy&#39;</span></code></pre></div>
-
-<p>Затем нужно импортировать фреймворк Susy 2 в таблицы стилей:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">Importing</span> <span class="nt">Susy</span>
-<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Версия 2 фреймворка Susy имеет <a href="http://susydocs.oddbird.net/en/latest/settings/#global-defaults" title="список глобальных переменных">список глобальных переменных</a>, встроенных в него. Эти переменные можно изменить прямо в таблице стилей:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">Configuring</span> <span class="nt">Susy</span> <span class="nt">2</span> <span class="nt">Global</span> <span class="nt">Defaults</span>
-  <span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
-    <span class="nt">key</span> <span class="o">:</span> <span class="nt">value</span>
-<span class="o">);</span></code></pre></div>
-
-<p>Можно поэкспериментировать с переменными и их значениями по умолчанию, чтобы посмотреть, ккая из них и за что отвечает. Более детальный обзор этих переменных будет произведен во второй части данного руководства.</p>
-
-<p>Однако, можно смело использовать Susy 2 с настройками по-умолчанию. В моем случае, так как я предпочитаю работать с моделью <code>border-box</code> и единицами измерения <code>rem</code>, то я изменю некоторые из переменных:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
-  <span class="nt">global-box-sizing</span><span class="o">:</span> <span class="nt">border-box</span><span class="o">,</span>
-  <span class="nt">use-custom</span><span class="o">:</span> <span class="o">(</span><span class="nt">rem</span><span class="o">:</span> <span class="nt">true</span><span class="o">)</span>
-<span class="o">);</span></code></pre></div>
-
-<p>Обратите внимание на то, что Susy 2 использует по умолчанию “резиновый” шаблон. Это означает, что ширина всех внешних блоков-контейнеров задана в 100%.</p>
-
-<p>Если же вы предпочитаете работать в Susy с фиксированными ширинами элементов и контрольными точками <code>breakpoints</code>, то просто измените значение переменной <code>math</code> на <code>static</code>. Главное отличие между двумя этими методами проявляется только тогда, когда настает потребность в превращении дизайна в RWD. Однако, этот вопрос будет рассмотрен позже, во второй части данного руководства.</p>
-
-<p>Также обратите внимание, что необходимо подключить к текущему проекту библиотеку Compass и файл нормализации стилей <code>normalize.css</code> (<em>в первых двух строках</em>):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;normalize&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">переменных</span> <span class="nt">Susy</span>
-<span class="o">$</span><span class="nt">susy</span><span class="o">:(</span>
-  <span class="nt">global-box-sizing</span><span class="o">:</span> <span class="nt">border-box</span><span class="o">;</span>
-  <span class="nt">use-custom</span><span class="o">:</span> <span class="o">(</span><span class="nt">rem</span><span class="o">:</span> <span class="nt">true</span><span class="o">)</span>
-<span class="o">);</span>
-
-<span class="k">@include</span> <span class="nt">border-box-sizing</span><span class="p">;</span></code></pre></div>
-
-<h2 id="html--css---ag">Базовый HTML и CSS для шаблона AG</h2>
-
-<p>HTML-каркас для данного шаблона будет выглядеть следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;h1&gt;</span>
-    10-колоночный шаблон с вложенностью блоков
-  <span class="nt">&lt;/h1&gt;</span>
-  <span class="c">&lt;!-- Column 1 --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_1&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h2&gt;</span>
-      Колонка 1
-    <span class="nt">&lt;/h2&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- Column 2 --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h2&gt;</span>
-      Колонка 2
-    <span class="nt">&lt;/h2&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_1_1&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;h2&gt;</span>
-        Колонка 2-1-1
-      <span class="nt">&lt;/h2&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_1_2&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;h2&gt;</span>
-        Колонка 2-1-2
-      <span class="nt">&lt;/h2&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_2_1&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;h2&gt;</span>
-        Колонка 2-2-1
-      <span class="nt">&lt;/h2&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_2_2&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;h2&gt;</span>
-        Колонка 2-2-2
-      <span class="nt">&lt;/h2&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_3_1&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;h2&gt;</span>
-          Колонка 2-3-1
-        <span class="nt">&lt;/h2&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_3_2&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;h2&gt;</span>
-          Колонка 2-3-2
-        <span class="nt">&lt;/h2&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_4&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;h2&gt;</span>
-          Колонка 2-4
-        <span class="nt">&lt;/h2&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- end Column 2 --&gt;</span>
-  <span class="c">&lt;!-- Column 3 --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_3&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h2&gt;</span>
-      Колонка 3
-    <span class="nt">&lt;/h2&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>В этом примере показан довольно сложный случай вложенности одних блоков в другие блоки.</p>
-
-<p>Ниже представлен простой SCSS-код для сетки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-
-  <span class="o">.</span><span class="n">column_1</span><span class="o">,.</span><span class="n">column_3</span><span class="err">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#71dad2</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nc">.column_2</span><span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fae7b3</span><span class="p">;</span>
-
-    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
-      <span class="k">background-color</span><span class="o">:</span> <span class="m">#ee9e9c</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="nc">.column_2_2_1</span><span class="p">{</span>
-      <span class="k">background-color</span><span class="o">:</span> <span class="m">#f09671</span><span class="p">;</span>
-    <span class="p">}</span>
-
-    <span class="nc">.column_2_2_2</span><span class="p">{</span>
-      <span class="k">background-color</span><span class="o">:</span> <span class="m">#f6d784</span><span class="p">;</span>
-
-      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
-        <span class="k">background-color</span><span class="o">:</span> <span class="m">#ee9e9c</span><span class="p">;</span>
-      <span class="p">}</span>
-
-      <span class="nc">.column_2_4</span><span class="p">{</span>
-        <span class="k">background-color</span><span class="o">:</span> <span class="m">#ea9fc3</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-
-  <span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="p">{</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="n">rem</span><span class="p">;</span>
-    <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="n">rem</span> <span class="m">0</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Все готово для погружения в плагин Susy. Но перед началом необходимо немного остановиться на деталях этого плагина.</p>
-
-<h2 id="susy">Наиболее важные функции и миксины плагина Susy</h2>
-
-<p>Прежде чем приступать к созданию сеток с помощью Susy, стоит кратко рассказать о трех наиболее важных функциях и миксинах данного плагина. Если вам удастся сразу же разобрать с этими тремя вопросами, вы сможете создавать с помощью Susy сетки практически любого вида и сложности.</p>
-
-<h3 id="container">Миксин Container</h3>
-
-<p>Первое, что необходимо сделать в разметке - это включить миксин <code>.container</code>. Тем самым подключаются все возможности плагина Susy для расчета и построения CSS-сеток.</p>
-
-<p>Синтаксис этого миксина прост:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">container</span><span class="o">(</span> <span class="o">[&lt;</span><span class="nt">lenght</span><span class="o">&gt;]</span> <span class="o">)</span><span class="p">;</span></code></pre></div>
-
-<p>Необязательный параметр <code>lenght</code> позволяет указать для блока-обертки максимальную ширину <code>max-width</code>. Если параметр не указан, то плагин Susy будет принимать значение максимальной ширины по умолчанию - <code>max-widht: 100%</code>.</p>
-
-<p>Рабочий пример миксина <code>container</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">container</span><span class="p">;</span></code></pre></div>
-
-<h3 id="span">Миксин span</h3>
-
-<p>Миксин span является основой плагина Susy. Обычно используется стандартный способ для вызова данного миксина:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">span</span><span class="o">(</span> <span class="o">&lt;</span><span class="nt">width</span><span class="o">&gt;</span> <span class="o">[&lt;</span><span class="nt">wide</span> <span class="o">/</span> <span class="nt">wider</span><span class="o">&gt;]</span> <span class="nt">of</span> <span class="o">&lt;</span><span class="nt">layout</span><span class="o">&gt;</span> <span class="o">[&lt;</span><span class="nt">last</span><span class="o">&gt;]</span> <span class="o">)</span><span class="p">;</span></code></pre></div>
-
-<p>Если до этого момента вы использовали плагин Susy версии 1, то должны были обратить внимание, что синтаксис этого миксина очень похож на синтаксис миксина <code>span-column</code>, с очень незначительными отличиями.</p>
-
-<p>Давайте подробно остановимся на всех тонкостях синтаксиса миксина <code>span</code>:</p>
-
-<ul>
-  <li><code>width</code> - количество колонок с создаваемой разметке;</li>
-  <li><code>wide / wider</code> - необязательный параметр, который позволяет разделить колонку с помощью одного или двух gutter;</li>
-  <li><code>of</code> - указывает Susy, что дальше идут параметры, связанные с разметкой;</li>
-  <li><code>layout</code> - показывает ширину блока-обертки;</li>
-  <li><code>last</code> - необязательный параметр, который говорит о том, что это последний элемент в ряду.</li>
-</ul>
-
-<p>Пример создания колонки с помощью миксина <code>span</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">span</span><span class="o">(</span> <span class="nt">3</span> <span class="nt">wide</span> <span class="nt">of</span> <span class="nt">9</span> <span class="nt">last</span><span class="o">)</span><span class="p">;</span></code></pre></div>
-
-<h3 id="span_1">Функция span</h3>
-
-<p>Функция <code>span</code> во многом очень похожа на одноименный миксин <code>span</code>, за тем исключением, что она только лишь возвращает ширину элемента. В случае использования функции span потребуются только параметры ширины колонки, ширины <code>gutter</code> и всего блока-обертки в целом.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">9</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Прелесть использования функции <code>span</code> в том, что в этом случае нет необходимости в запоминании миксинов для работы в <code>margin</code> или <code>padding</code> в плагине Susy, как это было в предыдущей его версии. Теперь можно использовать функцию <code>span</code> для установки точного значения ширины отступа:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.paddingLeft</span><span class="p">{</span>
-  <span class="k">padding-left</span><span class="o">:</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">9</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="gutter">Функция gutter</h3>
-
-<p>Функция <code>gutter</code> принимает только один аргумент:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">margin-right</span><span class="o">:</span> <span class="nt">gutter</span><span class="o">(</span><span class="nt">9</span><span class="o">);</span></code></pre></div>
-
-<p>Это и все основные функции и миксины плагина Susy, которые необходимо знать для работы с ним.</p>
-
-<h2 id="susy-1">Создание разметки с помощью плагина Susy</h2>
-
-<p>Первый шаг, который мы сделаем для превращения HTML-кода в нужную разметку, это подключим миксин <code>container</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<p>Помимо миксина <code>container</code>, мы подключили еще один миксин - <code>clearfix</code>, так как внутри блока-обертки будут располагаться плавающие блоки. Если взглянуть на результат компиляции в CSS, то все станет очевидным: миксин <code>container</code> генерирует строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">max-width</span><span class="o">:</span> <span class="nt">100</span><span class="o">%;</span>
-<span class="nt">margin-left</span><span class="o">:</span> <span class="nt">auto</span><span class="o">;</span>
-<span class="nt">margin-right</span><span class="o">:</span> <span class="nt">auto</span><span class="o">;</span></code></pre></div>
-
-<p>а миксин <code>clearfix</code> создает CSS-строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">overflow</span><span class="o">:</span> <span class="nt">hidden</span><span class="o">;</span>
-<span class="o">*</span><span class="nt">zoom</span><span class="o">:</span> <span class="nt">1</span><span class="o">;</span></code></pre></div>
-
-<blockquote>
-  <p>Прим. переводчика: я бы воспользовался более современной версией миксина для очистки потока - <code>pie-clearfix</code>. Данный миксин построен на методе, о котором говориться в статье известного CSS-гуру Никаласа Галлахера - <a href="http://nicolasgallagher.com/micro-clearfix-hack/">A new micro clearfix hack</a>.</p>
-</blockquote>
-
-<p>Теперь перейдем к более мелким деталям разметки. Предположительно, вся ширина блока-контейнера будет у нас состоять из 10 колонок. На рисунке-эскизе будущий макет сайта должен состоять из трех колонок - двух узких боковых и одной центральной широкой.</p>
-
-<p>Такую HTML-разметку мы и создали ранее в этой статье. Поэтому предположим, что две боковые колонки будут у нас шириной в 2 стобца из 10, а центральная колонка - из 6 столбцов из 10 ( 10 - (2 + 2) ).</p>
-
-<p>Следовательно, блок с классами <code>.column_1</code> и <code>.column_3</code> дописываем миксин:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Помимо этого, блоку с классом <code>.column_3</code> дописываем еще один миксин <code>last</code>, так как этот блок является последним в данном ряду:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_3</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Если заглянем в скомпилированный CSS-код, то увидим простую картину. Всем блокам задается одинаковая ширина в процентах, правый <code>margin</code> также в процентах. А вот если применен миксин <code>last</code>, то плавание блока меняется на противоположное и убирается правый <code>margin</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">18.36735%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">2.04082%</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Центральная колонка должна иметь у нас ширину в шесть столбцов и плавающие блоки внутри себя, поэтому задаем для нее два миксина:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2</span><span class="p">{</span>
-    <span class="o">...</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span></code></pre></div>
-
-<p>… что дает в результате CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">59.18367%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">2.04082%</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Отлично! Рассмотрим далее наш пример. Внутри центральной колонки в одном ряду расположены два блока, которые в сумме занимают всю ширину блока-контейнера (в данном случае это центральная колонка). Поэтому для двух этих блоков зададим одинаковый миксин:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_1_1</span><span class="o">,</span><span class="nc">.column_2_1_2</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… и не забудем добавить для блока с классом <code>.column_2_1_2</code> миксин <code>last</code>, так как он последний в своем ряду и с ним будут происходить толчно такие же метаморфозы, как и в предыдущем случае:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_1_2</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Смотрим на готовый CSS-код и видим, что ничего необычного не произошло - все предсказуемо:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_1_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_1_2</span> <span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ee9e9c</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">48.27586%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_1_2</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В следующем ряду располагаются еще два блока, но уже с разной шириной: блок с классом <code>.column_2_2_1</code> будет занимать 2 колонки из 6, а блок с классом <code>column_2_2_2</code> - 4 колонки из 6.</p>
-
-<p>Кроме того, в блоке с классом <code>column_2_2_2</code>, в свою очередь, размещены еще два плавающих блока <code>column_2_3_1</code>, <code>column_2_3_2</code>, поэтому к нему нужно применить опять миксин <code>clearfix</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_2_1</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nc">.column_2_2_2</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
-  <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
-    <span class="o">...</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nc">.column_2_3_2</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>CSS-результат применения этих миксинов показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_2_1</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.column_2_2_2</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.column_2_3_1</span><span class="o">,</span> <span class="nc">.column_2_3_2</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">47.36842%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.column_2_3_2</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Последним у нас идет блок, который занимает всю ширину своего блока-родителя. В нему мы применим миксин <code>span(full)</code> и одновременно очистку через CSS-свойство <code>clear: both;</code>.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_4</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
-  <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… чтобы получился CSS-результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_2_2</span> <span class="nc">.column_2_4</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот, в принципе, и все несложное построение разметки. Давайте взглянем на результат наших трудов в окне браузера:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_result.png" alt="Готовый шаблон, созданный с помощью Susy" class="center-image" /></p>
-
-<p>Полный вариант кода можно посмотреть здесь - <a href="http://sassmeister.com/gist/11450132">Susy Part 1</a></p>
-
-<p>Думаю, на cегодня можно закруглиться с изучением Susy. Но, вообще эта тема очень интересная и положительная. В том плане, что для практической работы применение плагина Susy мне видится - в самый раз.</p>
-
-<p>Это вам не неуклюжие 960gs или Blueprint. Тут все гибко и настраиваемо прямо на лету. Хочешь такую разметку - пожалуйста. А хочешь другую - да пожалуйста, Susy тебе пересчитает все в мгновение ока!</p>
-
-<p>Думается мне, это не последняя статья, посвященная плагину Susy под библиотеку Compass.</p>
-
-<p>Данная статья является вольным переводом и осмыслением оригинала - <a href="http://www.zell-weekeat.com/susy2-tutorial/">A Complete Tutorial to Susy 2</a></p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
