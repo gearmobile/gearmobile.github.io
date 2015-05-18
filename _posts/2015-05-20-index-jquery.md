@@ -94,14 +94,30 @@ $('li').eq(1).html("Secondo");
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item primo"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item secondo"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item tetro"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item quattro"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item cinque"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item sei"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item sedici"><a href="#" class="test__link">test item link</a></li>
-  <li class="test__item"><a href="#" class="test__link">test item link</a></li>
+  <li class="test__item primo">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item secondo">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item tetro">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item quattro">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item cinque">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item sei">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item sedici">
+    <a href="#" class="test__link">test item link</a>
+  </li>
+  <li class="test__item">
+    <a href="#" class="test__link">test item link</a>
+  </li>
 </ul>
 {% endhighlight %}
 

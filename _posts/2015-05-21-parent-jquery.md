@@ -35,6 +35,7 @@ share: true
 * `$('div').parent()` - вернет **родительские элементы** всех div-ов
 * `$('div').parent('.block')` - вернет элементы класса `.block`, которые являются родительскими для div-элементов на странице
 
+На этом все.
 
 ***
 [1]: https://css-tricks.com/child-and-sibling-selectors/ "Child and Sibling Selectors"
