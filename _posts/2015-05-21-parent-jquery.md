@@ -1,4 +1,10 @@
-# Метод parent и children библиотеки jQuery
+---
+title: "Метод parent и children библиотеки jQuery"
+layout: post
+categories: jquery
+tags: [jquery, parent, children]
+share: true
+---
 
 Два метода-антагониста, принцип работы которых ясен из имени самих методов.
 
