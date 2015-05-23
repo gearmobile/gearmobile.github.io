@@ -144,6 +144,151 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-01-28T00:00:00+03:00"><a href="http://zencoder.ru/git/git-undoing-changes/">January 28, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-undoing-changes/" rel="bookmark" title="Отмена изменений в Git" itemprop="url">Отмена изменений в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Обширная и достаточно сложная тема. Однако необходимая, если стоит задача изучить и иметь возможность работать в Git.</p>
+</blockquote>
+
+<p>Эта тема касается отмены изменений в Git. Так как эта система контроля версий представляет из себя три ветки - рабочая директория, буфер, репозиторий - то будут рассмотрены все три способа.</p>
+
+<h2 id="section">Отмена изменений в рабочей директории</h2>
+
+<p>Для отмены изменений в рабочей директории необходимо выполнить одну команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">checkout</span> <span class="p">--</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Данная команда говорит Git вернуть состояние файла <code>name_of_file</code> до того, каким оно было зафиксировано в репозитории. Другими словами, произойдет сброс изменений файла в рабочей директории проекта.</p>
+
+<p>Обязательным условием использования команды <code>checkout</code> является двойной дефис. Это “говорит” команде <code>checkout</code>, что в данном случае нужно оставаться в текущей ветке (branche).</p>
+
+<h2 id="section-1">Отмена изменений в буфере</h2>
+
+<p>Для отмены изменений в буфере нужно использовать команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Эта команда “вернет” файл <code>name_of_file</code> из буфера в рабочую директорию.</p>
+
+<h2 id="section-2">Отмена изменений в репозитории</h2>
+
+<p>Что касается репозитория, то здесь ситуация намного сложнее. Связано это с тем, что все коммиты в репозитории взаимосвязаны между собой.</p>
+
+<p>Нельзя просто так взять и изменить какой-либо определенный коммит - все они находятся в своеобразной цепочке и один коммит проистекает из предыдущего коммита.</p>
+
+<p>Другими словами, у каждого коммита есть свой коммит-родитель и коммит-потомок. Изменить какой-либо коммит - это значит вырвать его из этой цепочки взаимосвязей. Тем самым нарушится целостность всего репозитория и работа Git также нарушится. Ведь дело в том, что сама суть системы контроля версий Git основана на такой взаимосвязанной цепочке коммитов - один коммит проистекает из другого, второй из первого, третий из второго и так далее.</p>
+
+<p>Как же поступить в данной ситуации?</p>
+
+<p>Не все так мрачно, как кажется на первый взгляд. На самом деле существует много способов отмены изменений в репозитории. Ниже мы познакомимся с ними.</p>
+
+<h3 id="amend">Опция amend</h3>
+
+<p>Если следовать из логического рассуждения, представленного выше, то получается, что в цепочке коммитов должен быть крайний коммит - тот, который был внесен совсем недавно. У этого коммита есть коммит-родитель, но нет коммита-потомка, так как этот коммит - крайний в цепочке.</p>
+
+<p>Соответственно, раз у этого коммита нет потомков, то изменение этого коммита не повлечет за собой нарушение целостности всей цепочки коммитов. Измениться только этот коммит - и только.</p>
+
+<p>Изменить крайний коммит можно просто перезаписав его. Для этой цели служит ключ <code>--amend</code>. Команда в целом представляет из себя следующее:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">commit</span> <span class="p">-</span><span class="n">-amend</span> <span class="n">-m</span> <span class="s2">&quot;Add some commit&quot;</span></code></pre></div>
+
+<p>Как только будет выполнена подобная команда, крайний коммит (тот, на котором находится указатель HEAD) будет перезаписан и это очень легко проследить - достаточно сравнить контрольную сумму SHA этого коммита до и после изменений.</p>
+
+<h3 id="checkout">Команда checkout</h3>
+
+<p>С помощью команды <code>checkout</code> можно выполнять откат репозитория до нужной версии. Данный способ основан на самом факте существования цепочки коммитов, в которой в роли узлов выступают сами коммиты.</p>
+
+<p>Образно можно представить данную ситуацию очень наглядно - как обычную магнитофонную ленту в старых кассетных магнитофонах. То место на ленте, где произошла последняя остановка и на котором находится звукозаписывающая головка - это и есть крайний коммит. Предыдущие коммиты - это места на ленте, когда происходила остановка записи в те самые моменты.</p>
+
+<p>Команда <code>checkout</code> может заставить указатель HEAD вернуться назад, на предыдущее место остановки - на предыдущий коммит. И необязательно этот коммит должен быть предыдущим - он может быть любым более ранним.</p>
+
+<p>Все что для этого нужно - это указать тот коммит, к которому должен вернуться HEAD. Указать коммит просто - у каждого коммита есть уникальный идентификатор - контрольная SHA-сумма.</p>
+
+<p>Команда возврата к нужному коммиту выглядит таким образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">checkout</span> <span class="p">--</span> <span class="n">4a2f59a32bd1074c42</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Можно указать только часть SHA-суммы, так как это показано выше.</p>
+
+<p>И тогда Git произведет сброс состояния (<em>которые были сделаны в последнем коммите</em>) файла <code>name_of_file</code> в буфер. Если ввести команду <code>git status</code> то увидим, что в буфере будут изменения, готовые для коммита. Это те самые изменения файла <code>name_of_file</code>, которые мы “выбросили” из репозитория.</p>
+
+<p>Дальше выполняем “выброс” изменений файла <code>name_of_file</code> из буфера в рабочую директорию, чтобы мы смогли внести правки в этот файл:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="n">name_of_file</span></code></pre></div>
+
+<p>Все, что будет внесено в этот файл, а затем закоммичено - будет иметь уже другую контрольную сумму. А следовательно - это уже будет совсем другой коммит.</p>
+
+<h3 id="section-3">Зеркалирование коммитов</h3>
+
+<p>Одной из разнообразных команд Git для внесения изменений в репозиторий является команда <code>revert</code>.</p>
+
+<p>Суть ее очень проста - она отменяет все изменения, зафиксированные в крайнем коммите; и создает новый коммит, который является потомком предыдущего коммита, но в тоже время его зеркальной копией, противоположностью.</p>
+
+<p>Синтаксис команды revert также прост:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">revert</span> <span class="n">4a2f59a32bd1074c42</span></code></pre></div>
+
+<p>где <code>4a2f59a32bd1074c42</code> - это часть SHA-суммы крайнего коммита.</p>
+
+<h3 id="reset">Команда reset</h3>
+
+<p>Команда <code>reset</code> также может изменять репозиторий Git. Делает она это путем смещения указателя HEAD на нужный коммит.</p>
+
+<p>После такого смещения HEAD все более поздние коммиты никуда не пропадут из репозитория - они все еще там. Но теперь любое закоммиченное изменение произведет перезапись более поздних коммитов - и тогда они будут потеряны навсегда.</p>
+
+<p>Ситуация очень похожа на то образное сравнение цепочки коммитов Git с магнитофонной лентой. Стоит отмотать ленту на 10-20 минут назад и снова начать запись, то все более поздние записи (<em>относительно этого места</em>) будут перезаписаны.</p>
+
+<p>У команды <code>reset</code> есть три ключа, которые незначительно видоизменяют ее работу:</p>
+
+<ul>
+  <li>-soft</li>
+  <li>-mixed</li>
+  <li>-hard</li>
+</ul>
+
+<p>Команда <code>git reset --soft 4a2f59a32bd1074c42</code> произведет смещение указателя HEAD на указанный коммит 4a2f59a32bd1074c42. При этом Git произведет сброс изменений в буфер. В результате буфер и рабочая директория будут идентичными между собой; а репозиторий будет переведен в более ранее состояние.</p>
+
+<p>Команда <code>git reset --mixd 4a2f59a32bd1074c42</code> аналогична предыдущей. Также будет произведено смещение указателя HEAD. Но теперь Git сбросит изменения в рабочую директорию. Репозиторий и буфер будут идентичными друг другу и находиться в более раннем состоянии.</p>
+
+<p>Команда <code>git reset --hard 4a2f59a32bd1074c42</code> самая “жесткая”. Также будет произведено смещение указателя HEAD на указанный коммит, но при этом будет произведен сброс всех трех деревьев Git - репозитория, буфера и рабочей директории. Все три будут идентичными друг другу.</p>
+
+<h2 id="clean">Команда clean</h2>
+
+<p>В системе Git существует команда <code>clean</code> для удаления не отслеживаемых файлов в рабочей директории.</p>
+
+<p>Разница между командой <code>git rm</code> и <code>clean</code> заключается в том, что при удалении файлов из рабочей директории первой командой они вроде как удаляются. Но на самом деле удаленные файлы все еще остаются в системе Git. Просто они помещены в раздел мусора и являются теперь мусором.</p>
+
+<p>Команда <code>clean</code> как раз и выполняет очистку мусора в системе. Она удаляет все не отслеживаемые и неиспользуемые файлы.</p>
+
+<p>Но даже это она делает очень осторожно. Если просто запустить <code>git clean</code>, то ничего не произойдет. Система Git скажет, что команду <code>clean</code> необходимо запускать либо с ключом <code>-n</code>, либо с ключом <code>-f</code>.</p>
+
+<p>Запуск <code>git clean -n</code> - это тестовый запуск команды удаления. Ничего удалено не будет - система лишь покажет, что она собирается удалить, какие файлы.</p>
+
+<p>А вот запуск <code>git clean -f</code> произведен реальное удаление всех файлов, которые Git считает мусором. И в этом случае эти файлы будут потеряны навсегда.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-01-28T00:00:00+03:00"><a href="http://zencoder.ru/git/git-gitignoring-files/">January 28, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -973,152 +1118,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-12-29T00:00:00+03:00"><a href="http://zencoder.ru/css/nib-stylus/">December 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/nib-stylus/" rel="bookmark" title="Nib - библиотека миксинов под Stylus" itemprop="url">Nib - библиотека миксинов под Stylus</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Легкое знакомство с библиотекой Nib под препроцессор Stylus. Эта библиотека является тем же самым, что Compass или Bourbon под препроцессор Sass.</p>
-</blockquote>
-
-<p>Библиотека миксинов Nib написана под препроцессор Stylus и является аналогом более известных библиотек Compass или Bourbon под препроцессор Sass. С самим препроцессором Stylus я с вами познакомился немного раньше - скажем так, это было краткое и легкое знакомство.</p>
-
-<p>Библиотека Nib проживает по адресу - <a href="https://github.com/tj/nib" title="Nib">Nib GitHub</a>. Она маленькая и легкая, но должна быть полезной. Поэтому мне необходимо с ней познакомиться поближе.</p>
-
-<h2 id="nib">Установка библиотеки Nib</h2>
-
-<p>В Сети мною было найдено два способа установки данной библиотеки:</p>
-
-<ul>
-  <li>с использованием GitHub</li>
-  <li>с использованием менеджера пакетов npm</li>
-</ul>
-
-<p>Второй способ мне кажется более удобным, так как в этом случае библиотека устанавливается глобально и доступна для любого проекта из любого места файловой системы. В первом же случае придется устанавливать библиотеку каждый раз - локально в каждый отдельный проект.</p>
-
-<p>Если вдруг в системе еще не установлен препроцессор Stylus, то первоначально необходимо установить его командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">stylus</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
-
-<p>Не забудьте добавить ключ <code>--global</code>, чтобы препроцессор установился глобально в системе.</p>
-
-<p>Установка библиотеки Nib почти ничем не отличается от установки препроцессора и выполняется командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">nib</span> <span class="p">-</span><span class="n">-global</span></code></pre></div>
-
-<p>Отлично! Все, что теперь осталось сделать - это подключить библиотеку в текущий проект (текущий рабочий Stylus-файл).</p>
-
-<p>Это выполняется директивой <code>@import</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="nv">@import</span> <span class="s1">&#39;nib&#39;</span></code></pre></div>
-
-<p>Проверим, что библиотека подключена без ошибок и отрабатывает в проекте\файле. Для этого запишем в файле <code>style.styl</code> несколько миксинов этой библиотеки и “натравим” на файл <code>style.styl</code> утилиту <code>stylus</code> с несколькими ключами:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">stylus</span> <span class="n">-u</span> <span class="n">nib</span> <span class="n">-w</span> <span class="n">style</span><span class="p">.</span><span class="n">styl</span></code></pre></div>
-
-<p>здесь:</p>
-
-<ul>
-  <li><code>-u nib</code> - говорит о том, что при компиляции в CSS должно учитываться наличие библиотеки Nib</li>
-  <li><code>-w style.styl</code> - мониторить изменения в файле <code>style.styl</code> и своевременно выполнять его компиляцию в CSS</li>
-</ul>
-
-<p>Посмотрим на результат компиляции Stylus в CSS - очень уж любопытно, получилось ли?</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/12/nib.png" alt="Библиотека Nib в действии" /></p>
-
-<p>Отлично! Все работает четко - миксины преобразуются в готовый CSS-код. Правда, выглядит он немного неприглядно - не причесанный и не почищенный.</p>
-
-<p>Ну это решается просто - достаточно на этот CSS-файл натравить Gulp-плагины <a href="https://www.npmjs.com/package/gulp-csscomb" title="gulp-csscomb">gulp-csscomb</a> и <a href="https://www.npmjs.com/package/gulp-autoprefixer" title="gulp-autoprefixer">gulp-autoprefixer</a>.</p>
-
-<p>Главное - библиотека подключена и работает!</p>
-
-<h2 id="nib------gulp">Nib - как подружить с Gulp</h2>
-
-<p>До этого момента мною использовалась нативная утилита <code>stylus</code> для компиляции из формата Stylus в формат CSS. И в том числе - с поддержкой библиотеки Nib.</p>
-
-<p>Однако, на практике такой способ вряд-ли будет использоваться. Я имею ввиду, что использование лишь одной утилиты <code>stylus</code> - я сомневаюсь, что кому-либо пригодиться.</p>
-
-<p>Гораздо практичнее использование Gulp, у которого есть соответствующий плагин <a href="https://www.npmjs.com/package/gulp-stylus" title="Stylus plugin for gulp">gulp-stylus</a> для компиляции из формата Stylus в CSS.</p>
-
-<p>Этот плагин имеет поддержку библиотеки Nib, достаточно только настроить таковую в своем проекте.</p>
-
-<p>Ниже я рассмотрю процесс подключения и настройки Nib (а заодно - и Stylus) в моем любимом Gulp.</p>
-
-<h2 id="gulp-stylus--nib">Установка плагинов gulp-stylus и nib</h2>
-
-<p>В своем рабочем проекте необходимо установить два плагина (<em>с помощью консоли</em>):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">gulp-stylus</span> <span class="n">nib</span> <span class="p">-</span><span class="n">-save-dev</span></code></pre></div>
-
-<p>В результате оба пакета установятся в проект и добавятся в файл package.json в качестве зависимостей:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">...</span>
-<span class="s2">&quot;gulp-stylus&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.3.4&quot;</span><span class="p">,</span>
-<span class="s2">&quot;nib&quot;</span><span class="o">:</span> <span class="s2">&quot;^1.0.4&quot;</span>
-<span class="p">...</span></code></pre></div>
-
-<h2 id="gulpfilejs">Настройка файла gulpfile.js</h2>
-
-<p>В файле <code>gulpfile.js</code> необходимо внести несколько правок. Первым делом - добавляем в начало файла две с строки:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
-  <span class="nx">stylus</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-stylus&#39;</span><span class="p">),</span>
-  <span class="nx">nib</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;nib&#39;</span><span class="p">),</span>
-<span class="p">...</span></code></pre></div>
-
-<p>Затем создаем задачу task для компиляции из Stylus в CSS. В качестве параметра у метода <code>stylus</code> будет дополнительная строка <code>use:[nib()]</code>, говорящая о том, что необходимо использовать библиотеку Nib:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;stylus&#39;</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;app/styles/common.styl&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">stylus</span><span class="p">({</span><span class="nx">use</span><span class="o">:</span><span class="p">[</span><span class="nx">nib</span><span class="p">()]}))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">prefixer</span><span class="p">({</span>
-      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 2 versions&#39;</span><span class="p">]</span>
-    <span class="p">}))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">csscomb</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;dist/assets/styles/&#39;</span><span class="p">));</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Вот это и все (<em>необходимый минимум</em>), чтобы подружить библиотеку Nib c Gulp.</p>
-
-<p>Не забываем подключить в stylus-файл проекта библиотеку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s1">&#39;nib&#39;</span></code></pre></div>
-
-<h2 id="nib-1">Миксины библиотеки Nib</h2>
-
-<p>С подключением библиотеки Nib разобрались. Остался вопрос - а что там внутри, под капотом у Nib?</p>
-
-<p>С малой толикой миксинов я уже познакомился, когда создавал тестовую страничку подключения и компиляции (<em>см. изображение выше</em>).</p>
-
-<p>На <a href="https://github.com/tj/nib" title="Nib GitHub">официальной странице Nib</a> есть ссылка на документацию по миксинам - <a href="http://tj.github.io/nib/" title="Документация миксинов Nib">Документация миксинов Nib</a>.</p>
-
-<p>Там все описано просто и понято, с подробными примерами. Осталось только читать и пользоваться.</p>
-
-<p>В принципе, больше и сказать мне нечего (<em>по крайней мере - мне</em>) по поводу миксинов в Nib. Дальше только - брать их и использовать на практике.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1388,6 +1387,12 @@
       <li>
         
           <a href="http://zencoder.ru/page44">44</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page45">45</a>
         
       </li>
     

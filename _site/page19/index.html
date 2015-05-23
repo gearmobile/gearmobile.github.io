@@ -144,6 +144,120 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-06-16T00:00:00+04:00"><a href="http://zencoder.ru/install-compass-v1-linux-mint/">June 16, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/install-compass-v1-linux-mint/" rel="bookmark" title="Установка Compass v1.0.0 под Linux Mint" itemprop="url">Установка Compass v1.0.0 под Linux Mint</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>До вчерашнего дня у меня на ноутбуке под Linux Mint “Qiana” стояли два незаменимых для меня пакета для кодинга - Sass + Compass.</p>
+</blockquote>
+
+<p>Оба пакета были не самой свежей версии, но стабильной. Однако, с недавних пор к ним прибавилось еще два пакета - Susy 2 и Breakpoint. Но Susy 2 для своей работы требует фреймворк Compass версии 1.0.0.</p>
+
+<p>Поэтому, пришла пора обновить Compass и под Linux Mint. Под Windows 7 у меня уже давно стоит Compass-1.0.0.alpha.19 + Sass-3.3.8 (Maptastic Maple) + Susy-2.1.2 + Breakpoint-2.4.2.</p>
+
+<p>Под эту систему процесс инсталляции Compass v1.0.0 замудреный и описан в этой статье - “Медиа-запросы Breakpoint в Sass”.</p>
+
+<p>Но работать под Windows мне не нравиться, поэтому поставил для себя задачу перейти на Compass версии 1.0.0.alpha.19 на Linux.</p>
+
+<p>На момент написания статьи Compass и Sass у меня под Linux Mint “Qiana” были следующих версий:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sass</span> <span class="n">-v</span>
+<span class="n">Sass</span> <span class="n">3</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">19</span> <span class="p">(</span><span class="n">Media</span> <span class="n">Mark</span><span class="p">)</span>
+<span class="p">$</span> <span class="n">compass</span> <span class="n">-v</span>
+<span class="n">Compass</span> <span class="n">0</span><span class="p">.</span><span class="n">12</span><span class="p">.</span><span class="n">6</span> <span class="p">(</span><span class="n">Alnilam</span><span class="p">)</span></code></pre></div>
+
+<p>Произвожу “зачистку” системы командами:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gem</span> <span class="n">uninstall</span> <span class="n">compass</span>
+<span class="p">$</span> <span class="n">gem</span> <span class="n">uninstall</span> <span class="n">sass</span></code></pre></div>
+
+<p>Установка Compass alpha-версии производится командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span> <span class="p">-</span><span class="n">-pre</span></code></pre></div>
+
+<p>Но вот беда, под Linux Mint “Qiana” эта команда выдает ошибку:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">...</span>
+<span class="n">Unable</span> <span class="n">to</span> <span class="n">install</span> <span class="n">gem</span> <span class="p">-</span> <span class="n">Failed</span> <span class="n">to</span> <span class="n">build</span> <span class="n">gem</span> <span class="n">native</span> <span class="n">extension</span> <span class="p">-</span> <span class="n">cannot</span> <span class="n">load</span> <span class="n">such</span> <span class="n">file</span> <span class="err">—</span> <span class="n">mkmf</span> <span class="p">(</span><span class="n">LoadError</span><span class="p">)</span>
+<span class="p">...</span></code></pre></div>
+
+<p>По своему прошлому опыту линуксоида зная, что почти всякая ошибка в Linux приводит к тому, что для ее решения приходится изрядно потанцевать с бубном, я приуныл. Но все-же решил погуглить - может кто-то уже сталкивался с такой проблемой и успел ее решить?</p>
+
+<p>И о чудо - на StackOverflow нашелся такой вопрос и <a href="http://stackoverflow.com/questions/18316667/failed-to-build-gem-native-extension-mkmf-loaderror-ubuntu-12-04" title="StackOverflow">готовое решение</a> на него. Правда, вопрос там относился к проблеме запуска Ruby определенной версии - <code>v 3.2.9</code> под Ubuntu 12.04, но это дела не меняет. Ошибка одна и таже и решение мне подошло однозначно.</p>
+
+<p>На удивление, решение оказалось простым - нужно всего лишь установить в системе developer-версию Ruby - <code>ruby1.9.1-dev</code>.</p>
+
+<p>На момент установки Compass версии <code>alpha.19</code> у меня имелся следующий Ruby:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ruby</span> <span class="n">-v</span>
+<span class="n">ruby</span> <span class="n">1</span><span class="p">.</span><span class="n">9</span><span class="p">.</span><span class="n">3p194</span> <span class="p">(</span><span class="n">2012</span><span class="p">-</span><span class="n">04</span><span class="p">-</span><span class="n">20</span> <span class="n">revision</span> <span class="n">35410</span><span class="p">)</span> <span class="p">[</span><span class="n">i686-linux</span><span class="p">]</span></code></pre></div>
+
+<p>Ставлю developer-версию Ruby (вот оно - решение!):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">ruby1</span><span class="p">.</span><span class="n">9</span><span class="p">.</span><span class="n">1-dev</span></code></pre></div>
+
+<p>И затем снова пробую установить Compass alpha-версии:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span> <span class="p">-</span><span class="n">-pre</span>
+<span class="n">Building</span> <span class="n">native</span> <span class="n">extensions</span><span class="p">.</span>  <span class="n">This</span> <span class="n">could</span> <span class="n">take</span> <span class="n">a</span> <span class="k">while</span><span class="p">...</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">rb-inotify</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">9</span><span class="p">.</span><span class="n">5</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">rb-kqueue</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">listen</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">6</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">json</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">8</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Building</span> <span class="n">native</span> <span class="n">extensions</span><span class="p">.</span>  <span class="n">This</span> <span class="n">could</span> <span class="n">take</span> <span class="n">a</span> <span class="k">while</span><span class="p">...</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">compass</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">alpha</span><span class="p">.</span><span class="n">19</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="p">...</span></code></pre></div>
+
+<p>На этот раз установка пошла успешно и Compass 1.0.0.alpha.19 появился в моей системе:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">compass</span> <span class="n">-v</span>
+<span class="n">Compass</span> <span class="n">1</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">alpha</span><span class="p">.</span><span class="n">19</span></code></pre></div>
+
+<p>Препроцессор Sass подтянулся автоматом, в качестве зависимости:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sass</span> <span class="n">-v</span>
+<span class="n">Sass</span> <span class="n">3</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">8</span> <span class="p">(</span><span class="n">Maptastic</span> <span class="n">Maple</span><span class="p">)</span></code></pre></div>
+
+<p>Отлично! Теперь настала очередь сладкой парочки Susy 2 + Breakpoint:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">susy</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">susy</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Successfully</span> <span class="n">installed</span> <span class="n">susy</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">2</span>
+<span class="p">...</span>
+<span class="p">$</span> <span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">sassy-maps</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">4</span><span class="p">.</span><span class="n">0</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Fetching</span><span class="err">:</span> <span class="n">breakpoint</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">4</span><span class="p">.</span><span class="n">2</span><span class="p">.</span><span class="n">gem</span> <span class="p">(</span><span class="n">100</span><span class="p">%)</span>
+<span class="n">Successfully</span> <span class="n">installed</span> <span class="n">sassy-maps</span><span class="p">-</span><span class="n">0</span><span class="p">.</span><span class="n">4</span><span class="p">.</span><span class="n">0</span>
+<span class="n">Successfully</span> <span class="n">installed</span> <span class="n">breakpoint</span><span class="p">-</span><span class="n">2</span><span class="p">.</span><span class="n">4</span><span class="p">.</span><span class="n">2</span>
+<span class="p">...</span></code></pre></div>
+
+<p>Ну вот и все, проблема установки Compass 1.0.0.alpha.19 под Linux Mint “Qiana” успешно решена! Можно продолжать с удобством кодить под Linux.</p>
+
+<p>Для полного счастья нужно еще разобраться с установкой Photoshop под Linux - тогда жизнь будет полной.</p>
+
+<p>Удачного кодинга!</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-06-09T00:00:00+04:00"><a href="http://zencoder.ru/compass-or-bourbon/">June 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -968,238 +1082,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-30T00:00:00+04:00"><a href="http://zencoder.ru/css/bootstrap3-brief/">May 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~8 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/bootstrap3-brief/" rel="bookmark" title="Краткий обзор Bootstrap 3" itemprop="url">Краткий обзор Bootstrap 3</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Еще один фреймворк из бесчисленного на сегодняшний день полка фреймворков - Bootstrap 3. Точнее было бы сказать, что не еще один - а флагман CSS-фреймворков! Версия 2 вышла давно и на сегодня является устаревшей. Сегодня самая современная версия - это версия 3. Поэтому ее мы и будем рассматривать. Вопрос данной статьи будет посвящен основе данной фреймворка - CSS-сетке и особенностям ее создания в версии 3.</p>
-</blockquote>
-
-<h2 id="bootstrap-3">Установка и настройка Bootstrap 3</h2>
-
-<p>Ничего сложного и необычного в установке фреймворка Bootstrap 3 нет. Для этого скачиваем дистрибутив с официального сайта Bootstrap 3, распаковываем архив в готовый проект-директорию.</p>
-
-<p>Затем с официального сайта берем готовый шаблон HTML-документа - <a href="http://getbootstrap.com/getting-started/#template" title="Basic template">Basic template</a> и создаем свой собственный индексный файл HTML:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="cp">&lt;!DOCTYPE html&gt;</span>
-<span class="nt">&lt;html</span> <span class="na">lang=</span><span class="s">&quot;en&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;head&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">http-equiv=</span><span class="s">&quot;X-UA-Compatible&quot;</span> <span class="na">content=</span><span class="s">&quot;IE=edge&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;meta</span> <span class="na">name=</span><span class="s">&quot;viewport&quot;</span> <span class="na">content=</span><span class="s">&quot;width=device-width, initial-scale=1&quot;</span><span class="nt">&gt;</span>
-    <span class="c">&lt;!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags --&gt;</span>
-    <span class="nt">&lt;title&gt;</span>Bootstrap 101 Template<span class="nt">&lt;/title&gt;</span>
-
-    <span class="c">&lt;!-- Bootstrap --&gt;</span>
-    <span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;css/bootstrap.min.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span><span class="nt">&gt;</span>
-
-    <span class="c">&lt;!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries --&gt;</span>
-    <span class="c">&lt;!-- WARNING: Respond.js doesn&#39;t work if you view the page via file:// --&gt;</span>
-    <span class="c">&lt;!--[if lt IE 9]&gt;</span>
-<span class="c">      &lt;script src=&quot;https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js&quot;&gt;&lt;/script&gt;</span>
-<span class="c">      &lt;script src=&quot;https://oss.maxcdn.com/respond/1.4.2/respond.min.js&quot;&gt;&lt;/script&gt;</span>
-<span class="c">    &lt;![endif]--&gt;</span>
-  <span class="nt">&lt;/head&gt;</span>
-  <span class="nt">&lt;body&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Hello, world!<span class="nt">&lt;/h1&gt;</span>
-
-    <span class="c">&lt;!-- jQuery (necessary for Bootstrap&#39;s JavaScript plugins) --&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-    <span class="c">&lt;!-- Include all compiled plugins (below), or include individual files as needed --&gt;</span>
-    <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/bootstrap.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;/body&gt;</span>
-<span class="nt">&lt;/html&gt;</span></code></pre></div>
-
-<p>В этом файле проверяем правильность путей для CSS и JS-файлов:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;css/bootstrap.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;link</span> <span class="na">href=</span><span class="s">&quot;css/bootstrap-theme.css&quot;</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span><span class="nt">&gt;</span>
-...</code></pre></div>
-
-<p>Все готово для дальнейшей работы.</p>
-
-<h2 id="bootstrap-3-1">Система сеток Bootstrap 3</h2>
-
-<p>Важнейшей составляюшей любого CSS-фреймворка является система CSS-сетки (grid). Как и в предыдущей версии Bootstrap 2, в версии 3 используется 12-ти колоночная система.</p>
-
-<p>Однако, в Bootstrap 3 применяются четыре типа классов для создания адаптивной (responsive) сетки. На официальном сайте Bootstrap 3 имеется таблица с побробным и наглядным описанием этих классов - <a href="http://getbootstrap.com/css/#grid" title="Grid Options">Grid Options</a>.</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/bootstrap3_grid-options.png" alt="Таблица классов для CSS-сетки Bootstrap 3" /></p>
-
-<p>В этой таблице представлены четыре ширины экрана устройства, на котором будет отображена страница. Колонка “Extra small devices” с шириной менее 768px обозначает <strong>мобильные устройства</strong>. Колонка “Small devices” с шириной равной или больше 768px представляет <strong>планшетные компьютеры</strong> (планшеты). Две остальные колонки представляют <strong>обычный настольный монитор</strong> через колонку “Medium devices” с шириной равной или больше 992px и <strong>широкоформатный монитор</strong> через колонку “Large devices” с шириной равной или больше 1200px.</p>
-
-<p>Вышеназванные величины 768px, 992px и 1200px являются контрольными точками (breakpoints), служащими для обработки медиа-запросов в адаптивном дизайне страницы.</p>
-
-<p>В данной таблице строка “Class prefix” является чуть ли не самой важной, так как в ней содержатся имена (префиксы) классов фреймворка Bootstrap 3 для каждого из четырех типов устройств. Для мобильного устройства имя (префикс) класса будет <code>.col-xs-</code>, для планшетного компьютера префикс будет <code>.col-sm-</code>, для обычного монитора - <code>.col-md-</code> и для широкоформатного монитора - <code>.col-lg-</code>. Для видно из названия префиксов, они являются сокращениями от названия самих устройств, поэтому их легко запомнить.</p>
-
-<p>Вот и все, что необходимо знать о системе CSS-сеток в фреймворке Bootstrap 3. Дальше можно легко домыслить ход построения адаптивной сетки для конкретного сайта.</p>
-
-<h2 id="css---bootstrap-3">Пример создания CSS-сетки в Bootstrap 3</h2>
-
-<p>Допустим, необходимо создать следующий макет:</p>
-
-<ul>
-  <li>для широкоформатного монитора в макете должно быть 2 столбца - один шириной 10 колонок и второй шириной 2 колонки;</li>
-  <li>для обычного монитора 2 столбца - один шириной 8 колонок и второй шириной 4 колонки;</li>
-  <li>для планшета 2 столбца - один шириной 6 колонок и второй шириной также 6 колонок;</li>
-  <li>для мобильного устройства макет должен остаться, как и для планшета - два столбца одинаковой ширины.</li>
-</ul>
-
-<p>То есть, при изменении ширины монитора устройства ширина столбцов в макете должна меняться, как показано выше. Для этого создадим простую разметку и добавим в нее классы Bootstrap 3:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-10 col-md-8 col-sm-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 col-md-4 col-sm-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Если открыть созданную страницу в окне браузера и попробовать менять ширину его окна, то в диспечере свойств страницы увидим метаморфозы, связанные с работой медиа-запросов <code>media-queries</code>. При ширине окна больше 1200px будем наблюдать левый столбец шириной в 10 колонок и правый столбец шириной в 2 колонки.</p>
-
-<p>Уменьшив ширину окна до 992px, получим левый столбец шириной в 8 колонок и правый стлбец шириной в 4 колонки. Еще уменьшив окно до 768px, получим два одинаковых столбца шириной в 6 колонок. Если окно окончательно уменьшится (менее 768px), ширина столбцов останется прежней, но они расположаться вертикально, друг под другом (<em>поведение по умолчанию</em>).</p>
-
-<h2 id="bootstrap-3-2">Видимость элементов сетки в Bootstrap 3</h2>
-
-<p>Немного усложним задачу и сделаем ее интереснее ради теоретического примера работы фреймворка Bootstrap 3. Допустим, нам необходим такой макет:</p>
-
-<ul>
-  <li>широкоформатный монитор - 12 колонок;</li>
-  <li>обычный монитор - 3 колонки;</li>
-  <li>планшетный монитор - 3 колонки;</li>
-  <li>мобильный монитор - 2 колонки.</li>
-</ul>
-
-<p>Тогда HTML-разметка и классы фреймворка Bootstrap 3 следующими:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 col-md-4  col-sm-4  col-xs-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 hidden-md hidden-sm hidden-xs&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 col-md-4  col-sm-4  col-xs-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 hidden-md hidden-sm hidden-xs&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 col-md-4  col-sm-4  hidden-xs&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 hidden-md hidden-sm hidden-xs&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>В данном случае при измении ширины окна браузера будет меняться количество колонок внутри макета. При ширине большей 1200px число колонок будет равняться шести. При уменьшении окна до ширины в 992px число колонок изменится до 4-х и будет оставаться таковым при ширине окна 768px. Если окно еще уменьшится ниже 768px, то количество колонок измениться до двух.</p>
-
-<p>Подобные метаморфозы возможны благодаря классу <code>hidden-x</code>, который вы могли заметить в разметке. Задача этого класса скрыть указанный элемент при достижении окном браузера определенной контрольной точки. Для каждого из предполагаемых состояний окна браузера необходимо указать класс - <code>hidden-lg</code>, <code>hidden-md</code>, <code>hidden-sm</code>, <code>hidden-xs</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/bootstrap3_available-classes.png" alt="Сравнительная таблица классов hidden и visible в Bootstrap 3" /></p>
-
-<p>Противоположностью класса <code>hidden-x</code> является класс <code>visible-x</code>. Несмотря на то, что действие этих классов должно быть прямо противоположным друг другу, на практике это различие уловить не так просто и тут может помочь сравнительная таблица с официального файта Bootstrap 3 - <a href="http://getbootstrap.com/css/#responsive-utilities" title="Responsive utilities">Responsive utilities</a>. В этой таблице (см. таблицу выше) хорошо видно различие между этими классами.</p>
-
-<p>В то время как класс <code>hidden-x</code> производит скрытие элемента в определенной контрольной точке (breakpoint), во всех остальных состояниях элемент видимый. Класс <code>visible-x</code> делает элемент видимым только в определенном состоянии - во всех остальных состояниях элемент <strong>невидимый</strong>.</p>
-
-<h2 id="nesting---bootstrap-3">Вложенность (nesting) сетки в Bootstrap 3</h2>
-
-<p>CSS-сетка в фреймворке Bootstrap 3 позволяет выполнять вложение одних ячеек в другие. Такое явление называется nesting. К примеру, необходим создать такую HTML-разметку:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row primo&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-4&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-4&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-4&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row secondo&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-8&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-4&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row tetro&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-6&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-      <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row quattro&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Для наглядности примера оставим для элементов только один класс <code>.col-lg-</code>. Блок с классом <code>primo</code> имеет три обычные колонки <code>col-lg-4</code>. Блок с классом <code>secondo</code> имеет две колонки - <code>col-lg-8</code> и <code>col-lg-4</code>. Внутри колонки <code>col-lg-8</code> размещено еще два блока равной ширины - две колонки с классом <code>col-lg-6</code>. Это пример вложенности (nesting) одних ячеек CSS-сетки Bootstrap 3 в другие ячейки.</p>
-
-<p>Аналогичная ситуация с блоком класса <code>tetro</code>, но в нем в оба “первичных” блока вложены еще два блока. Всего получается четыре блока. С блоком класса <code>quattro</code> все просто - там “обычные” (не вложенные) шесть блоков класса <code>col-lg-2</code>.</p>
-
-<p>При этом нужно обратить внимание (если еще не догадались), что при вложении одних блоков в другие ширина блока-родителя принимается по умолчанию равной 12-колонкам.</p>
-
-<h2 id="offsetting---bootstrap-3">Смещение (offsetting) колонок в Bootstrap 3</h2>
-
-<p>В Bootstrap 3 можно смещать колонки вправо с помощью класса <code>.col-*-offset-*</code>, который добавляет <code>margin-left</code> для указанной колонки. Смещение производится на ширину колонки, кратную указанному количеству.</p>
-
-<p>Приведу пример, чтобы было наглядно понятно:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-8&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 col-lg-offset-2 right&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>В этом примере колонка с классом <code>right</code> имеет ширину в два столбца и смещается вправо опять таки на два столбца - <code>col-lg-offset-2</code>. При этом стоит также заметить, что данное смещение будет выполняться только при ширине экрана больше 1200px (breakpoint), на что указывает имя класса - <code>col-lg-</code>. Если необходимо, чтобы такое смещение сохранялось при меньших размерах окна браузера, необходимо явно указать это в коде:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-8&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-lg-2 col-lg-offset-2 col-md-offset-2 col-sm-offset-2 col-xs-offset-2 right&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<h2 id="responsive---bootstrap-3">Адаптивная (responsive) сетка в Bootstrap 3</h2>
-
-<p>Переключать ширину сетки с фиксированной на резиновую в Bootstrap 3 можно точно также, как и во 2-й версии. Для этого нужно заменить для блока-контейнера имя класса с <code>container</code> на <code>container-fluid</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container-fluid&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
-    ...
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<h2 id="section">Заключение</h2>
-
-<p>На этом обзор CSS-сетки в фреймворке Bootstrap 3 можно считать законченным. Субъективно для меня был интересен именно этот вопрос. Что касается рассмотрения остальных классов, предназначенных для оформления различных элементов на странице, то мне они кажутся не такими интересныи и важными.</p>
-
-<p>Может быть, в дальнейшем я и вернусь к расмотрению деталей фреймворка Bootstrap 3.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1469,6 +1351,12 @@
       <li>
         
           <a href="http://zencoder.ru/page44">44</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page45">45</a>
         
       </li>
     
