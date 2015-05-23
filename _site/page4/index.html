@@ -144,6 +144,82 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-17T00:00:00+03:00"><a href="http://zencoder.ru/git/fast-forward-git/">April 17, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/fast-forward-git/" rel="bookmark" title="Режим fast-forward в Git" itemprop="url">Режим fast-forward в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Перевод статьи, посвященной вопросу - что такое fast-forward в системе Git</p>
+</blockquote>
+
+<p>Оригинал данного вольного перевода размещен здесь - <a href="http://ariya.ofilabs.com/2013/09/fast-forward-git-merge.html" title="Fast-Forward Git Merge">Fast-Forward Git Merge</a>. Статья довольно свежая - от 20.09.2013. Почему перевод статьи? Потому что на русском ничего не нашел (окромя <a href="http://git-scm.com/book/ru/v2" title="Pro Git">книги официальной</a>).</p>
+
+<p>Слияние (<code>merge</code>) ветвей является весьма распространенной и обыденной операцией, выполняемой в системе Git. Однако, в некоторых случаях Git выполняет слияние ветвей в режиме <strong>fast-forward</strong>. Но что такое режим <strong>fast-forward</strong> и чем он отличается от <em>обычного</em> режима слияния ветвей.</p>
+
+<p>Давайте разберем этот вопрос на конкретном примере. Допустим, при работе в репозитории мною была создана ветка <code>speedup</code> из текущей ветки <code>master</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git checkout -b speedup</code></pre></div>
+
+<p>Поработав некоторое время в этой ветке, я создал несколько <code>commit</code>‘ов (три коммита, три белых кружка на рисунке):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/fast-forward_1.png" alt="Ветка speedup" title="Ветка Speedup" /></p>
+
+<p>После этого я решил, что работа в ветке <code>speedup</code> мною выполнена и я сделал <code>push</code> этой ветки на свой удаленный репозиторий.</p>
+
+<p>Между тем, обратите внимание на тот важный факт, что в ветке <code>master</code> <strong>не было внесено никаких изменений</strong> с того самого момента, когда я сделал ответвление от нее - ветку <code>speedup</code>.</p>
+
+<p>Когда менеджер проекта уведомится о том факте, что разрабатываемая мною ветка готова для интеграции в проект, то им будет выполнены стандартные шаги по публикации моей работы - команды <code>git fetch</code> и <code>git merge</code>. Так как в ветке <code>master</code> не было внесено изменений с того момента (серый кружок), как была создана ветка <code>speedup</code>, то при слиянии система Git применит метод <strong>fast-forward</strong>. В этом случае вся последовательность коммитов будет иметь <em>линейный</em> вид (<strong>левая часть</strong> рисунка):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/fast-forward_2.png" alt="Fast-Forward Git" title="Fast-Forward Git" /></p>
+
+<p>Примечание переводчика: другими словами, Git просто произведет перемещение указателя HEAD с серого кружка (последний коммит ветки <code>master</code>) на последний белый кружок (последний коммит ветки <code>speedup</code>). И будет считать, что все это - ветка <code>master</code>. Получится своеобразный <em>проброс указателя</em> HEAD вдоль последовательной линии коммитов. Именно поэтому автор упоминает термин <em>линейного</em> вида.</p>
+
+<p>Другим вариантом слияния веток в данном случае является использование флага <code>-no-ff</code> в команде <code>git merge</code>, что представляет из себя сокращение от - <strong>no fast-forward</strong>. В этом случае ситуация будет несколько иной - ее схематичное изображение на <strong>правой</strong> части рисунка вверху.</p>
+
+<p>В этом случае при слиянии веток <code>master</code> и <code>speedup</code> системой Git создается коммит (кружок со штрихованной границей), задача которого - <strong>информировать о слиянии веток</strong>. Другими словами - <em>цель</em> и <em>задача</em> этого коммита только в информировании о слиянии веток <code>master</code> и <code>speedup</code>.</p>
+
+<p>В ситуациях подобного рода система Git всегда старается применить режим <strong>fast-forward</strong>, если это возможно. Однако, такое поведение Git можно <a href="http://stackoverflow.com/questions/2500296/can-i-make-fast-forwarding-be-off-by-default-in-git" title="Fast Forward Off By Default">легко изменить</a> на режим <strong>no fast-forward</strong> и сделать его поведением системы по умолчанию.</p>
+
+<p>Пожалуй, самой главной неприятной неожиданностью при использовании <code>merge</code> в режиме <strong>no fast-forward</strong> - это когда вы нажимаете ту самую зеленую кнопку “Merge” в web-интерфейсе сервиса GitHub при выполнении <a href="https://help.github.com/articles/using-pull-requests/" title="Pull Request">pull request</a>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/fast-forward_3.png" alt="GitHub Pull Request" title="GitHub Pull Request" /></p>
+
+<p>К сожалению, на сегодняшний день web-интерфейс GitHub выполняет операцию слияния (<code>merge</code>) так, как если бы для этой команды был установлен флаг <code>-no-ff</code>. Другими словами, даже если при слиянии веток ситуация позволяет использовать режим <strong>fast-forward</strong>, GitHub не будет его использовать.</p>
+
+<p>Одним из разумных объяснений такого поведения GitHub является тот факт, что каждая операция <code>pull request</code> должна быть однозначно <strong>идентифицирована</strong>. К примеру, несколько последних коммитов проекта (в качестве примера мною был взят проект <a href="https://github.com/eslint/eslint" title="ESLint">ESLint</a> - ничего личного) могут выглядеть таким образом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/fast-forward_4.png" alt="ESLint" title="ESLint" /></p>
+
+<p>Внимательно посмотрите на приведенный выше рисунок. На нем хорошо видно, что некоторые слияния (<code>merge</code>) веток могут быть выполнены в режиме <strong>fast-forward</strong>. Но своеобразный подход GitHub к слиянию веток привел к тому, что линейная история коммитов была превращена в нечто похожее на рисунок железнодорожного пути.</p>
+
+<p>Если в нескольких словвах подвести общий итог вышесказанного, то он окажется следующим.</p>
+
+<p>Режим <strong>no fast-forward</strong> хранит всю информацию о слияниях веток. Такой подход может оказаться запутанным и сложным, если необходимо прочитать историю коммитов.</p>
+
+<p>С другой стороны, режим <strong>fast-forward</strong> хранит не всю информацию о слияниях веток. Такой подход более простой для чтения, но в этом случае становится неочевидным история веток проекта.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-04-16T00:00:00+03:00"><a href="http://zencoder.ru/git/git-diff/">April 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -626,92 +702,6 @@ index fff54a9..8fbea1c 100644
 <p>Теперь, если проверить состояние удаленного репозитория на сервере GitHub, то увидим, что оно идентично состоянию локального репозитория. Но самое главное - удален последний ошибочный коммит, чего я и добивался.</p>
 
 <p>На этом все,</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-04-02T00:00:00+03:00"><a href="http://zencoder.ru/linux/easytag-several-operations/">April 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/linux/easytag-several-operations/" rel="bookmark" title="EasyTAG - работаем с программой" itemprop="url">EasyTAG - работаем с программой</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Как оказалось, работа в программе EasyTAG - это нетривиальная задача. Интерфейс программы не является интуитивно понятным (по крайней мере - для меня).</p>
-</blockquote>
-
-<p>У меня стояло несколько задач для обработки файлов аудио-книг:</p>
-
-<ul>
-  <li>одновременное редактирование тегов для нескольких mp3-файлов</li>
-  <li>добавление изображений к mp3-файлу</li>
-  <li>переименование mp3-файлов по их тегам</li>
-</ul>
-
-<p>Во всех трех случаях мне пришлось заглядывать в справку <kbd>F1</kbd> программы EasyTAG, чтобы разобраться с вопросами.</p>
-
-<h2 id="easytag-----mp3-">EasyTAG - редактирование нескольких mp3-файлов</h2>
-
-<p>Если стоит задача редактирования тегов для нескольких mp3-файлов одновременно (а такая задача возникает часто), для этого необходимо выполнить несложную последовательность действий.</p>
-
-<ol>
-  <li>Выделить в окне EasyTAG все редактируемые mp3-файлы</li>
-  <li>Изменить значение тега</li>
-  <li>Нажать на значок “Ab” в поле тега</li>
-</ol>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_multiple-rename.png" alt="Редактирования нескольких файлов одновременно" class="center-image" /></p>
-
-<ol>
-  <li>Сохранить внесенные изменения</li>
-</ol>
-
-<h2 id="easytag----">EasyTAG - добавление изображения</h2>
-
-<p>Для добавления изображений (обложек) к аудио-файлам, нужно воспользоваться соответствующей вкладкой в панели редактирования тегов EasyTAG. Значок плюса добавляет изображение к файлу (можно добавить несколько изображений); но есть еще два значка, не столь очевидных.</p>
-
-<p>Первый значок (шестренка) служит для открытия окна редактирования изображения (обложки) файла. Можно изменить заголовок изображения, а также его тип.</p>
-
-<p>Второй значок служит для того, чтобы назначить изображение для всех выбранных mp3-файлов. Это аналог значка “Ab”, только для изображений.</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_cover_edit.png" alt="Добавление изображения" class="center-image" /></p>
-
-<h2 id="easytag----mp3---">EasyTAG - переименование mp3-файлов по тегам</h2>
-
-<p>Еще одна крайне важная и полезная функция, которая необходима в программе EasyTAG - это переименование mp3-файлов по значениям тега этого mp3-файла. Другими словами, имеется mp3-файл такого (примерного) вида - <code>2013-04-02-Альфред-ван-Вогт-Зачарованная деревня.mp3</code>. Это mp3-файл нужно переименовать в программе EasyTAG и привести к виду <code>Альфред-ван-Вогт - Зачарованная деревня.mp3</code>.</p>
-
-<p>Программа EasyTAG обладает такой возможностью, вот только “добраться” (точнее - догадаться) до этой функции с первого раза не получиться. Ниже приведена последовательность действий для достижения этой цели.</p>
-
-<ol>
-  <li>Выделить в окне EasyTAG все редактируемые mp3-файлы</li>
-  <li>Нажать иконку “Show scanner”. Откроется окно “Tag and Filename Scan”, в котором в поле “Scanner” из выпадающего списка необходимо выбрать запись “Rename File and Directory”. Во втором поле окна размещен обширный список готовых масок для переименования файлов. Можно выбрать готовую маску, а можно создать свою - это очень просто сделать. Должно получиться нечто похожее на следующее:</li>
-</ol>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_file-rename-via-tag.png" alt="Переименование файлов по тегам" class="center-image" /></p>
-
-<ol>
-  <li>Нажать кнопку “Scan Files”, чтобы применить маску к ранее выбранным mp3-файлам.</li>
-  <li>Закрыть окно “Tag and Filename Scan”, нажав кнопку “Close”.</li>
-  <li>Сохранить внесенные изменения. При этом появиться окно с предупреждением о переименовании mp3-файла (-ов)</li>
-</ol>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_file-rename-via-tag-confirm.png" alt="Подтверждение переименования файлов" class="center-image" /></p>
-
-<p>В принципе, на это все.</p>
 
 <hr />
 

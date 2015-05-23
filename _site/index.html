@@ -144,6 +144,204 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-23T00:00:00+03:00"><a href="http://zencoder.ru/jquery/next-jquery/">May 23, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/next-jquery/" rel="bookmark" title="Методы next() и prev() библиотеки jQuery" itemprop="url">Методы next() и prev() библиотеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Рассмотрю методы для нахождения <strong>следующих</strong> и <strong>предыдущих</strong> элементов из выборки. Предполагается, что имеется группа элементов, у которых один родитель.</p>
+
+<p>Чтобы не ходить вокруг да около, приведу пример HTML-разметки:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 6<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 7<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 8<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 9<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 10<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 11<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 12<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Видно, что у элемента-родителя <code>ul class="test"</code> имеется двенадцать элементов-потомков <code>li class="test__item"</code>.</p>
+
+<p>Так вот, в библиотеке jQuery имеются несколько классов, с помощью которых можно “погулять” по этому DOM-дереву. Расссмотрю каждый из них в отдельности.</p>
+
+<p>Но стоит сразу сказать - как всегда, эти методы очень краткие и предельно понятные. Вся “прелесть” начинается, когда методы объединяют в jQuery-цепочку.</p>
+
+<h2 id="next">Метод next()</h2>
+
+<p>С помощью этого метода возвращается элемент, находящий <strong>следующим</strong> по отношению к текущему элементу.</p>
+
+<p>Приведу такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="nx">next</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--nexted&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>… который выполняет следующее:</p>
+
+<ul>
+  <li>создать переменную <code>list</code> и поместить в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найти все элементы <code>li</code></li>
+  <li>вернуть элемент <code>li</code> с индексом 6 - <code>.eq(6)</code></li>
+  <li>найти следующий за ним элемент <code>li</code></li>
+  <li>присвоить ему класс <code>.test__link--nexted</code></li>
+</ul>
+
+<p>В результате выполнения этого кода класс <code>.test__link--nexted</code> будет присвоен элементу <code>li</code> с индексом 7 (или восьмому - по счету):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 6<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 7<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--nexted&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 8<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 9<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 10<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 11<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 12<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h2 id="prev">Метод prev()</h2>
+
+<p>Этот метод абсолютно аналогичен методу <code>next()</code> за тем исключением, что его действие направлено в противоположную сторону. Метод <code>prev()</code> возвращает элемент, который <strong>предшествует</strong> текущему элементу.</p>
+
+<p>То есть, такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="nx">prev</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--preved&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<ul>
+  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
+  <li>вернет элемент <code>li</code> с индексом 6 - <code>.eq(6)</code></li>
+  <li>найдет предшествующий ему элемент <code>li</code></li>
+  <li>присвоит ему класс <code>.test__link--preved</code></li>
+</ul>
+
+<p>Результатом выполнения этого кода класс <code>.test__link--preved</code> будет присвоен элементу <code>li</code> с индексом 5 (или шестому - по счету):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--preved&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 6<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 7<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 8<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 9<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 10<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 11<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 12<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Обобщением вышесказанного является такое предложение. Методы <code>next()</code> и <code>prev()</code> возвращают один элемент, который является <strong>следующим</strong> или <strong>предшествует</strong> текущему элементу. Все элементы имеют <strong>одного общего родителя</strong> и поиск осуществляется только в этих рамках (другими словами - это sibling-элементы).</p>
+
+<h2 id="nextall--prevall">Методы nextAll() и prevAll()</h2>
+
+<p>Производными от рассмотренных мною выше методов <code>next()</code> и <code>prev()</code> являются методы <code>nextAll()</code> и <code>prevAll()</code>. Фактически, это те же самые методы <code>next()</code> и <code>prev()</code>, но в этих методах возвращается не один элемент, а <strong>все оставшиеся</strong> элементы, которые являются sibling по отношению к текущему элементу.</p>
+
+<p>То есть, такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">nextAll</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--squared&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<ul>
+  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
+  <li>вернет элемент <code>li</code> с индексом 3 - <code>.eq(3)</code></li>
+  <li>найдет все следующие за ним элементы <code>li</code> - <code>.nextAll()</code></li>
+  <li>присвоит всем найденным элементам <code>li</code> класс <code>.block__item--squared</code></li>
+</ul>
+
+<p>Результатом будет такой HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 6<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 7<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 8<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 9<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 10<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 11<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 12<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Метод <code>prevAll()</code> работает аналогично, но “в другую сторону”. Этот метод возвращает <strong>все элементы</strong>, которые <strong>предшествуют</strong> текущему элементу.</p>
+
+<p>То есть, такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">prevAll</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--circled&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<ul>
+  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
+  <li>вернет элемент <code>li</code> с индексом 3 - <code>.eq(3)</code></li>
+  <li>найдет все элементы <code>li</code>, которые предшествуют ему - <code>.prevAll()</code></li>
+  <li>присвоит всем найденным элементам <code>li</code> класс <code>.block__item--circled</code></li>
+</ul>
+
+<p>Результатом работы этого js-скрипта будет такой HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 6<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 7<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 8<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 9<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 10<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 11<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item 12<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Вывод по методам <code>nextAll()</code> и <code>prevAll()</code>. Эти методы работают с sibling-элементами, то есть - имеющими одного родителя. Эти методы возвращают все найденные элементы, которые предшествуют или расположены после текущего элемента.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-05-22T00:00:00+03:00"><a href="http://zencoder.ru/jquery/siblings-jquery/">May 22, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -288,6 +486,8 @@
   <li><code>$('div').parent('.block')</code> - вернет элементы класса <code>.block</code>, которые являются родительскими для div-элементов на странице</li>
 </ul>
 
+<p>На этом все.</p>
+
 <hr />
 
   </div><!-- /.entry-content -->
@@ -386,14 +586,30 @@
 <p>Приведу такой гипотетический пример:</p>
 
 <div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item primo&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item secondo&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item tetro&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item quattro&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item cinque&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item sei&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item sedici&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item primo&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item secondo&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item tetro&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item quattro&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item cinque&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item sei&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item sedici&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
 <span class="nt">&lt;/ul&gt;</span></code></pre></div>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test__item&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
@@ -404,12 +620,15 @@
 
 <ul>
   <li>сделать выборку всех элементов с классом <code>.test__item</code></li>
-  <li>при клике мыши на любом из этих элементов выполнить функцию</li>
-  <li>сделать выборку всех элементов <code>li</code></li>
-  <li>вернуть индекс активного элемента из выборки - <code>$(this).index()</code></li>
-  <li>вернуть активный элемент по его индексу - <code>.eq($(this).index())</code></li>
-  <li>для возвращенного элемента <code>.eq($(this).index())</code> изменить его содержимое на значение его индекса - <code>html($(this).index())</code></li>
-  <li>всем соседним (sibling) элементам установить значение в - <code>.siblings().html("test item link")</code></li>
+  <li>при клике мыши на любом из этих элементов выполнить функцию:
+    <ul>
+      <li>сделать выборку всех элементов <code>li</code></li>
+      <li>вернуть индекс активного элемента из выборки - <code>$(this).index()</code></li>
+      <li>вернуть активный элемент по его индексу - <code>.eq($(this).index())</code></li>
+      <li>для возвращенного элемента <code>.eq($(this).index())</code> изменить его содержимое на значение его индекса - <code>html($(this).index())</code></li>
+      <li>всем соседним (sibling) элементам установить значение в - <code>.siblings().html("test item link")</code></li>
+    </ul>
+  </li>
 </ul>
 
 <p>Пример рабочий, поэтому его можно свободно попробовать.</p>
@@ -494,109 +713,6 @@
 <p>На этом все.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-18T00:00:00+03:00"><a href="http://zencoder.ru/jquery/find-jquery/">May 18, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/find-jquery/" rel="bookmark" title="Функция .find библиотеки jQuery" itemprop="url">Функция .find библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Осуществляет поиск элементов внутри <strong>уже выбранных элементов</strong>.</p>
-
-<p>Метод имеет варианты использования и соответствующий синтаксис:</p>
-
-<p><code>.find(selector)</code> - ищет элементы, соответствующие заданному селектору, внутри <strong>выбранных элементов</strong>.</p>
-
-<p><code>.find(element)</code> - осуществляет поиск элемента <code>element</code> внутри <strong>выбранных элементов</strong>. Параметр <code>element</code> задается в виде DOM-элемента.</p>
-
-<p><code>.find(jQuery object)</code> - осуществляет поиск элементов внутри <strong>выбранных элементов</strong>, оставляя те, которые содержатся в заданном объекте jQuery.</p>
-
-<p><strong>Примеры использования</strong>.</p>
-
-<ul>
-  <li>вернет все элементы <code>span</code>, находящиеся внутри div-элементов:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span></code></pre></div>
-
-<ul>
-  <li>вернет все элементы с классом <code>.bigBlock</code>, находящиеся внутри div-элементов:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.bigBlock&#39;</span><span class="p">)</span></code></pre></div>
-
-<p><strong>Вышеуказанные примеры хороши лишь в качестве демонстрации возможностей метода <code>.find()</code>.</strong></p>
-
-<p>Например, искать span-элементы, лежащие внутри div’ов правильнее будет так:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div span&#39;</span><span class="p">)</span></code></pre></div>
-
-<p>Метод <code>.find()</code> же удобно использовать, когда некоторые <strong>элементы уже найдены</strong> и необходимо осуществить поиск других элементов внутри уже найденных элементов:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// найдем все ul-элементы на странице</span>
-<span class="kd">var</span> <span class="nx">$ulElements</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">);</span>
-<span class="c1">// найдем li-элементы с классом .userBox внутри $ulElements</span>
-<span class="nx">$ulElements</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">);</span>
-
-<span class="c1">// сокращенный вариант записи</span>
-<span class="kd">var</span> <span class="nx">$ulElements</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>Так же <code>.find()</code> удобен для использования в <strong>цепочках методов</strong>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">)</span> <span class="c1">// найдем все ul-элементы на странице</span>
-  <span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;listElements&#39;</span><span class="p">)</span> <span class="c1">// добавим ul&#39;ам класс .listElements</span>
-  <span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">)</span> <span class="c1">// найдем li-элементы с классом .userBox внутри ul&#39;ов</span>
-  <span class="p">.</span><span class="nx">remove</span><span class="p">();</span> <span class="c1">// и удалим их</span>
-
-<span class="c1">// сокращенный вариант записи</span>
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;listElements&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span></code></pre></div>
-
-<p>Работа метода <code>.find()</code> <strong>схожа</strong> с методом <code>.children()</code>, который осуществляет поиск подходящих <strong>дочерних элементов</strong>.</p>
-
-<p>Отличие заключается в том, что <code>.find()</code> проводит поиск не только среди дочерних элементов, но и внутри них тоже (другими словами - поиск проходит на <strong>всех уровнях</strong> иерархии DOM, в то время как <code>.children()</code> ищет только <strong>на одном уровне</strong>).</p>
-
-<h2 id="find">Пример метода .find()</h2>
-
-<p>Внутри каждого ul-элемента найдем первый li-элемент и последний p-элемент:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// найдем и сохраним все ul-элементы</span>
-<span class="kd">var</span> <span class="nx">$matched</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">);</span>
-
-<span class="c1">// выделим их</span>
-<span class="nx">$matched</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;matched&#39;</span><span class="p">);</span>
-
-<span class="c1">// найдем внутри уже выбранных элементов все требуемые и выделим их, добавив класс .result</span>
-<span class="nx">$matched</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first, p:last&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">);</span>
-
-<span class="c1">// сокращенный вариант записи</span>
-<span class="kd">var</span> <span class="nx">$matched</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;matched&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first, p:last&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">);</span></code></pre></div>
-
-<h2 id="find-1">Фильтрация элементов помощью .find()</h2>
-
-<p>Кроме поиска, .find() может осуществлять своеобразную фильтрацию.</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">$span</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span> <span class="c1">// создать переменную $span и поместить в нее результат выборки по элементам span</span>
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="nx">$span</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">);</span> <span class="c1">// найти все элементы p, среди этих найденных элементов найти все элементы span и расскрасить их</span></code></pre></div>
-
-<hr />
-
-<p>Материал статьи полностью основан на <a href="http://jquery.page2page.ru/" title="jQuery page2page2Page">http://jquery.page2page.ru</a> и не претендует на оригинальность.</p>
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

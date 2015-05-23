@@ -144,6 +144,65 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-07-15T00:00:00+04:00"><a href="http://zencoder.ru/linux/linux-hacking-grub/">July 15, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/linux/linux-hacking-grub/" rel="bookmark" title="Взлом Linux через GRUB" itemprop="url">Взлом Linux через GRUB</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Очень простой способ получить полный доступ (права <code>root</code>‘а) к системе Linux, используя загрузчик GRUB (даже LiveCD не нужен).</p>
+</blockquote>
+
+<p>Что для этого нужно? Просто грузим систему и ждем появления меню GRUB’а со списком установленных в системе операционных систем.</p>
+
+<p>Список может быть примерно такой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Gentoo</span> <span class="n">Linux</span> <span class="n">2</span><span class="p">.</span><span class="n">6</span><span class="p">.</span><span class="n">31-r6</span>
+<span class="n">ArchLinux</span> <span class="n">2</span><span class="p">.</span><span class="n">6</span><span class="p">.</span><span class="n">31</span>
+<span class="n">Ubuntu</span> <span class="n">Karmic</span> <span class="n">Koala</span> <span class="n">9</span><span class="p">.</span><span class="n">10</span>
+<span class="n">Sabayon</span> <span class="n">Linux</span> <span class="n">r5</span><span class="p">.</span><span class="n">1</span> <span class="n">KDE</span></code></pre></div>
+
+<p>Выбираем систему (стрелочками вверх-вниз), к которой хотим получить доступ. И нажимаем буковку <code>e</code> на клавиатуре (<code>e</code> – от <code>edit</code>). Например, нам нужно “попасть” в ArchLinux.</p>
+
+<p>Выбираем пункт ArchLinux 2.6.31, нажимаем <code>e</code> и нам открывается для редактирования запись, соответствующая записи в конфигурационном файле GRUB <code>menu.lst</code> (для Debian-подобных систем, или <code>grub.cfg</code> – для Gentoo):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">title</span> <span class="n">Archlinux</span> <span class="n">2</span><span class="p">.</span><span class="n">6</span><span class="p">.</span><span class="n">31</span>
+  <span class="n">root</span> <span class="p">(</span><span class="n">hd0</span><span class="p">,</span><span class="n">5</span><span class="p">)</span>
+  <span class="n">kernel</span> <span class="p">/</span><span class="n">boot</span><span class="p">/</span><span class="n">vmlinuz26</span> <span class="n">root</span><span class="p">=/</span><span class="n">dev</span><span class="p">/</span><span class="n">sda6</span> <span class="n">ro</span> <span class="n">vga</span><span class="p">=</span><span class="n">0</span><span class="k">?</span><span class="n">318</span>
+  <span class="n">initrd</span> <span class="p">/</span><span class="n">boot</span><span class="p">/</span><span class="n">kernel26</span><span class="p">.</span><span class="n">img</span></code></pre></div>
+
+<p>Удаляем в строке <code>kernel</code> (в данном случае – третья по счету) все, кроме пути к ядру <code>/boot/vmlinuz26</code> и пути к разделу <code>root</code> (<code>root=/dev/sda6</code>). То есть, у нас получится запись такого вида:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">kernel</span> <span class="p">/</span><span class="n">boot</span><span class="p">/</span><span class="n">vmlinuz26</span> <span class="n">root</span><span class="p">=/</span><span class="n">dev</span><span class="p">/</span><span class="n">sda6</span></code></pre></div>
+
+<p>Дописываем в конец этой строки это: <code>rw init=/bin/bash</code>. В итоге запись будет выглядеть так:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">kernel</span> <span class="p">/</span><span class="n">boot</span><span class="p">/</span><span class="n">vmlinuz26</span> <span class="n">root</span><span class="p">=/</span><span class="n">dev</span><span class="p">/</span><span class="n">sda6</span> <span class="n">rw</span> <span class="n">init</span><span class="p">=/</span><span class="n">bin</span><span class="p">/</span><span class="n">bash</span></code></pre></div>
+
+<p>Сохраняем результаты нашего “непосильного” труда – нажимаем <kbd>Enter</kbd> и затем грузим ArchLinux с исправленными нами параметрами, нажав <code>b</code> (<code>b</code> – от <code>boot</code>).</p>
+
+<p>В итоге у нас загружается консоль с правами <code>root</code>‘а. Что и требовалось. Дальше – только дело фантазии и умения.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-07-13T00:00:00+04:00"><a href="http://zencoder.ru/css/coding-hacking/">July 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -518,151 +577,6 @@ $ sudo ifconfig -a
 <p>Сканирование портов Windows XP:</p>
 
 <p><img src="http://zencoder.ru/images/uploads/2013/06/Port-Scan-Windows-Network-Tools.png" alt="Port Scan Windows - Network Tools" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-06-14T00:00:00+04:00"><a href="http://zencoder.ru/css/css-box-shadow/">June 14, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-box-shadow/" rel="bookmark" title="CSS box shadow - создаем тени для блоков" itemprop="url">CSS box shadow - создаем тени для блоков</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Свойство <code>box-shadow</code> позволяет web-дизайнерам создавать очень интересные эффекты для элементов страницы. А именно - с помощью него можно задавать тень для блочных элементов, например таких, как <code>div</code>.</p>
-</blockquote>
-
-<p>Создаваемая тень имеет несколько параметров, комбинация которых позволяет придать оригинальный и неповторимый вид элементу. Можно установить смещение тени по горизонтали, по вертикали, задать цвет, степень размытия краев, размер. В CSS3 имеется возможность создать для элемента сразу несколько теней, с разным цветом и размерами.</p>
-
-<p>Можно также создать тень, которая будет размещена не снаружи элемента, а внутри него.</p>
-
-<h2 id="box-shadow">Синтаксис свойства <code>box-shadow</code>:</h2>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">h-shadow</span> <span class="nt">v-shadow</span> <span class="nt">blur</span> <span class="nt">spread</span> <span class="nt">color</span> <span class="nt">inset</span><span class="o">;</span></code></pre></div>
-
-<p>где:</p>
-
-<ul>
-  <li><code>h-shadow</code> - смещение тени по горизонтали;</li>
-  <li><code>v-shadow</code> - смещение тени по вертикали;</li>
-  <li><code>blur</code> - размытие границ тени;</li>
-  <li><code>spread</code> - размер тени;</li>
-  <li><code>color</code> - цвет тени;</li>
-  <li><code>inset</code> - создать тень внутри элемента.</li>
-</ul>
-
-<p>Порядок следования значений свойства <code>box-shadow</code> необязательный, то есть, можно расположить их в любой последовательности.</p>
-
-<p>Простой пример использования <code>box-shadow</code>:</p>
-
-<p>Браузеры Firefox, Chrome, Opera и IE9 отобразят серую тень под этим блоком.</p>
-
-<p>Код, выводящий данный результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span></code></pre></div>
-
-<p>Однако, приведенный пример будет не совсем работоспособным. Для браузеров Firefox и Chrome более ранних версий может понадобиться добавление префиксов. Тогда полная версия кода будет выглядеть следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span>
-<span class="nt">-moz-box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span>
-<span class="nt">-webkit-box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span></code></pre></div>
-
-<p>Как говорилось выше, порядок следования значений свойства необязателен. Более того, из всех шести значений обязательными являются только два первых - смещение по горизонтали и по вертикали. Все остальные можно опустить, если в них нет необходимости.</p>
-
-<h2 id="section">Примеры использования кода:</h2>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span><span class="o">;</span>
-<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span><span class="o">;</span>
-<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">;</span>
-<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nt">3px</span> <span class="nf">#888</span><span class="o">;</span>
-<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nt">3px</span> <span class="nf">#888</span> <span class="nt">inset</span><span class="o">;</span>
-<span class="nt">box-shadow</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">5px</span> <span class="nt">2px</span> <span class="nf">#888</span><span class="o">,</span> <span class="nt">-5px</span> <span class="nt">-5px</span> <span class="nf">#f4f4f4</span><span class="o">,</span> <span class="nt">1px</span> <span class="nt">1px</span> <span class="nt">2px</span> <span class="nf">#cc6600</span><span class="o">;</span></code></pre></div>
-
-<p>Последняя строка наиболее интересна, поэтому разберем ее подробнее.</p>
-
-<p>Смещения по горизонтали и вертикали могут принимать как положительные, так и отрицательные значения. В последнем случае тень будет перемещаться не вправо, а влево. Размытие тени blur и размер тени spread могут иметь только положительные значения или 0. Несколько теней для одного элемента можно задавать последовательно, через запятую. В нашем примере было задано три тени с разными цветами и смещением.</p>
-
-<h2 id="box-shadow-1">Теория <code>box-shadow</code></h2>
-
-<p>По умолчанию, для элемента создается внешняя тень.</p>
-
-<p>Тень создается как минимум с посощью двух обязательных параметров - горизонтального и вертикального смещения.</p>
-
-<p>Горизонтальное смещение определяет смещение тени относительно элемента по горизонтали. Может принимать положительное или отрицательное значение. При положительном значении тень смещается вправо от элемента. При отрицательном - влево от элемента.</p>
-
-<p>Вертикальное смещение задает смещение тени по вертикали относительно элемента. Может рпинимать положительное или отрицательное значение. При положительном значении тень смещается относительно элемента вниз по вертикали. При отрицательном значении смещение происходит вверх по вертикали.</p>
-
-<p>Третье и необязательное значение свойства box-shadow, это размытие <code>blur</code>. По умолчанию оно равно 0 и граница тени четкая. Размытие может принимать только положительные значения. Чем больше число, тем сильнее происходит размытие. В спецификации не разъясняется точного алгоритма, по которому происходит усиления размытия при увеличении его значения.</p>
-
-<p>Размер тени spread также явлется необязательным параметром и может принимать как положительные, так и отрицательные значения. При положительном значении тень увеличивается по всем направлениям. При отрицательном наоборот уменьшается.</p>
-
-<h2 id="section-1">Несколько примеров теней</h2>
-
-<p>Ниже приведены несколько небольших примеров создания теней с разными смещениями, размытием и размером.</p>
-
-<p>В примере A смещение тени происходит влево и вверх на 5 пикселей.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_A</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">#888</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В примере B точно также происходит смещение на пять пикселей вверх и влево, но при этом добавлено размытие тени величиной в 5 пикселей. Хорошо видно, что тень имеет нечеткие границы.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_B</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В примере С таже самая тень имеет размер в 5 пикселей.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_C</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">0</span> <span class="m">5px#888</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Пример D показывает тень, имеющую размытие в 5 пикселей и размер в 5 пикселей.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_D</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">5px#888</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">-5px</span> <span class="m">-5px</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В примере E показана тень, которая не имеет смещения по горизонтали и вертикали, но у нее задано размытие в 5 пикселей.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_E</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px#888</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В примере F тень также не имеет смещения, но имеет размытие и размер в 5 пикселей.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#Example_F</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px#888</span><span class="p">;</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">5px</span> <span class="m">#888</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
 
 <p>На этом все.</p>
 

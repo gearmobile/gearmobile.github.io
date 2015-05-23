@@ -144,6 +144,143 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-02-23T00:00:00+04:00"><a href="http://zencoder.ru/css/negative-margin/">February 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/negative-margin/" rel="bookmark" title="Отрицательный margin в нормальном потоке" itemprop="url">Отрицательный margin в нормальном потоке</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Свойство <code>margin</code> очень хорошо для решения задачи установления дистанции между элементами, но знаете ли вы, что отрицательные <code>margin</code> могут не увеличивать, а сокращать расстояние между элементами, вплоть до того, что эти элементы будут перекрывать друг друга.</p>
+</blockquote>
+
+<p>Создадим простой пример и для этого предположим, что у нас есть страница, на которой элемент после заголовка <code>h2</code> всегда должен находиться непосредственно под ним. Самый распространенный пример из практики для этого случая, когда первый параграф, идущий сразу же после заголовка, не имеет пустого пространства (blank line) между собой и этим параграфом.</p>
+
+<p>Решения такого вопроса два.</p>
+
+<p><strong>Первый способ</strong> - это воспользоваться смежными селекторами.</p>
+
+<p><strong>Второй способ</strong>, представленный на рисунке ниже, это применить отрицательный <code>margin-bottom</code> для <code>h2</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/header-paragraph.png" alt="Между заголовком и параграфом нет промежутка" class="center-image" /></p>
+
+<p>Можно подумать, что у параграфа, который следует сразу за заголовком, отсутствует <code>margin-top</code>, но это не так. <code>Margin-top</code> никуда не пропадал.</p>
+
+<p>Он просто оказался перекрытым заголовком <code>h2</code>, у которого край <code>margin-bottom</code> находится в непосредственной близости от края текста самого заголовка. Параграф и его собственный <code>margin</code> располагаются сразу под ним, а не у нижнего края границы заголовка.</p>
+
+<p>Такой прием полезен на практике в случае, когда необходимо расположить часть контента “на одной линии”. Почему слово на одной линии заключено в кавычки - потому-что контент только визуально располагается на одной линии.</p>
+
+<p>Предположим, у нас есть список (HTML-разметка):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;jump&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;prev&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;ch03.html&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Salaries<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;next&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;ch05.html&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punching the Clock<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>В этом списке нам необходимо расположить оба пункта так, чтобы они находились на горизонтальной линии. Визуально это можно увидеть так, как изображено на рисунке ниже.</p>
+
+<p>Такую задачу можно выполнить обычным способом - через <code>float</code> (прим. переводчика - я бы так и поступил, разбросал оба <code>li</code> по разным углам блока <code>ul</code> через <code>float: left</code> и <code>float: right</code>) для обоих пунктов.</p>
+
+<p>Но можно решить такую задачу другим способом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/on_the_same_line.png" alt="Два пункта меню на одной линии" class="center-image" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.jump</span><span class="p">{</span>
+  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">25em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">.25em</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span><span class="p">;</span>
+<span class="p">}</span>
+  <span class="nc">.jump</span> <span class="nc">.next</span><span class="p">{</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-1em</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>В этом примере отрицательный <code>margin-top</code> величиной в <code>-1em</code> “поднимает” элемент <code>li.next</code> вверх ровно на высоту строки, установленную нами ранее в правиле <code>line-height: 1</code>.</p>
+
+<blockquote>
+  <p>Прим. переводчика: очень понравилось, о таком способе решения даже не подозревал!</p>
+</blockquote>
+
+<p>Другим полезным приемом является частичное выдвижение элемента изнутри наружу своего контейнера-родителя. Предположим, у нас стоит задача расположить блок заголовка точно по центру разделительной линии так, как это показано на рисунке ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/centering_heading_on_a_dividing_line.png" alt="Расположение заголовка по центру разделительной линии" class="center-image" /></p>
+
+<p>HTML-разметка такого заголовка будет следующей:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;entry&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    The Web Stack
+  <span class="nt">&lt;/h2&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.entry</span><span class="p">{</span>
+    <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.entry</span> <span class="nt">h2</span><span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">-0.67em</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>C другой стороны, может потребоваться задача, когда блок заголовка не имеет фиксированной ширины, а ширина задается только его содержимым. В этом случае необходимо добавить всего несколько строк кода в HTML-разметку и CSS-правила, соответственно:</p>
+
+<p>HTML-разметка, в которой добавлен еще один элемент - <code>span</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;entry&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    <span class="nt">&lt;span&gt;</span>The Web Stack<span class="nt">&lt;/span&gt;</span>
+  <span class="nt">&lt;/h2&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.entry</span> <span class="nt">h2</span><span class="p">{</span>
+    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-0.67em</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+    <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.entry</span> <span class="nt">h2</span> <span class="nt">span</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">.25em</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/shrink_wraped_text.png" alt="Ширина блока заголовка задается его контентом" class="center-image" /></p>
+
+<p>В этом примере все хорошо работает до тех пор, пока длина текста внутри блока меньше, чем длина разделительной линии. Заголовок разбивается на две линии, сам блок заголовка вмещается вниз от разделительной линии и перестает быть расположенным по центру.</p>
+
+<p>Для этого случая решение с помощью отрицательного <code>margin-top</code> не является самым лучшим. Можно лишь посоветовать убрать верхнюю границу <code>border-top</code> у блока-родителя и сделать для него фоновую заливку белого цвета, также. Это будет не совсем то, что нужно; но все же достаточно хорошее решение.</p>
+
+<p>Автор статьи: Eric Meyer - “Smashing CSS Professional Techniques for Modern Layout”</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-02-21T00:00:00+04:00"><a href="http://zencoder.ru/css/css-outline-border/">February 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -660,126 +797,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-12T00:00:00+04:00"><a href="http://zencoder.ru/pseudo-class-empty/">December 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/pseudo-class-empty/" rel="bookmark" title="Краткая заметка по псевдо-классу :empty" itemprop="url">Краткая заметка по псевдо-классу :empty</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Я люблю ту простоту, которую привносят CSS3-селекторы в таблицы стилей. В этой статье приведено краткое описание одного из моих любимых селекторов: псевдо-класса <code>:empty</code>.</p>
-</blockquote>
-
-<h2 id="empty">Что такое псевдо-класс :empty</h2>
-
-<p>Вот краткое описание, взятое из спецификации W3C:</p>
-
-<blockquote>
-  <p>Псевдо-класс <code>:empty</code> относится к элементу, у которого нет потомков.</p>
-</blockquote>
-
-<p>Звучит просто и понятно, не правда ли? Потому что это действительно так - псевдо-класс <code>:empty</code> применяется к элементам, которые полностью пустые; например, для пустого параграфа:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<p>Или же пустые ячейки таблицы:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-<span class="nt">&lt;/table&gt;</span></code></pre></div>
-
-<p>А вот к такому параграфу псевдо-класс <code>:empty</code> не применим, так как он не является пустым (внутри этого тега есть пробел, который является равноправным символом по сравнению со всеми остальными):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<h2 id="empty-1">Практическое применение :empty</h2>
-
-<p>Хорошо, но каким образом может быть полезен этот селектор?</p>
-
-<p>Представим ситуацию, когда вы стилизуете таблицу и некоторые из ячеек этой таблицы не имеют данных внутри себя. Тогда вы можете применить к ним другие правила благодаря псевдо-классу <code>:empty</code>.</p>
-
-<p>Давайте возьмем таблицу, которая создавалась мною ранее. Я собираюсь использовать те же самые таблицы стилей, но сделаю их более упрощенными. Также я собираюсь удалить содержимое из некоторых ячеек для того, чтобы сделать пример соответствующим статье.</p>
-
-<p>Разметка будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
-  <span class="nt">&lt;caption&gt;</span>A simple table<span class="nt">&lt;/caption&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">rowspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>Some headings<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">&gt;</span>More headings<span class="nt">&lt;/th&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Great<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Brilliant<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Genius<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Good<span class="nt">&lt;/th&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Interesting totals<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>155<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>165<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>70<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>140<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Curious<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>35<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>50<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>15<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Awesome<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>75<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>90<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Fabulous<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>30<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>20<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>80<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Nice<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>45<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-<span class="nt">&lt;/table&gt;</span></code></pre></div>
-
-<p>И вот, что я собираюсь добавить в таблицы стилей, для того чтобы отформатировать пустые ячейки таблицы:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">tbody td:empty {
-  background: #efefef;
-}</code></pre></div>
-
-<p>А вот теперь пустые ячейки таблицы отформатированы <a href="http://webdesignernotebook.com/examples/empty-selector.html" title="Empty Selector">по-другому</a>! Мне кажется, что невозможно сделать это более простым способом.</p>
-
-<p>Если вас этот селектор заинтересовал, то скажу, что он поддерживается всеми последними версиями браузеров Firefox, Safari, Chrome и Opera. И возможно, он работает в браузере Internet Explorer 9, наравне с остальными селекторами стандарта CSS3.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
