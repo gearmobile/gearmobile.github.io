@@ -144,6 +144,423 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-06-03T00:00:00+04:00"><a href="http://zencoder.ru/css/xampp-linux-mint-images-not-showing/">June 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/xampp-linux-mint-images-not-showing/" rel="bookmark" title="XAMPP Linux Mint - не отображаются картинки" itemprop="url">XAMPP Linux Mint - не отображаются картинки</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Столкнулся с небольшой, но достаточно неприятной проблемой.</p>
+</blockquote>
+
+<p>Занимался изучением настройки сверстанного HTML-шаблона под WordPress. То есть, другими словами - создания темы WordPress из готового HTML-шаблона.</p>
+
+<p>Для этой задачи у меня на Linux Mint 17 Cinnanom 64-bit установлен локальный сервер XAMPP. Если кто не знает, как сервер XAMPP устанавливается под Linux, то могут почитать в этой статье - “Установка XAMPP под Linux Mint 17”. Под локальным сервером у меня “крутятся” виртуальные хосты на основе движка WordPress.</p>
+
+<h2 id="wordpress">Предпросмотр темы не отображается в WordPress</h2>
+
+<p>После создания директории под новую тему - <code>Choose</code> закинул к нее скриншот готовой темы для preview в менедежере тем WordPress - <code>wp-admin/themes.php</code>. Но вот неожиданность - картинка-скриншот будущей темы Choose не отобразилась!</p>
+
+<p>Перепробовал достаточно способов, в том числе и с официального сайта XAMPP - <a href="https://www.apachefriends.org/ru/faq_linux.html" title="XAMPP - картинки не отображаются">XAMPP работает, но почему картинки не отображаются?</a>. То, что там описано - изменение двух строк файла <code>/opt/lampp/etc/httpd.conf</code>:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">#EnableMMAP</span> <span class="err">off</span>
+<span class="err">#EnableSendfile</span> <span class="err">off</span></code></pre></div>
+
+<p>… не сработало, так как в моем конфигурационном файле <code>httpd.conf</code> обе строчки были расскоментированы по умолчанию:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">EnableMMAP</span> <span class="err">off</span>
+<span class="err">EnableSendfile</span> <span class="err">off</span></code></pre></div>
+
+<p>Решение оказалось на удивление простым. Я и не подозревал, что настройка прав доступа в Linux может быть такой “коварной” штукой! Сначала обратил внимание на тот факт, что preview тем WordPress, которые идут “в комплекте” с ним - “Twenty Fourteen”, “Twenty Thirteen”, “Twenty Twelve” нормально отображаются на странице. А вот <code>preview</code> моей темы - не отображается:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/06/xampp_theme-wordpress_not_show.png" alt="Предпросмотр темы не отображается в WordPress" /></p>
+
+<p>Решил проверить догадку методом “научного тыка” - тупо сравнить два файла-preview <code>screenshot.png</code> из разных тем, своей “Choose” и стандартной “Twenty Fourteen”:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">twentyfourteen</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
+<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">1</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">twentyfourteen</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
+
+<span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
+<span class="n">-rw</span><span class="p">-------</span> <span class="n">1</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span></code></pre></div>
+
+<p>Вот оно! У файла <code>screenshot.png</code> из темы “Twenty Fourteen” имеются права на чтение <code>r</code> для - владельца, группы и всех остальных <code>-rw-r-r-</code>. У файла <code>screenshot.png</code> из моей темы “Choose” имеются права на просмотр <code>r</code> только для владельца данного файла <code>-rw- - -</code>.</p>
+
+<p>Ну что-же, нужно добавить <code>+</code> права чтения <code>r</code> для всех <code>a</code> пользователей файла <code>screenshot.png</code> темы “Choose”:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">chmod</span> <span class="n">a</span><span class="p">+</span><span class="n">r</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span></code></pre></div>
+
+<p>… и проверить результат:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
+<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">1</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span></code></pre></div>
+
+<p>Перехожу в WordPress на страницу управления темами <code>wp-admin/themes.php</code> и смотрю, что получилось:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/06/xampp_theme-wordpress.png" alt="Рабочее preview создаваемой темы WordPress" /></p>
+
+<p>Картинка по центру изображения - это preview создаваемой темы “Choose” под WordPress. Как видно, все прошло удачно.</p>
+
+<h2 id="wordpress----xampp">Картинки темы WordPress не отображаются под XAMPP</h2>
+
+<p>Но вышеназванное решение оказалось лишь половиной дела. Вторая проблема заключалась в том, что при активации вновь созданной темы под WordPress изображения из нее не отображаются на странице.</p>
+
+<p>Фоновые изображения, картинки в HTML-файле - ничего не появляется на странице. Firebug не смог мне помочь - единственное, что он “подсказал” - “Файл невозможно загрузить”. Многословно, ничего не скажешь!</p>
+
+<p>Помог незаменимый ресурс для front-end разработчика - <a href="http://stackoverflow.com/" title="Stack Overflow">Stack Overflow</a>. Решение проблемы заключено в двух строках:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cd</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span>
+<span class="p">$</span> <span class="n">sudo</span> <span class="n">chmod</span> <span class="n">777</span> <span class="n">-R</span> <span class="p">.</span></code></pre></div>
+
+<p>То есть, переходим в директорию <code>htdocs</code> и меняем рекурсивно <code>-R</code> права на все действия <code>777</code> для всего содержимого текущей <code>.</code> директории. Не знаю, как там с вопросами безопасности в этом случае, но факт остается фактом - все стало работать, как и надо было:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/06/xampp_theme-wordpress_show_pictures.png" alt="Изображения темы WordPress корректно отображаются на странице" /></p>
+
+<p>В принципе, на этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-06-01T00:00:00+04:00"><a href="http://zencoder.ru/css/install-nodejs-npm-bower-in-linux-mint/">June 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~12 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/install-nodejs-npm-bower-in-linux-mint/" rel="bookmark" title="Установка Node.js, npm и Bower под Linux Mint" itemprop="url">Установка Node.js, npm и Bower под Linux Mint</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Статья посвящена вопросу установки Node.js и пакетного менеджера npm под операционную систему Linux Mint 17 “Qiana” Cinnamon (64-bit).</p>
+</blockquote>
+
+<p>Также рассмотрен вопрос установки пакетного менеджера Bower в этой же операционной системе.</p>
+
+<p>Почему выбрана система Linux Mint - об этом не стоит говорить долго. Это система гораздо удобнее для задач кодинга, нежели Windows. Пакеты Node.js и пакетный менеджер npm необходим для дальнейшего изучения ремесла верстальщика.</p>
+
+<p>Дело в том, что популярный фреймворк Foundation для своей корректной работы требует первоначальной установки Node.js. Автор планирует в дальнейшем познакомиться с фреймворком Foundation, поэтому ему потребовалась установка вышеназванных пакетов.</p>
+
+<p>О том, что такое Node.js, в этой статье также не будет описано. Во-первых, автор статьи имеет лишь поверхностное представление об этом сервере. А во-вторых, в Интернете есть немало хороших материалов по данному вопросу.</p>
+
+<h2 id="nodejs">Установка Node.js</h2>
+
+<p>Для установки пакета Node.js под систему Linux Mint можно воспользоваться официальным сайтом проекта - <a href="http://nodejs.org/" title="Node.js">Node.js</a>. В разделе <a href="http://nodejs.org/download/" title="Download">Download</a> имеется табличка для скачивания различных версий пакета Node.js. В случае системы Linux в этой таблице нужно найти строку Linux Binaries.</p>
+
+<p>Однако я не буду “заморчиваться” установкой из исходного кода. В Linux Mint есть прекрасный менеджер пакетов <code>apt-get</code>, которым можно и нужно воспользоваться для быстрой и безопасной установки Node.js под Linux. Единственный минус такого подхода - в результате у меня на машине будет стоять не самая свежая версия сервера Node.js. Однако в данном случае это абсолютно не критично.</p>
+
+<p>В терминале ввожу команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">nodejs</span></code></pre></div>
+
+<p>… пару секунд терпения и у меня под Linux Mint 17 “Qiana” Cinnamon (64-bit) установлен пакет Node.js версии:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">nodejs</span> <span class="n">-v</span>
+<span class="n">v0</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">25</span></code></pre></div>
+
+<p>На момент написания статьи самая свежая версия Node.js (<em>как указано на официальном сайте</em>) - это 0.10.28. Как видим, разница в версиях небольшая, так что я поступил правильно, воспользовавшись <code>apt-get</code>.</p>
+
+<h2 id="npm--linux-mint">Установка npm под Linux Mint</h2>
+
+<p>Как хорошо известно, у данного сервера имеется свой собственный менеджер пакетов npm (Node Packaged Modules), для установки дополнительных модулей под Node.js. Другими словами, с помощью менеджера npm можно установить под сервер Node.js любой модуль, имеющийся в наличии на репозитории GitHub. Модуль расширяет возможности сервера Node.js в зависимости от того, какой это модуль (<em>тавтология</em>). С кратким описанием и списком всех модулей под Node.js можно ознакомиться на официальном сайте проекта npm - <a href="https://www.npmjs.org/" title="Node Packaged Modules">Node Packaged Modules</a>.</p>
+
+<p>При установке в свою систему Linux Mint через <code>apt-get</code> у меня был установлен только сам сервер Node.js. При этом менеджер пакетов npm отстуствовал в системе. Не знаю, как это происходит при установке пакета Node.js из исходников, но при использовании <code>apt-get</code> у меня получилось именно так. Поэтому следующим шагом будет инсталляция менеджера пакетов npm под систему Linux Mint.</p>
+
+<p>В терминале Linux ввожу команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">npm</span></code></pre></div>
+
+<p>Пробежит много-много строк, но в результате в системе появиться пакет npm:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">-v</span>
+<span class="n">1</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">10</span></code></pre></div>
+
+<p>Использование менеджера npm очень похоже на использование менеджеров пакетов a-la Linux: <code>apt-get</code>, <code>emerge</code>, <code>pacman</code> и так далее. npm также является консольной командой и у него схожие ключи, поэтому пользователи Linux без труда разберутся с ним:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">-h</span></code></pre></div>
+
+<p>Давайте проверим работу установленного менеджера npm. Для этого я в специально отведенной директории Projects создам поддиректорию npm, перейду в нее для дальнейшего удобства работы и установлю в этой поддиректории модуль <code>underscore</code> из репозитория npm:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">-p</span> <span class="n">Projects</span><span class="p">/</span><span class="n">npm</span>
+<span class="p">$</span> <span class="n">cd</span> <span class="n">Projects</span><span class="p">/</span><span class="n">npm</span>
+<span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">underscore</span></code></pre></div>
+
+<p>Если теперь посмотреть содержимое поддиректории npm c помощью команды <code>ls</code>, то обнаружим появление папки <code>node_modules</code>, внутри которой располагается подпапка <code>underscore</code> c содержимым одноименного модуля:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">node_modules</span><span class="p">/</span><span class="n">underscore</span><span class="p">/</span>
+<span class="n">LICENSE</span>  <span class="n">package</span><span class="p">.</span><span class="n">json</span>  <span class="n">README</span><span class="p">.</span><span class="n">md</span>  <span class="n">underscore</span><span class="p">.</span><span class="n">js</span>  <span class="n">underscore-min</span><span class="p">.</span><span class="n">js</span></code></pre></div>
+
+<p>Модуль Underscore успешно установлен и менеджер npm также успешно справился со своей задачей.</p>
+
+<h2 id="bower--linux-mint">Установка менеджера Bower под Linux Mint</h2>
+
+<p>Переходим к заключительному (<em>и продолжительному</em>) вопросу данной статьи и рассмотрим установку менеджера пакетов Bower. Могу предвидеть у читателей логичный вопрос: “Как - еще один менеджер пакетов?! Но зачем? Разве не хватает npm, c которым мы только что познакомились?”</p>
+
+<p>Все правильно! npm - это менеджер пакетов. И Bower - тоже менеджер пакетов. Отличие первого от второго заключается в том, что npm - это менеджер пакетов для сервера Node.js (<em>и только</em>). А Bower (<em>хотя сам является модулем под Node.js</em>) - это менеджер пакетов для всего проекта в целом.</p>
+
+<p>Npm понимает и может работать только с JavaScript-приложениями (<em>модулями под Node.js, написанными на этом языке</em>). Bower умеет работать с пакетами на JavaScript, HTML, CSS. C помощью него можно одним движением добавить в разрабатываемый проект все, что нужно: библиотеку jQuery, фреймворк Foundation, модуль Underscore, сброс стилей Normalize.css и так далее.</p>
+
+<p>Не нужно самому “вручную” выискивать на безбрежных просторах Интернет пакет и подключать его в проект - Bower это сделает сам. Заманчиво, не правда ли? На официальной странице проекта <a href="http://bower.io/" title="Bower">Bower</a> можно почитать подробную информацию о данном менеджере (правда, на английском языке). В разделе <a href="http://bower.io/search/" title="Search Packages">Search Packages</a> можно поискать нужный пакет для установки.</p>
+
+<p>Я же приступлю к установке Bower на свою локальную машину. Так как Bower является модулем для Node.js, то его можно установить с помощью менеджера npm:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">-g</span> <span class="n">bower</span></code></pre></div>
+
+<p>Однако, если запустить после этого в терминале команду просмотра версии, то увидим такой результат:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">-v</span>
+<span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">env</span><span class="err">:</span> <span class="n">node</span><span class="err">:</span> <span class="n">No</span> <span class="n">such</span> <span class="n">file</span> <span class="n">or</span> <span class="n">directory</span></code></pre></div>
+
+<p>Исправить ситуацию можно созданием ссылки:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">ln</span> <span class="n">-s</span> <span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">nodejs</span> <span class="p">/</span><span class="n">usr</span><span class="p">/</span><span class="n">bin</span><span class="p">/</span><span class="n">node</span></code></pre></div>
+
+<p>Теперь если снова посмотреть версию установленного пакета, увидим следующее:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">-v</span>
+<span class="n">1</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">3</span></code></pre></div>
+
+<p>Создаю специальную поддиректорию <code>bower</code> в директории Projects, перехожу туда и запускаю менеджер bower на установку пакета jquery:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">-p</span> <span class="n">Projects</span><span class="p">/</span><span class="n">bower</span>
+<span class="p">$</span> <span class="n">cd</span> <span class="n">Projects</span><span class="p">/</span><span class="n">bower</span>
+<span class="p">$</span> <span class="n">bower</span> <span class="n">install</span> <span class="n">jquery</span></code></pre></div>
+
+<p>Если до этого момента на локальной машине (<em>как у меня</em>) не был установлен пакет <code>git</code>, то самое время это сделать, иначе bower не сможет установить указанный пакет jquery:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">install</span> <span class="n">jquery</span>
+<span class="n">bower</span> <span class="n">jquery</span><span class="c">#*  ENOGIT git is not installed or not in the PATH</span></code></pre></div>
+
+<p>Все пакеты для скачивания и установки менеджер bower берет с GitHub, поэтому без пакета git этот менеджер не сможет обойтись.</p>
+
+<p>Установка Git на Linux производится простой командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">git</span></code></pre></div>
+
+<p>После этого, повторив команду установки jquery через bower, получаю следующий отзыв в консоли:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">install</span> <span class="n">jquery</span>
+  <span class="n">bower</span> <span class="n">jquery</span><span class="c">#*              not-cached git://github.com/jquery/jquery.git#*</span>
+  <span class="n">bower</span> <span class="n">jquery</span><span class="c">#*                 resolve git://github.com/jquery/jquery.git#*</span>
+  <span class="n">bower</span> <span class="n">jquery</span><span class="c">#*                download https://github.com/jquery/jquery/archive/2.1.1.tar.gz</span>
+  <span class="n">bower</span> <span class="n">jquery</span><span class="c">#*                 extract archive.tar.gz</span>
+  <span class="n">bower</span> <span class="n">jquery</span><span class="c">#*                resolved git://github.com/jquery/jquery.git#2.1.1</span>
+  <span class="n">bower</span> <span class="n">jquery</span><span class="c">#~2.1.1            install jquery#2.1.1</span></code></pre></div>
+
+<p>Если посмотреть на содержимое поддиректории <code>bower</code>, то увидим, что там появилась директория <code>bower_components</code>, в которой находится поддиректория <code>jquery</code> c установленным пакетом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">bower_components</span><span class="p">/</span><span class="n">jquery</span><span class="p">/</span>
+<span class="n">bower</span><span class="p">.</span><span class="n">json</span>  <span class="n">dist</span>  <span class="n">MIT-LICENSE</span><span class="p">.</span><span class="n">txt</span>  <span class="n">src</span></code></pre></div>
+
+<p>В результате была установлена <strong>последняя версия</strong> библиотеки jQuery - 2.1.1. Если нужна какая-то конкретная версия пакета (jQuery, в частности), то нужно это указать с помощью тега:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">install</span> <span class="n">jquery</span><span class="c">#1.9.1</span></code></pre></div>
+
+<p>Внимательный читатель мог заметить, менеджер пакетов Bower также (как и npm) является консольным. Список доступных для него команд можно получить вызовом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">-h</span></code></pre></div>
+
+<p>В частности, для обновления уже установленного пакета существует команда:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">update</span> <span class="no">[name_package]</span></code></pre></div>
+
+<p>Для удаления установленного пакета имеется команда:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">uninstall</span> <span class="no">[name_package]</span></code></pre></div>
+
+<p>Посмотреть информацию о пакете:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">info</span> <span class="no">[name_package]</span></code></pre></div>
+
+<p>Этой командой можно воспользоваться при настройке файла пакетной установки <code>bower.json</code></p>
+
+<h2 id="bower--sublime-text">Плагин Bower под Sublime Text</h2>
+
+<p>Под редактор Sublime Text имеется одноименный плагин Bower, который в точности повторяет все возможности менеджера Bower. Все преимущество использования плагина Bower заключается в том, что производить инсталляцию, обновление или удаление пакетов можно прямо в редакторе Sublime Text, не переходя в консоль.</p>
+
+<p>Установка плагина Bower выполняется стандартно - через менеджер пакетов Sublime Text: нажимаем сочетание клавиш <strong>Shift+Ctrl+P</strong>, введем в строке <strong>Install</strong> и выбираем из появившегося списка пакет <strong>Bower</strong>.</p>
+
+<p>Теперь попробуем установить какой-либо пакет, не выходя из Sublime Text, c помощью плагина Bower. Для этого снова нажмем сочетание клавиш <strong>Shift+Ctrl+P</strong>, вводим <strong>Bower:Install</strong> и из появившегося списка выбираем пакет Foundation (<em>к примеру</em>).</p>
+
+<p>Видим, как в панели проектов Sublime Text, в папке <code>bower_components</code> появилась целая куча подпапок, являющихся частью единого целого - фреймворка Foundation:</p>
+
+<p><img src="/images/uploads/2014/06/st-bower_components.png" alt="Установленный через Bower пакет Foundation в Sublime Text" class="center-image responsive-image" /></p>
+
+<h2 id="bower">Настройка плагина Bower</h2>
+
+<p>Поддиректория <code>bower_components</code>, в которую плагин Bower производит установку пакетов, не является чем-то постоянным. То есть, можно легко изменить имя и расположение этой директории. Делается это следующим образом - в Sublime Text нажимаем сочетание клавиш <strong>Shift+Ctrl+P</strong> и вводим <strong>Bower: Configure project</strong> (<em>никто не запрещает создать файл конфигурации вручную</em>).</p>
+
+<p>В текущую директорию автоматически добавиться файл <code>.bowerrc</code> типа json, в котором будет всего лишь одна строка - имя директории, в которую производится установка пакетов через плагин Bower:</p>
+
+<p><img src="/images/uploads/2014/06/st-bower_configure_project.png" alt="Файл настроек пакета Bower" class="center-image responsive-image" /></p>
+
+<p>Для эксперимента изменим имя папки с:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="s2">&quot;directory&quot;</span><span class="err">:</span> <span class="s2">&quot;components&quot;</span></code></pre></div>
+
+<p>на:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="s2">&quot;directory&quot;</span><span class="err">:</span> <span class="s2">&quot;apps&quot;</span></code></pre></div>
+
+<p>… удалим старую директорию <code>bower_components</code> с пакетом foundation и установим через Bower другой пакет - underscore. В результате получим следущее:</p>
+
+<p><img src="/images/uploads/2014/06/st-bower_configure_project_new_name.png" alt="Новое имя директории с пакетами в Bower" class="center-image responsive-image" /></p>
+
+<h2 id="bower-1">Пакетная установка в менеджере Bower</h2>
+
+<p>У менеджера пакетов Bower есть еще одна замечательная особенность. Это возможность пакетной установки через специально созданный конфигурационный файл. Другими словами, создается специальный файл формата json (<code>component.json</code>), в котором прописываются имена всех пакетов, которые необходимы для установки в данном проекте. Затем в консоли запускается менеджер Bower c одной командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">install</span></code></pre></div>
+
+<p>… менеджер bower прочитает файл <code>component.json</code> и автоматически установит все пакеты, перечисленные в нем. Отлично, не правда ли?</p>
+
+<p><strong>Примечание</strong>: начиная с Bower v.0.9 файл конфигурации <code>component.json</code> был переименован в файл <code>bower.json</code>, который я буду использовать в дальнейшем.</p>
+
+<p>Файл <code>bower.json</code> имеет следующий формат:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">{</span>
+<span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;name_of_project&quot;</span><span class="p">,</span>
+<span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;1.0.0&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;dependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+    <span class="s2">&quot;name_package&quot;</span><span class="err">:</span> <span class="s2">&quot;version_package&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;name_package&quot;</span><span class="err">:</span> <span class="s2">&quot;version_package&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… где <code>name</code> - это имя проекта, <code>version</code> - версия проекта, <code>dependencies</code> - зависимости проекта. Под зависимостями проекта подразумевается список сторонних пакетов (к примеру - foundation, backborne, jquery и так далее), которые используются при создании данного проекта.</p>
+
+<p>Прописав в этом списке нужные пакеты, тем самым мы заставим Bower автоматически отслеживать наличие указанных пакетов для текущего проекта. Но, от слов к делу - давайте попрактикуемся и создадим примерный файл <code>bower.json</code> для текущего “проекта” bower. Для этого я удалю все ранее установленные в этой поддиректории пакеты:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">uninstall</span> <span class="no">[name_of_package]</span></code></pre></div>
+
+<p>… создам в этой директории пустой файл <code>bower.json</code> и наполню его следующим содержимым:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">{</span>
+<span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;bower&quot;</span><span class="p">,</span>
+<span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;dependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+     <span class="s2">&quot;jquery&quot;</span><span class="err">:</span> <span class="s2">&quot;1.9.1&quot;</span><span class="p">,</span>
+     <span class="s2">&quot;foundation&quot;</span><span class="err">:</span> <span class="s2">&quot;latest&quot;</span>
+   <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… где <code>latest</code> - самая последняя версия пакета. Сохраняю изменения, перехожу в консоль и запускаю команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">install</span></code></pre></div>
+
+<p>В результате будет произведена автоматическая установка всех перечисленных в файле пакетов. Кроме того, Bower умеет <strong>отслеживать зависимости пакетов</strong>. В моем примере в консоль была выведена следующая информация:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">...</span>
+<span class="n">Unable</span> <span class="n">to</span> <span class="n">find</span> <span class="n">a</span> <span class="n">suitable</span> <span class="n">version</span> <span class="k">for</span> <span class="n">jquery</span><span class="p">,</span> <span class="n">please</span> <span class="n">choose</span> <span class="n">one</span><span class="err">:</span>
+    <span class="n">1</span><span class="p">)</span> <span class="n">jquery</span><span class="c">#1.9.1 which resolved to 1.9.1 and is required by bower</span>
+    <span class="n">2</span><span class="p">)</span> <span class="n">jquery</span><span class="c">#&gt;= 2.1.0 which resolved to 2.1.1 and is required by foundation#5.2.3</span>
+    <span class="n">3</span><span class="p">)</span> <span class="n">jquery</span><span class="c">#&gt;=1.2 which resolved to 2.1.1 and is required by jquery.cookie#1.4.1</span>
+
+<span class="n">Prefix</span> <span class="n">the</span> <span class="n">choice</span> <span class="n">with</span> <span class="p">!</span> <span class="n">to</span> <span class="n">persist</span> <span class="n">it</span> <span class="n">to</span> <span class="n">bower</span><span class="p">.</span><span class="n">json</span>
+
+<span class="p">[?]</span> <span class="n">Answer</span><span class="err">:</span>
+<span class="p">...</span></code></pre></div>
+
+<p>… то есть, Bower отследил, что я устанавливаю библиотеку jQuery версии 1.9.1; но при этом самая последняя версия фреймворка Foundation 5.2.3 требует для своей работы jQuery версии 2.1.1. Вот менеджер и спрашивает у меня - как быть дальше? Ай да Bower!</p>
+
+<h2 id="bowerjson">Добавление зависимостей в файл bower.json</h2>
+
+<p>После создания пакетного файла <code>bower.json</code> в менеждере Bower можно <strong>автоматически добавлять в него запись</strong> при ручной установке отдельного пакета. Допустим, в ходе работы срочно потребовалась установка пакета backbone.</p>
+
+<p>Тогда выполняем следующую команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">install</span> <span class="n">backbone</span> <span class="p">-</span><span class="n">-save</span></code></pre></div>
+
+<p>… пакет <code>backbone</code> (и его зависимость <code>underscore</code>) успешно установились. Но нас интересует факт добавления записи в файл <code>bower.json</code>, поэтому смотрим:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="n">bower</span><span class="p">.</span><span class="n">json</span>
+<span class="p">{</span>
+<span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;bower&quot;</span><span class="p">,</span>
+<span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;dependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+    <span class="s2">&quot;jquery&quot;</span><span class="err">:</span> <span class="s2">&quot;1.9.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;foundation&quot;</span><span class="err">:</span> <span class="s2">&quot;latest&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;backbone&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.1.2&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="bowerjson-1">Автоматическое создание файла bower.json</h2>
+
+<p>Помимо ручного создания и настройки файла <code>bower.json</code>, у данного менеджера предусмотрена команда для автоматического создания и настройки этого файла. Для этого необходимо в консоли запустить команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">bower</span> <span class="n">init</span></code></pre></div>
+
+<p>… тогда менеджер проведет нас “за ручку” через все этапы создания настроек файла <code>bower.json</code> путем задания серии вопросов. Взгляните на примерный результат вышеназванной команды:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="n">bower</span><span class="p">.</span><span class="n">json</span>
+<span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;bower&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;dependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+    <span class="s2">&quot;jquery&quot;</span><span class="err">:</span> <span class="s2">&quot;1.9.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;foundation&quot;</span><span class="err">:</span> <span class="s2">&quot;latest&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;backbone&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.1.2&quot;</span>
+  <span class="p">},</span>
+  <span class="s2">&quot;description&quot;</span><span class="err">:</span> <span class="s2">&quot;my firts project&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;moduleType&quot;</span><span class="err">:</span> <span class="p">[</span>
+    <span class="s2">&quot;amd&quot;</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;authors&quot;</span><span class="err">:</span> <span class="p">[</span>
+    <span class="s2">&quot;zencoder&quot;</span>
+  <span class="p">],</span>
+  <span class="s2">&quot;license&quot;</span><span class="err">:</span> <span class="s2">&quot;MIT&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;homepage&quot;</span><span class="err">:</span> <span class="s2">&quot;http://localhost:7788/third/&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;ignore&quot;</span><span class="err">:</span> <span class="p">[</span>
+    <span class="s2">&quot;**/.*&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;node_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;bower_components&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;apps&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;tests&quot;</span>
+  <span class="p">]</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="autofilename--sublime-text">Плагин AutoFileName в Sublime Text</h2>
+
+<p>Редактор Sublime Text имеет неизмеримое количество полезных плагинов. Одним из них является <a href="https://sublime.wbond.net/packages/AutoFileName" title="AutoFileName">AutoFileName</a> - незаменимая вещь для автодополнения путей файлов в проекте. Кто имел мало-мальский опыт работы в Dreamveawer (или подобные ему IDE), могут сразу догадаться, о чем идет речь.</p>
+
+<p>Поэтому данный плагин “must have” в коллекции под рабочую версию Sublime Text любого верстальщика.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Завершаю обзор установки пакетов Node.js, npm и Bower под систему Linux Mint. Надеюсь, статья оказалась достаточно полной, точной и грамотной. В ее написании неоценимую помощь оказало видео “ <a href="http://youtu.be/swUFx9p0M7g" title="Bower - Обзор пакетного менеджера">Bower - Обзор пакетного менеджера</a> “ Sorax’а.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-05-30T00:00:00+04:00"><a href="http://zencoder.ru/css/bootstrap3-brief/">May 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -865,616 +1282,6 @@
 <p>Данная статья является вольным переводом главы “Manipulate Color with Ease” замечательной книги “Sass and Compass for Designers” автора Ben Frain.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-17T00:00:00+04:00"><a href="http://zencoder.ru/compass-hide-text/">May 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/compass-hide-text/" rel="bookmark" title="Замена текста изображением в Compass" itemprop="url">Замена текста изображением в Compass</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>При верстке макета довольно часто возникает задача создания кликабельного логотипа страницы.</p>
-</blockquote>
-
-<p>Но логотип страницы, как правило, создается с использованием на все 100% фантазии дизайнера - тут и необычный декоративный шрифт, и всякие добавленные в него изображения. Поэтому на практике обычно такой логотип вырезается из psd-макета целиком, в виде картинки.</p>
-
-<p>В HTML-разметке в заголовке страницы помещается текст-логотип сайта в теге первого уровня <code>h1</code> - все по правилам SEO. А в таблицах стилей производится подмена текста на вырезанное из макета изображение.</p>
-
-<p>В результате удается выйти из положения, когда и овцы целы и волки сыты. В этой статье будут рассмотрены несколько способов, с помощью которых можно решить данную задачу. Причем, решить наиболее простым и быстрым способом, с помощью миксинов благодаря волшебной библиотеке Compass.</p>
-
-<p>Первоначально произведем подключение неоходимого модуля в библиотеке Compass, добавив строку импортирования в проект:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/typography/text/replacement&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>… а затем приступим к изучению миксинов.</p>
-
-<h2 id="hide-text">Миксин hide-text</h2>
-
-<p>Первым миксином, который решает задачу замены текста изображением, является <code>hide-text</code>.</p>
-
-<p>Синтаксис этого миксина таков:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">hide-text</span><span class="o">([$</span><span class="nt">direction</span><span class="o">])</span></code></pre></div>
-
-<p>… где необязательный аргумент <code>$direction</code> определяет направление скрытия текста.</p>
-
-<p>Пример использования данного миксина:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;hidetext&quot;</span><span class="nt">&gt;</span>
-  mixin hide-text
-<span class="nt">&lt;/h1&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">426px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/cat.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_01.jpg" alt="Текст с фоновым изображением" /></p>
-
-<p>Подключим к вышеприведенному коду миксин <code>hide-text</code> и посмотрим на результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
-<span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">hide</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_hide-text.jpg" alt="Результат замещения текста с помощью миксина hide-text" /></p>
-
-<p>Результирующий CSS-код будет выглядеть таким образом. Добавляются смещение текста с помощью свойства <code>text-indent</code> с отрицательным значением; предотвращается случайное “схлопывание” блока через свойство <code>overflow: hidden</code>, если в нем вдруг окажутся плавающие элементы; задается расположение текста с левого края блока через свойство <code>text-align: left</code>, чтобы гарантировать его смещение за левый край блока через свойство <code>text-indent</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hidetext</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-119988px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="squish-text">Миксин squish-text</h2>
-
-<p>В библиотеке Compass также имеется миксин <code>squish-text</code> для замещения текста изображением с помощью <strong>эффекта скрытия</strong> данного текста. Другими словами, текст остается на своем месте, просто с помощью определенных CSS-свойств он делается визуально невидимым. Это может быть удобно для браузеров-читалок, которые проговаривают текст вслух для слабовидящих людей.</p>
-
-<p>Синтаксис миксина <code>squish-text</code> таков:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">squish-text</span><span class="p">;</span></code></pre></div>
-
-<p>Пример использования миксина <code>squish-text</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;squishtext&quot;</span><span class="nt">&gt;</span>
-  Mixin squish-text
-<span class="nt">&lt;/h1&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-<span class="nc">.squishtext</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="nb">white</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">480px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/girl.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_02.png" alt="Текст с фоновым изображением" /></p>
-
-<p>Подключим миксин <code>squish-text</code> и посмотрим на результат его работы:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squishtext</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_squish-text.png" alt="Результат замещения текста с помощью миксина squish-text" /></p>
-
-<p>Результат компилирования представленного выше SCSS-кода в CSS-код показан ниже. Довольно интересный способ скрытия текста, который стоит рассмотреть более подробно. С помощью CSS-свойства <code>font</code> сбрасывается на ноль размер шрифта (<em>кегль</em>) и межстрочное расстояние (интерлиньяж) для текста. Цвет текста через CSS-свойство <code>color</code> устанавливается прозрачным. В добавок гарантированно убирается тень у текста, если она у него есть (вдруг сработает наследование).</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squishtext</span> <span class="p">{</span>
-  <span class="o">...</span>
-  <span class="k">font</span><span class="o">:</span> <span class="m">0</span><span class="o">/</span><span class="m">0</span> <span class="k">serif</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Несмотря на то, что визуально результат работы миксина <code>squish-text</code> аналогичен работе миксина <code>hide-text</code>, принцип последнего более эффективен для большинства современных браузеров в вопросе замещения inline-текста.</p>
-
-<p>В показанном ниже примере можно улучшить разметку, “обернув” отдельные участки текста в любой из inline-элементов (<code>span</code>, <code>b</code> или <code>i</code>) и добавив к нему ноебходимый класс:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;squish&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet,<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span> consectetur adipisicing elit,<span class="nt">&lt;/span&gt;</span> sed do eiusmod
-  tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span>in reprehenderit in voluptate velit esse<span class="nt">&lt;/span&gt;</span> cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;squish-text&quot;</span><span class="nt">&gt;</span>cupidatat non proident<span class="nt">&lt;/span&gt;</span>, sunt in culpa qui officia deserunt mollit anim id est laborum.<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squish</span><span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">margin</span><span class="o">-</span><span class="n">leader</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
-  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;PT Sans&#39;</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
-  <span class="o">.</span><span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="err">{</span>
-    <span class="k">color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
-    <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_03.png" alt="Текст с отдельными участками, подлежащими скрытию" /></p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.squish</span><span class="p">{</span>
-  <span class="o">...</span>
-  <span class="o">.</span><span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="err">{</span>
-    <span class="o">...</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>В то время, как экранные программы-читалки и другие подобные инструменты могут свободно прочитать “спрятанный” текст, в окне обычного браузера он ни как не отображен:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_squish-text_text.png" alt="Скрытие текста с помощью миксина squish-text" /></p>
-
-<h2 id="section">Замещение текста изображением с фиксированными размерами</h2>
-
-<p>Если не принимать во внимание технологию спрайтов для фонового изображения, в Compass существует другой миксин, который также позволяет удобно замещать текст изображением. Это полезно, например, когда нужно поместить изображение логотипа в тег заголовка.</p>
-
-<p>Преимущество данного миксина заключается в автоматизированном способе установки размеров для элемента в соответствии с размерами используемого изображения. Для этой цели в библиотеке Compass имеется миксин с говорящим названием <code>replace-text-with-dimensions</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">replace-text-with-dimensions</span><span class="o">()</span><span class="p">;</span></code></pre></div>
-
-<p>Проиллюстрируем применение миксина <code>replace-text-with-dimensions</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;replace_dimensions&quot;</span><span class="nt">&gt;</span>
-  replace-text-with-dimensions
-<span class="nt">&lt;/h1&gt;</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_04.png" alt="Текст с непримененным миксином replace-text-with-dimensions" /></p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.replace_dimensions</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">replace</span><span class="o">-</span><span class="k">text</span><span class="o">-</span><span class="n">with</span><span class="o">-</span><span class="n">dimensions</span><span class="p">(</span><span class="s1">&#39;alsatian.jpg&#39;</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Не забудьте активировать строку <code>relative_assets = true</code> в конфигурационном файле <code>config.rb</code>, чтобы сработали относительные пути для изображений!</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/text_replacement_replace-text-with-dimensions.png" alt="Текст с примененным миксином replace-text-with-dimensions" /></p>
-
-<p>Мне кажется, было бы очень любопытно взглянуть на результирующий код компиляции в CSS. Видим, что на изображение указывает корректная ссылка; а также, что у изображения установлены правильные ширина (<code>width</code>) и высота (<code>height</code>). Все это благодаря Compass!</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.replace_dimensions</span> <span class="p">{</span>
-  <span class="k">text-indent</span><span class="o">:</span> <span class="m">-119988px</span><span class="p">;</span>
-  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;../img/alsatian.jpg?1400248446&#39;)</span><span class="p">;</span>
-  <span class="k">background-repeat</span><span class="o">:</span> <span class="k">no-repeat</span><span class="p">;</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">50%</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">640px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">470px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="html5-boilerplate">Замена текста изображением в HTML5 Boilerplate</h2>
-
-<p>За годы существования веб-разработки было создано немало оригинальных способов замещения текста изображением. На сегодняшний день наиболее лучшим способом является техника, представленная в хорошо известном проекте <a href="http://html5boilerplate.com" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
-
-<p>Ниже показан пример исходного CSS-кода, взятого из “HTML5 Boilerplate”, в котором показаны в виде классов различные способы замещения текста изображением. В каждом случае кратко описываются преимущества каждого из способов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.ir</span> <span class="p">{</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-    <span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="c">/* IE 6/7 fallback */</span>
-    <span class="o">*</span><span class="k">text-indent</span><span class="o">:</span> <span class="m">-9999px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.ir</span><span class="nd">:before</span> <span class="p">{</span>
-    <span class="k">content</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">150%</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">от</span> <span class="err">экранных</span> <span class="err">читалок</span> <span class="err">и</span> <span class="err">браузеров</span>
-
-<span class="nc">.hidden</span> <span class="p">{</span>
-    <span class="k">display</span><span class="o">:</span> <span class="k">none</span> <span class="cp">!important</span><span class="p">;</span>
-    <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">только</span> <span class="err">визуально</span><span class="o">,</span> <span class="err">но</span> <span class="err">оставить</span> <span class="err">доступным</span> <span class="err">для</span> <span class="err">экранных</span> <span class="err">читалок</span>
-
-<span class="nc">.visuallyhidden</span> <span class="p">{</span>
-    <span class="k">border</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">clip</span><span class="o">:</span> <span class="n">rect</span><span class="p">(</span><span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span><span class="p">);</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">-1px</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">//</span> <span class="err">Расширение</span> <span class="err">класса</span> <span class="nc">.visuallyhidden</span> <span class="err">благодаря</span> <span class="err">возможности</span> <span class="err">для</span> <span class="err">элементов</span> <span class="err">получать</span> <span class="err">фокус</span> <span class="err">с</span> <span class="err">клавиатуры</span>
-
-<span class="nc">.visuallyhidden.focusable</span><span class="nd">:active</span><span class="o">,</span>
-<span class="nc">.visuallyhidden.focusable</span><span class="nd">:focus</span> <span class="p">{</span>
-    <span class="k">clip</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">overflow</span><span class="o">:</span> <span class="k">visible</span><span class="p">;</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">static</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">//</span> <span class="err">Скрыть</span> <span class="err">текст</span> <span class="err">визуально</span> <span class="err">и</span> <span class="err">от</span> <span class="err">экранных</span> <span class="err">читалок</span><span class="o">,</span> <span class="err">но</span> <span class="err">оставить</span> <span class="err">нетронутой</span> <span class="nt">HTML-</span><span class="err">разметку</span>
-
-<span class="nc">.invisible</span> <span class="p">{</span>
-    <span class="k">visibility</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>На этом все. Данная статья является вольным переводом отдельной главы из книги <strong>Ben Frain “Sass and Compass for Designers</strong>”.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-15T00:00:00+04:00"><a href="http://zencoder.ru/css/compass-make-sprite/">May 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~9 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/compass-make-sprite/" rel="bookmark" title="Создание спрайтов в Compass" itemprop="url">Создание спрайтов в Compass</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Как часто верстальщику в своей работе требуется создавать спрайты?</p>
-</blockquote>
-
-<p>Мне кажется, что почти в каждом проекте стоит такая задача. Ведь сегодня на каждом из сайтов имеется либо панель навигации с иконками, либо ссылки на социальные сети также с иконками.</p>
-
-<p>Что такое CSS-спрайты, не буду вдаваться в подробности. В чем их преимущество и в чем профит их использования. А также, каким образом они создаются и используются. Мне кажется, читатель, которого заинтересовала тема создания спрайтов на Compass, и без того знает, что это такое.</p>
-
-<p>В данной статье будет рассматриваться вопрос, каким образом можно автоматизировать и ускорить процесс создания спрайтов. Не знаю, как кто другой, но я использовал ручной метод создания спрайтов, с помощью Photoshop.</p>
-
-<p>Также стоит сказать, что данная статья не претендует на полноту и точность. Материал дался автору с удивительным трудом, буквально по крупицам (хотя в Сети есть много хороших материалов по этой теме на английском языке).</p>
-
-<h2 id="compass">Создание нового проекта в Compass</h2>
-
-<p>Создаем чистый Compass-проект с нуля, как обычно:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">compass</span> <span class="n">create</span> <span class="n">sprites</span></code></pre></div>
-
-<p>… и настраиваем конфигурационный файл <code>config.rb</code> этого проекта, приведя к следующему виду:</p>
-
-<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="n">http_path</span> <span class="o">=</span> <span class="s2">&quot;/&quot;</span>
-  <span class="n">css_dir</span> <span class="o">=</span> <span class="s2">&quot;css&quot;</span>
-  <span class="n">sass_dir</span> <span class="o">=</span> <span class="s2">&quot;sass&quot;</span>
-  <span class="n">images_dir</span> <span class="o">=</span> <span class="s2">&quot;img&quot;</span>
-  <span class="n">javascripts_dir</span> <span class="o">=</span> <span class="s2">&quot;js&quot;</span>
-
-  <span class="n">output_style</span> <span class="o">=</span> <span class="ss">:expanded</span>
-  <span class="n">relative_assets</span> <span class="o">=</span> <span class="kp">true</span>
-  <span class="n">line_comments</span> <span class="o">=</span> <span class="kp">false</span></code></pre></div>
-
-<p>Особенно стоит обратить внимание на предпоследнюю строку:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">relative_assets</span> <span class="p">=</span> <span class="n">true</span></code></pre></div>
-
-<p>… с помощью которой устанавливаются относительные пути к файлам изображений в проекте. Если не активировать данную строку, то спрайт не сможет подключиться к элементам в документе.</p>
-
-<h2 id="section">Подключение плагина спрайтов</h2>
-
-<p>Делается это как обычно в библиотеке Compass, одной строкой импортирования:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/utilities/sprites&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Далее, как правило, следует долгий и нудный процесс вырезания изображений из psd-макета. В данном примере этот процесс будет заменен на более быстрый и красивый. Мы воспользуемся готовым бесплатным набором иконок, который скачаем из бескрайних просторов Интернета.</p>
-
-<p>Затем создадим в каталоге <code>img</code> подкаталог <code>webicons</code> (<code>img/webicons</code>) и распакуем в него скачанный архив.</p>
-
-<p>Также стоит отметить, что плагин для работы со спрайтами в библиотеке Compass может работать только с изображениями формата <code>.png</code>. Поэтому перед созданием спрайтов необходимо создать отдельный каталог, в котором будут размещены все изображения, из которых будут создаваться спрайт.</p>
-
-<h2 id="section-1">Скачивание библиотеки с иконками</h2>
-
-<p>Набор темных иконок в формате <code>.png</code> подойдет любой, главное, чтобы он был бесплатным. Например, такой - <a href="http://www.wpzoom.com/wpzoom/new-freebie-wpzoom-developer-icon-set-154-free-icons/">WPZOOM Developer Icon Set</a>.</p>
-
-<p>Далее создаем отдельную директорию, в которой будет размещен полученный набор иконок:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">img</span><span class="p">/</span><span class="n">webicons</span></code></pre></div>
-
-<h2 id="section-2">Подключение набора иконок в проект</h2>
-
-<p>Подключение набора изображений (иконок в нашем случае) в проект производится директивой:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;webicons/*.png&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Точнее, этой директивой создается карта изображений <code>map</code>.</p>
-
-<h2 id="section-3">Создание спрайта</h2>
-
-<p>Спрайт создается в библиотеке Compass c помощью миксина <code>@include all-[folder-name]-sprites;</code>, где [folder-name] - имя каталога с изображениями. В нашем случае данный миксин будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">all-webicons-sprites</span><span class="p">;</span></code></pre></div>
-
-<p>Если теперь взглянуть на директорию с проектом в файловом менеджере, то увидим, что в каталоге добавился новый файл-картинка в формате <code>.png</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/img_001.png" alt="Созданный в Compass спрайт" /></p>
-
-<p>В файле <code>style.css</code> сгенерируется код, в котором появятся имена классов для каждого из изображений. Также для каждого из изображений будет добавлено позиционирование (точнее - оно будет вычислено). Также стоит обратить внимание на CSS-свойство <code>background</code>.</p>
-
-<p>Значение его имеет правильный относительный путь - <code>../img/...</code>, это сработала переменная <code>relative_assets = true</code> в конфигурационном файле <code>config.rb</code>.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-<span class="nc">.webicons-sprite</span><span class="o">,</span> <span class="nc">.webicons-agenda</span><span class="o">,</span> <span class="nc">.webicons-arrow-down</span><span class="o">,</span> <span class="nc">.webicons-arrow-left-down</span><span class="o">,</span> <span class="nc">.webicons-arrow-left-up</span><span class="o">,</span> <span class="nc">.webicons-arrow-left</span><span class="o">,</span> <span class="nc">.webicons-arrow-right-down</span><span class="o">,</span> <span class="nc">.webicons-arrow-right-up</span><span class="o">,</span> <span class="nc">.webicons-arrow-right</span><span class="o">,</span> <span class="nc">.webicons-arrow-up</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(&#39;../img/webicons-sf124b45856.png&#39;)</span> <span class="k">no-repeat</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-agenda</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-172px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-266px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-43px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-arrow-left-up</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">...</span></code></pre></div>
-
-<h2 id="section-4">Создание списка</h2>
-
-<p>В HTML-документе создаем обычный маркированный список:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;</span>
-    <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;</span>
-    <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;</span>
-    <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 4<span class="nt">&lt;/a&gt;</span>
-    <span class="nt">&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;</span>
-      <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 5<span class="nt">&lt;/a&gt;</span>
-    <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>… и выполняем его легкое форматирование на SCSS:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrap</span><span class="p">{</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">960px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="n">ul</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">horizontal</span><span class="o">-</span><span class="n">list</span><span class="p">(</span><span class="err">$</span><span class="k">padding</span><span class="p">);</span>
-    <span class="n">li</span><span class="err">{</span>
-      <span class="n">a</span><span class="err">{</span>
-        <span class="k">padding-left</span><span class="o">:</span> <span class="err">$</span><span class="n">base</span><span class="o">-</span><span class="k">line-height</span><span class="p">;</span>
-        <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Преобразуем маркированный список с помощью магии Compass в горизонтальный список, воспользовавшись миксином <code>horizontal-list($padding, $direction)</code>. Аргумент <code>$direction</code> опустим за ненадобностью, а в качестве аргумента <code>$padding</code> передадим отступ, равный переменной:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-<span class="o">$</span><span class="nt">base-line-height</span><span class="o">:</span> <span class="nt">33px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">padding</span><span class="o">:</span> <span class="o">$</span><span class="nt">base-line-height</span><span class="o">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<h2 id="section-5">Добавление иконок в список</h2>
-
-<p>Можно воспользоваться готовыми именами классов, созданными библиотекой Compass. То есть, открыть (в нашем случае) файл <code>style.css</code>, взять оттуда нужные имена классов (<code>.webicons-agenda</code>, <code>.webicons-arrow-down</code>, <code>.webicons-arrow-left-down</code>, <code>.webicons-arrow-left-up</code>, …) и добавить их в HTML-разметку.</p>
-
-<p>Но такой способ будет не совсем правильным, так как HTML-разметка будет “загрязнена” избыточными именами классов. Когда как можно легко избежать этого недостатка, применив директиву <code>@extend</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">1</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">4</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">agenda</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Оцените чистоту этого способа - HTML-разметка не тронута, а в HTML-документе все работает так, как и было задумано.</p>
-
-<h2 id="section-6">Управлением расположения иконок на спрайте</h2>
-
-<p>Иногда при создании спрайта может появиться задача расположить изображения внутри создаваемого спрайта определенным образом - по-горизонтали, по-вертикали или каким-то еще образом. Библиотека Compass может помощь в этом случае и легко решить поставленную задачу.</p>
-
-<p>Переменная <code>[folder-name]-layout: vertical | horizontal | diagonal | smart</code> управляет расположением иконок в создаваемом библиотекой Compass спрайте.</p>
-
-<p>Имя переменной состоит из двух значений, первое из которых - это имя каталога, в котором расположены изображения. Таким образом, в случае данного примера переменная будет иметь вид:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">webicons-layout</span><span class="o">:</span> <span class="nt">vertical</span><span class="o">;</span></code></pre></div>
-
-<p>По умолчанию в переменной <code>[folder-name]-layout</code> используется значение <code>vertical</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_vertical_layout.png" alt="Вертикальное расположение иконок" /></p>
-
-<p>… которое можно поменять на <strong>три других</strong>:</p>
-
-<ul>
-  <li><code>горизонтальное</code> - <code>horizontal</code>:</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_horizontal_layout.png" alt="Горизонтальное расположение иконок" /></p>
-
-<ul>
-  <li><code>диагональное</code> - <code>diagonal</code>:</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_diagonal_layout.png" alt="Диагональное расположение иконок" /></p>
-
-<ul>
-  <li>стоит особо отметить “умное” расположение - <code>smart</code>, которое умеет экономить место на спрайте (сравните в почти точно таким же расположением изображений при вертикальном <code>layout</code> и почувствуйте разницу!):</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_smart_layout.png" alt="Умное расположение иконок" /></p>
-
-<p>Добавлять переменную <code>[folder-name]-layout</code> нужно перед объявлением каталога с иконками:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-<span class="o">$</span><span class="nt">webicons-layout</span><span class="o">:</span> <span class="s1">&#39;smart&#39;</span><span class="o">;</span>
-  <span class="o">...</span>
-<span class="k">@import</span> <span class="s2">&quot;webicons/*.png&quot;</span><span class="p">;</span></code></pre></div>
-
-<h2 id="section-7">Управление расстоянием между изображениями на спрайте</h2>
-
-<p>На создаваемом спрайте все изображения расположены таким образом, чтобы быть максимально тесно прижатыми друг к другу. Таким образом убирается лишнее пустое пространство и уменьшается общий размер спрайта в целом.</p>
-
-<p>Но может потребоваться задача увеличить расстояние между изображениями на спрайте. С помощью библиотеки Compass это можно выполнить при помощи переменной <code>[folder-name]-spacing</code>.</p>
-
-<p>В имени этой переменной <code>folder-name</code> - это имя каталога с расположенными в нем изображениями. В нашем случае имя каталога <code>webicons</code>, поэтому имя переменной будет - <code>$webicons-spacing</code>.</p>
-
-<p>Для примера зададим расстояние в 10px между изображениями на спрайте:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">webicons-spacing</span><span class="o">:</span> <span class="nt">10px</span><span class="o">;</span>
-  <span class="o">...</span>
-<span class="k">@import</span> <span class="s2">&quot;webicons/*.png&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>В результате между изображениями появиться промежуток, равный 10px:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/compass_sprites_spacing.png" alt="Увеличенное расстояние между изображениями на спрайте" /></p>
-
-<h2 id="section-8">Управление именами создаваемых классов в спрайте</h2>
-
-<p>Можно изменить тот способ, каким библиотека Compass создает имена классов в спрайте.</p>
-
-<p>Первоначальный (по умолчанию) вид имен классов имеет представление:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-326px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-53px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-arrow-left-up</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">...</span></code></pre></div>
-
-<p>Можно отделить имя директории с расположенными в нем изображениями от имени каждого из изображений, по отдельности. Чтобы было более понятно, сразу выполним такое преобразование:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.webicons</span><span class="p">{</span>
-  <span class="o">.</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span> <span class="err">{</span><span class="o">@</span><span class="n">include</span> <span class="n">webicons</span><span class="o">-</span><span class="n">sprite</span><span class="p">(</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span><span class="p">);}</span>
-  <span class="nc">.arrow-right-down</span> <span class="p">{</span><span class="o">@</span><span class="n">include</span> <span class="n">webicons</span><span class="o">-</span><span class="n">sprite</span><span class="p">(</span><span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">down</span><span class="p">);}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>… и посмотрим на конечный результат:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.webicons</span> <span class="nc">.arrow-left-up</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons</span> <span class="nc">.arrow-right-down</span> <span class="p">{</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-106px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Видно, что вместо одного длинного имени появилось два класса. Преимуществом такого способа мне кажется отсутствие необходимости “городить” длинные имена, как в примере с подключением:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">1</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">up</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">&amp;</span><span class="nd">:nth-of-type</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="n">webicons</span><span class="o">-</span><span class="n">arrow</span><span class="o">-</span><span class="k">left</span><span class="o">-</span><span class="n">down</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="o">...</span></code></pre></div>
-
-<h2 id="section-9">Получение размеров создаваемого спрайта</h2>
-
-<p>Иногда может потребоваться так, чтобы при генерации спрайта библиотекой Compass автоматически были “отображены” в файле <code>.css</code> размеры каждого изображения. Входящего в состав этого спрайта.</p>
-
-<p>По умолчанию размеры изображений не отображаются в готовом CSS-коде:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-
-<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
-<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-326px</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">...</span>
-
-<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
-<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-53px</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">...</span></code></pre></div>
-
-<p>Но при включении переменной <code>[folder-name]-sprite-dimensions: true;</code> (по умолчанию ее значение равно <code>false</code>) размеры каждого из изображений будут отображены в CSS-коде:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">...</span>
-<span class="nc">.webicons-arrow-down</span> <span class="p">{</span>
-<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-326px</span><span class="p">;</span>
-<span class="k">height</span><span class="o">:</span> <span class="m">46px</span><span class="p">;</span>
-<span class="k">width</span><span class="o">:</span> <span class="m">42px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.webicons-arrow-left-down</span> <span class="p">{</span>
-<span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">-53px</span><span class="p">;</span>
-<span class="k">height</span><span class="o">:</span> <span class="m">43px</span><span class="p">;</span>
-<span class="k">width</span><span class="o">:</span> <span class="m">43px</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="o">...</span></code></pre></div>
-
-<p>Как и в предыдущих случаях с переменными в спрайте библиотеки Compass, вместо <code>folder-name</code> необходимо подставить имя каталога, в котором размещены файлы изображений. В нашем случае имя переменной будет выглядеть следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">webicons-sprite-dimentions</span><span class="o">:</span> <span class="nt">true</span><span class="o">;</span>
-  <span class="o">...</span>
-<span class="k">@include</span> <span class="s1">&#39;webicons/*.png&#39;</span><span class="p">;</span></code></pre></div>
-
-<p>Пока на этом все …</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

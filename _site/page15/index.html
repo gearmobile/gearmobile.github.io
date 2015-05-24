@@ -144,6 +144,263 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-20T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-install-and-launch-gulp-uglify/">August 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-install-and-launch-gulp-uglify/" rel="bookmark" title="Gulp - установка и запуск плагина gulp-uglify" itemprop="url">Gulp - установка и запуск плагина gulp-uglify</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье “Gulp - знакомство и первый запуск”” мы познакомились с установкой менеджера Gulp и запуском первой задачи под него. В этой статье мы перейдем к еще более интересному материалу, в котором узнаем, как устанавливать и запускать плагины под Gulp на примере одного из них - <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">gulp-uglify</a>.</p>
+</blockquote>
+
+<p>Как я уже упоминал ранее, Gulp имеет модульную структуру. Под Gulp, несмотря на молодость проекта, уже написано достаточное количество плагинов. Конечно, оно не сравниться с огромной коллекцией таковых под мега-популярный Grunt, но для большинства случаев жизни уже сейчас их хватит.</p>
+
+<p>Каждый из плагинов - это код, решающий только одну задачу. Например, один плагин умеет сжимать изображения, другой сжимает js-файлы, третий сжимает css-файлы; еще один умеет компилировать scss-файлы в css-файлы. И так далее - список можно продолжать и продолжать.</p>
+
+<p>Становиться понятно, что для конкретной задачи нам нужно установить нужный плагин и создать задачу (task) в файле <code>gulpfile.js</code>. А затем запустить Gulp на выполнение этой задачи. Конечно, задач может быть не одна, а несколько. Все зависит о того, какие именно задачи нам необходимо выполнять.</p>
+
+<p>Давайте рассмотрим процесс установки плагинов и настройки задач на примере одного из них - <code>gulp-uglify</code>. Данный плагин служит для минификации js-файлов - он удаляет пробелы, запятые, точки с запятой. В результате js-файл получается меньшим по размеру.</p>
+
+<p>Все плагины под Gulp размещены по этому адресу - <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">Gulp Plugins</a>. В строке поиска нужно вводить имя искомого плагина, в результате получаем (<em>или не получаем</em>) страницу с описанием плагина и командой для его установки.</p>
+
+<h2 id="gulp-uglify--gulp">Устанавливаем gulp-uglify под Gulp</h2>
+
+<p>На странице плагина <a href="http://gulpjs.com/plugins/" title="Gulp Plugins">gulp-uglify</a> описана команда установки этого плагина, которую мы повторим для себя, в своем проекте:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-uglify</span></code></pre></div>
+
+<p>Опять таки, ключ <code>--save-dev</code> “говорит” менеджеру <code>npm</code> добавить плагин <code>gulp-uglify</code> в качестве зависимости в файл <code>package.json</code>:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">$</span> <span class="err">cat</span> <span class="err">package.json</span>
+<span class="p">{</span>
+  <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
+    <span class="nt">&quot;gulp-uglify&quot;</span><span class="p">:</span> <span class="s2">&quot;~0.3.1&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="gulp-uglify--gulp-1">Создаем задачу gulp-uglify под Gulp</h2>
+
+<p>Плагин <code>gulp-uglify</code> установлен и теперь самое время прописать в файле <code>gulpfile.js</code> именованную задачу (named task) под него. Надеюсь, уважаемый читатель помнит о двух типах задач под Gulp, описанных в предыдущей статье “Gulp - знакомство и первый запуск”.</p>
+
+<p>Открываем файл <code>gulpfile.js</code> в редакторе кода (у меня это Sublime Text) и вносим туда следующие строки:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">uglify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">);</span>
+<span class="p">...</span>
+<span class="c1">// Gulp Uglify</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;gulp-uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
+<span class="p">});</span></code></pre></div>
+
+<p>В принципе, можно и не вводить вышеприведенные строки вручную, а просто скопировать их со страницы описания плагина <a href="https://www.npmjs.org/package/gulp-uglify/" title="Gulp-uglify">gulp-uglify</a>. Они размещены в блоке с заголовком Usage.</p>
+
+<p>Но это не главное. Важнее разобраться, что из себя представляет каждая из этих строк. Так вот, строка <code>uglify = require('gulp-uglify')</code> - это создание переменной с именем <code>uglify</code>, в которую помещается плагин <code>gulp-uglify</code>. Обратите внимание на синтаксис этой строки и ее табуляцию - оба аспекта важны и их несоблюдение приведет к тому, что Gulp не будет работать. По большому счету, можно написать и так - <code>var uglify = require('gulp-uglify');</code>, но предыдущая запись является более правильной.</p>
+
+<p>Далее идут строки для новой именованной задачи для Gulp. Имя задачи задаем произвольно и пусть оно будет таким - <code>gulp-uglify</code>. В теле callback-функции пропишем директорию, содержимое которой Gulp должен отслеживать - <code>gulp.src('js/*.js')</code>. В данном случае указываем, что Gulp должен следить за изменениями всех файлов с расширением .js, расположенных внутри директории <code>js</code>.</p>
+
+<p>Следующая строка <code>.pipe(uglify())</code> получает в виде потока содержимое директории <code>js</code> и обрабатывает его с помощью плагина <code>gulp-uglify</code>, помещенного внутрь переменной <code>uglify</code>. Результат обработки передается в виде потока в строку <code>.pipe(gulp.dest('build/js'))</code>, которая сохраняет его по пути <code>build/js</code>.</p>
+
+<p>Вот мы и разобрали суть задачи в Gulp! Ведь ничего сложного, правда?!</p>
+
+<h2 id="gulp-uglify--gulp-2">Запускаем задачу gulp-uglify в Gulp</h2>
+
+<p>Переходим от слов к делу и запустим на выполнение только что созданную нами задачу <code>gulp-uglify</code>. Не забываем, что именованные задачи в Gulp запускаются с указанием их имени:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">gulp-uglify</span>
+<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;gulp-uglify&#39;</span><span class="p">...</span>
+<span class="p">[</span><span class="n">21</span><span class="err">:</span><span class="n">47</span><span class="err">:</span><span class="n">43</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;gulp-uglify&#39;</span> <span class="n">after</span> <span class="n">12</span> <span class="n">ms</span></code></pre></div>
+
+<p>Вуаля! Видим (по аналогии с предыдушим опытом запуска дефолтной задачи), что именованная задача <code>gulp-uglify</code> успешно запустилась, выполнилась за 12 миллисекунд и также успешно завершилась. По идее, теперь по пути <code>build/js</code> у нас должен располагаться минифицированный js-файл (в моем случае это был <code>jquery-1.11.1.js</code>).</p>
+
+<p>Посмотрим и видим, что так оно и есть, файлик <code>jquery-1.11.1.js</code> помещен туда, куда мы и прописывали:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">js</span><span class="p">/</span>
+<span class="n">jquery</span><span class="p">-</span><span class="n">1</span><span class="p">.</span><span class="n">11</span><span class="p">.</span><span class="n">1</span><span class="p">.</span><span class="n">js</span></code></pre></div>
+
+<p>А точно ли он минифицированный? Это легко проверить - открываем его в Sublime Text и наблюдаем такую картину:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_gulp_uglify.png" alt="Минифицированный с помощью gulp-uglify файл в Gulp" /></p>
+
+<h2 id="gulp">Полезные плагины под Gulp</h2>
+
+<p>Мы успешно установили и запустили плагин под Gulp - можно в очередной раз поздравить себя! В данном случае это был плагин <code>gulp-uglify</code> для минификации js-файлов.</p>
+
+<p>Однако, как можно догадаться, существует большое количество других полезных плагинов. Все они устанавливаются и настраиваются точно также, как и рассмотренный нами <code>gulp-uglify</code>.</p>
+
+<p>Ниже я приведу примерный список наиболее полезных плагинов под Gulp, существующих на сегодняшний день:</p>
+
+<ul>
+  <li><code>gulp-minify-html</code> // минификация HTML-файлов</li>
+  <li><code>gulp-minify-css</code> // минификация CSS-файлов</li>
+  <li><code>gulp-csso</code> // еще один плагин минификации CSS-файлов</li>
+  <li><code>gulp-uglify</code> // минификация JS-файлов</li>
+  <li><code>gulp-sass</code> // компиляция SCSS-файлов в CSS-файлы</li>
+  <li><code>gulp-ruby-sass</code> // компиляции SCSS-файлов в CSS-файлы, более стабильный</li>
+  <li><code>gulp-concat</code> // конкатенация (соединение нескольких файлов в один файл)</li>
+  <li><code>gulp-jshint</code> // ???</li>
+  <li><code>gulp-livereload</code> // запуск плагина LiveReload</li>
+  <li><code>gulp-watch</code> // мониторинг файлов в фоновом режиме в Gulp</li>
+  <li><code>gulp-notify</code> // вывод окна с уведомлением о событиях в Gulp</li>
+  <li><code>gulp-imagemin</code> // сжатие изображений в Gulp</li>
+  <li><code>gulp-rename</code> // переименование файлов в Gulp</li>
+  <li><code>gulp-plumber</code> // настройка обработки ошибок в Gulp</li>
+</ul>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-19T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-introduction-and-first-launch/">August 19, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-introduction-and-first-launch/" rel="bookmark" title="Gulp - знакомство и первый запуск" itemprop="url">Gulp - знакомство и первый запуск</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>В этой статье будем знакомиться с новым менеджером задач (task manager) под названием <a href="http://gulpjs.com/" title="Gulp">Gulp</a>. Постепенно вместе с вами я пройду весь процесс - от установки Gulp до установки плагинов, создания задач, отслеживания ошибок и еще многое другое.</p>
+
+<p>Но для начала узнаем, что такое Gulp. Это точно такой менеджер задач, как и Grunt. Оба они являются модулями под Node.js и устанавливаются с помощью пакетного менеждера <code>npm</code>.</p>
+
+<p>Отличие от Grunt в том, что Gulp является переработкой Grunt. Как говорят его разработчики, цель создания была в том, чтобы выбросить из Grunt все лишнее. Кроме того, настройка Gulp значительно упростилась:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp.png" alt="Gulp" class="center-image" /></p>
+
+<p>На сегодня однозначным преимуществом Gulp перед Grunt является скорость обработки файлов - она в разы выше, чем у старенького Grunt.</p>
+
+<h2 id="gulp">Установка Gulp</h2>
+
+<p>Установка будет производиться под операционной системой Linux Mint 17 Cinnamon. Поэтому, пользователи Mac OS найдут все нижеприведенные команды абсолютно идентичными для себя. Подразумевается, что в системе уже установлен Node.js и менеджер пакетов npm.</p>
+
+<p>Процесс инсталляции выполняется в два этапа. Первоначально Gulp устанавливается глобально, с помощью ключа <code>-g</code>. Давайте так и поступим - произведем установку в системе:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">-g</span> <span class="n">gulp</span></code></pre></div>
+
+<p>Затем создадим тестовую директорию с именем <code>gulp_test</code>, в которой будет производить наше знакомство:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">gulp_test</span>
+<span class="p">$</span> <span class="n">cd</span> <span class="n">gulp_test</span><span class="p">/</span></code></pre></div>
+
+<p>В этой директории создадим файл <code>package.json</code> и пропишем в нем имя проекта и его версию:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Этого будет достаточно. Теперь установим Gulp внутри директории <code>gulp_test</code>. При этом воспользуемся ключом <code>--save-dev</code>, который будет “говорить” менеджеру пакетов npm вносить в файл <code>package.json</code> все устанавливаемые им пакеты в качестве зависимостей проекта:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp</span></code></pre></div>
+
+<p>Теперь снова посмотрим на содержимое файла <code>package.json</code> и увидим, что npm добавил Gulp в качестве зависмости:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+<span class="p">{</span>
+  <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;first&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+  <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+    <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.7&quot;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Установка завершена и можно переходить к использованию этого менеждера задач.</p>
+
+<h2 id="gulp-1">Первый запуск Gulp</h2>
+
+<p>Менеджер задач - само слово говорит за себя, это программа для управления задачами. В Gulp все задачи прописываются в одном единственном файле <code>gulpfile.js</code>. Первоначально этого файла не существует и его нужно создать самостоятельно, вручную:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span></code></pre></div>
+
+<p>Затем в нем пропишем первую задачу. Все задачи деляться на <strong>два неравнозначных типа</strong>: <strong>задача по умолчанию</strong> (default task) и <strong>именованные задачи</strong> (named tasks). Разница между ними в том, что задача по умолчанию имеет имя <code>default</code>, которое можно и не указывать. Кроме того, задача по умолчанию запускается в консоли <strong>всего одной командой</strong>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span></code></pre></div>
+
+<p>В то время как <strong>именованная задача</strong> (named task) может иметь произвольное имя. Запуск такой задачи в консоли выполняется с указанием имени конкретной задачи:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">name_of_task</span></code></pre></div>
+
+<p>Еще один важный момент заключается в том, что этот менеджер задач является потоковым. Что это значит? Не знаю, получиться ли у меня достаточно точно объяснить данный вопрос, но вот линуксоиды, хорошо знакомые с командной строкой, меня должны понять. В консоли Linux (Unix) есть такое понятие, как <a href="http://en.wikipedia.org/wiki/Pipeline_%28Unix%29" title="Pipeline">pipe</a>.</p>
+
+<p>Например, простая команда:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="p">|</span> <span class="n">less</span></code></pre></div>
+
+<p>… выполняет следующее: результат команды <code>ls -l</code> <strong>перенаправляется</strong> для обработки в программу <code>less</code>. Редактор <code>less</code> автоматически открывается в консоли с уже готовым для чтения текстом внутри себя.</p>
+
+<p>Чисто схематично такой пример можно усложнить и представить в таком виде:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">programm1</span> <span class="p">|</span> <span class="n">programm2</span> <span class="p">|</span> <span class="n">programm3</span> <span class="p">|</span> <span class="n">programm4</span> <span class="p">|</span> <span class="n">programm5</span></code></pre></div>
+
+<p>Каждая из программ в этом списке будет производить обработку данных и передавать результат этой обработки другой программе, по цепочке.</p>
+
+<p>Принцип работы Gulp точно такой же. Только вместо программ в нем используются плагины (я не забыл сказать, что он имеет модульную структуру?):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">plugin1</span> <span class="p">|</span> <span class="n">plugin2</span> <span class="p">|</span> <span class="n">plugin3</span> <span class="p">|</span> <span class="n">plugin4</span> <span class="p">|</span> <span class="n">plugin5</span> <span class="p">|</span> <span class="n">plugin6</span></code></pre></div>
+
+<p>Отлично! С теорией закончили и можно снова возвращаться к практике, к нашему файлу настроек <code>gulpfile.js</code>. Откроем его и пропишем в нем такие строки:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">var</span> <span class="n">gulp</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">);</span>
+
+<span class="n">gulp</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+  <span class="n">console</span><span class="p">.</span><span class="n">log</span><span class="p">(</span><span class="s1">&#39;Hello from Gulp!&#39;</span><span class="p">)</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Первая строка <code>var gulp = require('gulp');</code> создает переменную <code>gulp</code>, в которую помещается сам Gulp. Это необходимо для Node.js, который будет читать файл <code>gulpfile.js</code> и работать с Gulp в виде переменной <code>gulp</code>.</p>
+
+<p>Вторая строка, начинающаяся с <code>gulp.task</code> - это не что иное, как задача. Именно так создаются задачи в этом менеджере. Здесь <code>'default'</code> - это имя задачи (в данном случае это задача по умолчанию, как вы помните). Функция <code>function()</code> имеет в своем теле неограниченное количество инструкций. Так как мы еще не умеем работать с плагинами под Gulp, то в качестве инструкции пропишем вывод в консоль обычной текстовой строки - <code>console.log('Hello from Gulp!')</code>.</p>
+
+<p>Давайте попробуем запустить наш менеджер задач, чтобы посмотреть, а работает ли он вообще? И как он работает? Для этого переходим в консоль и вводим в ней одну единственную команду <code>gulp</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="p">[</span><span class="n">19</span><span class="err">:</span><span class="n">37</span><span class="err">:</span><span class="n">53</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="p">[</span><span class="n">19</span><span class="err">:</span><span class="n">37</span><span class="err">:</span><span class="n">53</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Hello</span> <span class="n">from</span> <span class="n">Gulp</span><span class="p">!</span>
+<span class="p">[</span><span class="n">19</span><span class="err">:</span><span class="n">37</span><span class="err">:</span><span class="n">53</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">169</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
+
+<p>Вот это да! А что означают все эти строки в консоли? Означают они только хорошее! Строка <code>Using gulpfile ~/Projects/gulp_test/gulpfile.js</code> говорит о том, что Gulp для своей работы воспользовался файлом настроек <code>gulpfile</code> по указанному пути. Затем было запущено выполнение задачи с именем <code>default</code> - <code>Starting 'default'...</code>. Результатом выполнения этой задачи был вывод в консоль строки - <code>Hello from Gulp!</code>. И задача с именем <code>default</code> благополучно завершилась - <code>Finished 'default' after 169 μs</code>, причем на ее выполнение ушло 169 миллисекунд.</p>
+
+<p>Можно поздравить самих себя - мы только что создали и запустили на выполнение свою первую задачу под Gulp!</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-01T00:00:00+04:00"><a href="http://zencoder.ru/javascript/owl-carousel/">August 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -932,563 +1189,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-17T00:00:00+04:00"><a href="http://zencoder.ru/javascript/plugin-smooth-scroll/">July 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~14 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/plugin-smooth-scroll/" rel="bookmark" title="Плагин Smooth Scroll" itemprop="url">Плагин Smooth Scroll</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Обзор краткий такого же небольшого плагина Smooth Scroll, написанного под библиотеку jQuery.</p>
-</blockquote>
-
-<p>Этот скрипт предназначен только для одной цели - плавного скроллинга (<em>прокрутки</em>) страницы. Благодаря этому улучшается юзабилити страницы и сайта в целом, так как нет резких скачков при переходе по ссылкам.</p>
-
-<h2 id="smooth-scroll">Подключение плагина Smooth Scroll</h2>
-
-<p>Подключение Smooth Scroll к HTML-странице производится как обычно:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!--  SCRIPTS  --&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.smooth-scroll.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/settings.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-...</code></pre></div>
-
-<p>… где первая строка - это библиотека jQuery, вторая строка - плагин Smooth Scroll, третья строка - файл инициализации плагина Smooth Scroll.</p>
-
-<h2 id="smooth-scroll-1">Инициализация Smooth Scroll</h2>
-
-<p>Для того, чтобы заработал плагин Smooth Scroll и на странице появилась плавная прокрутка, нужно в js-файле скрипта прописать строки:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">smoothScroll</span><span class="p">();</span>
-<span class="p">});</span></code></pre></div>
-
-<p>… то есть - всем ссылкам страницы присвоить метод <code>smoothScroll()</code>, что дает плавный скроллинг. В принципе, этого достаточно - больше ничего и не надо.</p>
-
-<h2 id="smooth-scroll-2">Варианты выборки в Smooth Scroll</h2>
-
-<p>Помимо показанной выше строчки, скрипт Smooth Scroll имеет несколько других вариантов режима работы. Другими словами, эти режимы работы - все навсего усложненный первый вариант, вариации на тему выборки HTML-элемента в библиотеке jQuery.</p>
-
-<p>Примеры выборок взяты мною из файла <code>readme.md</code>, переводить их мне совсем не хочется; да и нет в этом необходимости - все понятно даже по коду:</p>
-
-<ul>
-  <li>Allows for easy implementation of smooth scrolling for same-page links.</li>
-  <li>Works like this: <code>$('a').smoothScroll();</code></li>
-  <li>Specify a containing element if you want: <code>$('#container a').smoothScroll();</code></li>
-  <li>Exclude links if they are within a containing element: <code>$('#container a').smoothScroll({excludeWithin: ['.container2']});</code></li>
-  <li>Exclude links if they match certain conditions: <code>$('a').smoothScroll({exclude: ['.rough','#chunky']});</code></li>
-  <li>Adjust where the scrolling stops: <code>$('.backtotop').smoothScroll({offset: -100});</code></li>
-  <li>Add a callback function that is triggered before the scroll starts: `$(‘a’).smoothScroll({beforeScroll: function() { alert(‘ready to go!’); }});</li>
-  <li>Add a callback function that is triggered after the scroll is complete: <code>$('a').smoothScroll({afterScroll: function() { alert('we made it!'); }});</code></li>
-</ul>
-
-<h2 id="smooth-scroll-3">Пример работы Smooth Scroll</h2>
-
-<p>Ниже привожу пример HTML, SCSS и JS-кода, на котором проходил “испытание” плагин Smooth Scroll у меня, в моей “лаборатории”.</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;title&gt;</span>Smooth Scroll Plugin<span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-
-<span class="nt">&lt;body&gt;</span>
-
-  <span class="nt">&lt;h1</span> <span class="na">class=</span><span class="s">&quot;head&quot;</span><span class="nt">&gt;</span>smooth scroll plugin<span class="nt">&lt;/h1&gt;</span>
-
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;scroll&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#h1&quot;</span><span class="nt">&gt;</span>header 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#h2&quot;</span><span class="nt">&gt;</span>header 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#h3&quot;</span><span class="nt">&gt;</span>header 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#h4&quot;</span><span class="nt">&gt;</span>header 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#h5&quot;</span><span class="nt">&gt;</span>header 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-
-  <span class="nt">&lt;h1&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h2&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h3</span> <span class="na">id=</span><span class="s">&quot;h3&quot;</span><span class="nt">&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h4&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5</span> <span class="na">id=</span><span class="s">&quot;h5&quot;</span><span class="nt">&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 6<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 7<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h1&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h2</span> <span class="na">id=</span><span class="s">&quot;h2&quot;</span><span class="nt">&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h3&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h4&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 6<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 7<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h1</span> <span class="na">id=</span><span class="s">&quot;h1&quot;</span><span class="nt">&gt;</span>header 1<span class="nt">&lt;/h1&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h2&gt;</span>header 2<span class="nt">&lt;/h2&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h3&gt;</span>header 3<span class="nt">&lt;/h3&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h4</span> <span class="na">id=</span><span class="s">&quot;h4&quot;</span><span class="nt">&gt;</span>header 4<span class="nt">&lt;/h4&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 5<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 6<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="nt">&lt;h5&gt;</span>header 7<span class="nt">&lt;/h5&gt;</span>
-
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Laudantium odit sunt dicta, consequatur quis totam animi possimus. Dignissimos quod commodi enim accusamus obcaecati delectus, eaque similique quam hic perspiciatis fugiat.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis molestiae eos id provident veniam porro quas et optio vitae dignissimos delectus adipisci dolorum similique numquam necessitatibus sit magni, neque dolor.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non error dolorum, obcaecati, amet officia debitis nesciunt ullam quasi nobis aliquid quae voluptas mollitia ducimus accusantium veritatis quia esse autem inventore?<span class="nt">&lt;/p&gt;</span>
-
-  <span class="c">&lt;!--  SCRIPTS  --&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.smooth-scroll.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/settings.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-
-<span class="nt">&lt;/body&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#789</span><span class="o">;</span>
-
-<span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="o">,</span><span class="nt">h3</span><span class="o">,</span><span class="nt">h4</span><span class="o">,</span><span class="nt">h5</span><span class="p">{</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-  <span class="k">font-family</span><span class="o">:</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">h1</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">36px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nt">h2</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">32px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nt">h3</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">28px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nt">h4</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">24px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">15%</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nt">h5</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">24px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nt">h6</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">25%</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nt">h7</span><span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">30%</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.head</span><span class="p">{</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">48px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.scroll</span><span class="p">{</span>
-  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="n">li</span><span class="err">{</span>
-    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="n">a</span><span class="err">{</span>
-      <span class="k">text-transform</span><span class="o">:</span> <span class="k">capitalize</span><span class="p">;</span>
-      <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-      <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
-      <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
-        <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">15%</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">smoothScroll</span><span class="p">();</span>
-<span class="p">});</span></code></pre></div>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-07-16T00:00:00+04:00"><a href="http://zencoder.ru/javascript/slider-flexslider/">July 16, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~9 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/slider-flexslider/" rel="bookmark" title="Слайдер FlexSlider" itemprop="url">Слайдер FlexSlider</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Люблю я разбирать новые слайдеры и пробовать с ними работать. На этот раз я столкнулся с неизвестным для себя плагином FlexSlider в одном из готовых HTML-макетов австралийского фрилансера <a href="http://peterfinlan.com/" title="Peter Finlan">Peter Finlan</a>.</p>
-</blockquote>
-
-<p>Домашняя страничка слайдера FlexSlider располагается здесь - <a href="http://flexslider.woothemes.com/index.html" title="FlexSlider 2">FlexSlider 2</a>. Как сказано на официальной страничке, слайдер является адаптивным, периодически.</p>
-
-<p>В арсенале у плагина заготовлена возможность автоматического генерирования перемотки изображений, пагинации страниц; показ не только изображений, но и видео. А вот заголовок для данного слайдера не предусмотрен, насколько я понял (<em>поправьте меня, если я неправ - буду только рад, ибо слайдер понравился</em>).</p>
-
-<p>Зато у FlexSlider я впервые (<em>для себя</em>) встретил такую удобную возможность, как управление отображением стрелок перемотки или пагинацией через опции самого слайдера. То есть, не нужно копаться в сгенерированном коде DOM-дерева с помощью Firebug, чтобы найти там блок пагинации (<em>к примеру</em>) и отключить его через CSS-правило <code>display: block;</code>. В случае с FlexSlider все делается проще - прописал одну строчку <code>controlNav: false</code> и пагинация отключена.</p>
-
-<h2 id="flexslider">Подключение FlexSlider</h2>
-
-<p>Подключение плагина FlexSlider к HTML-странице производится абсолютно стандартно, как и для любого другого плагина, написанного под библиотеку jQuery (<em>я не забыл сказать, что FlexSlider написан под jQuery?</em>). В моем случае я использовал версию jQuery 1.11.1. Здесь есть небольшое ограничение - FlexSlider 2.3.0 требует для своей работы как минимум jQuery 1.4.2. Кнопка для скачивания FlexSlider находиться там же, где вся остальная информация - <a href="http://flexslider.woothemes.com/index.html" title="FlexSlider Download">FlexSlider Download</a>.</p>
-
-<p>Подключение FlexSlider в HTML:</p>
-
-<h2 id="html---flexslider">HTML-разметка для FlexSlider</h2>
-
-<p>Разметка для слайдера на странице выполняется в виде блока-обертки и маркированного списка:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- FLEXSLIDER --&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;flexslider&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;slides&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/caramel.jpg&quot;</span>    <span class="na">width=</span><span class="s">&quot;800&quot;</span> <span class="na">height=</span><span class="s">&quot;504&quot;</span> <span class="na">alt=</span><span class="s">&quot;FlexSlider&quot;</span> <span class="na">title=</span><span class="s">&quot;Flexslider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/cheesecake.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;800&quot;</span> <span class="na">height=</span><span class="s">&quot;504&quot;</span> <span class="na">alt=</span><span class="s">&quot;FlexSlider&quot;</span> <span class="na">title=</span><span class="s">&quot;Flexslider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/donut.jpg&quot;</span>      <span class="na">width=</span><span class="s">&quot;800&quot;</span> <span class="na">height=</span><span class="s">&quot;504&quot;</span> <span class="na">alt=</span><span class="s">&quot;FlexSlider&quot;</span> <span class="na">title=</span><span class="s">&quot;Flexslider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/lemon.jpg&quot;</span>      <span class="na">width=</span><span class="s">&quot;800&quot;</span> <span class="na">height=</span><span class="s">&quot;504&quot;</span> <span class="na">alt=</span><span class="s">&quot;FlexSlider&quot;</span> <span class="na">title=</span><span class="s">&quot;Flexslider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--  end flexslider  --&gt;</span></code></pre></div>
-
-<p>Пример взят с официальной странички и в нем оставлены имена классов для обоих блоков, как есть. Плагин при своей инициализации генерирует два дополнительных блока:</p>
-
-<ul>
-  <li>ol class=”flex-control-nav” - для пагинации изображений</li>
-  <li>ul class=”flex-direction-nav” - для стрелок перемотки изображений</li>
-</ul>
-
-<p>… а также создает блок-обертку <code>div class="flex-viewport"</code> для списка <code>ul class="slides"</code>. То есть, разметка получается прозрачной и ясной.</p>
-
-<h2 id="flexslider-1">Инициализация FlexSlider</h2>
-
-<p>Для инициализации плагина FlexSlider нужно в конфигурационном js-файле для случая самого простого вида написать такие строки:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.flexslider&#39;</span><span class="p">).</span><span class="nx">flexslider</span><span class="p">({</span>
-    <span class="nx">animation</span><span class="o">:</span> <span class="s2">&quot;slide&quot;</span>
-  <span class="p">});</span>
-<span class="p">});</span></code></pre></div>
-
-<p>В принципе, уже этого достаточно для создания слайдера FlexSlider - он уже работает. Можно стилизовать его самому с помощью CSS, или же подключить уже готовые CSS-стили и отредактировать их - кому как удобно. Я попробую отредактировать внешний вид слайдера сам:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#778899</span><span class="o">;</span>
-
-<span class="nc">.flexslider</span><span class="p">{</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">800px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">10px</span> <span class="k">solid</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">);</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">5px</span><span class="p">);</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="p">(</span><span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="m">10px</span><span class="p">);</span>
-
-  <span class="c">/*  PAGINATION  */</span>
-  <span class="o">.</span><span class="n">flex</span><span class="o">-</span><span class="n">control</span><span class="o">-</span><span class="n">nav</span><span class="err">{</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-    <span class="k">z-index</span><span class="o">:</span> <span class="m">3</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-30px</span><span class="p">;</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">pie</span><span class="o">-</span><span class="n">clearfix</span><span class="p">;</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
-    <span class="n">li</span><span class="err">{</span>
-      <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-      <span class="k">margin-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-      <span class="n">a</span><span class="err">{</span>
-        <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-        <span class="k">width</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-        <span class="k">height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-        <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
-        <span class="k">cursor</span><span class="o">:</span> <span class="k">pointer</span><span class="p">;</span>
-        <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
-        <span class="o">@</span><span class="n">include</span> <span class="n">single</span><span class="o">-</span><span class="n">transition</span><span class="p">(</span><span class="k">background-color</span><span class="o">,</span> <span class="m">.2s</span><span class="o">,</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">);</span>
-        <span class="o">&amp;.</span><span class="n">flex</span><span class="o">-</span><span class="n">active</span><span class="err">{</span>
-          <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
-          <span class="k">cursor</span><span class="o">:</span> <span class="k">default</span><span class="p">;</span>
-        <span class="p">}</span>
-        <span class="o">&amp;</span><span class="nd">:hover</span><span class="o">,&amp;</span><span class="nd">:focus</span><span class="p">{</span>
-          <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
-        <span class="p">}</span>
-      <span class="err">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-
-  <span class="c">/*  ARROWS  */</span>
-  <span class="nc">.flex-direction-nav</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
-    <span class="o">.</span><span class="n">flex</span><span class="o">-</span><span class="n">prev</span><span class="o">,</span>
-    <span class="o">.</span><span class="n">flex</span><span class="o">-</span><span class="n">next</span><span class="err">{</span>
-      <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-      <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-      <span class="k">margin-top</span><span class="o">:</span> <span class="m">-10px</span><span class="p">;</span>
-      <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
-      <span class="k">width</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-      <span class="k">height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
-      <span class="k">border</span><span class="o">:</span> <span class="m">2px</span> <span class="k">solid</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
-      <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">single</span><span class="o">-</span><span class="n">transition</span><span class="p">(</span><span class="k">background-color</span><span class="o">,</span> <span class="m">.2s</span><span class="o">,</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">);</span>
-      <span class="o">&amp;:</span><span class="n">hover</span><span class="o">,&amp;:</span><span class="n">focus</span><span class="err">{</span>
-        <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-        <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-    <span class="nc">.flex-prev</span><span class="p">{</span>
-      <span class="k">left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nc">.flex-next</span><span class="p">{</span>
-      <span class="k">right</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="p">}</span>
-  <span class="err">}</span>
-  <span class="c">/*  IMAGES  */</span>
-  <span class="nc">.flex-viewport</span><span class="p">{</span>
-    <span class="n">li</span><span class="err">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="p">(</span><span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">6</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="m">8px</span> <span class="m">4px</span> <span class="k">inset</span><span class="p">);</span>
-      <span class="n">img</span><span class="err">{</span>
-        <span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
-        <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-        <span class="k">z-index</span><span class="o">:</span> <span class="m">-2</span><span class="p">;</span>
-      <span class="p">}</span>
-      <span class="err">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/07/flexslider.jpg" alt="Стилизованный слайдер FlexSlider" /></p>
-
-<h2 id="flexslider-2">Опции слайдера FlexSlider</h2>
-
-<p>Плагин имеет большое количество настроек, которые представлены ниже. Список взят отсюда - <a href="http://pcvector.net/scripts/slideshow_and_scroller/386-flexslider-adaptivnyy-slayder.html" title="Flexslider - адаптивный слайдер">Flexslider - адаптивный слайдер</a>.</p>
-
-<h3 id="section">Опции по умолчанию:</h3>
-
-<ul>
-  <li>namespace: “flex-“, //{Новое} String: Префикс, прикрепляемый к классу каждого элемента сгенерированного плагином</li>
-  <li>selector: “.slides &gt; li”, //{Новое} Selector: Должен соответствовать простому шаблону. ‘{container} &gt; {slide}’ — Игнорируйте шаблон на свой страх и риск</li>
-  <li>animation: “fade”, //String: Тип анимации, “fade” или “slide”</li>
-  <li>easing: “swing”, //{Новое} String: Определяет переход поддерживаемый плагином jQuery easing.</li>
-  <li>direction: “horizontal”, //String: Выбор направления смены изображений “horizontal” или “vertical”</li>
-  <li>reverse: false, //{NEW} Boolean: реверс направления анимации</li>
-  <li>animationLoop: true, //Boolean: Цикличность анимации. Если false, directionNav будет добавлять класс “disable” на обоих концах слайдера</li>
-  <li>smoothHeight: false, //{Новое} Boolean: Allow height of the slider to animate smoothly in horizontal mode</li>
-  <li>startAt: 0, //Integer: Слайд с какого должно начинаться слайдшоу. Массив (0 = первый слайд)</li>
-  <li>slideshow: true, //Boolean: Включение автослайдшоу</li>
-  <li>slideshowSpeed: 7000, //Integer: Скорость слайдшоу в мс</li>
-  <li>animationSpeed: 600, //Integer: Скорость анимации в мс</li>
-  <li>initDelay: 0, //{Новое} Integer: Задержка инициализации в мс
--randomize: false, //Boolean: Случайный порядок слайдов</li>
-</ul>
-
-<h3 id="section-1">Использование функций</h3>
-
-<ul>
-  <li>pauseOnAction: true, //Boolean: Pause the slideshow when interacting with control elements, highly recommended.</li>
-  <li>pauseOnHover: false, //Boolean: Pause the slideshow when hovering over slider, then resume when no longer hovering</li>
-  <li>useCSS: true, //{Новое} Boolean: Slider will use CSS3 transitions if available</li>
-  <li>touch: true, //{Новое} Boolean: Allow touch swipe navigation of the slider on touch-enabled devices</li>
-  <li>video: false, //{Новое} Boolean: If using video in the slider, will prevent CSS3 3D Transforms to avoid graphical glitches</li>
-</ul>
-
-<h3 id="section-2">Первичное управление</h3>
-
-<ul>
-  <li>controlNav: true, //Boolean: Создание навигации для постраничного управления каждым слайдом. Замечание: оставьте true для использования manualControls</li>
-  <li>directionNav: true, //Boolean: Создание навигации для кнопок назад/вперед (true/false)</li>
-  <li>prevText: “Previous”, //String: Тест для кнопки “previous” пункта directionNav</li>
-  <li>nextText: “Next”, //String: Тест для кнопки “next” пункта directionNav</li>
-</ul>
-
-<h3 id="section-3">Вторичная навигация</h3>
-
-<ul>
-  <li>keyboard: true, //Boolean: Разрешает навигацию с помощью стрелок на клавиатуре (влево/вправо)</li>
-  <li>multipleKeyboard: false, //{Новое} Boolean: Разрешает управление с помощью клавиатуры по несколькими слайдерами. Поведение по умолчанию вырезает возможность управления клавиатурой при использовании более одного слайдера</li>
-  <li>mousewheel: false, //{Обновление} Boolean: Требуется плагин jquery.mousewheel.js (https://github.com/brandonaaron/jquery-mousewheel) - Управление навигацией по слайдам с помощью колесика мыши</li>
-  <li>pausePlay: false, //Boolean: Создание динамического pause/play элемента</li>
-  <li>pauseText: “Pause”, //String: Текста для кнопки “pause” элемента pausePlay</li>
-  <li>playText: “Play”, //String: Текст для кнопки “play” элемента pausePlay</li>
-</ul>
-
-<h3 id="section-4">Специальные свойства</h3>
-
-<ul>
-  <li>controlsContainer: “”, //{Обновление} jQuery Object/Selector: Объявление какой контейнер элементов навигации будет применен. По умолчанию это FlexSlider. Например, можно использовать так $(“.flexslider-container”). Свойство игнорируется если элемент не найден.</li>
-  <li>manualControls: “”, //{Обновление} jQuery Object/Selector: Объявление пользовательской панели управления навигацией. Примером может быть $(“.flex-control-nav li”) или “#tabs-nav li img”, и т.п.. Количество элементов в вашей controlNav должно совпадать с количеством слайдов/табов.</li>
-  <li>sync: “”, //{Новое} Selector: Зеркало действий выполняемых над этим слайдером с помощью другого слайдера. Используйте с осторожностью.</li>
-  <li>asNavFor: “”, //{Новое} Selector: Внутренние свойства направленные на превращение слайдера в миниатюры с возможностью навигации для другого слайдера</li>
-</ul>
-
-<h3 id="section-5">Опции карусели</h3>
-
-<ul>
-  <li>itemWidth: 0, //{Новое} Integer: Ширина Box-model отдельных элементов карусели, включая горизонтальные границы и отступы (padding)</li>
-  <li>itemMargin: 0, //{Новое} Integer: Отступ между элементами карусели</li>
-  <li>minItems: 0, //{Новое} Integer: Минимальное количество элементов карусели, которые будут видимы. Элементы будут плавно изменять размер при значении ниже заданного</li>
-  <li>maxItems: 0, //{Новое} Integer: Максимальное количество элментов карусели, которые будут видимы. Элементы будут плавно изменять размер при превышении этого лимита.</li>
-  <li>move: 0, //{Новое} Integer: Количество элментов в карусели, которые должны двигаться по анимации. Если 0, то слайдер будет двигать все видимые элементы</li>
-</ul>
-
-<h3 id="callback-api">Callback API</h3>
-
-<ul>
-  <li>start: function(){}, //Callback: function(slider) - Срабатывает, когда слайдер загружает первый слайд</li>
-  <li>before: function(){}, //Callback: function(slider) - Срабатывает асинхронно с каждой анимацией слайдера</li>
-  <li>after: function(){}, //Callback: function(slider) - Срабатывает после каждой завершенной анимацией слайдера</li>
-  <li>end: function(){}, //Callback: function(slider) - Срабатывает, когда слайдер доходит до последнего элемента (асинхронный)</li>
-  <li>added: function(){}, //{Новое} Callback: function(slider) - Срабатывает после того, как слайд добавлен</li>
-  <li>removed: function(){} //{Новое} Callback: function(slider) - Срабатывает после того, когда слайд удален</li>
-</ul>
-
-<h2 id="flexslider-3">Варианты слайдера FlexSlider</h2>
-
-<p>На официальной страничке плагина в прекрасно оформленном виде представлены [различные варианты][6] создания слайдера. Все они реализуются с помощью опций этого плагина и дополнительной HTML-разметки.</p>
-
-<p>Например, чтобы создать слайдер с thumbnail-пагинацией, нужно прописать в js-файле настроек:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.flexslider&#39;</span><span class="p">).</span><span class="nx">flexslider</span><span class="p">({</span>
-  <span class="nx">animation</span><span class="o">:</span> <span class="s2">&quot;slide&quot;</span><span class="p">,</span>
-  <span class="nx">controlNav</span><span class="o">:</span> <span class="s2">&quot;thumbnails&quot;</span>
-<span class="p">});</span></code></pre></div>
-
-<p>… а HTML-разметку изменить таким образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Place somewhere in the &lt;body&gt; of your page --&gt;</span>
-<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;flexslider&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;slides&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">data-thumb=</span><span class="s">&quot;slide1-thumb.jpg&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;slide1.jpg&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">data-thumb=</span><span class="s">&quot;slide2-thumb.jpg&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;slide2.jpg&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">data-thumb=</span><span class="s">&quot;slide3-thumb.jpg&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;slide3.jpg&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">data-thumb=</span><span class="s">&quot;slide4-thumb.jpg&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;slide4.jpg&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Но, в принципе, в этом случае рассказывать о возможных вариантах слайдера достаточно глупо - можно и нужно посетить официальную страничку и там смотреть примеры создания.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-<p>[6]: http://flexslider.woothemes.com/index.html “”</p>
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

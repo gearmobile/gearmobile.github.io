@@ -144,6 +144,315 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-25T00:00:00+04:00"><a href="http://zencoder.ru/css/breadcrumbs-css/">October 25, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/breadcrumbs-css/" rel="bookmark" title="Навигация breadcrumbs с помощью треугольников на CSS" itemprop="url">Навигация breadcrumbs с помощью треугольников на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Интересная статья по созданию навигации в виде “хлебных крошек” (breadcrumbs).</p>
+</blockquote>
+
+<p>Такая навигация удобна и полезна для сайтов с большим количеством рубрик. Благодаря такой навигации пользователь сайта может не запутаться в содержимом, точно знать, где он находиться и легко перейти в то место, куда ему нужно.</p>
+
+<p>Видов такой навигации может быть множество, все зависит от дизайна. Но принцип построения на CSS стандартный - с помощью списков <code>ul</code>.</p>
+
+<p>Статья была опубликована на одном из моих любимых сайтов CSS-Tricks. Ниже привожу вольный перевод ее автора (Chris Coyier):</p>
+
+<p>Вы уже знаете, как создавать треугольники на чистом CSS? Для этого просто генерируется блочный элемент с нулевой шириной и высотой, у которого имеется одна граница с цветом, а две смежные границы имеют прозрачный цвет. Такие треугольники применяются в самых разнообразных местах дизайна - например, для указателей в навигации.</p>
+
+<p>Другое место их применения - невинные украшательства дизайна, не нарушающие его общую разметку. В счастью, это возможно благодаря псевдо-элементам, которые часто используются при их создании. Применяя <code>:before</code>, <code>:after</code> или оба сразу можно сгенерировать блочные элементы и с их помощью создать треугольники.</p>
+
+<p>А вот последние можно применять для создания навигации в стиле “хлебные крошки”. Как выглядит одна из таких навигаций (<em>чтобы иметь представление, что это такое</em>), показано на рисунке ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/trianglebreadcrumbs.png" alt="Один из видов навигации хлебные крошки" /></p>
+
+<h2 id="html-">HTML разметка</h2>
+
+<p>Начнем создание такого меню с HTML-разметки, которая максимально проста и представляет собой обычный неупорядоченный список с классом breadcrumb:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;breadcrumb&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Home<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Vehicles<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Vans<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Camper Vans<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>1989 VW Westfalia Vanagon<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h2 id="css-">CSS код</h2>
+
+<p>В первую очередь убедимся, что наш список не выглядит, как обычный неупорядоченный список. Для этого уберем у него маркеры, сделаем его пункты плавающими влево и зададим самые общие стилевые правила для ссылок внутри этого списка. Обратите внимание на свойство <code>overflow</code> для всего списка в целом - он применяется здесь по двум причинам.</p>
+
+<p>Первая - наш список должен иметь высоту. Контейнеры, которые содержат только плавающие элементы, схлопываются (<code>collapse</code>), что совсем не то, что нам нужно. Второе - когда мы будем создавать треугольники, мы сделаем их достаточно большими:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="p">{</span>
+  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">18px</span> <span class="n">Helvetica</span><span class="o">,</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">0</span> <span class="m">10px</span> <span class="m">65px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="nb">brown</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span> <span class="m">85%</span><span class="o">,</span> <span class="m">35%</span><span class="o">,</span> <span class="m">1</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Для создания треугольника мы воспользуемся псевдо-элементом <code>:after</code>. Для него установим высоту и ширину, равную нулю; и абсолютно спозиционируем его на 100% влево, что означает - он будет располагаться у правого края своего блока родителя.</p>
+
+<p>Затем сместим треугольник вниз на 50% и “вернем” назад на -50px для точного позиционирования по центру (это классический прием - перевод здесь). Есть только один момент, на который нужно обратить внимание.</p>
+
+<p>Граница, которую мы создаем сверху, равна 50px, нижняя граница также равна 50px, а ширина левой границы равна 30px. Это сделано для того, чтобы треугольник получился более “плоским”, с не такой острой вершиной. Если мы сделаем левую границу равной остальным сторонам в 50px, угол треугольника будет слишком острый.</p>
+
+<p>Так как верхняя и нижняя границы равны по 50px, то общая высота треугольника получается в 100px. Это гораздо больше, чем высота нашего меню, в котором высота шрифта <code>18px</code> и <code>padding-top: 10px</code>, <code>padding-bottom: 10px</code>. Однако, это хорошо, что треугольник больше высоты меню. Это означает, что у нас остается достаточно свободного пространства, чтобы “поиграться” с размером шрифта:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">2</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">border-left</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span> <span class="m">85%</span><span class="o">,</span> <span class="m">35%</span><span class="o">,</span> <span class="m">1</span><span class="p">);</span>
+  <span class="k">border-top</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+  <span class="k">border-bottom</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Все хорошо. Но на примере, который нужно воссоздать в коде, есть тонкая полоска шириной в 1px, идущая по краю треугольника. Чтобы “нарисовать” ее в CSS-коде, нам потребуется еще “поколдовать”, так как напрямую создать границу для треугольника не получиться. Ведь треугольник как раз сам и является границей!</p>
+
+<p>Поэтому мы поступим по другому - создадим еще один треугольник, который поместим позади нашего первого и зададим для него белый фоновый цвет. По своим свойствам второй треугольник будет практически одинаков с первым, но создаваться будет с помощью псевдо-элемента <code>:before</code>.</p>
+
+<p>Обратите внимание на важную вещь - <code>z-index</code>. С помощью этого свойства можно “тасовать” элементы <code>:before</code> и <code>:after</code> (точнее - созданные ими треугольники) в нужном порядке - какой треугольник над каким должен располагаться:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:before</span> <span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">-50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">border-left</span><span class="o">:</span> <span class="m">30px</span> <span class="k">solid</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">border-top</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+  <span class="k">border-bottom</span><span class="o">:</span> <span class="m">50px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Примечание переводчика:</p>
+
+<blockquote>
+  <p>Изменения минимальны. Цвет границы задан белым <code>#fff</code> и добавлено смещение треугольника влево на 1px <code>margin-left: 1px</code>, чтобы разделительная черта была более заметна.</p>
+</blockquote>
+
+<p>Теперь что касается цветовой заливки навигации. Так как пример имеет плавное изменение цвета элементов навигации, нам потребуются еще два замечательных CSS-свойства: <code>nth-child</code> и HSLa.</p>
+
+<ul>
+  <li>Чем полезно <code>nth-child</code> - можно задать цвета для различных элементов навигации без добавления дополнительной разметки в HTML-код;</li>
+  <li>Чем полезно HSLa - основываясь только на одном цвете, можно легко задать различные оттенки для элементов навигации.</li>
+</ul>
+
+<p>Помимо этого, для первой ссылки мы уменьшим отступ слева с помощью <code>padding-left</code>, чтобы все элементы меню имели одинаковый размер; для последней ссылки совсем уберем цвет, сделаем некликабельной и вернем вид курсора по умолчанию. Все это мы выполним без какой-либо дополнительной разметки, с помощью псевдо-элементов <code>:first-child</code> и <code>:last-child</code> (<em>плюс к двум предыдущим</em>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:first-child</span> <span class="nt">a</span> <span class="p">{</span><span class="k">padding-left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">45%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">2</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">45%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">55%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">3</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">55%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">4</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">65%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">4</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">65%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">75%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">5</span><span class="o">)</span> <span class="nt">a</span><span class="nd">:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">75%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span><span class="nd">:last-child</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span> <span class="cp">!important</span><span class="p">;</span> <span class="k">color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span> <span class="k">pointer</span><span class="o">-</span><span class="n">events</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span> <span class="k">cursor</span><span class="o">:</span> <span class="k">default</span><span class="p">;}</span></code></pre></div>
+
+<p>Примечание переводчика:</p>
+
+<blockquote>
+  <p>Нумерация в <code>nth-child</code> начинается с единицы, а не с нуля, как принято в языках программирования.</p>
+</blockquote>
+
+<p>И наконец, состояния элементов навигации при наведении курсора мыши. Здесь единственная особенность - нам нужно задать цвет треугольника точно таким же, как и ссылка. Не проблема:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span><span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">25%</span><span class="o">,</span><span class="m">1</span><span class="p">);}</span>
+<span class="nc">.breadcrumb</span> <span class="nt">li</span> <span class="nt">a</span><span class="nd">:hover:after</span> <span class="p">{</span><span class="k">border-left-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">34</span><span class="o">,</span><span class="m">85%</span><span class="o">,</span><span class="m">25%</span><span class="o">,</span><span class="m">1</span><span class="p">)</span> <span class="cp">!important</span><span class="p">;}</span></code></pre></div>
+
+<h2 id="section">Совместимость с браузерами</h2>
+
+<p>Назовите меня ленивым, но я не занимался вопросом проверки данного кода на кросс-браузерную совместимость. Я был слишком захвачен самой идеей создания меню “хлебные крошки” на чистом CSS, чтобы думать его практическом использовании. Но если вас волнует мысль о его поддержке более старыми версиями браузеров, то стоит обратить внимание на следующие вещи:</p>
+
+<ul>
+  <li>используйте для передачи цвета HEX-код вместо HSLa;</li>
+  <li>для каждого из пунктов меню <code>li</code> создайте свои классы, вместо использования <code>nth-child</code>;</li>
+  <li>для браузеров, не поддерживающих псевдо-классы <code>:after</code>/<code>:before</code> используйте схему создания навигационного меню, основанную на изображениях;</li>
+  <li>применяйте библиотеку Modernizr для определения поддержки браузерами тех или иных свойств (например, HSLa);</li>
+  <li>используйте дополнительные стилевые правила для IE.</li>
+</ul>
+
+<p>Результат, созданный с помощью приведенного выше кода, показан ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/breadcrumb-result.jpg" alt="Меню хлебные крошки с помощью CSS-треугольников" /></p>
+
+<p>Эффект при наведении курсора мыши на один из пунктов меню:</p>
+
+<figure id="attachment_96" style="width: 600px;" class="wp-caption aligncenter">
+  [<img src="http://localhost:7788/third/wp-content/uploads/2013/10/breadcrumb-result-hover-600x129.jpg" alt="Эффект при наведении курсора мыши на меню навигации" width="600" height="129" class="size-medium wp-image-96" />][3]
+  <figcaption class="wp-caption-text">Эффект при наведении курсора мыши на меню навигации</figcaption>
+</figure>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/10/breadcrumb-result-hover.jpg" alt="Эффект при наведении курсора мыши на меню навигации" /></p>
+
+<p>На этом все и перевод закончен.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-24T00:00:00+04:00"><a href="http://zencoder.ru/css/css-lifted-shadows/">October 24, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-lifted-shadows/" rel="bookmark" title="Создание приподнятых теней с помощью CSS" itemprop="url">Создание приподнятых теней с помощью CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Создание приподнятых теней (<code>lifted shadow</code>) с помощью CSS.</p>
+</blockquote>
+
+<p>Такие тени создаются с помощью двух псевдо-элементов <code>:before</code> и <code>:after</code>. Дополнительной HTML-разметки при этом не требуется. Оба псевдо-элемента применяются только к одному элементу, который должен быть блочным. Ниже показана последовательность действий, которая совсем несложная.</p>
+
+<p>Статья написана по мотивам известного блога Николаса Галлахера, где показаны самые разнообразные виды таких сложных теней.</p>
+
+<p>Приступаем к написанию кода. Создаем элемент <code>p</code> и для него прописываем правила (<em>чтобы смотрелся хорошо</em>):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;lifted&quot;</span><span class="nt">&gt;</span>
+  Lifted Corners
+<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">70px</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">40px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">3</span><span class="p">)</span> <span class="k">inset</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Здесь все несложно. Задаем ширину и высоту блока, а также косметическую красоту типа выравнивания по центру и придания тени для блока. Не забываем сделать блок относительно позиционированным, так как в последующих шагах нам потребуются псевдо-элементы, которые нужно будет позиционировать относительно блока-родителя.</p>
+
+<p>Такой интересный момент в этом коде - нужно обязательно явно установить фоновый цвет для блока <code>background-color: #fff</code>. Иначе он будет прозрачным по умолчанию и сквозь него будут проступать наши тени.</p>
+
+<p>Необходимо получить две тени, одна из которых располагается под левым углом блока, а другая - под правым. Поэтому нам потребуются два псевдо-элемента - <code>:before</code> и <code>:after</code>. Создаем правила, общие для обоих псевдо-элементов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:before</span><span class="o">,</span> <span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
+  <span class="k">bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+  <span class="k">z-index</span><span class="o">:</span> <span class="m">-1</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+          <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">15px</span> <span class="m">10px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">.</span><span class="m">6</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Немного “расшифруем” показанный выше код. Устанавливаем для обоих псевдо-элементов абсолютное позиционирование и координаты: от нижней границы 15px (<code>bottom: 15px</code>) и от левой границы 4px (<code>left: 4px;</code>). Ширину элемента устанавливаем в половину от ширины элемента-родителя (<code>width: 50%;</code>), высоту - 10% от ширины этого же элемента. Один интересный момент, про который не нужно забыть - “подсовываем” тени под блок-родитель с помощью свойства <code>z-index: -1</code>. Ну и создаем сами тени правилом <code>box-shadow: 0 15px 10px rgba(0,0,0,0.6)</code>, указав браузерные префиксы.</p>
+
+<p>Теперь у нас есть обе тени, но выглядят они как одна, так как первая накладывается на другую, ибо их координаты одинаковы. Поэтому нужно “разнести” их по разным углам, установив для псевдо-элемента <code>:after</code> иное позиционирование по оси X:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lifted</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">left</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">right</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Почти все готово. Осталось только сделать для обеих теней “косину”, то есть развернуть их на определенное количество градусов. Левую тень развернем против часовой стрелки, чтобы ее внутренний угол оказался под блоком-родителем. Правую развернем точно также, только по часовой стрелке, чтобы ее внутренний угол также “спрятался” под блоком. Разворачивание будем выполнять с помощью правила <code>transform: rotate</code> для псевдо-элемента <code>:before</code> -</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
+   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
+     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span>
+        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">-3deg</span><span class="o">);</span></code></pre></div>
+
+<p>и для псевдо-элемента <code>:after</code> -</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">-webkit-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
+   <span class="nt">-moz-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
+     <span class="nt">-o-transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span>
+        <span class="nt">transform</span><span class="o">:</span> <span class="nt">rotate</span><span class="o">(</span><span class="nt">3deg</span><span class="o">);</span></code></pre></div>
+
+<p>Результат нашей работы можно посмотреть ниже. Красиво!</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/drop-down-shadows.jpg" alt="Блок с тенями под углами" /></p>
+
+<p>Можно немного усложнить задачу и сделать нижние уголки блока визуально приподнятыми. Создастся иллюзия того, что у блока завернутые вверх уголки, как у листочка бумаги. Для этого нужно вспомнить о том, что у свойства <code>border-radius</code> есть два параметра, а не одно.</p>
+
+<p>То есть, для одного угла можно задать два радиуса скругления, и тогда само скругление получиться не таким “правильным”, но более реалистичным. Первый радиус делаем большого размера, а второй немного меньше.</p>
+
+<p>В результате угол получается не скругленным, а немного скошенным. В нашем примере для блока-родителя задаем радиусы скругления нижних углов следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">border-bottom-left-radius: 40px 12px;
+border-bottom-right-radius: 40px 12px;</code></pre></div>
+
+<p>Итогом получается картинка листочка бумаги с завернутыми уголками:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/curved-corners.jpg" alt="Завернутые уголки на чистом CSS" /></p>
+
+<p>На сайте Николаса Галлахера есть множество других примеров создания теней, которые по-настоящему впечатляют. В этой статье приведен только один из них, самый распространенный. Как видите, ничего сложного в его создании нет. Но вот на кросс-браузерность такой пример мною не рассматривался, ибо мне был важен сам результат.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-10-23T00:00:00+04:00"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/">October 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -721,170 +1030,6 @@
 <h2 id="upd-19012014">UPD 19\01\2014</h2>
 
 <p>Для быстроты, удобства и краткости можно воспользоваться готовым миксином из библиотеки Scut - <a href="http://davidtheclark.github.io/scut/side-lined.html" title="Scut Side Line">Side-Lined</a>.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-20T00:00:00+04:00"><a href="http://zencoder.ru/css/css-center-in-block/">October 20, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-center-in-block/" rel="bookmark" title="CSS - разместить объект точно по центру блока" itemprop="url">CSS - разместить объект точно по центру блока</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Перевод небольшой статьи с замечательного сайта для веб-дизайнеров CSS-Tricks.</p>
-</blockquote>
-
-<p>Статья посвящена одному интересному моменту - как правильно точно отцентрировать один объект с фиксированными размерами внутри другого. В принципе ничего сложного (и большого секрета) в этом нет, но статья мне понравилась, поэтому решил перевести и разместить у себя. Особенно хороши картинки - глядя на них, можно и текст не писать - все наглядно понятно. Далее - вольный перевод статьи Криса Койера:</p>
-
-<p>На днях мне потребовалось создать страницу-заглушку для сайта. Мне необходимо было разместить изображение логотипа точно по центру экрана, а именно - отцентрированную по вертикали и горизонтали. Немного подумав, я задал для изображения класс centered и прописал для него правила:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.centered</span> <span class="p">{</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
-    <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-    <span class="k">left</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Примечание переводчика:</p>
-
-<blockquote>
-  <p>Свойство <code>fixed</code> здесь задается по двум причинам. Первая - необходимо, чтобы изображение имело фиксированное положение на странице и не изменяло его при прокрутке в окне браузера. Второе - изображение должно располагаться точно по центру окна. Одновременно соответствовать обоим критериям может только одно свойство - <code>fixed</code>. Оно очень похоже на более известное <code>absolute</code>, но с одним отличием - объект с этим свойством не меняет своего положения при прокрутке страницы.</p>
-</blockquote>
-
-<p>Но я уверен, что вы скажете - это еще не все, что необходимо сделать. Тот код, который я прописал, помещает верхний левый угол изображения посередине страницы, но не центр изображения по центру страницы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-not-centered-block.gif" alt="Изображение, размещенное не по центру блока" /></p>
-
-<p>Для того чтобы расположить картинку точно по центру, необходимо сместить ее влево на величину, равную половине ширины изображения и сместить вверх на величину, равную половине высоты изображения.</p>
-
-<p>Оба смещения нужно сделать с помощью свойства <code>margin-left</code> и <code>margin-top</code> с отрицательными значениями. Код в итоге будет следующим:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.centered</span> <span class="p">{</span>
-<span class="k">position</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
-<span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-<span class="k">left</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
-<span class="k">margin</span><span class="o">:</span> <span class="m">-50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">-100px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В результате изображение разместиться точно по центру экрана:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-centered-block.gif" alt="Изображение, размещенное точно по центру блока" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-19T00:00:00+04:00"><a href="http://zencoder.ru/sport/calculate-weight-of-disks/">October 19, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/sport/calculate-weight-of-disks/" rel="bookmark" title="Расчет веса блинов для самодельных гантелей" itemprop="url">Расчет веса блинов для самодельных гантелей</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Стоит задача рассчитать по формуле вес блинов, исходя из заданных размеров. Ими являются внутренний диаметр блина - это посадочное место на гриф гантели.</p>
-</blockquote>
-
-<p>Как правило, диаметр грифа гантели равен 25мм. С учетом допуска (<em>чтобы диск свободно надевался на гриф</em>), внутренний диаметр блина будет равен 26мм. То есть, делаем допуск в 1мм.</p>
-
-<p>Вторая величина - это толщина блина, так как блины будут изготавливаться из стального листового материала стандартной толщины. Листовой материал имеет толщину 4мм, 6мм, 8мм, 10мм, 12мм и так далее, с шагом в 2мм. В зависимости от получаемого размера блина будет подбираться толщина листа, из которого он будет изготавливаться, с тем, чтобы блин получался не слишком большой.</p>
-
-<p>Третья величина - это плотность стали. Она постоянна и равна 7800кг/м<sup>3</sup>.</p>
-
-<p>И так, имеем только три заранее известные величины - диаметр посадочного места, толщина блина и плотность стали, из которой будут изготавливаться диски. Необходимо рассчитать внешний диаметр диска, чтобы получить в результате блины весом 0,75кг, 1,5кг, 2,5кг, 5кг и 10кг.</p>
-
-<p>Стоит оговориться. Из-за чего весь этот сыр-бор нужен? Нужен для того, чтобы иметь дома нормальные гантели и по разумной цене. Кто не заходил в спортивные магазины и не видел цены на те же гантели или блины к ним, тот не представляет, насколько они космические и далекие от реальности. К примеру, одна наборная гантеля весом 15кг стоит 4500руб. Это уму непостижимо - откуда такая стоимость куска железа?!</p>
-
-<p>Но достаточно договориться со знакомым слесарем или токарем и они сделают набор почти такого же качества, но по разумной цене.</p>
-
-<h2 id="section">Приступаем к задаче. Как будем ее решать?</h2>
-
-<p>Немного отклонимся от темы и представим себе, что такое диск гантели с геометрической точки зрения? Это не что иное, как цилиндр. Только очень “широкий и “низкий”. Объем цилиндра вычисляется по коротенькой формуле: площадь основания цилиндра умножается на высоту цилиндра.</p>
-
-<p>Площадь основания цилиндра равна:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">S</span><span class="p">=</span><span class="err">ПИ</span><span class="p">*</span><span class="n">R</span><span class="p">&lt;</span><span class="n">sup</span><span class="p">&gt;</span><span class="n">2</span><span class="p">&lt;/</span><span class="n">sup</span><span class="p">&gt;</span></code></pre></div>
-
-<p>то есть, число ПИ умножается на радиус основания, возведенного в степень 2.</p>
-
-<p>Тогда объем цилиндра равен:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">V</span><span class="p">=</span><span class="n">S</span><span class="p">*</span><span class="n">h</span></code></pre></div>
-
-<p>где <code>h</code> - высота цилиндра. В нашем случае высота <code>h</code> - это толщина листового материала, равная 4мм, 6мм, 8мм и так далее.</p>
-
-<p>Но, диск гантели не является полным цилиндром. Внутри диска есть посадочное отверстие известного диаметра, которое с точки зрения геометрии также является цилиндром. Поэтому, объем диска гантели будет равен полному объему цилиндра по внешнему радиусу минус объем цилиндра по внутреннему радиусу (внутренний посадочный диаметр).</p>
-
-<p>То есть:</p>
-
-<ul>
-  <li><code>V&lt;sub&gt;1&lt;/sub&gt; = ПИ*R&lt;sup&gt;2&lt;/sup&gt;*h</code> - объем цилиндра по внешнему радиусу R</li>
-  <li><code>V&lt;sub&gt;2&lt;/sub&gt; = ПИ*r&lt;sup&gt;2&lt;/sup&gt;*h</code> - объем цилиндра по внутреннему радиусу r</li>
-  <li><code>V = V&lt;sub&gt;1&lt;/sub&gt; - V&lt;sub&gt;2&lt;/sub&gt;</code></li>
-</ul>
-
-<p>Все, объем блина гантели рассчитали. Теперь осталось высчитать вес этого объема.</p>
-
-<p>Тут еще проще - достаточно умножить полученный объем на удельную плотность стали. При этом нужно соблюдать единицы измерения, чтобы они совпадали. То есть, если объем рассчитывался в кубических мм, то и объем также должен быть в граммах на кубический мм.</p>
-
-<p>Результатом будет формула:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">M</span> <span class="p">=</span> <span class="p">(</span><span class="n">V</span><span class="p">*</span><span class="n">p</span><span class="p">)/</span><span class="n">10</span><span class="p">&lt;</span><span class="n">sup</span><span class="p">&gt;</span><span class="n">6</span><span class="p">&lt;/</span><span class="n">sup</span><span class="p">&gt;</span></code></pre></div>
-
-<p>где <code>p</code> - плотность стали, равная 7800кг/м<sup>3</sup>; 10<sup>6</sup> - переводим из г/мм<sup>3</sup> в кг/м<sup>3</sup>.</p>
-
-<p>С теоретическими расчетами закончено. Так как являюсь поклонником программы Excel, то преобразовал ее в небольшую табличку, с помощью которой можно быстро и легко подобрать нужные веса блинов гантели:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/table.png" alt="Таблица расчета весов в Excel" /></p>
-
-<p>Табличка доступна для скачивания всем желающим. Архив находится здесь - <a href="https://db.tt/LCvf5pgf" title="Таблица расчета блинов для гантели">Таблица расчета блинов для гантели</a>. Пользуясь ею, можно подобрать толщину листа, чтобы на выходе получить массу и внешний диаметр блина гантели.</p>
-
-<p>Ну, а нарисовать эскиз блина с указанием внутреннего и внешнего диаметров, толщины и фаски (по возможности) не составит труда в том же AutoCAD.</p>
-
-<p>Данная таблица будет еще мою дорабатываться, но незначительно, так как основная работа была сделана.</p>
-
-<h2 id="ps">P.S.</h2>
-
-<p>Как результат вычислений по данной таблице, привожу ниже фотографии готовых гантелей. Обе получились весом по 20кг в полном сборе. Работа токаря по вытачиванию грифов (отдельная благодарность ему за накатку), обтачиванию самих блинов, бесплатное изготовление зажимов к гантелям - все это обошлось мне в 800 рублей.</p>
-
-<p>Вес почти всех блинов получился меньше расчитанного на 100г, что является результатом токарной обработки. Вырезание блинов из листового материала производилось на обычной газорезке, а не на плазме.</p>
-
-<p>Поэтому края получились грубыми, пришлось основательно их обрабатывать на токарном станке:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/gantel01.jpg" alt="Гантель" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/gantel02.jpg" alt="Гантель" /></p>
 
 <p>На этом все.</p>
 

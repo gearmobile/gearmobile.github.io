@@ -144,6 +144,804 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-02T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/">May 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~11 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/" rel="bookmark" title="Краткое введение в Susy 2 (Часть 2)" itemprop="url">Краткое введение в Susy 2 (Часть 2)</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье были рассмотрены краткие основы плагина Susy 2 и на примере создана с помощью Susy довольно сложная HTML-разметка.</p>
+</blockquote>
+
+<p>В этой статье будет углубленное изучение плагина Susy 2. Сегодня предстоит изучить вопрос, каким образом можно легко и быстро создавать RWD (Responsive Web Design) с помощью Susy 2.</p>
+
+<p>Если вы начали читать эту статью, но представления не имеете, что такое Susy 2 вообще, то вам стоит обратиться к предыдущей статье “Краткое руководство по Susy 2” - это стоит затраченного времени!</p>
+
+<h2 id="breakpoints">Контрольные точки (breakpoints)</h2>
+
+<p>По умолчанию, плагин Susy 2 не имеет в своем составе миксина для создания контрольных точек <code>breakpoints</code>. Наоборот, разработчики рекомендуют установить отдельно плагин <a href="http://breakpoint-sass.com/" title="Breakpoint">Breakpoint</a> и использовать его для создания медиа-запросов <code>media-queries</code>.</p>
+
+<p>Поэтому сначала произведем установку и импортирование этого плагина.</p>
+
+<blockquote>
+  <p>Прим. переводчика - имеется отдельная статья по установке и работе с плагином Breakpoint в Sass, расположенная по этому адресу - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Медиа-запросы Breakpoint в Sass</a>.</p>
+</blockquote>
+
+<p>Плагин Breakpoint требует для своей работы наличия библиотеки Compass. Поэтому, сначала необходимо выполнить две команды по установке Compass и затем Breakpoint:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
+
+<blockquote>
+  <p>Прим. переводчика: непонятно, что автор имел ввиду, но плагин Breakpoint для своей работы не нуждается в наличии библиотеки Compass. А вот препроцессор Sass ему необходим однозначно.</p>
+</blockquote>
+
+<p>Затем необходимо подключить плагин Breakpoint в конфигурационном файле <code>config.rb</code> и в файле <code>style.scss</code>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="n">config</span><span class="o">.</span><span class="n">rb</span>
+<span class="c1"># Require any additional compass plugins here.</span>
+<span class="nb">require</span> <span class="s1">&#39;susy&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">style</span><span class="nc">.scss</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Теперь все готово для того, чтобы двигаться дальше.</p>
+
+<h2 id="breakpoint">Работаем с плагином Breakpoint</h2>
+
+<p>Если сказать одним предложением, что мне нравиться в использовании плагина Breakpoint, то это легкость, с которой можно создавать контрольные точки в веб-дизайнах под мобильные устройства. Давайте посмотрим, как это делается.</p>
+
+<p>Для того, чтобы воспользоваться плагином Breakpoint, необходимо вызвать одноименный миксин и вставить его в код, передав требуемые аргументы. Эти аргументы преобразуются плагином Breakpoint в соответствующие медиа-запросы. Общий синтаксис миксина таков:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">(&lt;</span><span class="nt">args</span><span class="o">&gt;)</span><span class="p">{</span>
+  <span class="o">//</span> <span class="nt">content</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Прелесть плагина Breakpoint в том, что если вы передаете ему только один аргумент, то он автоматически преобразуется в <code>mobile-first</code>. Этот аргумент должен быть значением минимальной ширины (<code>min-width</code>) разрабатываемого вами сайта, его контрольной точкой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">1200px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">//</span> <span class="k">content</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>… что при компиляции в CSS-код даст результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">1200px</span><span class="o">)</span><span class="p">{</span>
+  <span class="nc">.container</span><span class="p">{</span>
+    <span class="o">//</span> <span class="k">content</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Миксин Breakpoint очень гибкий и с помощью него при необходимости можно создавать <a href="http://breakpoint-sass.com/#get_started" title="Сложные медиа-запросы">сложные медиа-запросы</a>.</p>
+
+<h2 id="breakpoint---susy-2">Использование Breakpoint совместно с Susy 2</h2>
+
+<p>Предположим, необходимо создать CSS-сетку, которая будет меняться в определенной контрольной точке <code>breakpoint</code>. Изначально все блоки CSS-сетки должны занимать всю ширину окна браузера в 900px. При превышении значения ширины окна в 900px CSS-сетка должна преобразовываться в 10-колоночный макет сайта, который был рассмотрен и создан в предыдущей статье.</p>
+
+<blockquote>
+  <p>Прим. переводчика - все в точности с принципом MobileFirst.</p>
+</blockquote>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_1.jpg" alt="Преобразование дизайна из Mobile View в Desktop View в Susy 2" /></p>
+
+<p>Для того, чтобы осуществить такую задачу, достаточно просто добавить нужную контрольную точку <code>breakpoint</code> в уже существующую таблицу стилей SCSS.</p>
+
+<p>В конкретном случае это будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+<span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+<span class="o">...</span>
+<span class="nc">.column_2</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_1_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_1</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_3_2</span><span class="p">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_4</span><span class="p">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span></code></pre></div>
+
+<p>То есть, для контрольной точки <code>min-width: 900px</code> создаются правила построения CSS-сетки с использованием плагина Susy 2. Если ширина окна браузера будет меньше 900px, все блоки будут располагаться на всю ширину вертикально (по умолчанию - ведь это и есть нормальный поток). При ширине окна больше 900px подключиться плагин Susy 2 и преобразует CSS-шаблон в 10-колоночный вид для Desktop. Все сделано с учетом принципа MobileFirst.</p>
+
+<p>Готовый пример переработанного кода можно посмотреть здесь - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Susy 2 + Breakpoint</a>.</p>
+
+<p>Все выглядит достаточно просто и работает нормально. Но что, если требуется решить чуть более сложную задачу?</p>
+
+<blockquote>
+  <p>Примечание автора: Если вам не нравиться использовать контрольные точки с помощью плагина Breakpoint, вы можете свободно применять старые добрые медиа-запросы <code>media queries</code>, как это делается в CSS.</p>
+</blockquote>
+
+<h2 id="susy-2">Добавляем несколько контрольных точек в Susy 2</h2>
+
+<p>Допустим, стоит задача создать еще одно состояние шаблона, промежуточное между состоянием “Mobile View” и состоянием “Desktop View”. Необходимо, чтобы при переходе от мобильного экрана к экрану монитора появилось еще одно состояние для планшетных компьютеров “Tablet View”, с отдельной информационной колонкой справа:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_2.jpg" alt="Промежуточный дизайн Tablet View для планшетных компьютеров" /></p>
+
+<p>Этот случай выглядит немного сложнее, чем предыдущий. Главным образом потому, что блок <code>column_1</code> меняет свое положение и перемещается слева направо. Каким же образом можно осущесвить подобный маневр? Здесь необходимо применить небольшую хитрость.</p>
+
+<p>Немного проанализируем будущий шаблон Tablet View для планшетного дизайна. В нем блоки <code>column_1</code> и <code>column_3</code> будут занимать 2 колонки из общих 6 колонок; в тоже время как блок <code>column_2</code> будет занимать 4 колонки из 6. Кроме того, блок <code>column_1</code> будет располагаться над блоком <code>column_3</code>.</p>
+
+<p>Вся хитрость заключается в миксине <code>last</code> (прим. переводчика: логично предположить, если до этого момента внимательно изучался результирующий CSS-код работы плагина Susy 2. Вот и profit чтения исходных кодов страницы!).</p>
+
+<p>Давайте взглянем на готовый SCSS-код и сразу многое станет понятно:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Tablet View</span>
+<span class="c">----------------------------*/</span>
+<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+<span class="nc">.column_2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_1_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_1</span><span class="o">,</span> <span class="nc">.column_2_2_2</span><span class="o">,</span> <span class="nc">.column_2_4</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_3_2</span><span class="p">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_4</span><span class="p">{</span>
+        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Обратите внимание, что для блоков <code>.column_1</code> и <code>.column_3</code> изменилась их ширина и добавился миксин <code>last</code>. Если взглянуть на скомпилированный CSS-код, то увидим, что для этих блоков задано “плавание” вправо и убран правый <code>margin</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В то же время, для блока <code>.column_2</code> изменилась только его ширина, а “плавание” осталось прежним - влево. Вот в этом и заключается маленький секрет изменения раскладки блоков в шаблоне:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>В блоке <code>.column_2</code> также были произведены изменения ширины некоторых блоков с тем, чтобы шаблон в этом виде максимально соответсвовал своему предназначению - использованию на планшетных компьютерах. В частности, была увеличена ширина блоков <code>.column_2_2_1</code>, <code>.column_2_2_2</code>, <code>.column_2_4</code> для того, чтобы ими было удобно пользоваться на небольшом экране.</p>
+
+<p>Полный код получившегося примера можно посмотреть здесь - <a href="https://gist.github.com/roowa/11472003" title="Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View">Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View</a>.</p>
+
+<h2 id="susy-breakpoint">Миксин Susy-Breakpoint</h2>
+
+<p>Плагин Susy 2 имеет в своем составе дополнительный миксин <code>susy-breakpoint</code>. Цель создания и применения этого миксина - сокращенная форма записи кода контрольных точек в Sass, в точности следуя принципу этого препроцессора - DRY.</p>
+
+<p>Чтобы быть более понятным, приведу ниже кусочек кода, написанный с помощью миксина <code>susy-breakpoint</code> и точно такой же кусочек кода, написаный без этого миксина, как это делалось ранее в этой статье:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">C</span> <span class="err">использованием</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
+<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+
+<span class="o">//</span> <span class="err">Без</span> <span class="err">использования</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
+<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Видим, что миксин <code>susy-breakpoint</code> действительно использует сокращенную запись, в которой первый аргумент - это значение <code>breakpoint</code> (контрольной точки), а второй аргумент - число колонок, на которое разбита ширина шаблона.</p>
+
+<p>Тогда в миксине <code>span</code> достаточно указать число колонок из общего числа (которое равно 6), которое должен занимать указанный элемент. И что он является последним <code>last</code> с своем ряду (как дополнение).</p>
+
+<p>Приведем ниже измененый SCSS и CSS-код нашего разрабатываемого примера, с учетом использования миксина <code>susy-breakpoint</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+
+<span class="nc">.column_2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+    <span class="o">...</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Лично я предпочитаю использовать первый метод, с применением плагина Breakpoint (прим. переводчика: мне он также кажется более наглядным и интуитивно понятным). Естественно, можно с одинаковым успехом пользоваться обоими сопособами. Все зависит от того, какой вам больше нравиться и легче применять на практике.</p>
+
+<p>В этом участке примеры вы, внимательный читатель, могли заметить, что допущена маленькая неточность, упущение. Связано оно с тем, что плавающему контейнеру разрешено занимать всю ширину окна браузера, даже если оно слишком большое. Давайте исправим этот недостаток.</p>
+
+<h2 id="section">Ограничение блока-контейнера по ширине</h2>
+
+<p>Так как в этом примере используется плавающий контейнер, то ограничить его по ширине очень просто:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>В результате будет произведено ограничение блока с классом <code>.container</code> по максимальной ео ширине:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Точно такого же результата можно добиться, если просто записать:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>К сожалению, точно также нельзя поступить в случае с CSS-сетками фиксированной ширины <code>static grid</code>, потому что плагин Susy 2 производит все необходимые математические вычисления в CSS-сетке и расчет максимальной ширины блока-контейнера этой же CSS-сетки одновременно. Для построения CSS-сетки с фиксированной шириной необходим другой способ.</p>
+
+<p>Но рассмотрение этого способа оставим на следующий раз, так как на сегодня уже достаточно.</p>
+
+<p>Окончательный результат рассмотренного в этой статье шаблона можно посмотреть здесь - <a href="https://gist.github.com/roowa/11473471" title="Susy + Breakpoint = Final">Susy + Breakpoint = Final</a>.</p>
+
+<p>Данная статья является вольным переводом и обработкой оригинала - <a href="http://www.zell-weekeat.com/susy2-tutorial-2/" title="A Complete Tutorial to Susy 2 (Part 2)">A Complete Tutorial to Susy 2 (Part 2)</a>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-01T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-2/">May 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~14 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/susy/brief-tutorial-susy-2/" rel="bookmark" title="Краткое руководство по Susy 2" itemprop="url">Краткое руководство по Susy 2</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Susy является вспомогательным инструментом, с помощью которого можно создавать гибкие настраиваемые CSS-сетки буквально на лету.</p>
+</blockquote>
+
+<p>На момент написания статьи состоялся релиз Susy 2. Если у вас есть опыт работы с предыдущей версией этого фреймворка - Susy 1, то вам наверняка еще больше понравиться работа в Susy 2, так как эта версия предоставляет веб-разработчику еще большую гибкость.</p>
+
+<p>Данное руководство по Susy 2 состоит из двух частей; в этой первой части будет показан процесс создания шаблона в фреймворке Susy 2.</p>
+
+<h2 id="susy-2">Почему именно Susy 2</h2>
+
+<p>Как я уже упоминал ранее, Susy является вспомогательным инструментом, благодаря которому можно создавать гибкие сетки практически любого вида, без необходимости производить многочисленные рутинные вычисления. Преимуществом Susy в отделении CSS от HTML.</p>
+
+<p>Если у вас до прочтения этой статьи был опыт работы с такими традиционными фреймворками, как Foundation или Bootstrap, то вы должны знать, что в этих фреймворках ширина колонок и контрольные точки <code>breakpoints</code> имеют фиксированные значения. Для изменения разметки необходимо добавлять классы к элементам в HTML-код (<em>прим. переводчика - забыл, как называется случай, когда HTML-структура засорена чрезмерным количеством классов</em>).</p>
+
+<p>Фреймворк Susy лишен такого недостатка - классы создаются непосредственно под необходимый случай и применяются к конкретной сетке.</p>
+
+<p>Как мне кажется, этот момент довольно трудно понять сразу, так как является достаточно абстрактным понятием. Вместо того, чтобы пытаться бесконечно объяснять теорию, мне кажется гораздо лучшим для понимания воспользоваться практическим примером. Для этого создадим с помощью Susy 2 10-колоночный тестовый макет, нарисованный Arnaud Guera (AG) для официального сайта Susy 2:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/susy2-1.png" alt="Тестовый шаблон Arnaud Guera" class="center-image" /></p>
+
+<h2 id="susy-2-1">Установка Susy 2</h2>
+
+<h3 id="susy---">Если Susy вообще не установлен</h3>
+
+<p>Фреймворк Susy для своей работы нуждается в препроцессоре Sass. Поэтому, если у вас на локальном компьютере еще не установлены как Sass, так и Susy, то необходимо это сделать:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">susy</span></code></pre></div>
+
+<h3 id="susy--">Если Susy уже установлен</h3>
+
+<p>Если фреймворк Susy уже установлен на вашем компьютере и также имеется Ruby RVM (Ruby Version Manager), то можно произвести обновление с помощью команды:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">update</span></code></pre></div>
+
+<p>Если у вас эта команда не сработала, то это означает, что нужно попробовать другой способ или же сначала <a href="http://rvm.io/rvm/install" title="установить Ruby RVM">установить Ruby RVM</a>.</p>
+
+<p>Второй способ установки фреймворка Susy версии 2 несколько более “ручной”. Он предполагает, что сначала нужно деинсталлировать предыдущие версии Sass\Susy, а затем установить их снова. Этот способ является наилучшим, если необходимо избежать ошибок при обновлении (как в первом случае).</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">uninstall</span> <span class="n">susy</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">uninstall</span> <span class="n">sass</span>
+
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">sass</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">susy</span></code></pre></div>
+
+<p>После успешной установки фреймворка Susy 2 на локальной машине, приступим к его базовой настройке.</p>
+
+<h2 id="susy-2-2">Базовая настройка Susy 2</h2>
+
+<p>Точно также, как и в первой версии, необходимо в конфигурационном файле <code>config.rb</code> указать, что фреймворк Susy должен быть включен в текущий проект:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="err">#</span> <span class="nt">Require</span> <span class="nt">any</span> <span class="nt">additional</span> <span class="nt">compass</span> <span class="nt">plugins</span> <span class="nt">here</span><span class="o">.</span>
+<span class="nt">require</span> <span class="s1">&#39;susy&#39;</span></code></pre></div>
+
+<p>Затем нужно импортировать фреймворк Susy 2 в таблицы стилей:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">Importing</span> <span class="nt">Susy</span>
+<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Версия 2 фреймворка Susy имеет <a href="http://susydocs.oddbird.net/en/latest/settings/#global-defaults" title="список глобальных переменных">список глобальных переменных</a>, встроенных в него. Эти переменные можно изменить прямо в таблице стилей:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">Configuring</span> <span class="nt">Susy</span> <span class="nt">2</span> <span class="nt">Global</span> <span class="nt">Defaults</span>
+  <span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
+    <span class="nt">key</span> <span class="o">:</span> <span class="nt">value</span>
+<span class="o">);</span></code></pre></div>
+
+<p>Можно поэкспериментировать с переменными и их значениями по умолчанию, чтобы посмотреть, ккая из них и за что отвечает. Более детальный обзор этих переменных будет произведен во второй части данного руководства.</p>
+
+<p>Однако, можно смело использовать Susy 2 с настройками по-умолчанию. В моем случае, так как я предпочитаю работать с моделью <code>border-box</code> и единицами измерения <code>rem</code>, то я изменю некоторые из переменных:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
+  <span class="nt">global-box-sizing</span><span class="o">:</span> <span class="nt">border-box</span><span class="o">,</span>
+  <span class="nt">use-custom</span><span class="o">:</span> <span class="o">(</span><span class="nt">rem</span><span class="o">:</span> <span class="nt">true</span><span class="o">)</span>
+<span class="o">);</span></code></pre></div>
+
+<p>Обратите внимание на то, что Susy 2 использует по умолчанию “резиновый” шаблон. Это означает, что ширина всех внешних блоков-контейнеров задана в 100%.</p>
+
+<p>Если же вы предпочитаете работать в Susy с фиксированными ширинами элементов и контрольными точками <code>breakpoints</code>, то просто измените значение переменной <code>math</code> на <code>static</code>. Главное отличие между двумя этими методами проявляется только тогда, когда настает потребность в превращении дизайна в RWD. Однако, этот вопрос будет рассмотрен позже, во второй части данного руководства.</p>
+
+<p>Также обратите внимание, что необходимо подключить к текущему проекту библиотеку Compass и файл нормализации стилей <code>normalize.css</code> (<em>в первых двух строках</em>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;normalize&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span>
+
+<span class="o">//</span> <span class="err">Настройка</span> <span class="err">переменных</span> <span class="nt">Susy</span>
+<span class="o">$</span><span class="nt">susy</span><span class="o">:(</span>
+  <span class="nt">global-box-sizing</span><span class="o">:</span> <span class="nt">border-box</span><span class="o">;</span>
+  <span class="nt">use-custom</span><span class="o">:</span> <span class="o">(</span><span class="nt">rem</span><span class="o">:</span> <span class="nt">true</span><span class="o">)</span>
+<span class="o">);</span>
+
+<span class="k">@include</span> <span class="nt">border-box-sizing</span><span class="p">;</span></code></pre></div>
+
+<h2 id="html--css---ag">Базовый HTML и CSS для шаблона AG</h2>
+
+<p>HTML-каркас для данного шаблона будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>
+    10-колоночный шаблон с вложенностью блоков
+  <span class="nt">&lt;/h1&gt;</span>
+  <span class="c">&lt;!-- Column 1 --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_1&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Колонка 1
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- Column 2 --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Колонка 2
+    <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_1_1&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Колонка 2-1-1
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_1_2&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Колонка 2-1-2
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_2_1&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Колонка 2-2-1
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_2_2&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Колонка 2-2-2
+      <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_3_1&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h2&gt;</span>
+          Колонка 2-3-1
+        <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_3_2&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h2&gt;</span>
+          Колонка 2-3-2
+        <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_2_4&quot;</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;h2&gt;</span>
+          Колонка 2-4
+        <span class="nt">&lt;/h2&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="c">&lt;!-- end Column 2 --&gt;</span>
+  <span class="c">&lt;!-- Column 3 --&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;column_3&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Колонка 3
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>В этом примере показан довольно сложный случай вложенности одних блоков в другие блоки.</p>
+
+<p>Ниже представлен простой SCSS-код для сетки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+
+  <span class="o">.</span><span class="n">column_1</span><span class="o">,.</span><span class="n">column_3</span><span class="err">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#71dad2</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="nc">.column_2</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fae7b3</span><span class="p">;</span>
+
+    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="m">#ee9e9c</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nc">.column_2_2_1</span><span class="p">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="m">#f09671</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="nc">.column_2_2_2</span><span class="p">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="m">#f6d784</span><span class="p">;</span>
+
+      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
+        <span class="k">background-color</span><span class="o">:</span> <span class="m">#ee9e9c</span><span class="p">;</span>
+      <span class="p">}</span>
+
+      <span class="nc">.column_2_4</span><span class="p">{</span>
+        <span class="k">background-color</span><span class="o">:</span> <span class="m">#ea9fc3</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+
+  <span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="p">{</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="n">rem</span><span class="p">;</span>
+    <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="n">rem</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Все готово для погружения в плагин Susy. Но перед началом необходимо немного остановиться на деталях этого плагина.</p>
+
+<h2 id="susy">Наиболее важные функции и миксины плагина Susy</h2>
+
+<p>Прежде чем приступать к созданию сеток с помощью Susy, стоит кратко рассказать о трех наиболее важных функциях и миксинах данного плагина. Если вам удастся сразу же разобрать с этими тремя вопросами, вы сможете создавать с помощью Susy сетки практически любого вида и сложности.</p>
+
+<h3 id="container">Миксин Container</h3>
+
+<p>Первое, что необходимо сделать в разметке - это включить миксин <code>.container</code>. Тем самым подключаются все возможности плагина Susy для расчета и построения CSS-сеток.</p>
+
+<p>Синтаксис этого миксина прост:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">container</span><span class="o">(</span> <span class="o">[&lt;</span><span class="nt">lenght</span><span class="o">&gt;]</span> <span class="o">)</span><span class="p">;</span></code></pre></div>
+
+<p>Необязательный параметр <code>lenght</code> позволяет указать для блока-обертки максимальную ширину <code>max-width</code>. Если параметр не указан, то плагин Susy будет принимать значение максимальной ширины по умолчанию - <code>max-widht: 100%</code>.</p>
+
+<p>Рабочий пример миксина <code>container</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">container</span><span class="p">;</span></code></pre></div>
+
+<h3 id="span">Миксин span</h3>
+
+<p>Миксин span является основой плагина Susy. Обычно используется стандартный способ для вызова данного миксина:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">span</span><span class="o">(</span> <span class="o">&lt;</span><span class="nt">width</span><span class="o">&gt;</span> <span class="o">[&lt;</span><span class="nt">wide</span> <span class="o">/</span> <span class="nt">wider</span><span class="o">&gt;]</span> <span class="nt">of</span> <span class="o">&lt;</span><span class="nt">layout</span><span class="o">&gt;</span> <span class="o">[&lt;</span><span class="nt">last</span><span class="o">&gt;]</span> <span class="o">)</span><span class="p">;</span></code></pre></div>
+
+<p>Если до этого момента вы использовали плагин Susy версии 1, то должны были обратить внимание, что синтаксис этого миксина очень похож на синтаксис миксина <code>span-column</code>, с очень незначительными отличиями.</p>
+
+<p>Давайте подробно остановимся на всех тонкостях синтаксиса миксина <code>span</code>:</p>
+
+<ul>
+  <li><code>width</code> - количество колонок с создаваемой разметке;</li>
+  <li><code>wide / wider</code> - необязательный параметр, который позволяет разделить колонку с помощью одного или двух gutter;</li>
+  <li><code>of</code> - указывает Susy, что дальше идут параметры, связанные с разметкой;</li>
+  <li><code>layout</code> - показывает ширину блока-обертки;</li>
+  <li><code>last</code> - необязательный параметр, который говорит о том, что это последний элемент в ряду.</li>
+</ul>
+
+<p>Пример создания колонки с помощью миксина <code>span</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">span</span><span class="o">(</span> <span class="nt">3</span> <span class="nt">wide</span> <span class="nt">of</span> <span class="nt">9</span> <span class="nt">last</span><span class="o">)</span><span class="p">;</span></code></pre></div>
+
+<h3 id="span_1">Функция span</h3>
+
+<p>Функция <code>span</code> во многом очень похожа на одноименный миксин <code>span</code>, за тем исключением, что она только лишь возвращает ширину элемента. В случае использования функции span потребуются только параметры ширины колонки, ширины <code>gutter</code> и всего блока-обертки в целом.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">9</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Прелесть использования функции <code>span</code> в том, что в этом случае нет необходимости в запоминании миксинов для работы в <code>margin</code> или <code>padding</code> в плагине Susy, как это было в предыдущей его версии. Теперь можно использовать функцию <code>span</code> для установки точного значения ширины отступа:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.paddingLeft</span><span class="p">{</span>
+  <span class="k">padding-left</span><span class="o">:</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">9</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<h3 id="gutter">Функция gutter</h3>
+
+<p>Функция <code>gutter</code> принимает только один аргумент:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">margin-right</span><span class="o">:</span> <span class="nt">gutter</span><span class="o">(</span><span class="nt">9</span><span class="o">);</span></code></pre></div>
+
+<p>Это и все основные функции и миксины плагина Susy, которые необходимо знать для работы с ним.</p>
+
+<h2 id="susy-1">Создание разметки с помощью плагина Susy</h2>
+
+<p>Первый шаг, который мы сделаем для превращения HTML-кода в нужную разметку, это подключим миксин <code>container</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Помимо миксина <code>container</code>, мы подключили еще один миксин - <code>clearfix</code>, так как внутри блока-обертки будут располагаться плавающие блоки. Если взглянуть на результат компиляции в CSS, то все станет очевидным: миксин <code>container</code> генерирует строки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">max-width</span><span class="o">:</span> <span class="nt">100</span><span class="o">%;</span>
+<span class="nt">margin-left</span><span class="o">:</span> <span class="nt">auto</span><span class="o">;</span>
+<span class="nt">margin-right</span><span class="o">:</span> <span class="nt">auto</span><span class="o">;</span></code></pre></div>
+
+<p>а миксин <code>clearfix</code> создает CSS-строки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">overflow</span><span class="o">:</span> <span class="nt">hidden</span><span class="o">;</span>
+<span class="o">*</span><span class="nt">zoom</span><span class="o">:</span> <span class="nt">1</span><span class="o">;</span></code></pre></div>
+
+<blockquote>
+  <p>Прим. переводчика: я бы воспользовался более современной версией миксина для очистки потока - <code>pie-clearfix</code>. Данный миксин построен на методе, о котором говориться в статье известного CSS-гуру Никаласа Галлахера - <a href="http://nicolasgallagher.com/micro-clearfix-hack/">A new micro clearfix hack</a>.</p>
+</blockquote>
+
+<p>Теперь перейдем к более мелким деталям разметки. Предположительно, вся ширина блока-контейнера будет у нас состоять из 10 колонок. На рисунке-эскизе будущий макет сайта должен состоять из трех колонок - двух узких боковых и одной центральной широкой.</p>
+
+<p>Такую HTML-разметку мы и создали ранее в этой статье. Поэтому предположим, что две боковые колонки будут у нас шириной в 2 стобца из 10, а центральная колонка - из 6 столбцов из 10 ( 10 - (2 + 2) ).</p>
+
+<p>Следовательно, блок с классами <code>.column_1</code> и <code>.column_3</code> дописываем миксин:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Помимо этого, блоку с классом <code>.column_3</code> дописываем еще один миксин <code>last</code>, так как этот блок является последним в данном ряду:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Если заглянем в скомпилированный CSS-код, то увидим простую картину. Всем блокам задается одинаковая ширина в процентах, правый <code>margin</code> также в процентах. А вот если применен миксин <code>last</code>, то плавание блока меняется на противоположное и убирается правый <code>margin</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">18.36735%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">2.04082%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Центральная колонка должна иметь у нас ширину в шесть столбцов и плавающие блоки внутри себя, поэтому задаем для нее два миксина:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2</span><span class="p">{</span>
+    <span class="o">...</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span></code></pre></div>
+
+<p>… что дает в результате CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">59.18367%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">2.04082%</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Отлично! Рассмотрим далее наш пример. Внутри центральной колонки в одном ряду расположены два блока, которые в сумме занимают всю ширину блока-контейнера (в данном случае это центральная колонка). Поэтому для двух этих блоков зададим одинаковый миксин:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_1_1</span><span class="o">,</span><span class="nc">.column_2_1_2</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… и не забудем добавить для блока с классом <code>.column_2_1_2</code> миксин <code>last</code>, так как он последний в своем ряду и с ним будут происходить толчно такие же метаморфозы, как и в предыдущем случае:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_1_2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Смотрим на готовый CSS-код и видим, что ничего необычного не произошло - все предсказуемо:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_1_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_1_2</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ee9e9c</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">48.27586%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_1_2</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В следующем ряду располагаются еще два блока, но уже с разной шириной: блок с классом <code>.column_2_2_1</code> будет занимать 2 колонки из 6, а блок с классом <code>column_2_2_2</code> - 4 колонки из 6.</p>
+
+<p>Кроме того, в блоке с классом <code>column_2_2_2</code>, в свою очередь, размещены еще два плавающих блока <code>column_2_3_1</code>, <code>column_2_3_2</code>, поэтому к нему нужно применить опять миксин <code>clearfix</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_2_1</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.column_2_2_2</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
+    <span class="o">...</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+  <span class="p">}</span>
+  <span class="nc">.column_2_3_2</span><span class="p">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>CSS-результат применения этих миксинов показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_2_1</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.column_2_2_2</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.column_2_3_1</span><span class="o">,</span> <span class="nc">.column_2_3_2</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">47.36842%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.column_2_3_2</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Последним у нас идет блок, который занимает всю ширину своего блока-родителя. В нему мы применим миксин <code>span(full)</code> и одновременно очистку через CSS-свойство <code>clear: both;</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_2_4</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+  <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… чтобы получился CSS-результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="nc">.column_2</span> <span class="nc">.column_2_2_2</span> <span class="nc">.column_2_4</span> <span class="p">{</span>
+  <span class="o">...</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Вот, в принципе, и все несложное построение разметки. Давайте взглянем на результат наших трудов в окне браузера:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_result.png" alt="Готовый шаблон, созданный с помощью Susy" class="center-image" /></p>
+
+<p>Полный вариант кода можно посмотреть здесь - <a href="http://sassmeister.com/gist/11450132">Susy Part 1</a></p>
+
+<p>Думаю, на cегодня можно закруглиться с изучением Susy. Но, вообще эта тема очень интересная и положительная. В том плане, что для практической работы применение плагина Susy мне видится - в самый раз.</p>
+
+<p>Это вам не неуклюжие 960gs или Blueprint. Тут все гибко и настраиваемо прямо на лету. Хочешь такую разметку - пожалуйста. А хочешь другую - да пожалуйста, Susy тебе пересчитает все в мгновение ока!</p>
+
+<p>Думается мне, это не последняя статья, посвященная плагину Susy под библиотеку Compass.</p>
+
+<p>Данная статья является вольным переводом и осмыслением оригинала - <a href="http://www.zell-weekeat.com/susy2-tutorial/">A Complete Tutorial to Susy 2</a></p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-04-30T00:00:00+04:00"><a href="http://zencoder.ru/compass/typography-compass/">April 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -828,680 +1626,6 @@
   <li><a href="https://www.youtube.com/watch?v=Leert-TnSSg" title="Compass (Sass) — вертикальный ритм (vertical rhythm)">Compass (Sass) — вертикальный ритм (vertical rhythm)</a></li>
   <li><a href="http://atendesigngroup.com/blog/vertical-rhythm-compass" title="Vertical Rhythm with Compass">Vertical Rhythm with Compass</a></li>
 </ul>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-04-21T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/">April 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/" rel="bookmark" title="Настройка permalink в WordPress" itemprop="url">Настройка permalink в WordPress</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В первую очередь, что за загадочное слово - <code>permalink</code>? Все просто - это сокращение от <em>permanent link - постоянная ссылка</em>.</p>
-</blockquote>
-
-<p>Постоянные ссылки нужны в системе WordPress для того, чтобы указывать на одну и ту же запись в перемещающейся ленте записей. При первоначальной настройке WordPress одной из задач является вопрос с постоянными ссылками. По умолчанию в WordPress permalink имеют ужасающий вид:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="p">/</span><span class="n">word1</span><span class="p">/</span><span class="k">?</span><span class="n">p</span><span class="p">=</span><span class="n">123</span></code></pre></div>
-
-<p>Ужасающий в том смысле, что такая ссылка для человека совершенно не читаемая. Сможете ли вы сказать, что находится по адресу, указанному в этой ссылке? Конечно нет!</p>
-
-<p>Это для системы CMS WordPress понятно, что в этой ссылке указан адрес на пост с <code>id=123</code> (<em>порядковый номер записи 123</em>). И если система покопается в своей базе данных, то она (<em>может быть</em>) найдет запись с таким идентификатором и выдаст ее “на гора”. А для человека такая запись ни о чем не говорит.</p>
-
-<p>Поэтому в настройках WordPress имеется специальный раздел, в котором можно настроить вид постоянных ссылок на понятный человеку (<em>ЧПУ - Человеко-Понятный Урл</em>). Размещен этот раздел по адресу “Настройки” - “Постоянные ссылки”.</p>
-
-<p>Система WordPress предлагает на выбор пять вариантов постоянных ссылок (permalink) - один по умолчанию и четыре готовых (на выбор):</p>
-
-<ul>
-  <li><strong>День и название поста</strong> - http://localhost:7788/third/2014/04/20/sample-post/</li>
-  <li><strong>Месяц и название поста</strong> - http://localhost:7788/third/2014/04/sample-post/</li>
-  <li><strong>Цифры</strong> - http://localhost:7788/third/archives/123</li>
-  <li><strong>Название записи</strong> - http://localhost:7788/third/sample-post/</li>
-</ul>
-
-<p>По большому счету, с каждым из этих четырех видов permalink все понятно. Я имею ввиду, в каком виде она предоставляет ссылку.</p>
-
-<p>Но, помимо этих четырех permalink, имеется еще один вариант:</p>
-
-<ul>
-  <li><strong>Произвольно</strong> - http://localhost:7788/third</li>
-</ul>
-
-<p>В этом случае администратору сайта предоставляется возможность настроить вид permalink произвольно, руководствуясь специальными переменными. Ниже приведен список таких переменных, с указанием примера в скобках:</p>
-
-<ul>
-  <li><strong>%year%</strong> - год публикации записи (2014)</li>
-  <li><strong>%monthnum%</strong> - порядковый номер месяца публикации записи (05)</li>
-  <li><strong>%day%</strong> - порядковый день месяца публикации записи (21)</li>
-  <li><strong>%hour%</strong> - час публикации записи (09)</li>
-  <li><strong>%minute%</strong> - минута публикации записи (12)</li>
-  <li><strong>%second%</strong> - секунда публикации записи (13)</li>
-  <li><strong>%post_id%</strong> - идентификатор записи (123)</li>
-  <li><strong>%postname%</strong> - имя записи (about-the-permalink)</li>
-  <li><strong>%category%</strong> - категория записи (wordpress)</li>
-  <li><strong>%author%</strong> - автор записи (zencoder)</li>
-  <li><strong>%tag%</strong> - метка записи (css)</li>
-</ul>
-
-<p>Благодаря этим переменным можно создать permalink практически любого вида и под любые потребности.</p>
-
-<p>К примеру, для <strong>блога с регулярными записями без тематики</strong> подойдет permalink следующей конструкции:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="k">%</span><span class="n">year</span><span class="p">%/</span><span class="k">%</span><span class="n">monthnum</span><span class="p">%/</span><span class="k">%</span><span class="n">day</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
-
-<span class="p">//</span> <span class="err">Пример:</span>
-<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="k">%</span><span class="n">year</span><span class="p">%/</span><span class="k">%</span><span class="n">monthnum</span><span class="p">%/</span><span class="k">%</span><span class="n">day</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
-
-<p>Для <strong>блога с нерегулярными записями и записи без тематики</strong> подойдет permalink вида:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="n">url</span><span class="p">/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
-
-<span class="p">//</span> <span class="err">Пример:</span>
-<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="n">url</span><span class="p">/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
-
-<p>Для <strong>блога с регулярными тематическими записями</strong> подойдет краткий permalink:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="k">%</span><span class="n">category</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
-
-<span class="p">//</span> <span class="err">Пример:</span>
-<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="k">%</span><span class="n">category</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
-
-<p>Настройку постоянных ссылок необходимо выполнять заранее, то есть в самом начале создания сайта на WordPress. Иначе, когда записей будет много и вы решите изменить вид постоянных ссылок для своего сайта, повторная индексация записей может произойти со сбоями.</p>
-
-<p>Еще одним важным моментом при самостоятельной настройке permalink является то, что любая из них должна заканчиваться переменной %postname% или %post_id%. В этом случае каждая из существующих в системе WordPress permalink будет указывать на конкретную запись. Если вы посмотрите на примеры выше, то заметите, что ссылки построены именно по такому принципу.</p>
-
-<p>Данный материал является отрывком из книги Криса Койера “Digging Into WordPress”, пересказанным автором сайта своими словами.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-04-09T00:00:00+04:00"><a href="http://zencoder.ru/css/module-grid-960gs/">April 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~19 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/module-grid-960gs/" rel="bookmark" title="Верстаем с помощью модульной сетки 960gs" itemprop="url">Верстаем с помощью модульной сетки 960gs</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Вот плавно и постепенно, стараясь без рывков и пробелов в познаниях front-end, я подошел к теме модульных сеток на CSS. Очередные мысли по поводу верстки для начинающего верстальщика.</p>
-</blockquote>
-
-<p>Зачем я подошел к этой теме? Для чего нужны модульные сетки для верстальщика? Ответ прост - сегодня по крайней мере половина всех дизайнов верстается по такой сетке. Зачем это делается? Для быстроты процесса верстки и стандартизации этого же самого процесса. Сама идея модульной сетки далеко и далеко не новая - в типографии она была разработана еще в прошлом веке (<em>если я не ошибаюсь</em>). Благодаря такой сетке упорядочивается расположение всех элементов текста (изображений) на странице журнала, газеты и т. д.</p>
-
-<p>Чтобы воочию представить себе модульную сетку в типографии, возьмите любой журнал или статью и внимательно посмотрите на любую его(ее) страницу. Вы сразу обратите внимание, что колонки текста, заголовки, фотографии на странице располагаются не хаотично, а <em>в некотором порядке</em>. Если попытаться начертить границы между блоками контента, то можно увидеть <strong>определенную блочную структуру</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/journal_grid_example.jpg" alt="Выдуманный пример разметки журнальной страницы" /></p>
-
-<p>Рисунок выше - самый что ни на есть истинный пример модульной сетки. Блоки на этом рисунке могут быть блоками текста или изображениями. И такое расположение блоков информации на странице вполне может иметь место быть в реальной жизни.</p>
-
-<p>Кстати, а почему модульные? Откуда такое название? Все просто - под модулем в таких сетках подразумевается “кирпичик”, основа сетки. Минимальная единица “измерения”, которая является основой этой сетки.</p>
-
-<p>Обыкновенная кирпичная стена - это тоже модульная структура, модулем у которой является - <strong>кирпич</strong>. Стена увеличивается в размерах в высоту и ширину на шаг, равный высоте и ширине кирпича. Поэтому такая структура и называется модульной.</p>
-
-<p>Сетка в электронной таблице MS Excel тоже является модульной структурой, в основе которой лежит <strong>ячейка</strong> этой сетки. Таблица в Excel может увеличиваться или уменьшаться с шагом, равным размеру ячейки этой таблицы.</p>
-
-<p>Как очень хорошо известно, CSS - это типография, перешедшая в Интернет. Многие термины и понятия также перекочевали из типографии в технологию CSS: размер шрифта, межстрочное расстояние и т. д. Не стала исключением модульная сетка.</p>
-
-<p>В один прекрасный момент веб-дизайнеры поняли, что не стоит изобретать велосипед. Что создание макета веб-страницы в коде HTML&amp;CSS гораздо удобнее, проще и быстрее выполнять по модульной сетке, нежели “тасовать” блоки произвольно. Кроме того, сам дизайн страницы получается более стандартизированным, унифицированным; <strong>подчиненным одним и тем же, единым правилам</strong>.</p>
-
-<p>С помощью кода на CSS была сделана попытка воспроизвести модульную сетку в Веб и применить ее на практике. Первой такой (<em>насколько я знаю</em>) попыткой была система <strong>960 Grid System</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid.jpg" alt="Модульная сетка на CSS" /></p>
-
-<p>При первом взгляде на рисунок (<em>не знаю, как у вас</em>), у меня сразу возник вопрос - “а где же здесь сетка?” Сетка, сетка - <strong>это и есть сетка, спроектированная под особенности Веб</strong>! Ведь вы хорошо знаете, что в макете веб-страницы имеет значение только ширина блоков контента; высота же блоков является <em>величиной переменной</em>, она меняется в зависимости от количества контента, наполняющего эти блоки; она почти никогда не задается жестко, фиксировано. Поэтому в данном случае строки сетки совсем ни к чему - <strong>остаются только колонки</strong>.</p>
-
-<p>Как уже упоминалось выше, модульная сетка пришла в CSS из типографии; понятия, связанные с модульной сеткой, также пришли из типографии.</p>
-
-<p>В модульной сетке имеются всего <strong>три параметра</strong>:</p>
-
-<ul>
-  <li><strong>container</strong> (<em>контейнер</em>)</li>
-  <li><strong>column</strong> (<em>колонка</em>)</li>
-  <li><strong>gutter</strong> (<em>канавка</em>)</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_structure.jpg" alt="Структура модульной сетки на CSS" /></p>
-
-<p>Видим, что основной блок-обертка (<strong>container</strong>) содержит в себе 12 колонок (<strong>column</strong>). Содержимое (&lt;/em&gt;контент&lt;/em&gt;) располагается в этих колонках. Колонок может быть не обязательно 12; другими популярными величинами являются <strong>16 колонок</strong> и <strong>24 колонки</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_16_columns.jpg" alt="Модульная CSS-сетка из 16 колонок" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_24_columns.jpg" alt="Модульная CSS-сетка из 24 колонок" /></p>
-
-<p>Откуда такие величины - 12, 16 и 24 колонки? Во-первых, они взяты из математических расчетов, на которых основана модульная сетка. А во-вторых, такие значения наиболее применимы на практике.</p>
-
-<p>Колонки разделяются между собой промежутками (<code>gutter</code>). Как правило, самые крайние отступы от колонок равны половине <strong>gutter</strong> - <strong>gutter/2</strong>.</p>
-
-<p>Колонки можно объединять между собой - две колонки объединить в одну, три колонки объединить в одну и так далее. В результате получаются ячейки сетки - блоки с контентом. Чтобы визуально разъяснить (<em>если еще непонятно</em>) этот вопрос, посмотрите на рисунок ниже:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/css_module_grid.jpg" alt="Пример блочной верстки на основе CSS-сетки" /></p>
-
-<p>Вот и получается примерный вид блочной верстки страницы на основе модульной CSS-сетки.</p>
-
-<p>Ну, это было краткое теоретическое введение в модульные CSS-сетки. Задачей данной статьи не являются теоретические основы подобных сеток, так как уже давно написаны прекрасные материалы (<em>с не менее прекрасными иллюстрациями</em>) по этой теме другими людьми. В этой же статье мы попытаемся осуществить практическое применение таких сеток и воспользуемся одной из старейший из них - <strong>960 Grid System</strong> (сокращенное название - 960gs).</p>
-
-<h2 id="gs">Получение модульной сетки 960gs</h2>
-
-<p>Первым шагом необходимо получить копию заготовки (шаблон) данной модульной CSS-сетки. Для этого заходим на сайт проекта <a href="http://960.gs/" title="960gs">960gs</a> и скачиваем оттуда заготовку, нажав большую кнопку посередине с надписью - <strong>‘Big ol’DOWNLOAD button :)’</strong>. Получаем на свой компьютер архив с именем <code>960-Grid-System-master.zip</code>.</p>
-
-<p>Кстати, а почему такое название у этой модульной сетки - 960 Grid System? Все просто, здесь цифра 960 - это ширина блока-обертки <strong>container</strong> в 960px, наиболее приемлемая ширина страницы сайта для мониторов с разрешением 1024x768px. На время создания этой модульной CSS-сетки большинство сайтов делалось фиксированной ширины для наиболее популярного разрешения мониторов - 1024x768px.</p>
-
-<p>Разархивируем этот пакет и взглянем на его содержимое:</p>
-
-<ul>
-  <li>app_plugins</li>
-  <li>code</li>
-  <li>licenses</li>
-  <li>logo_files</li>
-  <li>sketch_sheets</li>
-  <li>templates</li>
-  <li>.gitignore</li>
-  <li>README.txt</li>
-</ul>
-
-<p>В папке <strong>app_plugins</strong> находятся плагины под два графических редактора - Fireworks и Photoshop. Цель плагинов - будучи установленными в эти программы, помогать создавать макеты сайтов на основе модульной сетки 960gs. Это помощь для дизайнеров, которые рисуют макеты будущих сайтов.</p>
-
-<p>В папке <strong>licenses</strong> располагаются тексты лицензий, под которыми распространяется данная модульная сетка.</p>
-
-<p>В директории <strong>logo_files</strong> находятся логотип 960 Grid System в разных форматах - <code>.ai</code>, <code>.eps</code>, <code>.png</code> и <code>.psd</code>. Как пишется сам автор 960gs - Nathan Smith, этот логотип был создан и предоставлен в бесплатное пользование всем желающим по многочисленным просьбам “трудящихся”.</p>
-
-<p>Есть также заготовки модульной сетки в виде <strong>линованной бумаги с колонкой для комментариев</strong>. Эти заготовки помещены в папку <strong>sketch_sheets</strong> в формате <code>.pdf</code> и готовы для того, чтобы их распечатать и пользоваться. Видимо, это тоже было сделано по просьбам “трудящихся”, которые любят создавать наброски макета на бумаге с помощью ручки или карандаша.</p>
-
-<p>А вот для настоящих IT-ов имеется директория <strong>templates</strong>, в которой расфасованы точно такие же макеты, но в электронном виде, под самые разные wireframe-программы. Количество впечатляет - тут и Balsamiq, и Photoshop, Firework и Illustrator; под Gimp на Linux и под Omnigraffle на Mac OS X; пользуйся не хочу, что называется.</p>
-
-<p>Но мы вернемся к самой главной папке, которую мы пропустили - <strong>code</strong>. Там находится то, ради чего мы и затеялись с этой модульной сеткой 960gs - готовые файлы с кодом этой самой сетки. Файлы формата HTML (<code>demo.html</code>, <code>demo_24_col.html</code>, <code>demo_24_col_rtl.html</code>, <code>demo_rtl.html</code>) можно посмотреть, но интереса они представляют мало - как понятно из их названия, это всего лишь демо-файлы. В папке <strong>img</strong> находятся три файла формата <code>.gif</code>: <code>12_col.gif</code>, <code>16_col.gif</code>, <code>24_col.gif</code>. Задача этих файлов - “подкладывать” их в виде фона для блока <code>.container_12</code> (или <code>.container_16</code> или <code>.container_24</code>) для того, чтобы удобно было визуально видеть эту самую сетку при верстке.</p>
-
-<p>Папка <strong>CSS</strong> имеет список файлов формата CSS:</p>
-
-<ul>
-  <li>960.css</li>
-  <li>960<em>12</em>col.css</li>
-  <li>960<em>12</em>col_rtl.css</li>
-  <li>960<em>16</em>col.css</li>
-  <li>960<em>16</em>col_rtl.css</li>
-  <li>960<em>24</em>col.css</li>
-  <li>960<em>24</em>col_rtl.css</li>
-  <li>960_rtl.css</li>
-  <li>demo.css</li>
-  <li>reset.css</li>
-  <li>reset_rtl.css</li>
-  <li>text.css</li>
-  <li>text_rtl.css</li>
-</ul>
-
-<p>… и подпапку <strong>min</strong>, в которой содержится точно такой же список файлов. Разница между первым и вторым списком в том, что первый список - это <strong>developer</strong>-версия, а второй - <strong>production</strong>-версия.</p>
-
-<p>Внимательный читатель спросит - а что это за суффикс странный у некоторых файлов CSS - <code>rtl</code>. Ну, даже новичкам (которые в теме) должно быть понятно, что это <code>right-to-left</code>, стили для создания дизайна, в котором текст пишется и располагается справа налево. Таки если вы не собираетесь иммигрировать на историческую родину, то эти стили вам никогда не пригодятся, по большому счету!</p>
-
-<p>Эти файлы формата CSS является тем самым, ради чего мы заходили на оф. сайт - это и сеть модульная сетка 960gs! Можно открыть их в HTML-редакторе и просмотреть исходный код - он очень короткий и простой.</p>
-
-<p>Построение верстки на основе модульной сетки 960gs производится с помощью классов, расположенных в главном файле <code>960_12_col.css</code> (или <code>960_16_col.css</code>, или <code>960_24_col.css</code>). Классов в модульной сетке 960gs не так уж много - точнее, их совсем мало:</p>
-
-<ul>
-  <li>.container<em>12 (.container</em>16, .container_24)</li>
-  <li>.grid_х</li>
-  <li>.push_х</li>
-  <li>.pull_х</li>
-  <li>.alpha</li>
-  <li>.omega</li>
-  <li>.prefix_х</li>
-  <li>.suffix_х</li>
-  <li>.clear</li>
-</ul>
-
-<p>Эти классы - своего рода рычаги, с помощью которых можно управлять созданием верстки:</p>
-
-<ul>
-  <li><strong>Класс</strong> <code>.container_12</code> создает блок-обертку шириной 960px, расположенную по центру окна браузера, состоящую из 12 колонок. Аналогично классы <code>.container_16</code> и <code>.container_24</code> также создают обертку шириной 960px, но состоящую из 16 и 24 колонок, соответственно.</li>
-  <li><strong>Класс</strong> <code>.grid_х</code> - это общее представление (<em>можно сказать - формула</em>) для создания ячеек модульной сетки. В качестве <code>х</code> может быть значение от 1 до 12 (в 12-колоночной сетке), от 1 до 16 (в 16-колоночной сетке), от 1 до 24 (в 24-колоночной сетке). Задав значение вместо <code>х</code>, создается ячейка шириной <code>х</code> колонок. То есть, <code>.grid_2</code> создает ячейку шириной 2 колонки; <code>.grid_10</code> - создает ячейку шириной в 10 колонок. Естественно, значение <code>х</code> не может превышать общее число колонок в контейнере. То есть, в контейнере с классом <code>.container_12</code> может быть класс <code>.grid_12</code>, но не больше. В контейнере с классом <code>.container_16</code> может быть класс <code>.grid_16</code>, но не больше. Аналогично с контейнером класса <code>.container_24</code>.</li>
-  <li><strong>Класс</strong> <code>.push_х</code> “сдвигает” ячейку вправо на указанное количество колонок. То есть, класс <code>.push_4</code> “отодвигает” ячейку вправо на 4 колонки.</li>
-  <li><strong>Класс</strong> <code>.pull_х</code> “сдвигает” ячейку влево на указанное количество колонок. Например, <code>.pull_3</code> сдвинет ячейку влево на три колонки.</li>
-  <li><strong>Классы</strong> <code>.alpha</code> и <code>.omega</code> просты - они убирают отступы у ячейки слева и справа, соответственно.</li>
-  <li><strong>Классы</strong> <code>.prefix_х</code> и <code>.suffix_х</code> добавляют пустое пространство (расширяют) ячейку слева и справа, соответственно.</li>
-  <li><strong>Класс</strong> <code>.clear</code> служит для “очистки” содержимого после плавающего блока.</li>
-</ul>
-
-<p>Давайте от теории перейдем к практике и создадим каркас обычного трех-колоночного макета, в котором “шапка” и “подвал” будут занимать всю ширину страницы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/css_module_grid_simple_mockup.jpg" alt="Пример простого трех-колоночного макета" /></p>
-
-<p>Из скачанного архива <code>960-Grid-System-master.zip</code> нам потребуются файлы:</p>
-
-<ul>
-  <li><strong>text.css</strong> (<em>в нем находятся все правила по типографике</em>)</li>
-  <li><strong>reset.css</strong> (<em>файл сброса стилей для браузеров</em>)</li>
-  <li><strong>960_24_col.css</strong> (<em>модульная CSS-сетка на 24 колонок</em>)</li>
-  <li><strong>24_col.gif</strong> (фоновая картинка, рисующая 24 колонок в основном блоке <code>.container_24</code>)</li>
-</ul>
-
-<p>Выбираем их оттуда и раскладываем по папкам нашего собственного проекта:</p>
-
-<ul>
-  <li><strong>css</strong>:
-    <ul>
-      <li>text.css</li>
-      <li>reset.css</li>
-      <li>960<em>24</em>col.css</li>
-    </ul>
-  </li>
-  <li><strong>img</strong>:
-    <ul>
-      <li>24_col.gif</li>
-    </ul>
-  </li>
-</ul>
-
-<p>В шапке <code>header</code> файла <code>index.html</code> производим последовательное подключение полученных файлов. Только один из них - <code>style.css</code> - мы создадим самостоятельно, для написания своих собственных CSS-стилей. Все остальные файлы оставим без изменения - так и нужно поступать с файлами данного фреймворка (и не только этого):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/reset.css&quot;</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/text.css&quot;</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/960_24_col.css&quot;</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
-
-<p>Затем создадим HTML-структуру страницы, применив знания классов, которые были рассмотрены выше. Шапке сайта задаем класс <code>.grid_24</code>, чтобы она заняла всю ширину 24-колоночного блока. Затем создаем левый блок шириной в 8 колонок с помощью класса <code>.grid_8</code>, центральный блок шириной в 13 колонок с помощью класса <code>.grid_13</code>, правый блок шириной в 3 колонки через класс <code>.grid_3</code>. И внизу помещаем “подвал” сайта опять на всю ширину страницы с помощью класса <code>.grid_24</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_24&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!-- header --&gt;</span>
-    <span class="nt">&lt;header</span> <span class="na">class=</span><span class="s">&quot;grid_24&quot;</span><span class="nt">&gt;&lt;/header&gt;</span>
-  <span class="c">&lt;!-- content --&gt;</span>
-    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">&quot;grid_8 leftSideBar&quot;</span><span class="nt">&gt;&lt;/aside&gt;</span>
-    <span class="nt">&lt;main</span> <span class="na">class=</span><span class="s">&quot;grid_13&quot;</span><span class="nt">&gt;&lt;/main&gt;</span>
-    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">&quot;grid_3 rightSideBar&quot;</span><span class="nt">&gt;&lt;/aside&gt;</span>
-  <span class="c">&lt;!-- footer --&gt;</span>
-    <span class="nt">&lt;footer</span> <span class="na">class=</span><span class="s">&quot;grid_24&quot;</span><span class="nt">&gt;&lt;/footer&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
-
-<p>Все, совсем несложными движениями мы создали структуру страницы сайта. Осталось применить некоторое оформление к блокам, чтобы визуально их отличать:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_24</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/24_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">header</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.leftSideBar</span><span class="o">,</span> <span class="nc">.rightSideBar</span><span class="o">,</span> <span class="nt">main</span><span class="p">{</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.leftSideBar</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nt">main</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">180</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.rightSideBar</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">300</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nt">footer</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">7</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>На официальном сайте проекта 960gs имеется ссылка на слайд-шоу, в котором есть несколько интересных примеров создания разметки с помощью 960gs. Давайте разберем их - кусочки кода, которые можно применить на практике (кстати, именно такое предназначение имеют сниппеты).</p>
-
-<h2 id="section">Простой пример колонок</h2>
-
-<p>Очень простой пример создания двух рядов с тремя и двумя ячейками на всю ширину страницы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_several_grids.jpg" alt="Два ряда с колонками на всю ширину страницы" /></p>
-
-<p>Для этого создаем такую разметку:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!-- header --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>
-      1/3 ширины блока .container
-    <span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>
-      1/3 ширины блока .container
-    <span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>
-      1/3 ширины блока .container
-    <span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;clear&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- гадость! --&gt;</span>
-  <span class="c">&lt;!-- footer --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>
-      1/2 ширины блока .container
-    <span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;p&gt;</span>
-      1/2 ширины блока .container
-    <span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
-
-<p>… и CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/12_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">=</span><span class="s2">&quot;grid_4&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">=</span><span class="s2">&quot;grid_6&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-1">Ячейки, обернутые другой ячейкой</h2>
-
-<p>Простой пример обертывания ячеек с сетке еще одной - общей ячейкой, которая может служить для придания общего фона для всех элементов внутри блока. Стоит обратить внимание на применение двух классов <code>alpha</code> и <code>omega</code> для первого и последнего блоков. С помощью этих классов убираются отступы слева и справа от этих крайних блоков. Если не добавить эти классы, то верстка поломается:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_wrap_grids.jpg" alt="Обертывание ячеек в 960gs" /></p>
-
-<p>HTML-код:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!-- content --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;wrap&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_12&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3 alpha&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Part_1
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Part_2
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Part_3
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_3 omega&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Part_4
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
-
-<p>… и CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/12_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;wrap&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid_3&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="gs-1">Смещение ячеек в 960gs</h2>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_rearrangement_grids.jpg" alt="Перемещение ячеек в сетке 960gs" /></p>
-
-<p>Интересный пример перемещения ячеек в модульной сетке 960gs. Если внимательно посмотреть на пример, то станет заметно, что фиолетовый блок с надписью Last (последний) стоит на первом месте в ряду. Достигнуто это благодаря двум классам <code>.push</code> и <code>.pull</code>. Если не вдаваться в код, стоящий за этими двумя классами, то их назначение запомнить легко: <code>push</code> - толкать (толкаем, двигаем ячейки слева направо), <code>pull</code> - тянуть (тянем, двигаем ячейки справа налево). В этом примере было произведено взаимное замещение двух ячеек - они поменялись местами.</p>
-
-<p>HTML-код:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!-- header --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;first&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_6 push_6&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_2 alpha&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Grid_1
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_2&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Grid_2
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_2 omega&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Grid_3
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- content --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;last&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_6 pull_6&quot;</span><span class="nt">&gt;</span>
-    Last
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
-
-<p>… CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/12_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;first&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;last&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">class</span><span class="o">^=</span><span class="s2">&quot;grid_2&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">180</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="gs-2">Создание рамки вокруг ячейки в 960gs</h2>
-
-<p>Также интересный пример создания рамки вокруг ячейки с изображением. Такая рамка с помощью обычного CSS-кода создается очень легко и просто; а вот в системе 960gs это достаточно непростая задача. Для этого придется в одну ячейку вложить блок, для которого установить границу, которая будет служить рамкой для картинки:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_border_grids.jpg" alt="Ячейка с рамкой в 960gs" /></p>
-
-<p>HTML-код:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_12&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!-- content --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;top&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_7&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;border&quot;</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vitae, voluptatum, minus dolor eaque officiis quis placeat commodi unde minima recusandae amet velit dolorem perferendis quibusdam dolorum! Saepe iste nisi nobis!
-      <span class="nt">&lt;/p&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto, iusto, id veniam non quas nesciunt laborum error debitis ipsam delectus sequi incidunt sunt et iste nulla deserunt vitae aut beatae.
-      <span class="nt">&lt;/p&gt;</span>
-      <span class="nt">&lt;p&gt;</span>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Recusandae, ab, totam, labore, odio accusamus excepturi repellendus porro deserunt ut nisi molestiae molestias quibusdam accusantium saepe doloribus perspiciatis aliquid voluptatum sit?
-      <span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;top&quot;</span> <span class="na">class=</span><span class="s">&quot;grid_5&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">role=</span><span class="s">&quot;border&quot;</span> <span class="na">class=</span><span class="s">&quot;banner&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
-
-<p>… CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_12</span><span class="p">{</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;top&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;border&quot;</span><span class="o">]</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">10px</span> <span class="k">solid</span> <span class="m">#e5e5e6</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">280px</span><span class="p">;</span>
-<span class="p">}</span>
-
-  <span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;border&quot;</span><span class="o">]</span> <span class="nt">p</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-    <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-    <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nt">div</span><span class="o">[</span><span class="nt">role</span><span class="o">=</span><span class="s2">&quot;border&quot;</span> <span class="o">][</span><span class="nt">class</span><span class="o">=</span><span class="s2">&quot;banner&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/weiss.jpg)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">no-repeat</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<h2 id="gs-3">Ячейка с обтеканием в 960gs</h2>
-
-<p>И напоследок еще один пример, на этот раз с примером отмены обтекания. Обратите внимание на два последних ряда. В предпоследнем намеренно сделано три ячейки, чтобы ширина страницы не была заполнена до конца. После этого ряда добавлен блок с классом <code>clear</code>, чтобы предотвратить смещение ячеек следующего ряда в это пустое пространство. Это одно из предназначений класса <code>clear</code> в системе 960gs.</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/04/module_grid_960_clear_grids.jpg" alt="Отмена обтекания ячейки в 960gs" /></p>
-
-<p>HTML-код:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container_24&quot;</span><span class="nt">&gt;</span>
-  <span class="c">&lt;!-- header --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_24 navbar&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_12 push_2 alpha header&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 push_5 omega header&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- content --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_24 content&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;aside</span> <span class="na">class=</span><span class="s">&quot;grid_10 alpha leftColumn&quot;</span><span class="nt">&gt;&lt;/aside&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_4 pull_9 label&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_11 push_3 rightColumn omega&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="c">&lt;!-- subtopics --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 topic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 topic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 topic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;clear&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="c">&lt;!-- вот он зачем здесь, этот странный блок! --&gt;</span>
-  <span class="c">&lt;!-- subtopics --&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;grid_6 subtopic&quot;</span><span class="nt">&gt;&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span>
-<span class="c">&lt;!-- end container --&gt;</span></code></pre></div>
-
-<p>… CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container_24</span><span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../img/24_col.gif)</span> <span class="k">top</span> <span class="k">left</span> <span class="k">repeat</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.navbar</span><span class="p">{</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">240</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.header</span><span class="p">{</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">120</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">7</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.content</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">60</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">15px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.leftColumn</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">300</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.rightColumn</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">180</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">150px</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-60px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.label</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">50px</span><span class="p">;</span>
-  <span class="k">margin-top</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.news</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
-<span class="p">}</span>
-
-<span class="nc">.topic</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0%</span><span class="o">,</span><span class="m">0%</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">80px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.subtopic</span><span class="p">{</span>
-  <span class="k">background-color</span><span class="o">:</span> <span class="n">hsla</span><span class="p">(</span><span class="m">30</span><span class="o">,</span><span class="m">100%</span><span class="o">,</span><span class="m">50%</span><span class="o">,.</span><span class="m">4</span><span class="p">);</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">80px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.border</span><span class="p">{</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот и все. Объемной получилась статейка!</p>
 
 <hr />
 

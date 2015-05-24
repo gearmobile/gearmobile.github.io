@@ -144,6 +144,586 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-09-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-autoprefixer/">September 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-autoprefixer/" rel="bookmark" title="Gulp-autoprefixer, gulp-rename, gulp-notify" itemprop="url">Gulp-autoprefixer, gulp-rename, gulp-notify</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В статье рассмотрены три модуля для работы под Gulp - <code>gulp-rename</code>, <code>gulp-notify</code>, <code>gulp-autoprefixer</code>.</p>
+</blockquote>
+
+<p>Все три модуля слишком маленькие и слишком простые, чтобы их рассматривать в отдельности. Все приведенные в статье примеры являются базовыми и служат задаче показать принцип работы каждого из модулей.</p>
+
+<h2 id="section">Подготовка проекта</h2>
+
+<p>Подготовим проект, создав его базовую основу. Первым файлом создадим файл <code>package.json</code> и наполним его таким содержимым:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span> <span class="err">:</span> <span class="s2">&quot;three_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span> <span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Затем установим <em>локально</em> Gulp.js и укажем <code>npm</code>, чтобы он внес этот пакет в качестве зависимостей в файл <code>package.json</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Создаем js-файл, в котором будем прописывать задачи для Gulp:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">var</span> <span class="n">gulp</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">);</span>
+
+  <span class="p">//</span> <span class="k">Default</span> <span class="n">Task</span>
+  <span class="n">gulp</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="p">//</span> <span class="n">body</span><span class="p">...</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Основа для тестирования отдельных модулей готова.</p>
+
+<h2 id="gulp-rename----">Gulp-rename - переименование файлов</h2>
+
+<p>Задача модуля <code>gulp-rename</code> предназначена для одной маленькой цели - <em>переименования файлов</em>. Установим модуль с указанием зависимостей:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-rename</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-rename&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.2.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>И создадим задачу в файле <code>gulpfile.js</code> для установленного модуля <code>gulp-rename</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">var</span> <span class="n">gulp</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+      <span class="n">rename</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">);</span>
+
+  <span class="p">//</span> <span class="n">Rename</span> <span class="n">Task</span>
+  <span class="n">gulp</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="s1">&#39;rename&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="n">gulp</span><span class="p">.</span><span class="n">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;pretty_styles.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">gulp</span><span class="p">.</span><span class="n">dest</span><span class="p">(</span><span class="s1">&#39;build/css/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>В задаче под именем <code>rename</code> для Gulp “говориться” следующее: найти файл <code>style.css</code> - <code>gulp.src('css/style.css')</code>; переименовать его в имя <code>pretty_styles</code> - <code>.pipe(rename('pretty_styles.css'))</code>; переименованный файл положить в папку по пути <code>build/css/</code> - <code>.pipe(gulp.dest('build/css/'))</code>.</p>
+
+<p>Запускаю задачу <code>rename</code> в консоли и вижу, что процесс прошел успешно:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">rename</span>
+  <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">/</span><span class="n">media</span><span class="p">/</span><span class="n">aaron</span><span class="p">/</span><span class="n">application</span><span class="p">/</span><span class="n">develop</span><span class="p">/</span><span class="n">training</span><span class="p">/</span><span class="n">gulp_connect</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">Starting</span> <span class="s1">&#39;rename&#39;</span><span class="p">...</span>
+  <span class="n">Finished</span> <span class="s1">&#39;rename&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span></code></pre></div>
+
+<p>Проверяю, “положил” ли Gulp переименованный файл <code>pretty_styles.css</code> по пути <code>build/css/</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
+  <span class="n">pretty_styles</span><span class="p">.</span><span class="n">css</span></code></pre></div>
+
+<p>Да, все верно, файл <code>pretty_styles.css</code> находиться там, где он и должен находиться.</p>
+
+<p>Рассмотренный выше пример очень прост. Более сложные и интересные возможности модуля <code>gulp-rename</code> показаны на его официальной странице - <a href="https://www.npmjs.org/package/gulp-rename" title="gulp-rename">gulp-rename</a>. А именно - возможности переименования с помощью <em>функций</em> или с помощью <em>префиксов\суффиксов</em>.</p>
+
+<h2 id="gulp-notify-----">Gulp-notify - уведомление о событиях</h2>
+
+<p>Установка модуля <code>gulp-notify</code> выполняется как обычно:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-notify</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-rename&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.2.0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-notify&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.6.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Затем создаю задачу <code>notify</code>, которая будет отслеживать все изменения в файле <code>css/style.css</code>. Задача информирования об изменениях подразумевает ее использование в <em>фоновом режиме</em>.</p>
+
+<p>Поэтому, создаю еще одну задачу для мониторинга - <code>watch</code>, которую помещаю в дефолтную задачу <code>default</code>. В общем случае файл <code>gulpgile.js</code> будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+  <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
+  <span class="nx">notify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-notify&#39;</span><span class="p">);</span>
+
+  <span class="c1">// Default Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+
+  <span class="c1">// Notify Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;notify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">notify</span><span class="p">(</span><span class="s1">&#39;File style.css was changed!&#39;</span><span class="p">));</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Watch Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;notify&#39;</span><span class="p">]);</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>В консоли запускаю Gulp с дефолтной задачей <code>default</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+  <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">/</span><span class="n">media</span><span class="p">/</span><span class="n">aaron</span><span class="p">/</span><span class="n">application</span><span class="p">/</span><span class="n">develop</span><span class="p">/</span><span class="n">training</span><span class="p">/</span><span class="n">gulp_connect</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+  <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">79</span> <span class="n">ms</span>
+  <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+  <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">97</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
+
+<p>Теперь вношу в файл <code>css/style.css</code> изменения и сохраняю их. На Рабочем столе мгновенно появляется всплывающее окно с уведомлением о внесенных в файл <code>css/style.css</code> изменениях. Не знаю, как в других системах, но на Linux Mint 17 Cinnamon это окошко выглядит очень симпатично.</p>
+
+<p>На <a href="https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js" title="gulp-notify">странице GitHub</a> автора модуля представлены <em>более интересные примеры</em> создания и использования <code>gulp-notify</code>.</p>
+
+<h2 id="gulp-autoprefixer----">Gulp-autoprefixer - браузерные префиксы</h2>
+
+<p>Интересный модуль <code>gulp-autoprefixer</code> для управления <em>браузерными префиксами</em> в проекте. Задача у него - не просто устанавливать префиксы для тех CSS3-свойств, которые нуждаюся в этом на данный момент (<em>другими словами - для включения их поддержки в браузерах</em>).</p>
+
+<p>С помощью <code>gulp-autoprefixer</code> можно управлять “глубиной” версий браузеров, которые должны поддерживать работу конкретного проекта. Другими словами, можно указать модулю <code>gulp-autoprefixer</code>, что необходимо отслеживать поддержку префиксов только в двух последних версиях каждого (<em>из всех существующих</em>) браузера - <code>last 2 versions</code> (<em>кстати, это значение по умолчанию для данного модуля</em>).</p>
+
+<p>Или же учитывать только две последние версии браузера Google Chrome - <code>last 2 Chrome versions</code>. При задании префиксов можно учитывать глобальную статистику использования браузера - <code>&gt; 5%</code> (если брузер используют больше 5% населения Интернет).</p>
+
+<p>Модуль <code>gulp-autoprefixer</code> использует собственные имена для браузеров при задании параматров работы своей работы. С полным списком еще более интересных возможностей для задания выборки браузеров можно (<em>и нужно</em>) ознакомиться на <a href="https://github.com/postcss/autoprefixer#browsers" title="gulp-autoprefixer - Browsers">странице GitHub</a>.</p>
+
+<p>Работа модуля <code>gulp-autoprefixer</code> основана на известном ресурсе <a href="http://caniuse.com/" title="Can I Use">Can I Use</a>. Именно оттуда он берет инормацию о поддержке браузерами того или иного CSS3-свойства на данный момент. Кстати, известный фреймворк Compass также основывается на <a href="http://caniuse.com/" title="Can I Use">Can I Use</a> при работе со своими миксинами (mixin).</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/gulp-autoprefixer_caniuse.png" alt="Сервис Can I Use" /></p>
+
+<p>Помимо этого, модуль <code>gulp-autoprefixer</code> умеет красиво форматировать CSS-свойства с браузерными префиксами в виде <a href="https://github.com/postcss/autoprefixer#visual-cascade" title="Visual Cascade">визульного каскада</a>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span> <span class="p">{</span>
+<span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+   <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+        <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>За такую возможность отвечает параметр <code>cascade</code>, который включен по умолчанию в данном модуле. Вообще, по умолчанию модуль <code>gulp-autoprefixer</code> имеет такие параметры в виде массива (array): <code>&gt; 1%, last 2 versions, Firefox ESR, Opera 12.1</code>.</p>
+
+<p>Вступление было достаточно долгим и подробным - это потому, что модуль <code>gulp-autoprefixer</code> интересный и нужный. Приступаю к его установке:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-autoprefixer</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-rename&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.2.0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-notify&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.6.0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-autoprefixer&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.0.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Создаю задачу <code>autoprefixer</code> с описанием того, что нужно отслеживать изменения в файле <code>css/style.css</code> и при добавлении в него CSS3-свойств преобразовывать их в свойства с браузерными префиксами. При этом учитывать только две последние версии браузеров и результат помещать по пути <code>build/css/</code>.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+  <span class="nx">autoprefixer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-autoprefixer&#39;</span><span class="p">);</span>
+
+  <span class="c1">// Autoprefixer Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;autoprefixer&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">autoprefixer</span><span class="p">({</span>
+      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 2 versions&#39;</span><span class="p">]</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Внесу в файл <code>css/style.css</code> CSS3-свойство <code>transform</code>, которое заведомо нужно использовать с префиксами (для этого я заранее “<a href="http://caniuse.com/#feat=transforms2d" title="CSS3 Transforms">подглядел</a>” его на “Can I Use”):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Запускаю задачу <code>autoprefixer</code> и смотрю результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+          <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Все четко - под условие “не ниже второй версии” попали только браузеры на движке Webkit - можно свериться <a href="http://caniuse.com/#feat=transforms2d" title="CSS3 Transforms">здесь</a>.</p>
+
+<p>Можно немного “углубить” условие и “опуститься” до третьей версии всех браузеров:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Autoprefixer Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;autoprefixer&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">autoprefixer</span><span class="p">({</span>
+      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 3 versions&#39;</span><span class="p">]</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>… и посмотреть результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+      <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+          <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Вывод в <code>build/css/style.css</code> красивый благодаря <code>cascade</code>, который можно и отключить, установив <code>cascade: false</code>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-09-08T00:00:00+04:00"><a href="http://zencoder.ru/css/bootstrap-susy-grid-system/">September 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~12 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/bootstrap-susy-grid-system/" rel="bookmark" title="Bootstrap и Susy - сравнение grid system" itemprop="url">Bootstrap и Susy - сравнение grid system</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Сегодня по подписке мне на почту пришла ссылка на статью “<a href="http://goo.gl/F5mZ2n" title="Bootstrap’s Grid System vs. Susy: A Comparison">Bootstrap’s Grid System vs. Susy: A Comparison</a>”. Пришла как нельзя кстати - я сам задавался для себя таким вопросом - что лучше выбрать для себя в качестве системы построения разметки (grid system) - мега-популярный Bootstrap или менее популярную, но более гибкую и функциональную Susy? И вот пожалуйста - сравнительное описание уже готово - осталось его только прочитать!</p>
+</blockquote>
+
+<p>Более того, c автором статьи <a href="http://www.sitepoint.com/author/zliew/" title="Zell Liew">Zell Liew</a> я заочно знаком - на моем бложике есть переводы его статьей по теме Susy: “Краткое руководство по Susy 2”, “Краткое введение в Susy 2 (Часть 2)”, “Статические сетки с помощью Susy 2”. Более того, к этому времени он уже успел написать собственную книгу, посвященную Susy - <a href="http://zell-weekeat.com/learnsusy/" title="Learning Susy">Learning Susy</a>.</p>
+
+<p>Как мне кажется, данная статья является нужной и своевременной, как нельзя кстати. Естественно, я не мог удержаться от того, чтобы не прочитать и не сделать ее вольный перевод (<em>для себя и возможно - для читателей</em>).</p>
+
+<h2 id="section">Введение</h2>
+
+<p>На сегодняшний день существует достаточно систем построения разметки (grid system), которые можно выбрать для своей работы. Из всего множества фреймворком подобного типа одним из самых любимых и самых ненавидимых определенно является <a href="http://getbootstrap.com/" title="Bootstrap">Bootstrap</a>.</p>
+
+<p>Сегодня я хотел бы представить вашему вниманию менее известный фреймворк - <a href="http://susy.oddbird.net/" title="Susy">Susy</a>. В этой статье я сделаю сравнение между системами построения разметки (grid system) Susy и Bootstrap. Благодаря этой статье читатель может четко уяснить для себя, что собой представляет Susy и можно ли ее использовать на практике.</p>
+
+<h2 id="susy">Что такое Susy</h2>
+
+<p>Для того, чтобы ответить на этот вопрос, нужно сначала ответить на другой вопрос - “Что такое grid (CSS-сетка)?”</p>
+
+<p>В терминологии web-дизайна grid (CSS-сетка) - это всего лишь набор вертикальных линий, которые располагаются на web-странице сверху вниз. Эти линии пришли в web из печатного издания (типографии) и сегодня используются web-дизайнерами повседневно и повсеместно для создания основы web-страницы, с помощью которой облегчается возможность организации и представления информации:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/grid_system.png" alt="Система сеток (grid system) на web-странице" /></p>
+
+<p>Эти вертикальные линии помогают выполнить задачу разделения всего пространства web-страницы на два вида полос. Более широкий вид полосы называется колонкой (column), а более узкий - канавкой (gutter). Организация и расположение элементов страницы “привязывается” к этим колонкам (columns) и канавкам (gutters):</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/grid_system-columns-and-gutters.png" alt="Колонки (columns) и канавки (gutters) в Grid System" /></p>
+
+<p>Систему сеток (grid system), описанную выше, используют множество CSS-фреймворков. Наиболее известные (в качестве примера) из них:</p>
+
+<ul>
+  <li>960 grid system</li>
+  <li>1140px grid system</li>
+  <li>Bootstrap</li>
+  <li>Foundation</li>
+</ul>
+
+<p>Все упомянутые (и не только эти) фреймворки имеют одну общую черту. Они имеют уже готовую систему сеток (grid system), которую можно изменять только в ограниченных пределах.</p>
+
+<p>Susy является движком для создания разметки web-страницы (layout). Это набор инструментов, с помощью которых можно создать произвольную CSS-сетку (grid), которая отвечает потребностям дизайна конкретной web-страницы. Susy предоставляет в ваше распоряжение гибкость и свободу действий в web-разработке.</p>
+
+<h2 id="bootstrap">Что такое Bootstrap</h2>
+
+<p>Bootstrap - это больше, чем просто фреймворк для создания CSS-сетки (grid) разрабатываемой web-страницы. Это полноценный набор инструментов, имеюший в своем составе большое количество самых разнообразных возможностей для создания web-страницы:</p>
+
+<ul>
+  <li>система построения разметки (grid system);</li>
+  <li>готовые CSS-стили для большинства стандартных элементов web-страницы, таких как навигация, формы, иконки;</li>
+  <li>готовые jQuery-плагины для сложных элементов web-страницы, таких как аккордеон или карусель.</li>
+</ul>
+
+<p>Теперь, когда стала ясна разница между Susy и Bootstrap, становится понятно, что невозможно сравнивать между собой два таких разных программных продукта. Основа у этих инструментов совершенно разная.</p>
+
+<p>Тем не менее, в дальнейшей части этой статьи будет произведено детальное сравнение между Susy и системой построения разметки (grid system) фреймворка Bootstrap. Между ними все же существует несколько общих черт, по которым можно произвести аналогию:</p>
+
+<ul>
+  <li>Язык используемого препроцессора</li>
+  <li>Способ создания разметки (markup)</li>
+  <li>Возможность редактирования CSS-сетки</li>
+  <li>Возможность настройки breakpoints</li>
+  <li>Взаимосвязь HTML и CSS</li>
+  <li>Документация и сообщество</li>
+</ul>
+
+<h2 id="section-1">Язык используемого препроцессора</h2>
+
+<p>Язык препроцессора важен потому, что при разработке страницы потребуются утилиты и инструменты, написанные именно под этот язык; и другого выбора у вас просто нет. Давайте немного разъясню, о чем идет речь.</p>
+
+<p>Несмотря на то, что первоначально Bootstrap был создан на Less, на сегодняшний день Bootstrap поддерживает два препроцессора - Sass и Less. Таким образом, язык препроцессора не является препятствием при использовании Bootstrap - можно воспользоваться любым из двух.</p>
+
+<p>Последняя версия Susy (Susy 2) работает только совместно с Sass версии 3.3. и выше, потому что для Susy 2 необходима поддержка Sass-карт Sass maps. Предыдущая более ранняя версия “Susy One” использует для своей работы Sass ниже версии 3.3. К сожалению, Susy не подерживает Less.</p>
+
+<h2 id="markup">Способ создания разметки (markup)</h2>
+
+<p>Чтобы увидеть разницу в способе создания разметки (markup) web-страницы, давайте создадим простой пример:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/layout.png" alt="Пример разметки (markup) страницы" /></p>
+
+<p>Фреймворк Bootstrap требует использования в обязательном порядке классов наподобие <code>.row</code> или <code>.col-md-4</code> при создании разметки страницы - для того, чтобы к HTML-документу смогли примениться CSS-стили.</p>
+
+<p>Вышеупомянутое требование является наиболее критикуемым моментом в Bootstrap. Противники Bootstrap заявляют, что все подобные классы относятся к репрезентационным и им не место в HTML-разметке страницы.</p>
+
+<p>Ниже приведен пример кода, с помощью которого создается разметка на Bootstrap - со всеми необходимыми классами в данном случае. Дополнительно применены классы, относящиеся непосредственно к системе построения разметки (grid system):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container-fluid&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-md-8 content&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Content
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-md-4 sidebar&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Sidebar
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Для сравнения, ниже приведен код на Susy для создания аналогичной разметки (markup):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Content
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;sidebar&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Sidebar
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Как хорошо видно, разметка на Susy гораздо проще и более семантичная, нежели аналогичная разметка на Bootstrap. Однако, создание разметки с помощью Susy на этом не заканчивается - необходимо добавить CSS-стили для классов <code>content</code> и <code>sidebar</code>, чтобы они применились к создаваемой HTML-разметке. Поэтому давайте выполним небольшую стилизацию с помощью этих классов с тем, чтобы показать, как работает Susy.</p>
+
+<p>Первое, на что необходимо обратить внимание, так это тот факт, что Bootstrap добавляет канавки (gutters) в качестве CSS-свойства <code>padding</code> по обе стороны каждой колонки (column) в CSS-сетке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/bootstrap-gutters.png" alt="Канавки (gutters) в Bootstrap" /></p>
+
+<p>По умолчанию, Susy “прилепляет” канавку (gutter) в качестве CSS-свойства <code>margin</code> только с одной (правой) стороны каждой колонки (column). Для того, чтобы изменить поведение Susy на точно такое же, как в Bootstrap, необходимо изменить значение переменной <code>gutter-position</code> в Sass-карте <code>#susy</code>:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">$susy:</span> <span class="err">(</span>
+  <span class="err">gutter-position:</span> <span class="err">inside</span>
+<span class="err">)</span></code></pre></div>
+
+<p>Примечание переводчика - автор немного “поскромничал”, не сказав, что у него имеется своя собственная статья, посвященная позиционированию gutter в Susy - “Understanding Gutter Positions in Susy”.</p>
+
+<p>В каждой CSS-сетке, создаваемой с помощью Susy, к классу <code>.container</code> необходимо применить миксин <code>container</code>. В рассмотренном выше примере вместо класса <code>.container</code> используется класс <code>.wrap</code> в качестве класса у блока-обертки, имеющей максимальную ширину в 1140px:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrap</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В предыдущем случае, когда выполнялась разметка с помощью Bootstrap, выделялись 8 колонок (columns) под контент и 4 колонки (columns) под блок с классом <code>.sidebar</code>. При создании разметки на Susy необходимо воспользоваться миксином <code>span</code>, с помощью которого можно создать 8 колонок для блока с классом <code>.content</code> и 4 колонки для блока с классом <code>.sidebar</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">8</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Разметка на Susy более простая, нежели на Bootstrap. Однако, обратной стороной этой простоты является факт, что придется выполнить больше работы по подключению миксинов и общей настройке классов. В то время как Bootstrap предоставляет все необходимые классы в готовом виде.</p>
+
+<h2 id="css-">Возможность редактирования CSS-сетки</h2>
+
+<p>Bootstrap предоставляет возможность редактирования системы построения разметки (grid system) только в ограниченных пределах. Имеется возможность свободно изменять такие вещи, как:</p>
+
+<ul>
+  <li>количество колонок (columns)</li>
+  <li>размер канавки (gutter)</li>
+  <li>значения четыре доступных breakpoints (<code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>)</li>
+</ul>
+
+<p>Все вышеперечисленные параметры можно настроить двумя способами:</p>
+
+<ul>
+  <li>выполнить конфигурирование на вкладке “Customize and download” официальной страницы Bootstrap прежде, чем скачивать готовый дистрибутив</li>
+  <li>если используется любой из препроцессоров (Sass или Less), то изменить значения соответсвующих переменных <code>_variables</code></li>
+</ul>
+
+<p>В обоих случаях, настройки для колонок (columns) и канавок (gutters) находятся в разделе с названием Grid System; настройки для медиа-запросов (media queries) находятся в разделе под названием Media Queries Breakpoints.</p>
+
+<p>С другой стороны, Susy позволяет изменять гораздо больше параметров. Вот список того, что можно настраивать в Susy:</p>
+
+<ul>
+  <li>количество колонок (columns)</li>
+  <li>размер каждой из колонки в отдельности</li>
+  <li>размер канавки (gutter)</li>
+  <li>позиционирование канавок (gutters)</li>
+  <li>количество breakpoints</li>
+  <li>направление потока слева направо или справа налево</li>
+  <li>блочную модель (box model)</li>
+</ul>
+
+<p>… и еще много чего.</p>
+
+<p>Наподобие других систем для построения разметки (grid system), таких как Singularity или GridsetApp, которые наиболее часто применяются для постороения ассиметричной разметки (asymmetric layout), Susy также умеет создавать ассиметричные CSS-сетки. Хорошие примеры построения таких сеток размещены здесь:</p>
+
+<ul>
+  <li>The Marber - Gridset</li>
+  <li>The Gerstner - Gridset</li>
+  <li>Typekit + Gridset Demos</li>
+</ul>
+
+<blockquote>
+  <p>Примечание переводчика - у автора статьи на его официальном сайте имеется статья, посвященная созданию ассиметричной разметки на Susy - “Creating Asymmetric Layouts With Susy”.</p>
+</blockquote>
+
+<p>Одна из таких сеток, созданная Nathan Ford мне нравиться и я сделал аналогичный вариант ассиметричной разметки с помощью Susy. Теперь нет необходимости применять какую-либо стандартную систему построения разметки (grid system) - Susy может удовлетворить всем требованиям разработчика.</p>
+
+<p>Примечание переводчика - автор статьи использовал online-инструмент SassMeister для написания кода под препроцессор Sass. Если данный вопрос незнаком читателю, то можно обратиться к ссылке - “Знакомимся с редактором SassMeister”.</p>
+
+<h2 id="breakpoints">Возможность настройки breakpoints</h2>
+
+<p>Как уже упоминалось ранее, Bootstrap имеет возможность применения в создаваемой разметке до 4 контрольных точек (breakpoints): <code>xs</code>, <code>sm</code>, <code>md</code>, <code>lg</code>. Эти breakpoints заранее определены в фреймворке Bootstrap</p>
+
+<p>В рассматриваемом нами примере, если попробовать уменьшить размер окна браузера меньше 991px, то блок с классом <code>.content</code> займет всю ширину блока-родителя; блок с классом <code>.sidebar</code> переместиться вниз и также займет всю ширину.</p>
+
+<p>Предположим, что возникла задача сделать так, чтобы оба блока с классами <code>.content</code> и <code>.sidebar</code> занимали каждый ровно половину окна браузера при уменьшении его размеров ниже 991px:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container-fluid&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-xs-6 col-md-8 content&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Content
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-xs-6 col-md-4 sidebar&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;h2&gt;</span>
+        Sidebar
+      <span class="nt">&lt;/h2&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Если точно такую же задачу выполнять с помощью Susy, то в этом случае изменения коснуться CSS вместо HTML, как в первом случае. HTML-разметка останется прежней и в нее не будет ничего добавлено:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Content
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;sidebar&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Sidebar
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>В данном случае необходимо добавить контрольную точку <code>breakpoint</code> в Sass-файл.</p>
+
+<p>При создании такой контрольной точки <code>breakpoint</code> имеет смысл выполнить подход по принципу “Mobile First” и сначала задать стилевые правила для блоков <code>.content</code> и <code>.sidebar</code> таким образом, чтобы они занимали ровно половину окна браузера каждый. При увеличении размера окна (больше чем 991px) блок с классом <code>.content</code> станет занимать 8 колонок, а блок с классом <code>.sidebar</code> - 4 колонки от общего пространства окна браузера:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">media</span> <span class="p">(</span><span class="k">min-width</span><span class="o">:</span> <span class="m">980px</span><span class="p">)</span> <span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">8</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">media</span> <span class="p">(</span><span class="k">min-width</span><span class="o">:</span> <span class="m">980px</span><span class="p">)</span> <span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Bootstrap требует аккуратного обращения с именами CSS-классов при создании HTML-разметки. Когда создается проект на Bootstrap, мне всегда приходиться помнить точные имена классов для контрольных точек.</p>
+
+<p>В Susy наоборот - весь процесс кодинга перемещается из области HTML-документа в область Sass-файла, в котором также необходимо соблюдать осторожность. Я предпочитаю размещать контрольные точки (breakpoints) именно в таблице стилей, так как в этом случае общая картина проекта становиться более наглядной для меня.</p>
+
+<p>В зависимости от предпочтений, можно использовать Bootstrap или Susy - оба они хорошо выполняют свою задачу построения разметки. Лично я предпочитаю Susy, так как в этом случае имется возможность “разъединить” HTML и CSS между собой. Данный факт плавно приводит меня к следующему вопросу.</p>
+
+<h2 id="html--css">Взаимосвязь HTML и CSS</h2>
+
+<p>На сегодняшний день почти все сайты в Интернет содержат в себе массу кода на HTML и CSS. И чем плотнее взаимосвязь между двумя этими типами файлов, тем сложнее выполнять поддержку таких сайтов.</p>
+
+<p>Просто представим на минуту то время, когда весь CSS-код размещался внутри HTML-кода с помощью атрибута <code>style</code>. Использование классов Bootstrap наподобие <code>.col-xs-6</code>, <code>.col-md-4</code> или <code>.row</code> аналогично использованию атрибута <code>style</code> в HTML-документе.</p>
+
+<p>Если в HTML-документе имеется множество элементов, которые требуют специфической разметки с помощью классов <code>.col-</code>, то количество случаев, когда придется воспользоваться такими классами значительно возрастает. Что, если возникла задача изменить дизайн таким образом, чтобы блок с классом <code>.content</code> занимал не 8 колонок (columns), а 7 колонок (columns)? Потребуется изменить имя класса везде, где оно встречается внутри HTML-документа:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;col-md-7 content&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    Content
+  <span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Становиться понятно высказывание о том, что HTML и CSS-файлы с такой тесной взаимосвязью очень тяжело поддерживать.</p>
+
+<p>Лично я предпочитаю использовать Susy и размещать все презентационные классы во внешнем CSS-файле, там где они и должны находиться. Например, при ипользовании Susy, если необходимо изменить размер блока с классом <code>.content</code> до 7 колонок, то для этого достаточно изменить всего лишь один миксин <code>span</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">7</span> <span class="n">of</span> <span class="m">12</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Как мне кажется, выполнять поддержку HTML и CSS-файлов, взаимосвязанных подобным образом, гораздо легче.</p>
+
+<p>Так как благодаря Susy появляется возможность свободного управления HTML и CSS-файлами, то можно применить на своей практике любую из популярных CSS-методологий, таких как SMACSS, OOCSS или BEM. При этом отпадает необходимость заботиться о том факте, каким образом любая из этих методологий будет взаимодействовать с вашим конкретным HTML-файлом.</p>
+
+<h2 id="section-2">Документация и сообщество</h2>
+
+<p>Документация и сообщество играю большую роль в жизни любого фреймворка. Чем больше сообщество и чем более детальная документация по фреймворку, тем выше вероятность того, что ответ на вопрос будет найдет быстро и легко.</p>
+
+<p>Документация к Bootstrap и его сообщество достаточно развитые. Если у вас возникают какие-либо проблемы, вы всегда можете написать вопрос на Stack Overflow или на любой другой форум, посвященный кодингу. Обязательно найдется знающий человек, который сможет и захочет помочь в решении вашего вопроса.</p>
+
+<p>Напротив, документация по Susy не такая детальная; а сообщество (пока) не слишком большое. При изучении возможностей Susy и способов создания web-сайтов на основе этого фреймворка могут возникнуть проблемы, которые и отталкивают многих от перехода с Bootstrap на Susy. Для того, чтобы попробовать устранить этот недостаток, мною написана книга “Learning Susy”. Всем интересующимся можно ознакомиться с ней.</p>
+
+<h2 id="section-3">Заключение</h2>
+
+<p>Несмотря на тот факт, что Bootstrap и Susy являются совершенно различными инструментами, в этой статье мы смогли произвести сравнение между системами построения разметки (grid system) обоих фреймворков. Как я уже упоминал ранее, у меня есть твердое убеждение в том, что Susy является гораздо более удобным инструментом для создания разметки.</p>
+
+<p>Если вы заинтересовались возможностью дальнейшего изучения Susy, посетите официальный сайт этого проекта, почитайте документацию к этому фреймворку или скачайте бесплатно “5 глав из моей книги”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-09-05T00:00:00+04:00"><a href="http://zencoder.ru/git/fork-github/">September 05, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -510,170 +1090,6 @@
 <p><img src="http://zencoder.ru/images/uploads/2014/09/git-mv_index.png" alt="Команда git mv - переименование файла в Git" /></p>
 
 <p>Вот и все несложные операции по перемещению\переименованию или удалению файлов с помощью команд <code>git rm</code> и <code>git mv</code>, под всевидящим оком Git.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-01T00:00:00+04:00"><a href="http://zencoder.ru/git/github-push-and-pull/">September 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-push-and-pull/" rel="bookmark" title="GitHub - команды push и pull" itemprop="url">GitHub - команды push и pull</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжаю открывать для себя возможности системы Git и сервиса GitHub.</p>
-</blockquote>
-
-<p>Уже сейчас, обладая минимальными базовыми знаниями Git и владея учетной записью на сервере GitHub, я не представляю, как я мог жить раньше без обоих этих вещей. Это действительно удобно и надежно!</p>
-
-<p>Благодаря им я знаю, что у меня никогда и ничто не потеряется; и все, что нужно - у меня всегда под рукой. На работе поработал над чем-либо - отправил на GitHub; домой пришел - “стянул” наработки с GitHub и продолжил работу с прерванного места.</p>
-
-<p>Вот на последнем я хотел бы остановиться подробнее. Конечно, веб-разработчик, давно и хорошо знакомый с Git и GitHub, может только улыбнуться насчет того, чем я собираюсь поделиться. Настолько все это просто и понятно. Но это просто и понятно для него, опытного web-разработчика. А для начинающего веб-программиста - это новое и неизведанное. Впрочем, достаточно лирики - переходим к практике.</p>
-
-<h2 id="github----push">GitHub - команда push</h2>
-
-<p>В предыдущей статье я познакомился с возможностью создания репозитория на сервисе GitHub. И возможностью клонирования этого репозитория на локальную машину - “GitHub и Git - создание и работа с репозиторием”.</p>
-
-<p>Напомню, что в том примере было произведено клонирование репозитория с помощью команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">arbeit</span><span class="p">.</span><span class="n">git</span></code></pre></div>
-
-<p>Другими словами, было произведено копирование существующего репозитория с удаленного сервера на локальную машину. Причем, копирование как есть - полностью весь репозиторий, со всеми его файлами, коммитами, индексами и тому подобным.</p>
-
-<p>После внесений изменений в локальный репозиторий - индексации и фиксации - необходимо было отправить произведенные изменения на удаленный сервер, на GitHub.</p>
-
-<p>Для этой цели существует (и я ею воспользовался) команда <code>push</code> (отправить). К примеру, давайте я внесу еще кое-какие изменения в локальном репозитории, затем проиндексирую и зафиксирую их, а затем отправлю на GitHub:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
-
-<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Continue write article about push and pull in GitHub&#39;</span>
-<span class="no">[master 5af3abc]</span> <span class="k">Continue</span> <span class="n">write</span> <span class="n">article</span> <span class="n">about</span> <span class="n">push</span> <span class="n">and</span> <span class="n">pull</span> <span class="k">in</span> <span class="n">GitHub</span>
- <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">18</span> <span class="n">insertions</span><span class="p">(+)</span>
-
-<span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
-<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
-<span class="n">Your</span> <span class="n">branch</span> <span class="n">is</span> <span class="n">ahead</span> <span class="n">of</span> <span class="s1">&#39;origin/master&#39;</span> <span class="n">by</span> <span class="n">1</span> <span class="n">commit</span><span class="p">.</span>
-  <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git push&quot;</span> <span class="n">to</span> <span class="n">publish</span> <span class="n">your</span> <span class="n">local</span> <span class="n">commits</span><span class="p">)</span>
-<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span>
-
-<span class="p">$</span> <span class="n">git</span> <span class="n">push</span>
-<span class="p">...</span>
-<span class="n">Counting</span> <span class="n">objects</span><span class="err">:</span> <span class="n">7</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
-<span class="n">Delta</span> <span class="n">compression</span> <span class="n">using</span> <span class="n">up</span> <span class="n">to</span> <span class="n">4</span> <span class="n">threads</span><span class="p">.</span>
-<span class="n">Compressing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
-<span class="n">Writing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">1</span><span class="p">.</span><span class="n">65</span> <span class="n">KiB</span> <span class="p">|</span> <span class="n">0</span> <span class="n">bytes</span><span class="p">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
-<span class="n">Total</span> <span class="n">4</span> <span class="p">(</span><span class="n">delta</span> <span class="n">1</span><span class="p">),</span> <span class="n">reused</span> <span class="n">0</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">)</span>
-<span class="n">To</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">semenencko</span><span class="p">/</span><span class="n">articles</span>
-   <span class="n">022b756</span><span class="p">..</span><span class="n">5af3abc</span>  <span class="n">master</span> <span class="p">-&gt;</span> <span class="n">master</span></code></pre></div>
-
-<p>Вот - все наработки, которые я сделал на домашнем компьютере, оказались с считанные секунды помещенными на сервере GitHub, под бдительным оком Git.</p>
-
-<h2 id="github----pull">GitHub - команда pull</h2>
-
-<p>Продолжим логическую картину моего рабочего процесса (workflow). На следующий день я прихожу на работу и у меня есть время и возможность поработать над своим проектом. Естественно, я хочу продолжить с того места, на котором остановился дома. Для этого я воспользуюсь командой <code>pull</code>, чтобы “стянуть” с GitHub последние изменения.</p>
-
-<p>В данном случае команда <code>pull</code> будет выглядеть так:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-pull.png" alt="GitHub - команда pull" class="center-image" /></p>
-
-<p>В выводе консоли (на картинке) видно, что было произведено добавление одного измененного файла по имени README.md, в котором были добавлены две строки.</p>
-
-<p>Обратите внимание на разницу между командами <code>clone</code> и <code>pull</code> в данном случае. Команда <code>clone</code> копирует весь репозиторий целиком, как есть - со всеми его файлами. Команда <code>pull</code> копирует разницу между удаленным и локальным репозиторием. Эту разницу можно назвать дельта или patch.</p>
-
-<p>В результате вышеприведенной команды в считанные секунды я получаю на рабочем компьютере точную копию того проекта, над которым работал дома. И могу продолжать с того места, на котором остановился.</p>
-
-<h2 id="github----fetch">GitHub - команда fetch</h2>
-
-<p>Существует разновидность команды <code>pull</code> - это команда <code>fetch</code>. И одна, и вторая команда выполняют одинаковые задачи - получение patch удаленного репозитория. Но делают они это по разному.</p>
-
-<p>Команда <code>pull</code> получает patch репозитория и автоматически производит слияние удаленной и локальной ветвей репозитория. Если произойдет конфликт слияния, то только в этом случае слияния не произойдет и решать конфликт придется вручную.</p>
-
-<p>Команда <code>fetch</code> также производит получение patch удаленного репозитория. Но при этом автоматического слияния ветвей удаленного и локального репозиториев не происходит:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-fetch.png" alt="GitHub - команда fetch" class="center-image" /></p>
-
-<p>На картинке выше показано, что была выполнена команда <code>git fetch</code> после того, как на стороне сервиса GitHub было произведено редактирование файла README.md. Однако, последующая команда <code>git status</code> показала, что изменения есть, но они не слиты с локальной ветвью репозитория. И порекомендовала выполнить команду <code>git pull</code>, чтобы произвести такое слияние.</p>
-
-<p>Помимо этого, имеются изменения в локальном репозитории, которые не проиндексированы и не зафиксированы. Что же, исправляю ситуацию - последовательно ввожу команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">pull</span>
-<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
-<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Added fetch image&#39;</span>
-<span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
-
-<p>Производить слияние и разрешение конфликтов при слиянии я еще не умею, поэтому вопрос, как произвести слияние ветвей после команды <code>git fetch</code> я опущу в данной статье.</p>
-
-<p>Вернувшись к вышесказанному, можно сделать вывод, что команда <code>pull</code> более универсальная, нежели команда <code>fetch</code>. Именно команду <code>pull</code> имеет смысл применять в практической работе.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-31T00:00:00+04:00"><a href="http://zencoder.ru/git/github-how-to-delete-repository/">August 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-how-to-delete-repository/" rel="bookmark" title="Как удалить репозиторий на GitHub" itemprop="url">Как удалить репозиторий на GitHub</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Как новичок в работе с системой <a href="https://github.com/" title="GitHub">GitHub</a>, столкнулся с вопросом - как удалить созданный на GitHub репозиторий?</p>
-</blockquote>
-
-<p>Оказалось, что ничего сложного в этом нет. Однако, задача эта и не такая простая, как может показаться. По крайней мере, чисто интуитивно у меня не получилось ее выполнить - пришлось искать ответ в Сети.</p>
-
-<p>Итак, у меня есть учетная запись на GitHub, под которой создана пара репозиториев. Один из этих репозиториев был создан в учебных целях, поэтому для моей дальнейшей работы он мне не пригодиться и его можно удалить.</p>
-
-<h2 id="github">Список репозиториев на GitHub</h2>
-
-<p>Для начала открою свою страничку на GitHub и посмотрю, какие репозитории у меня уже есть:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-list_of_repos.png" alt="Список репозиториев на GitHub" /></p>
-
-<p>Один из репозиторев - <code>arbeit</code> - можно удалить.</p>
-
-<p>Для этой цели нужно просто зайти в него по ссылке:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit.png" alt="Репозиторий arbeit на GitHub" /></p>
-
-<p>В правом нижнем углу окна браузера, в списке, имеется строка <code>Settings</code>. Открываем ее, сразу же копируем имя репозитория в поле <code>Repository name</code> (оно нам понадобиться еще здесь) и прокручиваем страницу вниз, пока не находим раздел с устрашающим названием <code>Danger Zone</code>. В этой опасной зоне находим подраздел <code>Delete this repository</code> с одноименной кнопкой <code>Delete this repository</code>.</p>
-
-<p>Жмем на эту кнопку и получаем в результате окно с предупреждением об удаленни репозитория. В окне запроса имени удаляемого репозитория вводим (или вставляем из буфера обмена) - <code>arbeit</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-delete_repo_arbeit.png" alt="Запрос имени удаляемого репозитория" /></p>
-
-<p>Снова жму на кнопку, на этот раз с еще более страшным напоминанием о последствиях совершаемого мною шага. И все! Репозиторий <code>arbeit</code> удален:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit_deleted.png" alt="Удаленный репозиторий на GitHub" /></p>
-
-<p>Ничего сложного, но так сразу и не догадаешься, что нужно делать. Разработчики GitHub постарались и обезопасили пользователей от случайного удаления репозиториев с данными.</p>
 
 <hr />
 

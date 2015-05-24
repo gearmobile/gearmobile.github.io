@@ -144,6 +144,278 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-04T00:00:00+04:00"><a href="http://zencoder.ru/pseudo-class-target/">November 04, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/pseudo-class-target/" rel="bookmark" title="Псевдокласс `:target` - стили для элемента-якоря в HTML-документе" itemprop="url">Псевдокласс `:target` - стили для элемента-якоря в HTML-документе</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Настала очередь изучить, что такое псевдо-класс <code>:target</code>.</p>
+</blockquote>
+
+<p>Вопрос достаточно интересный как с точки зрения теории, так еще больше - с точки зрения практики.</p>
+
+<p>Начнем издалека и вспомним (<em>если кто читал</em>) одну из глав книги Энди Бадда “Мастерская CSS”. Глава называется “Изменение стиля элемента при наведении указателя на отдаленный элемент” и речь в ней идет о том, как сделать так, чтобы управлять одним элементом с помощью другого.</p>
+
+<p>Техника, описанная в данной главе, представляла из себя следующее. В ссылку вкладывались несколько элементов, которые позиционировались абсолютно на странице и размещались в любом ее месте.</p>
+
+<p>Визуально создается впечатление, что они никак не связаны между собой. Но на самом деле они находятся внутри одного элемента - ссылки (ниже приведен кусок кода из этой главы в качестве примера):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">title=</span><span class="s">&quot;Richard Rutter&quot;</span> <span class="na">href=</span><span class="s">&quot;http://www.clagnut.com/&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;link&quot;</span><span class="nt">&gt;</span>» Richard Rutter<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/a&gt;</span></code></pre></div>
+
+<p>Способ достаточно хорош, за исключением того, что применяется дополнительная разметка и нарушается семантика HTML-документа. На момент написания этой книги это был единственный способ управления “отдаленными элементами на странице.</p>
+
+<p>Но на сегодняшний день существует еще один способ, более аккуратный и универсальный - с помощью псевдо-класса <code>:target</code>. Другое дело, что поддержка в браузерах этого CSS-свойства не полностью реализована и здесь можно смело показать пальцем в сторону браузера IE, в нем оно поддерживается, начиная с 9-ой версии.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/target.png" alt="Псевдо-класс target" /></p>
+
+<p>С помощью этого псевдо-класса можно управлять абсолютно любым элементом в документе. При этом он не обязан располагаться в каком-то определенном месте, наоборот - он может находиться в нормальном потоке и не нарушать семантику.</p>
+
+<p>Приведу в качестве примера кусок кода, демонстрирующий такой подход:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#example&quot;</span><span class="nt">&gt;</span>Example<span class="nt">&lt;/a&gt;</span> et dolore magna aliqua.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">&quot;example&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet, ut enim ad minim veniam<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<p>Видим ссылку, помещенную в середине документа, обрамленную элементами <code>p</code>. У ссылки атрибут <code>href</code> имеет значение <code>#example</code>, который очень похож на ссылку на якорь. На самом деле это и есть ссылка на якорь, который назначен для одного из параграфов с идентификатором <code>id="example"</code>.</p>
+
+<p>Вид ссылки может быть не обязательно таким, но и более длинным - <code>http://localhost:7788/third/#example</code>. Все, что располагается в ней после знака диез <code>#</code>, называется <code>хэштег</code>.</p>
+
+<p>Псевдо-класс <code>:target</code> как раз и служит для стилизации элемента с якорем, на который указывает такая ссылка. Давайте приступим к стилизации, чтобы воочию увидеть, как работает этот псевдо-элемент.</p>
+
+<p>Для одного из параграфов мы уже назначили идентификатор, который является якорем. Пропишем для него немного правил:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="p">{</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">12px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+      <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+          <span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Мы изменили семейство шрифтов, кегль и цвет. Эти правила устанавливаются “как обычно”, то есть - как прописали, так они и отображаются в браузере. Теперь создадим немного стилей, которые первоначально себя никак не проявляют, а только по происшествии какого-то события.</p>
+
+<p>В нашем случае это будет клик на ссылке. Для таких правил синтаксис следующий:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="nd">:target</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#bbddff</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">outline</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#667788</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Откроем созданную нами страницу в браузере - и почти ничего не увидим. Точнее - только те правила, которые явно прописаны в первом куске кода. Но если кликнуть мышью на ссылке с текстом <code>Example</code>, то увидим достаточно занимательную трансформацию параграфа. Это псевдо-класс <code>:target</code> в действии!</p>
+
+<p>Он применил прописанные для него правила только при совершении некоего события. И применены они были к обособленному участку HTML-кода (помеченному идентификатором <code>#example</code>), который почти никак не связан со ссылкой.</p>
+
+<p>Можно немного усложнить пример и связать несколько параграфов между собой, то есть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="nd">:target</span> <span class="o">+</span> <span class="nt">p</span><span class="p">{</span>
+  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#0000ff</span><span class="p">;</span>
+  <span class="k">text-indent</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Откроем вновь страницу в браузере и посмотрим результат. Все ОК.</p>
+
+<p>Псевдо-класс <code>:target</code> может принимать любые CSS-свойства, в том числе скрытие\показ элементов с помощью правила <code>display</code>. Последнее довольно часто применяется при верстке различных блоков.</p>
+
+<p>На странице сайта MDN приведен пример создания одного из таких блоков - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:target" title="MDN LightBox Target">CSS LightBox</a>. Другим ярким примером использования этого элемента являются вкладки на чистом CSS, где необходима смена цвета вкладок и их содержимого при переключении.</p>
+
+<p>Ниже привожу, как всегда, полный текст кода.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#example&quot;</span><span class="nt">&gt;</span>Example<span class="nt">&lt;/a&gt;</span> et dolore magna aliqua.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">&quot;example&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet, ut enim ad minim veniam<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="p">{</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">12px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+      <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+          <span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#example</span><span class="nd">:target</span><span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#bbddff</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">outline</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#667788</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nf">#example</span><span class="nd">:target</span> <span class="o">+</span> <span class="nt">p</span><span class="p">{</span>
+  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#0000ff</span><span class="p">;</span>
+  <span class="k">text-indent</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В принципе, это и все, что можно сказать о псевдо-классе <code>:target</code>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-03T00:00:00+04:00"><a href="http://zencoder.ru/css/boilerplate-bootstrap/">November 03, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/boilerplate-bootstrap/" rel="bookmark" title="Boilerplate или Bootstrap - что выбрать при создании проекта" itemprop="url">Boilerplate или Bootstrap - что выбрать при создании проекта</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Для меня, как новичка в изучении фреймворков данная тема интересна.</p>
+</blockquote>
+
+<p>В этой статье приводится краткое сравнение двух популярных продуктов - Boilerplate и Bootstrap. Далее - вольный перевод статьи, написанной автором Ivaylo Gerchev для известного среди веб-дизайнеров сайта SitePoint.com.</p>
+
+<p>Создание каждого нового проекта подразумевает под собой некоторую часть рутинной, повторяющейся работы. Это связано с тем, что большинство создаваемых проектов с начальной точки имеют в своей основе определенный набор стандартного кода и принципов его построения. Все мы знаем, что изобретение велосипеда каждый раз - это не только бесполезная, но и утомительная работа. Однако существуют инструменты, способные решить эту проблему.</p>
+
+<p>Boilerplate и Bootstrap - оба являются очень полезными инструментами для создания проектов. Но вопрос заключается в том: какой из них выбрать и какой лучше подойдет для меня и моего проекта? Вы не первый, кто задается таким вопросом (<em>если вообще задаетесь</em>). Именно для цели прояснить ситуацию и принять правильное решение и была написана данная статья.</p>
+
+<p>Самый очевидный вопрос из всех - какой продукт лучше всего использовать? Ответ на него является слишком общим и расплывчатым, поэтому нам потребуется более детальное сравнение и объяснение каждого из них. В действительности, решений на данный вопрос не два, а четыре: можно использовать Boilerplate, можно использовать Bootstrap, можно использовать оба этих продукта совместно или не использовать никакой из них. Для того, чтобы решить, какой этих пунктов является лучшим, позвольте мне погрузиться в детали и рассказать о преимуществах и недостатках каждого из двух претендентов.</p>
+
+<h2 id="boilerplate">Использование Boilerplate</h2>
+
+<p>Boilerplate является шаблоном для быстрого старта при разработке fron-end’а, который содержит в себе наилучшие готовые образцы, взятые из практики веб-разработки. Данный шаблон предлагает готовую общую структуру папок и файлов будущего проекта, готовый HTML5-шаблон и основные конфигурации для взаимодействия с сервером. Он похож на план постройки для вашего дома, но у него отсутствуют строительные блоки. Другими словами, у вас есть общее представление, как построить дом и вы сделали все необходимые предварительные шаги для его постройки, но у вас нет под рукой необходимых строительных материалов, чтобы приступить к строительству. Но вы вольны добавить в Boilerplate любые “отсутствующие” HTML/CSS/Javascript-компоненты из любого места, включая и Bootstrap.</p>
+
+<p>На первый взгляд Boilerplate может показаться достаточно простым шаблоном. Но на самом деле он готов предоставить вам множество преимуществ, которые не заметны изначально. Давайте рассмотрим некоторые из них:</p>
+
+<ul>
+  <li>Готовый HTML5-шаблон совместно с базовой структурой файлов и папок под будущий проект;</li>
+  <li>Готовые к использованию, оптимизированные стили печати;</li>
+  <li>Кросс-браузерная совместимость;</li>
+  <li>Оптимизация под мобильные браузеры;</li>
+  <li>Прогрессивное улучшение (progressive enhancement) и постепенная деградация (graceful degradation);</li>
+  <li>Улучшенная конфигурация взаимодействия с сервером;</li>
+  <li>Правила для сжатия и оптимального кеширования;</li>
+  <li>Оптимизированный под Google Analytics сниппет сайта;</li>
+  <li>и многое другое …</li>
+</ul>
+
+<p>Вы получаете все эти прекрасные вещи сразу, не написав ни единой строчки кода. Ниже представлено содержимое распакованного архива Boilerplate:</p>
+
+<ul>
+  <li><code>css</code> - директория, в которой содержатся файлы <code>normalize.css</code>, <code>main.css</code> с настройками Boilerplate по умолчанию, основные helpers, медиа-запросы и стили печати;</li>
+  <li><code>doc</code> - директория с документацией по Boilerplate. Вы можете использовать эту директорию, чтобы хранить в ней документацию по своему собственному проекту;</li>
+  <li><code>img</code> - пустая директория под изображения вашего будущего проекта;</li>
+  <li><code>js</code> - директория, содержащая файл main.js для вашего собственного кода и файл <code>plugin.js</code>, содержащий код под плагины. Также здесь располагаются библиотеки Modernizr и jQuery, каждая в своей отдельной папке;</li>
+  <li>Настройки по умолчанию для сервера Apache. Для остальных серверов существует репозиторий настроек <a href="https://github.com/h5bp/server-configs" title="Server Configs">Server Configs</a>;</li>
+  <li><code>404.html</code> - очень обобщенный шаблон страницы ошибки 404;</li>
+  <li><code>apple touch icons</code> - набор готовых иконок для Apple TouchScreen;</li>
+  <li><code>crossdomain.xml</code> - шаблон для работы с кросс-доменными запросами</li>
+  <li><code>favicon.ico</code> - файл фавикона;</li>
+  <li><code>humans.txt</code> - файл со списков разработчиков проекта (вашего проекта);</li>
+  <li><code>index.html</code> - готовый HTML5-шаблон, основа для всех страниц вашего проекта;</li>
+  <li><code>robots.txt</code> - файл для включения в список всех страниц, которые вы хотите исключить поиска.</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/boilerplate-project.jpg" alt="Каталог Boilerplate-проекта" /></p>
+
+<p>С этого момента вы можете приступать к созданию своего собственного сайта, просто добавляя код и компоненты, которые необходимо использовать.</p>
+
+<h2 id="bootstrap">Использование Bootstrap</h2>
+
+<p>Bootstrap является фреймворком для front-end разработки и набором инструментов веб-дизайнера для создания современных web-сайтов. С помощью фреймворка Bootstrap вы можете создать полностью функциональный web-сайт с нуля. То есть, он предоставляет вам не только стартовую точку, но и все строительные материалы, которые могут потребоваться при создании сайта. Скачиваемый архив Bootstrap содержит в себе только файлы для CSS и JS компонентов, плюс набор шрифтовых иконок. В дополнение к этому, вы можете скачать основной шаблон для начала создания сайта. Структуры файлов и папок для будущего проекта или конфигураций для взаимодействия с серверной частью сайта - не существует.</p>
+
+<p>Преимущества и основные характеристики:</p>
+
+<ul>
+  <li>Ориентированность в первую очередь на мобильные устройства;</li>
+  <li>Кросс-браузерная совместимость;</li>
+  <li>Легкость использования;</li>
+  <li>Система CSS-сетки;</li>
+  <li>Готовые к использованию компоненты и утилиты;</li>
+  <li>и многое другое …</li>
+</ul>
+
+<p>Список компонентов и утилит фреймворка Bootstrap представлен ниже:</p>
+
+<ul>
+  <li><code>Grid</code> - утилита для создания разметки дизайна сайта;</li>
+  <li><code>Icons</code> - набор иконок, отсортированных по размерам;</li>
+  <li><code>CSS classes</code> - набор основных классов стилей для разработки сайта;</li>
+  <li><code>CSS components</code> - стилизованные HTML-компоненты;</li>
+  <li><code>JS widgets</code> - замечательный набор интерактивных компонентов на Javascript;</li>
+  <li>Шаблоны и примеры для начала работы.</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/bootstrap-project.jpg" alt="Каталог Bootstrap-проекта" /></p>
+
+<p>Как видите, фреймворк Bootstrap предоставляет полный набор компонентов, с помощью которых вы можете начать создание собственного сайта.</p>
+
+<h2 id="boilerplate--bootstrap">Использование Boilerplate плюс Bootstrap</h2>
+
+<p>Как насчет совместного использования обоих продуктов? Нет проблем! Это легко настроить с помощью проекта <a href="http://www.initializr.com/" title="Initializr">Initializr</a>, который автоматически интегрирует Boilerplate и Bootstrap друг с другом. Используя Initializr, можно создать настраиваемый архив, содержащий в себе все “вкусности” обоих пакетов. Вы можете воспользоваться данным ресурсом, если вам для работы необходимы лучшие части обоих миров.</p>
+
+<h2 id="boilerplate-1">Использование вашего собственного решения на базе Boilerplate</h2>
+
+<p>Некоторые разработчики не любят пользоваться таким продуктами, как Boilerplate или Bootstrap. Их самым главным аргументом в этом вопросе является тот факт, что подобные инструменты содержат в себе слишком много неиспользуемого в проекте кода (<em>грубо говоря - в Bootstrap имеется 100 CSS-классов, но в текущем проекте используется только 20 из них. Остальные получаются бесплезным балластом, который только нагружает каналы связи с сервером и сам браузер</em>). Если вы думаете точно также, то вы должны знать, что вы не ограничены рамками чьих-то сторонних разработок. Вы можете легко собрать для себя лучшие разработки в один собственный фреймворк. Такой способ поможет создать вам коллекцию только тех компонентов, которые вам необходимы.</p>
+
+<h2 id="section">Вердикт</h2>
+
+<p>Правильный выбор между этими продуктами зависит от двух вещей. Первое - вы должны знать, что вам необходимо для создания проекта и какие требования предъявляет сам проект. И второе - вы должны знать, что может предложить вам каждый из этих программных продуктов (Boilerplate &amp; Bootstrap), их достоинства и недостатки. Понятно, что с первым вопросом я не смогу помочь вам, а вот по второму вопросу могу дать краткий совет, состоящий из нескольких пунктов:</p>
+
+<ul>
+  <li>с помощью Boilerplate вы <em>не сможете создать цельный сайт</em> - это только отправная точка;</li>
+  <li>с помощью Bootstrap <em>можно создать с нуля полный сайт</em> благодаря компонентам и утилитам этого фреймворка;</li>
+  <li>Boilerplate является <em>серверно-ориентированным продуктом</em> - хороший шаблон для старта проекта, если вы работаете с серверными технологиями, как например PHP;</li>
+  <li>Bootstrap - <em>клиент-ориентированный продукт</em>, это полный набор инструментов для создания сайтов (front-end разработка);</li>
+  <li>Boilerplate - это <em>набор основного кода</em>, в который вы можете добавить любой компонент, который необходим;</li>
+  <li>Bootstrap - наоборот, это <em>полный набор готовых к использованию компонентов</em>, которые вы можете использовать “из коробки”;</li>
+  <li>Вы можете объединить вместе Boilerplate и Bootstrap, чтобы получить преимущества обоих продуктов;</li>
+  <li>Вы можете создать и использовать свой собственный настроенный шаблон, включающий только те компоненты, которые вам необходимы.</li>
+</ul>
+
+<p>Моим заключительным словом будет следующее. Оба продукта - и Boilerplate и Bootstrap являются прекрасными инструментами, которые вы можете использовать для своей работы. Все зависит о того, какие задачи перед вами стоят - тот инструмент вам и требуется выбрать для решения задачи.</p>
+
+<p>На этом перевод закончен, ибо закончена сама статья …</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-11-02T00:00:00+04:00"><a href="http://zencoder.ru/css/compass-sass-scss/">November 02, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -531,250 +803,6 @@ compass create
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-29T00:00:00+04:00"><a href="http://zencoder.ru/css/sass-scss-part-1/">October 29, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/sass-scss-part-1/" rel="bookmark" title="SASS (SCSS) в картинках - Часть 1" itemprop="url">SASS (SCSS) в картинках - Часть 1</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Следующий виток саморазвития верстальщика - начинаем изучение препроцессора SASS.</p>
-</blockquote>
-
-<p>Вы спросите - а зачем он нужен и что это за “зверь” такой? Ведь в багаже знаний верстальщика и так полно вещей, которые он должен знать. Это и HTML&amp;CSS, и Javascript с jQuery, и основы PHP с системами управления контентом (CMS) WordPress, Joomla, Drupal. Помимо этого - знание основ Photoshop (не сможете нарезать psd-макет). И еще куча всего по мелочи. Так зачем усложнять себе жизнь еще чем-то?</p>
-
-<p>И будете неправы. В данном случае - это не усложнение, а облегчение “тяжелой” жизни верстальщика. Достаточно потратить пару дней на изучение SASS, чтобы потом верстать страницы быстрее и семантически более правильно. Ну хорошо, скажете вы - уговорил. Так что же это за такая прекрасная вещь, SASS?</p>
-
-<p>SASS - это надстройка над CSS, написанная на языке программирования Ruby (есть такой). Правильно такая надстройка называется препроцессором. SASS добавляет в CSS такие вещи, как переменные, функции и многое другое. Тем самым, описательный язык CSS превращается в более-менее полноценный язык программирования. Часто ли вы при написании CSS-кода повторяете один и тот же код?</p>
-
-<p>Я думаю, ответ однозначен - конечно часто! И тут на помощь может прийти функции - достаточно один раз прописать ее в начале документа, а затем только подключать в нужных местах. Или, к примеру, вы прописали цвет для ссылок, но заказчику он не понравился - это нужно выискивать все подобные ссылки в коде и менять их. Но можно прописать одну переменную, и присваивать ее значение там, где это необходимо.</p>
-
-<p>Существует аналог SASS по имени LESS. Отличие в том, что LESS моложе, проще и не имеет такой мощной библиотеки-фреймворка Compass, какую имеет SASS.</p>
-
-<p>Стоит также сказать, что существую две версии SASS - собственно SASS и SCSS. Первый - это старая версия синтаксиса, которая только отдаленно напоминает CSS. В нем построение кода выполняется с помощью табуляции размером в два пробела.</p>
-
-<p>При этом отсутствуют точки запятой и фигурные скобки. На сегодняшний день такой синтаксис (и эта версия - соответственно) уже не используются.</p>
-
-<p>Пример такого кода показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">table</span><span class="nc">.hl</span>
-  <span class="nt">margin</span><span class="o">:</span> <span class="nt">2em</span> <span class="nt">0</span>
-  <span class="nt">td</span><span class="nc">.ln</span>
-    <span class="nt">text-align</span><span class="o">:</span> <span class="nt">right</span></code></pre></div>
-
-<p>Более новая версия - SCSS (SASS-подобный CSS) имеет синтаксис почти такой же, как и у CSS. Поэтому особо рассказывать тут нечего, лучше посмотреть на пример кода:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">table</span><span class="nc">.hl</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">2em</span> <span class="m">0</span><span class="p">;</span>
-  <span class="n">td</span><span class="o">.</span><span class="n">ln</span> <span class="err">{</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Прежде чем начинать изучение SASS, его необходимо установить. В этой статье все время будет посвящено установке и настройке последнего. А во второй части уже будет самое интересное - показ и рассказ того, что может и что умеет SASS.</p>
-
-<p>Установка SASS разделена на два этапа. Первый - необходимо установить поддержку языка Ruby в операционной системе, так как SASS - это всего лишь одно из многих приложений, написанное на этом языке. Больше всего в этом плане повезло пользователям MacOS X - там поддержка Ruby предустановлена по-умолчанию. Для пользователей Linux OS нужно только немного напрячься - установить эту поддержку с помощью менеджера пакетов. Например, для систем Debian* эта команда будет выглядеть так:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">apt-get</span> <span class="n">install</span> <span class="n">ruby</span></code></pre></div>
-
-<p>Пользователи же Windows как всегда “впереди планеты всей”. Придется находить и скачивать вручную пакет-инсталлятор Ruby. Для этого переходим по адресу <a href="rubyinstaller.org/downloads/" title="Ruby Installer">rubyinstaller.org/downloads/</a>, выбираем из списка самую свежую версию пакета (на момент написания это Ruby 2.0.0-p247) и скачиваем ее:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/rubyinstaller-windows.jpg" alt="Пакет Ruby-инсталлятора для Windows" /></p>
-
-<p>Потом запускаем программу на установку. Инсталлятор Ruby имеет стандартный вид и опции, кроме одной, на которую нужно обратить внимание:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/ruby-install.jpg" alt="Установка Ruby под Windows" /></p>
-
-<p>Необходимо поставить галочки так, как это показано на рисунке, иначе Ruby и его приложение SASS не запустятся в терминале. Стоит сразу оговориться, что ни сам Ruby, ни программа SASS не имеют графического интерфейса. Управление обоими программными продуктами осуществляется через командную строку.</p>
-
-<p>Что касается трех галочек в окне инсталлятора, то тут все просто. Первая галочка устанавливает поддержку языка Tcl\Tk, вторая галочка добавляет путь к исполняемому файлу Ruby в окружение командной оболочки, третья галочка устанавливает привязку файлов с расширением <code>.rb</code> и <code>.rdw</code> к Ruby.</p>
-
-<p>После того, как установлен Ruby, настало время SASS. Здесь ситуация проще, так как Ruby имеет свой собственный менеджер пакетов a-la системы Linux OS. Менеджер пакетов имеет название <code>gem</code>. Чтобы установить приложение SASS, достаточно иметь подключение к Интернет и запустить в терминале Windows следующую команду:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/gem-install-sass.jpg" alt="Установка SASS под Windows" /></p>
-
-<p>Если все прошло успешно, то вывод в терминале должен быть таким:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-installed.jpg" alt="Успешная установка SASS под Windows" /></p>
-
-<p>Для самоуспокоения и ознакомления с командами приложения SASS можно набрать в терминале:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sass</span> <span class="p">-</span><span class="n">-help</span></code></pre></div>
-
-<p>Должен появиться список всех команд программы SASS. Это подтверждает факт, что установка прошла успешно. Теперь немного отвлечемся от темы и углубимся в сторону HTML. Как хорошо известно, подключение таблиц со стилями в HTML-странице производится по следующему типу:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/index-html.jpg" alt="Подключение стилевых таблиц в HTML" /></p>
-
-<p>Браузеры понимают только файлы с расширением .css и кодом, созданным в синтаксисе CSS. Однако, мы уже выяснили, что SASS имеет свой собственный синтаксис и файлы создает с расширением .scss. Как быть в такой ситуации? Все очень просто - программа SASS может конвертировать свои собственные файлы в файлы формата CSS, а также сохранять их с расширением .css. Поэтому то, что создается в SASS можно считать промежуточным результатом.</p>
-
-<p>Приложение SASS умеет выполнять мониторинг редактируемого sass-файла в автоматическом режиме, для этого достаточно указать ей входной (input) и выходной (output) файлы. К примеру, такая команда может выглядеть следующим образом:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-watch.jpg" alt="Запуск мониторинга sass-файла" /></p>
-
-<p>Если sass-файлов несколько и расположены они в одной директории, то можно запустить мониторинг все этой директории следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sass</span> <span class="p">-</span><span class="n">-watch</span> <span class="n">input_directory</span><span class="err">:</span><span class="n">output_directory</span></code></pre></div>
-
-<p>Из рисунка видно, что программа в автоматическом режиме производит анализ всех изменений в sass-файле и записывает их в выходной css-файл. При этом фиксируются все изменения, в том числе и ошибки:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-monitoring.jpg" alt="Фиксирование всех событий в sass-файле" /></p>
-
-<p>При этом, если взглянуть на содержимое директории, к которой расположен проект, то увидим, что там, помимо sass-файла, располагается и css-файл (результат работы):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/sass-dir.jpg" alt="Содержимое директории с проектом" /></p>
-
-<p>Кроме того, из подсказки командной строки видно, что процесс мониторинга можно прервать в любой момент, нажав сочетание клавиш <kbd>Ctrl+C</kbd>. Программа настроена с умом и случайно (по ошибке) остановить ее не получиться - она попросит подтверждения выбранного действия путем ввода буковки <code>Y</code> (Yes) и нажатия клавиши <kbd>Enter</kbd>.</p>
-
-<p>Помимо конвертации sass-файлов с css-файлы, в SASS имеется встроенная возможность обратного процесса. Осуществляется она с помощью утилиты <code>sass-convert</code>. Синтаксис такой команды может быть таким:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sass-convert</span> <span class="p">-</span><span class="n">-from</span> <span class="n">css</span> <span class="p">-</span><span class="n">-to</span> <span class="n">sass</span> <span class="n">-R</span> <span class="p">.</span></code></pre></div>
-
-<p>Такая команда рекурсивно (ключ <code>-R</code>) сконвертирует все css-файлы в sass-файлы, расположенные в текущей (точка здесь не зря стоит!) директории.</p>
-
-<p>В принципе, все что нужно сказать об установке Ruby/SASS, о том как прекрасен и хорошо SASS - уже сказано. В следующей статье будет рассмотрено на примерах, на что же действительно способен SASS.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-28T00:00:00+04:00"><a href="http://zencoder.ru/web-tools/webmaster-command-line/">October 28, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/web-tools/webmaster-command-line/" rel="bookmark" title="Командная строка (cmd) для веб-мастера" itemprop="url">Командная строка (cmd) для веб-мастера</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Для веб-разработчика, и для верстальщика в частности, первые вещи, которые он обязан знать, это языки HTML, CSS, Javascript с библиотекой jQuery.</p>
-</blockquote>
-
-<p>Желательно знание основ PHP, популярных CMS - WordPress, Joomla, Drupal. Обязательно знание основ работы в Photoshop, иначе просто не сможет верстальщик работать.</p>
-
-<p>Но причем здесь командная строка Windows, скажете вы? Это системному администратору в его ремесле она необходима, чтобы создавать <code>bat</code>-файлы, через терминал управлять удаленными соединениями, создавать и настраивать локальные сети. Для чего же она нужна человеку, который работает с веб-приложениями?</p>
-
-<p>Оказывается, нужна. Не вся ее мощь, не все ее DOS-команды - только самые распространенные и необходимые. А нужна при работе с препроцессорами CSS, такими как SASS или LESS.</p>
-
-<p>Насчет LESS - это можно еще поспорить, а вот для SASS она понадобиться однозначно. Установка препроцессора SASS производиться через командную строку; процесс мониторинга также запускается через командную оболочку.</p>
-
-<p>Так что давайте подтянем свои знания в этой области на тот уровень, который необходим. Ниже приведено краткое описание с примерами всех тех команд, которые могут потребоваться. Некоторые читатели могут сказать - а зачем плодить еще одну статью по командной строке Windows?</p>
-
-<p>В Интернете и так таких статей пруд пруди! На это могу сказать одно - этот сайт является моей записной книжкой. И здесь я выкладываю записи по принципу: “чтобы не забыть”, “описать задачу и ее выполнение самому, чтобы лучше понять”. Ну, лирика закончена, приступаем к делу.</p>
-
-<h2 id="section">Горячие клавиши командной оболочки</h2>
-
-<ul>
-  <li><kbd>Win+R</kbd> - быстрый запуск командной оболочки;</li>
-  <li><kbd>Alt+Space</kbd> - меню настройки командной строки;</li>
-  <li><kbd>F7</kbd> - показ списка введенных команд в оболочке;</li>
-</ul>
-
-<p><code>cmd /f:on</code> - включение перебора директорий по сочетанию <kbd>Ctrl+D</kbd> и перебора файлов по сочетанию <kbd>Ctrl+F</kbd>; (очень полезное свойство - благодаря ему не нужно вручную писать имя каталога, куда необходимо попасть, достаточно найти его методом перебора).</p>
-
-<h2 id="section-1">Создание папок</h2>
-
-<ul>
-  <li><code>mkdir sass</code> - создание новой папки sass в корне текущего диска;</li>
-  <li><code>md sass</code> - аналогично предыдущей (укороченный вариант);</li>
-  <li><code>md sass\verstka</code> - создание вложенных директорий;</li>
-  <li><code>md F:verstka\revoltz</code> - создание директорий в указанном диске;</li>
-</ul>
-
-<h2 id="section-2">Просмотр содержимого каталогов</h2>
-
-<ul>
-  <li><code>tree</code> - показ дерева каталогов;</li>
-  <li><code>tree /f</code> - показ дерева каталогов с их содержимым;</li>
-  <li><code>tree F:sass</code> - показ “куска” дерева каталогов, начиная с указанного места;</li>
-  <li><code>dir</code> - просмотр содержимого текущего диска (каталога) в виде списка;</li>
-  <li><code>dir F:</code> - просмотр содержимого диска <code>F:</code></li>
-  <li><code>dir /p F:</code> - постраничный вывод содержимого диска <code>F:</code></li>
-  <li><code>type test.txt</code> - просмотр содержимого файла (расширение файла указывать обязательно);</li>
-</ul>
-
-<h2 id="section-3">Перемещение по каталогам и дискам</h2>
-
-<ul>
-  <li><code>cd /d F:</code> - переход в корень диска <code>F:</code> (<em>для меня, как бывшего линуксоида, странное и неудобное нагромождение с ключом</em>)</li>
-  <li><code>cd ..</code> - перейти на уровень вверх;</li>
-  <li><code>cd Folder\Folder2\Folder3</code> - перейти в папку <code>Folder3</code>;</li>
-</ul>
-
-<h2 id="section-4">Удаление файлов и каталогов</h2>
-
-<ul>
-  <li><code>del test.txt</code> - удалить файл (расширение файла указывать обязательно);</li>
-  <li><code>rmdir folder3</code> - удалить папку (директорию);</li>
-</ul>
-
-<h2 id="section-5">Копирование и перемещение</h2>
-
-<ul>
-  <li><code>copy text.txt Folder\Folder2\Folder3</code> - скопировать файл в директорию <code>Folder3</code>;</li>
-  <li><code>move text.txt Folder\Folder2\Folder3</code> - переместить файл в директорию <code>Folder3</code>;</li>
-</ul>
-
-<h2 id="section-6">Разное</h2>
-
-<ul>
-  <li><code>cls</code> - очистка экрана ввода;</li>
-</ul>
-
-<p>Для работы в командной строке также желательно ее настроить, облагородить под себя. Ибо изначально вид командной оболочки достаточно непригляден. Для открытия свойств окна терминала достаточно щелкнуть ПКМ на любом месте заголовка окна.</p>
-
-<p>Затем перейти в свойства - окно с четырьмя вкладками.</p>
-
-<p>Первую - “Options” - можно пропустить, там ничего особо интересного нет.</p>
-
-<p>Вторая вкладка - “Font” - для настройки шрифтов. Лучше всего поставить шрифт “Lucida Console” и кегль 12:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/font-cmd.jpg" alt="Шрифты терминала Windows" /></p>
-
-<p>Третья вкладка - “Layout” - для настройки размеров окна. Наиболее удобные размеры приведены на рисунке:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/layout-cmd.jpg" alt="Размеры окна терминала Windows" /></p>
-
-<p>Четвертая вкладка - “Colors” - для настройки цветов фона, текста. Всплывающее окно (появляется по нажатию клавиши <kbd>F7</kbd>) также настраивается с помощью фонового цвета и цвета текста - но кто его использует? (<em>можно оставить “как есть”</em>):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/colors-cmd.jpg" alt="Цвета терминала Windows" /></p>
-
-<p>Конечно, все настройки индивидуальны. Как говориться, на вкус и цвет все фломастеры разные. Поэтому рисунок ниже - примерный вид того, каким может быть настроенный терминал Windows:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/10/terminal-cmd.jpg" alt="Вид терминала Windows" /></p>
-
-<p>На этом все.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

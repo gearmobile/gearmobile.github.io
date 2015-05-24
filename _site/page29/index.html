@@ -144,6 +144,349 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-18T00:00:00+04:00"><a href="http://zencoder.ru/css/css-columns-via-ul/">November 18, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-columns-via-ul/" rel="bookmark" title="Маркированный список ul в две колонки через CSS2" itemprop="url">Маркированный список ul в две колонки через CSS2</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Достаточно интересный способ организации обычного маркированного списка в две колонки.</p>
+</blockquote>
+
+<p>Имеется определенное количество элементов <code>li</code> списка <code>ul</code>. Нужно организовать все <code>li</code> в две колонки. Первое, что приходит на ум - это воспользоваться новыми правилами CSS3.</p>
+
+<p>Но проблема в том, они новые и не всеми браузерами поддерживаются. Тогда смысл их применять? Но можно воспользоваться CSS2 и этот способ был случайно мною “подсмотрен” на сайте <a href="http://loco.ru" title="Loco">Loco.ru</a> у автора dIrm. Мною этот способ был немного доработан и помещен у себя в качестве копилки.</p>
+
+<p>Итак, имеется обычный маркированный список в виде HTML-разметки. Количество элементов <code>li</code> я специально сделал нечетным:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 1<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 2<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 3<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 4<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 5<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 6<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 7<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 8<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 9<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 10<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>Колонка 11<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Сделаем CSS-стилизацию списка, ничем не примечательную. Класс <code>.clearfix</code> добавим в HTML-разметку для элемента <code>ul</code> - это классическая очистка потока для плавающих потомков внутри блока-родителя. Элементы <code>li</code> у нас будут плавать внутри <code>ul</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">ul</span><span class="p">{</span>
+  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">398px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">100px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">font</span><span class="o">:</span> <span class="k">bold</span> <span class="k">italic</span> <span class="m">16px</span><span class="o">/</span><span class="m">30px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">8</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.clearfix</span><span class="nd">:before</span><span class="o">,</span>
+<span class="nc">.clearfix</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="n">table</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.clearfix</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Вот теперь немного интереснее, когда приступим к элементу <code>li</code>. Вся “фишка” в организации их в два столбца благодаря двум CSS-правилам - <code>display: block</code> и <code>width: 45%</code>.</p>
+
+<p>Все элементы сделаем плавающими влево <code>float: left</code>, поэтому CSS-правило <code>display: block</code> можно опустить за ненадобностью, но оставим его для наглядности примера. Получается, что каждый из элементов <code>li</code> является блочным, с фиксированной шириной и плавает влево.</p>
+
+<p>В результате все эти элементы располагаются “по порядку”. “Колонка 1” в левом верхнем углу, следом за ним - “Колонка 2”. “Колонка 3” не вмещается по ширине в область блока-родителя, поэтому располагается под “Колонка 1”. Далее - опять все по порядку. Три правила <code>padding-bottom: 10px</code>, <code>text-align: center</code>, <code>background-color: #556677</code> - для красоты добавляем:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">ul</span> <span class="nt">li</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">45%</span><span class="p">;</span>
+  <span class="k">padding-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#556677</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Ну и в конце еще несколько штрихов для придания полной иллюзии двухколоночного текста. Здесь воспользуемся правилом <code>nth-child</code> с аргументом <code>even</code>, чтобы избежать дополнительной нагрузки на разметку в виде классов, которые придется добавлять в противном случае:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="nd">:nth-child</span><span class="o">(</span><span class="nt">even</span><span class="o">)</span><span class="p">{</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">10%</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#667788</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-11-13T00:00:00+04:00"><a href="http://zencoder.ru/css-rem/">November 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~9 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css-rem/" rel="bookmark" title="Rem - масштабируемые единицы измерения" itemprop="url">Rem - масштабируемые единицы измерения</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Статья написана в далеком 2011 году одним товарищем по имени Jonathan Snook.</p>
+</blockquote>
+
+<p>Статейка мне понравилась и пришлась в пору - мне как раз нужно было ознакомиться с вопросом масштабируемого размера шрифта и возможности единообразного задания его размера для всего документа.</p>
+
+<p>Материальчик понравился и я решил, что я лучше не смогу его написать, чем как просто перевести. Вопрос хорошо освещен - кратко и по делу, с необходимыми примерами.</p>
+
+<p>Думаю, в следующих своих верстках я буду применять именно тот подход, который описан здесь. Ниже - мой вольный перевод.</p>
+
+<h2 id="rem">Размер шрифта в rem</h2>
+
+<p>Определение единиц измерения текста всегда было темой горячих споров, даже в наши дни. К сожалению, на сегодняшний день все еще существуют многочисленные “за” и “против” для каждого из методов определения универсальной единицы измерения шрифта. Вопрос заключается в том, чтобы выбрать наиболее приемлемую из всех приемлемых.</p>
+
+<p>Наиболее популярны два метода определения размера шрифта:</p>
+
+<ul>
+  <li>размер шрифта в пикселях <code>px</code></li>
+  <li>размер шрифта в <code>em</code></li>
+</ul>
+
+<p>Давайте сделаем краткий обзор обоих методов, прежде чем я представлю еще один - волшебный третий способ.</p>
+
+<h2 id="px">Размер шрифта в <code>px</code></h2>
+
+<p>С самого первого дня, когда зародился Интернет, мы (<em>веб-мастера</em>) использовали пиксели для задания размеров текста. Это надежный и понятный способ.</p>
+
+<p>К сожалению, пользователи Internet Explorer - даже IE9 - не имеют возможности изменять размер текста, используя для этого встроенную функцию браузера.</p>
+
+<p>Для веб-мастеров, которые озабочены такой возможностью, это большая проблема. Последние свежие версии браузера IE имеют встроенную функцию масштабирования, которая увеличивает размер ВСЕГО на странице - эта возможность присутствует во всех остальных браузерах, поддерживающих веб-стандарты. Это несколько сглаживает недостатки браузеров и данного метода, в частности.</p>
+
+<p>Исходя из своего личного опыта, могу сказать, что использование пикселей предоставляет для меня надежную структуру будущего сайта. Пользователи браузеров имеют достаточно средств, чтобы подстроить сайт под свои предпочтения. Но я отвлекся от темы. Что еще у нас есть в наличии?</p>
+
+<h2 id="em">Размер шрифта в <code>em</code></h2>
+
+<p>Невозможность изменения размеров текста в браузере IE постоянно вызывало чувство разочарования у веб-разработчиков. Чтобы обойти эту проблему, можно использовать единицы измерения <code>em</code>.</p>
+
+<p>Впервые об этом способе написал в далеком 2004-м году Richard Rutter в своей статье <a href="http://clagnut.com/blog/348/" title="How to size text using ems">How to size text using ems</a>.</p>
+
+<p>Этот способ основан на задании основного размера шрифта для <code>body</code> в процентах. В этом случае <code>1em</code> равен <code>10px</code>, вместо <code>16px</code> по-умолчанию.</p>
+
+<p>Теперь, чтобы установить размер шрифта для элемента страницы в единицах, эквивалентных <code>14px</code>, нужно установить его в <code>1.4em</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">h1</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span>
+  <span class="nt">p</span>  <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
+  <span class="nt">li</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px? */</span></code></pre></div>
+
+<p>Проблема с размерами шрифта в <code>em</code> заключается в том, что такая система достаточно <em>сложна при применении ее на практике</em>. В примере, приведенном выше, размер шрифта элемента <code>li</code> равен не 14px, а 20px.</p>
+
+<p>Если добавить еще один вложенный уровень, то размер шрифта будет 27px! Происходит это вследствие наследования свойств в CSS-таблицах.</p>
+
+<p>Чтобы избежать такого эффекта, нужно явно прописать для каждого дочернего элемента размер шрифта в 1em:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span><span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">h1</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span>
+  <span class="nt">p</span>  <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
+  <span class="nt">li</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1.4em</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px? */</span>
+  <span class="nt">li</span> <span class="nt">li</span><span class="o">,</span> <span class="nt">li</span> <span class="nt">p</span> <span class="c">/* etc */</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span> <span class="p">}</span></code></pre></div>
+
+<p>Проблема наследования при системе задания размеров шрифта в em достаточно неудобна. Что же можно еще предложить для решения проблемы?</p>
+
+<h2 id="rem-1">Размер шрифта в <code>rem</code></h2>
+
+<p>Стандарт CSS3 вводит в обиход несколько новых единиц измерения, одной из которых является <code>rem</code>, что является сокращением от “root em”. Давайте немного разберемся, что из себя представляет эта единица измерения.</p>
+
+<p>Единица измерения <code>em</code> является относительной к размеру шрифта элемента родителя, что приводит к <em>эффекту наследования</em>. Единица измерения <code>rem</code> является относительной к основному корневому элементу, то есть к html.</p>
+
+<p>Это означает, что можно установить размер шрифта только один раз, для элемента html. Для всех остальных элементов, которые являются потомками этого элемента, достаточно установить размер шрифта в процентах (<code>rem</code>) относительно корневого элемента:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span>
+  <span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
+  <span class="nt">h1</span>   <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span></code></pre></div>
+
+<p>В примере, показанном выше, базовый размер шрифта установлен в процентах <code>62,5%</code>, что очень похоже, как мы поступали с единицами <code>em</code>. Другими словами, единица измерения <code>rem</code> лишена недостатков <code>em</code> с ее <em>каскадностью</em> и <em>наследованием правил</em>.</p>
+
+<p>Но как насчет скудной поддержки этой единицы измерения в браузерах?</p>
+
+<p>Вы будете сильно удивлены, но поддержка <code>rem</code> в браузерах достойная: Safari 5, Chrome, Firefox 3.6+ и даже Internet Explorer 9. Хорошая новость заключается в том, что в IE9 поддерживается изменение размера текста, установленного в единицах измерения <code>rem</code>. Увы, бедная Opera (вплоть до версии 11.10, по крайней мере), не имеет поддержки единиц измерения <code>rem</code>.</p>
+
+<p>Как же нам поступить с браузерами, которые не поддерживают единицы измерения <code>rem</code>? Для них мы можем выполнить откат <code>fallback</code> в виде пикселей <code>px</code>. То есть, мы одновременно будем задавать размер шрифта в <code>px</code> и в <code>rem</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">62.5%</span><span class="p">;</span> <span class="p">}</span> 
+  <span class="nt">body</span> <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =14px */</span>
+  <span class="nt">h1</span>   <span class="p">{</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">24px</span><span class="p">;</span> <span class="k">font-size</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">4</span><span class="n">rem</span><span class="p">;</span> <span class="p">}</span> <span class="c">/* =24px */</span></code></pre></div>
+
+<p>И пожалуйста, теперь мы имеем прочную и предсказуемую структуру во всех браузерах.</p>
+
+<p>Декабрь 13 2011 - Opera 11.60 теперь поддерживает единицы измерения <code>rem</code>.</p>
+
+<hr />
+
+<p>Конец статьи и перевода. В дополнение я могу сказать, что на сайте CSS Tricks также есть интересный материал по поводу <code>rem</code>.</p>
+
+<p>В частности, на нем приведены удобные <code>mixin</code>‘ы для SASS, с помощью которых можно быстро задать размер шрифта в <code>rem</code> (с <code>fallback</code> в <code>px</code>):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">html</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">62</span><span class="o">,</span><span class="m">5%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="k">@mixin</span> <span class="nt">font-size</span><span class="o">($</span><span class="nt">sizeValue</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.6</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nt">font-size</span><span class="o">:</span> <span class="o">($</span><span class="nt">sizeValue</span> <span class="o">*</span> <span class="nt">10</span><span class="o">)</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span>
+  <span class="nt">font-size</span><span class="o">:</span> <span class="o">$</span><span class="nt">sizeValue</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Пример использования этого SASS-mixin’а:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">font-size</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… что при компиляции в CSS будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="n">rem</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>И еще несколько разновидностей SASS-mixin’ов, которые могут пригодиться. Подмешивания используются для задания размера шрифта и интерлиньяжа (высоты строки):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">fontSize</span><span class="o">($</span><span class="nt">sizeValue</span><span class="o">:</span> <span class="nt">12</span> <span class="o">)</span><span class="p">{</span>
+    <span class="nt">font-size</span><span class="o">:</span> <span class="o">$</span><span class="nt">sizeValue</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span> <span class="o">//</span><span class="nt">fallback</span> <span class="nt">for</span> <span class="nt">old</span> <span class="nt">browsers</span>
+    <span class="nt">font-size</span><span class="o">:</span> <span class="o">(</span><span class="nt">0</span><span class="nc">.125</span> <span class="o">*</span> <span class="o">$</span><span class="nt">sizeValue</span><span class="o">)</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Как подключать</span>
+<span class="c">  --------------------*/</span>
+  <span class="nt">p</span><span class="p">{</span>
+    <span class="o">@</span><span class="n">mixin</span> <span class="n">fontSize</span><span class="p">(</span><span class="m">20</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Результат компиляции в CSS</span>
+<span class="c">  -------------------------------*/</span>
+  <span class="nt">p</span><span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">5</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">lineHeight</span><span class="o">($</span><span class="nt">heightValue</span><span class="o">:</span> <span class="nt">12</span> <span class="o">)</span><span class="p">{</span>
+    <span class="nt">line-height</span><span class="o">:</span> <span class="o">$</span><span class="nt">heightValue</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span> <span class="o">//</span><span class="nt">fallback</span> <span class="nt">for</span> <span class="nt">old</span> <span class="nt">browsers</span>
+    <span class="nt">line-height</span><span class="o">:</span> <span class="o">(</span><span class="nt">0</span><span class="nc">.125</span> <span class="o">*</span> <span class="o">$</span><span class="nt">heightValue</span><span class="o">)</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Как подключить</span>
+<span class="c">  -------------------*/</span>
+  <span class="nt">p</span><span class="p">{</span>
+    <span class="o">@</span><span class="n">mixin</span> <span class="n">lineHeight</span><span class="p">(</span><span class="m">18</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Результат компиляции в CSS</span>
+<span class="c">  --------------------------------*/</span>
+  <span class="nt">p</span><span class="p">{</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">25</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>А здесь представлен “полный” <code>mixin</code>, с помощью которого можно одновременно задать кегль и <code>line-height</code>. Удобная штучка - можно задать только размер шрифта и получить на выходе интерлиньяж и кегль в пикселях (и <code>rem</code>‘ах):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">fontsize</span><span class="o">($</span><span class="nt">size</span><span class="nd">:1</span><span class="nc">.6</span><span class="o">,</span> <span class="o">$</span><span class="nt">line</span><span class="o">:</span> <span class="o">$</span><span class="nt">size</span> <span class="o">*</span> <span class="nt">1</span><span class="nc">.5</span><span class="o">)</span><span class="p">{</span>
+    <span class="nt">font-size</span><span class="o">:</span>   <span class="o">($</span><span class="nt">size</span> <span class="o">*</span> <span class="nt">10</span><span class="o">)</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span>
+    <span class="nt">line-height</span><span class="o">:</span> <span class="o">($</span><span class="nt">line</span> <span class="o">*</span> <span class="nt">10</span><span class="o">)</span> <span class="o">+</span> <span class="nt">px</span><span class="o">;</span>
+    <span class="nt">font-size</span><span class="o">:</span>   <span class="o">$</span><span class="nt">size</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
+    <span class="nt">line-height</span><span class="o">:</span> <span class="o">$</span><span class="nt">line</span> <span class="o">+</span> <span class="nt">rem</span><span class="o">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Как подключить</span>
+<span class="c">  -------------------*/</span>
+  <span class="nt">p</span><span class="p">{</span>
+    <span class="o">@</span><span class="n">mixin</span> <span class="n">fontsize</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="p">);</span>
+  <span class="p">}</span>
+
+  <span class="c">/* Результат компиляции в CSS</span>
+<span class="c">  -------------------------------*/</span>
+  <span class="nt">p</span><span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">27px</span><span class="p">;</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">8</span><span class="n">rem</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">2</span><span class="o">.</span><span class="m">7</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<h2 id="ps">P.S.</h2>
+
+<p>Постепенно изучаю вопрос создания тем под WordPress. Скачал версию 3.7.1, установил под локальный сервер XAMPP и открыл файл <code>style.css</code> стандартной темы “Twenty Twelve”. И в заголовке этого файла сразу же наткнулся на следующие интересные строки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">/*</span> <span class="o">=</span><span class="nt">Notes</span>
+<span class="nt">--------------------------------------------------------------</span>
+<span class="nt">This</span> <span class="nt">stylesheet</span> <span class="nt">uses</span> <span class="nt">rem</span> <span class="nt">values</span> <span class="nt">with</span> <span class="nt">a</span> <span class="nt">pixel</span> <span class="nt">fallback</span><span class="o">.</span> <span class="nt">The</span> <span class="nt">rem</span>
+<span class="nt">values</span> <span class="o">(</span><span class="nt">and</span> <span class="nt">line</span> <span class="nt">heights</span><span class="o">)</span> <span class="nt">are</span> <span class="nt">calculated</span> <span class="nt">using</span> <span class="nt">two</span> <span class="nt">variables</span><span class="o">:</span>
+
+<span class="o">$</span><span class="nt">rembase</span><span class="o">:</span>     <span class="nt">14</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">line-height</span><span class="o">:</span> <span class="nt">24</span><span class="o">;</span>
+
+<span class="nt">----------</span> <span class="nt">Examples</span>
+
+<span class="o">*</span> <span class="nt">Use</span> <span class="nt">a</span> <span class="nt">pixel</span> <span class="nt">value</span> <span class="nt">with</span> <span class="nt">a</span> <span class="nt">rem</span> <span class="nt">fallback</span> <span class="nt">for</span> <span class="nt">font-size</span><span class="o">,</span> <span class="nt">padding</span><span class="o">,</span> <span class="nt">margins</span><span class="o">,</span> <span class="nt">etc</span><span class="o">.</span>
+	<span class="nt">padding</span><span class="o">:</span> <span class="nt">5px</span> <span class="nt">0</span><span class="o">;</span>
+	<span class="nt">padding</span><span class="o">:</span> <span class="nt">0</span><span class="nc">.357142857rem</span> <span class="nt">0</span><span class="o">;</span> <span class="o">(</span><span class="nt">5</span> <span class="o">/</span> <span class="o">$</span><span class="nt">rembase</span><span class="o">)</span>
+
+<span class="o">*</span> <span class="nt">Set</span> <span class="nt">a</span> <span class="nt">font-size</span> <span class="nt">and</span> <span class="nt">then</span> <span class="nt">set</span> <span class="nt">a</span> <span class="nt">line-height</span> <span class="nt">based</span> <span class="nt">on</span> <span class="nt">the</span> <span class="nt">font-size</span>
+	<span class="nt">font-size</span><span class="o">:</span> <span class="nt">16px</span>
+	<span class="nt">font-size</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.142857143rem</span><span class="o">;</span> <span class="o">(</span><span class="nt">16</span> <span class="o">/</span> <span class="o">$</span><span class="nt">rembase</span><span class="o">)</span>
+	<span class="nt">line-height</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.5</span><span class="o">;</span> <span class="o">($</span><span class="nt">line-height</span> <span class="o">/</span> <span class="nt">16</span><span class="o">)</span>
+
+<span class="nt">----------</span> <span class="nt">Vertical</span> <span class="nt">spacing</span>
+
+<span class="nt">Vertical</span> <span class="nt">spacing</span> <span class="nt">between</span> <span class="nt">most</span> <span class="nt">elements</span> <span class="nt">should</span> <span class="nt">use</span> <span class="nt">24px</span> <span class="nt">or</span> <span class="nt">48px</span>
+<span class="nt">to</span> <span class="nt">maintain</span> <span class="nt">vertical</span> <span class="nt">rhythm</span><span class="o">:</span>
+
+<span class="nc">.my-new-div</span> <span class="p">{</span>
+	<span class="k">margin</span><span class="o">:</span> <span class="m">24px</span> <span class="m">0</span><span class="p">;</span>
+	<span class="k">margin</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">714285714</span><span class="n">rem</span> <span class="m">0</span><span class="p">;</span> <span class="p">(</span> <span class="m">24</span> <span class="o">/</span> <span class="err">$</span><span class="n">rembase</span> <span class="p">)</span>
+<span class="p">}</span>
+
+<span class="nt">----------</span> <span class="nt">Further</span> <span class="nt">reading</span>
+<span class="nt">http</span><span class="o">://</span><span class="nt">snook</span><span class="nc">.ca</span><span class="o">/</span><span class="nt">archives</span><span class="o">/</span><span class="nt">html_and_css</span><span class="o">/</span><span class="nt">font-size-with-rem</span>
+<span class="nt">http</span><span class="o">://</span><span class="nt">blog</span><span class="nc">.typekit.com</span><span class="o">/</span><span class="nt">2011</span><span class="o">/</span><span class="nt">11</span><span class="o">/</span><span class="nt">09</span><span class="o">/</span><span class="nt">type-study-sizing-the-legible-letter</span><span class="o">/</span></code></pre></div>
+
+<p>То есть, что нам сообщают разработчики WordPress в этих строках? Что данный файл стилевых правил использует для построения дизайна сайта два значения в качестве переменных:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">rembase</span><span class="o">:</span>     <span class="nt">14</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">line-height</span><span class="o">:</span> <span class="nt">24</span><span class="o">;</span></code></pre></div>
+
+<p>… в единицах измерения <code>rem</code> с откатом <code>fallback</code> в пиксели <code>px</code>. И далее приводятся примеры того, как применяются обе эти переменные для построения стилевых правил и как производится вычисление нужных величин, являющихся производными от этих переменных.</p>
+
+<p>В самом конце две ссылки по тематике <code>rem</code> для любознательных, первой из которых является вольный перевод, который вы читаете! Значит, я на правильном пути.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-11-12T00:00:00+04:00"><a href="http://zencoder.ru/css-icomoon/">November 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -572,278 +915,6 @@
 <p>На этом все.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-04T00:00:00+04:00"><a href="http://zencoder.ru/pseudo-class-target/">November 04, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/pseudo-class-target/" rel="bookmark" title="Псевдокласс `:target` - стили для элемента-якоря в HTML-документе" itemprop="url">Псевдокласс `:target` - стили для элемента-якоря в HTML-документе</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Настала очередь изучить, что такое псевдо-класс <code>:target</code>.</p>
-</blockquote>
-
-<p>Вопрос достаточно интересный как с точки зрения теории, так еще больше - с точки зрения практики.</p>
-
-<p>Начнем издалека и вспомним (<em>если кто читал</em>) одну из глав книги Энди Бадда “Мастерская CSS”. Глава называется “Изменение стиля элемента при наведении указателя на отдаленный элемент” и речь в ней идет о том, как сделать так, чтобы управлять одним элементом с помощью другого.</p>
-
-<p>Техника, описанная в данной главе, представляла из себя следующее. В ссылку вкладывались несколько элементов, которые позиционировались абсолютно на странице и размещались в любом ее месте.</p>
-
-<p>Визуально создается впечатление, что они никак не связаны между собой. Но на самом деле они находятся внутри одного элемента - ссылки (ниже приведен кусок кода из этой главы в качестве примера):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">title=</span><span class="s">&quot;Richard Rutter&quot;</span> <span class="na">href=</span><span class="s">&quot;http://www.clagnut.com/&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;link&quot;</span><span class="nt">&gt;</span>» Richard Rutter<span class="nt">&lt;/span&gt;</span>
-<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p>Способ достаточно хорош, за исключением того, что применяется дополнительная разметка и нарушается семантика HTML-документа. На момент написания этой книги это был единственный способ управления “отдаленными элементами на странице.</p>
-
-<p>Но на сегодняшний день существует еще один способ, более аккуратный и универсальный - с помощью псевдо-класса <code>:target</code>. Другое дело, что поддержка в браузерах этого CSS-свойства не полностью реализована и здесь можно смело показать пальцем в сторону браузера IE, в нем оно поддерживается, начиная с 9-ой версии.</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/target.png" alt="Псевдо-класс target" /></p>
-
-<p>С помощью этого псевдо-класса можно управлять абсолютно любым элементом в документе. При этом он не обязан располагаться в каком-то определенном месте, наоборот - он может находиться в нормальном потоке и не нарушать семантику.</p>
-
-<p>Приведу в качестве примера кусок кода, демонстрирующий такой подход:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#example&quot;</span><span class="nt">&gt;</span>Example<span class="nt">&lt;/a&gt;</span> et dolore magna aliqua.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">&quot;example&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet, ut enim ad minim veniam<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<p>Видим ссылку, помещенную в середине документа, обрамленную элементами <code>p</code>. У ссылки атрибут <code>href</code> имеет значение <code>#example</code>, который очень похож на ссылку на якорь. На самом деле это и есть ссылка на якорь, который назначен для одного из параграфов с идентификатором <code>id="example"</code>.</p>
-
-<p>Вид ссылки может быть не обязательно таким, но и более длинным - <code>http://localhost:7788/third/#example</code>. Все, что располагается в ней после знака диез <code>#</code>, называется <code>хэштег</code>.</p>
-
-<p>Псевдо-класс <code>:target</code> как раз и служит для стилизации элемента с якорем, на который указывает такая ссылка. Давайте приступим к стилизации, чтобы воочию увидеть, как работает этот псевдо-элемент.</p>
-
-<p>Для одного из параграфов мы уже назначили идентификатор, который является якорем. Пропишем для него немного правил:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="p">{</span>
-  <span class="k">font</span><span class="o">:</span> <span class="m">12px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-      <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-          <span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Мы изменили семейство шрифтов, кегль и цвет. Эти правила устанавливаются “как обычно”, то есть - как прописали, так они и отображаются в браузере. Теперь создадим немного стилей, которые первоначально себя никак не проявляют, а только по происшествии какого-то события.</p>
-
-<p>В нашем случае это будет клик на ссылке. Для таких правил синтаксис следующий:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="nd">:target</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#bbddff</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">outline</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#667788</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Откроем созданную нами страницу в браузере - и почти ничего не увидим. Точнее - только те правила, которые явно прописаны в первом куске кода. Но если кликнуть мышью на ссылке с текстом <code>Example</code>, то увидим достаточно занимательную трансформацию параграфа. Это псевдо-класс <code>:target</code> в действии!</p>
-
-<p>Он применил прописанные для него правила только при совершении некоего события. И применены они были к обособленному участку HTML-кода (помеченному идентификатором <code>#example</code>), который почти никак не связан со ссылкой.</p>
-
-<p>Можно немного усложнить пример и связать несколько параграфов между собой, то есть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="nd">:target</span> <span class="o">+</span> <span class="nt">p</span><span class="p">{</span>
-  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0000ff</span><span class="p">;</span>
-  <span class="k">text-indent</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Откроем вновь страницу в браузере и посмотрим результат. Все ОК.</p>
-
-<p>Псевдо-класс <code>:target</code> может принимать любые CSS-свойства, в том числе скрытие\показ элементов с помощью правила <code>display</code>. Последнее довольно часто применяется при верстке различных блоков.</p>
-
-<p>На странице сайта MDN приведен пример создания одного из таких блоков - <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:target" title="MDN LightBox Target">CSS LightBox</a>. Другим ярким примером использования этого элемента являются вкладки на чистом CSS, где необходима смена цвета вкладок и их содержимого при переключении.</p>
-
-<p>Ниже привожу, как всегда, полный текст кода.</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#example&quot;</span><span class="nt">&gt;</span>Example<span class="nt">&lt;/a&gt;</span> et dolore magna aliqua.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p</span> <span class="na">id=</span><span class="s">&quot;example&quot;</span><span class="nt">&gt;</span>Lorem ipsum dolor sit amet, ut enim ad minim veniam<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, sed do eiusmod tempor incididunt ut<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#example</span><span class="p">{</span>
-  <span class="k">font</span><span class="o">:</span> <span class="m">12px</span> <span class="n">Georgia</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-      <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-       <span class="o">-</span><span class="n">o</span><span class="o">-</span><span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-          <span class="n">transition</span><span class="o">:</span> <span class="n">all</span> <span class="m">.3s</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#example</span><span class="nd">:target</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#bbddff</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">outline</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">#667788</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nf">#example</span><span class="nd">:target</span> <span class="o">+</span> <span class="nt">p</span><span class="p">{</span>
-  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
-  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0000ff</span><span class="p">;</span>
-  <span class="k">text-indent</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В принципе, это и все, что можно сказать о псевдо-классе <code>:target</code>.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-03T00:00:00+04:00"><a href="http://zencoder.ru/css/boilerplate-bootstrap/">November 03, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/boilerplate-bootstrap/" rel="bookmark" title="Boilerplate или Bootstrap - что выбрать при создании проекта" itemprop="url">Boilerplate или Bootstrap - что выбрать при создании проекта</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Для меня, как новичка в изучении фреймворков данная тема интересна.</p>
-</blockquote>
-
-<p>В этой статье приводится краткое сравнение двух популярных продуктов - Boilerplate и Bootstrap. Далее - вольный перевод статьи, написанной автором Ivaylo Gerchev для известного среди веб-дизайнеров сайта SitePoint.com.</p>
-
-<p>Создание каждого нового проекта подразумевает под собой некоторую часть рутинной, повторяющейся работы. Это связано с тем, что большинство создаваемых проектов с начальной точки имеют в своей основе определенный набор стандартного кода и принципов его построения. Все мы знаем, что изобретение велосипеда каждый раз - это не только бесполезная, но и утомительная работа. Однако существуют инструменты, способные решить эту проблему.</p>
-
-<p>Boilerplate и Bootstrap - оба являются очень полезными инструментами для создания проектов. Но вопрос заключается в том: какой из них выбрать и какой лучше подойдет для меня и моего проекта? Вы не первый, кто задается таким вопросом (<em>если вообще задаетесь</em>). Именно для цели прояснить ситуацию и принять правильное решение и была написана данная статья.</p>
-
-<p>Самый очевидный вопрос из всех - какой продукт лучше всего использовать? Ответ на него является слишком общим и расплывчатым, поэтому нам потребуется более детальное сравнение и объяснение каждого из них. В действительности, решений на данный вопрос не два, а четыре: можно использовать Boilerplate, можно использовать Bootstrap, можно использовать оба этих продукта совместно или не использовать никакой из них. Для того, чтобы решить, какой этих пунктов является лучшим, позвольте мне погрузиться в детали и рассказать о преимуществах и недостатках каждого из двух претендентов.</p>
-
-<h2 id="boilerplate">Использование Boilerplate</h2>
-
-<p>Boilerplate является шаблоном для быстрого старта при разработке fron-end’а, который содержит в себе наилучшие готовые образцы, взятые из практики веб-разработки. Данный шаблон предлагает готовую общую структуру папок и файлов будущего проекта, готовый HTML5-шаблон и основные конфигурации для взаимодействия с сервером. Он похож на план постройки для вашего дома, но у него отсутствуют строительные блоки. Другими словами, у вас есть общее представление, как построить дом и вы сделали все необходимые предварительные шаги для его постройки, но у вас нет под рукой необходимых строительных материалов, чтобы приступить к строительству. Но вы вольны добавить в Boilerplate любые “отсутствующие” HTML/CSS/Javascript-компоненты из любого места, включая и Bootstrap.</p>
-
-<p>На первый взгляд Boilerplate может показаться достаточно простым шаблоном. Но на самом деле он готов предоставить вам множество преимуществ, которые не заметны изначально. Давайте рассмотрим некоторые из них:</p>
-
-<ul>
-  <li>Готовый HTML5-шаблон совместно с базовой структурой файлов и папок под будущий проект;</li>
-  <li>Готовые к использованию, оптимизированные стили печати;</li>
-  <li>Кросс-браузерная совместимость;</li>
-  <li>Оптимизация под мобильные браузеры;</li>
-  <li>Прогрессивное улучшение (progressive enhancement) и постепенная деградация (graceful degradation);</li>
-  <li>Улучшенная конфигурация взаимодействия с сервером;</li>
-  <li>Правила для сжатия и оптимального кеширования;</li>
-  <li>Оптимизированный под Google Analytics сниппет сайта;</li>
-  <li>и многое другое …</li>
-</ul>
-
-<p>Вы получаете все эти прекрасные вещи сразу, не написав ни единой строчки кода. Ниже представлено содержимое распакованного архива Boilerplate:</p>
-
-<ul>
-  <li><code>css</code> - директория, в которой содержатся файлы <code>normalize.css</code>, <code>main.css</code> с настройками Boilerplate по умолчанию, основные helpers, медиа-запросы и стили печати;</li>
-  <li><code>doc</code> - директория с документацией по Boilerplate. Вы можете использовать эту директорию, чтобы хранить в ней документацию по своему собственному проекту;</li>
-  <li><code>img</code> - пустая директория под изображения вашего будущего проекта;</li>
-  <li><code>js</code> - директория, содержащая файл main.js для вашего собственного кода и файл <code>plugin.js</code>, содержащий код под плагины. Также здесь располагаются библиотеки Modernizr и jQuery, каждая в своей отдельной папке;</li>
-  <li>Настройки по умолчанию для сервера Apache. Для остальных серверов существует репозиторий настроек <a href="https://github.com/h5bp/server-configs" title="Server Configs">Server Configs</a>;</li>
-  <li><code>404.html</code> - очень обобщенный шаблон страницы ошибки 404;</li>
-  <li><code>apple touch icons</code> - набор готовых иконок для Apple TouchScreen;</li>
-  <li><code>crossdomain.xml</code> - шаблон для работы с кросс-доменными запросами</li>
-  <li><code>favicon.ico</code> - файл фавикона;</li>
-  <li><code>humans.txt</code> - файл со списков разработчиков проекта (вашего проекта);</li>
-  <li><code>index.html</code> - готовый HTML5-шаблон, основа для всех страниц вашего проекта;</li>
-  <li><code>robots.txt</code> - файл для включения в список всех страниц, которые вы хотите исключить поиска.</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/boilerplate-project.jpg" alt="Каталог Boilerplate-проекта" /></p>
-
-<p>С этого момента вы можете приступать к созданию своего собственного сайта, просто добавляя код и компоненты, которые необходимо использовать.</p>
-
-<h2 id="bootstrap">Использование Bootstrap</h2>
-
-<p>Bootstrap является фреймворком для front-end разработки и набором инструментов веб-дизайнера для создания современных web-сайтов. С помощью фреймворка Bootstrap вы можете создать полностью функциональный web-сайт с нуля. То есть, он предоставляет вам не только стартовую точку, но и все строительные материалы, которые могут потребоваться при создании сайта. Скачиваемый архив Bootstrap содержит в себе только файлы для CSS и JS компонентов, плюс набор шрифтовых иконок. В дополнение к этому, вы можете скачать основной шаблон для начала создания сайта. Структуры файлов и папок для будущего проекта или конфигураций для взаимодействия с серверной частью сайта - не существует.</p>
-
-<p>Преимущества и основные характеристики:</p>
-
-<ul>
-  <li>Ориентированность в первую очередь на мобильные устройства;</li>
-  <li>Кросс-браузерная совместимость;</li>
-  <li>Легкость использования;</li>
-  <li>Система CSS-сетки;</li>
-  <li>Готовые к использованию компоненты и утилиты;</li>
-  <li>и многое другое …</li>
-</ul>
-
-<p>Список компонентов и утилит фреймворка Bootstrap представлен ниже:</p>
-
-<ul>
-  <li><code>Grid</code> - утилита для создания разметки дизайна сайта;</li>
-  <li><code>Icons</code> - набор иконок, отсортированных по размерам;</li>
-  <li><code>CSS classes</code> - набор основных классов стилей для разработки сайта;</li>
-  <li><code>CSS components</code> - стилизованные HTML-компоненты;</li>
-  <li><code>JS widgets</code> - замечательный набор интерактивных компонентов на Javascript;</li>
-  <li>Шаблоны и примеры для начала работы.</li>
-</ul>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/bootstrap-project.jpg" alt="Каталог Bootstrap-проекта" /></p>
-
-<p>Как видите, фреймворк Bootstrap предоставляет полный набор компонентов, с помощью которых вы можете начать создание собственного сайта.</p>
-
-<h2 id="boilerplate--bootstrap">Использование Boilerplate плюс Bootstrap</h2>
-
-<p>Как насчет совместного использования обоих продуктов? Нет проблем! Это легко настроить с помощью проекта <a href="http://www.initializr.com/" title="Initializr">Initializr</a>, который автоматически интегрирует Boilerplate и Bootstrap друг с другом. Используя Initializr, можно создать настраиваемый архив, содержащий в себе все “вкусности” обоих пакетов. Вы можете воспользоваться данным ресурсом, если вам для работы необходимы лучшие части обоих миров.</p>
-
-<h2 id="boilerplate-1">Использование вашего собственного решения на базе Boilerplate</h2>
-
-<p>Некоторые разработчики не любят пользоваться таким продуктами, как Boilerplate или Bootstrap. Их самым главным аргументом в этом вопросе является тот факт, что подобные инструменты содержат в себе слишком много неиспользуемого в проекте кода (<em>грубо говоря - в Bootstrap имеется 100 CSS-классов, но в текущем проекте используется только 20 из них. Остальные получаются бесплезным балластом, который только нагружает каналы связи с сервером и сам браузер</em>). Если вы думаете точно также, то вы должны знать, что вы не ограничены рамками чьих-то сторонних разработок. Вы можете легко собрать для себя лучшие разработки в один собственный фреймворк. Такой способ поможет создать вам коллекцию только тех компонентов, которые вам необходимы.</p>
-
-<h2 id="section">Вердикт</h2>
-
-<p>Правильный выбор между этими продуктами зависит от двух вещей. Первое - вы должны знать, что вам необходимо для создания проекта и какие требования предъявляет сам проект. И второе - вы должны знать, что может предложить вам каждый из этих программных продуктов (Boilerplate &amp; Bootstrap), их достоинства и недостатки. Понятно, что с первым вопросом я не смогу помочь вам, а вот по второму вопросу могу дать краткий совет, состоящий из нескольких пунктов:</p>
-
-<ul>
-  <li>с помощью Boilerplate вы <em>не сможете создать цельный сайт</em> - это только отправная точка;</li>
-  <li>с помощью Bootstrap <em>можно создать с нуля полный сайт</em> благодаря компонентам и утилитам этого фреймворка;</li>
-  <li>Boilerplate является <em>серверно-ориентированным продуктом</em> - хороший шаблон для старта проекта, если вы работаете с серверными технологиями, как например PHP;</li>
-  <li>Bootstrap - <em>клиент-ориентированный продукт</em>, это полный набор инструментов для создания сайтов (front-end разработка);</li>
-  <li>Boilerplate - это <em>набор основного кода</em>, в который вы можете добавить любой компонент, который необходим;</li>
-  <li>Bootstrap - наоборот, это <em>полный набор готовых к использованию компонентов</em>, которые вы можете использовать “из коробки”;</li>
-  <li>Вы можете объединить вместе Boilerplate и Bootstrap, чтобы получить преимущества обоих продуктов;</li>
-  <li>Вы можете создать и использовать свой собственный настроенный шаблон, включающий только те компоненты, которые вам необходимы.</li>
-</ul>
-
-<p>Моим заключительным словом будет следующее. Оба продукта - и Boilerplate и Bootstrap являются прекрасными инструментами, которые вы можете использовать для своей работы. Все зависит о того, какие задачи перед вами стоят - тот инструмент вам и требуется выбрать для решения задачи.</p>
-
-<p>На этом перевод закончен, ибо закончена сама статья …</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
