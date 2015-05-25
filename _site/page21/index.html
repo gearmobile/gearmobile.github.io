@@ -144,6 +144,332 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-20T00:00:00+04:00"><a href="http://zencoder.ru/css/compass-color-functions/">May 20, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~10 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/compass-color-functions/" rel="bookmark" title="Функции работы с цветом в Sass и Compass" itemprop="url">Функции работы с цветом в Sass и Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Приступаем к очередной интересной и обширной теме - как с помощью Sass/Compass облегчить себе жизнь при работе с цветами во время верстки.</p>
+</blockquote>
+
+<p>Каждый верстальщик хорошо знает, как часто ему приходиться при верстке определять и манипулировать цветами в CSS-коде. Препроцессор Sass и его библиотека Compass обладают богатым набором функций, предназначеных для всевозможных операций с цветом в SCSS-коде.</p>
+
+<p>Эта статья посвящена обзору функций Sass и Compass для работы с цветом. Начнем, как обычно, с самой простой функции и будем плавно продвигаться от простого к сложному.</p>
+
+<h2 id="compass">Первоначальная настройка проекта Compass</h2>
+
+<p>Для начала создадим пустойй проект Compass и настроим его. Инициализируем несколько переменных <code>$color</code> и <code>$color1</code>, которым определим цвет. Эти переменные понадобятся нам в дальнейшем.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+<span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nt">hsla</span><span class="o">(</span><span class="nt">120</span><span class="o">,</span><span class="nt">100</span><span class="o">%,</span><span class="nt">50</span><span class="o">%,</span><span class="nc">.5</span><span class="o">);</span>
+<span class="o">$</span><span class="nt">color1</span><span class="o">:</span> <span class="nt">hsla</span><span class="o">(</span><span class="nt">240</span><span class="o">,</span><span class="nt">100</span><span class="o">%,</span><span class="nt">50</span><span class="o">%,</span><span class="nc">.5</span><span class="o">);</span>
+<span class="o">$</span><span class="nt">unit</span><span class="o">:</span> <span class="nt">180px</span><span class="o">;</span>
+
+<span class="nt">div</span><span class="p">{</span>
+  <span class="k">height</span><span class="o">:</span> <span class="err">$</span><span class="n">unit</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="n">unit</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">3</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80%</span><span class="p">);</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="err">$</span><span class="n">unit</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.origin</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="lighten--darken">Фунции lighten и darken</h2>
+
+<p>Начнем с самых простых функций - <code>lighten</code> и <code>darken</code>. Кто маломальски знаком с английским языком, должен сам догадаться о их предназначении. Функция <code>lighten</code> осветляет исходный цвет, а функция <code>darken</code> затемняет его.</p>
+
+<p>Синтаксис функций <code>lighten</code> и <code>darken</code> одинаков. Первым аргументом задается начальное значение цвета - передадим его функции в виде переменной <code>$color</code>. Вторым аргументом является значение в процентах, на которое нужно осветлить или затемнить исходный цвет:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.lighten</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.darken</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-lighten_darken.png" alt="Функции lighten и darken" /></p>
+
+<p>Функции lighten и darken могут использоваться в любом месте SCSS-кода - везде, где применяется цвет. Например, видоизменим показанный выше пример. Применим функции lighten и darken для изменения цвета шрифта, границы и фона:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.mixin</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="o">.</span><span class="m">95</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">);</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">30%</span><span class="p">);</span>
+  <span class="k">color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">60%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-mixin.png" alt="Функции lighten и darken для цвета шрифта и границы" /></p>
+
+<h2 id="complement--invert">Функции complement и invert</h2>
+
+<p>Переходим к функциям обратного преобразования цвета. Первая функция <code>complement</code> преобразует исходный цвет на прямо противоположный. Допустим, у нас имеется переменная <code>$color</code> c заданным в ней цветом. Передадим эту переменную функции <code>complement</code> в качестве аргумента:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.complement</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">complement</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате на выходе получим цвет, расположенный на 180 градусов по отношению к исходному цвету. Чтобы было понятнее, посмотрим на “HSLA wheel”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/hsl-color-wheel.png" alt="HSLA wheel" /></p>
+
+<p>Исходным цветом у нас является <code>hsla(120,100%,50%,.5)</code>. На 180 градусов по отношению к исходному цвету расположен <code>hsla(300,100%,50%,.5)</code>, иначе называемый Magenta. Вот его и получаем от функции <code>complement</code>.</p>
+
+<p>Функция <code>invert</code> практичеси аналогична функции <code>complement</code>. Она также производит инвертирование цвета от исходного. Но функция <code>invert</code> отличается от функции <code>complement</code> тем, что с помощью нее производится инвертирование цветов (красного, зеленого, синего), но прозрачность <code>opacity</code> остается неизменной.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.invert</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="k">invert</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-complement_invert.png" alt="Функции complement и invert" /></p>
+
+<h2 id="adjust-hue">Функция adjust-hue</h2>
+
+<p>Функция <code>adjust-hue</code> практически аналогична функции <code>complement</code> - она инвертирует исходный цвет. Но в отличие от последней обладает большей гибкостью. Если функция <code>complement</code> возвращает цвет, расположенный точно на 180 градусов от исходного (противоположный), то функция <code>adjust-hue</code> может управлять градусом расположения “выходного цвета.”</p>
+
+<p>Другими словами, можно задать угол, отличный от 180 градусов. Кроме того, значение угла может быть как положительным, так и отрицательным:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjusthue_plus</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="n">hue</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.adjusthue_minus</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="n">hue</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,-</span><span class="m">80</span><span class="n">deg</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-hue.png" alt="Функция adjust-hue" /></p>
+
+<h2 id="saturate--desaturate">Функции saturate и desaturate</h2>
+
+<p>В препроцессоре Sass имеется пара функций для управления насыщеностью цвета.</p>
+
+<p>Функция <code>saturate()</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.saturate</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">saturate</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… увеличивает насыщенность цвета от исходного.</p>
+
+<p>А функция <code>desaturate()</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.desaturate</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">desaturate</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">80%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… наоборот, уменьшает насыщенность цвета от исходного.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-saturate_desaturate.png" alt="Функции saturate и desaturate" /></p>
+
+<h2 id="transparentize--fade-out">Функции transparentize и fade-out</h2>
+
+<p>Функция <code>transparentize</code> добавляет к исходному цвету альфа-канал и, тем самым, управляет прозрачностью исходного цвета. Особая прелесть этой функции заключается в том, что даже если исходный цвет не имеет альфа-канала, то на выходе к этому цвету будет добавлен альфа-канал с заданым уровнем прозрачности. То есть, будет выполнено преобразование в формат RGBA.</p>
+
+<p>Значение прозрачности может находиться в диапазоне от 0 (полностью прозрачный) до 1 (полностью непрозрачный):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.transparentize</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">transparentize</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Функция <code>fade-out</code> аналогична функции <code>transparentize</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.fadeout</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">fade</span><span class="o">-</span><span class="n">out</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-transparentize_fade-out.png" alt="Функции transparentize и fade-out" /></p>
+
+<h2 id="opacify--fade-in">Функции opacify и fade-in</h2>
+
+<p>Функции <code>opacify</code> и <code>fade-in</code> являются прямой противоположностью функций <code>transparentize</code> и <code>fade-out</code>. В помощью этих функций цвет делается менее прозрачным:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.opacify</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">opacify</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.fadein</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">fade</span><span class="o">-</span><span class="n">in</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-opacify_fade-in.png" alt="Функции opacify и fade-in" /></p>
+
+<h2 id="grayscale">Функция grayscale</h2>
+
+<p>Функция преобразования исходного цвета в оттенки серого чрезвычайно проста в использовании. В принципе, тут и рассказывать особенно нечего:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.grayscale</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">grayscale</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-grayscale.png" alt="Функция grayscale" /></p>
+
+<h2 id="rgba">Функция rgba</h2>
+
+<p>Если стоит задача преобразования исходного цвета (заданного в виде переменной, в формате HEX или HSLA) в формат RGBA, в этом случае на помощь придет функция <code>rgba</code>. При этом к выходному цвету добавляется альфа-канал для задания прозрачности цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rgba</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,.</span><span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-rgba.png" alt="Функция rgba" /></p>
+
+<p>С практической точки зрения функция rgba равносильна функции transparentize/fade-out или opacify/fade-in.</p>
+
+<h2 id="mix">Функция mix</h2>
+
+<p>В препроцессоре Sass имеется функция смешивания цветов для получения на выходе одного, результирующего цвета. Другими словами, у нас имеются два цвета, представленные переменными <code>$color</code> и <code>$color1</code>. C помощью функции <code>mix</code> можно смешать эти два цвета в определенной пропорции, чтобы получить на выходе один результирующий цвет.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.mix</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="k">mix</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">color1</span><span class="o">,</span><span class="m">70%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В показанном выше примере у функции <code>mix</code> имеются два аргумента в виде переменных (два цвета). Последний третий аргумент в виде процентов задает пропорцию, в которой один цвет будет смешан с другим. В нашем случае цвет <code>$color</code> смешан с цветом <code>$color1</code> в пропорции - 70% от первого цвета <code>$color</code> добавляется ко второму цвету <code>$color1</code>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-mix.png" alt="Функция mix" /></p>
+
+<h2 id="adjust-color">Функция adjust-color</h2>
+
+<p>Вот мы и подошли к более сложным функциям препроцессора Sass. Первой из таких функций является <code>adjust-color</code>, c помощью которой можно управлять любым значением цвета - красным, зеленым, синим (для цветовой модели RGB) или же цветом, насыщеностью и светлотой (для цветовой модели HSL). Функции <code>adjust-color</code> также доступно управление альфа-каналом (прозрачностью) цвета.</p>
+
+<p>Функция <code>adjust-color</code> достаточно сложная, но с помощью нее можно управлять практически всем, что относится к цвету в SCSS-коде. Давайте последовательно разберемся во всех ее возможностях.</p>
+
+<p>Каждому цвету в этой функции соответствует одноименный аргумент:</p>
+
+<ul>
+  <li><code>$red</code>, <code>$green</code>, <code>$blue</code> - значения красного, зеленого и синего цветов в диапазоне от 0 до 255;</li>
+  <li><code>$hue</code> - значение от 0 до 359 градусов, обозначающих цвет на HSL-диаграме; значение может быть как положительным, так и отрицательным;</li>
+  <li><code>$saturation</code>, <code>$lightness</code> - значения насыщенности и светлоты для цветовой модели HSL; находятся в диапазоне от 0 до 100%; могут быть отрицательными или положительными;</li>
+  <li><code>$alpha</code> - значение альфа-канала в диапазоне от 0 до 1.</li>
+</ul>
+
+<p>Хватит теории, давайте рассмотрим работу функции adjust-color на примерах.</p>
+
+<ol>
+  <li>Изменение цвета от исходного <code>$color</code> для цветовой модели HSLA. Первым аргументом передается цвет в виде переменной <code>$color</code>; вторым аргументом задается изменение цвета через переменную <code>$hue</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorHue</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">hue</span><span class="o">:</span><span class="m">40</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_hue.png" alt="Функция adjust-color с аргументом $hue" /></p>
+
+<ol>
+  <li>Изменение цвета и светлоты одновременно. Первым аргументом $color задается исходный цвет, вторым аргументом устанавливается цвет $hue, третьим аргументом задается изменение светлоты $lightness:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorHueLightness</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">hue</span><span class="o">:</span><span class="m">40</span><span class="o">,</span><span class="err">$</span><span class="n">lightness</span><span class="o">:</span><span class="m">30</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_hue_lightness.png" alt="Функция adjust-color с аргументом $hue и $lightness" /></p>
+
+<ol>
+  <li>Изменение двух каналов цвета одновременно для цветовой модели RGB. Функции <code>adjust-color</code> передаются три аргумента: исходный цвет <code>$color</code>, канал красного цвета <code>$red</code>, канал зеленого цвета <code>$green</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorRedGreen</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="nb">red</span><span class="o">:</span><span class="m">40</span><span class="o">,</span><span class="err">$</span><span class="nb">green</span><span class="o">:</span><span class="m">30</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_red_green.png" alt="Функция adjust-color с аргументом $red и $green" /></p>
+
+<ol>
+  <li>Смешивание аргументов цветовых моделей RGB и HSL в функции adjust-color. Передадим функции adjust-color аргументы исходного цвета $color, аргумент красного канала $red модели RGB и аргумент $hue модели HSL:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.adjustColorError</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="nb">red</span><span class="o">:</span><span class="m">40</span><span class="o">,</span><span class="err">$</span><span class="n">hue</span><span class="o">:</span><span class="m">20</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате компиляции данного кода в CSS получим такую ошибку:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">Syntax</span> <span class="nt">error</span><span class="o">:</span> <span class="nt">Cannot</span> <span class="nt">specify</span> <span class="nt">HSL</span> <span class="nt">and</span> <span class="nt">RGB</span> <span class="nt">values</span> <span class="nt">for</span> <span class="nt">a</span> <span class="nt">color</span> <span class="nt">at</span> <span class="nt">the</span> <span class="nt">same</span> <span class="nt">time</span> <span class="nt">for</span> <span class="err">`</span><span class="nt">adjust-color</span><span class="err">&#39;</span>
+<span class="nt">on</span> <span class="nt">line</span> <span class="nt">38</span> <span class="nt">of</span> <span class="o">.../</span><span class="nt">sass</span><span class="o">/</span><span class="nt">style</span><span class="nc">.scss</span></code></pre></div>
+
+<p>… которая говорит о том, что в функции <code>adjust-color</code> недопустимо смешивание аргументов разных цветовых моделей - RGB и HSL.</p>
+
+<p>Поэтому нужно быть внимательным при работе с функцией adjust-color и не допускать одновременной передачи функции аргументов разных цветовых моделей RGB и HSL.</p>
+
+<h2 id="scale-color">Функция scale-color</h2>
+
+<p>Рассмотренная выше функция <code>adjust-color</code> производила изменение цвета на основе занчений передаваемых ей аргументов. Функция <code>scale-color</code> работает несколько иначе - она изменяет цвет на основе исходного цвета. Чтобы было сразу понятно, о чем идет речь, давайте рассмотрим несколько примеров:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.origin</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.adjustcolor</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">adjust</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">lightness</span><span class="o">:-</span><span class="m">20%</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.scalecolor</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">scale</span><span class="o">-</span><span class="k">color</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="err">$</span><span class="n">lightness</span><span class="o">:-</span><span class="m">20%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-adjust-color_scale-color.png" alt="Разница между функциями adjust-color и scale-color" /></p>
+
+<p>В данном примере функция <code>adjust-color</code> берет за основу цвет в переменной <code>$color</code> и делает его светлее на фиксированные <code>20%</code>. Функция <code>scale-color</code>, c другой стороны, поступает несколько иначе. Ею строиться шкала светлоты от 1 до 100%, в которой 1 соответствует светлоте цвета, заданной в переменной <code>$color</code>. Значение <code>100%</code> соответствует полной прозрачности. И на основе этой шкалы функция <code>scale-color</code> вычисляет светлоту в <code>20%</code>.</p>
+
+<p>Неудивительно, что в показанном выше примере результат функции <code>scale-color</code> оказался светлее, чем результат функции <code>adjust-color</code>.</p>
+
+<h2 id="shade--tint">Функции shade и tint</h2>
+
+<p>Фреймворк Сompass также, как и препроцессор Sass, имеет в своем составе некоторое количество функций для работы с цветом. Наиболее интересными среди них могу показаться две функции - <code>shade</code> и <code>tint</code>.</p>
+
+<p>Функция <code>shade</code> выполняет смешивание заданного цвета с черным цветом в указанной пропорции. Пропорция указывется в процентах от черного цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.shade</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">shade</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">40%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-shade.png" alt="Результат работы функции shade" /></p>
+
+<p>Функция <code>tint</code>, напротив, выполняет смешивание исходного цвета с белым цветом в заданном соотношении. Код ниже создаст цвет на основе смешения цвета в переменной <code>$color</code> и <code>30%</code> белого цвета:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.tint</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="n">tint</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">30%</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/sass_colors-tint.png" alt="Результат работы функции tint" /></p>
+
+<h2 id="section">Заключение</h2>
+
+<p>На этом обзор “цветовых” функций препроцессора Sass и библиотеки Compass можно считать завершенным. В качестве вывода можно сказать, что благодаря подобным функциям упрощается и убыстряется работа при верстке дизайна сайта.</p>
+
+<p>Более того, с помощью данных функций, имея в качестве входного значения всего один цвет, можно создать отличный дизайн в профессиональной цветовой палитре. И не прибегнуть ни к одному из графических инструментов.</p>
+
+<p>Помимо использования рассмотренных выше цветовых функций каждой по отдельности, можно комбинировать их в одном выражении, создавая достаточно сложные конструкции.</p>
+
+<p>Данная статья является вольным переводом главы “Manipulate Color with Ease” замечательной книги “Sass and Compass for Designers” автора Ben Frain.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-05-17T00:00:00+04:00"><a href="http://zencoder.ru/compass-hide-text/">May 17, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -981,106 +1307,6 @@
 <p>На этом серия статей по Susy 2 завершена.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-05-03T00:00:00+04:00"><a href="http://zencoder.ru/css/playground-sassmeister/">May 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/playground-sassmeister/" rel="bookmark" title="Знакомимся с редактором SassMeister" itemprop="url">Знакомимся с редактором SassMeister</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Решил написать небольшой обзор по online-инструменту для front-end’щика под названием SassMeister.</p>
-</blockquote>
-
-<p>На русском языке не встречал хотя бы краткого описания, поэтому решил, что не помешает познакомиться в ним поближе.</p>
-
-<p>Итак, что это за инструмент? Если сказать кратко - это online-редактор для кода, наподобие известного CodePen, который уже описывался на страницах данного блога - “Площадка для тестирования CodePen”. Другими словами, SassMeister является площадкой для тестирования (playground) для людей, связанный с веб-разработкой.</p>
-
-<h2 id="codepen--sassmeister">Различие между CodePen и SassMeister</h2>
-
-<p>Также, как и CodePen, данный редактор предназначен исключительно для front-end разработчиков, так как понимает только два языка - HTML и CSS. А также всевозможные препроцессоры к этой паре языков. Как и CodePen, SassMeister позволяет сохранять созданный в нем код и делать еще пару вещей.</p>
-
-<p>Но в чем же тогда отличие SassMeister от CodePen, что заставило упомянуть этот <code>playground</code>? Отличие есть и оно существенное. Площадка CodePen - это универсальный инструмент для веб-разработчика. В нем есть все необходимое для работы - зарегистрировался, открыл и работай!</p>
-
-<p>SassMeister - это площадка, созданная исключительно для работы с препроцессором Sass и его библиотеками. Получается, что у последнего специализация более узкая; за счет этого SassMeister выполняет свою задачу лучше, чем CodePen.</p>
-
-<p>Итак, в двух словах. Вам нужен хороший универсальный инструмент front-end разработки? Это CodePen. Вам нужен хороший инструмент для работы только с препроцессором Sass? Это SassMeister.</p>
-
-<p>Давайте попробуем создать пример кода в этом инструменте и на его примере поймем, как с ним работать. Итак, открываем главную страницу SassMeister - <a href="http://sassmeister.com/" title="SassMeister">SassMeister</a> и видим основное окно с вкладками вверху. (<em>Сразу стоит сказать, что редактор SassMeister имеет тесную интеграцию с сервисом GitHub, поэтому зайти в редактор можно, используя учетную запись последнего.</em>) Самая главная и нужная среди них - вкладка с настройками редактора, которая называется Control Panel.</p>
-
-<h2 id="sassmeister">Панель управления SassMeister</h2>
-
-<p>Открываем ее и разберемся с ней:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/sassmeister_control_panel.jpg" alt="Панель управления редактора SassMeister" /></p>
-
-<p>Во-первых, надпись “Sass” не дает нам забыть о том, что мы собираемся работать с препроцессором Sass (<em>это типа шутки</em>).</p>
-
-<p>Вторая строка “Compiler” с тремя переключателями позволяет выбрать, какую версию препроцессора Sass мы хотим использовать: свежую 3.3.6, более раннюю 3.2.19 или же LibSass (<em>портированный на С препроцессор Sass</em>).</p>
-
-<p>В третьей строке выбираем, с каким <em>синтаксисом</em> препроцессора Sass мы будем работать - с новым SCSS или же со старым Sass (<em>на котором почти никто не пишет на сегодняшний день</em>).</p>
-
-<p>Отлично, идем дальше!</p>
-
-<p>Опускаем взгляд еще ниже на окно с заголовком “Extensions” и останавливаемся, затаив дыхание. Да-да, вы не ошиблись! Это именно то, о чем вы подумали! Это список плагинов на выбор, которые можно подключить в наш проект один щелчком мыши.</p>
-
-<p>А теперь напомните мне, с каким списком расширений под Sass может работать CodePen? Не помните? Я подскажу - с двумя! Это Compass и Bourbon.</p>
-
-<p>Конечно, в CodePen можно подключить на выбор не один препроцессор, а несколько - Sass, LESS, Stylus. Но вот с выбором плагинов под эти препроцессоры будет слабовато. В этом и заключается преимущество SassMeister - он делает одну вещь, но делает ее хорошо, основательно, до конца!</p>
-
-<p>ОК, для нашего примера работы в SassMeister выберем из этого списка три расширения: Breakpoint, Compass, Susy. Это делается одинарным щелчком мыши на названии расширения, как будто это простая ссылка на веб-странице. Выбранное расширение автоматически добавляется в проект строкой:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Четвертая строка “CSS” предлагает опции, с которыми внимательный читатель уже должен быть знаком. Это стандартные опции компилирования препроцессора Sass из SCSS-кода в CSS-код. Точно такие же настройки имеются в конфигурационном файле <code>config.rb</code> любого Sass/Compass-проекта.</p>
-
-<p>Пятая строка “HTML” предлагает выбрать способ, которым мы будем писать код HTML. Это будет или чистый HTML, или же с помощью HTML-препроцессоров: Haml, Markdown, Textile, Jade.</p>
-
-<p>В строке Editor можно выбрать визуальную тему оформления для редактора SassMeister. Допустим, выберу для себя тему Monokai, так как люблю работать с редактором Sublime Text (здесь нет темы Twilight, а то бы однозначно выбрал ее).</p>
-
-<p>Чекбоксы “Enable Emmet support” и “Use Vim keybindings” предназначены для любителей работать с плагином Emmet под Sublime Text и совсем крутых парней, которые предпочитают стиль редактора Vim.</p>
-
-<p>Вот и все настройки одновременно с обзором возможностей редактора SassMeister. Пора переходить к написанию кода. Для этого закрываем Control Panel и щелкаем мышью на вкладках CSS и HTML вверху. Добавятся еще два окошка CSS и HTML, соответственно. Накидаем в окне HTML совсем простенький код, немного оформим его в окне SCSS, проверим скомпилированный результат в окне CSS и полюбуемся на творение рук своих в четвертом, самом нижнем окне визуального предпросмотра:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/sassmeister_result.jpg" alt="Результат работы в редакторе SassMeister" /></p>
-
-<h2 id="sassmeister--github-gist">Сохранение кода в SassMeister через GitHub Gist</h2>
-
-<p>Отлично! Мы успешно справились с задачей и создали великолепный образец кода в SassMeister. Теперь осталось самое малое - сохранить на века этот образец, чтобы потомки смогли восхищаться им. Нетрудно догадаться, что для этой цели служит вкладка в виде облачка. Наводим на нее мышь и видим надписи - “Save Gist” и Reset. Напрягаем все извилины своего мозга и щелкаем мышью по ссылке “Save Gist”. Редактор SassMeister радостно (зелененькой надписью) сообщает, что наш “Gist is saved”.</p>
-
-<p>А что такое <strong>Gist</strong> и где оказался наш кусочек кода (куда он сохранился)? Еще раз наводим мышь на облачко и видим, что вкладочка то поменялась! Вместо двух там теперь появилось еще несколько ссылок: “Update Gist”, “View on GitHub”, “Fork Gist”, наша старая знакомая Reset. Вау, знакомые слова - GitHub, Fork! А давайте пройдем по ссылочке “View on GitHub”?</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/05/sassmeister_github_gist.jpg" alt="Сохраненный код с SassMeister на сервисе GitHub Gist" /></p>
-
-<p>Ну конечно же! Мы оказались на GitHub, а точнее - на его сервисе <strong>Gist</strong>. Кто не знаком с этим сервисом, может уже догадаться о его предназначении. Он служит для хранения таких вот (<em>и не обязательно именно таких</em>) кусочков кода (<em>snippets</em>). Более того, у сервиса <strong>Gist</strong> имеется интеграция через плагин с редактором Sublime Text, которая позволяет буквально по волшебству вставлять код из <strong>Gist</strong> прямо в ST!</p>
-
-<p>После сохранения кода на GitHub Gist в панели SassMeister появляется еще одна вкладочка - стрелка. Назначение ее предельно понятно - с помощью нее можно встраивать (<em>embed</em>) созданный здесь код в другой проект, в виде объекта.</p>
-
-<h2 id="sassmeister---">SassMeister - заключение</h2>
-
-<p>Вот, в принципе, и все, что можно рассказать об online-редакторе SassMeister. Единственный момент, с которым я не разобрался, это вкладка <strong>Bookmark</strong> - для чего она нужна и как с ней работать, в чем прикол ее существования в этом редакторе. Может быть, внимательный читатель подскажет, для чего она нужна?</p>
-
-<p>Думаю, для кодеров, которые любят и активно используют препроцессор Sass совместно с великолепной библиотекой Compass и плагинами в ней, площадка для тестирования SassMeister понравиться однозначно!</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

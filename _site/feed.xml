@@ -4,13 +4,72 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://zencoder.ru/feed.xml" />
 <link rel="alternate" type="text/html" href="http://zencoder.ru" />
-<updated>2015-05-24T11:54:33+03:00</updated>
+<updated>2015-05-25T16:58:17+03:00</updated>
 <id>http://zencoder.ru/</id>
 <author>
   <name>zencoder</name>
   <uri>http://zencoder.ru/</uri>
   <email>gearmobile@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Область применения селекоторов в jQuery]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/jquery/scope-selectors-jquery/" />
+  <id>http://zencoder.ru/jquery/scope-selectors-jquery</id>
+  <published>2015-05-27T00:00:00+03:00</published>
+  <updated>2015-05-27T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;В библиотеке jQuery имется возможность использования области применения селекторов, с помощью &lt;em&gt;контекста&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Что такое &lt;em&gt;контекст&lt;/em&gt; в jQuery? Давайте рассмотрим “стандартную” запись кода на JavaScript(jQuery):&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;li&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;someClass&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Видим в этом коде, что функции &lt;code&gt;$()&lt;/code&gt; передается &lt;strong&gt;один аргумент&lt;/strong&gt; - в данном случае это селектор &lt;code&gt;li&lt;/code&gt;. В качестве селектора может быть фрагмент разметки, имя класса или имя идентификатора. Но - в 90% случаев функции &lt;code&gt;$()&lt;/code&gt; передается один аргумент.&lt;/p&gt;
+
+&lt;p&gt;Однако это не является правилом. И функции &lt;code&gt;$()&lt;/code&gt; можно передавать не один, а два аргумента.&lt;/p&gt;
+
+&lt;p&gt;В этом случае второй аргумент является &lt;strong&gt;контекстом&lt;/strong&gt; и служит для указания &lt;strong&gt;области дерева DOM&lt;/strong&gt;, внутри которой необходимо осуществлять поиск.&lt;/p&gt;
+
+&lt;p&gt;То есть, запись вида:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;li&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;someClass&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;… говорит - найти все элементы &lt;code&gt;li&lt;/code&gt; во всем дереве DOM. Другими словами, отсутствие второго аргумента подразумевает область применения селекторов - все дерево DOM.&lt;/p&gt;
+
+&lt;p&gt;А вот запись вида:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;li&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#primo&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;block__item--first&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;… говорит, что нужно найти все селекторы &lt;code&gt;li&lt;/code&gt; внутри элемента с идентификатором &lt;code&gt;#primo&lt;/code&gt;. Другими словами, идентификатор &lt;code&gt;#primo&lt;/code&gt; ограничивает область применения (или область видимости - как больше нравиться) селектора &lt;code&gt;li&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Можно слегка усложнить область видимости селекторов - указать не одну область, а две области:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;li&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#primo,#tetro&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;block__item--first&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;… в этом случае будут возвращены только те элементы &lt;code&gt;li&lt;/code&gt;, которые находятся внутри блока с идентификатором &lt;code&gt;#primo&lt;/code&gt; и внутри блока с идентификатором &lt;code&gt;#tetro&lt;/code&gt;. Другими словами, были заданы две области видимости для селектора &lt;code&gt;li&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;В качестве второго аргумента (контекста) функции &lt;code&gt;$()&lt;/code&gt; может быть передан не только селектор, имя класса или имя идентификатора (как в рассмотренном выше случае).&lt;/p&gt;
+
+&lt;p&gt;Контекстом может быть результат работы другой функции! То есть, можно одной функции выборки передавать результат выборки другой функции!&lt;/p&gt;
+
+&lt;p&gt;Например, таким гипотетическим образом:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;a&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;$&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;#primo &amp;gt; li&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;addClass&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;block__link--decor&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;На этом все.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/jquery/scope-selectors-jquery/&quot;&gt;Область применения селекоторов в jQuery&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 27, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
 <entry>
@@ -25,7 +84,7 @@
     <email>gearmobile@gmail.com</email>
   </author>
   <content type="html">
-    &lt;p&gt;Достаточно интересный (для меня) метод выборки элеемнтов из коллекции - метод &lt;code&gt;.slice()&lt;/code&gt;. Хотя чего-то эдакого в этом методе не совсем.&lt;/p&gt;
+    &lt;p&gt;Достаточно интересный (для меня) метод выборки элементов из коллекции - метод &lt;code&gt;.slice()&lt;/code&gt;. Хотя чего-то эдакого в этом методе нет совсем.&lt;/p&gt;
 
 &lt;p&gt;Просто этот метод позволяет установить диапазон (область), по которому (внутри которой) будут выбираться элементы.&lt;/p&gt;
 
@@ -2063,142 +2122,6 @@
 
 
     &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/fast-forward-git/&quot;&gt;Режим fast-forward в Git&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on April 17, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[git diff - учимся сравнивать в Git]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/git/git-diff/" />
-  <id>http://zencoder.ru/git/git-diff</id>
-  <published>2015-04-16T00:00:00+03:00</published>
-  <updated>2015-04-16T00:00:00+03:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;blockquote&gt;
-  &lt;p&gt;Краткий обзор команды git diff&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Итак, продолжаю знакомиться с системой Git и на этот раз вопрос будет касаться команды &lt;code&gt;git diff&lt;/code&gt;. Это краткая заметка, которая ни в коей мере не претендует на полноценный обзор. Скорее всего - философское рассуждение на тему сравнения в Git.&lt;/p&gt;
-
-&lt;p&gt;С помощью этой команды в Git можно сравнивать между собой файлы для того, чтобы увидеть - где произошло изменение.&lt;/p&gt;
-
-&lt;p&gt;Когда изменение обнаружено, тогда можно решать, что с ним делать - оставить, удалить или отредактировать.&lt;/p&gt;
-
-&lt;p&gt;Перед использованием команды &lt;code&gt;diff&lt;/code&gt; стоит напомнить о трех состояниях системы Git: Working Area, Staging Area, Repository. Фактически, команда &lt;code&gt;diff&lt;/code&gt; производит сравнение между разными состояниями одного файла.&lt;/p&gt;
-
-&lt;p&gt;Поэтому, когда запускается команда &lt;code&gt;diff&lt;/code&gt;, следует принимать во внимание, что и с чем будет сравниваться.&lt;/p&gt;
-
-&lt;h2 id=&quot;working-area&quot;&gt;Working Area&lt;/h2&gt;
-
-&lt;p&gt;Рассмотрим &lt;strong&gt;первый случай&lt;/strong&gt;, когда имеется отслеживаемый файл &lt;code&gt;index.html&lt;/code&gt;, в который вносятся изменения.&lt;/p&gt;
-
-&lt;p&gt;Но изменения в этом файле &lt;strong&gt;не индексируются&lt;/strong&gt; (&lt;code&gt;git add&lt;/code&gt;) и &lt;strong&gt;не фиксируются&lt;/strong&gt; (&lt;code&gt;git commit&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;В этом случае, чтобы увидеть изменения, нужно запустить команду:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;В этом случае производится сравнение между фиксированной версией файла &lt;code&gt;index.html&lt;/code&gt; (в области Repository) и его измененной версией (в области Working Area).&lt;/p&gt;
-
-&lt;p&gt;Вывод будет примерно таким:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff
-diff --git a/index.html b/index.html
-index 8fbea1c..fff54a9 100644
---- a/index.html
-+++ b/index.html
-@@ -5,6 +5,6 @@
-   &amp;lt;title&amp;gt;Index&amp;lt;/title&amp;gt;
- &amp;lt;/head&amp;gt;
- &amp;lt;body&amp;gt;
--
-+  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;
- &amp;lt;/body&amp;gt;
- &amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;В этом примере все предельно ясно и понятно. Строка &lt;code&gt;--- a/index.html&lt;/code&gt; - это фиксированная версия файла &lt;code&gt;index.html&lt;/code&gt;. Строка &lt;code&gt;+++ b/index.html&lt;/code&gt; - это измененная версия файла &lt;code&gt;index.html&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Две строки:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;-
-+  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;… отображают, сколько и каких строк удалено (знак минус); сколько и каких строк добавлено (знак плюс).&lt;/p&gt;
-
-&lt;p&gt;Итак, с первым вариантом разобрались. Комадна &lt;code&gt;git diff&lt;/code&gt; выполняет сравнение версии файла из области Repository и этой же версии из области Working Area.&lt;/p&gt;
-
-&lt;h2 id=&quot;staging-area&quot;&gt;Staging Area&lt;/h2&gt;
-
-&lt;p&gt;&lt;strong&gt;Второй вариант&lt;/strong&gt; - файл &lt;code&gt;index.html&lt;/code&gt; отслеживается, в него внесено изменение, которое проиндексировано (внесено в область Staging Area).&lt;/p&gt;
-
-&lt;p&gt;Команда &lt;code&gt;git diff&lt;/code&gt; &lt;strong&gt;ничего не покажет&lt;/strong&gt;, так как изменения в файле &lt;code&gt;index.html&lt;/code&gt; были перенесены (&lt;code&gt;git add&lt;/code&gt;) из области Working Area в область Staging Area. Другими словами, область Working Area чистая и в ней нет ничего, чтобы можно было сравнить с областью Repository.&lt;/p&gt;
-
-&lt;p&gt;В этом случае для команды &lt;code&gt;git diff&lt;/code&gt; необходимо добавить ключ &lt;code&gt;--staged&lt;/code&gt;. Тогда вывод будет примерно таким:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff --staged
-diff --git a/index.html b/index.html
-index 8fbea1c..fff54a9 100644
---- a/index.html
-+++ b/index.html
-@@ -5,6 +5,6 @@
-   &amp;lt;title&amp;gt;Index&amp;lt;/title&amp;gt;
- &amp;lt;/head&amp;gt;
- &amp;lt;body&amp;gt;
--
-+  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;
- &amp;lt;/body&amp;gt;
- &amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Ключ &lt;code&gt;--staged&lt;/code&gt; указывает, что необходимо сравнивать область Repository с областью Staging Area.&lt;/p&gt;
-
-&lt;p&gt;Итак, разобрались со вторым случаем. Команда &lt;code&gt;git diff --staged&lt;/code&gt;производит сравнение области Repository с областью Staging Area.&lt;/p&gt;
-
-&lt;h2 id=&quot;repository&quot;&gt;Repository&lt;/h2&gt;
-
-&lt;p&gt;Третий вариант - файл &lt;code&gt;index.html&lt;/code&gt; отслеживается, в него внесены изменения, которые проиндексированы (&lt;code&gt;git add&lt;/code&gt;) и зафиксированы (&lt;code&gt;git commit&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;В этом случае область Working Area и Staging Area чистые от изменений, поэтому область Repository нельзя сравнивать с ними - там нет ничего для сравнения.&lt;/p&gt;
-
-&lt;p&gt;Поэтому команда &lt;code&gt;git diff&lt;/code&gt; или &lt;code&gt;git diff --staged&lt;/code&gt; &lt;strong&gt;ничего не покажет&lt;/strong&gt; - сравнивать то не с чем!&lt;/p&gt;
-
-&lt;p&gt;Так как все изменения зафиксированы и перенесены в область Repository, то и сравнивать их между собой нужно только там, в этой области.&lt;/p&gt;
-
-&lt;p&gt;В этом случае команда сравнения &lt;code&gt;git diff&lt;/code&gt; будет выглядеть примерно таким образом:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git diff 0644c20  73a4c4c
-diff --git a/index.html b/index.html
-index fff54a9..8fbea1c 100644
---- a/index.html
-+++ b/index.html
-@@ -5,6 +5,6 @@
-   &amp;lt;title&amp;gt;Index&amp;lt;/title&amp;gt;
- &amp;lt;/head&amp;gt;
- &amp;lt;body&amp;gt;
--  &amp;lt;h1&amp;gt;Header 1&amp;lt;/h1&amp;gt;
-+
- &amp;lt;/body&amp;gt;
- &amp;lt;/html&amp;gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Здесь &lt;code&gt;0644c20&lt;/code&gt; - это первые семь символов hash-суммы последнего commit’а, &lt;code&gt;73a4c4c&lt;/code&gt; - первые семь символов hash-суммы предпоследнего commit’а.&lt;/p&gt;
-
-&lt;p&gt;Их можно получить командой:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git log --oneline&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Другими словами, в этом случае сравниваются между собой различные коммиты. И это могут быть совсем не обязательно соседние коммиты - можно сравнить, к примеру, первый и последний коммиты.&lt;/p&gt;
-
-&lt;p&gt;Итак, разобрались с третим вариантом - когда сравниваются командой &lt;code&gt;git diff hash_sum_1 hash_sum_2&lt;/code&gt; между собой различные коммиты, расположенные в области Repository.&lt;/p&gt;
-
-&lt;p&gt;На этом все.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/git-diff/&quot;&gt;git diff - учимся сравнивать в Git&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on April 16, 2015.&lt;/p&gt;
   </content>
 </entry>
 

@@ -144,6 +144,146 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-16T00:00:00+03:00"><a href="http://zencoder.ru/git/git-diff/">April 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-diff/" rel="bookmark" title="git diff - учимся сравнивать в Git" itemprop="url">git diff - учимся сравнивать в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Краткий обзор команды git diff</p>
+</blockquote>
+
+<p>Итак, продолжаю знакомиться с системой Git и на этот раз вопрос будет касаться команды <code>git diff</code>. Это краткая заметка, которая ни в коей мере не претендует на полноценный обзор. Скорее всего - философское рассуждение на тему сравнения в Git.</p>
+
+<p>С помощью этой команды в Git можно сравнивать между собой файлы для того, чтобы увидеть - где произошло изменение.</p>
+
+<p>Когда изменение обнаружено, тогда можно решать, что с ним делать - оставить, удалить или отредактировать.</p>
+
+<p>Перед использованием команды <code>diff</code> стоит напомнить о трех состояниях системы Git: Working Area, Staging Area, Repository. Фактически, команда <code>diff</code> производит сравнение между разными состояниями одного файла.</p>
+
+<p>Поэтому, когда запускается команда <code>diff</code>, следует принимать во внимание, что и с чем будет сравниваться.</p>
+
+<h2 id="working-area">Working Area</h2>
+
+<p>Рассмотрим <strong>первый случай</strong>, когда имеется отслеживаемый файл <code>index.html</code>, в который вносятся изменения.</p>
+
+<p>Но изменения в этом файле <strong>не индексируются</strong> (<code>git add</code>) и <strong>не фиксируются</strong> (<code>git commit</code>).</p>
+
+<p>В этом случае, чтобы увидеть изменения, нужно запустить команду:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git diff</code></pre></div>
+
+<p>В этом случае производится сравнение между фиксированной версией файла <code>index.html</code> (в области Repository) и его измененной версией (в области Working Area).</p>
+
+<p>Вывод будет примерно таким:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git diff
+diff --git a/index.html b/index.html
+index 8fbea1c..fff54a9 100644
+--- a/index.html
++++ b/index.html
+@@ -5,6 +5,6 @@
+   &lt;title&gt;Index&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+-
++  &lt;h1&gt;Header 1&lt;/h1&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;</code></pre></div>
+
+<p>В этом примере все предельно ясно и понятно. Строка <code>--- a/index.html</code> - это фиксированная версия файла <code>index.html</code>. Строка <code>+++ b/index.html</code> - это измененная версия файла <code>index.html</code>.</p>
+
+<p>Две строки:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash">-
++  &lt;h1&gt;Header 1&lt;/h1&gt;</code></pre></div>
+
+<p>… отображают, сколько и каких строк удалено (знак минус); сколько и каких строк добавлено (знак плюс).</p>
+
+<p>Итак, с первым вариантом разобрались. Комадна <code>git diff</code> выполняет сравнение версии файла из области Repository и этой же версии из области Working Area.</p>
+
+<h2 id="staging-area">Staging Area</h2>
+
+<p><strong>Второй вариант</strong> - файл <code>index.html</code> отслеживается, в него внесено изменение, которое проиндексировано (внесено в область Staging Area).</p>
+
+<p>Команда <code>git diff</code> <strong>ничего не покажет</strong>, так как изменения в файле <code>index.html</code> были перенесены (<code>git add</code>) из области Working Area в область Staging Area. Другими словами, область Working Area чистая и в ней нет ничего, чтобы можно было сравнить с областью Repository.</p>
+
+<p>В этом случае для команды <code>git diff</code> необходимо добавить ключ <code>--staged</code>. Тогда вывод будет примерно таким:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git diff --staged
+diff --git a/index.html b/index.html
+index 8fbea1c..fff54a9 100644
+--- a/index.html
++++ b/index.html
+@@ -5,6 +5,6 @@
+   &lt;title&gt;Index&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+-
++  &lt;h1&gt;Header 1&lt;/h1&gt;
+ &lt;/body&gt;
+ &lt;/html&gt;</code></pre></div>
+
+<p>Ключ <code>--staged</code> указывает, что необходимо сравнивать область Repository с областью Staging Area.</p>
+
+<p>Итак, разобрались со вторым случаем. Команда <code>git diff --staged</code>производит сравнение области Repository с областью Staging Area.</p>
+
+<h2 id="repository">Repository</h2>
+
+<p>Третий вариант - файл <code>index.html</code> отслеживается, в него внесены изменения, которые проиндексированы (<code>git add</code>) и зафиксированы (<code>git commit</code>).</p>
+
+<p>В этом случае область Working Area и Staging Area чистые от изменений, поэтому область Repository нельзя сравнивать с ними - там нет ничего для сравнения.</p>
+
+<p>Поэтому команда <code>git diff</code> или <code>git diff --staged</code> <strong>ничего не покажет</strong> - сравнивать то не с чем!</p>
+
+<p>Так как все изменения зафиксированы и перенесены в область Repository, то и сравнивать их между собой нужно только там, в этой области.</p>
+
+<p>В этом случае команда сравнения <code>git diff</code> будет выглядеть примерно таким образом:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git diff 0644c20  73a4c4c
+diff --git a/index.html b/index.html
+index fff54a9..8fbea1c 100644
+--- a/index.html
++++ b/index.html
+@@ -5,6 +5,6 @@
+   &lt;title&gt;Index&lt;/title&gt;
+ &lt;/head&gt;
+ &lt;body&gt;
+-  &lt;h1&gt;Header 1&lt;/h1&gt;
++
+ &lt;/body&gt;
+ &lt;/html&gt;</code></pre></div>
+
+<p>Здесь <code>0644c20</code> - это первые семь символов hash-суммы последнего commit’а, <code>73a4c4c</code> - первые семь символов hash-суммы предпоследнего commit’а.</p>
+
+<p>Их можно получить командой:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git log --oneline</code></pre></div>
+
+<p>Другими словами, в этом случае сравниваются между собой различные коммиты. И это могут быть совсем не обязательно соседние коммиты - можно сравнить, к примеру, первый и последний коммиты.</p>
+
+<p>Итак, разобрались с третим вариантом - когда сравниваются командой <code>git diff hash_sum_1 hash_sum_2</code> между собой различные коммиты, расположенные в области Repository.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-04-15T00:00:00+03:00"><a href="http://zencoder.ru/linux/remarkable-markdown-editor-linux/">April 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -574,89 +714,6 @@
 <p>В принципе, на это все.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-03-29T00:00:00+03:00"><a href="http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8/">March 29, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/linux/linux-mp3tag-convert-to-utf8/" rel="bookmark" title="EasyTag - из Windows-1251 в UTF-8" itemprop="url">EasyTag - из Windows-1251 в UTF-8</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Тема статьи - конвертация mp3-тегов, созданных в кодировке <code>windows-1251</code>, в кодировку <code>utf-8</code>, под управлением операционной системы Linux.</p>
-</blockquote>
-
-<h2 id="section">В чем проблема</h2>
-
-<p>Причина возникновения такого вопроса заключается в том, что я уже достаточно давно стал поклонником аудио-книг. И передачи “Модель для сборки” - в частности. И хотя сама передача уже давно закрыта, ее архивы в Интернете доступны для скачивания.</p>
-
-<p>Дома у меня имеются только две операционные системы - Mac OS X 10.10 и Linux Mint 17 Cinnamon. И вот тут возникает небольшая проблема, связанная с тем, что Audacious под Linux и iTunes под Mac не отображают правильно мета-информацию проигрываемых mp3-файлов аудио-книг, если эти файлы созданы под Windows.</p>
-
-<p>Другими словами, аудио-проигрыватель “читает” аудио-книгу, но вот понять визуально - какую, нельзя. Не видно названия книги, ее автора, имени чтеца. Происходит это потому, что оба вышеназванных проигрывателя не могут правильно отображать мета-данные mp3-файлов, если эти мета-данные созданы в кодировке <code>windows-1251</code>.</p>
-
-<h2 id="section-1">Как решить проблему</h2>
-
-<p>Решением вопроса является перекодировка мета-данных mp3-файлов, перевод символов из кодировки <code>windows-1251</code> в кодировку <code>utf-8</code>, с которой умеют работать Audacious и iTunes.</p>
-
-<p>Решение оказалось на удивление простое и “под рукой”. Популярный редактор mp3-тегов под Linux с названием EasyTAG в два счета справляется с задачей. Главное - нужно правильно настроить чтение mp3-тегов этой программой.</p>
-
-<h2 id="easytag">Последовательность действий по настройке EasyTAG</h2>
-
-<ol>
-  <li>
-    <p>Устанавливаем программу EasyTAG</p>
-  </li>
-  <li>
-    <p>Переходим в настройки программы EasyTAG - “Edit - Preferences”</p>
-  </li>
-  <li>
-    <p>К окне настроек программы EasyTAG переходим на вкладку “ID3 Tag Settings”</p>
-  </li>
-  <li>
-    <p>Устанавливаем параметры программы EasyTAG так, как это показано на скриншоте:</p>
-
-    <p><img src="http://zencoder.ru/images/uploads/2015/03/easytag.png" alt="Параметры программы EasyTAG" /></p>
-  </li>
-</ol>
-
-<p>Если описать двумя словами, то необходимо для “ID3v1 tags” выбрать кодировку Windows-1251, для “ID3v1 tags” выбрать кодировку <code>utf-8</code>. Для поля “Character Set for reading ID3 tags” также выбрать кодировку <code>windows-1251</code>.</p>
-
-<h2 id="easytag-1">Конвертация в программе EasyTAG</h2>
-
-<p>Когда программа EasyTAG настроена, то процесс конвертации mp3-тегов из кодировки <code>windows-1251</code> в кодировку <code>utf-8</code> выполнить проще простого.</p>
-
-<ol>
-  <li>
-    <p>Открываем в программе EasyTAG папку с коллекцией mp3-файлов, которые необходимо обработать (переконвертировать).</p>
-  </li>
-  <li>
-    <p>Выделяем в окне программы EasyTAG все эти файлы.</p>
-  </li>
-  <li>
-    <p>Сохраняем их.</p>
-  </li>
-</ol>
-
-<p>Да, именно так - “открыл-сохранил”, ничего больше. И теперь Audacious вместе с iTunes прекрасно читают обработанные файлы музыки (и аудио-книг).</p>
-
-<p>На этом все.</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

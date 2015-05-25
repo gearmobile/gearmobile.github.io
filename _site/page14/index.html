@@ -144,6 +144,189 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-livereload/" rel="bookmark" title="Gulp - плагин gulp-livereload" itemprop="url">Gulp - плагин gulp-livereload</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке.</p>
+</blockquote>
+
+<p>Суть плагина <code>gulp-livereload</code> в автоматизации обновления страниц в окне браузера. Это тоже самое, что и связка - плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка - плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
+
+<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье - “Установка LiveReload в Sublime Text 2” меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда - почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
+
+<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер работает стабильно. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
+
+<h2 id="gulp-livereload">Установка плагина gulp-livereload</h2>
+
+<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу - <a href="https://www.npmjs.org/package/gulp-livereload" title="Gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-livereload</span></code></pre></div>
+
+<p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
+ <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;gulp-livereload&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.1.1&quot;</span>
+ <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span></code></pre></div>
+
+<h2 id="livereload--">Установка плагина LiveReload под браузер</h2>
+
+<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера - Google Chrome и Safari.</p>
+
+<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla - <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится устаревшая версия плагина, которая наверняка не подойдет для вашего браузера.</p>
+
+<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров - <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
+
+<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин - он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
+
+<h2 id="gulp-livereload-1">Создание задачи под gulp-livereload</h2>
+
+<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него - это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас - устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
+
+<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_error_start_server.png" alt="Ошибка запуска сервера LiveReload" /></p>
+
+<p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Все - мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Complie Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">sassSCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
+    <span class="nx">minifyHTML</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-html&#39;</span><span class="p">),</span>
+    <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span>
+
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+
+<span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Sass Complie Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
+
+<h2 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h2>
+
+<p>Осталось выполнить две маленькие вещи. Первая - включаю плагин LiveReload в браузере. Вторая - запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">17</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">19</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span></code></pre></div>
+
+<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию - 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">figure</span><span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+ <span class="p">}</span></code></pre></div>
+
+<p>… и смотрю на вывод в консоли:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span></code></pre></div>
+
+<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> - он тоже подхватил изменения?</p>
+
+<p>Смотрим:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_01.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> - “картинка” в окне браузера изменилась без перезагрузки последнего.</p>
+
+<p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">97</span> <span class="n">ms</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_02.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp - использование плагина <code>gulp-livereload</code>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-26T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-imagemin/">August 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -679,153 +862,6 @@
 <p>В выводе консоли видим, что сначала запустилась задача <code>concat</code> и выполнилась за 7.17 миллисекунд, затем запустилась задача <code>uglify</code> и на ее выполнение ушло 2.64 милисекунды. И затем запустилась задача по умолчанию <code>default</code>, которая выполнилась за 7.04 миллисекунд.</p>
 
 <p>Все прошло успешно.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-21T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/">August 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/" rel="bookmark" title="Gulp - плагин gulp-ruby-sass" itemprop="url">Gulp - плагин gulp-ruby-sass</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Рассмотрим очень нужный и полезный плагин <code>gulp-ruby-sass</code> под Gulp для компиляции файлов Sass в файлы формата CSS. Для разработчиков, которые пользуются препроцессором Sass данный плагин <code>gulp-ruby-sass</code> просто необходим.</p>
-</blockquote>
-
-<p>Для компиляции Sass в CSS под Gulp имеется несколько плагинов. Например, <code>gulp-sass</code> или <code>gulp-ruby-sass</code>. Более стабильным плагином является <code>gulp-ruby-sass</code>. Вот его мы и установим.</p>
-
-<h2 id="gulp-ruby-sass">Установка плагина gulp-ruby-sass</h2>
-
-<p>Команда установки уже стандартная для нас:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-ruby-sass</span></code></pre></div>
-
-<p>В директории <code>sass</code> заранее помещены мною два scss-файла <code>main.scss</code> и <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">sass</span><span class="p">/</span>
-<span class="n">main</span><span class="p">.</span><span class="n">scss</span>  <span class="n">style</span><span class="p">.</span><span class="n">scss</span></code></pre></div>
-
-<p>После этого создаю именованную задачу <code>sass</code> для плагина <code>gulp-ruby-sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>И запускаем задачу <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">12</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Оба файла скомпилированы <code>main.scss</code> и <code>style.scss</code> и помещены по пути <code>build/css</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
-  <span class="n">main</span><span class="p">.</span><span class="n">css</span>  <span class="n">one</span><span class="p">.</span><span class="n">css</span>  <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Взглянем на содержимое хотя бы одного из них (пускай это будет <code>main.css</code>), чтобы убедиться в том, что это уже CSS-файл, а не SCSS-файл:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin.png" alt="Компиляция Sass в CSS с помощью gulp-ruby-sass" /></p>
-
-<p>Да, действительно, перед нами CSS-файл!</p>
-
-<h2 id="gulp-ruby-sass-1">Добавление опций к плагину gulp-ruby-sass</h2>
-
-<p>До этого момента все плагины, которые мы устанавливали и настраивали в виде задач, были без опций. То есть, в потоке мы просто вызывали плагин через переменную и передавали ему данные для обработки. На этом работа плагина заканчивалась.</p>
-
-<p>Однако внимательный читатель мог уже при первом знакостве с плагинами заметить, что в руководстве почти к каждому из них, помимо описания установки, есть раздел, посвященный опциям данного плагина. Другими словами, плагин может не просто обрабатывать данные, а обрабатывать так, как нам это нужно.</p>
-
-<p>Что касается плагина <code>gulp-ruby-sass</code>, то данный плагин может производить компиляцию из Sass в CSS <strong>несколькими способами</strong>. Достаточно почитать раздел <strong>API</strong> к документации к нему - <a href="https://www.npmjs.org/package/gulp-ruby-sass" title="Gulp-Ruby-Sass">gulp-ruby-sass</a>.</p>
-
-<p>Мы же воспользуемся всего одной опцией из этого списка и сделаем так, чтобы результат компиляции был <strong>более сжатым</strong>. Для этого немного изменим созданную ранее задачу <code>sass</code> и добавим опцию <code>style: 'compressed'</code> к переменной <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">({</span>
-    <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;compressed&#39;</span>
-  <span class="p">}))</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Снова запустим задачу <code>sass</code> из консоли:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">68</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>И взглянем на результат компиляции файла <code>main.scss</code> в файл <code>main.css</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin_compressed.png" alt="Компиляция gulp-ruby-sass с опцией compressed" /></p>
-
-<p>Отлично! Видим, что плагин <code>gulp-ruby-sass</code> действительно отработал с опцией <code>compressed</code> и произвел не просто компиляцию из SCSS в CSS, но и сжатие CSS-файла <code>main.css</code> - удалены все лишние пробелы и табуляция, выкинуты лишние точки с запятой, а все CSS-правила размещены в одну строку.</p>
-
-<h2 id="section">Объединение нескольких плагинов в одной задаче</h2>
-
-<p>До недавнего момента при работе в Gulp мы всегда поступали таким образом - “один плагин - одна задача”. Однако, Gulp гораздо гибче и мощнее, чем можно было бы подумать. В частности, в одной задаче можно объединить несколько ранее установленных плагинов именно благодаря поточности Gulp.</p>
-
-<p>Чтобы было более понятно, разберем все вышесказанное на живом примере. Дополним задачу <code>sass</code> плагином конкатенации, чтобы “склеить” два результирующих файла <code>main.css</code> и <code>style.css</code> в один файл <code>compile.css</code>. Как вы уже догадались, для этой цели мы воспользуемся уже установленным ранее плагином <code>gulp-concat</code>.</p>
-
-<p>Видоизменим задачу <code>sass</code>, добавив строку <code>.pipe(concat('compile.css'))</code> после строки с вызовом плагина <code>gulp-ruby-sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">({</span>
-      <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;compressed&#39;</span>
-    <span class="p">}))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;compile.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-  <span class="p">});</span></code></pre></div>
-
-<p>Вновь запустим в консоли задачу <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">05</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Посмотрим содержимое по пути <code>build/css</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">aaron</span><span class="nv">@zmk</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span> <span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
-  <span class="n">compile</span><span class="p">.</span><span class="n">css</span>  <span class="n">one</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Файл <code>compile.css</code> появился по указанному пути. Взглянем на его содержимое в редакторе Sublime Text:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin_compressed_concat.png" alt="Компиляция gulp-ruby-sass и конкатенация Sass в CSS под Gulp" /></p>
-
-<p>Пример получился не совсем удачный, но, тем не менее, наглядный. Видим, чтобы оба плагина отработали. Была произведена компиляция, а затем “склейка” двух файлов в один.</p>
-
-<p>Конечно, благодаря поточности в Gulp, в одну задачу можно добавлять не два плагина, а гораздо больше.</p>
 
 <hr />
 
