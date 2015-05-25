@@ -20,11 +20,11 @@ share: true
 
 {% highlight html %}
 <nav class="test">
-  <a href="javascript:void(0);" class="test__link">test link item</a>
-  <a href="javascript:void(0);" class="test__link">test link item</a>
-  <a href="javascript:void(0);" class="test__link proba">test link item</a>
-  <a href="javascript:void(0);" class="test__link">test link item</a>
-  <a href="javascript:void(0);" class="test__link">test link item</a>
+  <a href="#" class="test__link">test link item</a>
+  <a href="#" class="test__link">test link item</a>
+  <a href="#" class="test__link proba">test link item</a>
+  <a href="#" class="test__link">test link item</a>
+  <a href="#" class="test__link">test link item</a>
 </nav>
 {% endhighlight %}
 
@@ -48,11 +48,11 @@ $('.proba').siblings().addClass('selected');
 
 {% highlight html %}
 <nav class="test">
-  <a href="javascript:void(0);" class="test__link selected">test link item</a>
-  <a href="javascript:void(0);" class="test__link selected">test link item</a>
-  <a href="javascript:void(0);" class="test__link proba">test link item</a>
-  <a href="javascript:void(0);" class="test__link selected">test link item</a>
-  <a href="javascript:void(0);" class="test__link selected">test link item</a>
+  <a href="#" class="test__link selected">test link item</a>
+  <a href="#" class="test__link selected">test link item</a>
+  <a href="#" class="test__link proba">test link item</a>
+  <a href="#" class="test__link selected">test link item</a>
+  <a href="#" class="test__link selected">test link item</a>
 </nav>
 {% endhighlight %}
 
@@ -63,19 +63,19 @@ $('.proba').siblings().addClass('selected');
 {% highlight html %}
 <ul class="test">
   <li class="test__item">
-    <a href="javascript:void(0);" class="test__link">test item link</a>
+    <a href="#" class="test__link">test item link</a>
   </li>
   <li class="test__item">
-    <a href="javascript:void(0);" class="test__link">test item link</a>
+    <a href="#" class="test__link">test item link</a>
   </li>
   <li class="test__item">
-    <a href="javascript:void(0);" class="test__link proba">test item link</a>
+    <a href="#" class="test__link proba">test item link</a>
   </li>
   <li class="test__item">
-    <a href="javascript:void(0);" class="test__link">test item link</a>
+    <a href="#" class="test__link">test item link</a>
   </li>
   <li class="test__item">
-    <a href="javascript:void(0);" class="test__link">test item link</a>
+    <a href="#" class="test__link">test item link</a>
   </li>
 </ul>
 {% endhighlight %}

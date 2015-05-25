@@ -15,24 +15,24 @@ share: true
 {% highlight html %}
 <div class="wrapper">
   <ul id="primo" class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__linmlk">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
 </div>
 {% endhighlight %}
@@ -61,24 +61,24 @@ $(function(){
 {% highlight html %}
 <div class="wrapper">
   <ul id="primo" class="block">
-    <li class="block__item block__item--firstSimple"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item block__item--firstSimple"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
 </div>
 {% endhighlight %}
@@ -119,24 +119,24 @@ $(function(){
 {% highlight html %}
 <div class="wrapper">
   <ul id="primo" class="block">
-    <li class="block__item block__item--firstChild"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item block__item--firstChild"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item block__item--firstChild"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item block__item--firstChild"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item block__item--firstChild"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item block__item--firstChild"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
   <ul class="block">
-    <li class="block__item block__item--firstChild"><a href="#" class="block__link">block link 1</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 2</a></li>
-    <li class="block__item"><a href="#" class="block__link">block link 3</a></li>
+    <li class="block__item block__item--firstChild"></li>
+    <li class="block__item"></li>
+    <li class="block__item"></li>
   </ul>
 </div>
 {% endhighlight %}

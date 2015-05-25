@@ -1,5 +1,5 @@
 ---
-title: "Область применения селекторов в jQuery"
+title: "Область применения селекторов jQuery"
 layout: post
 categories: jquery
 tags: [jquery,scope selectors]

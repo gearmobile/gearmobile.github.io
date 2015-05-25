@@ -33,18 +33,18 @@ share: true
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item"><a href="#" class="test__link">test link item 1</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 2</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 3</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 4</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 5</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 6</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 7</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 8</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 9</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 10</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 11</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 12</a></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
 </ul>
 {% endhighlight %}
 
@@ -69,18 +69,18 @@ $(function(){
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item"><a href="#" class="test__link">test link item 1</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 2</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 3</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 4</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 5</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 6</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 7</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 8</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 9</a></li>
-  <li class="test__item test__link--sliced"><a href="#" class="test__link">test link item 10</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 11</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 12</a></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item test__link--sliced"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
 </ul>
 {% endhighlight %}
 

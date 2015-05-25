@@ -12,18 +12,18 @@ share: true
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item"><a href="#" class="test__link">test link item 1</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 2</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 3</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 4</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 5</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 6</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 7</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 8</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 9</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 10</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 11</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 12</a></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
 </ul>
 {% endhighlight %}
 
@@ -49,18 +49,18 @@ $(function(){
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item"><a href="#" class="test__link">test link item 1</a></li>
-  <li class="test__item test__item--right"><a href="#" class="test__link">test link item 2</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 3</a></li>
-  <li class="test__item test__item--right"><a href="#" class="test__link">test link item 4</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 5</a></li>
-  <li class="test__item test__item--right"><a href="#" class="test__link">test link item 6</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 7</a></li>
-  <li class="test__item test__item--right"><a href="#" class="test__link">test link item 8</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 9</a></li>
-  <li class="test__item test__item--right"><a href="#" class="test__link">test link item 10</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 11</a></li>
-  <li class="test__item test__item--right"><a href="#" class="test__link">test link item 12</a></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--right"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--right"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--right"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--right"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--right"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--right"></li>
 </ul>
 {% endhighlight %}
 
@@ -71,18 +71,18 @@ $(function(){
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item test__item--left"><a href="#" class="test__link">test link item 1</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 2</a></li>
-  <li class="test__item test__item--left"><a href="#" class="test__link">test link item 3</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 4</a></li>
-  <li class="test__item test__item--left"><a href="#" class="test__link">test link item 5</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 6</a></li>
-  <li class="test__item test__item--left"><a href="#" class="test__link">test link item 7</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 8</a></li>
-  <li class="test__item test__item--left"><a href="#" class="test__link">test link item 9</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 10</a></li>
-  <li class="test__item test__item--left"><a href="#" class="test__link">test link item 11</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 12</a></li>
+  <li class="test__item test__item--left"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--left"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--left"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--left"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--left"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__item--left"></li>
+  <li class="test__item"></li>
 </ul>
 {% endhighlight %}
 
@@ -107,18 +107,18 @@ $(function(){
 
 {% highlight html %}
 <ul class="test">
-  <li class="test__item"><a href="#" class="test__link">test link item 1</a></li>
-  <li class="test__item test__link--capitalize"><a href="#" class="test__link">test link item 2</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 3</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 4</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 5</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 6</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 7</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 8</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 9</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 10</a></li>
-  <li class="test__item test__link--uppercase"><a href="#" class="test__link">test link item 11</a></li>
-  <li class="test__item"><a href="#" class="test__link">test link item 12</a></li>
+  <li class="test__item"></li>
+  <li class="test__item test__link--capitalize"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item"></li>
+  <li class="test__item test__link--uppercase"></li>
+  <li class="test__item"></li>
 </ul>
 {% endhighlight %}
 
