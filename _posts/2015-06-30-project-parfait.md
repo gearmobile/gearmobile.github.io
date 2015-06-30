@@ -14,7 +14,7 @@ share: true
 
 Задача открыть PSD файл в Project Parfait чрезвычайно проста. Для этого достаточно перейти по ссылке ["https://projectparfait.adobe.com/"][1] и кликнуть мышью на большой синей кнопке **Upload Your Own PSD**, которая размещается в правом верхнем углу страницы:
 
-![Загрузка PSD в Project Parfait]({{site.url}}/images/uploads/2015/06/uploads/2015/06/upload.png "Загрузка PSD в Project Parfait")
+![Загрузка PSD в Project Parfait]({{site.url}}/images/uploads/2015/06/upload.png "Загрузка PSD в Project Parfait")
 
 Затем нужно войти под своей учетной записью Adobe ID и перетащить (drag'n'drop) PSD-файл на пустую панель, после чего загрузка файла начнется автоматически:
 

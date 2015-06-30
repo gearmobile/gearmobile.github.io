@@ -10,7 +10,7 @@ share: true
 
 Компания Adobe произвела реинкарнацию проекта Project Parfait, добавив в него поддержку бесплатного дискового пространства и сервиса обмена [Creative Cloud Assets][2], а также переименовав его в **Extract**:
 
-![Adobe Extract]({{site.url}}/images/uploads/2015/07/uploads/2015/07/extractoverview.png "Adobe Extract")
+![Adobe Extract]({{site.url}}/images/uploads/2015/07/extractoverview.png "Adobe Extract")
 
 Проект Extract сохранил всю существующую функциональность Project Parfait, а интеграция с CC Files наряду с новой возможностью обмена файлами позволила улучшить и ускорить взаимодействие между веб-дизайнерами и веб-разработчиками.
 
