@@ -11,7 +11,7 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://zencoder.ru/images/header.jpg">
+<meta name="twitter:image" content="http://zencoder.ru/images/header05.jpg">
 
 <meta name="twitter:title" content="Заметки верстальщика">
 <meta name="twitter:description" content="Заметки верстальщика">
@@ -127,7 +127,7 @@
   
   
     <div class="entry-image">
-      <img src="http://zencoder.ru/images/header.jpg" alt="Заметки верстальщика">
+      <img src="http://zencoder.ru/images/header05.jpg" alt="Заметки верстальщика">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -140,6 +140,482 @@
 
 <div id="main" role="main">
   
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-23T00:00:00+04:00"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/">October 23, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css-horizontal-dropdown-menu/" rel="bookmark" title="Создаем горизонтальное выпадающее меню на CSS" itemprop="url">Создаем горизонтальное выпадающее меню на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье “Создаем вертикальное меню на CSS” был освещен вопрос построения вертикального меню с подменю.</p>
+</blockquote>
+
+<p>В этой статье будет логическое продолжение этого вопроса и мы научимся делать горизонтальное меню с выпадающим подменю. Принцип построение и функционирования такой навигации очень похож на вертикальное меню, с той лишь разницей, что она будет располагаться горизонтально. В основе заложен тот же самый принцип - свойство <code>display</code> со значениями <code>none</code> и <code>block</code>.</p>
+
+<p>При построении горизонтального меню нужно быть внимательным с принципом специфичности CSS, то есть - с вложенностью и каскадностью правил. Хорошим подспорьем в этом вопросе является SASS (SCSS), благодаря которому исключаются ошибки при соблюдении каскадности и наследовании свойств.</p>
+
+<p>Код, написанный на SASS (SCSS) короче и логически читается проще, чем CSS. Поэтому, рекомендую изучить этот вопрос в статьях “SASS (SCSS) в картинках - Часть 1”, “SASS (SCSS) в картинках - Часть 2”.</p>
+
+<p>Мы же приступим к созданию горизонтального меню с подменю “на коленках”. Почему говорю так? Дело в том, что существует масса готовых примеров и кода, а также генераторов различных меню. Но они неинтересны - нам нужно разобраться в принципе построения и возможности самому написать такую навигацию. Как обычно, начинаем с каркаса меню, выполненного на HTML:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;hormenu&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_1-4<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_2<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_3-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_4<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;arrow&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-hormenu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-4<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link_5-5<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Структура подобного меню абсолютно одинакова со структурой вертикального меню. Также имеется внешний маркированный список с пунктами в виде ссылок, перед некоторыми из которых добавлены дополнительные подменю, выполненные также в виде маркированного списка.</p>
+
+<p>Различие между внешним и внутренним меню в классах, с помощью которых они будут видоизменяться. Помимо этого вы можете заметить, что у некоторых ссылок есть класс <code>arrow</code>, но о нем мы поговорим позже.</p>
+
+<p>Приступим к оформлению нашего меню с помощью CSS. Сразу оговорюсь, что примеры кода, представленного здесь, написаны на SASS (SCSS). Начнем с того, что расположим навигацию горизонтально:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.hormenu</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
+  <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+  <span class="n">li</span><span class="err">{</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+    <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
+      <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="p">}</span></code></pre></div>
+
+<p>Думаю, ничего загадочного в этой части кода нет. Делаем отступ для меню и располагаем элементы <code>li</code> внутри него горизонтально с помощью свойства <code>float: left</code>. Предотвращаем схлопывание (<code>collapse</code>) блока-родителя <code>ul</code>, прописав для него <code>overflow: hidden</code>.</p>
+
+<p>Чтобы пункты меню были легко различимы, сделаем промежуток между ними с помощью левого <code>margin</code> в 1px. И для аккуратности уберем левый <code>margin</code> у первого элемента <code>li</code>.</p>
+
+<p>Далее оформляем ссылки внутри пунктов <code>li</code>. Делаем ссылки блочными, чтобы кликабельной была вся область пункта навигации и задаем для нее высоту. Также указываем интерлиньяж, чтобы выровнять текст по вертикали и <code>text-align</code> для выравнивания по горизонтали. Цвет фона и цвет текста - как обычно.</p>
+
+<p>Помимо этого, делаем ссылки с относительным позиционированием - оно нам пригодиться позже, когда будем отрисовывать треугольники. В этом коде стоит обратить внимание только на один момент - ширина элемента задается жестко. Это делается для того, чтобы основное меню не дергалось вправо-влево.</p>
+
+<p>Возможна ситуация, когда пункт подменю по ширине будет больше, чем пункт основного меню, и тогда ребенок “растянет” своего родителя.</p>
+
+<p>При скрытии же подменю пункты основного меню будут “сжиматься”, уменьшая ширину до своей собственной. Вот для этой цели и применяется явное задание ширины элемента <code>a</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">130px</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#555</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Продолжим стилизацию нашей навигации и займемся подменю, а точнее - его подпунктами <code>li</code>. Уберем у этих элементов плавание влево <code>float</code> и левый <code>margin</code>, чтобы они не наследовали эти свойства. Убираем плавание, чтобы элементы <code>li</code> расположились вертикально, а левый <code>margin</code> - убрать “лесенку”:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">li</span><span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span><span class="p">;</span></code></pre></div>
+
+<p>Стилизуем ссылки пунктов подменю. Делаем фоновую заливку чуть светлее, чтобы отличалась от основного меню, а текст - чуть темнее по той же причине. Ну и анимация пунктов при наведении курсора мыши:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#111</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#333</span><span class="p">;</span>
+  <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#222</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Теперь самое главное - сделаем подпункты меню выпадающими. Для этого сначала спрячем его, убрав из DOM-модели HTML-документа с помощью значения свойства <code>dislay: none</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-hormenu</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span></code></pre></div>
+
+<p>… а затем будем показывать его только при наведении курсора мыши на пункт меню. Код здесь может показаться немного непонятным, но знак амперсанда означает тоже, что и класс <code>hormenu</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&amp;</span><span class="nd">:hover</span> <span class="nc">.sub-hormenu</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Все - наше меню создано и работает. Давайте немного приукрасив его, придав функциональности. А именно - на данный момент визуально невозможно различить, у какого пункта основного меню есть подменю, а у какого - нет. Для этого “продрисуем” к нужным пунктам небольшой треугольник с помощью псевдо-класса <code>:after</code>.</p>
+
+<p>Как раз здесь нам и понадобиться относительное позиционирование для ссылок, о котором говорилось ранее. Создание стрелки “поручим” отдельному классу <code>arrow</code>, который будем “вешать” только на нужные нам ссылки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.arrow</span><span class="nd">:after</span><span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">border-top</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">666</span><span class="p">;</span>
+  <span class="k">border-left</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+  <span class="k">border-right</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+  <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Вот, в принципе, и все. Основная задача выполнена и горизонтальное меню с выпадающим подменю у нас работает. Конечно, можно озадачиться целью “окрасить” активный пункт основного меню в тот же цвет, что и у подменю. Но эта проблема не входит в рассмотрение поставленной нами задачи. Ниже представлен полный код правил CSS (SCSS) для нашего меню:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+
+ <span class="nt">a</span><span class="p">{</span>
+   <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+ <span class="p">}</span>
+
+ <span class="nc">.arrow</span><span class="nd">:after</span><span class="p">{</span>
+   <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;&#39;</span><span class="p">;</span>
+   <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+   <span class="k">top</span><span class="o">:</span> <span class="m">50%</span><span class="p">;</span>
+   <span class="k">left</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+   <span class="k">width</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+   <span class="k">height</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+   <span class="k">border-top</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">666</span><span class="p">;</span>
+   <span class="k">border-left</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+   <span class="k">border-right</span><span class="o">:</span> <span class="m">4px</span> <span class="k">solid</span> <span class="k">transparent</span><span class="p">;</span>
+   <span class="k">margin-top</span><span class="o">:</span> <span class="m">-2px</span><span class="p">;</span>
+ <span class="p">}</span>
+
+ <span class="nc">.hormenu</span><span class="p">{</span>
+   <span class="k">margin</span><span class="o">:</span> <span class="m">50px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">50px</span><span class="p">;</span>
+   <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+   <span class="n">li</span><span class="err">{</span>
+     <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+     <span class="k">margin-left</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+     <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
+       <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="o">&amp;</span><span class="nd">:hover</span> <span class="nc">.sub-hormenu</span><span class="p">{</span>
+       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+     <span class="p">}</span>
+     <span class="nc">.sub-hormenu</span><span class="p">{</span>
+       <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+       <span class="n">li</span><span class="err">{</span>
+         <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+         <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1px</span> <span class="m">0</span><span class="p">;</span>
+         <span class="n">a</span><span class="err">{</span>
+           <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#111</span><span class="p">;</span>
+           <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#333</span><span class="p">;</span>
+           <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
+             <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">+</span> <span class="m">#222</span><span class="p">;</span>
+           <span class="p">}</span>
+           <span class="o">&amp;</span><span class="nd">:after</span><span class="p">{</span>
+             <span class="k">content</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+           <span class="p">}</span>
+         <span class="err">}</span>
+       <span class="err">}</span>
+     <span class="err">}</span>
+     <span class="nt">a</span><span class="p">{</span>
+       <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+       <span class="k">line-height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
+       <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
+       <span class="k">width</span><span class="o">:</span> <span class="m">130px</span><span class="p">;</span>
+       <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+       <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+       <span class="k">color</span><span class="o">:</span> <span class="m">#ccc</span> <span class="o">-</span> <span class="m">#555</span><span class="p">;</span>
+       <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+     <span class="p">}</span>
+   <span class="err">}</span>
+ <span class="err">}</span></code></pre></div>
+
+<p>… и то, как оно выглядит:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/css-horizontal-menu.jpg" alt="Горизонтальное меню на CSS" /></p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/css-horizontal-menu-with-dropdown-submenu.jpg" alt="Горизонтальное меню с выпадающим подменю" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-10-22T00:00:00+04:00"><a href="http://zencoder.ru/css/css-vertical-dropdown-menu/">October 22, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-vertical-dropdown-menu/" rel="bookmark" title="Создаем вертикальное меню на CSS" itemprop="url">Создаем вертикальное меню на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Продолжаем изучение CSS и сегодня приступим к построению вертикального меню.</p>
+</blockquote>
+
+<p>Такие меню очень популярны и без них не обходится каждый второй сайт. Статей по созданию подобной навигации написано немало, но меня данный факт волнует мало. Моя задача - разобраться в принципе построения подобного меню и возможность сделать его самому, на коленках за пару минут. В действительности все просто, даже очень просто.</p>
+
+<p>Созданное в этой статье вертикальное меню будет далеко по своим внешним эстетическим данным от совершенства. Но это и неважно - важен сам принцип, механизм построения и функционирования подобной навигации. А всякие фантики-бантики можно навесить всегда, было бы желание.</p>
+
+<p>Механизм действия и построения такого меню основан на одном единственном CSS-свойстве - <code>display</code>, а точнее на его значениях - <code>display: block</code> и <code>display: none</code>.</p>
+
+<p>В этой статье будет создаваться простое вертикальное меню, в котором подменю размещается сбоку от основного меню. Существует более сложный вариант вертикального меню, в котором подменю размещается внутри основного.</p>
+
+<p>Такая навигация называется <code>меню-аккордеон</code> и принцип его создания будет рассмотрен позже.</p>
+
+<p>C чего же мы начнем? С построения обычного маркированного списка, пунктами которого будут ссылки. Списку зададим класс с именем <code>menu</code>, так как он нам понадобиться в дальнейшем:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Созданное только что меню будет внешним, а внутри него (<em>точнее внутри его пунктов</em>) мы поместим еще одно меню. Получиться одно меню, вложенное в другое (помните уроки HTML?).</p>
+
+<p>То есть, у нас есть пять пунктов внешнего меню - вот мы и вложим в каждый из них еще одно меню, перед ссылкой. Ссылка будет исполнять роль переключателя, который будет переводить значение свойства <code>display</code> из none в <code>block</code> и наоборот.</p>
+
+<p>В итоге получиться пять подменю, для каждого из которых мы пропишем один класс - <code>sub-menu</code>. Этот класс нам также потребуется в дальнейшем:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;menu&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 1-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 2-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 3-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 4-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5<span class="nt">&lt;/a&gt;</span>
+        <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;sub-menu&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-1<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-2<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;</span>
+        <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punkt 5-3<span class="nt">&lt;/a&gt;</span>
+      <span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Все - каркас будущего вертикального меню готов и больше мы его трогать не будем. Остальные действия будем выполнять только с помощью CSS. Для начала создадим базовые стили, чтобы придать нашему меню хоть какой-то вид:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">*</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">a</span><span class="p">{</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">ul</span><span class="p">{</span>
+  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.menu</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">30px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Здесь мы обнуляем <code>margin</code> и <code>padding</code> для всех элементов, в том числе и <code>ul</code>; убираем маркер у пунктов меню; убираем подчеркивание у ссылок.</p>
+
+<p>Для внешнего списка с классом menu задаем отступ сверху и слева, чтобы не прилипал к границам окна браузера и устанавливаем фиксированную ширину в <code>100px</code>.</p>
+
+<p>Дальше форматируем пункты меню:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span><span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+    <span class="k">line-height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#ccc</span><span class="p">;</span>
+    <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Ставим высоту каждого элемента <code>li</code> равной 20px и выравниваем текст внутри него по центру вертикали; задаем фоновый цвет для них же, чтобы можно было различать каждый из пунктов на фоне окна браузера; делаем нижний <code>margin</code> в 1px, чтобы элементы <code>li</code> не сливались между собой и были похожи на пункты меню.</p>
+
+<p>Последний шаг - устанавливаем для <code>li</code> относительное позиционирование, так как в дальнейшем будем размещать подменю относительно этого элемента.</p>
+
+<p>Далее чисто косметические правила для ссылок, находящихся внутри внешнего меню - размер шрифта (кегль) и цвет текста:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span> <span class="nt">a</span><span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">16px</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#000</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь приступаем к самому интересному - стилизации подменю. Для начала зададим его ширину (пусть будет чуть меньше ширины внешнего списка):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">90px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Затем установим для подменю абсолютное позиционирование для того, чтобы сместить его вправо на значение, равное ширине внешнего списка и “прилепить” кверху каждого из элементов <code>li</code>.</p>
+
+<p>И самое главное - скроем его отображение в браузере через правило <code>display: none</code>. В результате код будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">90px</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+  <span class="k">left</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">top</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Немного стилизуем пункты меню и ссылки в подменю. Для каждого пункта подменю устанавливаем цвет фона, чтобы отличать подменю от основного меню. И цвет ссылок по той же причине:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sub-menu</span> <span class="nt">li</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#aaa</span><span class="p">;</span>
+<span class="p">}</span>
+  <span class="nc">.sub-menu</span> <span class="nt">li</span> <span class="nt">a</span><span class="p">{</span>
+    <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Заключительный код, который заставляет наше меню работать именно так, как задумано. То есть, этим мы говорим браузеру присвоить свойству <code>display</code> значение <code>block</code> при наведении мыши на ссылку во внешнем списке:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.menu</span> <span class="nt">li</span><span class="nd">:hover</span> <span class="nc">.sub-menu</span><span class="p">{</span>
+  <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате подменю отобразиться (браузер сгенерирует его). Изначально в коде было прописано для него <code>display: none</code>. То есть, для браузера такого подменю не существовало и в DOM-модели документа элемент <code>ul</code> с классом <code>sub-menu</code> отсутствовал.</p>
+
+<p>Так как этому подменю задано абсолютное позиционирование со смещением вправо на <code>100px</code> и вверх на <code>0px</code>, то оно поместиться точно справа вверху от своего родителя - пункта меню внешнего списка.</p>
+
+<p>В принципе, на этом уже все сказано. Основной принцип вертикального меню показан и создан. Остальное - уже дело техники, если нужно придать ему нужный вид. На закуску пример нашего меню в обычном состоянии:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/css-vertical-menu.jpg" alt="Вертикальное меню на CSS" /></p>
+
+<p>И меню, когда наведена мышка на один из пунктов меню и справа появляется подменю, соответствующее этому пункту:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/11/css-vertical-menu-expand.jpg" alt="Вертикальное меню на CSS с подменю" /></p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
 <article class="hentry">
   <header>
     
@@ -414,155 +890,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-18T00:00:00+04:00"><a href="http://zencoder.ru/css/css-line-shorter-than-box/">October 18, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-line-shorter-than-box/" rel="bookmark" title="CSS - как сделать линию короче бокса" itemprop="url">CSS - как сделать линию короче бокса</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>При верстке макета сайта, кстати, совсем несложного, возник вопрос.</p>
-</blockquote>
-
-<p>Заключается он в том, имеется информационная часть, разбитая на две колонки. Каждая из колонок также разделена на отдельные секции - посты. Для колонок и постов на макете задуманы дизайнером декоративные линии-разделители.</p>
-
-<p>Проблемы с созданием таких линий, в принципе, нет никакой. Их можно легко создать с помощью стилевого правила <code>border-bottom</code> и <code>border-right</code>. Или же с помощью правил <code>border-right</code> и элемента <code>hr</code>.</p>
-
-<p>Но вопрос заключается в том, что декоративные линии на макете короче, чем высота колонки или ширина поста. То есть, получается, что <code>border</code> должен быть короче, чем бокс:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/css-lines.png" alt="Декоративные линии короче, чем контент" /></p>
-
-<p>Как же поступить в данном случае? Скажем так, обычными способами CSS решить такой вопрос невозможно. Но решение было найдено с помощью форума htmlbook.</p>
-
-<p>В данном случае можно выйти из положения с помощью псевдокласса <code>:after</code>. Для наглядности представим такой пример.</p>
-
-<p>Создаем слой с контентом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text text</code></pre></div>
-
-<p>И пропишем для него стилевые правила:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">div {
-  width: 300px;
-  position: relative;
-}</code></pre></div>
-
-<p>Как видим, их не так уж и много. Задаем ширину блока и устанавливаем для него относительное позициоирование. Затем для созданного нами бокса создаем псевдокласс <code>:after</code> и прописываем для него свойства:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">div</span><span class="nd">:after</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s2">&quot;&quot;</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">-10px</span><span class="p">;</span>
-  <span class="k">bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">border-left</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Немного распишем, что да как в этом коде.</p>
-
-<p>Внутри простого блока после его содержимого создается псевдоблок с абсолютным позиционированием, для которого устанавливаются координаты <code>top</code> и <code>bottom</code> (<strong>благодаря двум последним он растягивается, так как создаются верхняя и нижняя координата для границы</strong>) и для этого блока создается только левая граница <code>border-left</code> со свойствами: <code>1px сплошного черного цвета</code>.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-10-17T00:00:00+04:00"><a href="http://zencoder.ru/css/css-image-shadow/">October 17, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-image-shadow/" rel="bookmark" title="CSS - два способа создания тени для картинки" itemprop="url">CSS - два способа создания тени для картинки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Столкнулся с интересным примером или задачей - не знаю, как сказать.</p>
-</blockquote>
-
-<p>Состоит в том, чтобы сделать для картинки тень, причем внутреннюю тень. Казалось бы, задачу просто решить - с помощью <code>box-shadow</code> или <code>text-shadow</code>.</p>
-
-<p>Но не все так просто. В Интернете есть хорошие статьи на эту тему, в частности, на Хабре имеет очень детальный обзор данного способа.</p>
-
-<p>Но пример так мне понравился, что решил его описать у себя - повторение мать учения, как говорится.</p>
-
-<p>Данную задачу можно решить двумя способами. Ни один из них не является достаточно универсальным, это всего лишь выход из положения. Итак, имеется изображение, для которого нужно создать внутреннюю тень.</p>
-
-<p><strong>Первый способ</strong> - это “обернуть” ее в дополнительный блок, которому прописать внутреннюю тень. Главное тут - не забыть “опустить” изображение внутри блока, чтобы тень “легла” на нее.</p>
-
-<p>Код такого способа представлен ниже:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;block1&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/charlize_theron_1.jpg&quot;</span> <span class="na">width=</span><span class="s">&quot;480&quot;</span> <span class="na">height=</span><span class="s">&quot;300&quot;</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block1</span><span class="p">{</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="k">inset</span> <span class="m">0</span> <span class="m">0</span> <span class="m">6px</span> <span class="m">4px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">7</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">480px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
-<span class="p">}</span>
-  <span class="nc">.block1</span> <span class="nt">img</span><span class="p">{</span>
-    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
-    <span class="k">z-index</span><span class="o">:</span> <span class="m">-2</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>И результат работы этого кода:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/block-outer.png" alt="Картинка, обернутая в блок" /></p>
-
-<p>Все хорошо - просто и работает. Единственный минус - нарушение семантики HTML-кода. Ведь, чтобы добавить для картинки всего лишь тень, потребовалось создать лишний HTML-элемент, тем самым засоряя документ.</p>
-
-<p><strong>Второй способ</strong> - более правильный с точки зрения семантики. Чтобы “набросить” тень на изображение, нужно поместить его в блок в качестве фонового изображения.</p>
-
-<p>В остальном все остается точно таким же, как и в первом примере. Также создается внутренняя тень для блока, но при этом нет необходимости “опускать” картинку с помощью z-index.</p>
-
-<p>Код второго способа показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;block2&quot;</span><span class="nt">&gt;&lt;/div&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block2</span><span class="p">{</span>
-  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="k">inset</span> <span class="m">0</span> <span class="m">0</span> <span class="m">12px</span> <span class="m">8px</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">481px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">361px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(images/charlize_theron_2.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Картинка - результат работы этого кода:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/block-inside.png" alt="Картинка, вложенная в блок в качестве фонового изображения" /></p>
-
-<p>Код более краткий. Единственный минус - изображение должно быть только в качестве фона для блока.</p>
-
-<p>На этом все.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -842,6 +1169,12 @@
       <li>
         
           <a href="http://zencoder.ru/page45">45</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page46">46</a>
         
       </li>
     

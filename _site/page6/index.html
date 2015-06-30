@@ -11,7 +11,7 @@
 
 <!-- Twitter Cards -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="http://zencoder.ru/images/header.jpg">
+<meta name="twitter:image" content="http://zencoder.ru/images/header05.jpg">
 
 <meta name="twitter:title" content="Заметки верстальщика">
 <meta name="twitter:description" content="Заметки верстальщика">
@@ -127,7 +127,7 @@
   
   
     <div class="entry-image">
-      <img src="http://zencoder.ru/images/header.jpg" alt="Заметки верстальщика">
+      <img src="http://zencoder.ru/images/header05.jpg" alt="Заметки верстальщика">
     </div><!-- /.entry-image -->
   
   <div class="header-title">
@@ -140,6 +140,197 @@
 
 <div id="main" role="main">
   
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-07T00:00:00+03:00"><a href="http://zencoder.ru/git/github-fallback-commit/">April 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-fallback-commit/" rel="bookmark" title="Откат коммитов на GitHub" itemprop="url">Откат коммитов на GitHub</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Небольшая статья, посвященная вопросу отката коммитов в GitHub.</p>
+</blockquote>
+
+<p>В чем заключается вопрос, собственно? В том, что имеется определенный репозиторий, размещенный на сервере GitHub. У этого удаленного репозитория есть локальная синхронизированная версия на рабочей машине автора. Этот репозиторий изменяется с большей или меньшей периодичностью; все изменения фиксируются соответствующими коммитами.</p>
+
+<p>И вот в один прекрасный момент в репозиторий было внесено изменение, которое затем было закоммичено и отправлено на GitHub. Однако, от этого изменения нужно избавиться - оно ошибочное.</p>
+
+<p>Но как это сделать, если коммит уже находится на GitHub? В интерфейсе сервиса GitHub я не нашел нужной кнопки, чтобы удалять конкретный коммит и тем самым возвращать репозиторий до нужного состояния.</p>
+
+<p>Это потому, что управление коммитами на GitHub производится через локальный репозиторий. Ниже приведу три несложных шага для того, чтобы показать, каким образом это выполняется.</p>
+
+<h2 id="section">Шаг первый</h2>
+
+<p>Первое - необходимо получить список hash-сумм последних коммитов репозитория. Это и понятно - нужно иметь перед собой дерево коммитов, чтобы видеть - куда двигаться. В дереве коммитов hash-суммы являются опорными точками, идентификационными номерами каждого из коммитов:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">log</span></code></pre></div>
+
+<p>Ниже показан краткий вывод команды <code>git log</code> - четыре самых поздних коммита репозитория:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">commit</span> <span class="n">ee3a2ae6888fb87d5013786f6cf3b18da63f7bbb</span>
+<span class="n">Author</span><span class="err">:</span> <span class="n">gearmobile</span> <span class="p">&lt;</span><span class="n">gearmobile</span><span class="nv">@gmail</span><span class="p">.</span><span class="n">com</span><span class="p">&gt;</span>
+<span class="n">Date</span><span class="err">:</span>   <span class="n">Mon</span> <span class="n">Apr</span> <span class="n">6</span> <span class="n">17</span><span class="err">:</span><span class="n">48</span><span class="err">:</span><span class="n">08</span> <span class="n">2015</span> <span class="p">+</span><span class="n">0300</span>
+
+    <span class="k">End</span>
+
+<span class="n">commit</span> <span class="n">6d92268e42eace0c78a5150144645333b769623d</span>
+<span class="n">Author</span><span class="err">:</span> <span class="n">gearmobile</span> <span class="p">&lt;</span><span class="n">gearmobile</span><span class="nv">@gmail</span><span class="p">.</span><span class="n">com</span><span class="p">&gt;</span>
+<span class="n">Date</span><span class="err">:</span>   <span class="n">Mon</span> <span class="n">Apr</span> <span class="n">6</span> <span class="n">17</span><span class="err">:</span><span class="n">06</span><span class="err">:</span><span class="n">35</span> <span class="n">2015</span> <span class="p">+</span><span class="n">0400</span>
+
+    <span class="n">Close</span> <span class="n">to</span> <span class="k">end</span>
+
+<span class="n">commit</span> <span class="n">855404bf39b5fabd45ba0c6f5702e7a28949a02e</span>
+<span class="n">Author</span><span class="err">:</span> <span class="n">gearmobile</span> <span class="p">&lt;</span><span class="n">gearmobile</span><span class="nv">@gmail</span><span class="p">.</span><span class="n">com</span><span class="p">&gt;</span>
+<span class="n">Date</span><span class="err">:</span>   <span class="n">Mon</span> <span class="n">Apr</span> <span class="n">6</span> <span class="n">15</span><span class="err">:</span><span class="n">24</span><span class="err">:</span><span class="n">04</span> <span class="n">2015</span> <span class="p">+</span><span class="n">0400</span>
+
+    <span class="k">End</span> <span class="n">2014</span><span class="p">-</span><span class="n">07</span><span class="p">-</span><span class="n">16</span>
+
+<span class="n">commit</span> <span class="n">3eb55145a79f9f8f732338a0e80bd71b2325b6da</span>
+<span class="n">Author</span><span class="err">:</span> <span class="n">gearmobile</span> <span class="p">&lt;</span><span class="n">gearmobile</span><span class="nv">@gmail</span><span class="p">.</span><span class="n">com</span><span class="p">&gt;</span>
+<span class="n">Date</span><span class="err">:</span>   <span class="n">Mon</span> <span class="n">Apr</span> <span class="n">6</span> <span class="n">12</span><span class="err">:</span><span class="n">48</span><span class="err">:</span><span class="n">17</span> <span class="n">2015</span> <span class="p">+</span><span class="n">0400</span>
+
+    <span class="k">End</span></code></pre></div>
+
+<p>Мне нужно вернуть репозиторий из состояния, описанного в коммите <code>ee3a2ae6888fb87d</code>, в состояние, зафиксированное в коммите <code>6d92268e42eace0c</code>.</p>
+
+<h2 id="section-1">Шаг второй</h2>
+
+<p>Для этого я воспользуюсь командой <code>reset</code>, с ключом <code>--hard</code>. Эта команда мне подходит потому, что я не собираюсь сохранять изменения, зафиксированные в коммите <code>ee3a2ae6888fb87d</code>, так как они полностью ошибочны.</p>
+
+<p>Как подробно описывается в статье <a href="/git/git-undoing-changes/">Отмена изменений в Git</a>, такую задачу можно выполнить командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">reset</span> <span class="p">-</span><span class="n">-hard</span> <span class="n">6d92268e42eace0c</span></code></pre></div>
+
+<p>где <code>6d92268e42eace0c</code> - начальные 16 символов hash-суммы коммита, на который я хочу “перепрыгнуть”. Полный вид hash-суммы в 40 символов можно не использовать - достаточно 16 символов для надежной идентификации конкретного коммита.</p>
+
+<p>После выполнения этой команды локальный репозиторий будет сброшен к состоянию, зафиксированному в коммите <code>6d92268e42eace0c</code>. Другими словами, я избавился от последних ошибочных изменений и вернул репозиторий в предыдущее его состояние.</p>
+
+<p>Однако, это всего лишь половина дела, так как откат коснулся только локального репозитория. В этой статье речь идет прежде всего об удаленном репозитории, размещенном на GitHub. Как добиться внесения аналогичных изменений на GitHub?</p>
+
+<p>Казалось бы - просто! Достаточно выполнить команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
+
+<p>Но, на самом деле это не получится сделать - Git не позволит это выполнить. По той причине, что на данный момент состояние локального репозитория имеет более раннюю версию, нежели состояние удаленного репозитория.</p>
+
+<p>Вместо этого Git предложит выполнить комнаду <code>git pull</code>, чтобы привести локальный репозиторий к удаленному.</p>
+
+<h2 id="section-2">Шаг третий</h2>
+
+<p>Чтобы заставить Git выполнить обратную задачу - привести удаленный репозиторий к локальному, необходимо использовать ключ <code>-f</code>.</p>
+
+<p>То есть, форсировать внесение изменений и тем самым “сказать” Git - синхронизировать удаленный репозиторий с локальным репозиторием несмотря на то, что последний имеет более ранюю версию:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">push</span> <span class="o">-f</span></code></pre></div>
+
+<h2 id="section-3">Заключение</h2>
+
+<p>Теперь, если проверить состояние удаленного репозитория на сервере GitHub, то увидим, что оно идентично состоянию локального репозитория. Но самое главное - удален последний ошибочный коммит, чего я и добивался.</p>
+
+<p>На этом все,</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-02T00:00:00+03:00"><a href="http://zencoder.ru/linux/easytag-several-operations/">April 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/linux/easytag-several-operations/" rel="bookmark" title="EasyTAG - работаем с программой" itemprop="url">EasyTAG - работаем с программой</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Как оказалось, работа в программе EasyTAG - это нетривиальная задача. Интерфейс программы не является интуитивно понятным (по крайней мере - для меня).</p>
+</blockquote>
+
+<p>У меня стояло несколько задач для обработки файлов аудио-книг:</p>
+
+<ul>
+  <li>одновременное редактирование тегов для нескольких mp3-файлов</li>
+  <li>добавление изображений к mp3-файлу</li>
+  <li>переименование mp3-файлов по их тегам</li>
+</ul>
+
+<p>Во всех трех случаях мне пришлось заглядывать в справку <kbd>F1</kbd> программы EasyTAG, чтобы разобраться с вопросами.</p>
+
+<h2 id="easytag-----mp3-">EasyTAG - редактирование нескольких mp3-файлов</h2>
+
+<p>Если стоит задача редактирования тегов для нескольких mp3-файлов одновременно (а такая задача возникает часто), для этого необходимо выполнить несложную последовательность действий.</p>
+
+<ol>
+  <li>Выделить в окне EasyTAG все редактируемые mp3-файлы</li>
+  <li>Изменить значение тега</li>
+  <li>Нажать на значок “Ab” в поле тега</li>
+</ol>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_multiple-rename.png" alt="Редактирования нескольких файлов одновременно" class="center-image" /></p>
+
+<ol>
+  <li>Сохранить внесенные изменения</li>
+</ol>
+
+<h2 id="easytag----">EasyTAG - добавление изображения</h2>
+
+<p>Для добавления изображений (обложек) к аудио-файлам, нужно воспользоваться соответствующей вкладкой в панели редактирования тегов EasyTAG. Значок плюса добавляет изображение к файлу (можно добавить несколько изображений); но есть еще два значка, не столь очевидных.</p>
+
+<p>Первый значок (шестренка) служит для открытия окна редактирования изображения (обложки) файла. Можно изменить заголовок изображения, а также его тип.</p>
+
+<p>Второй значок служит для того, чтобы назначить изображение для всех выбранных mp3-файлов. Это аналог значка “Ab”, только для изображений.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_cover_edit.png" alt="Добавление изображения" class="center-image" /></p>
+
+<h2 id="easytag----mp3---">EasyTAG - переименование mp3-файлов по тегам</h2>
+
+<p>Еще одна крайне важная и полезная функция, которая необходима в программе EasyTAG - это переименование mp3-файлов по значениям тега этого mp3-файла. Другими словами, имеется mp3-файл такого (примерного) вида - <code>2013-04-02-Альфред-ван-Вогт-Зачарованная деревня.mp3</code>. Это mp3-файл нужно переименовать в программе EasyTAG и привести к виду <code>Альфред-ван-Вогт - Зачарованная деревня.mp3</code>.</p>
+
+<p>Программа EasyTAG обладает такой возможностью, вот только “добраться” (точнее - догадаться) до этой функции с первого раза не получиться. Ниже приведена последовательность действий для достижения этой цели.</p>
+
+<ol>
+  <li>Выделить в окне EasyTAG все редактируемые mp3-файлы</li>
+  <li>Нажать иконку “Show scanner”. Откроется окно “Tag and Filename Scan”, в котором в поле “Scanner” из выпадающего списка необходимо выбрать запись “Rename File and Directory”. Во втором поле окна размещен обширный список готовых масок для переименования файлов. Можно выбрать готовую маску, а можно создать свою - это очень просто сделать. Должно получиться нечто похожее на следующее:</li>
+</ol>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_file-rename-via-tag.png" alt="Переименование файлов по тегам" class="center-image" /></p>
+
+<ol>
+  <li>Нажать кнопку “Scan Files”, чтобы применить маску к ранее выбранным mp3-файлам.</li>
+  <li>Закрыть окно “Tag and Filename Scan”, нажав кнопку “Close”.</li>
+  <li>Сохранить внесенные изменения. При этом появиться окно с предупреждением о переименовании mp3-файла (-ов)</li>
+</ol>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/04/easytag_file-rename-via-tag-confirm.png" alt="Подтверждение переименования файлов" class="center-image" /></p>
+
+<p>В принципе, на это все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
 <article class="hentry">
   <header>
     
@@ -517,272 +708,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-01-28T00:00:00+03:00"><a href="http://zencoder.ru/git/git-undoing-changes/">January 28, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-undoing-changes/" rel="bookmark" title="Отмена изменений в Git" itemprop="url">Отмена изменений в Git</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Обширная и достаточно сложная тема. Однако необходимая, если стоит задача изучить и иметь возможность работать в Git.</p>
-</blockquote>
-
-<p>Эта тема касается отмены изменений в Git. Так как эта система контроля версий представляет из себя три ветки - рабочая директория, буфер, репозиторий - то будут рассмотрены все три способа.</p>
-
-<h2 id="section">Отмена изменений в рабочей директории</h2>
-
-<p>Для отмены изменений в рабочей директории необходимо выполнить одну команду:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">checkout</span> <span class="p">--</span> <span class="n">name_of_file</span></code></pre></div>
-
-<p>Данная команда говорит Git вернуть состояние файла <code>name_of_file</code> до того, каким оно было зафиксировано в репозитории. Другими словами, произойдет сброс изменений файла в рабочей директории проекта.</p>
-
-<p>Обязательным условием использования команды <code>checkout</code> является двойной дефис. Это “говорит” команде <code>checkout</code>, что в данном случае нужно оставаться в текущей ветке (branche).</p>
-
-<h2 id="section-1">Отмена изменений в буфере</h2>
-
-<p>Для отмены изменений в буфере нужно использовать команду:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="n">name_of_file</span></code></pre></div>
-
-<p>Эта команда “вернет” файл <code>name_of_file</code> из буфера в рабочую директорию.</p>
-
-<h2 id="section-2">Отмена изменений в репозитории</h2>
-
-<p>Что касается репозитория, то здесь ситуация намного сложнее. Связано это с тем, что все коммиты в репозитории взаимосвязаны между собой.</p>
-
-<p>Нельзя просто так взять и изменить какой-либо определенный коммит - все они находятся в своеобразной цепочке и один коммит проистекает из предыдущего коммита.</p>
-
-<p>Другими словами, у каждого коммита есть свой коммит-родитель и коммит-потомок. Изменить какой-либо коммит - это значит вырвать его из этой цепочки взаимосвязей. Тем самым нарушится целостность всего репозитория и работа Git также нарушится. Ведь дело в том, что сама суть системы контроля версий Git основана на такой взаимосвязанной цепочке коммитов - один коммит проистекает из другого, второй из первого, третий из второго и так далее.</p>
-
-<p>Как же поступить в данной ситуации?</p>
-
-<p>Не все так мрачно, как кажется на первый взгляд. На самом деле существует много способов отмены изменений в репозитории. Ниже мы познакомимся с ними.</p>
-
-<h3 id="amend">Опция amend</h3>
-
-<p>Если следовать из логического рассуждения, представленного выше, то получается, что в цепочке коммитов должен быть крайний коммит - тот, который был внесен совсем недавно. У этого коммита есть коммит-родитель, но нет коммита-потомка, так как этот коммит - крайний в цепочке.</p>
-
-<p>Соответственно, раз у этого коммита нет потомков, то изменение этого коммита не повлечет за собой нарушение целостности всей цепочки коммитов. Измениться только этот коммит - и только.</p>
-
-<p>Изменить крайний коммит можно просто перезаписав его. Для этой цели служит ключ <code>--amend</code>. Команда в целом представляет из себя следующее:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">commit</span> <span class="p">-</span><span class="n">-amend</span> <span class="n">-m</span> <span class="s2">&quot;Add some commit&quot;</span></code></pre></div>
-
-<p>Как только будет выполнена подобная команда, крайний коммит (тот, на котором находится указатель HEAD) будет перезаписан и это очень легко проследить - достаточно сравнить контрольную сумму SHA этого коммита до и после изменений.</p>
-
-<h3 id="checkout">Команда checkout</h3>
-
-<p>С помощью команды <code>checkout</code> можно выполнять откат репозитория до нужной версии. Данный способ основан на самом факте существования цепочки коммитов, в которой в роли узлов выступают сами коммиты.</p>
-
-<p>Образно можно представить данную ситуацию очень наглядно - как обычную магнитофонную ленту в старых кассетных магнитофонах. То место на ленте, где произошла последняя остановка и на котором находится звукозаписывающая головка - это и есть крайний коммит. Предыдущие коммиты - это места на ленте, когда происходила остановка записи в те самые моменты.</p>
-
-<p>Команда <code>checkout</code> может заставить указатель HEAD вернуться назад, на предыдущее место остановки - на предыдущий коммит. И необязательно этот коммит должен быть предыдущим - он может быть любым более ранним.</p>
-
-<p>Все что для этого нужно - это указать тот коммит, к которому должен вернуться HEAD. Указать коммит просто - у каждого коммита есть уникальный идентификатор - контрольная SHA-сумма.</p>
-
-<p>Команда возврата к нужному коммиту выглядит таким образом:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">checkout</span> <span class="p">--</span> <span class="n">4a2f59a32bd1074c42</span> <span class="n">name_of_file</span></code></pre></div>
-
-<p>Можно указать только часть SHA-суммы, так как это показано выше.</p>
-
-<p>И тогда Git произведет сброс состояния (<em>которые были сделаны в последнем коммите</em>) файла <code>name_of_file</code> в буфер. Если ввести команду <code>git status</code> то увидим, что в буфере будут изменения, готовые для коммита. Это те самые изменения файла <code>name_of_file</code>, которые мы “выбросили” из репозитория.</p>
-
-<p>Дальше выполняем “выброс” изменений файла <code>name_of_file</code> из буфера в рабочую директорию, чтобы мы смогли внести правки в этот файл:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">reset</span> <span class="n">HEAD</span> <span class="n">name_of_file</span></code></pre></div>
-
-<p>Все, что будет внесено в этот файл, а затем закоммичено - будет иметь уже другую контрольную сумму. А следовательно - это уже будет совсем другой коммит.</p>
-
-<h3 id="section-3">Зеркалирование коммитов</h3>
-
-<p>Одной из разнообразных команд Git для внесения изменений в репозиторий является команда <code>revert</code>.</p>
-
-<p>Суть ее очень проста - она отменяет все изменения, зафиксированные в крайнем коммите; и создает новый коммит, который является потомком предыдущего коммита, но в тоже время его зеркальной копией, противоположностью.</p>
-
-<p>Синтаксис команды revert также прост:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">revert</span> <span class="n">4a2f59a32bd1074c42</span></code></pre></div>
-
-<p>где <code>4a2f59a32bd1074c42</code> - это часть SHA-суммы крайнего коммита.</p>
-
-<h3 id="reset">Команда reset</h3>
-
-<p>Команда <code>reset</code> также может изменять репозиторий Git. Делает она это путем смещения указателя HEAD на нужный коммит.</p>
-
-<p>После такого смещения HEAD все более поздние коммиты никуда не пропадут из репозитория - они все еще там. Но теперь любое закоммиченное изменение произведет перезапись более поздних коммитов - и тогда они будут потеряны навсегда.</p>
-
-<p>Ситуация очень похожа на то образное сравнение цепочки коммитов Git с магнитофонной лентой. Стоит отмотать ленту на 10-20 минут назад и снова начать запись, то все более поздние записи (<em>относительно этого места</em>) будут перезаписаны.</p>
-
-<p>У команды <code>reset</code> есть три ключа, которые незначительно видоизменяют ее работу:</p>
-
-<ul>
-  <li>-soft</li>
-  <li>-mixed</li>
-  <li>-hard</li>
-</ul>
-
-<p>Команда <code>git reset --soft 4a2f59a32bd1074c42</code> произведет смещение указателя HEAD на указанный коммит 4a2f59a32bd1074c42. При этом Git произведет сброс изменений в буфер. В результате буфер и рабочая директория будут идентичными между собой; а репозиторий будет переведен в более ранее состояние.</p>
-
-<p>Команда <code>git reset --mixd 4a2f59a32bd1074c42</code> аналогична предыдущей. Также будет произведено смещение указателя HEAD. Но теперь Git сбросит изменения в рабочую директорию. Репозиторий и буфер будут идентичными друг другу и находиться в более раннем состоянии.</p>
-
-<p>Команда <code>git reset --hard 4a2f59a32bd1074c42</code> самая “жесткая”. Также будет произведено смещение указателя HEAD на указанный коммит, но при этом будет произведен сброс всех трех деревьев Git - репозитория, буфера и рабочей директории. Все три будут идентичными друг другу.</p>
-
-<h2 id="clean">Команда clean</h2>
-
-<p>В системе Git существует команда <code>clean</code> для удаления не отслеживаемых файлов в рабочей директории.</p>
-
-<p>Разница между командой <code>git rm</code> и <code>clean</code> заключается в том, что при удалении файлов из рабочей директории первой командой они вроде как удаляются. Но на самом деле удаленные файлы все еще остаются в системе Git. Просто они помещены в раздел мусора и являются теперь мусором.</p>
-
-<p>Команда <code>clean</code> как раз и выполняет очистку мусора в системе. Она удаляет все не отслеживаемые и неиспользуемые файлы.</p>
-
-<p>Но даже это она делает очень осторожно. Если просто запустить <code>git clean</code>, то ничего не произойдет. Система Git скажет, что команду <code>clean</code> необходимо запускать либо с ключом <code>-n</code>, либо с ключом <code>-f</code>.</p>
-
-<p>Запуск <code>git clean -n</code> - это тестовый запуск команды удаления. Ничего удалено не будет - система лишь покажет, что она собирается удалить, какие файлы.</p>
-
-<p>А вот запуск <code>git clean -f</code> произведен реальное удаление всех файлов, которые Git считает мусором. И в этом случае эти файлы будут потеряны навсегда.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-01-28T00:00:00+03:00"><a href="http://zencoder.ru/git/git-gitignoring-files/">January 28, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-gitignoring-files/" rel="bookmark" title="Игнорирование файлов в Git" itemprop="url">Игнорирование файлов в Git</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Два способа игнорирования файлов - локальный и глобальный. Шаблоны для игнорирования файлов в для различных операционных систем, языков программирования, CMS и т. д. Игнорирование уже отслеживаемого файла в Git. Отслеживание пустых директорий.</p>
-</blockquote>
-
-<h2 id="gitignore">Шаблоны правил для .gitignore</h2>
-
-<p>Два ресурса на GitHub, в которых собраны шаблоны файла <code>.gitignore</code> для разных случаев - разных операционных систем, разных языков программирования и т. д.</p>
-
-<h3 id="section">Общий список правил</h3>
-
-<p>По ссылке ниже представлен набор общих правил и рекомендаций при создании файла <code>.gitignore</code>. Помимо этого, в данном разделе показан шаблон для самого общего случая использования <code>.gitignore</code>:</p>
-
-<p><a href="https://help.github.com/articles/ignoring-files/">Общий список правил игнорирования файлов в Git</a></p>
-
-<h3 id="section-1">Детализированный список правил</h3>
-
-<p>По ссылке ниже представлен более детальный и полезный список правил, по которым создается файл <code>.gitignore</code>. В этом списке можно найти рекомендации для разных операционных систем (Linux, Mac OS X, Windows, Android), разных языков программирования (Java, Perl и т. д.), различных CMS (к примеру - Joomla, Magento, Jekyll). Даже для README есть свой набор правил!</p>
-
-<p><a href="https://github.com/github/gitignore">Деталированный список правил игнорирования файлов в Git</a></p>
-
-<p>Помимо списка языков программирования, в котором для каждого пункта этого списка представлены рекомендованные правила для файла <code>.gitignore</code>, имеется еще дополнительная директория “Global”.</p>
-
-<p>Как раз в этой директории располагается список рекомендаций применительно к операционным системам. Достаточно найти нужную систему, перейти по ссылке и воспользоваться набором правил.</p>
-
-<h2 id="section-2">Глобальное игнорирование</h2>
-
-<p>В Git возможно игнорирование файлов двумя способами:</p>
-
-<ul>
-  <li>локально</li>
-  <li>глобально</li>
-</ul>
-
-<p>В последнем случае (<em>глобально</em>) имеется ввиду, что Git будет игнорировать указанные файлы всегда, в любом из проектов.</p>
-
-<p>Ярким примером такого глобального игнорирования являются служебные файлы операционной системы - они должны игнорироваться всегда и в любом проекте Git.</p>
-
-<p>Файл конфигурации с глобальным игнорированием может быть назван как угодно (в отличие от файла <code>.gitignore</code>). Главное - он должен располагаться в домашней директории пользователя, а не в директории с проектом. И это его главное отличие от файла <code>.gitignore</code>.</p>
-
-<p>После того, как файл глобального игнорирования создан, необходимо добавить его в конфигурационный файл Git. То есть, “сказать” Git, что “у тебя есть список файлов, которые ты должен игнорировать; этот список называется так и расположен он здесь”.</p>
-
-<p>Выполняется это командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">config</span> <span class="p">-</span><span class="n">-global</span> <span class="n">core</span><span class="p">.</span><span class="n">excludesfile</span> <span class="p">~/.</span><span class="n">gitignore_global</span></code></pre></div>
-
-<p>Если теперь взглянуть на конфигурационный файл Git, то увидим следующее:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">~/.</span><span class="n">gitconfig</span>
-<span class="no">[user]</span>
-    <span class="n">name</span> <span class="p">=</span> <span class="n">g</span><span class="p">*</span><span class="n">e</span>
-    <span class="n">email</span> <span class="p">=</span> <span class="n">g</span><span class="p">*</span><span class="n">e</span><span class="nv">@gmail</span><span class="p">.</span><span class="n">com</span>
-<span class="no">[core]</span>
-    <span class="n">excludesfile</span> <span class="p">=</span> <span class="p">/</span><span class="n">Users</span><span class="p">/</span><span class="n">g</span><span class="p">*</span><span class="n">e</span><span class="p">/.</span><span class="n">gitignore_global</span></code></pre></div>
-
-<h2 id="section-3">Игнорирование отслеживаемого файла</h2>
-
-<p>Может возникнуть ситуация, когда файл был создан и помещен в репозиторий Git. То есть, теперь он является отслеживаемым.</p>
-
-<p>Но это была ошибка - этот файл не нужно было отслеживать! Как сказать Git, чтобы он не отслеживал этот файл?</p>
-
-<p>Для этого нужно выполнить два шага.</p>
-
-<p>Первый - это внести имя нужного файла в список игнорируемых файлов - отредактировать файл <code>.gitignore</code>.</p>
-
-<p>Однако, этот шаг еще ничего не даст - Git все также будет его отслеживать, так как он уже внесен в буфера обмена.</p>
-
-<p>Для этого нужно “вынуть” данный файл из буфера обмена. Это выполняется командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">git</span> <span class="n">rm</span> <span class="p">-</span><span class="n">-cached</span> <span class="n">name_of_file</span></code></pre></div>
-
-<p>Данная команда удалит указанный файл из буфера обмена, однако оставит в рабочей директории и в репозитории. Последующий коммит произведет удаление этого файла и из репозитория.</p>
-
-<p>Осталось только выполнить коммит обоих изменений - <em>добавление файла в игнорируемые</em> и <em>удаление его из репозитория</em>.</p>
-
-<p>Все последующие изменения в этом файле <em>отслеживаться не будут</em>.</p>
-
-<h2 id="section-4">Отслеживание пустых директорий</h2>
-
-<p>У Git имеется одна очень не очевидная особенность, которая сбивает с толку прозелитов и в один прекрасный момент может их подвести, если они не знают о данном факте.</p>
-
-<p>Заключается он в том, что Git - это система контроля версий для файлов! Другими словами - Git умеет отслеживать только файлы!</p>
-
-<p>Поэтому, если в проекте имеется пустая директория, то Git ее просто “выкинет”. По той простой причине, что точки зрения Git директория - всего лишь путь к файлу, способ найти отслеживаемый файл. А раз файла нет, то путь ведет <em>вникуда</em>, так как отслеживать <em>нечего</em>.</p>
-
-<p>Кстати сказать, я сам когда-то был таким новичком и столкнулся с этим непонятным для меня фактом. Интуитивно догадался, в чем дело и поступал таким “корявым” (<em>как я считал</em>) способом.</p>
-
-<p>К примеру, для директории psd я создавал файл-заглушку <code>dummy.psd</code> размером 1px*1px. Главное - чтобы в директории psd что-то лежало - тогда Git не удалит ее! )</p>
-
-<p>Как оказалось, я был прав! И это единственный правильный способ заставить Git <em>отслеживать пустые директории</em>.</p>
-
-<p>Одна только <em>маленькая поправка</em> - в мире Unix такой файл-заглушку можно создать с помощью команды <code>touch</code> и выглядеть такой файл будет так (<em>общепринятое соглашение</em>):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">.</span><span class="n">gitkeep</span></code></pre></div>
-
-<p>Что же - этот способ более аккуратный и грамотный!</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1058,6 +983,12 @@
       <li>
         
           <a href="http://zencoder.ru/page45">45</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page46">46</a>
         
       </li>
     
