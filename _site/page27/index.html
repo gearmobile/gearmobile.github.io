@@ -144,6 +144,326 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-13T00:00:00+04:00"><a href="http://zencoder.ru/css/stih-css3/">December 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/stih-css3/" rel="bookmark" title="Стилизация стихотворения с помощью CSS3-селекторов" itemprop="url">Стилизация стихотворения с помощью CSS3-селекторов</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Селекторы стандарта CSS3 имеют поистине безграничные возможности для выделения HTML-элементов без создания дополнительной разметки (которая практически всегда применялась в предыдущих версиях CSS).</p>
+</blockquote>
+
+<p>В этой статье я собираюсь менее чем за 5 минут выполнить стилизацию популярного детского стихотворения “Мерцай, звездочка, мерцай!”, используя CSS3-селекторы.</p>
+
+<h2 id="section">Кодируем стихотворение</h2>
+
+<p>Не существует единого мнения в вопросе, как следует выполнять HTML-разметку для стихотворения: большинство полагает, что каждый стих из стихотворения должен быть параграфом (<code>p</code>), а каждая строка стиха должна быть отделена от другой с помощью элемента <code>br</code>.</p>
+
+<p>Некоторые возлагают надежды на грядущие элементы стандарта HTML5, предназначенные специально для форматирования стихотворений, такие как <code>&lt;poem&gt;</code>, <code>&lt;stanza&gt;</code> и <code>&lt;line&gt;</code>. Однако маловероятно, что это будущее наступит в скором времени (<em>если вообще наступит</em>).</p>
+
+<h2 id="section-1">Разметка</h2>
+
+<p>В будущей разметке имеются три основных элемента:</p>
+
+<ul>
+  <li>заголовок;</li>
+  <li>подзаголовок с информацией об авторе;</li>
+  <li>само стихотворение, собственно.</li>
+</ul>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
+  Twinkle Twinkle Little Star
+<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;h2&gt;</span>
+  by Jane Taylor, 1806
+<span class="nt">&lt;/h2&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  Twinkle, twinkle, little star,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      How I wonder what you are!<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Up above the world so high,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Like a diamond in the sky!
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  When the blazing sun is gone,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      When he nothing shines upon,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Then you show your little light,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Twinkle, twinkle, all the night.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  Then the traveller in the dark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Thanks you for your tiny spark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      He could not see which way to go,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      If you did not twinkle so.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  In the dark blue sky you keep,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      And often through my curtains peep,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      For you never shut your eye,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Till the sun is in the sky.
+<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>
+  As your bright and tiny spark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Lights the traveller in the dark,<span class="ni">&amp;mdash;</span><span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Though I know not what you are,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
+      Twinkle, twinkle, little star.
+<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<h2 id="section-2">Стилизация заголовков</h2>
+
+<p>Прежде чем приступать к стилизации элементов страницы, необходимо добавить базовый сброс стилей и некоторые значения по умолчанию в таблицу стилей:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#111</span><span class="p">;</span>
+  <span class="k">font</span><span class="o">:</span> <span class="m">14px</span> <span class="n">Baskerville</span><span class="o">,</span> <span class="s2">&quot;Palatino Linotype&quot;</span><span class="o">,</span> <span class="s2">&quot;Times New Roman&quot;</span><span class="o">,</span> <span class="n">Times</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span>
+
+  <span class="nt">div</span><span class="o">,</span> <span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span><span class="o">,</span> <span class="nt">p</span> <span class="p">{</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Само стихотворение обернем в блок <code>div</code> и разместим его по центру окна браузера, для большей красоты:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">390px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Заголовки стихотворения также разместим по центру страницы и уберем полужирное начертание, присвоенное им по умолчанию:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span> <span class="p">{</span>
+    <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Установим размер шрифта для основного заголовка - тега <code>h1</code>; добавим небольшой <code>margin-bottom</code> и такой же <code>line-height</code> (потому что размер шрифта был задан слишком большой; если заголовок окажется достаточно длинным, то между его строками будет большое расстояние):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">34px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Для заголовка второго уровня <code>h2</code> с информацией об авторе и дате публикации будет использовать другой, более легкий цвет; меньший размер шрифта; сделаем его курсивным, чтобы он выглядел совсем уж по другому; а также небольшой отступ внизу с помощью <code>margin-bottom</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h2</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#666</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
+  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-3">Стихотворение</h2>
+
+<p>Для основного текста стихотворения добавим интерлиньяж <code>line-height</code> достаточно большого размера для того, чтобы расстояние между строками было большое и такой текст было удобно читать. Также для каждого стиха добавим <code>margin-bottom</code>, чтобы визуально отделить их друг от друга:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="p">;</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section-4">Волшебные селекторы</h2>
+
+<p>А вот теперь начнем развлекаться! Первое - добавим декоративный элемент в начале и в конце информации об авторе. Для этого воспользуемся псевдо-элементами <code>:before</code> и <code>:after</code> в сочетании с CSS-свойством <code>content</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h2</span><span class="nd">:before</span> <span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;— &#39;</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">h2</span><span class="nd">:after</span> <span class="p">{</span>
+  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39; —&#39;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь увеличим первую букву стихотворения - так называемая <em>буквица</em> (<code>drop cap</code>). Для этого воспользуемся смежным селектором (<code>+</code>) и псевдо-элементом (<code>:first-child</code>).</p>
+
+<p>Смежный селектор позволяет выбрать селекторы, которые следуют сразу выбранным нами селектором внутри одного и того же элемента-родителя (например, внутри одного и того же блока <code>div</code>).</p>
+
+<p>Мы выделим первую букву каждого параграфа, который следует сразу за заголовком второго уровня <code>h2</code>, который в нашем примере только один:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">h2</span> <span class="o">+</span> <span class="nt">p</span><span class="nd">:first-letter</span> <span class="p">{</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">38px</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">2px</span> <span class="m">5px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Буквицу смещаем влево, так чтобы остальной текст обтекал его вокруг; при увеличении размера шрифта междустрочный интервал <code>line-height</code> уменьшаем, чтобы последующие строки не были сдвинуты вниз; и слегка сместим буквицу внутри текста с помощью <code>margin</code>.</p>
+
+<p>Выделим первую строку каждого параграфа через <code>small-caps</code> и сделаем его более удобочитаемым, добавив немного расстояния между каждой строчкой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">p</span><span class="nd">:first-line</span> <span class="p">{</span>
+  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
+  <span class="k">letter-spacing</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Для того, чтобы еще как-то выделить стихотворение, добавим к последнему параграфу дополнительное пространство внизу, чтобы отделить его от всего остального контента, который будет идти следом за ним. Для этого воспользуемся псевдо-элементом <code>:last-child</code>, с помощью которого выделим последнего потомка элемента-родителя:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">p</span><span class="nd">:last-child</span> <span class="p">{</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+  <span class="k">padding-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Вот стилизация стихотворения и закончена!</p>
+
+<h2 id="section-5">Некоторые заметки о поддержке браузерами</h2>
+
+<p>Не стоит ожидать, что весь созданный CSS-код будет одинаково работать во всех основных браузерах. Последние версии Safari, Firefox и Opera поддерживают все представленные здесь селекторы. Но Internet Explorer 8 не поддерживает псевдо-элемент <code>:last-child</code>; Internet Explorer 7 не поддерживает псевдо-элементы <code>:last-child</code>, <code>:before</code> и <code>:after</code>; Internet Explorer 6 также не поддерживает псевдо-элемент <code>:first-child</code>, помимо всего прочего.</p>
+
+<h2 id="section-6">Заключение</h2>
+
+<p>Эта статья является очень общим и кратким руководством, как использовать селекторы CSS3-стандарта для стилизации HTML-элементов без дополнительных классов, идентификаторов или чрезмерно раздутого кода. Селекторы CSS3 не работают в более старых версиях браузеров, таких как Internet Explorer 6, в которых генерируются только основные CSS-свойства (за редким исключением).</p>
+
+<p>Но это не означает, что текст в окне браузера делается нечитаемым - просто CSS3-селекторы добавляют дополнительное оформление в современных браузерах, которыми пользуются на сегодняшний день только небольшое количество людей.</p>
+
+<blockquote>
+  <p>Примечание переводчика: статья была написано довольно давно - в 2009 году. Что касается поддержки браузерами CSS3-селекторов, то на сегодняшний день изменений не так уже и много. Исключением является факт, что о браузере IE6 можно забыть.</p>
+</blockquote>
+
+<p>Оригинал статьи - “<a href="http://webdesignernotebook.com/css/styling-a-poem-with-advanced-css-selectors/" title="Styling a Poem with Advanced CSS Selectors">Styling a Poem with Advanced CSS Selectors</a>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-12T00:00:00+04:00"><a href="http://zencoder.ru/pseudo-class-empty/">December 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/pseudo-class-empty/" rel="bookmark" title="Краткая заметка по псевдо-классу :empty" itemprop="url">Краткая заметка по псевдо-классу :empty</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Я люблю ту простоту, которую привносят CSS3-селекторы в таблицы стилей. В этой статье приведено краткое описание одного из моих любимых селекторов: псевдо-класса <code>:empty</code>.</p>
+</blockquote>
+
+<h2 id="empty">Что такое псевдо-класс :empty</h2>
+
+<p>Вот краткое описание, взятое из спецификации W3C:</p>
+
+<blockquote>
+  <p>Псевдо-класс <code>:empty</code> относится к элементу, у которого нет потомков.</p>
+</blockquote>
+
+<p>Звучит просто и понятно, не правда ли? Потому что это действительно так - псевдо-класс <code>:empty</code> применяется к элементам, которые полностью пустые; например, для пустого параграфа:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<p>Или же пустые ячейки таблицы:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span></code></pre></div>
+
+<p>А вот к такому параграфу псевдо-класс <code>:empty</code> не применим, так как он не является пустым (внутри этого тега есть пробел, который является равноправным символом по сравнению со всеми остальными):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<h2 id="empty-1">Практическое применение :empty</h2>
+
+<p>Хорошо, но каким образом может быть полезен этот селектор?</p>
+
+<p>Представим ситуацию, когда вы стилизуете таблицу и некоторые из ячеек этой таблицы не имеют данных внутри себя. Тогда вы можете применить к ним другие правила благодаря псевдо-классу <code>:empty</code>.</p>
+
+<p>Давайте возьмем таблицу, которая создавалась мною ранее. Я собираюсь использовать те же самые таблицы стилей, но сделаю их более упрощенными. Также я собираюсь удалить содержимое из некоторых ячеек для того, чтобы сделать пример соответствующим статье.</p>
+
+<p>Разметка будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
+  <span class="nt">&lt;caption&gt;</span>A simple table<span class="nt">&lt;/caption&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">rowspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>Some headings<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">&gt;</span>More headings<span class="nt">&lt;/th&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Great<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Brilliant<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Genius<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Good<span class="nt">&lt;/th&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Interesting totals<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>155<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>165<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>70<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>140<span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Curious<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>35<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>50<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>15<span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Awesome<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>75<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>90<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Fabulous<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>30<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>20<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>80<span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+  <span class="nt">&lt;tr&gt;</span>
+    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Nice<span class="nt">&lt;/th&gt;</span>
+    <span class="nt">&lt;td&gt;</span>45<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
+    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
+  <span class="nt">&lt;/tr&gt;</span>
+<span class="nt">&lt;/table&gt;</span></code></pre></div>
+
+<p>И вот, что я собираюсь добавить в таблицы стилей, для того чтобы отформатировать пустые ячейки таблицы:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">tbody td:empty {
+  background: #efefef;
+}</code></pre></div>
+
+<p>А вот теперь пустые ячейки таблицы отформатированы <a href="http://webdesignernotebook.com/examples/empty-selector.html" title="Empty Selector">по-другому</a>! Мне кажется, что невозможно сделать это более простым способом.</p>
+
+<p>Если вас этот селектор заинтересовал, то скажу, что он поддерживается всеми последними версиями браузеров Firefox, Safari, Chrome и Opera. И возможно, он работает в браузере Internet Explorer 9, наравне с остальными селекторами стандарта CSS3.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-12-11T00:00:00+04:00"><a href="http://zencoder.ru/css/css-frameworks-evil/">December 11, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -624,949 +944,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-08T00:00:00+04:00"><a href="http://zencoder.ru/css/wonderful-function-calc/">December 08, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/wonderful-function-calc/" rel="bookmark" title="Замечательная функция calc()" itemprop="url">Замечательная функция calc()</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Как всегда случайно набрел в просторах Интернет на <a href="http://webdesignernotebook.com/" title="Web Designer Notebook">интересный блог</a> одной девушки-дизайнера с не менее интересным именем Inayaili de León Persson.</p>
-</blockquote>
-
-<p>Более того, эта девушка португальского происхождения родом из Панамы, но родилась она в СССР! С 2008 года живет в Лондоне и работает ведущим веб-дизайнеров в Canonical. Как все запутано!</p>
-
-<p>Но это было лирическое вступление. Переходим к главному. Мне на глаза уже давно попадались описания функции <code>calc()</code> - на CSSTricks (еще не успел прочитать) и на htmlbook (успел прочитать). Последний источник как-то не впечатлил, из-за сухости изложения материала, наверное.</p>
-
-<p>А вот на сайте девушки с таким необычным именем функция <code>calc()</code> описана кратко, но интересно, с примерами. И хоть написана статья была в далеком 2011 году, мне интересно было ее прочитать для себя (и фактически перевести).</p>
-
-<h2 id="calc">Что такое функция calc()</h2>
-
-<p>Функция <code>calc()</code> может быть использована для вычисления различных линейных размеров на странице. Например, с ее помощью можно рассчитывать значение границ, <code>margin</code>, <code>padding</code>, кегля и многое другое.</p>
-
-<p>Вычисление ширины объектов может быть чрезвычайно сложной задачей, особенно если макет сайта резиновый; функция <code>calc()</code> уникальная, потому что она позволяет выполнять расчеты внутри самих таблиц стилей CSS.</p>
-
-<p>Функция <code>calc()</code> умеет работать с простейшими математическими операторами:</p>
-
-<ul>
-  <li>сложением <code>+</code></li>
-  <li>вычитанием <code>-</code></li>
-  <li>умножением <code>*</code></li>
-  <li>делением <code>/</code></li>
-</ul>
-
-<p>Давайте рассмотрим простейший пример работы функции <code>calc()</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">div</span><span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="p">);</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Очень просто, не правда ли? В одной функции может использоваться не один, а несколько математических операторов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">div</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span> <span class="o">+</span> <span class="m">2px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В текущей спецификации говориться, что операции умножения и деления имеют приоритет над операциями сложения и вычитания. Это означает, что в примере выше сначала будет вычислено выражение <code>2px*2</code>, и только затем два оставшихся - сложение и вычитание. Также обратите внимание, что деление на 0 приведет (и должно привести) к ошибке.</p>
-
-<p>Спецификация по функции <code>calc()</code> еще не завершена, но ее основы уже готовы.</p>
-
-<h2 id="calc-1">Простой пример calc()</h2>
-
-<p>Для того, чтобы показать возможности функции <code>calc()</code>, была создана базовая разметка страницы с помощью этой функции.</p>
-
-<p>Разметка состоит из основного контейнера <code>div id="main"</code> (расположенного слева), колонки справа <code>div id="accessory"</code> и подвала, помещенного внизу <code>div id="footer"</code>.</p>
-
-<p>Ниже приведен код этой разметки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;main&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Far far away ...<span class="nt">&lt;/h1&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Far far away, behind the word mountains ...<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;accessory&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;ul&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Far far away ...<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Separated they live ...<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-      <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>A small river named ...<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">&quot;footer&quot;</span><span class="nt">&gt;</span>Visit the article ...<span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>После применения не требующего объяснений (надо надеяться) простого сброса CSS-стилей (полный код CSS-сброса смотрите в исходном коде примера - <a href="http://webdesignernotebook.com/examples/calc-function.html" title="Calc Examples">Calc Examples</a>), установки базового шрифта и внешнего вида ссылок, стилизуем элемент <code>body</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#e8eadd</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#3c323a</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>После этого я говорю, что основной контейнер <code>div.wrapper</code> должен занимать всю ширину своего контейнера (100%) за вычетом 40 пикселей и располагаться горизонтально, по центру:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrapper</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">1024px</span><span class="p">;</span> <span class="c">/* Откат для браузеров, которые не поддерживают функцию calc() */</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">40px</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">40px</span><span class="p">);</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В коде выше была добавлена строка отката для браузеров, которые не поддерживают работу с функцией <code>calc()</code>, а также браузерный префикс <code>-moz-</code> для браузера Firefox 4.</p>
-
-<p>Затем устанавливается ширина, границы, плавание влево и <code>margin</code> для основного блока с контентом <code>div#main</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#main</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">8px</span> <span class="k">solid</span> <span class="m">#b8c172</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">20px</span> <span class="m">20px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">704px</span><span class="p">;</span> <span class="c">/* Откат для браузеров, которые не поддерживают функцию calc() */</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">75%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">75%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Давайте разберемся с функцией <code>calc()</code> в этом примере кода. Здесь я хочу, чтобы ширина контейнера <code>div#main</code> равнялась 75% (75% от ширины контейнера-родителя, не забывайте об этом!).</p>
-
-<p>Но из этой ширины мне необходимо вычесть <code>padding</code> слева и справа от контейнера - <code>20px*2</code>, а также ширину границы с обоих сторон - <code>8px*2</code>.</p>
-
-<p>Переходим к боковой панели <code>div#accessory</code> и говорим ей, что она должна занимать оставшуюся ширину контейнера-родителя в 25%. Но при этом также должны учитываться ширина границы этого блока, <code>margin-right: 20px</code> и <code>padding</code>. Блок будет “плавать” вправо:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#accessory</span><span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">8px</span> <span class="k">solid</span> <span class="m">#b8c172</span><span class="p">;</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">208px</span><span class="p">;</span> <span class="c">/* Откат для браузеров, которые не поддерживают функцию calc() */</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">25%</span> <span class="o">-</span> <span class="m">10px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span> <span class="m">-20px</span><span class="p">);</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">25%</span> <span class="o">-</span> <span class="m">10px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span> <span class="m">-20px</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Если более подробно разобрать выражение <code>calc(25% - 10px*2 - 8px*2 -20px)</code>, то увидим, что из первоначальной ширины 25% вычитается padding справа и слева <code>10px*2</code>, ширина правой и левой сторон границы этого блока <code>8px*2</code>, а также правый <code>margin</code> для блока-контейнера <code>div#main</code>.</p>
-
-<p>Блок-подвал <code>footer</code> просто имеет ширину, равную всей ширине блока-родителя. Я думаю, что описывать стили для этого блока излишне.</p>
-
-<p>Если уменьшать размер окна браузера, то при достижении им определенной величины ширина боковой панели <code>div#accessory</code> становиться слишком маленькой, что нарушает дизайн страницы.</p>
-
-<p>Поэтому в код ниже был добавлен простой <code>media query</code>, с помощью которого у блоков <code>div#main</code> и <code>div#accessory</code> убирается плавание влево-вправо и пересчитывается ширина обоих блоков так, чтобы они занимали 100% ширины блока-родителя за минусом ширины границ и соответствующих <code>padding</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="nt">screen</span> <span class="nt">and</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">768px</span><span class="o">)</span><span class="p">{</span>
-
-  <span class="nf">#main</span><span class="o">,</span> <span class="nf">#accessory</span><span class="p">{</span>
-    <span class="k">float</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
-  <span class="p">}</span>
-
-  <span class="nf">#main</span><span class="p">{</span>
-    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-    <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-  <span class="p">}</span>
-
-  <span class="nf">#accessory</span><span class="p">{</span>
-    <span class="k">width</span><span class="o">:</span> <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-    <span class="k">width</span><span class="o">:</span> <span class="n">calc</span><span class="p">(</span><span class="m">100%</span> <span class="o">-</span> <span class="m">20px</span><span class="o">*</span><span class="m">2</span> <span class="o">-</span> <span class="m">8px</span><span class="o">*</span><span class="m">2</span><span class="p">);</span>
-  <span class="p">}</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Приведенный выше пример разметки страницы является очень упрощенным. Но есть надежда, что он заинтересует вас и подтолкнет к дальнейшим экспериментам с замечательной функцией <code>calc()</code>.</p>
-
-<h2 id="section">Поддержка браузерами</h2>
-
-<p>Функция <code>calc()</code> поддерживается браузером IE9 и Firefox 4 (для которого необходимо указать браузерный префикс <code>-moz-calc()</code>). Я понимаю, однако, что применение этой функции в устаревших браузерах к таким вещам, как анимация, может быть большой проблемой. Но в тоже время, анимация не является жизненно важной необходимостью сайта.</p>
-
-<p>Это не означает, что вы не должны пробовать эту функцию на практике. Ведь разработчики браузеров Firefox и IE предприняли усилия для того, чтобы внести поддержку данной функции в свои браузеры. Доля этих браузеров на мировом рынке самая большая, поэтому, я полагаю, что остальные производители браузеров не останутся долго в стороне.</p>
-
-<p>В своих примерах я предпочла использовать откат в виде абсолютной величины (ширина блока) для браузеров, которые не поддерживают данную функцию.</p>
-
-<blockquote>
-  <p>Дальше переводить не стал, ибо идет сплошная “вода” в виде заключения и всяческих пожеланий, не относящаяся к делу.</p>
-</blockquote>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-05T00:00:00+04:00"><a href="http://zencoder.ru/css/css-sass-less-stylus/">December 05, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~23 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-sass-less-stylus/" rel="bookmark" title="CSS-препроцессоры и преимущество их использования" itemprop="url">CSS-препроцессоры и преимущество их использования</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Статья на NetTuts+, написанная Johnathan Croom в 2012 году.</p>
-</blockquote>
-
-<p>Основная цель статьи - показать преимущество использования любого из трех описанных в ней препроцессоров Sass, LESS и Stylus. Обзор прекрасно подойдет для новичков, которые только открывают для себя эту грань веб-дизайна.</p>
-
-<p>В этой статье мы рассмотрим преимущества и выгоды использования трех различных препроцессоров - <a href="http://sass-lang.com/" title="Sass">Sass</a>, <a href="http://lesscss.org/" title="LESS">LESS</a> и <a href="http://learnboost.github.com/stylus/" title="Stylus">Stylus</a>.</p>
-
-<h2 id="section">Введение</h2>
-
-<p>Препроцессоры CSS были созданы с одной единственной целью - добавить стилевым таблицам CSS мощь и одновременную гибкость без нарушения кросс-браузерности. Все препроцессоры компилируют созданный с помощью их синтаксиса код в стандартный CSS-код, который понимает и использует любой браузер, каким бы древним он (<em>браузер</em>) не был.</p>
-
-<p>Существуют множество преимуществ, которые привносят препроцессоры в таблицы стилей CSS и в этой статье мы рассмотрим только некоторые из них, как хорошо известные, так и мало распространенные. Давайте приступим к обзору.</p>
-
-<h2 id="section-1">Синтаксис</h2>
-
-<p>Наиболее важной частью при написании кода в любом препроцессоре CSS является его синтаксис. В счастью для нас, синтаксис всех трех препроцессоров, которые мы будем рассматривать, имеют CSS-подобный вид.</p>
-
-<h3 id="sass--less">Sass &amp; LESS</h3>
-
-<p>Оба препроцессора Sass и LESS имеют стандартный CSS-синтаксис. Это делает задачу конвертирования уже существующего CSS-кода в синтаксис любого из этих препроцессоров простой и быстрой. Sass использует для своих файлов расширение <code>.scss</code>, LESS - расширение <code>.less</code>.</p>
-
-<p>Вид обычного файла в синтаксисе Sass или LESS представлен ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* style.scss или style.less */</span>
-
-<span class="nt">h1</span><span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0982c1</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Хорошо видно, что это обычный синтаксис CSS, который прекрасно конвертируется в Sass (SCSS) или LESS.</p>
-
-<p>Важно обратить внимание, что Sass (SCSS) также имеет старую версию синтаксиса Sass, в которой опущены точки с запятой и фигурные скобки.</p>
-
-<p>Несмотря на то, что такой синтаксис все еще можно применять на практике, он является устаревшим и мы не будем использовать его в наших примерах.</p>
-
-<p>Синтаксис Sass (<em>старая версия</em>) выглядит следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* style.sass */</span>
-
-<span class="nt">h1</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="nt">0982c1</span></code></pre></div>
-
-<h3 id="stylus">Stylus</h3>
-
-<p>Для своих файлов этот препроцессор использует расширение <code>.styl</code>. Синтаксис препроцессора Stylus более многословный (<em>прим. переводчика: автор что-то напутал здесь</em>) в нем применяется за основу стандартный синтаксис CSS, но допускается применение различного сочетания скобок, двоеточий и точек с запятой.</p>
-
-<p>Примеры синтаксиса Stylus:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* CSS-подобный синтаксис */</span>
-
-<span class="nt">h1</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0982C1</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="c">/* опущены фигурные скобки */</span>
-
-<span class="nt">h1</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="nf">#0982C1</span><span class="o">;</span>
-
-<span class="c">/* опущены фигурные скобки, двоеточия и точки с запятой */</span>
-
-<span class="nt">h1</span>
-  <span class="nt">color</span> <span class="nf">#0982C1</span></code></pre></div>
-
-<p>Все варианты синтаксиса, показанные выше, являются валидными и в результате компиляции получается правильный CSS-код. Например, такой код скомпилируется в стандартный CSS без ошибок:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
-  <span class="k">color</span> <span class="m">#0982c1</span>
-<span class="p">}</span>
-<span class="nt">h2</span>
-  <span class="nt">font-size</span><span class="o">:</span> <span class="nt">1</span><span class="nc">.2em</span></code></pre></div>
-
-<h2 id="section-2">Переменные</h2>
-
-<p>В препроцессорах переменные объявляются и используются внутри файлов стилей CSS. Переменные могут принимать любое значение, допустимое в CSS (цвет, число или текст) и может ссылаться из любого места CSS-документа.</p>
-
-<h3 id="sass">Sass</h3>
-
-<p>В препроцессоре Sass переменная объявляется с помощью символа <code>$</code>, при этом имя переменной и ее значение отделяются друг от друга двоеточием так, как это делается в CSS:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">mainColor</span><span class="o">:</span> <span class="nf">#0982c1</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">siteWidth</span><span class="o">:</span> <span class="nt">1024px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">borderStyle</span><span class="o">:</span> <span class="nt">dotted</span><span class="o">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="err">$</span><span class="n">mainColor</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="err">$</span><span class="n">borderStyle</span> <span class="err">$</span><span class="n">mainColor</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="err">$</span><span class="n">siteWidth</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less">LESS</h3>
-
-<p>Переменные в LESS точно такие же, как и в Sass, за исключением того, что перед именем переменной ставится символ <code>@</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mainColor</span><span class="o">:</span> <span class="nf">#0982c1</span><span class="p">;</span>
-<span class="k">@siteWidth</span><span class="o">:</span> <span class="nt">1024px</span><span class="p">;</span>
-<span class="k">@borderStyle</span><span class="o">:</span> <span class="nt">dotted</span><span class="p">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="o">@</span><span class="n">mainColor</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="o">@</span><span class="n">borderStyle</span> <span class="o">@</span><span class="n">mainColor</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="o">@</span><span class="n">siteWidth</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="stylus-1">Stylus</h3>
-
-<p>Переменные в Stylus не нуждаются ни в каком знаке для своего объявления, но, тем не менее, могут использовать символ <code>$</code>. Как правило, завершающий символ строки точка с запятой также не нужен, за исключением случая, когда имя переменной и ее значение совпадают.</p>
-
-<p>Еще один достойный упоминания момент заключается в том, что Stylus (0.22.4) компилирует код, даже если в нем имя переменной объявлено с помощью символа <code>@</code>, но при вызове этой переменной в коде подстановки значения переменной не происходит.</p>
-
-<p>Другими словами, не выполняется такая операция:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">mainColor</span> <span class="o">=</span> <span class="nf">#0982c1</span>
-<span class="nt">siteWidth</span> <span class="o">=</span> <span class="nt">1024px</span>
-<span class="o">$</span><span class="nt">borderStyle</span> <span class="o">=</span> <span class="nt">dotted</span>
-
-<span class="nt">body</span>
-  <span class="nt">color</span> <span class="nt">mainColor</span>
-  <span class="nt">border</span> <span class="nt">1px</span> <span class="o">$</span><span class="nt">borderStyle</span> <span class="nt">mainColor</span>
-  <span class="nt">max-width</span> <span class="nt">siteWidth</span></code></pre></div>
-
-<h3 id="css">Скомпилированный CSS</h3>
-
-<p>Каждый из представленных в виде примера файлов компилируется в точно такой же CSS-код. Вы можете включить воображение, чтобы представить, насколько полезными могут быть переменные.</p>
-
-<p>Благодаря им отпадает необходимость задавать значение цвета и потом двадцать раз повторять его в CSS-коде. Или же поставлена задача изменить ширину сайта и для этого необходимо “перерыть” код в поисках этой величины.</p>
-
-<blockquote>
-  <p>Прим. переводчика: здесь автор немного утрирует ситуацию, так как в любом нормальном редакторе кода имеется функция поиска.</p>
-</blockquote>
-
-<p>Ниже представлен CSS-код после выполнения компиляции:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0982c1</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">dotted</span> <span class="m">#0982c1</span><span class="p">;</span>
-  <span class="k">max-width</span><span class="o">:</span> <span class="m">1024px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="nesting">Вложенность (nesting)</h2>
-
-<p>Если в коде CSS поставлена задача обратиться одновременно к нескольким элементам, имеющим одного и того же родителя, то писать снова и снова этого родителя - занятие утомительное.</p>
-
-<p>Например, так:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">section</span> <span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">section</span> <span class="nt">nav</span> <span class="p">{</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">section</span> <span class="nt">nav</span> <span class="nt">a</span> <span class="p">{</span>
-    <span class="k">color</span><span class="o">:</span> <span class="m">#0982C1</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">section</span> <span class="nt">nav</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
-    <span class="k">text-decoration</span><span class="o">:</span> <span class="k">underline</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вместо этого, используя возможности препроцессора, мы можем поместить все дочерние селекторы внутри скобок элемента-родителя. Кроме того, символ <code>&amp;#038;</code> является ссылкой (<em>сокращением</em>) на селектор элемента-родителя.</p>
-
-<h3 id="sass-less--stylus">Sass, LESS &amp; Stylus</h3>
-
-<p>Все три препроцессора имеют абсолютно одинаковый синтаксис для вложенных селекторов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">section</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-
-  <span class="n">nav</span> <span class="err">{</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-
-    <span class="n">a</span> <span class="err">{</span>
-      <span class="k">color</span><span class="o">:</span> <span class="m">#0982C1</span><span class="p">;</span>
-
-      <span class="o">&amp;</span><span class="m">#038</span><span class="p">;</span><span class="o">:</span><span class="n">hover</span> <span class="err">{</span>
-        <span class="k">text-decoration</span><span class="o">:</span> <span class="k">underline</span><span class="p">;</span>
-      <span class="p">}</span>
-    <span class="err">}</span>
-  <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-
-<h2 id="css-1">Скомпилированный CSS</h2>
-
-<p>Ниже показан скомпилированный в CSS результат кода, представленного выше. Сравните с тем кодом, который мы писали в самом начале - абсолютно одинаково. Но какое удобство при использовании преимуществ препроцессора!</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">section</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">section</span> <span class="nt">nav</span> <span class="p">{</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">25px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">section</span> <span class="nt">nav</span> <span class="nt">a</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0982C1</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">section</span> <span class="nt">nav</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
-  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">underline</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="mixins">Подмешивания (mixins)</h2>
-
-<p>Миксины <code>mixins</code> являются функциями, которые позволяют многократно использовать сгруппированные свойства внутри CSS-кода. Вместо того, чтобы просматривать весь код в поисках нужных строчек для их изменения, теперь можно вносить изменения только один раз, внутри миксина.</p>
-
-<p>Применение подмешиваний особенно оправдывает себя при создании специфичных стилей для элементов или простановке браузерных префиксов. Когда миксин вызывается внутри CSS-селектора, происходит распознавание аргументов этого миксина, затем его стили применяются к селектору, который его вызвал.</p>
-
-<blockquote>
-  <p>Прим. переводчика: в приведенных ниже примерах стоит обратить внимание на разницу в синтаксисе объявления и вызова миксина внутри CSS-селектора для всех трех препроцессоров.</p>
-</blockquote>
-
-<h3 id="sass-1">Sass</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Sass mixin по имени error с аргументом $borderWidth, значение которого по умолчанию равно 2px */</span>
-
-<span class="k">@mixin</span> <span class="nt">error</span><span class="o">($</span><span class="nt">borderWidth</span><span class="o">:</span> <span class="nt">2px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">border</span><span class="o">:</span> <span class="o">$</span><span class="nt">borderWidth</span> <span class="nt">solid</span> <span class="nf">#F00</span><span class="o">;</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="nf">#F00</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="nc">.generic-error</span> <span class="p">{</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">error</span><span class="p">();</span> <span class="c">/* Подключается миксин по имени error */</span>
-<span class="p">}</span>
-<span class="nc">.login-error</span> <span class="p">{</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">error</span><span class="p">(</span><span class="m">5px</span><span class="p">);</span> <span class="c">/* Подключается миксин по имени error со значением аргумента $borderWidth, равным 5px; то есть происходит переопределение значения аргумента */</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less-1">LESS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* LESS mixin по имени error с аргументом $borderWidth, значение которого по умолчанию равно 2px */</span>
-
-<span class="nc">.error</span><span class="o">(</span><span class="k">@borderWidth</span><span class="o">:</span> <span class="nt">2px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">border</span><span class="o">:</span> <span class="k">@borderWidth</span> <span class="nt">solid</span> <span class="nf">#F00</span><span class="p">;</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="nf">#F00</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="nc">.generic-error</span> <span class="p">{</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="o">.</span><span class="n">error</span><span class="p">();</span> <span class="c">/* Подключается миксин по имени error */</span>
-<span class="p">}</span>
-<span class="nc">.login-error</span> <span class="p">{</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="o">.</span><span class="n">error</span><span class="p">(</span><span class="m">5px</span><span class="p">);</span> <span class="c">/* Подключается миксин по имени error со значением аргумента $borderWidth, равным 5px; то есть происходит переопределение значения аргумента */</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="style">Style</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Stylus mixin по имени error с аргументом $borderWidth, значение которого по умолчанию равно 2px */</span>
-
-<span class="nt">error</span><span class="o">(</span><span class="nt">borderWidth</span><span class="o">=</span> <span class="nt">2px</span><span class="o">)</span> <span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="n">borderWidth</span> <span class="k">solid</span> <span class="m">#F00</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#F00</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.generic-error</span> <span class="p">{</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="n">error</span><span class="p">();</span> <span class="c">/* Подключается миксин по имени error */</span>
-<span class="p">}</span>
-<span class="nc">.login-error</span> <span class="p">{</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="n">error</span><span class="p">(</span><span class="m">5px</span><span class="p">);</span> <span class="c">/* Подключается миксин по имени error со значением аргумента $borderWidth, равным 5px; то есть происходит переопределение значения аргумента */</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="css-2">Скомпилированный CSS</h3>
-
-<p>Результатом компиляции из всех трех препроцессоров будет одинаковый CSS-код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.generic-error</span> <span class="p">{</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">4px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">2px</span> <span class="k">solid</span> <span class="m">#f00</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#f00</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nc">.login-error</span> <span class="p">{</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">12px</span><span class="p">;</span>
-  <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">5px</span> <span class="k">solid</span> <span class="m">#f00</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#f00</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="inheritance">Наследование (inheritance)</h2>
-
-<p>При написании CSS стилей “классическим” способом, для того чтобы применить одни и те же свойства к нескольким элементам в HTML-документе, нам следовало бы создать такой код:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="o">,</span>
-<span class="nt">ul</span><span class="o">,</span>
-<span class="nt">ol</span> <span class="p">{</span>
-  <span class="c">/* какие-то стили здесь */</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Все работает прекрасно. Но если потребуется написать стили отдельно для любого из этих селекторов, нужно будет создавать отдельные правила для каждого из них. И сразу же код таблиц стилей становиться неряшливым и трудно поддерживаемым.</p>
-
-<p>В противоположность этому применяются наследование. Наследование - это возможность для одних CSS-селекторов наследовать свойства у другого селектора.</p>
-
-<blockquote>
-  <p>Прим. переводчика: обратите внимание на одинаковый синтаксис подключения (объявления) наследования внутри CSS-селектора с помощью директивы <code>@extend</code>.</p>
-</blockquote>
-
-<h3 id="sass--stylus">Sass &amp; Stylus</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">block</span><span class="p">;</span> <span class="c">/* Наследовать свойства у селектора класса .block */</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#EEE</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">ul</span><span class="o">,</span> <span class="nt">ol</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">extend</span> <span class="o">.</span><span class="k">block</span><span class="p">;</span> <span class="c">/* Наследовать свойства у селектора класса .block */</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="css-3">Скомпилированный CSS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span><span class="o">,</span> <span class="nt">p</span><span class="o">,</span> <span class="nt">ul</span><span class="o">,</span> <span class="nt">ol</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#EEE</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">ul</span><span class="o">,</span> <span class="nt">ol</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less-2">LESS</h3>
-
-<p>Препроцессор LESS не поддерживает наследование в полной мере так, как это организовано в Sass или Stylus. Вместо добавления множественных селекторов в один набор свойств, наследование трактуется как миксин без аргументов.</p>
-
-<p>Импорт стилей выполняется для каждого селектора. Обратной стороной такого подхода является постоянное повторение строк со свойствами в компилированном CSS-стиле.</p>
-
-<p>Вот как может выглядеть LESS-код с наследованием:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="o">.</span><span class="k">block</span><span class="p">;</span> <span class="c">/* Наследование свойств у селектора класса .block */</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#EEE</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">ul</span><span class="o">,</span> <span class="nt">ol</span> <span class="p">{</span>
-  <span class="o">.</span><span class="k">block</span><span class="p">;</span> <span class="c">/* Наследование свойств у селектора класса .block */</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="css-4">Скомпилированный CSS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#EEE</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">ul</span><span class="o">,</span>
-<span class="nt">ol</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="m">5px</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">2px</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#333</span><span class="p">;</span>
-  <span class="k">text-transform</span><span class="o">:</span> <span class="k">uppercase</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Как хорошо видно из кода, стили класса <code>.block</code> добавлены для селекторов, которым требуется задать наследование у этого класса.</p>
-
-<blockquote>
-  <p>Прим. переводчика: код действительно получается избыточным, просто для каждого селектора тупо добавляются строки класса <code>.block</code>.</p>
-</blockquote>
-
-<h2 id="section-3">Импортирование</h2>
-
-<p>В CSS-сообществе к импортированию стилей с помощью директивы <code>@import</code> существует стойкое негативное отношение, так как такой подход порождает множественные HTTP-запросы к серверу, что замедляет работу браузера и нагружает сам сервер. Однако, в препроцессорах технология импортирования работает иначе.</p>
-
-<p>В любом из трех препроцессоров импортирование одного файла внутрь другого фактически приводит к вставке кода одного файла в другой при компиляции, в результате которой получается один CSS-файл.</p>
-
-<blockquote>
-  <p>Прим. переводчика: другими словами, в препроцессорах импортирование необходимо для компиляции одного файла из нескольких. В стандартном CSS импортирование приводит к подстановке одного кода внутрь другого.</p>
-</blockquote>
-
-<p>Обратите внимание, что при компилировании файла со стандартным подключением с помощью директивы <code>@import "file.css"</code> внутри него компиляции последнего не происходит. А вот миксины или переменные импортируются и используются в стилевом файле, как положено. Технология импортирования очень удобная, так как она позволяет создавать множество отдельных файлов для правильной организации проекта.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* file.{type} */</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#EEE</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="k">@import</span> <span class="s2">&quot;reset.css&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;file.{type}&quot;</span><span class="p">;</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#0982C1</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="css-5">Скомпилированный CSS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;reset.css&quot;</span><span class="p">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#EEE</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">p</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#0982C1</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-4">Функции работы с цветом</h2>
-
-<p>“Цветовые” функции созданы для трансформации цвета при компиляции. Такие функции чрезвычайно полезны при создании градиентов, затемнения цвета при <code>hover</code> и многое другое.</p>
-
-<h3 id="sass-2">Sass</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">lighten</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%);</span> <span class="c">/* возвращает цвет на 10% светлее чем $color */</span>
-<span class="nt">darken</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%);</span>  <span class="c">/* возвращает цвет на 10% темнее чем $color */</span>
-
-<span class="nt">saturate</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%);</span>   <span class="c">/* возвращает цвет на 10% более насыщенный чем $color */</span>
-<span class="nt">desaturate</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%);</span> <span class="c">/* возвращает цвет на 10% менее насыщенный чем $color */</span>
-
-<span class="nt">grayscale</span><span class="o">($</span><span class="nt">color</span><span class="o">);</span>  <span class="c">/* возвращает шкалу полутонов цвета $color */</span>
-<span class="nt">complement</span><span class="o">($</span><span class="nt">color</span><span class="o">);</span> <span class="c">/* returns complement color of $color */</span>
-<span class="nt">invert</span><span class="o">($</span><span class="nt">color</span><span class="o">);</span>     <span class="c">/* возвращает инвертированный цвет от $color */</span>
-
-<span class="nt">mix</span><span class="o">($</span><span class="nt">color1</span><span class="o">,</span> <span class="o">$</span><span class="nt">color2</span><span class="o">,</span> <span class="nt">50</span><span class="o">%);</span> <span class="c">/* возвращает результат смешивания цвета $color1 с цветом $color2 */</span></code></pre></div>
-
-<p>Представленный выше код является всего лишь кратким списком функций работы с цветом в Sass. Полный список всех доступных функций расположен по адресу <a href="http://sass-lang.com/docs/yardoc/Sass/Script/Functions.html" title="Sass Documentation">Sass Documentation</a>.</p>
-
-<p>“Цветовые” функции могут использоваться везде, где требуется работа с цветов в коде. Простой пример - объявлена переменная с цветом, к которой дальше в коде применяется функция затемнения цвета <code>darken</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#0982C1</span><span class="o">;</span>
-
-<span class="nt">h1</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">3px</span> <span class="k">solid</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span> <span class="m">50%</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less-3">LESS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">lighten</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span> <span class="c">/* возвращает цвет на 10% светлее чем $color */</span>
-<span class="nt">darken</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span>  <span class="c">/* возвращает цвет на 10% темнее чем $color */</span>
-
-<span class="nt">saturate</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span>   <span class="c">/* возвращает цвет на 10% более насыщенный чем $color */</span>
-<span class="nt">desaturate</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span> <span class="c">/* возвращает цвет на 10% менее насыщенный чем $color */</span>
-
-<span class="nt">spin</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">)</span><span class="p">;</span>  <span class="c">/* возвращает цвет, смещенный на 10 градусов вправо относительно цвета @color */</span>
-<span class="nt">spin</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">-10</span><span class="o">)</span><span class="p">;</span> <span class="c">/* возвращает цвет, смещенный на 10 градусов влево относительно цвета @color */</span>
-
-<span class="nt">mix</span><span class="o">(</span><span class="k">@color1</span><span class="o">,</span> <span class="k">@color2</span><span class="o">)</span><span class="p">;</span> <span class="c">/* возвращает результат смешивания цвета $color1 с цветом $color2 */</span></code></pre></div>
-
-<p>Список функций препроцессора LESS находится на официальном сайте проекта <a href="http://lesscss.org/#-color-functions" title="LESS Documentation">LESS Documentation</a>.</p>
-
-<p>Ниже показан пример того, как можно применять “цветовые” функции в LESS:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@color</span><span class="o">:</span> <span class="nf">#0982C1</span><span class="p">;</span>
-
-<span class="nt">h1</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="o">@</span><span class="k">color</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">3px</span> <span class="k">solid</span> <span class="n">darken</span><span class="p">(</span><span class="o">@</span><span class="k">color</span><span class="o">,</span> <span class="m">50%</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="stylus-2">Stylus</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">lighten</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span> <span class="c">/* возвращает цвет на 10% светлее чем $color */</span>
-<span class="nt">darken</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span>  <span class="c">/* возвращает цвет на 10% темнее чем $color */</span>
-
-<span class="nt">saturate</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span>   <span class="c">/* возвращает цвет на 10% более насыщенный чем $color */</span>
-<span class="nt">desaturate</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%)</span><span class="p">;</span> <span class="c">/* возвращает цвет на 10% менее насыщенный чем $color */</span></code></pre></div>
-
-<p>Полный список всех функций работы с цветом препроцессора Stylus представлен на сайте проекта <a href="http://learnboost.github.com/stylus/docs/bifs.html" title="Stylus Documentation">Stylus Documentation</a>.</p>
-
-<p>И пример использования “цветовой” функции в Stylus:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">color</span> <span class="o">=</span> <span class="nf">#0982C1</span>
-
-<span class="nt">h1</span>
-  <span class="nt">background</span> <span class="nt">color</span>
-  <span class="nt">border</span> <span class="nt">3px</span> <span class="nt">solid</span> <span class="nt">darken</span><span class="o">(</span><span class="nt">color</span><span class="o">,</span> <span class="nt">50</span><span class="o">%)</span></code></pre></div>
-
-<h2 id="section-5">Арифметические операции</h2>
-
-<p>Благодаря препроцессорам выполнение арифметических операций внутри CSS-кода теперь осуществляется просто и легко. Такая возможность часто бывает полезной.</p>
-
-<blockquote>
-  <p>Прим. переводчика: стоит упомянуть о функции из CSS3 по имени <code>calc()</code>, которая также позволяет выполнять внутри CSS-кода простые арифметические операции.</p>
-</blockquote>
-
-<h3 id="sass-less--stylus-1">Sass, LESS &amp; Stylus</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="p">(</span><span class="m">14px</span><span class="o">/</span><span class="m">2</span><span class="p">);</span>
-  <span class="k">top</span><span class="o">:</span> <span class="m">50px</span> <span class="o">+</span> <span class="m">100px</span><span class="p">;</span>
-  <span class="k">right</span><span class="o">:</span> <span class="m">100px</span> <span class="o">-</span> <span class="m">50px</span><span class="p">;</span>
-  <span class="k">left</span><span class="o">:</span> <span class="m">10</span> <span class="o">*</span> <span class="m">10</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-6">Практические примеры</h2>
-
-<p>Вот мы и рассмотрели основные моменты того, что и как умеют делать все три препроцессора. Однако мы еще ни разу не коснулись момента практического применения этих возможностей. Ниже показан список реальных веб-приложений, в которых используются препроцессоры, заметно улучшая при этом весь код.</p>
-
-<h2 id="section-7">Браузерные префиксы</h2>
-
-<p>Одним из наиболее ярких примеров преимущества использования препроцессоров является написание с их помощью свойств с браузерными префиксами. Один раз создав миксин с поддержкой браузерных префиксов, мы избавляем себя от рутинной работы.</p>
-
-<p>Например, создадим для всех трех препроцессоров миксин скругления углов блока:</p>
-
-<h3 id="sass-3">Sass</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">border-radius</span><span class="o">($</span><span class="nt">values</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">-webkit-border-radius</span><span class="o">:</span> <span class="o">$</span><span class="nt">values</span><span class="o">;</span>
-     <span class="nt">-moz-border-radius</span><span class="o">:</span> <span class="o">$</span><span class="nt">values</span><span class="o">;</span>
-          <span class="nt">border-radius</span><span class="o">:</span> <span class="o">$</span><span class="nt">values</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span> <span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">10px</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less-4">LESS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.border-radius</span><span class="o">(</span><span class="k">@values</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">-webkit-border-radius</span><span class="o">:</span> <span class="k">@values</span><span class="p">;</span>
-     <span class="nt">-moz-border-radius</span><span class="o">:</span> <span class="k">@values</span><span class="p">;</span>
-          <span class="nt">border-radius</span><span class="o">:</span> <span class="k">@values</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span> <span class="p">{</span>
-  <span class="o">.</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">10px</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="stylus-3">Stylus</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">border-radius</span><span class="o">(</span><span class="nt">values</span><span class="o">)</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="n">values</span><span class="p">;</span>
-     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="n">values</span><span class="p">;</span>
-          <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="n">values</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">div</span> <span class="p">{</span>
-  <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">10px</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="css-6">Скомпилированный CSS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">div</span> <span class="p">{</span>
-  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-     <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-          <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-8">Трехмерный текст</h2>
-
-<p>Создание эффекта трехмерности для текста с помощью CSS-свойства <code>text-shadow</code> является прекрасной идеей. Единственная проблема заключается в работе с цветом, которая достаточно трудная и обременительная.</p>
-
-<p>Используя миксины и функции для работы с цветом, мы можем создать объемный текст и изменять его цвет на лету:</p>
-
-<h3 id="sass-4">Sass</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@mixin</span> <span class="nt">text3d</span><span class="o">($</span><span class="nt">color</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="o">$</span><span class="nt">color</span><span class="o">;</span>
-  <span class="nt">text-shadow</span><span class="o">:</span> <span class="nt">1px</span> <span class="nt">1px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">5</span><span class="o">%),</span>
-               <span class="nt">2px</span> <span class="nt">2px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%),</span>
-               <span class="nt">3px</span> <span class="nt">3px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">15</span><span class="o">%),</span>
-               <span class="nt">4px</span> <span class="nt">4px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">($</span><span class="nt">color</span><span class="o">,</span> <span class="nt">20</span><span class="o">%),</span>
-               <span class="nt">4px</span> <span class="nt">4px</span> <span class="nt">2px</span> <span class="nf">#000</span><span class="o">;</span>
-<span class="p">}</span>
-
-<span class="nt">h1</span> <span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">32pt</span><span class="p">;</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">text3d</span><span class="p">(</span><span class="m">#0982c1</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less-5">LESS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.text3d</span><span class="o">(</span><span class="k">@color</span><span class="o">)</span> <span class="p">{</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="k">@color</span><span class="p">;</span>
-  <span class="nt">text-shadow</span><span class="o">:</span> <span class="nt">1px</span> <span class="nt">1px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">5</span><span class="o">%),</span>
-               <span class="nt">2px</span> <span class="nt">2px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%),</span>
-               <span class="nt">3px</span> <span class="nt">3px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">15</span><span class="o">%),</span>
-               <span class="nt">4px</span> <span class="nt">4px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="k">@color</span><span class="o">,</span> <span class="nt">20</span><span class="o">%),</span>
-               <span class="nt">4px</span> <span class="nt">4px</span> <span class="nt">2px</span> <span class="nf">#000</span><span class="p">;</span>
-<span class="err">}</span>
-
-<span class="nt">span</span> <span class="p">{</span>
-  <span class="nt">font-size</span><span class="o">:</span> <span class="nt">32pt</span><span class="o">;</span>
-  <span class="nc">.text3d</span><span class="o">(</span><span class="nf">#0982c1</span><span class="o">);</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="stylus-4">Stylus</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">text3d</span><span class="o">(</span><span class="nt">color</span><span class="o">)</span>
-  <span class="nt">color</span><span class="o">:</span> <span class="nt">color</span>
-  <span class="nt">text-shadow</span><span class="o">:</span> <span class="nt">1px</span> <span class="nt">1px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="nt">color</span><span class="o">,</span> <span class="nt">5</span><span class="o">%),</span> <span class="nt">2px</span> <span class="nt">2px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="nt">color</span><span class="o">,</span> <span class="nt">10</span><span class="o">%),</span> <span class="nt">3px</span> <span class="nt">3px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="nt">color</span><span class="o">,</span> <span class="nt">15</span><span class="o">%),</span> <span class="nt">4px</span> <span class="nt">4px</span> <span class="nt">0px</span> <span class="nt">darken</span><span class="o">(</span><span class="nt">color</span><span class="o">,</span> <span class="nt">20</span><span class="o">%),</span> <span class="nt">4px</span> <span class="nt">4px</span> <span class="nt">2px</span> <span class="nf">#000</span>
-<span class="nt">span</span>
-  <span class="nt">font-size</span><span class="o">:</span> <span class="nt">32pt</span>
-  <span class="nt">text3d</span><span class="o">(</span><span class="nf">#0982c1</span><span class="o">)</span></code></pre></div>
-
-<p>В примере для Stylus я выбрал вариант написания свойства <code>text-shadow</code> в одну строку, так как здесь я опустил фигурные скобки.</p>
-
-<h3 id="css-7">Скомпилированный CSS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">span</span> <span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">32pt</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#0982c1</span><span class="p">;</span>
-  <span class="k">text-shadow</span><span class="o">:</span> <span class="m">1px</span> <span class="m">1px</span> <span class="m">0px</span> <span class="m">#097bb7</span><span class="o">,</span>
-               <span class="m">2px</span> <span class="m">2px</span> <span class="m">0px</span> <span class="m">#0875ae</span><span class="o">,</span>
-               <span class="m">3px</span> <span class="m">3px</span> <span class="m">0px</span> <span class="m">#086fa4</span><span class="o">,</span>
-               <span class="m">4px</span> <span class="m">4px</span> <span class="m">0px</span> <span class="m">#07689a</span><span class="o">,</span>
-               <span class="m">4px</span> <span class="m">4px</span> <span class="m">2px</span> <span class="m">#000</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-9">Колонки</h2>
-
-<p>Использование переменных и числовых значений для этих переменных пришла мне в голову, когда я только начал знакомиться с возможностями CSS-препроцессоров. Объявление ширины для макета внутри переменной делает задачу изменения этой ширины (<em>при необходимости</em>) простой и быстрой:</p>
-
-<h3 id="sass-5">Sass</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">siteWidth</span><span class="o">:</span> <span class="nt">1024px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">gutterWidth</span><span class="o">:</span> <span class="nt">20px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">sidebarWidth</span><span class="o">:</span> <span class="nt">300px</span><span class="o">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="n">siteWidth</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.content</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="n">siteWidth</span> <span class="o">-</span> <span class="p">(</span><span class="err">$</span><span class="n">sidebarWidth</span><span class="o">+</span><span class="err">$</span><span class="n">gutterWidth</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nc">.sidebar</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="err">$</span><span class="n">gutterWidth</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="n">sidebarWidth</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="less-6">LESS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@siteWidth</span><span class="o">:</span> <span class="nt">1024px</span><span class="p">;</span>
-<span class="k">@gutterWidth</span><span class="o">:</span> <span class="nt">20px</span><span class="p">;</span>
-<span class="k">@sidebarWidth</span><span class="o">:</span> <span class="nt">300px</span><span class="p">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">@</span><span class="n">siteWidth</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.content</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">@</span><span class="n">siteWidth</span> <span class="o">-</span> <span class="p">(</span><span class="o">@</span><span class="n">sidebarWidth</span><span class="o">+@</span><span class="n">gutterWidth</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nc">.sidebar</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="o">@</span><span class="n">gutterWidth</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="o">@</span><span class="n">sidebarWidth</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="stylus-5">Stylus</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">siteWidth</span> <span class="o">=</span> <span class="nt">1024px</span><span class="o">;</span>
-<span class="nt">gutterWidth</span> <span class="o">=</span> <span class="nt">20px</span><span class="o">;</span>
-<span class="nt">sidebarWidth</span> <span class="o">=</span> <span class="nt">300px</span><span class="o">;</span>
-
-<span class="nt">body</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">siteWidth</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.content</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">siteWidth</span> <span class="o">-</span> <span class="p">(</span><span class="n">sidebarWidth</span><span class="o">+</span><span class="n">gutterWidth</span><span class="p">);</span>
-<span class="p">}</span>
-<span class="nc">.sidebar</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="n">gutterWidth</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="n">sidebarWidth</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h3 id="css-8">Скомпилированный CSS</h3>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">1024px</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.content</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">704px</span><span class="p">;</span>
-<span class="p">}</span>
-<span class="nc">.sidebar</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">margin-left</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-10">Некоторые уловки препроцессоров</h2>
-
-<p>Существует несколько хитростей при работе с CSS-препроцессорами. В этой статье я расскажу только о некоторой части из них. Но если эта тема вас заинтересовала, я рекомендую вам внимательно прочитать официальную документацию или же, что еще лучше, просто начните пользоваться препроцессором каждый день в процессе кодинга.</p>
-
-<h2 id="section-11">Сообщение об ошибках</h2>
-
-<p>Если вы уже пишите код на CSS достаточно давно, то наверняка сталкивались с ситуацией, когда внутри кода закралась ошибка, которую вы никак не можете найти. Если вы попадали в точно такую же ситуацию, то могу вас обрадовать - существует способ решить такую задачу.</p>
-
-<p>CSS-препроцессоры могут сообщать об ошибках в коде и заставить их поступать таким образом достаточно просто. В этом случае препроцессор сам сообщает вам, в каком месте CSS-кода находиться ошибка (<em>и все счастливы</em>).</p>
-
-<p>Если вас заинтересовала подобная возможность во всех трех препроцессорах, то в <a href="http://tjholowaychuk.com/post/5002088731/stylus-vs-sass-vs-less-error-reporting" title="Stylus vs Sass vs Less Error Reporting">этой статье</a> подробно описано, как выполнить данную настройку.</p>
-
-<h2 id="section-12">Комментирование</h2>
-
-<p>В CSS-препроцессоре при компиляции из кода удаляются любые комментарии в виде двойного слеш’а (<code>// это комментарий</code>). Но, в тоже время, блочные комментарии (<code>/* это комментарий */</code>) остаются в коде без изменений.</p>
-
-<p>На заметку: при компиляции в минимизированную версию CSS-файла удаляются любые комментарии.</p>
-
-<h2 id="section-13">Заключение</h2>
-
-<p>Каждый из трех рассмотренный в этой статье CSS-препроцессоров (Sass, LESS и Stylus) обладает своим собственным, уникальным способом решения одной и той же задачи. Это дает в руки разработчика возможность выбора, каким способом выполнить поставленную задачу. Объединяет все препроцессоры способность расширить горизонты кодера с одновременным сохранением кросс-браузерности и чистоты кода.</p>
-
-<p>Я советую вам попробовать все известные препроцессоры, чтобы на личном опыте вы выбрали для себя наиболее предпочтительный. Если же до этого момента вы писали код только на чистом CSS, я настоятельно рекомендую вам научиться работать хотя бы в одном из препроцессоров.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1842,6 +1219,12 @@
       <li>
         
           <a href="http://zencoder.ru/page45">45</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page46">46</a>
         
       </li>
     

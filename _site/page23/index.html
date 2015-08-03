@@ -144,6 +144,373 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-04-30T00:00:00+04:00"><a href="http://zencoder.ru/compass/typography-compass/">April 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/compass/typography-compass/" rel="bookmark" title="Типографика с помощью Compass" itemprop="url">Типографика с помощью Compass</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Отличный момент познакомиться с еще одной безграничной возможностью библиотеки Compass - это поработать с типографикой.</p>
+</blockquote>
+
+<p>Для этого дела в Compass имеется достаточно большой набор готовых миксинов. И хотя принцип большинства из них прост, суть дела от этого не меняется.</p>
+
+<h2 id="compass">Убрать подчеркивание у ссылок в Compass</h2>
+
+<p>Начнем с простого и попробуем настроить вид и поведение ссылок с помощью Compass. Для этого необходимо подключить модуль в текущий проект в виде строки:</p>
+
+<pre>
+@import "compass/typography/links";
+</pre>
+
+<p>Затем создадим в HTML-файле пару параграфов с ссылками:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius, eos, dolorum, eum blanditiis laudantium placeat aspernatur esse dolorem <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>optio molestiae provident<span class="nt">&lt;/a&gt;</span> nobis sint architecto dolores repudiandae magnam iste assumenda minima.<span class="nt">&lt;/p&gt;</span>
+
+<span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sequi, nobis, maiores, quasi molestias dignissimos repellendus quis nemo quibusdam <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>accusamus culpa numquam<span class="nt">&lt;/a&gt;</span> voluptas sunt dolor inventore pariatur cumque a unde ut.<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<p>… и применим к ссылкам миксин <code>hover-link</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
+  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+
+  <span class="n">a</span> <span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">hover</span><span class="o">-</span><span class="n">link</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Если теперь посмотрим на скомпилированный вывод в CSS-файле, то увидим две до удивления простые строчки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="nt">a</span> <span class="p">{</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">underline</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>То есть, суть миксина <code>hover-link</code> в убирании подчеркивания у ссылки в ее обычном состоянии; и добавлении подчеркивания при состоянии hover. Попробуйте ввести показанный выше код в своем HTML-редакторе и посмотреть результат.</p>
+
+<h3 id="compass-1">Изменение цвета ссылок в Compass</h3>
+
+<p>В Compass имеется миксин <code>link-colors</code> для управления цветом ссылок. То есть, с помощью этого миксина можно изменять стандартные цвета ссылки при ее различных состояниях.</p>
+
+<p>Синтаксис миксина достаточно устрашающий, с первого взгляда:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">link-colors</span><span class="o">($</span><span class="nt">normal</span><span class="o">,</span> <span class="o">$</span><span class="nt">hover</span><span class="o">,</span> <span class="o">$</span><span class="nt">active</span><span class="o">,</span> <span class="o">$</span><span class="nt">visited</span><span class="o">,</span> <span class="o">$</span><span class="nt">focus</span><span class="o">)</span></code></pre></div>
+
+<p>Однако здесь нет ничего сложного. Пять переменных миксина принимают в качестве аргументов цвета для ссылки в пяти ее состояниях:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>$normal - цвет обычного состояния ссылки<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>$hover - цвет ссылки при наведенном на нее курсоре мыши<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>$active - цвет ссылки в момент нажатия на нее<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>$visited - цвет посещенной ссылки<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>$focus - цвет ссылки, получившей фокус с клавиатуры<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>При этом только один из параметров миксина <code>link-colors</code> является обязательным - <code>$normal</code>. Остальные можно опустить и тогда будут использоваться цвета по умолчанию.</p>
+
+<p>Давайте поэскпериментируем и немного изменим цвета для ссылок в нашем примере. Перед этим не забудем подключить соответствующий модуль строкой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/typography/links/link-colors&quot;</span></code></pre></div>
+
+<p>Откроем таблицу цветов, расположенную по адресу <a href="http://www.w3schools.com/html/html_colors.asp" title="HTML Colors">w3schools - HTML Colors</a> и наугад возмем оттуда пять цветов в HEX-формате, которые передадим миксину в качестве аргументов:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">link</span><span class="o">-</span><span class="n">colors</span><span class="p">(</span><span class="m">#CC0000</span><span class="o">,</span> <span class="m">#CC3300</span><span class="o">,</span> <span class="m">#CC6600</span><span class="o">,</span> <span class="m">#CC9900</span><span class="o">,</span> <span class="m">#CCCC00</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В скомпилированном CSS-файле появиться несколько строчек такого вида:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="nt">a</span><span class="nd">:visited</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#cc9900</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">a</span><span class="nd">:focus</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#cccc00</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">a</span><span class="nd">:hover</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#cc3300</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">a</span><span class="nd">:active</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#cc6600</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Введите показанный здесь код у себя и посмотрите на результат.</p>
+
+<h2 id="compass-2">Сброс всех стилей для ссылок в Compass</h2>
+
+<p>Последний миксин из данного раздела позволяет производить сброс всех стилей для ссылок и превращении их в обычный текст, внутри которого находятся данные ссылки.</p>
+
+<p>Например, имеется параграф с классом <code>.woo</code>, внутри которого расположена ссылка. Применим к ней миксин <code>unstyled-link</code> для сброса всех стилей, предварительно подключив модуль:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/typography/links/unstyled-link&quot;</span><span class="p">;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="nc">.woo</span> <span class="nt">a</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">unstyled</span><span class="o">-</span><span class="n">link</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Посмотрим на результат компиляции кода в CSS и увидим такую картину:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="nc">.woo</span> <span class="nt">a</span> <span class="p">{</span>
+  <span class="k">color</span><span class="o">:</span> <span class="k">inherit</span><span class="p">;</span>
+  <span class="k">text-decoration</span><span class="o">:</span> <span class="k">inherit</span><span class="p">;</span>
+  <span class="k">cursor</span><span class="o">:</span> <span class="k">inherit</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span><span class="nc">.woo</span> <span class="nt">a</span><span class="nd">:active</span><span class="o">,</span>
+<span class="nc">.wrap</span> <span class="nt">p</span><span class="nc">.woo</span> <span class="nt">a</span><span class="nd">:focus</span> <span class="p">{</span>
+  <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Ссылка наследует от параграфа (то есть - текста, входящего в этот параграф) свойства цвета, подчеркивание и вид курсора; а также убирается рамка <code>outline</code> при получении ссылкой фокуса или щелчка мыши по ней.</p>
+
+<p>То есть, другими словами, ссылка становиться полностью похожей внешне и по поведению на весь остальной текст, который ее окружает. Попробуйте у себя вышеприведенный код, чтобы увидеть результат.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-04-30T00:00:00+04:00"><a href="http://zencoder.ru/css/framework-blueprint/">April 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/framework-blueprint/" rel="bookmark" title="Основы фреймворка Blueprint" itemprop="url">Основы фреймворка Blueprint</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Плавный переход от простого CSS-фреймворка 960gs к чуть более сложному фреймворку Blueprint.</p>
+</blockquote>
+
+<p>Конечно, основой для изучения фреймворка Blueprint может послужить только официальное руководство. Эта статья - попытка автора осмыслить и научиться основам работы с фреймворком Blueprint. Статья является вольным переводом <a href="https://github.com/joshuaclayton/blueprint-css/wiki/Quick-start-tutorial" title="Официальное руководство по Blueprint">официального руководства по Blueprint</a>.</p>
+
+<h2 id="blueprint">Что такое Blueprint</h2>
+
+<p>Этот фреймворк предназначен для сокращения времени на разработку front-end проектов (ну конечно - ведь задача всех без исключения CSS-фреймворков заключается именно в этом; они для этого и были созданы).</p>
+
+<p>В отличие от фреймворка 960gs, фреймворк Blueprint предлагает более богатый набор предустановленных возможностей. Помимо CSS-сетки (grid), имеются стили для типографики, для печати, для браузеров IE.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/blueprint.jpg" alt="Фреймворк Blueprint" class="center-image" /></p>
+
+<p>Однако, Blueprint не является средством для всего - в первую очередь, он предназначен для создания веб-сайтов, у которых каждая страница имеет свой собственный, отличный от других страниц, дизайн. Прежде чем продолжить знакомство с Blueprint, стоит взглянуть на готовые веб-страницы, созданные с помощью этого фреймворка, чтобы решить для себя - подходит ли он для вас или нет.</p>
+
+<p>Также можно воспользоваться тестовой директорией на официальном сайте проекта, чтобы на практике убедиться во всех возможностях, которые предоставляет Blueprint.</p>
+
+<p>Понятие “фреймворк” в данном контексте (имеется ввиду Blueprint) может вводить в заблуждение, так как Blueprint не поможет вам в задаче организации или написания CSS-кода.</p>
+
+<h2 id="blueprint-1">Обзор структуры фреймворка Blueprint</h2>
+
+<p>Снизу вверх, перечислим CSS-слои, из которых состоит Blueprint:</p>
+
+<ul>
+  <li><strong>CSS-reset</strong> - сброс стилей;</li>
+  <li><strong>Типографика</strong> - предоставляет небольшой набор типографики и цветов оформления;</li>
+  <li><strong>Grid</strong> - предоставляет набор CSS-классов, с помощью которых выполняется построение CSS-сетки.</li>
+</ul>
+
+<p>Вторая часть фреймворка Blueprint - это js-скрипты, позволяющие настроить большинство деталей фреймворка, начиная с колонок и их ширины и заканчивая файловыми путями и именами CSS-классов.</p>
+
+<p>Имеется два js-скрипта:</p>
+
+<ul>
+  <li><strong>Compressor</strong> - для сжатия и обработки исходных файлов;</li>
+  <li><strong>Validator</strong> - для валидации основных файлов фреймворка Blueprint;</li>
+</ul>
+
+<p>Для того, чтобы начать работу с фреймворком Blueprint, необходимы (<em>как минимум</em>) три файла, подключенные к стартовой HTML-странице:</p>
+
+<ul>
+  <li><code>screen.css</code> - весь CSS-код для вывода на устройства <code>screen</code> и <code>projection</code>;</li>
+  <li><code>print.css</code> - CSS-код для печати (вывод на принтеры);</li>
+  <li><code>ie.css</code> - немного CSS-кода для корректной работы в браузерах IE.</li>
+</ul>
+
+<p>Пример подключения вышеперечисленных файлов к HTML-странице показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/blueprint/screen.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">media=</span><span class="s">&quot;screen, projection&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/blueprint/print.css&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">media=</span><span class="s">&quot;print&quot;</span><span class="nt">&gt;</span>
+<span class="c">&lt;!--[if lt IE 8]&gt;</span>
+<span class="c">  &lt;link rel=&quot;stylesheet&quot; href=&quot;css/blueprint/ie.css&quot; type=&quot;text/css&quot; media=&quot;screen, projection&quot;&gt;</span>
+<span class="c">&lt;![endif]--&gt;</span></code></pre></div>
+
+<p>Обратите внимание, что пути расположения файлов <code>screen.css</code>, <code>print.css</code> и <code>ie.css</code> у вас могут отличаться от приведенного в примере.</p>
+
+<h2 id="css---blueprint">Использование CSS в фреймворке Blueprint</h2>
+
+<p>Как уже упоминалось выше, в фреймворке Blueprint имеются <strong>три основных CSS-слоя</strong>. Первые два CSS-слоя - это <strong>сброс стилей</strong> (<code>reset.css</code>) и <strong>типографика</strong> (<code>typography.css</code>); они применяют свое действие ко всем стандартным HTML-элементам страницы.</p>
+
+<p>Другими словами, у вас нет нужды вносить какие-либо изменения в оба эти файла. Если вам, к примеру, необходимо изменить размер шрифта на странице, вы можете сделать это в своем собственном файле таблиц стилей; таким образом можно легко и безболезненно обновлять фреймворк Blueprint, не затрагивая при этом ваши собственные проекты.</p>
+
+<h2 id="blueprint-2">Классы типографики в Blueprint</h2>
+
+<p>Во фреймворке Blueprint имеется небольшой набор классов для настройки типографики. Ниже приведен список имен классов с кратким описанием, для чего каждый из них предназначен:</p>
+
+<ul>
+  <li><code>.small</code> - делает размер шрифта меньше стандартного;</li>
+  <li><code>.large</code> - делает размер шрифта больше стандартного;</li>
+  <li><code>.hide</code> - скрывает HTML-элемент;</li>
+  <li><code>.quiet</code> - делает цвет текста менее ярким;</li>
+  <li><code>.loud</code> - делает цвет текста черным;</li>
+  <li><code>.highlight</code> - добавляет желтый фоновый цвет к тексту;</li>
+  <li><code>.added</code> - добавляет зеленый фоновый цвет цвет к тексту;</li>
+  <li><code>.removed</code> - добавляет красный фоновый цвет к тексту;</li>
+  <li><code>.first</code> - удаляет <code>padding-left</code> и <code>margin-left</code> у элемента;</li>
+  <li><code>.last</code> - удаляет <code>padding-right</code> и <code>margin-right</code> у элемента;</li>
+  <li><code>.top</code> - удаляет <code>padding-top</code> и <code>margin-top</code> у элемента;</li>
+  <li><code>.bottom</code> - удаляет <code>margin-bottom</code> и <code>padding-bottom</code> у элемента;</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/typography.jpg" alt="Примеры типографики в Blueprint" /></p>
+
+<h2 id="blueprint-3">Стилизация форм в Blueprint</h2>
+
+<p>Для стилизации форм (<code>forms.css</code>) в фреймворке Blueprint существует два класса - <code>.text</code> и <code>.title</code>. Класс <code>.text</code> делает текст элемента <code>input</code> обычным, а класс <code>.title</code> делает текст поля ввода <code>input</code> большего размера.</p>
+
+<p>Помимо этого, в Blueprint имеется несколько классов для создания и стилизации <strong>информационных сообщений</strong> и <strong>сообщений об ошибке</strong>:</p>
+
+<ul>
+  <li><code>div.error</code> - создает сообщение об ошибке (красный блок);</li>
+  <li><code>div.notice</code> - создает информационное сообщение (желтый блок);</li>
+  <li><code>div.success</code> - создает сообщение об успехе (зеленый блок).</li>
+</ul>
+
+<h2 id="section">Создание сетки</h2>
+
+<p>Третьим слоем (<code>grid.css</code>) фреймворка Blueprint являются классы для создания CSS-сетки - инструмент, с помощью которого можно создать сетку практически любого вида. Имейте ввиду, что практически любой участок CSS-кода в сетке может быть изменен (как это делается, показано ниже). В этой части инструкции используются настройки по умолчанию.</p>
+
+<p>По умолчанию, во фреймворке Blueprint создается сетка из 24-х колонок, каждая из которых имеет ширину в 30px; между колонками имеется расстояние в <code>10px</code>, созданное через <code>margin</code>. Общая ширина сетки составляет <strong>950px</strong>, что является оптимальной шириной для дисплеев размером <code>1024x768px</code>. Если вас интересует более узкий размер сетки, вам нужно обратиться к разделу с объяснениями настройки Blueprint.</p>
+
+<p>Отлично! Но каким образом можно установить сетку на HTML-странице с помощью Blueprint? С помощью классов, предоставляемых этим фреймворком. Для того, чтобы создать новую колонку, воспользуйтесь тегом <code>&lt;div&gt;</code> и примените к нему класс вида <code>.span-x</code>.</p>
+
+<p>Например, если необходимо создать сетку, состоящую из трех колонок (одна на две трети общей ширины и две на одну треть общей ширины), из секции заголовка и подвала, то код должен иметь следующий вид:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-24&quot;</span><span class="nt">&gt;</span>The header<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-4&quot;</span><span class="nt">&gt;</span>The first column<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-16&quot;</span><span class="nt">&gt;</span>The center column<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-4 last&quot;</span><span class="nt">&gt;</span>The last column<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-24&quot;</span><span class="nt">&gt;</span>The footer<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Помимо класса <code>.span-x</code> существует еще пара классов, о которых необходимо обязательно знать. Во-первых, любой сайт, созданный с помощью Blueprint-сетки, должен иметь блок-обертку с классом <code>.container</code>, который, как правило, помещается сразу после тега <code>&lt;body&gt;</code>.</p>
+
+<p>Во-вторых, последняя колонка в ряду (который по умолчанию может состоять из максимального числа - 24 колонок) должна иметь дополнительный класс <code>.last</code> для того, чтобы убрать <code>padding-right</code> и <code>margin-right</code> у последней. Колонка, имеющая класс <code>.span-24</code>, не нуждается в дополнительном классе <code>.last</code>, так как уже сама по себе занимает всю ширину сетки.</p>
+
+<p>В принципе, этих знаний уже достаточно для того, чтобы создавать CSS-сетки. Но фреймворк Blueprint предоставляет гораздо больше классов для создания более сложных дизайнов. Для того, чтобы воочию увидеть, что могут из себя представлять подобные дизайны, перейдите на главную страницу проекта. На ней показаны дизайны сайтов, демонстрирующие, на что способен фреймворк Blueprint в вопросе создания сеток.</p>
+
+<p>Ниже показан список <em>дополнительных классов</em>, которые могут пригодиться при создании сетки на Blueprint:</p>
+
+<ul>
+  <li><code>.append-x</code> - добавляет <code>х</code> колонок после указанной колонки;</li>
+  <li><code>.prepend-x</code> - добавляет <code>х</code> колонок перед указанной колонкой;</li>
+  <li><code>.push-x</code> - сдвигает вправо колонку на указанное кол-во столбцов; может использоваться для смещения колонок;</li>
+  <li><code>.pull-x</code> - сдвигает влево колонку на указанное кол-во столбцов; может использоваться для смещения колонок;</li>
+  <li><code>.border</code> - создает границу с правой стороны колонки;</li>
+  <li><code>.colborder</code> - создает пустую колонку, внутри которой (по середине вертикали) располагается граница <code>border</code>;</li>
+  <li><code>.clear</code> - “очистка” потока;</li>
+  <li><code>.showgrid</code> - добавьте к блоку-контейнеру или колонке для того, чтобы увидеть сетку или базовую линию</li>
+</ul>
+
+<p>В этом списке <code>х</code> является числом в диапазоне от 1 до 23 применительно к классам <code>append\prepend</code>; и числом в диапазоне от 1 до 24 для классов <code>push\pull</code>. Эти значения будут меняться, если вы установите новое значение в качестве количества колонок в конфигурационном файле фреймворка.</p>
+
+<p>Ниже показан еще один пример, в котором имеется четыре колонки одинаковой ширины, с границей между первыми двумя и последними двумя колонками, а также пустым промежутком (класс <code>.append-4</code>) посередине сетки шириной в четыре колонки:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-5 border&quot;</span><span class="nt">&gt;</span>The first column<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-5 append-4&quot;</span><span class="nt">&gt;</span>The second column<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-5 border&quot;</span><span class="nt">&gt;</span>The third column<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-5 last&quot;</span><span class="nt">&gt;</span>The fourth (last) column<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/blueprint_last_example.jpg" alt="Четыре колонки и класс .append-4" /></p>
+
+<p>Конечно, можно вложить один колонки в другие, чтобы получить необходимую разметку. Ниже показан пример четырех прямоугольников, расположенных - два вверху и два внизу. Причем все четыре прямоугольника находятся внутри первой половины страницы, в то время как второй прямоугольник занимает оставшуюся вторую половину страницы:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;container&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-12&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-6&quot;</span><span class="nt">&gt;</span>Top left<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-6 last&quot;</span><span class="nt">&gt;</span>Top right<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-6&quot;</span><span class="nt">&gt;</span>Bottom left<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-6 last&quot;</span><span class="nt">&gt;</span>Bottom right<span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;span-12 last&quot;</span><span class="nt">&gt;</span>Second half of page<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/04/blueprint_last_last.png" alt="Вложенность в Blueprint" /></p>
+
+<p>Попробуйте этот код в своем браузере, если вам трудно представить в уме, как это должно выглядеть. Чтобы увидеть больше примеров использования классов фреймворка Blueprint, перейдите по адресу на нашей странице - <code>/tests/parts/grid.html</code>.</p>
+
+<h2 id="section-1">Скрипты</h2>
+
+<p>Фреймворк Blueprint имеет в своем составе два скрипта: один для сжатия и кастомизации CSS-файлов; второй для валидации CSS-файлов, составляющих основу фреймворка - это особенно полезно, если вы вручную вносили в них изменения.</p>
+
+<h2 id="section-2">Валидатор</h2>
+
+<p>Задача файла-валидатора предельно проста - проверить валидность основных CSS-файлов фреймворка. Для выполнения этой задачи скрипт имеет в своем комплекте версию W3C CSS валидатора. Для того, чтобы запустить скрипт, необходим установленный язык Ruby на компьютере. Скрипт запускается из терминала командой:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="vg">$ruby</span> <span class="n">validate</span><span class="o">.</span><span class="n">rb</span></code></pre></div>
+
+<h2 id="section-3">Компрессор</h2>
+
+<p>Так как CSS-файлы, которые используются при создании HTML-файлов, являются сжатыми, то вам необходимо снова произвести их компрессию, если вы производили в них изменения. Для этой цели служит скрипт компрессии.</p>
+
+<p>В дополнение к этому с помощью файла компрессии можно настраивать CSS-сетки. Для того, чтобы настроить сетку, используется специальный файл настроек, и новый CSS-файл будет генерироваться при запуске компрессора. В новых сжатых файлах будут отражены изменения.</p>
+
+<p>Для того, чтобы сжать файл, необходимо просто запустить скрипт. Скрипт выполнит парсинг основных CSS-файлов и поместит новые сжатые файлы в папку проекта Blueprint. Также как и валидатор, компрессор должен быть установлен через Ruby. После установки скрипт его можно запустить из терминала с помощью команды:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="vg">$ruby</span> <span class="n">compress</span><span class="o">.</span><span class="n">rb</span></code></pre></div>
+
+<p>Вызов файла скрипта без указания дополнительных параметров произведен извлечение файлов из папки <code>blueprint/src</code> и произведен их сжатие до трех файлов - <code>ie.css</code>, <code>print.css</code>, <code>screen.css</code>. Однако, с помощью аргументов можно изменить алгоритм работы скрипта.</p>
+
+<p>Например, команда:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="vg">$ruby</span> <span class="n">compress</span><span class="o">.</span><span class="n">rb</span> <span class="o">-</span><span class="n">h</span></code></pre></div>
+
+<p>… покажет список аргументов, которые можно использовать совместно со скриптом.</p>
+
+<h2 id="section-4">Пользовательские настройки</h2>
+
+<p>Узнать больше о том, как применять пользовательские настройки, можно в документации к скрипту, расположенной по адресу <code>lib/compress.rb</code>.</p>
+
+<p>На этом статья закончена.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-04-28T00:00:00+04:00"><a href="http://zencoder.ru/css/vertical-rhythm-in-compass/">April 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1142,247 +1509,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-31T00:00:00+04:00"><a href="http://zencoder.ru/browser/conditional%20comments/">March 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/browser/conditional%20comments/" rel="bookmark" title="Что такое условные комментарии" itemprop="url">Что такое условные комментарии</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Короткая статья, посвященная условным комментариям. Такие комментарии до сих пор активно применяются на практике и имеют отношение исключительно к браузерам семейства Internet Explorer (IE).</p>
-</blockquote>
-
-<p>Точнее - условные комментарии и являются изобретением фирмы ООО “Микрософт”, призванным помочь браузерам этой конторы более-менее адекватно обрабатывать веб-сайты. Откуда такое странное название - условный комментарий? Его можно расшифровать как слияние двух слов:</p>
-
-<ul>
-  <li>условие;</li>
-  <li>комментарий;</li>
-</ul>
-
-<p><strong>Условие</strong> - это как обычное условие <strong>if</strong> в любом языке программирования (в том же JavaScript, к примеру). А <strong>комментарий</strong> - это как обычный комментарий в HTML-документе:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span> <span class="err">Это</span> <span class="err">комментарий</span> <span class="err">в</span> <span class="nt">HTML</span> <span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
-
-<h2 id="section">Синтаксис условного комментария</h2>
-
-<p>Сочетание условия и комментария в итоге получило название условного комментария. Синтаксис можно представить примером ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">8</span><span class="o">]&gt;</span>
-  <span class="o">...</span>
-<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
-
-<p>Новичок, если увидит впервые такой синтаксис, может удивиться и устрашиться его сложного написания (таким новичком был я когда-то, пока не привык). Тем более, его сложно запомнить для написания вручную, проще просто копировать. Но на самом деле в условных комментариях все предельно просто.</p>
-
-<p>Начинается (<code>if</code>) условный комментарий со строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">8</span><span class="o">]&gt;</span>
-  <span class="o">&lt;</span><span class="nt">p</span><span class="o">&gt;...</span> <span class="err">после</span> <span class="err">которой</span> <span class="err">идет</span> <span class="nt">HTML-</span><span class="err">код</span><span class="o">.</span> <span class="err">Заканчивается</span> <span class="o">(&lt;</span><span class="nt">strong</span><span class="o">&gt;</span><span class="nt">endif</span><span class="o">&lt;/</span><span class="nt">strong</span><span class="o">&gt;)</span> <span class="err">условный</span> <span class="err">комментарий</span> <span class="err">строкой</span><span class="o">:&lt;/</span><span class="nt">p</span><span class="o">&gt;</span>
-<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
-
-<p>Реальный рабочий пример условного комментария можно привести ниже. Например, таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">8</span><span class="o">]&gt;</span>
-  <span class="o">&lt;</span><span class="nt">link</span> <span class="nt">rel</span><span class="o">=</span><span class="s2">&quot;stylesheets&quot;</span> <span class="nt">type</span><span class="o">=</span><span class="s2">&quot;text/css&quot;</span> <span class="nt">href</span><span class="o">=</span><span class="s2">&quot;css/ie.css&quot;</span> <span class="nt">media</span><span class="o">=</span><span class="s2">&quot;screen, projection&quot;</span><span class="o">&gt;</span>
-<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
-
-<p>Расшифровать подобный условный комментарий можно таким образом: “<em>если браузером посетителя является Internet Explorer версии 8 или ниже, то следует загрузить таблицу стилей <code>ie.css</code>, расположенную по адресу <code>css/</code></em>”.</p>
-
-<h2 id="section-1">Цель создания условных комментариев</h2>
-
-<p>Условные комментарии понимают только браузеры семейства IE. Для других браузеров (таких как Chrome, Firefox или Opera) такие строки являются обычным HTML-комментарием, который они просто опускают (проходят мимо него).</p>
-
-<p>В этом и заключается цель создания условных комментариев - сделать так, чтобы браузеры IE смогли загружать таблицы стилей, предназначенные только для них; в то время как остальные браузеры не загружали бы эти таблицы.</p>
-
-<p>Зачем понадобилась такая особенность именно для браузеров IE, много говорить не надо. Все хорошо знают, что IE версии 6-9 отображают HTML-страницы не всегда в соответствии с веб-стандартами.</p>
-
-<p>Поэтому был придуман обходной маневр, призванный не нагружать “правильные” браузеры Chrome, Firefox или Opera лишним кодом, предназначенным только для браузера IE.</p>
-
-<h2 id="section-2">Ключевые слова в условных комментариях</h2>
-
-<p>Условие в условном комментарии создается с помощью <strong>специальных слов</strong>, запомнить значение которых очень легко, так как их <strong>всего четыре</strong>:</p>
-
-<ul>
-  <li><code>lt</code> - меньше (<code>&lt;</code>)</li>
-  <li><code>lte</code> - меньше или равно (<code>&lt;=</code>)</li>
-  <li><code>gt</code> - больше (<code>&gt;</code>)</li>
-  <li><code>gte</code> - больше или равно (<code>&gt;=</code>)</li>
-</ul>
-
-<p>То есть, запись вида:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lte</span> <span class="nt">IE</span> <span class="nt">7</span><span class="o">]&gt;</span>
-  <span class="o">...</span>
-<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
-
-<p>… читается как: “<em>если браузер IE версии 7 или ниже (версия 6 или 5), то применить код внутри комментария</em>”.</p>
-
-<p>Или же:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&lt;!</span><span class="nt">--</span><span class="o">[</span><span class="nt">if</span> <span class="nt">lt</span> <span class="nt">IE</span> <span class="nt">9</span><span class="o">]&gt;</span>
-  <span class="o">...</span>
-<span class="o">&lt;![</span><span class="nt">endif</span><span class="o">]</span><span class="nt">--</span><span class="o">&gt;</span></code></pre></div>
-
-<p>… “<em>если версия браузера IE меньше 9, то применить код внутри комментария.</em>”</p>
-
-<p>С записями - IE 6, IE 7, IE 8, IE 9 - думаю, все должно быть понятно без объяснений: Internet Explorer 6 (IE 6), Internet Explorer 7 (IE 7), Internet Explorer 8 (IE 8), Internet Explorer 9 (IE 9).</p>
-
-<h2 id="section-3">Заключение</h2>
-
-<p>Более подробно и обстоятельно об условных комментариях можно почитать из первоисточника (очень логично и правильно так сделать) - <a href="http://msdn.microsoft.com/ru-RU/library/ms537512.aspx" title="About conditional comments">About conditional comments</a>. Правда, оригинал написан на языке Шекспира, но кто не владеет им, может разобраться и так.</p>
-
-<p>Стоит также заметить, что на оф. сайте Microsoft говориться о том, что в браузере IE начиная с версии 10 прекращается поддержка условных комментариев - <a href="http://msdn.microsoft.com/ru-ru/library/ie/hh801214(v=vs.85).aspx" title="Условные комментарии более не поддерживаются">Условные комментарии более не поддерживаются</a>. То есть, браузер IE10 не сможет понять условный комментарий в HTML-документе и пропустит его, посчитав обычным комментарием.</p>
-
-<p>Насколько я могу лично судить о таком шаге, вызван он тем, что в компании Microsoft уверены в том, что браузер версии 10 сможет правильно работать в соответствии с W3C-стандартами и “костыль” в виде условного комментария ему больше не требуется.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-03-27T00:00:00+04:00"><a href="http://zencoder.ru/css/background-repeat-round-space/">March 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/background-repeat-round-space/" rel="bookmark" title="Background-repeat и его значения round и space" itemprop="url">Background-repeat и его значения round и space</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Помимо хорошо известных четырех значений свойства <code>background-repeat</code> - <code>repeat</code>, <code>no-repeat</code>, <code>repeat-x</code>, <code>repeat-y</code>, в спецификации CSS3 появились еще два, с которыми я познакомился совсем недавно.</p>
-</blockquote>
-
-<p>Перечислим их:</p>
-
-<ul>
-  <li><code>background-repeat: round</code></li>
-  <li><code>background-repeat: space</code></li>
-</ul>
-
-<p>Отлично, скажете вы! Ну и что, что же это за свойства? Мало прежних четырех? Давайте разберемся сначала, что это за свойства, а уже потом будем говорить, нужны они или не нужны.</p>
-
-<h2 id="background-repeat-repeat">Свойство background-repeat: repeat</h2>
-
-<p>Для начала посмотрим, как работает простое и привычное нам значение <code>repeat</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rnd</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">700px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(img/ChristinaVujnich.jpg)</span><span class="p">;</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="k">top</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">background-repeat</span><span class="o">:</span> <span class="k">repeat</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/background-repeat_repeat.jpg" alt="Свойство background-repeat: repeat" class="center-image" /></p>
-
-<p>Видим, как браузер аккуратно сделал все, что мы от него требовали - размножил фоновое изображение по горизонтали и по вертикали. Что не вместилось в блок, то было обрезано. Получилось несколько некрасиво; но зато - что требовали.</p>
-
-<h2 id="background-repeat-round">Свойство background-repeat: round</h2>
-
-<p>В спецификации CSS3 появилось одно из двух значений свойства <code>background-repeat</code>, которое делает попытку исправить ситуацию и выполнять “заливку” фона более красиво и “интеллектуально”. Это значение называется <code>round</code> - от английского округлять.</p>
-
-<p>Работает оно по следующему принципу - изображение размножается по вертикали и горизонтали фона блока, как и прежде. Но при этом браузер определяет, сколько раз удалось поместить изображение в блок без обрезки (по вертикали и по горизонтали). Сколько “целых” раз удалось поместить - столько раз он и помещает. А с оставшимся пустым пространством он поступает так - растягивает изображение по вертикали и горизонтали, чтобы равномерно заполнить это пустое пространство.</p>
-
-<p>Пример показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rnd</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">700px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(img/ChristinaVujnich.jpg)</span><span class="p">;</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="k">top</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">background-repeat</span><span class="o">:</span> <span class="n">round</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/background-repeat_round.jpg" alt="Свойство background-repeat: round" class="center-image" /></p>
-
-<p>Результат получился не слишком красивый, конечно. Но зачет - попытка сделана. А если быть более точным и без всякого “юмора”, то такой способ хорошо подойдет для фоновых изображений небольшого размера.</p>
-
-<h2 id="background-repeat-space">Свойство background-repeat: space</h2>
-
-<p>Еще одно значение свойства <code>background-repeat</code> из спецификации CSS3, призванное решить проблему красивого размещения фонового изображения в блоке элемента, это значение <code>space</code>.</p>
-
-<p>Принцип работы этого свойства аналогичен значению <code>round</code> - браузер также считает количество целых “вхождений” изображения в фон элемента. Но вот с пустым пространством он поступает несколько иначе. Браузер равномерно распределяет его между изображениями (размер которых он оставляет неизменными).</p>
-
-<p>Чтобы было понятно, о чем идет речь, посмотрите на пример ниже:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.rnd</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">700px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">500px</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
-  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(img/ChristinaVujnich.jpg)</span><span class="p">;</span>
-  <span class="k">background-position</span><span class="o">:</span> <span class="k">top</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">background-repeat</span><span class="o">:</span> <span class="n">space</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/03/background-repeat_space.jpg" alt="Свойство background-repeat: space" class="center-image" /></p>
-
-<p>Мною намеренно были изменены размер блока, для которого “прописывалось” фоновое изображение; и размер самого изображения также. Все было сделано с целью более наглядного представления, как работает значение <code>space</code> для свойства <code>background-repeat</code>.</p>
-
-<p>На рисунке выше хорошо видно, как браузер равномерно распределил пустое пространство по вертикали и горизонтали между изображениями.</p>
-
-<h2 id="round--space----">Значения Round &amp; Space - поддержка браузерами</h2>
-
-<p>В заключение осталось упомянуть последнее - какими браузерами поддерживаются оба значения свойства <code>background-repeat</code>. Похвастаться особо нечем - только два браузера на момент написания этой статьи поддерживают <code>space</code> и <code>round</code>. Первый - это Google Chrome начиная с <code>v.32</code>. А вот второй браузер, который может похвастаться (держитесь крепче за стул!) - это Internet Explorer v10.</p>
-
-<h2 id="modernizr">Поддержка с помощью Modernizr</h2>
-
-<p>В библиотеку Modernizr включена (благодаря ходатайству Louis Lazaris) поддержка значений <code>round</code> и <code>space</code> CSS-свойства <code>background-repeat</code> с помощью соответствующих классов <code>bgrepeatspace</code> и <code>bgrepeatround</code>. Поэтому, теперь можно использовать эту библиотеку для определения возможности поддержки в браузерах.</p>
-
-<p>Например, таким кодом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.element</span> <span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">550px</span><span class="p">;</span>
-  <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span> <span class="sx">url(bg.jpg)</span> <span class="k">repeat</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span> <span class="c">/* for all browsers */</span>
-<span class="p">}</span>
-
-<span class="nc">.bgrepeatspace</span> <span class="nc">.element</span> <span class="p">{</span>
-  <span class="k">background-repeat</span><span class="o">:</span> <span class="n">space</span><span class="p">;</span> <span class="c">/* for supporting browsers */</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section">Заключение</h2>
-
-<p>Вот, в принципе, и все по значениям <code>round</code> и <code>space</code> свойства <code>background-repeat</code>. В статье активно использовались мысли (и даже код, когда шла речь о Modernizr) из источника:</p>
-
-<p><a href="http://www.impressivewebs.com/space-round-css3-background/" title="CSS3′s ‘space’ and ‘round’ Values for background-repeat">CSS3′s ‘space’ and ‘round’ Values for background-repeat</a></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1658,6 +1784,12 @@
       <li>
         
           <a href="http://zencoder.ru/page45">45</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page46">46</a>
         
       </li>
     

@@ -144,6 +144,460 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-02-24T00:00:00+04:00"><a href="http://zencoder.ru/css/css-font-face/">February 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~14 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-font-face/" rel="bookmark" title="Подключение веб-шрифтов с помощью @font-face" itemprop="url">Подключение веб-шрифтов с помощью @font-face</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Выжимка из замечательной книги “Большая книга CSS3 3-е издание” Дэвида Макфарланда о веб-шрифтах и способе их подключения с помощью директивы <code>@font-face</code>.</p>
+</blockquote>
+
+<p>Узнал об этой теме массу нового для себя. В частности, два способа подключения шрифтов, особенность работы с сервисом Google Fonts и числовая шкала плотности шрифтов, ресурсы для поиска бесплатных шрифтов, тонкости работы с генератором FontSquirrel, ресурсы по шрифтовым иконкам. Для меня информация оказалась чрезвычайно полезной и интересной.</p>
+
+<p>Ниже привожу краткий конспект всех вопросов, показавшихся мне интересными и новыми в моей практике, пересказанный своими собственными словами. Надеюсь, данный материал окажется полезным не только для меня одного.</p>
+
+<h2 id="font-face">Подключение веб-шрифтов с помощью @font-face:</h2>
+
+<ul>
+  <li>подключение нестандартного шрифта с помощью директивы <code>@font-face</code></li>
+  <li>назначение подключенного шрифта с помощью свойства <code>font-family</code></li>
+</ul>
+
+<p>Директива <code>@font-face</code> указывает (название говорит само за себя - директива!) браузеру сделать две вещи:</p>
+
+<ul>
+  <li>создать указываемое имя шрифта</li>
+  <li>загрузить глифы для шрифта из указанного ею места</li>
+</ul>
+
+<p>Свойство <code>font-family</code> указывает браузеру применить шрифт с указанным именем выбранным элементам страницы.</p>
+
+<p>Существует несколько форматов веб-шрифтов. Наиболее распространенные из них: EOT, WOFF, OTF или TTF,</p>
+
+<p><strong>Формат EOT</strong>, который понимают браузеры IE вплоть до версии 8. Собственно, этот формат шрифта создан и существует только ради этого браузера и таких его версий. Чтобы получить шрифт формата EOT, необходимо специальное программное обеспечение для преобразования формата TTF в OET.</p>
+
+<p><strong>Формат WOFF</strong> (Web Open Font Format) является наилучшим на сегодняшний день для использования в Веб: самый маленький и легкий, поддерживается всеми современными браузерами (в том числе IE9 и выше); этот формат был создан специально для Веб. Фактически - это облегченная версия формата TTF или OTF.</p>
+
+<p><strong>Форматы OTF</strong> (Open Type Font) и TTF (True Type Font) - это самые обычные компьютерные шрифты, которые используются в большинстве операционных систем (Windows, Macintosh, Linux) и в приложениях под эти системы. Но, помимо этого, такие шрифты можно легко использовать и в Интернете.</p>
+
+<p><strong>Формат SVG</strong> - это даже не формат шрифта, а формат графики, графического изображения. Особенностью этого формата является то, что графика в этом формате создается исключительно с помощью векторов, то есть - математических формул.</p>
+
+<p>Благодаря этому изображения в таком формате масштабируются без потери качества - при увеличении размера картинки компьютеру достаточно пересчитать векторные точки. Особенность этого формата графики позволила применить его для создания “шрифтов”. То есть, обычный шрифт преобразуется в формат SVG, где каждый шрифт - это фактически картинка в масштабируемом формате SVG.</p>
+
+<p>Зачем потребовались такие трудности? Все дело в том, что браузеры под ОС Android (очень распространенная ОС под мобильные устройства) могут отображать веб-шрифты только в этом формате. Браузеры под iPhone (Safari 4.1 и ниже) также не умеют распознавать веб-шрифт. Вот этим “неумехам” и подсовывают картинки в виде шрифтов - “не умеешь кушать обычную пищу, так кушай хотя бы это!”.</p>
+
+<h2 id="section">Правовой вопрос использования шрифтов</h2>
+
+<p>Вопрос можно кратко cформулировать в следующих двух предложениях. Все шрифты делятся на <strong>платные</strong> или <strong>бесплатные</strong>.</p>
+
+<p><strong>Платные</strong> шрифты делятся на те, которые:</p>
+
+<ul>
+  <li><strong>можно</strong> использовать в Веб</li>
+  <li><strong>нельзя</strong> использовать в Веб</li>
+</ul>
+
+<p>Чтобы не заморачиваться решением запутанного вопроса лицензии на шрифты, можно воспользоваться веб-службами <a href="https://www.google.com/fonts" title="Google Fonts">Google Fonts</a> или <a href="https://typekit.com/" title="TypeKit">TypeKit</a>, на которых собраны все шрифты, <strong>которые можно использовать в Веб</strong>. Шрифты на этих серверах либо <strong>бесплатные</strong> (<a href="https://www.google.com/fonts" title="Google Fonts">Google Fonts</a>), либо <strong>платные</strong> (<a href="https://typekit.com/" title="TypeKit">TypeKit</a>).</p>
+
+<p>Краткий список <strong>источников бесплатных шрифтов</strong>, которые можно использовать в Веб:</p>
+
+<ul>
+  <li>The League of Movable Type (<a href="https://www.theleagueofmoveabletype.com/" title="The League of Movable Type">https://www.theleagueofmoveabletype.com/</a>)</li>
+  <li>FontSquirrel (<a href="http://www.fontsquirrel.com/" title="FontSquirrel">http://www.fontsquirrel.com/</a>)</li>
+  <li>Google Fonts (<a href="https://www.google.com/fonts" title="Google Fonts">https://www.google.com/fonts</a>)</li>
+  <li>The Open Font Library (<a href="http://openfontlibrary.org/ru" title="The Open Font Library">http://openfontlibrary.org/ru</a>)</li>
+  <li>Fontex.org (<a href="http://fontex.org/" title="Fontex.org">http://fontex.org/</a>)</li>
+  <li>Exljbris Font Foundry (<a href="http://www.exljbris.com/" title="Exljbris Font Foundry">http://www.exljbris.com/</a>)</li>
+</ul>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/theleagueofmovabletype.png" alt="The League of Movable Type" class="center-image" /></p>
+
+<p>Большинство веб-сервисов, которое предоставляет шрифты для Веб, “отдают” их в формате OTF или TTF. Поэтому нужно конвертировать этот шрифт в четыре формата, описанных выше, для того, чтобы максимальное число посетителей сайта смогло увидеть на своих устройствах содержимое данного сайта. Для конвертирования не нужно искать специальное программное обеспечение. Можно воспользоваться бесплатным генератором <a href="http://www.fontsquirrel.com/tools/webfont-generator" title="@font-face Generator">@font-face Generator</a>, находящемся на сервере FontSquirrel (<a href="http://www.fontsquirrel.com/" title="FontSquirrel">http://www.fontsquirrel.com/</a>).</p>
+
+<p>Единственное ограничение этого сервиса - он имеет свой собственный blacklist, в который помещены шрифты, запрещенные по лицензии для использования в Веб. Другими словам, если “подсунуть” этому генератору лицензионный шрифт, приобретенный пиратским способом, то он откажется от генерации последнего.</p>
+
+<p>Генератор <code>@font-face</code> Generator - не единственный в Веб сервис подобного рода. Существуют подобные ему генераторы, которые, в тому же, обладают “неразборчивостью” по отношению к лицензии конвертируемого шрифта.</p>
+
+<p>Порядок указания форматов шрифтов в директиве <code>@font-face</code> важен и должен быть следующим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+    <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+    <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+    <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+<span class="p">}</span></code></pre></div>
+
+<ul>
+  <li><strong>EOT</strong> - формат только для Internet Explorer 8 и ниже</li>
+  <li><strong>WOFF</strong> - самый современный и маленький по размеру шрифт, который понимают большинство современных браузеров</li>
+  <li><strong>TTF</strong> - сравнительно большой по размеру шрифт и достаточно устаревший</li>
+  <li><strong>SVG</strong> - самый большой по размеру и объему шрифт, поэтому его необходимо размещать в самой последней строке. К тому же, этот формат шрифта используется только в браузерах ОС Android или в браузере Safari 4 (<em>то есть, iPhone</em>)</li>
+</ul>
+
+<p>Браузер читает тело директивы <code>@font-face</code> - каждую строку последовательно. Как только он обнаруживает понятный для него формат шрифта, то загружает его. Поэтому последовательность объявления форматов шрифтов в директиве <code>@font-face</code> является неслучайной и эмпирически выверенной на основе опыта предыдущих веб-разработчиков.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="p">{</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;League Gothic&#39;</span><span class="o">,</span> <span class="n">Arial</span><span class="o">,</span> <span class="k">sans-serif</span><span class="p">;</span>
+  <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Правильное применение подключенного web-шрифта League Gothic. Здесь указывается на первом месте имя подключенного шрифта, а затем - <em>резервные шрифты, которые заведомо установлены в системе пользователя</em> (имя шрифта, гарантировано имеющегося в системе и семейство шрифтов).</p>
+
+<p>Внимательный читатель обратит внимание на вторую строку и скажет: это здесь лишнее, бред какой-то. На самом деле не совсем так. Браузеры всегда пытаются отрисовать заголовки полужирным начертанием, по умолчанию. Поэтому, здесь мы говорим, чтобы браузер просто этого не делал, и все.</p>
+
+<p>Помимо букв, шрифты могут состоять из иконок или изображений. Ресурсы, посвященные теме шрифтовых иконок и значков:</p>
+
+<ul>
+  <li><a href="http://css-tricks.com/flat-icons-icon-fonts/" title="The Big List of Flat Icons &amp; Icon Fonts">The Big List of Flat Icons &amp; Icon Fonts</a></li>
+  <li><a href="http://css-tricks.com/html-for-icon-font-usage/" title="HTML for Icon Font Usage">HTML for Icon Font Usage</a></li>
+  <li><a href="http://css-tricks.com/examples/IconFont/" title="Icon Fonts are Awesome">Icon Fonts are Awesome</a></li>
+  <li><a href="http://goo.gl/Rhwrf6" title="Шрифтовые иконки и сервис IcoMoon">Шрифтовые иконки и сервис IcoMoon</a></li>
+</ul>
+
+<h2 id="section-1">Виды шрифтов</h2>
+
+<p>При подключении шрифтов, установленных на компьютере, обычно не возникает вопросов и мы не задумываемся о том, как так получается, что при указании браузеру отрисовать текст полужирным с помощью тега <code>strong</code> у нас действительно получается полужирный шрифт; при указании сделать текст курсивным через тег <code>em</code> текст действительно делается курсивным; а при полужирном курсиве через теги <code>strong em</code> он делается полужирным курсивом. Нам кажется, что браузер делает текст таким, каким мы указываем ему.</p>
+
+<p>На самом деле это не так. Или не совсем так. Браузер действительно отрисовывает шрифт указанным ему способом, но вот с самим шрифтом он ничего сделать не может. Он просто берет указанное тегом начертание шрифта и выводит его на экран. Дело в том, что дизайнеры или компании, занимающиеся разработкой шрифтов, создают шрифты таким образом: художник рисует четыре набора одного и того же шрифта. То есть, рисуется набор символов в обычном начертании (regular), затем рисуется набор символов в курсивном начертании (italic), потом набор символов в полужирном начертании (bold), и наконец набор символов в полужирном курсивном начертании (bold italic). Все эти четыре набора символов фактически являются отдельными шрифтами, хотя и носят одно общее название (Georgia, Tahoma, Helvetica и так далее).</p>
+
+<p>Когда браузеру указывается, какое начертание применить, он просто берет шрифт с указанным начертанием и отображает его. К примеру, шрифт Arial имеет четыре вида начертания. Если указывается, что нужно полужирное начертание, то браузер берет полужирное начертание Arial. Сам браузер преобразовать одно начертание в другое не может ни в коей мере. Он может выполнить только одну вещь - попытаться сделать и обычного начертания “курсивное”. Команда, говорящая браузеру выполнить такую задачу, имеет название <code>oblique</code>. В этом случае браузер просто тупо выполняет наклон всех букв шрифта на 45 градусов, и все. Получившийся результат может быть просто ужасным, поэтому такая команда используется очень редко.</p>
+
+<p>В случае с веб-шрифтами веб-дизайнеру <strong>нужно самому побеспокоиться от том, чтобы подключить все четыре вида начертания выбранного шрифта по отдельности</strong>. Из-за браузера IE8 подключение веб-шрифтов с помощью директивы <code>@font-face</code> значительно осложняется и может быть выполнено двумя способами: <strong>простым</strong>, который IE8 не понимает (но понимают все остальные браузеры) и <strong>сложным</strong>, который будет доступен и IE8 также.</p>
+
+<h2 id="section-2">Простой способ подключения веб-шрифта</h2>
+
+<p>Простой способ заключает в добавлении к директиве <code>@font-face</code> двух CSS-правил: <code>font-weight</code> и <code>font-style</code>. Обычно эти два правила задают браузеру команды отображать текст полужирным и курсивным начертанием. Но внутри директивы <code>@font-face</code> эти правила выполняют другую роль, они заставляют браузер загрузить веб-шрифт с указанным стилем и жирностью. Чтобы быть более понятным, приведем сразу пример подключения веб-шрифта PTSans с четырьмя вариантами его отображения:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
+  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
+<span class="p">}</span>
+
+<span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
+  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">italic</span><span class="o">;</span>
+<span class="p">}</span>
+
+<span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">bold</span><span class="o">;</span>
+  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">normal</span><span class="o">;</span>
+<span class="p">}</span>
+
+<span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSans&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.woof&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+  <span class="nt">font-weight</span><span class="o">:</span> <span class="nt">bold</span><span class="o">;</span>
+  <span class="nt">font-style</span><span class="o">:</span> <span class="nt">italic</span><span class="o">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Расскажу, как я понимаю данные CSS-правила. Директива <code>@font-face</code> является своего рода функцией наподобие функции в JavaScript (<em>а может это и есть функция на самом деле, уж больно похожа по своему функционалу?</em>). Эта функция (<em>я буду называть так здесь эту директиву</em>) объявляет имя переменной правилом <code>font-family: 'PTSans'</code>. Эта переменная является массивом, который заполняется значениями с помощью последующих правил:</p>
+
+<ul>
+  <li><code>src: url('PTSansBoldItalic.eot')</code> - местоположение шрифта;</li>
+  <li><code>font-weight: normal</code> - загрузить шрифт указанной жирности;</li>
+  <li><code>font-style: normal</code> - загрузить шрифт указанного стиля.</li>
+</ul>
+
+<p>CSS-правила требуют, чтобы при четырех вариантах отображения шрифта заполнение массива <code>PTSans</code> производилось каждый раз отдельным вызовом функции <code>@font-face</code>. После этого достаточно подключить переменную <code>PTSans</code> к выбранным элементам страницы:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSans</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>И затем HTML-тегами <code>strong</code> или <code>em</code> указать, какое начертание шрифта применить к указанным элементам:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">dolor</span> <span class="nt">ets</span> <span class="o">&lt;</span><span class="nt">strong</span><span class="o">&gt;</span><span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">dolor</span> <span class="nt">ets</span><span class="o">&lt;/</span><span class="nt">strong</span><span class="o">&gt;</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">ipsum</span> <span class="nt">dolor</span> <span class="nt">ets</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="o">&lt;</span><span class="nt">em</span><span class="o">&gt;</span><span class="nt">dolor</span> <span class="nt">ets</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">dolor</span><span class="o">&lt;/</span><span class="nt">em</span><span class="o">&gt;</span> <span class="nt">ets</span> <span class="nt">lorem</span> <span class="nt">ipsum</span> <span class="nt">dolor</span> <span class="nt">ets</span></code></pre></div>
+
+<p>Браузер “вытащит” из массива PTSans шрифт нужного начертания (bold или italic или bold italic) и применит его к указанным элементам страницы.</p>
+
+<p>Преимуществом данного способа подключения веб-шрифта является его универсальность. Достаточно один раз объявить шрифт с помощью директивы <code>@font-face</code> и правила:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="err">какой</span><span class="nt">-</span><span class="err">то</span> <span class="err">элемент</span> <span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSans</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>… чтобы потом управлять отображением этого шрифта посредством семантически верных тегов <code>strong</code> и <code>em</code>.</p>
+
+<h2 id="section-3">Сложный способ подключения веб-шрифта</h2>
+
+<p>К сожалению, IE8 не понимает способа подключения веб-шрифта, описанного выше. Точнее, этот браузер не понимает способа подключения различных начертаний шрифта <strong>к одному и тому же имени этого шрифта</strong>. Если создать правила, описанные выше и попробовать загрузить полученную HTML-страницу в IE8, то весь текст будет отображен как: <code>font-family: PTSans; font-weight: normal; font-style: normal</code>.</p>
+
+<p>В тех местах, где применены теги <code>strong</code> или <code>em</code>, браузер IE8 будет сам делать из шрифта PTSans начертания <code>bold</code> и <code>italic</code>, а не подключать уже готовые шрифты в этих начертаниях. Результат такой “самодеятельности” будет плачевным.</p>
+
+<p>Выходом из положения будет применение различных имен шрифта в директиве <code>@font-face</code>. Пример варианта подключения веб-шрифта, понятного для IE8, показан ниже:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansRegular&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansRegular.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+<span class="p">}</span>
+
+<span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansItalic&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+<span class="p">}</span>
+
+<span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansBold&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.woff&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBold.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+<span class="p">}</span>
+
+<span class="k">@font-face</span><span class="p">{</span>
+  <span class="nt">font-family</span><span class="o">:</span> <span class="s1">&#39;PTSansBoldItalic&#39;</span><span class="o">;</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot&#39;</span><span class="o">);</span>
+  <span class="nt">src</span><span class="o">:</span>  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.eot#iefix&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;embedded-opentype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.woof&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;woff&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.ttf&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;truetype&#39;</span><span class="o">),</span>
+  <span class="nt">url</span><span class="o">(</span><span class="s1">&#39;PTSansBoldItalic.svg&#39;</span><span class="o">)</span> <span class="nt">format</span><span class="o">(</span><span class="s1">&#39;svg&#39;</span><span class="o">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Обратите внимание на отсутствие правил <code>font-weight</code> и <code>font-style</code> во всех четырех директивах <code>@font-face</code>. Такой код выглядит даже более понятным и логичным, нежели первый вариант. И вроде бы все хорошо, но задавайте теперь рассмотрим простой пример параграфа с тегами <code>strong</code> и <code>em</code>, к которому следует применить шрифт PTSans.</p>
+
+<p>Оцените этого CSS -“крокодила” ниже. Какой он громоздкий и неуклюжий! А если учесть, что на HTML-странице нужно будет применить шрифт PTSans не только к элементу p, а еще к заголовкам <code>h1</code>, <code>h2</code>, ссылке <code>a</code>? Насколько же “раздуются” таблицы стилей в этом случае! А если вдруг (не дай Бог!) придется вносить изменения в такой код?</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansRegular</span><span class="p">;</span>
+ <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+ <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+ <span class="k">font-size</span><span class="o">:</span> <span class="m">36px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">strong</span><span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansBold</span><span class="p">;</span>
+ <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+ <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">em</span><span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansItalic</span><span class="p">;</span>
+ <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
+ <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">p</span> <span class="nt">strong</span> <span class="nt">em</span><span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="n">PTSansBoldItalic</span><span class="p">;</span>
+ <span class="k">font-weight</span><span class="o">:</span> <span class="k">bold</span><span class="p">;</span>
+ <span class="k">font</span><span class="o">-</span><span class="k">italic</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Применять или не применять второй способ подключения веб-шрифтов - это вопрос того, насколько необходима поддержка IE8 для конкретного сайта. Следует учесть, что доля IE8 падает и будет продолжать падать.</p>
+
+<h2 id="google-fonts">Шрифты Google Fonts</h2>
+
+<p>Чтобы не заморачиваться с поиском шрифта, скачиванием его в формате TTF или OTF, конвертации на генераторе типа FontSquirrel Generator, подключения полученных CSS-стилей в проект с помощью многочисленных директив <code>font-face</code>, можно воспользоваться сервисом Google Fonts. Преимущество этого способа заключается в простоте способа и его надежности - достаточно получить на сервере Google одну строку ссылки и поместить ее в свой проект.</p>
+
+<p>Примечательный момент использования шрифтов Google - <strong>это способ подключения полученных шрифтов</strong>. Первый способ - с помощью тега <code>link</code>, второй в помощью директивы <code>@import</code>, третий с помощью скрипта JavaScript.</p>
+
+<p><strong>Первый способ</strong> прост, но имеет <em>один недостаток</em> - тег <code>link</code> нужно будет подключать к каждой из разрабатываемых HTML-страниц проекта.</p>
+
+<p>В тоже время, <strong>второй способ</strong> с помощью директивы <code>@import</code> более лаконичный - достаточно подключить ее в начало таблиц стилей, чтобы выбранные шрифты применялись ко всем HTML-страницам.</p>
+
+<p><strong>Третий способ</strong> с помощью JavaScript кроме сложности, никаких других преимуществ перед двумя другими не имеет.</p>
+
+<p>В Google плотность шрифта обозначается не с помощью ключевых слов <code>normal</code>, <code>bold</code> или <code>bolder</code>, а в числовой шкале - 100 до 900. Значение 400 соответствует <code>normal</code>, 700 - <code>bold</code>.</p>
+
+<p>К примеру, код может выглядеть следующим образом. Зададим для элемента <code>em</code> шрифт Gentium Book Basic нормальной плотности курсивного начертания:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">em</span><span class="p">{</span>
+ <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;Gentium Book Basic&#39;</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
+ <span class="k">font-weight</span><span class="o">:</span> <span class="m">400</span><span class="p">;</span>
+ <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На этом выжимка по веб-шрифтам заканчивается.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-02-23T00:00:00+04:00"><a href="http://zencoder.ru/css/negative-margin/">February 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/negative-margin/" rel="bookmark" title="Отрицательный margin в нормальном потоке" itemprop="url">Отрицательный margin в нормальном потоке</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Свойство <code>margin</code> очень хорошо для решения задачи установления дистанции между элементами, но знаете ли вы, что отрицательные <code>margin</code> могут не увеличивать, а сокращать расстояние между элементами, вплоть до того, что эти элементы будут перекрывать друг друга.</p>
+</blockquote>
+
+<p>Создадим простой пример и для этого предположим, что у нас есть страница, на которой элемент после заголовка <code>h2</code> всегда должен находиться непосредственно под ним. Самый распространенный пример из практики для этого случая, когда первый параграф, идущий сразу же после заголовка, не имеет пустого пространства (blank line) между собой и этим параграфом.</p>
+
+<p>Решения такого вопроса два.</p>
+
+<p><strong>Первый способ</strong> - это воспользоваться смежными селекторами.</p>
+
+<p><strong>Второй способ</strong>, представленный на рисунке ниже, это применить отрицательный <code>margin-bottom</code> для <code>h2</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/header-paragraph.png" alt="Между заголовком и параграфом нет промежутка" class="center-image" /></p>
+
+<p>Можно подумать, что у параграфа, который следует сразу за заголовком, отсутствует <code>margin-top</code>, но это не так. <code>Margin-top</code> никуда не пропадал.</p>
+
+<p>Он просто оказался перекрытым заголовком <code>h2</code>, у которого край <code>margin-bottom</code> находится в непосредственной близости от края текста самого заголовка. Параграф и его собственный <code>margin</code> располагаются сразу под ним, а не у нижнего края границы заголовка.</p>
+
+<p>Такой прием полезен на практике в случае, когда необходимо расположить часть контента “на одной линии”. Почему слово на одной линии заключено в кавычки - потому-что контент только визуально располагается на одной линии.</p>
+
+<p>Предположим, у нас есть список (HTML-разметка):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;jump&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;prev&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;ch03.html&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Salaries<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;next&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;ch05.html&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Punching the Clock<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>В этом списке нам необходимо расположить оба пункта так, чтобы они находились на горизонтальной линии. Визуально это можно увидеть так, как изображено на рисунке ниже.</p>
+
+<p>Такую задачу можно выполнить обычным способом - через <code>float</code> (прим. переводчика - я бы так и поступил, разбросал оба <code>li</code> по разным углам блока <code>ul</code> через <code>float: left</code> и <code>float: right</code>) для обоих пунктов.</p>
+
+<p>Но можно решить такую задачу другим способом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/on_the_same_line.png" alt="Два пункта меню на одной линии" class="center-image" /></p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.jump</span><span class="p">{</span>
+  <span class="k">list-style-type</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">25em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">.25em</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span><span class="p">;</span>
+<span class="p">}</span>
+  <span class="nc">.jump</span> <span class="nc">.next</span><span class="p">{</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-1em</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>В этом примере отрицательный <code>margin-top</code> величиной в <code>-1em</code> “поднимает” элемент <code>li.next</code> вверх ровно на высоту строки, установленную нами ранее в правиле <code>line-height: 1</code>.</p>
+
+<blockquote>
+  <p>Прим. переводчика: очень понравилось, о таком способе решения даже не подозревал!</p>
+</blockquote>
+
+<p>Другим полезным приемом является частичное выдвижение элемента изнутри наружу своего контейнера-родителя. Предположим, у нас стоит задача расположить блок заголовка точно по центру разделительной линии так, как это показано на рисунке ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/centering_heading_on_a_dividing_line.png" alt="Расположение заголовка по центру разделительной линии" class="center-image" /></p>
+
+<p>HTML-разметка такого заголовка будет следующей:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;entry&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    The Web Stack
+  <span class="nt">&lt;/h2&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.entry</span><span class="p">{</span>
+    <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.entry</span> <span class="nt">h2</span><span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">80%</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+    <span class="k">margin</span><span class="o">:</span> <span class="m">-0.67em</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>C другой стороны, может потребоваться задача, когда блок заголовка не имеет фиксированной ширины, а ширина задается только его содержимым. В этом случае необходимо добавить всего несколько строк кода в HTML-разметку и CSS-правила, соответственно:</p>
+
+<p>HTML-разметка, в которой добавлен еще один элемент - <code>span</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;entry&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    <span class="nt">&lt;span&gt;</span>The Web Stack<span class="nt">&lt;/span&gt;</span>
+  <span class="nt">&lt;/h2&gt;</span>
+    ...
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.entry</span> <span class="nt">h2</span><span class="p">{</span>
+    <span class="k">margin-top</span><span class="o">:</span> <span class="m">-0.67em</span><span class="p">;</span>
+    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+    <span class="k">border-top</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.entry</span> <span class="nt">h2</span> <span class="nt">span</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+    <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="nb">gray</span><span class="p">;</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">.25em</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/02/shrink_wraped_text.png" alt="Ширина блока заголовка задается его контентом" class="center-image" /></p>
+
+<p>В этом примере все хорошо работает до тех пор, пока длина текста внутри блока меньше, чем длина разделительной линии. Заголовок разбивается на две линии, сам блок заголовка вмещается вниз от разделительной линии и перестает быть расположенным по центру.</p>
+
+<p>Для этого случая решение с помощью отрицательного <code>margin-top</code> не является самым лучшим. Можно лишь посоветовать убрать верхнюю границу <code>border-top</code> у блока-родителя и сделать для него фоновую заливку белого цвета, также. Это будет не совсем то, что нужно; но все же достаточно хорошее решение.</p>
+
+<p>Автор статьи: Eric Meyer - “Smashing CSS Professional Techniques for Modern Layout”</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-02-21T00:00:00+04:00"><a href="http://zencoder.ru/css/css-outline-border/">February 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -464,326 +918,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-13T00:00:00+04:00"><a href="http://zencoder.ru/css/stih-css3/">December 13, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/stih-css3/" rel="bookmark" title="Стилизация стихотворения с помощью CSS3-селекторов" itemprop="url">Стилизация стихотворения с помощью CSS3-селекторов</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Селекторы стандарта CSS3 имеют поистине безграничные возможности для выделения HTML-элементов без создания дополнительной разметки (которая практически всегда применялась в предыдущих версиях CSS).</p>
-</blockquote>
-
-<p>В этой статье я собираюсь менее чем за 5 минут выполнить стилизацию популярного детского стихотворения “Мерцай, звездочка, мерцай!”, используя CSS3-селекторы.</p>
-
-<h2 id="section">Кодируем стихотворение</h2>
-
-<p>Не существует единого мнения в вопросе, как следует выполнять HTML-разметку для стихотворения: большинство полагает, что каждый стих из стихотворения должен быть параграфом (<code>p</code>), а каждая строка стиха должна быть отделена от другой с помощью элемента <code>br</code>.</p>
-
-<p>Некоторые возлагают надежды на грядущие элементы стандарта HTML5, предназначенные специально для форматирования стихотворений, такие как <code>&lt;poem&gt;</code>, <code>&lt;stanza&gt;</code> и <code>&lt;line&gt;</code>. Однако маловероятно, что это будущее наступит в скором времени (<em>если вообще наступит</em>).</p>
-
-<h2 id="section-1">Разметка</h2>
-
-<p>В будущей разметке имеются три основных элемента:</p>
-
-<ul>
-  <li>заголовок;</li>
-  <li>подзаголовок с информацией об авторе;</li>
-  <li>само стихотворение, собственно.</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;h1&gt;</span>
-  Twinkle Twinkle Little Star
-<span class="nt">&lt;/h1&gt;</span>
-<span class="nt">&lt;h2&gt;</span>
-  by Jane Taylor, 1806
-<span class="nt">&lt;/h2&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  Twinkle, twinkle, little star,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      How I wonder what you are!<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Up above the world so high,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Like a diamond in the sky!
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  When the blazing sun is gone,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      When he nothing shines upon,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Then you show your little light,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Twinkle, twinkle, all the night.
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  Then the traveller in the dark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Thanks you for your tiny spark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      He could not see which way to go,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      If you did not twinkle so.
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  In the dark blue sky you keep,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      And often through my curtains peep,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      For you never shut your eye,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Till the sun is in the sky.
-<span class="nt">&lt;/p&gt;</span>
-<span class="nt">&lt;p&gt;</span>
-  As your bright and tiny spark,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Lights the traveller in the dark,<span class="ni">&amp;mdash;</span><span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Though I know not what you are,<span class="nt">&lt;br</span> <span class="nt">/&gt;</span>
-      Twinkle, twinkle, little star.
-<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<h2 id="section-2">Стилизация заголовков</h2>
-
-<p>Прежде чем приступать к стилизации элементов страницы, необходимо добавить базовый сброс стилей и некоторые значения по умолчанию в таблицу стилей:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">body</span> <span class="p">{</span>
-  <span class="k">background</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#111</span><span class="p">;</span>
-  <span class="k">font</span><span class="o">:</span> <span class="m">14px</span> <span class="n">Baskerville</span><span class="o">,</span> <span class="s2">&quot;Palatino Linotype&quot;</span><span class="o">,</span> <span class="s2">&quot;Times New Roman&quot;</span><span class="o">,</span> <span class="n">Times</span><span class="o">,</span> <span class="k">serif</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-<span class="p">}</span>
-
-  <span class="nt">div</span><span class="o">,</span> <span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span><span class="o">,</span> <span class="nt">p</span> <span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-    <span class="k">padding</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Само стихотворение обернем в блок <code>div</code> и разместим его по центру окна браузера, для большей красоты:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="p">{</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
-  <span class="k">padding</span><span class="o">:</span> <span class="m">20px</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">390px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Заголовки стихотворения также разместим по центру страницы и уберем полужирное начертание, присвоенное им по умолчанию:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span><span class="o">,</span> <span class="nt">h2</span> <span class="p">{</span>
-    <span class="k">font-weight</span><span class="o">:</span> <span class="k">normal</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-  <span class="p">}</span></code></pre></div>
-
-<p>Установим размер шрифта для основного заголовка - тега <code>h1</code>; добавим небольшой <code>margin-bottom</code> и такой же <code>line-height</code> (потому что размер шрифта был задан слишком большой; если заголовок окажется достаточно длинным, то между его строками будет большое расстояние):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h1</span> <span class="p">{</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">34px</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Для заголовка второго уровня <code>h2</code> с информацией об авторе и дате публикации будет использовать другой, более легкий цвет; меньший размер шрифта; сделаем его курсивным, чтобы он выглядел совсем уж по другому; а также небольшой отступ внизу с помощью <code>margin-bottom</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h2</span> <span class="p">{</span>
-  <span class="k">color</span><span class="o">:</span> <span class="m">#666</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">18px</span><span class="p">;</span>
-  <span class="k">font-style</span><span class="o">:</span> <span class="k">italic</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-3">Стихотворение</h2>
-
-<p>Для основного текста стихотворения добавим интерлиньяж <code>line-height</code> достаточно большого размера для того, чтобы расстояние между строками было большое и такой текст было удобно читать. Также для каждого стиха добавим <code>margin-bottom</code>, чтобы визуально отделить их друг от друга:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span> <span class="p">{</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="p">;</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">15px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<h2 id="section-4">Волшебные селекторы</h2>
-
-<p>А вот теперь начнем развлекаться! Первое - добавим декоративный элемент в начале и в конце информации об авторе. Для этого воспользуемся псевдо-элементами <code>:before</code> и <code>:after</code> в сочетании с CSS-свойством <code>content</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">h2</span><span class="nd">:before</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39;— &#39;</span><span class="p">;</span>
-<span class="p">}</span>
-
-<span class="nt">h2</span><span class="nd">:after</span> <span class="p">{</span>
-  <span class="k">content</span><span class="o">:</span> <span class="s1">&#39; —&#39;</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Теперь увеличим первую букву стихотворения - так называемая <em>буквица</em> (<code>drop cap</code>). Для этого воспользуемся смежным селектором (<code>+</code>) и псевдо-элементом (<code>:first-child</code>).</p>
-
-<p>Смежный селектор позволяет выбрать селекторы, которые следуют сразу выбранным нами селектором внутри одного и того же элемента-родителя (например, внутри одного и того же блока <code>div</code>).</p>
-
-<p>Мы выделим первую букву каждого параграфа, который следует сразу за заголовком второго уровня <code>h2</code>, который в нашем примере только один:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">h2</span> <span class="o">+</span> <span class="nt">p</span><span class="nd">:first-letter</span> <span class="p">{</span>
-  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-  <span class="k">font-size</span><span class="o">:</span> <span class="m">38px</span><span class="p">;</span>
-  <span class="k">line-height</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">2px</span> <span class="m">5px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Буквицу смещаем влево, так чтобы остальной текст обтекал его вокруг; при увеличении размера шрифта междустрочный интервал <code>line-height</code> уменьшаем, чтобы последующие строки не были сдвинуты вниз; и слегка сместим буквицу внутри текста с помощью <code>margin</code>.</p>
-
-<p>Выделим первую строку каждого параграфа через <code>small-caps</code> и сделаем его более удобочитаемым, добавив немного расстояния между каждой строчкой:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">p</span><span class="nd">:first-line</span> <span class="p">{</span>
-  <span class="k">font-variant</span><span class="o">:</span> <span class="k">small-caps</span><span class="p">;</span>
-  <span class="k">letter-spacing</span><span class="o">:</span> <span class="m">1px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Для того, чтобы еще как-то выделить стихотворение, добавим к последнему параграфу дополнительное пространство внизу, чтобы отделить его от всего остального контента, который будет идти следом за ним. Для этого воспользуемся псевдо-элементом <code>:last-child</code>, с помощью которого выделим последнего потомка элемента-родителя:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nf">#poem</span> <span class="nt">p</span><span class="nd">:last-child</span> <span class="p">{</span>
-  <span class="k">margin-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-  <span class="k">padding-bottom</span><span class="o">:</span> <span class="m">30px</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Вот стилизация стихотворения и закончена!</p>
-
-<h2 id="section-5">Некоторые заметки о поддержке браузерами</h2>
-
-<p>Не стоит ожидать, что весь созданный CSS-код будет одинаково работать во всех основных браузерах. Последние версии Safari, Firefox и Opera поддерживают все представленные здесь селекторы. Но Internet Explorer 8 не поддерживает псевдо-элемент <code>:last-child</code>; Internet Explorer 7 не поддерживает псевдо-элементы <code>:last-child</code>, <code>:before</code> и <code>:after</code>; Internet Explorer 6 также не поддерживает псевдо-элемент <code>:first-child</code>, помимо всего прочего.</p>
-
-<h2 id="section-6">Заключение</h2>
-
-<p>Эта статья является очень общим и кратким руководством, как использовать селекторы CSS3-стандарта для стилизации HTML-элементов без дополнительных классов, идентификаторов или чрезмерно раздутого кода. Селекторы CSS3 не работают в более старых версиях браузеров, таких как Internet Explorer 6, в которых генерируются только основные CSS-свойства (за редким исключением).</p>
-
-<p>Но это не означает, что текст в окне браузера делается нечитаемым - просто CSS3-селекторы добавляют дополнительное оформление в современных браузерах, которыми пользуются на сегодняшний день только небольшое количество людей.</p>
-
-<blockquote>
-  <p>Примечание переводчика: статья была написано довольно давно - в 2009 году. Что касается поддержки браузерами CSS3-селекторов, то на сегодняшний день изменений не так уже и много. Исключением является факт, что о браузере IE6 можно забыть.</p>
-</blockquote>
-
-<p>Оригинал статьи - “<a href="http://webdesignernotebook.com/css/styling-a-poem-with-advanced-css-selectors/" title="Styling a Poem with Advanced CSS Selectors">Styling a Poem with Advanced CSS Selectors</a>”.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-12-12T00:00:00+04:00"><a href="http://zencoder.ru/pseudo-class-empty/">December 12, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/pseudo-class-empty/" rel="bookmark" title="Краткая заметка по псевдо-классу :empty" itemprop="url">Краткая заметка по псевдо-классу :empty</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Я люблю ту простоту, которую привносят CSS3-селекторы в таблицы стилей. В этой статье приведено краткое описание одного из моих любимых селекторов: псевдо-класса <code>:empty</code>.</p>
-</blockquote>
-
-<h2 id="empty">Что такое псевдо-класс :empty</h2>
-
-<p>Вот краткое описание, взятое из спецификации W3C:</p>
-
-<blockquote>
-  <p>Псевдо-класс <code>:empty</code> относится к элементу, у которого нет потомков.</p>
-</blockquote>
-
-<p>Звучит просто и понятно, не правда ли? Потому что это действительно так - псевдо-класс <code>:empty</code> применяется к элементам, которые полностью пустые; например, для пустого параграфа:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<p>Или же пустые ячейки таблицы:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-<span class="nt">&lt;/table&gt;</span></code></pre></div>
-
-<p>А вот к такому параграфу псевдо-класс <code>:empty</code> не применим, так как он не является пустым (внутри этого тега есть пробел, который является равноправным символом по сравнению со всеми остальными):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>...<span class="nt">&lt;/p&gt;</span></code></pre></div>
-
-<h2 id="empty-1">Практическое применение :empty</h2>
-
-<p>Хорошо, но каким образом может быть полезен этот селектор?</p>
-
-<p>Представим ситуацию, когда вы стилизуете таблицу и некоторые из ячеек этой таблицы не имеют данных внутри себя. Тогда вы можете применить к ним другие правила благодаря псевдо-классу <code>:empty</code>.</p>
-
-<p>Давайте возьмем таблицу, которая создавалась мною ранее. Я собираюсь использовать те же самые таблицы стилей, но сделаю их более упрощенными. Также я собираюсь удалить содержимое из некоторых ячеек для того, чтобы сделать пример соответствующим статье.</p>
-
-<p>Разметка будет выглядеть таким образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;table&gt;</span>
-  <span class="nt">&lt;caption&gt;</span>A simple table<span class="nt">&lt;/caption&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">rowspan=</span><span class="s">&quot;2&quot;</span><span class="nt">&gt;</span>Some headings<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span> <span class="na">colspan=</span><span class="s">&quot;4&quot;</span><span class="nt">&gt;</span>More headings<span class="nt">&lt;/th&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Great<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Brilliant<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Genius<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;col&quot;</span><span class="nt">&gt;</span>Good<span class="nt">&lt;/th&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Interesting totals<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>155<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>165<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>70<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>140<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Curious<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>35<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>50<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>15<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Awesome<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>75<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>90<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>5<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Fabulous<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>30<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>20<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>80<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-  <span class="nt">&lt;tr&gt;</span>
-    <span class="nt">&lt;th</span> <span class="na">scope=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>Nice<span class="nt">&lt;/th&gt;</span>
-    <span class="nt">&lt;td&gt;</span>45<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;&lt;/td&gt;</span>
-    <span class="nt">&lt;td&gt;</span>40<span class="nt">&lt;/td&gt;</span>
-  <span class="nt">&lt;/tr&gt;</span>
-<span class="nt">&lt;/table&gt;</span></code></pre></div>
-
-<p>И вот, что я собираюсь добавить в таблицы стилей, для того чтобы отформатировать пустые ячейки таблицы:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">tbody td:empty {
-  background: #efefef;
-}</code></pre></div>
-
-<p>А вот теперь пустые ячейки таблицы отформатированы <a href="http://webdesignernotebook.com/examples/empty-selector.html" title="Empty Selector">по-другому</a>! Мне кажется, что невозможно сделать это более простым способом.</p>
-
-<p>Если вас этот селектор заинтересовал, то скажу, что он поддерживается всеми последними версиями браузеров Firefox, Safari, Chrome и Opera. И возможно, он работает в браузере Internet Explorer 9, наравне с остальными селекторами стандарта CSS3.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -1059,6 +1193,12 @@
       <li>
         
           <a href="http://zencoder.ru/page45">45</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page46">46</a>
         
       </li>
     

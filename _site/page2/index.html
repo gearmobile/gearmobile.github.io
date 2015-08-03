@@ -144,6 +144,372 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-24T00:00:00+03:00"><a href="http://zencoder.ru/jquery/first-jquery/">May 24, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/first-jquery/" rel="bookmark" title="Метод first и first-child библиотеки jQuery" itemprop="url">Метод first и first-child библиотеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Рассмотрю два метода, которые похожи внешне и внутренне, как может показаться с первого взгляда. Однако, между ними есть тонкая разница.</p>
+
+<h2 id="first">Метод first</h2>
+
+<p>Метод <code>first()</code> призван возращать первый элемент из коллекции (выборки) этих элементов. Как всегда, чтобы не быть голословным и иметь наглядный пример перед глазами, приведу ниже HTML-разметку, на которой буду тренироваться:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;primo&quot;</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Вот такая большая разметка <code>div class="wrapper"</code> с четырьмя блоками <code>ul class="block"</code>, у каждого из которых есть элементы-потомки <code>li class="block__item"</code>.</p>
+
+<p>И создам небольшой скрипт на JS/jQuery такого плана:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.wrapper&#39;</span><span class="p">);</span>
+  <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--firstSimple&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Работа вышеприведенного js-кода будет сводиться к следующему:</p>
+
+<ul>
+  <li>создается переменная <code>wrapper</code>, в которую помещается результат выборки <code>$('.wrapper')</code></li>
+  <li>в переменной <code>wrapper</code> находим элемент <code>li</code>, который является первым в коллекции - <code>.find('li:first')</code></li>
+  <li>этому элементу добавляется класс - <code>.addClass('block__item--firstSimple')</code></li>
+</ul>
+
+<p>Код несложный и вроде бы все понятно. Но вот вопрос - а какой элемент <code>li</code> с точки зрения данного кода является первым в коллекции?</p>
+
+<p>Чтобы не ломать понапрасну голову, приведу сразу ответ:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;primo&quot;</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstSimple&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Вот так - только он один и только этот элемент является первым в коллекции элементов <code>li</code>.</p>
+
+<p>Это объяснимо, если слегка подумать. В переменной <code>wrapper</code> хранится коллекция элементов; и элементов <code>li</code> - в том числе.</p>
+
+<p>Коллекция элементов - это не что иное, как массив. А в массиве только один элемент может быть первым. То есть, иметь индекс 0.</p>
+
+<p>Именно поэтому метод <code>.first()</code> - это всего лишь синоним (alias) другого, более универсального метода <code>.eq()</code> и может быть записан таким способом - <code>.eq(0)</code> - вернуть элемент с нулевым индексом, то есть - первый элемент массива.</p>
+
+<p>Антагонистом метода <code>.first()</code> является метод <code>last()</code>, который возвращает последний элемент массива. И метод <code>.last()</code> также можно записать по другому - <code>.eq(-1)</code>; это также вернет последний элемент массива.</p>
+
+<p>Ок, с методом <code>.first()</code> вроде разобрались. Двигаемся дальше и рассмотрим метод <code>.first-child()</code>.</p>
+
+<h2 id="first-child">Метод first-child()</h2>
+
+<p>Казалось бы, в чем разница? Трудно догадаться, поэтому сразу приведу js-код с описанием работы. В качестве подопытной HTML-разметки будет выступать все та же, приведенная в самом начале статьи.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.wrapper&#39;</span><span class="p">);</span>
+  <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first-child&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--firstChild&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Что делает приведенный выше код? А вот что:</p>
+
+<ul>
+  <li>создает переменную <code>wrapper</code> и присваивает ей значение выборки - $(‘.wrapper’)</li>
+  <li>в переменной <code>wrapper</code> находим первый элемент <code>li</code> - <code>.find('li:first-child')</code></li>
+  <li>этому элементу присваивается класс - <code>.addClass('block__item--firstChild')</code></li>
+</ul>
+
+<p>Все просто и вроде бы точно также, как и в случае с методом <code>.first()</code>. Вроде бы да, но возникает вопрос - а какой элемент <code>li</code> данный код считает первым в данном случае?</p>
+
+<p>Чтобы не гадать, снова приведу готовый ответ:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;primo&quot;</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Вот она - разница в подходе отбора первого элемента. Другими словами, метод <code>.first-child()</code> находит все элементы, которые являются первыми потомками у своих непосредственных родителей. А в данном случае таких потомков насчиталось аж 4 штуки.</p>
+
+<p>Конечно, можно провести аналогию и рассмотреть метод <code>.last-child()</code>. Но мне кажется, смысла в этом особого нет - все и так понятно. Выборка будет производиться с точностью до наоборот и будут отбираться последние потомки своих неспосредственных родителей.</p>
+
+<p>На этом думаю закончить сравнительный обзор двух методов - <code>.first()</code> и <code>.first-child()</code>.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-23T00:00:00+03:00"><a href="http://zencoder.ru/jquery/next-jquery/">May 23, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/next-jquery/" rel="bookmark" title="Методы next и prev библиотеки jQuery" itemprop="url">Методы next и prev библиотеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Рассмотрю методы для нахождения <strong>следующих</strong> и <strong>предыдущих</strong> элементов из выборки. Предполагается, что имеется группа элементов, у которых один родитель.</p>
+
+<p>Чтобы не ходить вокруг да около, приведу пример HTML-разметки:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Видно, что у элемента-родителя <code>ul class="test"</code> имеется двенадцать элементов-потомков <code>li class="test__item"</code>.</p>
+
+<p>Так вот, в библиотеке jQuery имеются несколько методов, с помощью которых можно “погулять” по этому DOM-дереву. Расссмотрю каждый из них в отдельности.</p>
+
+<p>Но стоит сразу сказать - как всегда, эти методы очень краткие и предельно понятные. Вся “прелесть” начинается, когда методы объединяют в jQuery-цепочку.</p>
+
+<h2 id="next">Метод next()</h2>
+
+<p>С помощью этого метода возвращается элемент, находящий <strong>следующим</strong> по отношению к текущему элементу.</p>
+
+<p>Приведу такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="nx">next</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--nexted&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>… который выполняет следующее:</p>
+
+<ul>
+  <li>создать переменную <code>list</code> и поместить в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найти все элементы <code>li</code></li>
+  <li>вернуть элемент <code>li</code> с индексом 6 - <code>.eq(6)</code></li>
+  <li>найти следующий за ним элемент <code>li</code></li>
+  <li>присвоить ему класс <code>.test__link--nexted</code></li>
+</ul>
+
+<p>В результате выполнения этого кода класс <code>.test__link--nexted</code> будет присвоен элементу <code>li</code> с индексом 7 (или восьмому - по счету):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--nexted&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h2 id="prev">Метод prev()</h2>
+
+<p>Этот метод абсолютно аналогичен методу <code>next()</code> за тем исключением, что его действие направлено в противоположную сторону. Метод <code>prev()</code> возвращает элемент, который <strong>предшествует</strong> текущему элементу.</p>
+
+<p>То есть, такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="nx">prev</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--preved&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<ul>
+  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
+  <li>вернет элемент <code>li</code> с индексом 6 - <code>.eq(6)</code></li>
+  <li>найдет предшествующий ему элемент <code>li</code></li>
+  <li>присвоит ему класс <code>.test__link--preved</code></li>
+</ul>
+
+<p>Результатом выполнения этого кода класс <code>.test__link--preved</code> будет присвоен элементу <code>li</code> с индексом 5 (или шестому - по счету):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--preved&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h3 id="section">Краткое заключение</h3>
+
+<p>Обобщением вышесказанного является такое предложение. Методы <code>next()</code> и <code>prev()</code> возвращают один элемент, который является <strong>следующим</strong> или <strong>предшествует</strong> текущему элементу. Все элементы имеют <strong>одного общего родителя</strong> и поиск осуществляется только в этих рамках (другими словами - это sibling-элементы).</p>
+
+<h2 id="nextall--prevall">Методы nextAll() и prevAll()</h2>
+
+<p>Производными от рассмотренных мною выше методов <code>next()</code> и <code>prev()</code> являются методы <code>nextAll()</code> и <code>prevAll()</code>. Фактически, это те же самые методы <code>next()</code> и <code>prev()</code>, но в этих методах возвращается не один элемент, а <strong>все оставшиеся</strong> элементы, которые являются sibling по отношению к текущему элементу.</p>
+
+<p>То есть, такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">nextAll</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--squared&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<ul>
+  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
+  <li>вернет элемент <code>li</code> с индексом 3 - <code>.eq(3)</code></li>
+  <li>найдет все следующие за ним элементы <code>li</code> - <code>.nextAll()</code></li>
+  <li>присвоит всем найденным элементам <code>li</code> класс <code>.block__item--squared</code></li>
+</ul>
+
+<p>Результатом будет такой HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<p>Метод <code>prevAll()</code> работает аналогично, но “в другую сторону”. Этот метод возвращает <strong>все элементы</strong>, которые <strong>предшествуют</strong> текущему элементу.</p>
+
+<p>То есть, такой JS-код:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
+  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">prevAll</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--circled&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<ul>
+  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
+  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
+  <li>вернет элемент <code>li</code> с индексом 3 - <code>.eq(3)</code></li>
+  <li>найдет все элементы <code>li</code>, которые предшествуют ему - <code>.prevAll()</code></li>
+  <li>присвоит всем найденным элементам <code>li</code> класс <code>.block__item--circled</code></li>
+</ul>
+
+<p>Результатом работы этого js-скрипта будет такой HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h2 id="section-1">Общее заключение</h2>
+
+<p>Вывод по методам <code>nextAll()</code> и <code>prevAll()</code>. Эти методы работают с sibling-элементами, то есть - имеющими одного родителя. Эти методы возвращают все найденные элементы, которые предшествуют или расположены после текущего элемента.</p>
+
+<p>Методы <code>nextAll()</code> и <code>prevAll()</code> очень похожи также на рассмотренный мною в предыдущей статье метод <code>siblings</code>. Вот только действие метода <code>siblings</code> более “тупое” (если позволительно так сказать) - этот метод “фигачит” свое действие сразу в обе стороны от текущего элемента, по принципу - “от забора и до обеда”.</p>
+
+<p>Методы <code>nextAll()</code> и <code>prevAll()</code> более “интеллектуальные” - они “фигачат” свое действие только в одну сторону - указанную.</p>
+
+<p>Ну, а методы <code>next()</code> и <code>prev()</code> самые “умные” - “только один элемент, который ближайший и слева”; “только один элемент, который ближайший и справа”.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-05-22T00:00:00+03:00"><a href="http://zencoder.ru/jquery/siblings-jquery/">May 22, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -442,186 +808,6 @@
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
 
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-19T00:00:00+03:00"><a href="http://zencoder.ru/jquery/has-jquery/">May 19, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/has-jquery/" rel="bookmark" title="Методы has и hasClass библиотеки jQuery" itemprop="url">Методы has и hasClass библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Два очень похожих метода библиотеки jQuery, служащих для фильтрации выборки - метод <code>.has()</code> и метод <code>.hasClass()</code>.</p>
-
-<p>И действительно, оба этих метода похожи между собой. Чтобы было понятно, лучше сразу перейду к примерам.</p>
-
-<h2 id="has">Метод .has()</h2>
-
-<p>Метод <code>.has()</code> фильтрует элементы, имеющие в своем составе указанные в <code>.has()</code> <strong>селекторы</strong>.</p>
-
-<p>Простой пример:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">has</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span></code></pre></div>
-
-<p><strong>То есть</strong>: всем элементам <code>li</code>, имеющим в качестве потомков (<em>в своем составе</em>) элемент <code>a</code>, присвоить класс <code>.active</code>.</p>
-
-<p>На лицо, как бы это сказать, обратная фильтрация - <em>справа налево</em>. Обычно все методы библиотеки jQuery работают <em>слева направо</em>.</p>
-
-<p>Этот метод чем-то похож на метод <code>.parent()</code>. В качестве примера рассмотрим такой вариант:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">parent</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>… что читается таким образом: всем элементам <code>li</code>, являющимся родителями элементов <code>a</code>, присвоить класс <code>.active</code>.</p>
-
-<p>Напомню, что метод <code>.has()</code> работает именно с селекторами и имеет такой синтаксис:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="s1">&#39;selector&#39;</span><span class="p">)</span></code></pre></div>
-
-<h2 id="hasclass">Метод .hasClass()</h2>
-
-<p>Метод <code>.hasClass()</code> очень похож по принципу действия на предыдущий метод <code>has()</code> - но это только кажущееся впечатление.</p>
-
-<p>Во-первых, как понятно из имени метода <code>.hasClass()</code>, что он работает с <strong>классами</strong>, а не <strong>селекторами</strong>.</p>
-
-<p>То есть, синтаксис метода <code>.hasClass()</code> таков:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;class&#39;</span><span class="p">)</span></code></pre></div>
-
-<p>Во-вторых, метод <code>.hasClass()</code> возвращает логическое <code>true</code> или <code>false</code>, в отличие от метода <code>.has()</code>, который возвращает <strong>массив объектов</strong>, доступных для дальнейшей обработки.</p>
-
-<p>Простой пример:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span> <span class="p">(</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">hasClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">))</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;activeLink&#39;</span><span class="p">);</span>
-<span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;inactiveLink&#39;</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>… что читается таким образом: если элементы <code>li</code> имеют класс <code>.active</code>, то всем элементам <code>a</code>, являющимся потомками элементов <code>li</code>, присвоить класс <code>.activeLink</code>; иначе всем элементам <code>a</code> присвоить класс <code>.inactiveLink</code>.</p>
-
-<p>Стоит обратить внимание, что в случае метода <code>.hasClass()</code> имеет место быть обычный способ фильтрации элементов - слева направо; выборка сужается по мере появления новых условий.</p>
-
-<p>Вот такая картина получается, с двумя этими методами - <code>.has()</code> и <code>.hasClass</code>.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-18T00:00:00+03:00"><a href="http://zencoder.ru/jquery/find-jquery/">May 18, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/find-jquery/" rel="bookmark" title="Функция .find библиотеки jQuery" itemprop="url">Функция .find библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Осуществляет поиск элементов внутри <strong>уже выбранных элементов</strong>.</p>
-
-<p>Метод имеет варианты использования и соответствующий синтаксис:</p>
-
-<p><code>.find(selector)</code> - ищет элементы, соответствующие заданному селектору, внутри <strong>выбранных элементов</strong>.</p>
-
-<p><code>.find(element)</code> - осуществляет поиск элемента <code>element</code> внутри <strong>выбранных элементов</strong>. Параметр <code>element</code> задается в виде DOM-элемента.</p>
-
-<p><code>.find(jQuery object)</code> - осуществляет поиск элементов внутри <strong>выбранных элементов</strong>, оставляя те, которые содержатся в заданном объекте jQuery.</p>
-
-<p><strong>Примеры использования</strong>.</p>
-
-<ul>
-  <li>вернет все элементы <code>span</code>, находящиеся внутри div-элементов:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">)</span></code></pre></div>
-
-<ul>
-  <li>вернет все элементы с классом <code>.bigBlock</code>, находящиеся внутри div-элементов:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;.bigBlock&#39;</span><span class="p">)</span></code></pre></div>
-
-<p><strong>Вышеуказанные примеры хороши лишь в качестве демонстрации возможностей метода <code>.find()</code>.</strong></p>
-
-<p>Например, искать span-элементы, лежащие внутри div’ов правильнее будет так:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;div span&#39;</span><span class="p">)</span></code></pre></div>
-
-<p>Метод <code>.find()</code> же удобно использовать, когда некоторые <strong>элементы уже найдены</strong> и необходимо осуществить поиск других элементов внутри уже найденных элементов:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// найдем все ul-элементы на странице</span>
-<span class="kd">var</span> <span class="nx">$ulElements</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">);</span>
-<span class="c1">// найдем li-элементы с классом .userBox внутри $ulElements</span>
-<span class="nx">$ulElements</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">);</span>
-
-<span class="c1">// сокращенный вариант записи</span>
-<span class="kd">var</span> <span class="nx">$ulElements</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>Так же <code>.find()</code> удобен для использования в <strong>цепочках методов</strong>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">)</span> <span class="c1">// найдем все ul-элементы на странице</span>
-  <span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;listElements&#39;</span><span class="p">)</span> <span class="c1">// добавим ul&#39;ам класс .listElements</span>
-  <span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">)</span> <span class="c1">// найдем li-элементы с классом .userBox внутри ul&#39;ов</span>
-  <span class="p">.</span><span class="nx">remove</span><span class="p">();</span> <span class="c1">// и удалим их</span>
-
-<span class="c1">// сокращенный вариант записи</span>
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;listElements&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li.userBox&#39;</span><span class="p">).</span><span class="nx">remove</span><span class="p">();</span></code></pre></div>
-
-<p>Работа метода <code>.find()</code> <strong>схожа</strong> с методом <code>.children()</code>, который осуществляет поиск подходящих <strong>дочерних элементов</strong>.</p>
-
-<p>Отличие заключается в том, что <code>.find()</code> проводит поиск не только среди дочерних элементов, но и внутри них тоже (другими словами - поиск проходит на <strong>всех уровнях</strong> иерархии DOM, в то время как <code>.children()</code> ищет только <strong>на одном уровне</strong>).</p>
-
-<h2 id="find">Пример метода .find()</h2>
-
-<p>Внутри каждого ul-элемента найдем первый li-элемент и последний p-элемент:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// найдем и сохраним все ul-элементы</span>
-<span class="kd">var</span> <span class="nx">$matched</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">);</span>
-
-<span class="c1">// выделим их</span>
-<span class="nx">$matched</span><span class="p">.</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;matched&#39;</span><span class="p">);</span>
-
-<span class="c1">// найдем внутри уже выбранных элементов все требуемые и выделим их, добавив класс .result</span>
-<span class="nx">$matched</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first, p:last&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">);</span>
-
-<span class="c1">// сокращенный вариант записи</span>
-<span class="kd">var</span> <span class="nx">$matched</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;ul&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;matched&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first, p:last&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;result&#39;</span><span class="p">);</span></code></pre></div>
-
-<h2 id="find-1">Фильтрация элементов помощью .find()</h2>
-
-<p>Кроме поиска, .find() может осуществлять своеобразную фильтрацию.</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">$span</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;span&#39;</span><span class="p">);</span> <span class="c1">// создать переменную $span и поместить в нее результат выборки по элементам span</span>
-<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">).</span><span class="nx">find</span><span class="p">(</span><span class="nx">$span</span><span class="p">).</span><span class="nx">css</span><span class="p">(</span><span class="s1">&#39;color&#39;</span><span class="p">,</span><span class="s1">&#39;blue&#39;</span><span class="p">);</span> <span class="c1">// найти все элементы p, среди этих найденных элементов найти все элементы span и расскрасить их</span></code></pre></div>
-
-<hr />
-
-<p>Материал статьи полностью основан на <a href="http://jquery.page2page.ru/" title="jQuery page2page2Page">http://jquery.page2page.ru</a> и не претендует на оригинальность.</p>
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
 
 <div class="pagination">
   
@@ -897,6 +1083,12 @@
       <li>
         
           <a href="http://zencoder.ru/page45">45</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page46">46</a>
         
       </li>
     
