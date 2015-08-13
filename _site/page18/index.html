@@ -144,6 +144,213 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-07T00:00:00+04:00"><a href="http://zencoder.ru/javascript/slider-bxslider/">July 07, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/slider-bxslider/" rel="bookmark" title="Слайдер bxSlider" itemprop="url">Слайдер bxSlider</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Обзор еще одного слайдера под библиотеку jQuery под названием bxSlider.</p>
+</blockquote>
+
+<p>Данный слайдер обладает полным набором возможностей, адаптивный и легко устанавливается в проекте. Адрес проживания слайдера bxSlider - <a href="http://bxslider.com/" title="The Responsive jQuery Content Slider">The Responsive jQuery Content Slider</a>.</p>
+
+<p>Конкретно какими возможностями обладает bxSlider:</p>
+
+<ul>
+  <li>полностью адаптивный</li>
+  <li>может быть горизонтальным, вертикальным</li>
+  <li>может содержать в себе изображения, видео или HTML-контент</li>
+  <li>поддержка функций touch/swipe</li>
+  <li>для анимаций используются CSS transitions</li>
+  <li>маленький размер файла, легко видоизменяется и настраивается</li>
+  <li>поддержка браузерами Firefox, Chrome, Safari, iOS, Android, Ie7+</li>
+  <li>большое число настроек</li>
+</ul>
+
+<h2 id="bxslider">Установка слайдера bxSlider</h2>
+
+<p>Установка bxSlider ничем не отличается от установки ему подобных скриптов для создания carousel. Скачиваем с сайта архив - в нем есть все необходимое для подключения и работы. Помимо этого, там есть несколько дополнительных файлов типа <code>jquery.easing.1.3.js</code> и <code>jquery.fitvids.js</code>. Но нет библиотеки jQuery, которую автор рекомендует подключать в проект через CDN. Я подключу jQuery локально, версии 1.11.1.</p>
+
+<p>В HTML-файле перед закрывающим тегом body произвожу подключение скриптов в таком порядке:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">...
+<span class="c">&lt;!--  SCRIPTS  --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.bxslider.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/bxslider.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>Файл <code>jquery.bxslider.min.js</code> беру из скачанного архива, файл <code>bxslider.js</code> - произвольного имени, для настроек плагина bxSlider.</p>
+
+<p>В <code>head</code> HTML-документа, помимо этого, производится подключение таблицы стилей для плагина bxSlider, которую также беру из скачанного архива. Данный шаг выполнять совершенно необязательно - можно обойтись без файла <code>jquery.bxslider.css</code> и тогда получим “чистый” слайдер, который можно видоизменять по своему с помощью CSS:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/jquery.bxslider.css&quot;</span><span class="nt">&gt;</span>
+  ...
+ <span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>Плагин bxSlider подключен и готов к работе. Осталось создать HTML-разметку для него.</p>
+
+<h2 id="html----bxslider">HTML-разметка для слайдера bxSlider</h2>
+
+<p>Внутри тега <code>body</code> создаю разметку для будущего слайдера. Она проста и семантична, представляет из себя обычный маркированный список, в котором каждый элемент <code>li</code> является слайдом. Внутри <code>li</code> может размещаться изображение, видео или любой другой HTML-контент. Контейнер <code>ul</code> должен иметь класс с произвольным именем:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;slider&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h2 id="bxslider-1">Инициализация скрипта bxSlider</h2>
+
+<p>В созданном ранее js-файле <code>bxslider.js</code> произвожу инициализацию плагина bxSlider. Важно заметить, что строка инициализации должна быть обязательно заключена в “обертку” <code>$(document).ready()</code>, иначе слайдер не будет работать:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slider&#39;</span><span class="p">).</span><span class="nx">bxSlider</span><span class="p">();</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Смотрю готовый результат:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_ready.png" alt="Запущенный слайдер bxSlider" /></p>
+
+<p>Слайдер bxSlider запущен и работает - есть кнопки пагинации и перемотки, изображения крутятся при нажатии на них. Пробую отключить таблицу стилей <code>jquery.bxslider.css</code> и смотрю результат. Действительно, слайдер bxSlider получается “голым”, но рабочим:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_clean.png" alt="Чистый слайдер bxSlider" /></p>
+
+<h2 id="bxslider-2">Стилизация слайдера bxSlider</h2>
+
+<p>Произведу небольшую стилизацию слайдера bxSlider. Для этого необходимо воспользоваться плагином Firebug под браузер Mozilla Firefox, чтобы инспектировать DOM-дерево и находить нужные HTML-элементы с их классами. Как можно было понять из базовой HTML-разметки, все элеметы управления слайдером генерируются скриптом автоматически.</p>
+
+<p>Стилизация слайдера bxSlider с помощью CSS-правил (в данном примере это SCSS) может быть такой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">asidePos</span><span class="o">:</span> <span class="nt">50px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#778899</span><span class="o">;</span>
+
+<span class="nc">.bx-wrapper</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">5px</span> <span class="k">solid</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">viewport</span><span class="err">{</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c">/*  Скрывать пагинацию  */</span>
+  <span class="nc">.bx-pager</span><span class="p">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c">/*  Кнопки перемотки  */</span>
+  <span class="nc">.bx-prev</span><span class="o">,</span>
+  <span class="nc">.bx-next</span><span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">92px</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">single</span><span class="o">-</span><span class="n">transition</span><span class="p">(</span><span class="k">background-color</span><span class="o">,</span> <span class="m">.1s</span><span class="o">,</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">);</span>
+    <span class="o">&amp;:</span><span class="n">hover</span><span class="o">,&amp;:</span><span class="n">focus</span><span class="err">{</span>
+      <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nd">:active</span><span class="p">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+  <span class="nc">.bx-prev</span><span class="p">{</span>
+    <span class="k">left</span><span class="o">:</span> <span class="o">-</span><span class="err">$</span><span class="n">asidePos</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.bx-next</span><span class="p">{</span>
+    <span class="k">right</span><span class="o">:</span> <span class="o">-</span><span class="err">$</span><span class="n">asidePos</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nt">img</span><span class="p">{</span>
+    <span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>И посмотрим результат наших трудов. Уже гораздо лучше, однако:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_styled.png" alt="Стилизованный слайдер bxSlider" /></p>
+
+<h2 id="bxslider-3">Настройка слайдера bxSlider</h2>
+
+<p>Плагин bxSlider имеет большое количество настроек, которые легко подключать в коде. Разнообразные (и многочисленные) примеры создания слайдера приведены на странице - <a href="http://bxslider.com/examples" title="Examples">Examples</a>. Эти примеры можно и стоит изучить (<em>хотя бы слегка, для будущего</em>).</p>
+
+<p>В этой статье давайте я воссоздам один из приведенных на странице <a href="http://bxslider.com/examples" title="Examples">Examples</a> примеров. Пусть это будет слайдер с автоматической прокруткой и кнопками управления прокруткой - запуско и остановкой. Такой готовый пример размещен здесь - <a href="http://bxslider.com/examples/auto-show-start-stop-controls" title="Auto show with start / stop controls">Auto show with start / stop controls</a>. Я просто сделаю свой собственный дубликат, со своими стилями.</p>
+
+<p>Для этого в SCSS-коде добавляю такие строки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  auto controls  */</span>
+<span class="nc">.bx-controls-auto</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">5px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">pie</span><span class="o">-</span><span class="n">clearfix</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">controls</span><span class="o">-</span><span class="k">auto</span><span class="o">-</span><span class="n">item</span><span class="err">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">start</span><span class="o">,</span>
+    <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">stop</span><span class="err">{</span>
+      <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">single</span><span class="o">-</span><span class="n">transition</span><span class="p">(</span><span class="k">background-color</span><span class="o">,</span> <span class="m">.1s</span><span class="o">,</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.bx-start</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="p">(</span><span class="m">7px</span><span class="o">,</span><span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="nc">.bx-stop</span><span class="p">{</span>
+      <span class="k">width</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+      <span class="k">height</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+      <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>HTML-разметку на странице я не меняю, как вы могли заметить. Блок <code>.bx-controls-auto</code> генерируется скриптом bxSlider автоматически.</p>
+
+<p>Файл настроек <code>bxslider.js</code> подправляю, чтобы он выглядел таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$(</span><span class="nt">document</span><span class="o">)</span><span class="nc">.ready</span><span class="o">(</span><span class="nt">function</span><span class="o">()</span><span class="p">{</span>
+  <span class="err">$</span><span class="p">(</span><span class="s1">&#39;.slider&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">bxSlider</span><span class="p">(</span><span class="err">{</span>
+    <span class="k">auto</span><span class="o">:</span> <span class="n">true</span><span class="o">,</span>
+    <span class="n">autoControls</span><span class="o">:</span> <span class="n">true</span>
+  <span class="p">}</span><span class="o">);</span>
+<span class="err">}</span><span class="o">);</span></code></pre></div>
+
+<p>Смотрю результат в браузере:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_autoplay.png" alt="Слайдер bxSlider с автоматической прокруткой" /></p>
+
+<p>Отлично! Появились кнопки запуска и остановки показа слайдшоу; сам слайдер стартует автоматически, при открытии страницы в окне браузера.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Плагин bxSlider мне однозначно понравился. Семнатичная простая разметка, использование произвольного имени класса (а не идентификатора), автоматическое генерирование HTML-элементов слайдера, большое количество настроек, хорошие эффекты, простота подключения.</p>
+
+<p>Все эти преимущества однозначно сделали плагин bxSlider номером один в моей копилке.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-07-05T00:00:00+04:00"><a href="http://zencoder.ru/css/masked-background-effect-with-css/">July 05, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1030,185 +1237,6 @@
 <p>Плагин slick мне однозначно понравился. Простая установка и подключение, генерирование элементов управления показом слайдшоу, большое количество разнообразных настроек. С разнообразными вариантами настройки внешнего вида можно и нужно разобраться на странице примеров - <a href="http://kenwheeler.github.io/slick/" title="Demos">Demos</a>. И подогнать под необходимые конкретные условия, если потребуется.</p>
 
 <p>Удачного кодинга!</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-29T00:00:00+04:00"><a href="http://zencoder.ru/foundation-button-group-button-bar/">June 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/foundation-button-group-button-bar/" rel="bookmark" title="Foundation - button group и button bar" itemprop="url">Foundation - button group и button bar</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжение темы Foundation, в которой рассмотрен вопрос создания группы кнопок (button group) и панели кнопок (button bar).</p>
-</blockquote>
-
-<p>В предыдущем обзоре я с вами научился создавать кнопки на Foundation - “Foundation - создаем кнопки”. В этом обзоре мы научимся создавать группы кнопок (button group) - несколько кнопок, объединенных в группу. Такие кнопки могут применяться на странице для самых различных целей.</p>
-
-<h2 id="button-group--foundation">Группы кнопок (button group) на Foundation</h2>
-
-<p>С точки зрения HTML струкрута такой группы представляет из себя обычный маркированный список с вложенными ссылками. Все дело в CSS-классах фреймворка Foundation, которые применяются к этому списку. Ссылку мы создаем с помощью класса <code>.button</code>, как и в предыдущей статье. А для элемента <code>ul</code> мы присваиваем класс <code>.button-group</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>В результате получаем группу с набором кнопок внутри:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_group.png" alt="Button group на Foundation" /></p>
-
-<h2 id="button-group--foundation-1">Видоизменение группы кнопок (button group) на Foundation</h2>
-
-<p>Созданную таким образом группу кнопок можно видоизменять с помощью дополнительных классов, как это делалось ранее. К примеру создадим две группы кнопок и применим к ним дополнительные классы. <code>.radius</code>, <code>.round</code>, <code>.alert</code>, <code>.secondary</code>, <code>.success</code> Кстати, дополнительные классы можно применять не только к элементам <code>a</code>, но и к элементу <code>ul</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group radius&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button secondary&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group round&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button secondary&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Результат будет что-то в виде цветов итальянского флага:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_groups_additional.png" alt="Button group с дополнительными классами" /></p>
-
-<h2 id="button-bar--foundation">Панели кнопок (button bar) на Foundation</h2>
-
-<p>Группы кнопок, в свою очередь, можно объединять между собой, создавая панели кнопок (button bar). Для этой цели применяется элемент <code>div</code> в классом <code>.button-bar</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;button-bar&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success small round&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success small round&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success small round&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group round&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert small&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert small&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert small&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Результат будет примерно таким:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_bar.png" alt="Button bar на Foundation" /></p>
-
-<h2 id="button-bar--foundation-1">Видоизменение панели кнопок (button bar) на Foundation</h2>
-
-<p>Точно также, как и группу кнопок с классом <code>.button-group</code>, панель кнопок <code>.button-bar</code> можно видоизменять с помощью все тех же дополнительных классов, как показано на примере выше.</p>
-
-<h2 id="button-group--button-bar-c--sass">Создание button group и button bar c помощью Sass</h2>
-
-<p>Ну и по становящейся уже традиции переходим к вопросу создания панели кнопок (button bar) на Foundation c помощью Sass. Для этой цели служат два миксина:</p>
-
-<ul>
-  <li><code>button-group-container</code></li>
-  <li><code>button-group-style</code></li>
-</ul>
-
-<p>Создаю HTML-разметку с произвольным именем класса <code>.horizontal</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;horizontal&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>В файле <code>app.scss</code> прописываю для него следующие правила:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.horizontal</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">container</span><span class="p">;</span>
-  <span class="n">a</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="o">&amp;&gt;</span><span class="nt">li</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">style</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span> <span class="c">/* end horizontal */</span></code></pre></div>
-
-<p>Результат получается таким:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_bar_sass.png" alt="Button bar с помощью Sass на Foundation" /></p>
-
-<p>У миксинов <code>button-group-container</code> и <code>button-group-style</code> имеются дополнительные параметры для тонкой настройки. Пример использования данных параметров показан на странице официальной документации - <a href="http://foundation.zurb.com/docs/components/button_groups.html" title="Button groups">Button groups</a>.</p>
-
-<h2 id="appscss">Редактирование файла app.scss</h2>
-
-<p>До этого момента так и не удосужился рассмотреть вопрос редактирования файла <code>app.scss</code>. Точнее, я уже упоминал о нем в начале обзора Foundation как о пользовательской таблице стилей, куда можно и нужно писать свои собственные CSS-правила. Вот теперь решил, что как раз настало время исправить свой недочет.</p>
-
-<p>В начале файла <code>app.scss</code> имеются две строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;settings&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Назначение их должно быть понятно:</p>
-
-<ul>
-  <li>строка <code>@import "settings";</code> импортирует Sass-переменные и их значения в проект</li>
-  <li>строка <code>@import "foundation";</code> импортирует сам фреймворк Foundation в проект</li>
-</ul>
-
-<p>Однако, по аналогии с библиотекой Compass под препроцесор Sass, фреймворк Foundation позволяет выборочно импортировать в проект те свои возможности, которые необходимы на данный момент. Все эти возможности оформлены в виде отдельных модулей и прописаны каждый в отдельной строке файла <code>app.scss</code> в виде длинного закоментированного списка:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;settings&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span>
-
-<span class="o">//</span> <span class="nt">Or</span> <span class="nt">selectively</span> <span class="nt">include</span> <span class="nt">components</span>
-<span class="o">//</span>   <span class="k">@import</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/accordion&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/alert-boxes&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/block-grid&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/breadcrumbs&quot;</span><span class="o">,</span>
-<span class="o">...</span></code></pre></div>
-
-<p>Допустим, на данный момент нам необходим модуль фреймворка Foundation для создания групп (button group) и панелей (button bar) кнопок. Такой модуль располагается в строке (легко найти по названию!):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="s2">&quot;foundation/components/button-groups&quot;</span><span class="o">;</span></code></pre></div>
-
-<p>И чтобы подключить только его, нужно выключить весь фреймворк Foundation целиком - закоментировать строку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>и раскомментировать нижележащие строки следующим образом (только не забыть заменить запятую на точку с запятой в конце):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;settings&quot;</span><span class="p">;</span>
-<span class="o">//</span> <span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span>
-
-<span class="o">//</span> <span class="nt">Or</span> <span class="nt">selectively</span> <span class="nt">include</span> <span class="nt">components</span>
-<span class="k">@import</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/accordion&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/alert-boxes&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/block-grid&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/breadcrumbs&quot;</span><span class="o">,</span>
-<span class="s2">&quot;foundation/components/button-groups&quot;</span><span class="p">;</span>
-<span class="o">//</span> <span class="k">@import</span> <span class="s2">&quot;foundation/components/buttons&quot;</span><span class="p">;</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/clearing&quot;</span><span class="o">,</span></code></pre></div>
-
-<p>Вуаля! Все работает и не нужно “тащить” за собой целый воз плюшек, которые не нужны на данный момент.</p>
 
 <hr />
 

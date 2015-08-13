@@ -4,13 +4,174 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://zencoder.ru/feed.xml" />
 <link rel="alternate" type="text/html" href="http://zencoder.ru" />
-<updated>2015-08-03T21:48:34+03:00</updated>
+<updated>2015-08-13T19:42:29+03:00</updated>
 <id>http://zencoder.ru/</id>
 <author>
   <name>zencoder</name>
   <uri>http://zencoder.ru/</uri>
   <email>gearmobile@gmail.com</email>
 </author>
+
+
+<entry>
+  <title type="html"><![CDATA[Создание диаграмм с помощью Chart.js]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/javascript/chartjs/" />
+  <id>http://zencoder.ru/javascript/chartjs</id>
+  <published>2015-08-13T00:00:00+03:00</published>
+  <updated>2015-08-13T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;“Контент - это король”. Все мы слышали или читали эту фразу, в которой выражена важность качественного содержания ресурса для повышения конверсии сайта, как следствие хорошей поисковой оптимизации. Однако, в то время как качественное текстовое наполнение прекрасно работает для поисковых машин, часто бывает так, что посетителям сайта гораздо проще понять основную информацию сайта, глядя на изображение или диаграмму.&lt;/p&gt;
+
+&lt;p&gt;Например, если конкретный сайт специализируется на освещении вопросов каких-либо исследований, описание самих исследований конечно же является важной информацией; но диаграмма, в которой обобщаются данные исследования, будет не менее полезной для посетителей данного сайта.&lt;/p&gt;
+
+&lt;p&gt;В этой статье будет идти речь о JavaScript-библиотеке под названием Chart.js, которая использует HTML-элемент &lt;code&gt;canvas&lt;/code&gt; для создания диаграмм на странице. После краткого обзора библиотеки в статье будут представлены два примера использования Chart.js.&lt;/p&gt;
+
+&lt;h2 id=&quot;chartjs&quot;&gt;Что такое Chart.js&lt;/h2&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://www.chartjs.org/&quot; title=&quot;Chart.js&quot;&gt;Chart.js&lt;/a&gt; является JavaScript-библиотекой, с помощью которой можно создавать на странице различные типы диаграмм; при этом используются возможности HTML5-элемента &lt;code&gt;canvas&lt;/code&gt;. Если речь зашла об элементе &lt;code&gt;canvas&lt;/code&gt;, то это означает, что необходимо использовать &lt;code&gt;polyfill&lt;/code&gt; для обеспечения поддержки этого элемента в старых версиях браузеров. В качестве примера одного из таких &lt;code&gt;polyfill&lt;/code&gt; можно привести &lt;a href=&quot;https://github.com/arv/explorercanvas&quot; title=&quot;ExplorerCanvas&quot;&gt;ExplorerCanvas&lt;/a&gt;, находящийся по указанной ссылке.&lt;/p&gt;
+
+&lt;p&gt;Библиотека Chart.js не имеет каких-либо зависимостей; размер ее так мал, что составляет примерно 11Kb в минифицированном, конкатенированном и архивированном виде. Однако, есть возможность еще уменьшить размер библиотеки путем включения в нее только тех модулей, которые необходимы в конкретном случае; то есть, если нет необходимости в поддержке всех шести типов диаграмм, включенных по умолчанию в ядро Chart.js.&lt;/p&gt;
+
+&lt;p&gt;К примеру, если на конкретной странице нужно создать только диаграмму линейного типа (bar chart), то можно подключить лишь ядро библиотеки Chart.js и модуль, с помощью которого создаются диаграммы подобного типа; таким образом, будет уменьшен общий размер библиотеки Chart.js и увеличена скорость загрузки сайта в целом.&lt;/p&gt;
+
+&lt;p&gt;Другой замечательной особенностью библиотеки Chart.js является тот факт, что создаваемые ею диаграммы адаптивные; то есть, они могут изменять свой размер при изменения размеров окна браузера таким образом, чтобы эффективно занимать все доступное для этого пространство страницы.&lt;/p&gt;
+
+&lt;p&gt;И наконец, в отличие от многих других библиотек подобного рода, которые можно найти на просторах Интернет, Chart.js имеет &lt;a href=&quot;http://www.chartjs.org/docs/&quot; title=&quot;Chart.js Documentation&quot;&gt;подробную и хорошо изложенную документацию&lt;/a&gt;, с помощью которой можно легко создавать как простые, так и сложные образцы диаграмм.&lt;/p&gt;
+
+&lt;p&gt;В следующем разделе статьи будет рассмотрен процесс получения и подключения библиотеки Chart.js в текущий проект.&lt;/p&gt;
+
+&lt;h2 id=&quot;chartjs-1&quot;&gt;Начало работы с Chart.js&lt;/h2&gt;
+
+&lt;p&gt;Перед использованием библиотеки Chart.js ее необходимо скачать и подключить к странице, на которой планируется создать одну или несколько диаграмм. Существует два способа получить библиотеку Chart.js. Первый способ заключается в использовании &lt;a href=&quot;https://github.com/nnnick/Chart.js&quot; title=&quot;Chart.js GitHub&quot;&gt;GitHub репозитория&lt;/a&gt;. Второй способ - это воспользоваться менеджером Bower при помощи команды такого вида:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;bower install chartjs --save&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Будучи скачанной, библиотека подключается на страницу как обычный JavaScript-файл. В приведенном ниже примере производится подключение Chart.js со всеми ее модулями по-умолчанию:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;path/to/Chart.js&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;В приведенном примере обратите внимание на заглавную букву в имени подключаемой библиотеки Chart.js. Это не совсем обычный способ, когда имя подключаемой библиотеки начинается с заглавной буквы. Поэтому, если после подключения Chart.js на странице отображается 404-я ошибка, то знайте, в чем заключается данная ошибка.&lt;/p&gt;
+
+&lt;p&gt;После подключения библиотека Chart.js предоставляет все встроенные в нее методы через глобальную переменную с именем Chart. Теперь все готово для того, чтобы создать нашу первую диаграмму.&lt;/p&gt;
+
+&lt;p&gt;Для этого необходимо инициализировать новый Chart-объект путем передачи ему 2d-контекста элемента &lt;code&gt;canvas&lt;/code&gt;, который будет использоваться для создания в нем диаграммы. Чтобы понять основную идею этого шага, представим себе, что на странице имеется следующий элемент:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;canvas&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;skills&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/canvas&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Если нужно в этом элементе нарисовать круговую диаграмму (pie chart), то пишется следующее выражение:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;skills&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;2d&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;skillsChart&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Chart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pie&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;где аргумент &lt;code&gt;data&lt;/code&gt;, не представленный в данном примере, является переменной, в которой содержатся данные для отображения в диаграмме.&lt;/p&gt;
+
+&lt;p&gt;Теперь, когда нам известны основные принципы подключения Chart.js, пора переходить к конкретным примерам. Для краткости изложения материала я буду использовать в нижеследующих примерах полную версию библиотеки Chart.js; но при желании читатель может найти все необходимые модули по отдельности, в директории “src”.&lt;/p&gt;
+
+&lt;p&gt;Примечание переводчика: автор статьи немногословен; в данном случае требуется некоторая расшифровка вышесказанного; примерный вид подключения ядра библиотеки Chart.js и необходимого модуля выглядит таким образом:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;../src/Chart.Core.js&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;
+&lt;span class=&quot;nt&quot;&gt;&amp;lt;script &lt;/span&gt;&lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;../src/Chart.Doughnut.js&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/script&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;Создание круговой диаграммы&lt;/h2&gt;
+
+&lt;p&gt;В этом разделе статьи будет показан пример создания круговой диаграммы, в которой представлены профессиональные навыки гипотетического web-разработчика (в эту диаграмму будет включен язык Java, поэтому этим гипотетическим разработчиком я не могу быть ни в коей мере).&lt;/p&gt;
+
+&lt;p&gt;Как уже можно было догадаться, первым шагом будет создание нового элемента &lt;code&gt;canvas&lt;/code&gt;, в котором и будет прорисовываться круговая диаграмма:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;canvas&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;skills&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;300&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;300&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/canvas&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Теперь необходимо воспользоваться данными, которые будут отображаться в диаграмме. В реальной жизни такие данные получаются с сервера каким-либо образом; в нашем же случае будет использоваться статический вариант, без использования сервера. Для круговой диаграммы необходимо получить массив объектов, каждый из которых обладает несколькими свойствами.&lt;/p&gt;
+
+&lt;p&gt;Однако, для простоты и легкости понимания эти объекты будут обладать минимумом свойств - значение, которое будет отображено в диаграмме; цвет сектора на круговой диаграмме; надпись для сектора:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pieData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;25&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Java&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#811bd6&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;10&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Scala&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#9cbaba&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;35&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;HTML&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+    &lt;span class=&quot;nx&quot;&gt;color&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#6ae128&amp;#39;&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;В завершение, как было показано в предыдущем разделе статьи, необходимо получить 2d-контекст конкретного canvas-элемента и инициализировать новый Chart-объект:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;skills&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;2d&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;skillsChart&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Chart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Pie&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;pieData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ниже показан примерный результат того, что можно получить с помощью библиотеки Chart.js:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/08/pie-chartjs.png&quot; alt=&quot;Pie Chart&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Результатом приведенного выше кода будет круговая диаграмма (pie chart), код которого можно увидеть на странице примера - &lt;a href=&quot;http://jsfiddle.net/fq6hy784/&quot; title=&quot;Pie Chart JSFiddle&quot;&gt;Pie Chart JSFiddle&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;Создание столбцовой диаграммы&lt;/h2&gt;
+
+&lt;p&gt;В следующем примере будет создана столбцовая (bar chart) диаграмма, на которой будет отображена динамика изменения количества клиентов гипотетической компании в зависимости от их национальности, за 2010 год и за 2014 год. Также, как и в предыдущем примере, для этой цели будет использоваться элемент &lt;code&gt;canvas&lt;/code&gt;, размещенный на странице в виде такого примера:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;canvas&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;id=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;clients&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;500&amp;quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&amp;quot;400&amp;quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/canvas&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Затем создаем данные для нашей вымышленной компании:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;barData&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;labels&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Italy&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;UK&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;USA&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Germany&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;France&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Japan&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;],&lt;/span&gt;
+  &lt;span class=&quot;nx&quot;&gt;datasets&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;2010 customers #&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;fillColor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#382765&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;2500&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1902&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1041&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;610&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1245&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;952&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;},&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;label&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;2014 customers #&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;fillColor&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;#7bc225&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;
+      &lt;span class=&quot;nx&quot;&gt;data&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;3104&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1689&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1318&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;589&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1199&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;1436&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+    &lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+  &lt;span class=&quot;p&quot;&gt;]&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Как видно из примера, для создаваемой столбцовой диаграммы необходимо представить объект, содержащий свойство с именем &lt;code&gt;labels&lt;/code&gt;, внутри которого размещены предметы сравнения - то, что будет сравниваться между собой. В нашем случае этими предметами являются названия стран: Italy, UK, USA, Germany, France, Japan.&lt;/p&gt;
+
+&lt;p&gt;В дополнение к этому, нам необходимо предоставить еще одно свойство, по имени &lt;code&gt;datasets&lt;/code&gt;, в котором размещены наборы объектов, каждый из которых содержит данные для сравнения. В нашем случае будет производиться сравнение между 2010 и 2014 годом, поэтому нам потребуется только два объекта.&lt;/p&gt;
+
+&lt;p&gt;Внутри каждого из этих объектов необходимо задать &lt;code&gt;label&lt;/code&gt; для визуальной подсказки на диаграмме, значение для каждого из объектов; а также цвет заливки для каждого из участков диаграммы.&lt;/p&gt;
+
+&lt;p&gt;В результате, код для создания столбцовой диаграммы (bar chart) должен быть таким:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nb&quot;&gt;document&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getElementById&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;clients&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;getContext&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;2d&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;clientsChart&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;Chart&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;context&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;).&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;Bar&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;barData&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Ниже показан примерный результат того, что можно получить с помощью библиотеки Chart.js:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/08/bar-chartjs.png&quot; alt=&quot;Bar Chart&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Результатом созданного нами выше кода будет столбцовая диаграмма (bar chart), исходный код которого можно посмотреть по этой ссылке - &lt;a href=&quot;http://jsfiddle.net/6bjy9nxh/&quot; title=&quot;Bar Chart JSFiddle&quot;&gt;Bar Chart JSFiddle&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;Заключение&lt;/h2&gt;
+
+&lt;p&gt;В этой статье вы познакомились с Chart.js, JavaScript-библиотекой для быстрого и удобного создания красивых диаграмм. Как вы могли заметить, использование библиотеки не представляет каких-либо трудностей; мною были продемонстрированы примеры ее использования.&lt;/p&gt;
+
+&lt;p&gt;Библиотека Chart.js также предоставляет несколько дополнительных возможностей, о которых я не упомянул в этой статье. Но вы можете легко восполнить свой пробел в этих знаниях и почитать &lt;a href=&quot;http://www.chartjs.org/docs/&quot; title=&quot;Chart.js Documentation&quot;&gt;официальную документацию&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Знакомы ли были вы с этой библиотекой ранее и использовали ли ее в своей практике? Как часто и в каких проектах вы ее использовали? Если нет, то какую другую библиотеку подобного типа вы использовали?&lt;/p&gt;
+
+&lt;p&gt;Оригинал статьи размещен здесь - &lt;a href=&quot;http://www.sitepoint.com/creating-beautiful-charts-chart-js/&quot; title=&quot;Creating Beautiful Charts with Chart.js&quot;&gt;Creating Beautiful Charts with Chart.js&lt;/a&gt;.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/javascript/chartjs/&quot;&gt;Создание диаграмм с помощью Chart.js&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on August 13, 2015.&lt;/p&gt;
+  </content>
+</entry>
 
 
 <entry>
@@ -2044,76 +2205,6 @@
 &lt;hr /&gt;
 
     &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/git-merged-no-merged/&quot;&gt;--merged и --no-merged в Git&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 03, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Создание alias в Git]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/git/git-aliases/" />
-  <id>http://zencoder.ru/git/git-aliases</id>
-  <published>2015-05-02T00:00:00+03:00</published>
-  <updated>2015-05-02T00:00:00+03:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;blockquote&gt;
-  &lt;p&gt;Не помню, писал уже про создание псевдонимов (alias) в Git, или нет. Но материальчик мне сильно понравился - делюсь с ним.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Итак, в чем суть вопроса? Суть проста - любой компьютерщик с опытом прекрасно знает и всегда старается применять на своей практике сочетания клавиш (так называемые hotkeys) для убыстрения, упрошения процесса своей работы.&lt;/p&gt;
-
-&lt;p&gt;Сначала использование hotkeys кажется причудой не менее причудливых компьютерных гиков - &lt;cite&gt;это они просто хотят показать, что они крутые пацаны и не такие, как все&lt;/cite&gt;; затем, когда выучены и применяются на практике пара-тройка hotkeys - ты кажешься себе невероятно крутым компьютерным “перцем”; когда ты знаешь пару-тройку десятков hotkeys - это уже просто нужно для быстрой работы; и последняя (финальная стадия, которая лечению не поддается) - ты уже просто не можешь жить без hotkeys!&lt;/p&gt;
-
-&lt;p&gt;И так во всем - в любой программе, в любой утилите.&lt;/p&gt;
-
-&lt;p&gt;Не исключение и Git. Если в день хотя бы около десятка раз набивать &lt;code&gt;git status&lt;/code&gt;, &lt;code&gt;git add&lt;/code&gt;, &lt;code&gt;git commit&lt;/code&gt;, &lt;code&gt;git checkout&lt;/code&gt;, &lt;code&gt;git branch&lt;/code&gt; и так далее (список можно еще продолжать и продолжать), то через пару-тройку деньков в голову как-то сама собой вкрадывается мысль - а как бы сделать так, чтобы не набивать пальцами тупо одно и тоже изо дня в день? Как бы сделать это все покороче?&lt;/p&gt;
-
-&lt;p&gt;Ситуация выглядела бы крайне нелепой и смешной, если бы создатель системы Git (одновременно - один из создателей Linux) не предусмотрел возможности использования hotkeys в этой системе.&lt;/p&gt;
-
-&lt;p&gt;И она есть! Но вопрос данной статейки заключает даже не в том сногшибательном факте, что Git поддерживает работу “горячих клавиш”.&lt;/p&gt;
-
-&lt;p&gt;Вопрос в том - как их создавать самому и каким образом это делать.&lt;/p&gt;
-
-&lt;p&gt;До недавнего времени я лично знал один такой способ - это редактирование конфигурационного файла Git на предмет создания в нем своего собственного списка alias’ов.&lt;/p&gt;
-
-&lt;p&gt;Вот только одна тонкость - вы, уважаемый читатель, помните, какой файл под системой Windows необходимо редактировать для этой цели? А под системой Linux? А под Mac OS X?&lt;/p&gt;
-
-&lt;p&gt;Что-то я сильно сомневаюсь, что у вас “от зубов” отскочит ответ применительно ко всем трем системам. Я лично могу прямо сейчас припомнить ответ применительно только в системе Linux. Заминочка, однако!&lt;/p&gt;
-
-&lt;p&gt;А ларчик открывался просто! В системе Git есть &lt;strong&gt;встроенная возможность создания псевдонимов&lt;/strong&gt; (alias).&lt;/p&gt;
-
-&lt;p&gt;И выглядит такая команда до смешного простой - к примеру:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.st status&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;В результате достаточно ввести в окне терминала:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git st&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;… чтобы получить информацию о текущем состоянии репозитория. И при этом не нужно “ломать” голову в попытках вспомнить, в каком файле (и где он вообще находится) нужно вписывать желаемый hotkey. Система Git сама это сделает - нужно только указать, alias какого вида вы желаете.&lt;/p&gt;
-
-&lt;p&gt;Ниже привожу краткий список псевдонимов (alias) из книги “Pro Git” второго издания (впрочем, все описанное здесь почерпнуто оттуда - просто материальчик очень понравился):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.st status
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.ci commit
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.co checkout
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.br branch
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.unstage &lt;span class=&quot;s1&quot;&gt;&amp;#39;reset HEAD --&amp;#39;&lt;/span&gt;
-&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;git config --global alias.last &lt;span class=&quot;s1&quot;&gt;&amp;#39;log -1 HEAD&amp;#39;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Оно канешна, приведенный выше списочек не является истиной в последней инстанции - на что фантазии хватает, то и можно\нужно делать. Какой псевдоним кажется более удобным в работе (у кого руки какой кривизны) - тот и стряпать надо. И вопрос совсем не в том - какие псевдонимы должны быть.&lt;/p&gt;
-
-&lt;p&gt;Вопрос в том - что Git сам может создавать псевдонимы (alias).&lt;/p&gt;
-
-&lt;p&gt;На этом все.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/git/git-aliases/&quot;&gt;Создание alias в Git&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 02, 2015.&lt;/p&gt;
   </content>
 </entry>
 

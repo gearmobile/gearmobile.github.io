@@ -144,6 +144,172 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-04-08T00:00:00+03:00"><a href="http://zencoder.ru/git/github-change-url/">April 08, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~4 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-change-url/" rel="bookmark" title="Git - смена репозитория для загрузки" itemprop="url">Git - смена репозитория для загрузки</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Продолжаю изучение темы Git и GitHub. На повестке дня стоит вопрос - каким образом можно изменить ссылку существующего репозитория?</p>
+</blockquote>
+
+<p>Нет - не так! Попробую зайти с другой стороны и сказать иначе. Имеется готовый репозиторий Template, размещенный на сервере GitHub. Этот репозиторий является шаблоном (template starter) при создании разнообразных проектов. Нечто похожим на известный <a href="https://html5boilerplate.com/" title="HTML5 Boilerplate">HTML5 Boilerplate</a>.</p>
+
+<p>Репозиторий Template клонируется на локальную машину с именем разрабатываемого проекта, такой командой:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/gearmobile/template.git project</code></pre></div>
+
+<p>Затем в созданном репозитории Project разрабатывается требуемый проект.</p>
+
+<p>Но есть одно НО - необходимо преобразовать видоизмененный репозиторий Project в отдельный, самостоятельный репозиторий. Конечно, по большому счету, это уже и есть отдельный, самостоятельный репозиторий.</p>
+
+<p>Но вот ссылка у репозитория Project указывает на оригинал - репозиторий Template. И если произвести <code>push</code> на GitHub, то произойдет обновление репозитория Template.</p>
+
+<p>А этого крайне нежелательно допустить, так как этот репозиторий является стартовым, чистым листом для всех новых проектов!</p>
+
+<p>У меня же стоит такая задача - скопировать стартовый репозиторий  Template на локальную машину, преобразовать его в конкретный проект, вновь залить на GitHub уже как самостоятельный репозиторий с именем проекта в качестве имени репозитория. Как поступить?</p>
+
+<p>Можно решить вопрос несколькими способами. Ниже приведу пару из них - самых простых и доступных для моего понимания вечного newbie в Git\GitHub. Может быть, по мере освоения темы дополню статью более универсальным и грамотным способом.</p>
+
+<h2 id="config">Правка config</h2>
+
+<p>У клонированного на локальную машину репозитория ссылка на его удаленный оригинал размещена в конфигурационном файле <code>config</code> по пути <code>.git/config</code>, в секции <code>[remote "origin"]</code>, в переменной с именем <code>url</code>:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
+
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/template.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
+
+<p>Поэтому в локальном репозитории Project можно просто изменить эту ссылку с помощью любого текстового редактора.</p>
+
+<p>Отредактирую файл <code>config</code> и изменю в нем ссылку с</p>
+
+<div class="highlight"><pre><code class="language-http" data-lang="http"><span class="err">https://github.com/gearmobile/template.git</span></code></pre></div>
+
+<p>на</p>
+
+<div class="highlight"><pre><code class="language-http" data-lang="http"><span class="err">https://github.com/gearmobile/project.git</span></code></pre></div>
+
+<p>… где последняя - это ссылка на новый пустой репозиторий Project, который я создал на GitHub.</p>
+
+<p>Теперь конфигурационный файл <code>config</code> для локального репозитория Project будет выглядеть таким образом (обратить внимание на переменную <code>url</code>):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
+
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/project.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
+
+<p>Все - теперь локальный репозиторий Project является абсолютно самостоятельным и уникальным репозиторием, связанным ссылкой со своей удаленной копией на сервере GitHub.</p>
+
+<p>Осталось только сделать <code>push</code>, чтобы залить на GitHub. Правда, здесь придется воспользоваться ключом <code>-f</code> (как это описано в предыдущей статье <a href="/git/github-fallback-commit/">Откат коммитов на GitHub</a>):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git push -f</code></pre></div>
+
+<h2 id="set-url">Команда set-url</h2>
+
+<p>Второй способ практически идентичен предыдущему за тем лишь исключением, что он более правильный, так как для изменения url-адреса репозитория используется предназначенная для этого консольная команда Git - <code>set-url</code>.</p>
+
+<p>Точно также создаю на локальной машине копию Another Project удаленного репозитория Template:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git clone https://github.com/gearmobile/template.git another-project</code></pre></div>
+
+<p>Ссылка в новом репозитории Another-Project все также указывает на свой оригинал - репозиторий Template:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
+
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/template.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
+
+<p>Создаю на GitHub новый репозиторий Another-Project, который будет удаленной копией локального (уже существующего) репозитория Another-Project. И изменяю ссылку на вновь созданный удаленный репозиторий Another-Project:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git remote <span class="nb">set</span>-url origin https://github.com/gearmobile/another-project.git</code></pre></div>
+
+<p>Проверяю, изменилась ли ссылка в конфигурационном файле <code>config</code> (переменная <code>url</code>):</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>cat .git/config
+
+<span class="o">[</span>core<span class="o">]</span>
+  <span class="nv">repositoryformatversion</span> <span class="o">=</span> 0
+  <span class="nv">filemode</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">bare</span> <span class="o">=</span> <span class="nb">false</span>
+<span class="nb">  </span><span class="nv">logallrefupdates</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">ignorecase</span> <span class="o">=</span> <span class="nb">true</span>
+<span class="nb">  </span><span class="nv">precomposeunicode</span> <span class="o">=</span> <span class="nb">true</span>
+
+<span class="o">[</span>remote <span class="s2">&quot;origin&quot;</span><span class="o">]</span>
+  <span class="nv">url</span> <span class="o">=</span> https://github.com/gearmobile/another-project.git
+  <span class="nv">fetch</span> <span class="o">=</span> +refs/heads/*:refs/remotes/origin/*
+
+<span class="o">[</span>branch <span class="s2">&quot;master&quot;</span><span class="o">]</span>
+  <span class="nv">remote</span> <span class="o">=</span> origin
+  <span class="nv">merge</span> <span class="o">=</span> refs/heads/master</code></pre></div>
+
+<p>Да, ссылка была успешно изменена на новый удаленный репозиторий Another-Project. Можно вносить изменения и выполнять <code>push</code> на GitHub.</p>
+
+<h2 id="section">Небольшое заключение</h2>
+
+<p>Преимущество двух описанных выше способ в том, что не теряется история коммитов.</p>
+
+<p>На этом пока все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-04-07T00:00:00+03:00"><a href="http://zencoder.ru/git/github-fallback-commit/">April 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -587,119 +753,6 @@
     <span class="k">background</span><span class="o">-</span><span class="k">size</span><span class="o">:</span> <span class="k">auto</span> <span class="k">auto</span><span class="p">;</span>
   <span class="p">}</span>
 <span class="p">}</span></code></pre></div>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-03-07T00:00:00+03:00"><a href="http://zencoder.ru/html/html5-form-validation/">March 07, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/html/html5-form-validation/" rel="bookmark" title="HTML5 Form Validation" itemprop="url">HTML5 Form Validation</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>К вопросу о типах форм в HTML5, регулярных выражениях и валидации форм на основе регулярных выражений. Философское рассуждение на ночь глядя.</p>
-</blockquote>
-
-<h2 id="required">Атрибут required</h2>
-
-<p>Наиболее простой способ реализации валидации html-форм - это добавить к <code>input(type="text")</code> атрибут <code>required</code>.</p>
-
-<p>Данный атрибут сообщает браузерам, что содержимое поля ввода необходимо для заполнения. Теперь браузеры будут проверять содержимое поля ввода - то есть, выполнять его валидацию.</p>
-
-<p>Заметьте - браузеры сами будут это выполнять, без какого-либо участия Javascript/jQuery с нашей стороны (<em>это и есть одна из многогранных сторон HTML5</em>).</p>
-
-<p>В CSS3 для форм ввода разработаны два псевдо-класса:</p>
-
-<ul>
-  <li>:valid</li>
-  <li>:invalid</li>
-</ul>
-
-<p>Оба псевдокласса предназначены для управления видом форм (<code>border</code>, <code>background</code>, помещения маркеров внутрь или снаружи формы) в случае валидности или невалидности содержимого этой формы.</p>
-
-<p>Например, такой простейший код будет изменять фон поля ввода при валидности или невалидности содержимого:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">&amp;</span><span class="nt">__input</span>
-  <span class="nt">border</span> <span class="nt">1px</span> <span class="nt">solid</span> <span class="nf">#ddd</span>
-  <span class="nt">border-radius</span> <span class="nt">5px</span>
-  <span class="nt">padding</span> <span class="nt">3px</span> <span class="nt">10px</span>
-
-  <span class="o">&amp;</span><span class="nd">:valid</span>
-    <span class="nt">background-color</span> <span class="nt">rgba</span><span class="o">(</span><span class="nt">245</span><span class="o">,</span><span class="nt">255</span><span class="o">,</span><span class="nt">250</span><span class="o">,</span><span class="nc">.5</span><span class="o">)</span>
-
-  <span class="o">&amp;</span><span class="nd">:invalid</span>
-    <span class="nt">background-color</span> <span class="nt">rgba</span><span class="o">(</span><span class="nt">220</span><span class="o">,</span><span class="nt">20</span><span class="o">,</span><span class="nt">60</span><span class="o">,</span><span class="nc">.5</span><span class="o">)</span></code></pre></div>
-
-<p>Тут возникает законный вопрос - а каким образом браузер определяет, валидное или невалидное содержимое у этого поля?</p>
-
-<p>В данном случае - очень просто и примитивно (<em>для наглядности примера</em>). Если поле не содержит никакого (<em>любого</em>) символа, то поле считается невалидным и браузер генерирует для данного поля псевдо-класс <code>:invalid</code>.</p>
-
-<p>Если же поле содержит хотя бы один символ (<em>любой - не обязательно текстовый</em>), то данное поле уже считается валидным и браузер генерирует для этого поля псевдо-класс <code>:valid</code>.</p>
-
-<blockquote>
-  <p>Note! Содержимое атрибута <code>placeholder</code> не рассматривается браузером как содержимое формы. Другими словами, если поле ввода имеет атрибут <code>placeholder</code> с каким-то значением, то это поле будет считаться браузером все равно невалидным.</p>
-</blockquote>
-
-<h2 id="input">Типы input</h2>
-
-<p>Конечно, на практике такое поведение браузера имеет мало смысла, поэтому для валидации форм были созданы различные способы фильтрации введенных данных.</p>
-
-<p>Одним из таких способов фильтрации введенных данных является задание для элемента <code>input</code> его типа. Это также одна из “фишек” HTML5 и заключается она в том, что для поля ввода <code>input</code> можно указать, какого типа данные ожидаются в нем.</p>
-
-<p>Например, <code>input(type=“email”)</code> говорит о том, что в это поле нужно вводить только адреса электронной почты; <code>input(type=“number”)</code> - только числа; <code>input(type=“tel”)</code> - только номера телефонов; <code>input(type=“date”)</code> - только дату; <code>input(type=“url”)</code> - только URL-адреса; и так далее.</p>
-
-<p>Краткий список HTML5-типов <code>input</code>’ов:</p>
-
-<ul>
-  <li>email</li>
-  <li>number</li>
-  <li>tel</li>
-  <li>date</li>
-  <li>url</li>
-  <li>time</li>
-  <li>week</li>
-  <li>color</li>
-  <li>search</li>
-</ul>
-
-<p>Эти различные типы input’ов в HTML5 - не просто блаж в угоду призрачной HTML-семантики, как я сам воспринимал их ранее. На самом деле - это именованные <em>регулярные выражения</em>.</p>
-
-<p>Ну как - испугал я читателя? На самом деле <em>регулярные выражения</em> - это очень просто. Фактически - это набор символов, собранных воедино по определенному правилу и записанных в определенном синтаксисе.</p>
-
-<p>Грубо говоря - <code>[1,2,3,4,5,6,7,8,9]</code> - это уже <em>регулярное выражение</em>. Если этому регулярному выражению присвоить имя <code>number</code>, то получится <em>именованное регулярное выражение</em> <code>number</code>.</p>
-
-<p>Фактически типы <code>input</code>’ов, которые были рассмотрены выше - это <em>именованные регулярные выражения</em>, предустановленные разработчиками HTML5\браузеров.</p>
-
-<p>И когда для элемента <code>input</code> устанавливается тип <code>type="email"</code> (<em>к примеру</em>), то этим фактом браузеру всего лишь указывается <em>предустановленное регулярное выражение</em>, которое браузер должен будет использовать при проверке введенных данных.</p>
-
-<p>Вот я и подошел к самому интересному моменту - для чего нужны регулярные выражения? А нужны они для проверки введенных данных. Это маска, которую браузер накладывает на введенные пользователем данные. Совпала маска и данные - данные валидные; не совпала маска и введенные данные - данные невалидные.</p>
-
-<p>Помимо предустановленных регулярных выражений, можно создавать свои собственные, для определенных задач. Но для этого необходимо использовать соответствующий синтаксис и другие несложные знания по этой теме.</p>
-
-<p>Подключаются пользовательские регулярные выражения в HTML с помощью атрибута <code>pattern</code> и выглядит это таким образом (<em>регулярное выражение для проверки IPv4-адреса</em>):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">input type=&quot;text&quot; pattern=&quot;\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}&quot;</code></pre></div>
-
-<blockquote>
-  <p>Note! Использование пользовательского <code>pattern</code> совместно с любым HTML5-типом (<em>email, date, range, tel, number и так далее</em>) для элемента input почти никогда не имеет смысла по определению.</p>
-</blockquote>
 
 <p>На этом все.</p>
 
