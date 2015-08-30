@@ -144,6 +144,155 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2013-12-10T00:00:00+04:00"><a href="http://zencoder.ru/css/unknown-font-size-adjust/">December 10, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/unknown-font-size-adjust/" rel="bookmark" title="Неизвестное свойство font-size-adjust" itemprop="url">Неизвестное свойство font-size-adjust</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При создании CSS-правил сталкивались ли вы с ситуацией, когда при откате (fallback) шрифта у последнего менялась пропорциональность и текст начинал выглядеть больше или меньше оригинального?</p>
+</blockquote>
+
+<p>Возможно, новое замечательное свойство <code>font-size-adjust</code> из стандарта CSS3 поможет нам исправить ситуацию?</p>
+
+<h2 id="font-size-adjust">Что делает свойство font-size-adjust</h2>
+
+<p>Первое, что нужно сделать - это использовать браузер Firefox для того, чтобы страница с примером отображалась правильно. Да, не Safari, а только Firefox!</p>
+
+<p>Свойство <code>font-size-adjust</code> позволяет установить <em>оптимальный коэффициент пропорциональности</em> при использовании отката шрифта; если шрифт-заменитель имеет коэффициент пропорциональности, отличающийся от такого же коэффициента у главного шрифта, высота текста <code>x-height</code> (которая приблизительно равна размеру буквы <code>х</code> этого шрифта в нижнем регистре) останется неизменной.</p>
+
+<p>Давайте рассмотрим рисунок ниже:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/fontsizeadjust-compare.png" alt="Сравнение двух шрифтов" class="center-image" /></p>
+
+<p>Как видим на рисунке, шрифт Baskerville и Georgia имеют разный <em>коэффициент пропорциональности</em>. Если произойдет замещение шрифта (с учетом того, что шрифт Baskerville является главным), то в реальности размер шрифта визуально будет больше, при одинаковой величине.</p>
+
+<blockquote>
+  <p>Прим. переводчика. Еще раз - своими словами. На картинке видно, что одинаковые буквы <strong>А</strong> размером 320 пикселей у шрифта Baskerville и у шрифта Georgia на самом деле не одинаковые. Пропорции (о которых говорит Inyaili) букв у этих шрифтов разные! Теперь вспомним, как задается обычно шрифт в CSS-правилах.</p>
+</blockquote>
+
+<p>К примеру, так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">font</span><span class="o">:</span> <span class="nt">bold</span> <span class="nt">12px</span><span class="o">/</span><span class="nt">18px</span> <span class="nt">Baskerville</span><span class="o">,</span> <span class="nt">Georgia</span><span class="o">,</span> <span class="nt">serif</span><span class="o">;</span></code></pre></div>
+
+<p>или же так:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">font-family</span><span class="o">:</span> <span class="nt">Baskerville</span><span class="o">,</span> <span class="nt">Georgia</span><span class="o">,</span> <span class="nt">serif</span><span class="o">;</span></code></pre></div>
+
+<p>То есть, в правилах мы устанавливаем сначала главный шрифт Baskerville, который должен отображаться на странице; и вспомогательный шрифт Georgia, который должен отображаться, если браузер не найдет главный шрифт Baskerville (<em>это и есть откат шрифта, о котором упоминается в этой статье</em>). В принципе - это основы CSS .</p>
+
+<p>Теперь, если принимать во внимание картинку “Сравнение двух шрифтов”, то нетрудно представить, что произойдет при такой замене (откате).</p>
+
+<p>Шрифт Baskerville заменится шрифтом Georgia, у обоих при этом в правилах CSS установлена одинаковая высота в 320 пикселей. Но фактическая высота (точнее - пропорции) вспомогательного шрифта Georgia больше, чем у первостепенного Baskerville! Догадайтесь, что произойдет с готовым дизайном страницы при таком откате?</p>
+
+<p>При использовании свойства <code>font-size-adjust</code> значение свойства <code>font-size</code> для шрифта-заменителя будет разделено на значение <code>font-size-adjust</code>.</p>
+
+<p>Не путайте свойство <code>font-size-adjust</code> со свойством <code>-webkit-text-size-adjust</code>, которое используется для подстройки размера текста на iPhone.</p>
+
+<h2 id="font-size-adjust-1">Как определить значение свойства font-size-adjust</h2>
+
+<p>Отрывок из спецификации W3C однозначен:</p>
+
+<blockquote>
+  <p>Коэффициент пропорциональности для выбранных шрифтов может быть высчитан путем сравнения одного и того же текста, но с разным значением <code>font-size-adjust</code>. Если значение свойства <code>font-size-adjust</code> подобрано верно, то при одинаковом размере шрифта текст останется неизменным для всех используемых на странице шрифтов.</p>
+</blockquote>
+
+<p>Ниже я собираюсь на примере повторить вышесказанное. Давайте посмотрим на следующий код, в котором имеется параграф с двумя <code>span</code>.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+	<span class="k">font-family</span><span class="o">:</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">;</span>
+	<span class="k">font-size</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">span</span><span class="p">{</span>
+	<span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#ff0000</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.adjust</span><span class="p">{</span>
+	<span class="k">font-size</span><span class="o">-</span><span class="n">adjust</span><span class="o">:</span> <span class="m">0</span><span class="o">.</span><span class="m">5</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;p&gt;</span>
+  <span class="nt">&lt;span&gt;</span>a<span class="nt">&lt;/span&gt;</span>
+  <span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">&quot;adjust&quot;</span><span class="nt">&gt;</span>a<span class="nt">&lt;/span&gt;</span>
+<span class="nt">&lt;/p&gt;</span></code></pre></div>
+
+<p>Оба элемента <code>span</code> наследуют свойство <code>font-family</code> от своего родителя (элемента <code>p</code>), но второй элемент <code>span</code> также имеет еще и свойство <code>font-size-adjust</code>, заданное через класс <code>adjust</code>, значение которого выбрано наугад - <code>0.5</code>.</p>
+
+<p>Если вы откроете <a href="http://webdesignernotebook.com/examples/font-size-adjust-test.html" title="Example Font Size Adjust">страницу примера</a>, то взгляните на образец слева: высота красных квадратов не совпадает - значение свойства <code>font-size-adjust</code> подобрано неверно.</p>
+
+<p><em>У вас все квадраты на странице примера имеют одинаковую высоту? Что я говорила?</em></p>
+
+<p>После нескольких экспериментов я выбрала значение <code>0.455</code>. И CSS-код, создающий второй пример (расположенный на странице справа).</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">p</span><span class="p">{</span>
+	<span class="k">font-family</span><span class="o">:</span> <span class="n">Times</span> <span class="n">New</span> <span class="n">Roman</span><span class="p">;</span>
+	<span class="k">font-size</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nt">span</span><span class="p">{</span>
+	<span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#00ff00</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.adjust</span><span class="p">{</span>
+	<span class="k">font-size</span><span class="o">-</span><span class="n">adjust</span><span class="o">:</span> <span class="m">0</span><span class="o">.</span><span class="m">455</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Если вы снова перейдете на <a href="http://webdesignernotebook.com/examples/font-size-adjust-test.html" title="Example Font Size Adjust">страницу примера</a>, то обнаружите, что квадраты с зелеными границами имеют одинаковую высоту (<em>прим. переводчика - у меня они имели не совсем одинаковую высоту</em>) - то есть теперь у нас величина свойства <code>font-size-adjust</code> для выбранных шрифтов установлена верно.</p>
+
+<h2 id="font-size-adjust-2">Пример работы свойства font-size-adjust</h2>
+
+<p>Для того чтобы показать, как в действительности работает свойство <code>font-size-adjust</code> для текста, мною был создан <a href="http://webdesignernotebook.com/examples/font-size-adjust-test.html" title="Example Font Size Adjust">следующий пример</a>.</p>
+
+<p>На этой странице <code>font stack</code> состоит из следующих шрифтов: Calibri, Lucida Sans и Verdana (именно в этом порядке шрифты должны отображаться на странице в окне браузера).</p>
+
+<p>Браузер Safari генерирует эту страницу следующим образом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/font-size-adjust-safari.png" alt="Страница с правилом font-size-adjust в браузере Safari" class="center-image" /></p>
+
+<p>А вот так генерирует эту страницу браузер Firefox:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2013/12/font-size-adjust-ff.png" alt="Страница с правилом font-size-adjust в браузере Firefox" class="center-image" /></p>
+
+<p>Как видите, браузер Firefox поддерживает одинаковую x-высоту (<code>x-height</code>) букв в зависимости от того, какой шрифт используется.</p>
+
+<p>Мною не рассматривался вопрос выравнивания текста (свойство <code>text-align</code>), так как цель этой статьи была показать, каким образом свойство <code>font-size-adjust</code> может быть применено для сохранения целостности и удобочитаемости текста.</p>
+
+<p>Кроме того, даже не смотря на то, что первый блок <code>div</code> имеет корректный font stack, мне пришлось вручную прописывать в правилах шрифты Lucida Sans и Verdana для остальных блоков <code>div</code>. Так что вы (и я) можете заметить разницу несмотря на то, что установлены все три шрифта.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Догадываюсь, что использование свойства <code>font-size-adjust</code> в конечном счете имеет только негативное применение. Но этот вопрос может быть заголовком уже другой статьи, цель же этой - просто пример использования достаточно малоизвестного CSS3-свойства, которое может быть полезным в некоторых случаях.</p>
+
+<p>Признаюсь, что я не тестировала свойство <code>font-size-adjust</code> в реальных условиях, поэтому была бы рада услышать ваши отзывы по этому поводу. Данное свойство на сегодняшний день поддерживается только браузером Firefox версии от 1.0 до 3.0.</p>
+
+<p>У Inyaili de Leon есть еще одна интересная статья, которую планируется мною прочитать - “Будущее CSS типографики” (The Future Of CSS Typography) на малоизвестном ресурсе для дизайнеров Smashing Magazine.</p>
+
+<blockquote>
+  <p>Примечание переводчика: интересная, как и всегда, у девушки получилась статья. Для меня свойство <code>font-size-adjust</code> вообще было открытием. Помимо этого, есть масса других статей (<em>в том числе русскоязычных</em>) на тему <code>font-size-adjust</code>, но эта мне показалась самой лучшей, так как автор не лениться пробовать на практике те вопросы, которые описывает в статье. Сделал перевод в меру своих сил, поэтому могут быть неточности, конечно.</p>
+</blockquote>
+
+<p>Оригинал статьи расположен по адресу - “<a href="http://webdesignernotebook.com/css/the-little-known-font-size-adjust-css3-property/" title="The Little Known font-size-adjust CSS3 Property">The Little Known font-size-adjust CSS3 Property</a>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2013-12-09T00:00:00+04:00"><a href="http://zencoder.ru/modernizr/how-to-use-modernizr/">December 09, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1292,154 +1441,6 @@
 <p>Все хорошо, но теперь осталось выкроить “немного” маленьких зеленых бумажечек, чтобы приобрести SSL-сертификат.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2013-11-26T00:00:00+04:00"><a href="http://zencoder.ru/css/markdown/">November 26, 2013</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/markdown/" rel="bookmark" title="Язык Markdown - обзор редакторов для работы" itemprop="url">Язык Markdown - обзор редакторов для работы</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Начал создавать серию статей по Bootstrap, чтобы основательно изучить для себя данный вопрос. Но вот незадача - придется на время отложить его в сторону и отвлечься на пару моментов.</p>
-</blockquote>
-
-<p>Первый из них - это язык Markdown, а второй - модульные сетки. И если без первого вопроса изучение Bootstrap можно продолжить без какого-либо ущерба (до этого же как-то обходился без него?), то вот со вторым вопросом посложнее будет.</p>
-
-<p>Дело в том, что фреймворк Bootstrap в основе своей работы использует <em>модульную сетку</em>. А вы хорошо себе представляете (и знаете ли вообще?), что такое модульная сетка?</p>
-
-<h2 id="markdown">Начнем с языка Markdown</h2>
-
-<p>Совсем недавно узнал о существовании языка Markdown. Мне стало интересно, что это за язык такой и зачем он нужен. Оказалось все просто и практично, как раз для меня, так как я довольно часто пишу статьи для своего бложика.</p>
-
-<p>Язык Markdown - по мне, так его языком даже назвать нельзя. Это просто специальный синтаксис, призвание которого - облегчить и убыстрить написание HTML-документов. Это важно для людей, которые или сами ведут блоги\сайты или профессия которых называется контент-менеджер. Другими словами, это люди, которые часто пишут статьи с форматированием в виде HTML-документов.</p>
-
-<p>Если вы хотя бы раз писали статьи с таким форматированием, то прекрасно знаете, что необходимо делать бесчисленное число раз в редакторе - ввод HTML-тегов для форматирования текста. Поверьте (если не знаете) - это очень неудобно и утомительно.</p>
-
-<p>Конечно, для браузера HTML-теги необходимы, иначе он не сможет правильно прочитать HTML-документ. Но вот нам, человекам, эти теги, по большому счету, ни к чему.</p>
-
-<p>Язык Markdown был создан именно для того, чтобы позволить человеку, набирающему текст в HTML-формате, забыть об HTML-тегах. Вместо этих тегов в Markdown применяются символы-заменители, которые гораздо легче набирать вручную. В этом заключается смысл создания и использования языка Markdown.</p>
-
-<p>Конечно, как любой другой язык-надстройка (например, тот же SASS\SCSS или LESS для CSS), Markdown нуждается в компиляторе, который “переводил” бы текст в формате этого языка в стандартный формат HTML-документа.</p>
-
-<p>В терминологии Markdown такой компилятор называется транслятором и их существует достаточное количество. Существуют платные или бесплатные Markdown-редакторы, в которых уже встроен такой транслятор.</p>
-
-<p>Ниже я рассмотрю два варианта использования языка Markdown - один с помощью специализированных редакторов, второй - с помощью плагина под редактор Sublime Text 2, расширяющего его возможности в плане написания статей с таким синтаксисом.</p>
-
-<h2 id="markdownpad2">Редактор MarkdownPad2</h2>
-
-<p>Редактор MarkdownPad2 - это герой моего дня сегодня! Бесплатный, интуитивно понятный и простой. Под Windows XP у меня на работе он установился и запустился без проблем. А вот дома на ноутбуке HP Pavilion g6 с Windows 7 установился, но запуститься отказался. Выдал какую-то ошибку, которую мне неохота было выискивать в Google.</p>
-
-<p>В версии MarkdownPad2 (бесплатная) нет многих удобных фишек, которые есть в версии MarkdownPad2 Pro (платная). Но и без них можно прожить, это не так уж “страшно”.</p>
-
-<p>Текст, который вы читаете в данный момент (нетрудно догадаться) набран в этом редакторе с использованием синтаксиса Markdown (как ни странно). Сам синтаксис мне описывать совсем неохота по нескольким причинам.</p>
-
-<ol>
-  <li>Первая - там описывать нечего. Он настолько прост и лаконичен, что ему можно и нужно выучиться за полчаса, просто набирая текст в редакторе. Глупо было бы - ведь для цели упрощения написания статей в HTML-разметке язык Markdown и создавался.</li>
-  <li>Вторая - если у вас все же есть желание почитать статью-описание этого языка, то есть прекрасный вариант - “Технический блог” Владимира Старкова, где помещен материал <a href="http://vstarkov.ru/markdown-basics/" title="Markdown Basics">Основы markdown</a>. Статья совсем свежая, написана автором 13 февраля этого года. Кроме этого, малоизвестная поисковая система Google поможет вам найти целую кучу разнообразных <code>cheatsheet</code>‘ов по этому языку.</li>
-</ol>
-
-<p>Чтобы не быть голословным, приведу небольшое изображение редактора MarkdownPad2 после первого запуска программы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/markdownpad_first-launch.jpg" alt="MarkdownPad2 после первого запуска" class="center-image" /></p>
-
-<p>Левая половина окна - это пример синтаксиса Markdown. Правая половина окна - это предварительный просмотр текста, набранного в левой половине. Точно также текст будет выглядеть в окне браузера. Включить или отключить предварительный просмотр можно по клавише <kbd>F5</kbd>.</p>
-
-<p>Если хотите точно в этом удостовериться, нажмите клавишу <kbd>F6</kbd> (или самую последнюю иконку на панели инструментов редактора). Создаваемая страница откроется в окне браузера, являющегося браузером по умолчанию в системе.</p>
-
-<p>Давайте быстро пробежимся, как использовать программу и создавать документы в ней:</p>
-
-<ul>
-  <li>создаем новый документ <kbd>Ctrl+N</kbd></li>
-  <li>вносим в него изменения: текст, изображения и так далее</li>
-  <li>сохраняем файл с расширением <code>.md</code></li>
-  <li>экспортируем в HTML-файл <kbd>Ctrl+Shift+1</kbd></li>
-</ul>
-
-<p>Как видим, все просто до предела. Но хочу сказать о паре моментов по работе в этой программе:</p>
-
-<ul>
-  <li>при форматировании текста лучше использовать панель инструментов редактора, так как синтаксис в редакторе слегка отличается от “официального”;</li>
-  <li>опция экспорта в pdf-формат <kbd>Ctrl+Shift+2</kbd> доступна только в платной версии (<em>а оно нам надо?</em>).</li>
-</ul>
-
-<h2 id="markdowneditor">Редактор MarkDown#Editor</h2>
-
-<p>Еще один редактор для написания текстов в синтаксисе Markdown - “MarkDown#Editor”. Он также бесплатный, но на моем ноутбуке он запустился без ошибок.</p>
-
-<p>Программа создана автором из Страны Восходящего Солнца по имени Mitsuhiro Hibara. Проект проживает по запоминающемуся адресу <a href="http://www.hibara.org" title="MarkDown#Editor">http://www.hibara.org</a> (думаю, жители Восточной Украины и юга России меня поймут).</p>
-
-<p>Редактор мне понравился как внешним видом, так и своими возможностями. В нем все просто и интуитивно понятно. Ниже представлен внешний вид программы после первого ее запуска:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/markdowneditor_first-launch.jpg" alt="MarkdownSharpEditor - первый запуск редактора" class="center-image" /></p>
-
-<p>Программа умеет экспортировать только в один формат - HTML. Но больше и не нужно, правда?</p>
-
-<h2 id="markdownediting">Плагин MarkdownEditing</h2>
-
-<p>Готовые редакторы под Markdown - это прекрасная вещь, но меня не устраивает одно. Я не люблю держать на компьютере целую кучу программ, каждая из которых выполняет только одну задачу.</p>
-
-<p>Я говорю это к тому, что под мой любимый редактор Sublime Text имеется плагин MarkdownEditing, который позволяет создавать документы формата Markdown в этой программе.</p>
-
-<p>Давайте рассмотрим установку, настройку и работу этого плагина в ST2. Надо сказать, что вопрос с плагином под Sublime потратил у меня достаточно времени. Я не знал, как выполнять экспорт готового md-файла в html-файл. Ни Stackoverflow, ни Toster не помогли мне разобраться с данным вопросом. Только прямая свзяь с maintainer’ом плагина помогла разрешить ситуацию.</p>
-
-<ol>
-  <li>Установка плагина MarkdownEditing в Sublime Text 2 стандартная - через менеджер пакетов</li>
-  <li>Перезапускаем редактор Sublime Text 2</li>
-  <li>Создаем новый документ и устанавливаем для него синтаксис Markdown <kbd>Shift+Ctrl+P</kbd></li>
-  <li>Пишем в новом документе текст</li>
-  <li>Сохраняем отредактированный документ как файл с расширением <code>.md</code></li>
-</ol>
-
-<p><img src="http://zencoder.ru/images/uploads/2013/11/markdownediting_first-launch.jpg" alt="Плагин MarkdownEditing в Sublime Text 2" class="center-image" /></p>
-
-<p>А теперь немного внимания! Для меня данный вопрос был камнем преткновения, который заставил добраться с просьбой о помощи до самого maintainer’а плагина - Ali Ayas. Я долго не мог понять простой вещи - MarkdownEditing предназначен только для редактирования файлов с синтаксисом Markdown, о чем говорит само название этого плагина.</p>
-
-<p>Плагин MarkdownEditing не умеет сам конвертировать .md-файлы в файлы формата html. Поэтому, если вы пишите статьи для сайта под управлением WordPress (как в моем случае), вам необходимо поставить на эту CMS плагин для конвертации - WP-Markdown. Затем закидываете статьи в формате <code>.md</code> под эту CMS, а там уже плагин WP-Markdown автоматически превратит их в html-файлы.</p>
-
-<p>Не знаю, кого как, а меня разочаровал такой подход к делу создания markdown-файлов в Sublime Text 2 с плагином MarkdownEditing.</p>
-
-<h2 id="ps">P.S.</h2>
-
-<p>Эмоции немного остыли и я пришел к выводу, что не все так плохо, как казалось с первого взгляда. Более того, имеется плагин MarkdownBuild под Sublime Text 2, который прекрасно справляется с задачей компиляции файла <code>markdown</code> в html-файл. Устанавливается этот плагин как обычно, через менеджер пакетов.</p>
-
-<p>Настройки плагина минимальные и их можно привести здесь целиком:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">{</span>
-  <span class="s2">&quot;output_html&quot;</span> <span class="err">:</span> <span class="n">true</span><span class="p">,</span> <span class="p">//</span> <span class="err">сохранить</span> <span class="err">выходной</span> <span class="err">файл</span> <span class="n">html</span> <span class="err">в</span> <span class="err">ту</span> <span class="err">же</span> <span class="err">папку</span><span class="p">,</span> <span class="err">в</span> <span class="err">которой</span> <span class="err">находиться</span> <span class="err">входной</span> <span class="err">файл</span> <span class="n">markdown</span>
-  <span class="s2">&quot;open_html_in&quot;</span> <span class="err">:</span> <span class="s2">&quot;browser&quot;</span><span class="p">,</span>  <span class="p">//</span> <span class="err">открыть</span> <span class="err">файл</span> <span class="n">html</span> <span class="err">в</span> <span class="err">браузере</span>
-  <span class="s2">&quot;use_css&quot;</span> <span class="err">:</span> <span class="n">true</span><span class="p">,</span>
-  <span class="s2">&quot;charset&quot;</span> <span class="err">:</span> <span class="s2">&quot;UTF-8&quot;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Единственный момент заключается в том, что настройки плагина MarkdownBuild находятся в файле <code>MarkdownBuild.sublime-settings</code>, добраться до которого можно только через файловый менеджер или Проводник. В редакторе Sublime Text 2 я не нашел способа открыть настройки этого плагина.</p>
-
-<p>Кроме того, компиляция в этом плагине производится через сочетание клавиш <kbd>Shift+Ctrl+B</kbd>, а не <kbd>Ctrl+B</kbd>, как описано в документации.</p>
-
-<h2 id="section">Заключение</h2>
-
-<p>Я доволен тем, что познакомился с языком Markdown. С ним действительно создавать статьи под сайт гораздо легче, быстрее и удобнее. Писать статьи или обзоры с помощью Markdown - одно удовольствие.</p>
-
-<p>Редактором-победителем для меня стала программа MarkdownPad - быстрая, удобная и надежная. Тот момент, что она отказалась установиться на моем ноуте под Windows 7 роли не играет, как мне кажется.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
