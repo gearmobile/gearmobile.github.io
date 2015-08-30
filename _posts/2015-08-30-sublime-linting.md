@@ -1,5 +1,5 @@
 ---
-title: "SublimeLinter - обнаружение ошибок в Sublime Text"
+title: "SublimeLinter - обнаружение ошибок"
 layout: post
 categories: sublime text
 tags: [sublime text, linting]
