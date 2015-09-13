@@ -144,6 +144,267 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-09-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-autoprefixer/">September 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~8 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-autoprefixer/" rel="bookmark" title="Gulp-autoprefixer, gulp-rename, gulp-notify" itemprop="url">Gulp-autoprefixer, gulp-rename, gulp-notify</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В статье рассмотрены три модуля для работы под Gulp - <code>gulp-rename</code>, <code>gulp-notify</code>, <code>gulp-autoprefixer</code>.</p>
+</blockquote>
+
+<p>Все три модуля слишком маленькие и слишком простые, чтобы их рассматривать в отдельности. Все приведенные в статье примеры являются базовыми и служат задаче показать принцип работы каждого из модулей.</p>
+
+<h2 id="section">Подготовка проекта</h2>
+
+<p>Подготовим проект, создав его базовую основу. Первым файлом создадим файл <code>package.json</code> и наполним его таким содержимым:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span> <span class="err">:</span> <span class="s2">&quot;three_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span> <span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Затем установим <em>локально</em> Gulp.js и укажем <code>npm</code>, чтобы он внес этот пакет в качестве зависимостей в файл <code>package.json</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Создаем js-файл, в котором будем прописывать задачи для Gulp:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">var</span> <span class="n">gulp</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">);</span>
+
+  <span class="p">//</span> <span class="k">Default</span> <span class="n">Task</span>
+  <span class="n">gulp</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="p">//</span> <span class="n">body</span><span class="p">...</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Основа для тестирования отдельных модулей готова.</p>
+
+<h2 id="gulp-rename----">Gulp-rename - переименование файлов</h2>
+
+<p>Задача модуля <code>gulp-rename</code> предназначена для одной маленькой цели - <em>переименования файлов</em>. Установим модуль с указанием зависимостей:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-rename</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-rename&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.2.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>И создадим задачу в файле <code>gulpfile.js</code> для установленного модуля <code>gulp-rename</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">var</span> <span class="n">gulp</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+      <span class="n">rename</span> <span class="p">=</span> <span class="n">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">);</span>
+
+  <span class="p">//</span> <span class="n">Rename</span> <span class="n">Task</span>
+  <span class="n">gulp</span><span class="p">.</span><span class="n">task</span><span class="p">(</span><span class="s1">&#39;rename&#39;</span><span class="p">,</span> <span class="k">function</span><span class="p">(){</span>
+    <span class="n">gulp</span><span class="p">.</span><span class="n">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">rename</span><span class="p">(</span><span class="s1">&#39;pretty_styles.css&#39;</span><span class="p">))</span>
+    <span class="p">.</span><span class="n">pipe</span><span class="p">(</span><span class="n">gulp</span><span class="p">.</span><span class="n">dest</span><span class="p">(</span><span class="s1">&#39;build/css/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>В задаче под именем <code>rename</code> для Gulp “говориться” следующее: найти файл <code>style.css</code> - <code>gulp.src('css/style.css')</code>; переименовать его в имя <code>pretty_styles</code> - <code>.pipe(rename('pretty_styles.css'))</code>; переименованный файл положить в папку по пути <code>build/css/</code> - <code>.pipe(gulp.dest('build/css/'))</code>.</p>
+
+<p>Запускаю задачу <code>rename</code> в консоли и вижу, что процесс прошел успешно:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">rename</span>
+  <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">/</span><span class="n">media</span><span class="p">/</span><span class="n">aaron</span><span class="p">/</span><span class="n">application</span><span class="p">/</span><span class="n">develop</span><span class="p">/</span><span class="n">training</span><span class="p">/</span><span class="n">gulp_connect</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">Starting</span> <span class="s1">&#39;rename&#39;</span><span class="p">...</span>
+  <span class="n">Finished</span> <span class="s1">&#39;rename&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span></code></pre></div>
+
+<p>Проверяю, “положил” ли Gulp переименованный файл <code>pretty_styles.css</code> по пути <code>build/css/</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
+  <span class="n">pretty_styles</span><span class="p">.</span><span class="n">css</span></code></pre></div>
+
+<p>Да, все верно, файл <code>pretty_styles.css</code> находиться там, где он и должен находиться.</p>
+
+<p>Рассмотренный выше пример очень прост. Более сложные и интересные возможности модуля <code>gulp-rename</code> показаны на его официальной странице - <a href="https://www.npmjs.org/package/gulp-rename" title="gulp-rename">gulp-rename</a>. А именно - возможности переименования с помощью <em>функций</em> или с помощью <em>префиксов\суффиксов</em>.</p>
+
+<h2 id="gulp-notify-----">Gulp-notify - уведомление о событиях</h2>
+
+<p>Установка модуля <code>gulp-notify</code> выполняется как обычно:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-notify</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-rename&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.2.0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-notify&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.6.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Затем создаю задачу <code>notify</code>, которая будет отслеживать все изменения в файле <code>css/style.css</code>. Задача информирования об изменениях подразумевает ее использование в <em>фоновом режиме</em>.</p>
+
+<p>Поэтому, создаю еще одну задачу для мониторинга - <code>watch</code>, которую помещаю в дефолтную задачу <code>default</code>. В общем случае файл <code>gulpgile.js</code> будет выглядеть следующим образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+  <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
+  <span class="nx">notify</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-notify&#39;</span><span class="p">);</span>
+
+  <span class="c1">// Default Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+
+  <span class="c1">// Notify Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;notify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">notify</span><span class="p">(</span><span class="s1">&#39;File style.css was changed!&#39;</span><span class="p">));</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Watch Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;notify&#39;</span><span class="p">]);</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>В консоли запускаю Gulp с дефолтной задачей <code>default</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+  <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">/</span><span class="n">media</span><span class="p">/</span><span class="n">aaron</span><span class="p">/</span><span class="n">application</span><span class="p">/</span><span class="n">develop</span><span class="p">/</span><span class="n">training</span><span class="p">/</span><span class="n">gulp_connect</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+  <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+  <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">79</span> <span class="n">ms</span>
+  <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+  <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">97</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
+
+<p>Теперь вношу в файл <code>css/style.css</code> изменения и сохраняю их. На Рабочем столе мгновенно появляется всплывающее окно с уведомлением о внесенных в файл <code>css/style.css</code> изменениях. Не знаю, как в других системах, но на Linux Mint 17 Cinnamon это окошко выглядит очень симпатично.</p>
+
+<p>На <a href="https://github.com/mikaelbr/gulp-notify/blob/master/examples/gulpfile.js" title="gulp-notify">странице GitHub</a> автора модуля представлены <em>более интересные примеры</em> создания и использования <code>gulp-notify</code>.</p>
+
+<h2 id="gulp-autoprefixer----">Gulp-autoprefixer - браузерные префиксы</h2>
+
+<p>Интересный модуль <code>gulp-autoprefixer</code> для управления <em>браузерными префиксами</em> в проекте. Задача у него - не просто устанавливать префиксы для тех CSS3-свойств, которые нуждаюся в этом на данный момент (<em>другими словами - для включения их поддержки в браузерах</em>).</p>
+
+<p>С помощью <code>gulp-autoprefixer</code> можно управлять “глубиной” версий браузеров, которые должны поддерживать работу конкретного проекта. Другими словами, можно указать модулю <code>gulp-autoprefixer</code>, что необходимо отслеживать поддержку префиксов только в двух последних версиях каждого (<em>из всех существующих</em>) браузера - <code>last 2 versions</code> (<em>кстати, это значение по умолчанию для данного модуля</em>).</p>
+
+<p>Или же учитывать только две последние версии браузера Google Chrome - <code>last 2 Chrome versions</code>. При задании префиксов можно учитывать глобальную статистику использования браузера - <code>&gt; 5%</code> (если брузер используют больше 5% населения Интернет).</p>
+
+<p>Модуль <code>gulp-autoprefixer</code> использует собственные имена для браузеров при задании параматров работы своей работы. С полным списком еще более интересных возможностей для задания выборки браузеров можно (<em>и нужно</em>) ознакомиться на <a href="https://github.com/postcss/autoprefixer#browsers" title="gulp-autoprefixer - Browsers">странице GitHub</a>.</p>
+
+<p>Работа модуля <code>gulp-autoprefixer</code> основана на известном ресурсе <a href="http://caniuse.com/" title="Can I Use">Can I Use</a>. Именно оттуда он берет инормацию о поддержке браузерами того или иного CSS3-свойства на данный момент. Кстати, известный фреймворк Compass также основывается на <a href="http://caniuse.com/" title="Can I Use">Can I Use</a> при работе со своими миксинами (mixin).</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/09/gulp-autoprefixer_caniuse.png" alt="Сервис Can I Use" /></p>
+
+<p>Помимо этого, модуль <code>gulp-autoprefixer</code> умеет красиво форматировать CSS-свойства с браузерными префиксами в виде <a href="https://github.com/postcss/autoprefixer#visual-cascade" title="Visual Cascade">визульного каскада</a>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">a</span> <span class="p">{</span>
+<span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+   <span class="o">-</span><span class="n">moz</span><span class="o">-</span><span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+        <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>За такую возможность отвечает параметр <code>cascade</code>, который включен по умолчанию в данном модуле. Вообще, по умолчанию модуль <code>gulp-autoprefixer</code> имеет такие параметры в виде массива (array): <code>&gt; 1%, last 2 versions, Firefox ESR, Opera 12.1</code>.</p>
+
+<p>Вступление было достаточно долгим и подробным - это потому, что модуль <code>gulp-autoprefixer</code> интересный и нужный. Приступаю к его установке:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-autoprefixer</span>
+  <span class="p">$</span> <span class="n">cat</span> <span class="n">package</span><span class="p">.</span><span class="n">json</span>
+  <span class="p">{</span>
+    <span class="s2">&quot;name&quot;</span><span class="err">:</span> <span class="s2">&quot;four_modules&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;version&quot;</span><span class="err">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;devDependencies&quot;</span><span class="err">:</span> <span class="p">{</span>
+      <span class="s2">&quot;gulp&quot;</span><span class="err">:</span> <span class="s2">&quot;~3.8.8&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-rename&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.2.0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-notify&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.6.0&quot;</span><span class="p">,</span>
+      <span class="s2">&quot;gulp-autoprefixer&quot;</span><span class="err">:</span> <span class="s2">&quot;~1.0.0&quot;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Создаю задачу <code>autoprefixer</code> с описанием того, что нужно отслеживать изменения в файле <code>css/style.css</code> и при добавлении в него CSS3-свойств преобразовывать их в свойства с браузерными префиксами. При этом учитывать только две последние версии браузеров и результат помещать по пути <code>build/css/</code>.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+  <span class="nx">autoprefixer</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-autoprefixer&#39;</span><span class="p">);</span>
+
+  <span class="c1">// Autoprefixer Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;autoprefixer&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">autoprefixer</span><span class="p">({</span>
+      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 2 versions&#39;</span><span class="p">]</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>Внесу в файл <code>css/style.css</code> CSS3-свойство <code>transform</code>, которое заведомо нужно использовать с префиксами (для этого я заранее “<a href="http://caniuse.com/#feat=transforms2d" title="CSS3 Transforms">подглядел</a>” его на “Can I Use”):</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Запускаю задачу <code>autoprefixer</code> и смотрю результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+          <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Все четко - под условие “не ниже второй версии” попали только браузеры на движке Webkit - можно свериться <a href="http://caniuse.com/#feat=transforms2d" title="CSS3 Transforms">здесь</a>.</p>
+
+<p>Можно немного “углубить” условие и “опуститься” до третьей версии всех браузеров:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Autoprefixer Task</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;autoprefixer&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/style.css&#39;</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">autoprefixer</span><span class="p">({</span>
+      <span class="nx">browsers</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;last 3 versions&#39;</span><span class="p">]</span>
+    <span class="p">}))</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css/&#39;</span><span class="p">));</span>
+  <span class="p">});</span></code></pre></div>
+
+<p>… и посмотреть результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.block</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+  <span class="o">-</span><span class="n">webkit</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+      <span class="o">-</span><span class="n">ms</span><span class="o">-</span><span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+          <span class="n">transform</span><span class="o">:</span> <span class="n">rotate</span><span class="p">(</span><span class="m">7</span><span class="n">deg</span><span class="p">);</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Вывод в <code>build/css/style.css</code> красивый благодаря <code>cascade</code>, который можно и отключить, установив <code>cascade: false</code>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-09-08T00:00:00+04:00"><a href="http://zencoder.ru/css/bootstrap-susy-grid-system/">September 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -832,114 +1093,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-09-01T00:00:00+04:00"><a href="http://zencoder.ru/git/github-push-and-pull/">September 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-push-and-pull/" rel="bookmark" title="GitHub - команды push и pull" itemprop="url">GitHub - команды push и pull</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжаю открывать для себя возможности системы Git и сервиса GitHub.</p>
-</blockquote>
-
-<p>Уже сейчас, обладая минимальными базовыми знаниями Git и владея учетной записью на сервере GitHub, я не представляю, как я мог жить раньше без обоих этих вещей. Это действительно удобно и надежно!</p>
-
-<p>Благодаря им я знаю, что у меня никогда и ничто не потеряется; и все, что нужно - у меня всегда под рукой. На работе поработал над чем-либо - отправил на GitHub; домой пришел - “стянул” наработки с GitHub и продолжил работу с прерванного места.</p>
-
-<p>Вот на последнем я хотел бы остановиться подробнее. Конечно, веб-разработчик, давно и хорошо знакомый с Git и GitHub, может только улыбнуться насчет того, чем я собираюсь поделиться. Настолько все это просто и понятно. Но это просто и понятно для него, опытного web-разработчика. А для начинающего веб-программиста - это новое и неизведанное. Впрочем, достаточно лирики - переходим к практике.</p>
-
-<h2 id="github----push">GitHub - команда push</h2>
-
-<p>В предыдущей статье я познакомился с возможностью создания репозитория на сервисе GitHub. И возможностью клонирования этого репозитория на локальную машину - “GitHub и Git - создание и работа с репозиторием”.</p>
-
-<p>Напомню, что в том примере было произведено клонирование репозитория с помощью команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">arbeit</span><span class="p">.</span><span class="n">git</span></code></pre></div>
-
-<p>Другими словами, было произведено копирование существующего репозитория с удаленного сервера на локальную машину. Причем, копирование как есть - полностью весь репозиторий, со всеми его файлами, коммитами, индексами и тому подобным.</p>
-
-<p>После внесений изменений в локальный репозиторий - индексации и фиксации - необходимо было отправить произведенные изменения на удаленный сервер, на GitHub.</p>
-
-<p>Для этой цели существует (и я ею воспользовался) команда <code>push</code> (отправить). К примеру, давайте я внесу еще кое-какие изменения в локальном репозитории, затем проиндексирую и зафиксирую их, а затем отправлю на GitHub:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
-
-<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Continue write article about push and pull in GitHub&#39;</span>
-<span class="no">[master 5af3abc]</span> <span class="k">Continue</span> <span class="n">write</span> <span class="n">article</span> <span class="n">about</span> <span class="n">push</span> <span class="n">and</span> <span class="n">pull</span> <span class="k">in</span> <span class="n">GitHub</span>
- <span class="n">1</span> <span class="n">file</span> <span class="n">changed</span><span class="p">,</span> <span class="n">18</span> <span class="n">insertions</span><span class="p">(+)</span>
-
-<span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
-<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
-<span class="n">Your</span> <span class="n">branch</span> <span class="n">is</span> <span class="n">ahead</span> <span class="n">of</span> <span class="s1">&#39;origin/master&#39;</span> <span class="n">by</span> <span class="n">1</span> <span class="n">commit</span><span class="p">.</span>
-  <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git push&quot;</span> <span class="n">to</span> <span class="n">publish</span> <span class="n">your</span> <span class="n">local</span> <span class="n">commits</span><span class="p">)</span>
-<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span>
-
-<span class="p">$</span> <span class="n">git</span> <span class="n">push</span>
-<span class="p">...</span>
-<span class="n">Counting</span> <span class="n">objects</span><span class="err">:</span> <span class="n">7</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
-<span class="n">Delta</span> <span class="n">compression</span> <span class="n">using</span> <span class="n">up</span> <span class="n">to</span> <span class="n">4</span> <span class="n">threads</span><span class="p">.</span>
-<span class="n">Compressing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
-<span class="n">Writing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">4</span><span class="p">/</span><span class="n">4</span><span class="p">),</span> <span class="n">1</span><span class="p">.</span><span class="n">65</span> <span class="n">KiB</span> <span class="p">|</span> <span class="n">0</span> <span class="n">bytes</span><span class="p">/</span><span class="n">s</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
-<span class="n">Total</span> <span class="n">4</span> <span class="p">(</span><span class="n">delta</span> <span class="n">1</span><span class="p">),</span> <span class="n">reused</span> <span class="n">0</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">)</span>
-<span class="n">To</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">semenencko</span><span class="p">/</span><span class="n">articles</span>
-   <span class="n">022b756</span><span class="p">..</span><span class="n">5af3abc</span>  <span class="n">master</span> <span class="p">-&gt;</span> <span class="n">master</span></code></pre></div>
-
-<p>Вот - все наработки, которые я сделал на домашнем компьютере, оказались с считанные секунды помещенными на сервере GitHub, под бдительным оком Git.</p>
-
-<h2 id="github----pull">GitHub - команда pull</h2>
-
-<p>Продолжим логическую картину моего рабочего процесса (workflow). На следующий день я прихожу на работу и у меня есть время и возможность поработать над своим проектом. Естественно, я хочу продолжить с того места, на котором остановился дома. Для этого я воспользуюсь командой <code>pull</code>, чтобы “стянуть” с GitHub последние изменения.</p>
-
-<p>В данном случае команда <code>pull</code> будет выглядеть так:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-pull.png" alt="GitHub - команда pull" class="center-image" /></p>
-
-<p>В выводе консоли (на картинке) видно, что было произведено добавление одного измененного файла по имени README.md, в котором были добавлены две строки.</p>
-
-<p>Обратите внимание на разницу между командами <code>clone</code> и <code>pull</code> в данном случае. Команда <code>clone</code> копирует весь репозиторий целиком, как есть - со всеми его файлами. Команда <code>pull</code> копирует разницу между удаленным и локальным репозиторием. Эту разницу можно назвать дельта или patch.</p>
-
-<p>В результате вышеприведенной команды в считанные секунды я получаю на рабочем компьютере точную копию того проекта, над которым работал дома. И могу продолжать с того места, на котором остановился.</p>
-
-<h2 id="github----fetch">GitHub - команда fetch</h2>
-
-<p>Существует разновидность команды <code>pull</code> - это команда <code>fetch</code>. И одна, и вторая команда выполняют одинаковые задачи - получение patch удаленного репозитория. Но делают они это по разному.</p>
-
-<p>Команда <code>pull</code> получает patch репозитория и автоматически производит слияние удаленной и локальной ветвей репозитория. Если произойдет конфликт слияния, то только в этом случае слияния не произойдет и решать конфликт придется вручную.</p>
-
-<p>Команда <code>fetch</code> также производит получение patch удаленного репозитория. Но при этом автоматического слияния ветвей удаленного и локального репозиториев не происходит:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/github-fetch.png" alt="GitHub - команда fetch" class="center-image" /></p>
-
-<p>На картинке выше показано, что была выполнена команда <code>git fetch</code> после того, как на стороне сервиса GitHub было произведено редактирование файла README.md. Однако, последующая команда <code>git status</code> показала, что изменения есть, но они не слиты с локальной ветвью репозитория. И порекомендовала выполнить команду <code>git pull</code>, чтобы произвести такое слияние.</p>
-
-<p>Помимо этого, имеются изменения в локальном репозитории, которые не проиндексированы и не зафиксированы. Что же, исправляю ситуацию - последовательно ввожу команды:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">pull</span>
-<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
-<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Added fetch image&#39;</span>
-<span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
-
-<p>Производить слияние и разрешение конфликтов при слиянии я еще не умею, поэтому вопрос, как произвести слияние ветвей после команды <code>git fetch</code> я опущу в данной статье.</p>
-
-<p>Вернувшись к вышесказанному, можно сделать вывод, что команда <code>pull</code> более универсальная, нежели команда <code>fetch</code>. Именно команду <code>pull</code> имеет смысл применять в практической работе.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
