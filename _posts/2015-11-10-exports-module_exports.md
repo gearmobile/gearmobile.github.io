@@ -21,15 +21,14 @@ share: true
 Для понимания вышесказанного лучше всего создать пример приложения под Node.js. Давайте создадим файл с именем `greetings.js`, внутри которого размещены **две функции**:
 
 {% highlight javascript %}
+sayHelloInEnglish = function () {
+  return 'Hello';
+}
 
-	sayHelloInEnglish = function () {
-		return 'Hello';
-	}
-
-	sayHelloInSpanish = function () {
-		return 'Hola';
-	}
-	{% endhighlight %}
+sayHelloInSpanish = function () {
+  return 'Hola';
+}
+{% endhighlight %}
 
 ### Экспорт модуля
 
@@ -40,23 +39,19 @@ share: true
 1. Представьте себе, что эта строка существует в качестве первой линии кода в `greetings.js`:
 
 {% highlight javascript %}
-
-	var exports = module.exports = {}
-
+var exports = module.exports = {}
 {% endhighlight %}
 
 2. Видоизменим обе функции в файле `greetings.js` с помощью выражения `exports` таким образом, чтобы они были доступны для внешних файлов (модулей):
 
 {% highlight javascript %}
+exports.sayHelloInEnglish = function () {
+  return 'Hello';
+}
 
-	exports.sayHelloInEnglish = function () {
-		return 'Hello';
-	}
-
-	exports.sayHelloInSpanish = function () {
-		return 'Hola';
-	}
-
+exports.sayHelloInSpanish = function () {
+  return 'Hola';
+}
 {% endhighlight %}
 
 В приведенном выше коде можно было бы заменить выражение `exports` на `exports.module` и получить точно такой же результат. Если этот момент кажется вам непонятным, то помните, что выражение `exports` и выражение `exports.module` ссылаются на один и тот же объект.
@@ -64,18 +59,16 @@ share: true
 3. Это текущее значение выражения `module.exports`:
 
 {% highlight javascript %}
+module.exports = {
 
-	module.exports = {
+  sayHelloInEnglish = function () {
+    return 'Hello';
+  }
 
-		sayHelloInEnglish = function () {
-			return 'Hello';
-		}
-
-		sayHelloInSpanish = function () {
-			return 'Hola';
-		}
-	}
-
+  sayHelloInSpanish = function () {
+    return 'Hola';
+  }
+}
 {% endhighlight %}
 
 ### Импортирование модуля
@@ -85,57 +78,49 @@ share: true
 1. В Node.js используется команда `require` для импортирования одного модуля в другой модуль:
 
 {% highlight javascript %}
+var require = function(path) {
 
-	var require = function(path) {
+  // ...
 
-	  // ...
-
-	  return module.exports;
-	};
-
+  return module.exports;
+};
 {% endhighlight %}
 
 2. Давайте подключим модуль `greetings.js` в модуль `main.js`:
 
 {% highlight javascript %}
-
-	// main.js
-	var greeting = require('./greetings.js');
-
+// main.js
+var greeting = require('./greetings.js');
 {% endhighlight %}
 
 Приведенная выше строка кода равнозначна нижеследующему коду:
 
 {% highlight javascript %}
+// main.js
+var greeting = {
 
-	// main.js
-	var greeting = {
+sayHelloInEnglish = function () {
+  return 'Hello';
+}
 
-		sayHelloInEnglish = function () {
-			return 'Hello';
-		}
+sayHelloInSpanish = function () {
+  return 'Hola';
+}
 
-		sayHelloInSpanish = function () {
-			return 'Hola';
-		}
-
-	}
-
+}
 {% endhighlight %}
 
 3. Теперь можно использовать функции модуля `greetings.js` внутри модуля `main.js` как методы объекта `greeting`:
 
 {% highlight javascript %}
+// main.js
+var greeting = require('./greetings.js');
 
-	// main.js
-	var greeting = require('./greetings.js');
+// Hello
+greeting.sayHelloInEnglish('Hello');
 
-	// Hello
-	greeting.sayHelloInEnglish('Hello');
-
-	// Hola
-	greeting.sayHelloInSpanish('Hola');
-
+// Hola
+greeting.sayHelloInSpanish('Hola');
 {% endhighlight %}
 
 ### Отличительные моменты
@@ -145,31 +130,27 @@ share: true
 Нижеприведенный пример поможет разобраться в данном вопросе:
 
 {% highlight javascript %}
+// greetings.js
 
-	// greetings.js
+// var exports = module.exports = {};
 
-	// var exports = module.exports = {};
+exports.sayHelloInEnglish = function () {
+  return 'Hello';
+}
+exports.sayHelloInSpanish = function () {
+  return 'Hola';
+}
 
-	exports.sayHelloInEnglish = function () {
-		return 'Hello';
-	}
-	exports.sayHelloInSpanish = function () {
-		return 'Hola';
-	}
+// Эта строка кода выполняет повторное переопределение,
 
-	// Эта строка кода выполняет повторное переопределение,
-
-	module.exports = 'Bonjour';
-
+module.exports = 'Bonjour';
 {% endhighlight %}
 
 Теперь сделаем подключение модуля `greetings.js` в модуль `main.js`:
 
 {% highlight javascript %}
-
-	// main.js
-	var greetings = require('./greetings.js')
-
+// main.js
+var greetings = require('./greetings.js')
 {% endhighlight %}
 
 На данный момент в нашем примере ничего не поменялось. В переменную `greetings` помещается код, доступный из модуля `greetings.js`. Не более того.
@@ -179,31 +160,27 @@ share: true
 Другими словами, последней командой `module.exports` экспортируется совсем другой модуль - `Bonjour`, у которого другие свойства и методы. Происходит **переопределение** экспортируемого модуля и вызов метода `sayHelloInEnglish` или `sayHelloInSpanish` вызовет ошибку:
 
 {% highlight javascript %}
+// main.js
+// var greetings = require("./greetings.js");
 
-	// main.js
-	// var greetings = require("./greetings.js");
+/*
+ * TypeError: object Bonjour has no
+ * method 'sayHelloInEnglish'
+ */
+greetings.sayHelloInEnglish();
 
-	/*
-	 * TypeError: object Bonjour has no
-	 * method 'sayHelloInEnglish'
-	 */
-	greetings.sayHelloInEnglish();
-
-	/*
-	 * TypeError: object Bonjour has no
-	 * method 'sayHelloInSpanish'
-	 */
-	greetings.sayHelloInSpanish();
-
+/*
+ * TypeError: object Bonjour has no
+ * method 'sayHelloInSpanish'
+ */
+greetings.sayHelloInSpanish();
 {% endhighlight %}
 
 Чтобы отследить ошибки при использовании модуля `greetings`, можно вывести их в консоль:
 
 {% highlight javascript %}
-
-	// "Bonjour"
-	console.log(greetings);
-
+// "Bonjour"
+console.log(greetings);
 {% endhighlight %}
 
 ### Заключение

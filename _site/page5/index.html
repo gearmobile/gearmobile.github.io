@@ -144,6 +144,79 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-16T00:00:00+03:00"><a href="http://zencoder.ru/juery/on-jquery/">May 16, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/juery/on-jquery/" rel="bookmark" title="Функция on() библитеки jQuery" itemprop="url">Функция on() библитеки jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Маленькое вступление. Этой статьей я начинаю серию, посвященную работе с библиотекой jQuery. Точнее, я буду с помощью этих микро-статей самостоятельно изучать jQuery. И хотя при этом меня не оставляет постоянная мысль, что я делаю глупую и пустую работу (<em>есть масса куда более лучших по объему и качеству ресурсов на эту тематику</em>), все же мне так хочется. И это желание также продолжает основную идею этого бложика, его цель и смысл существования.</p>
+
+<p>Смысл жизни данного бложика - быть записной книжкой для своего хозяина. Помогать ему в освоении безбрежных просторов Web по принципу “прочитал-усвоил-пересказал”. Ибо такой принцип мне кажется наиболее эффективным в деле изучения чего-то нового, особенно - если этого нового очень много.</p>
+
+<p>Кроме того, мне работа с библиотекой jQuery нравиться! Она для меня - легкая и увлекательная игра; тот редкий случай, когда изучение программирования для меня дается одновременно очень легко и увлекательно. Чаще - что-то одно из двух.</p>
+
+<p>Хватит лирики - переходим к практике.</p>
+
+<h2 id="on">Функция on()</h2>
+
+<p>Функция <code>.on()</code> является <strong>универсальным способом</strong> обработки событий на странице с помощью библиотеки jQuery. Почему универсальным? Давайте взглянем на синтаксис функции <code>.on()</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="nx">event</span><span class="p">,</span> <span class="nx">eventHandler</span><span class="p">);</span></code></pre></div>
+
+<p>… здесь <code>event</code> - это стандартное событие языка JavaScript: <code>blur</code>, <code>focus</code>, <code>focusin</code>, <code>focusout</code>, <code>load</code>, <code>resize</code>, <code>scroll</code>, <code>unload</code>, <code>click</code>, <code>dblclick</code>, <code>mousedown</code>, <code>mouseup</code>, <code>mousemove</code>, <code>mouseover</code>, <code>mouseout</code>, <code>mouseenter</code>, <code>mouseleave</code>, <code>change</code>, <code>select</code>, <code>submit</code>, <code>keydown</code>, <code>keypress</code>, <code>keyup</code>, <code>error</code>.</p>
+
+<p>… <code>eventHandler</code> - это функция, обработчик события. Она создается для указанного события.</p>
+
+<p>Хватит слов - краткий пример все “расскажет” лучше всяких слов.</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>… или так -</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">myFunction</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="nx">myFunction</span><span class="p">);</span></code></pre></div>
+
+<p>То есть, при клике мыши (событие <code>click</code>) на элементе с идентификатором <code>#foo</code> запускается обработчик этого события - функция, которая в данном случае является всего лишь командой <code>alert</code>. Но эта функция может быть и более сложной, конечно.</p>
+
+<p>Другими словами, вызывая функцию <code>.on()</code>, мы передаем ей два аргумента - событие (которое нужно отслеживать) и обработчик этого события. Поэтому функция <code>.on()</code> и называется <strong>универсальной функцией</strong>.</p>
+
+<p>Существуют менее универсальные функции - одноименные (<em>событиям</em>) функции под каждое конкретное событие. Для сравнения, таких два примера абсолютно равнозначны, но имеют разный синтаксис:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">click</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
+<span class="p">})</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#foo&#39;</span><span class="p">).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;click&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">alert</span><span class="p">(</span><span class="s1">&#39;Вы нажали на элемент &quot;foo&quot;&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p><strong>Важное замечание</strong>: функция <code>.on()</code> была введена в jQuery взамен трех функций <code>.live()</code>, <code>.bind()</code>, <code>.delegate()</code>, которые считаются <strong>устаревшими</strong> и не поддерживаются современными версиями jQuery, начиная с версии 1.8.0.</p>
+
+<p>В принципе, на этом можно остановиться, говоря о функции <code>.on()</code>. Для начала - этого достаточно.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-05-15T00:00:00+03:00"><a href="http://zencoder.ru/javascript/ifelse/">May 15, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -561,72 +634,6 @@
 <p>В принципе, рассказанного выше минимума уже достаточно для комфортной работы в ZSH. В заключение можно лишь привести снимок терминала, чтобы иметь представление о красоте ZSH (с прикрученным “Oh My Zsh”):</p>
 
 <p><img src="http://zencoder.ru/images/uploads/2015/05/oh-my-zsh.png" alt="Oh My ZSH" title="Oh My ZSH" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-03T00:00:00+03:00"><a href="http://zencoder.ru/git/git-merged-no-merged/">May 03, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/git/git-merged-no-merged/" rel="bookmark" title="--merged и --no-merged в Git" itemprop="url">--merged и --no-merged в Git</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Весьма полезные две опции в системе Git - показать только те ветки, которые <strong>уже слиты</strong> с веткой <code>master</code> (к примеру); или же показать только те ветки, которые <strong>еще не были слиты</strong> с веткой <code>master</code> (к примеру).</p>
-
-<p>Таким образом, можно быстро и четко определиться, какие ветки уже можно удалить, так как все наработки в них слиты в основную ветку и таким образом - сохранены.</p>
-
-<p>А какие ветки удялять нельзя, так как наработки в них еще не слиты в основную ветку и еще не сохранены.</p>
-
-<p>Система Git не допустит удаления таких веток при запуске команды:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git branch -d name_of_branch</code></pre></div>
-
-<p>Только использование специального флага <code>-D</code> разрешит удаление ветки, которая не слита с основной веткой:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git branch -D name_of_branch</code></pre></div>
-
-<p>Итак, ниже две команды - героя дня.</p>
-
-<h2 id="merged">Опция –merged</h2>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git branch --merged</code></pre></div>
-
-<ul>
-  <li>показать все ветки, слияние для которых было выполнено. Такие ветки можно смело удалять.</li>
-</ul>
-
-<h2 id="no-merged">Опция –no-merged</h2>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git branch --no-merged</code></pre></div>
-
-<ul>
-  <li>показать все ветки, слияние для которых еще не было выполнено.</li>
-</ul>
-
-<h2 id="v">Опция -v</h2>
-
-<p>Показать список всех доступных веток и при этом <strong>отобразить последний коммит для каждой из веток</strong>:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>git branch -v
-
-  master        <span class="m">4669186</span> Header ready
-* sectionFooter 9fbcfc4 Footer Social Icons</code></pre></div>
 
 <p>На этом все.</p>
 

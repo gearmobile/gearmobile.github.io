@@ -144,6 +144,336 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-05-02T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/">May 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~11 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/susy/brief-tutorial-susy-part2/" rel="bookmark" title="Краткое введение в Susy 2 (Часть 2)" itemprop="url">Краткое введение в Susy 2 (Часть 2)</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В предыдущей статье были рассмотрены краткие основы плагина Susy 2 и на примере создана с помощью Susy довольно сложная HTML-разметка.</p>
+</blockquote>
+
+<p>В этой статье будет углубленное изучение плагина Susy 2. Сегодня предстоит изучить вопрос, каким образом можно легко и быстро создавать RWD (Responsive Web Design) с помощью Susy 2.</p>
+
+<p>Если вы начали читать эту статью, но представления не имеете, что такое Susy 2 вообще, то вам стоит обратиться к предыдущей статье “Краткое руководство по Susy 2” - это стоит затраченного времени!</p>
+
+<h2 id="breakpoints">Контрольные точки (breakpoints)</h2>
+
+<p>По умолчанию, плагин Susy 2 не имеет в своем составе миксина для создания контрольных точек <code>breakpoints</code>. Наоборот, разработчики рекомендуют установить отдельно плагин <a href="http://breakpoint-sass.com/" title="Breakpoint">Breakpoint</a> и использовать его для создания медиа-запросов <code>media-queries</code>.</p>
+
+<p>Поэтому сначала произведем установку и импортирование этого плагина.</p>
+
+<blockquote>
+  <p>Прим. переводчика - имеется отдельная статья по установке и работе с плагином Breakpoint в Sass, расположенная по этому адресу - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Медиа-запросы Breakpoint в Sass</a>.</p>
+</blockquote>
+
+<p>Плагин Breakpoint требует для своей работы наличия библиотеки Compass. Поэтому, сначала необходимо выполнить две команды по установке Compass и затем Breakpoint:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">compass</span>
+<span class="n">sudo</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">breakpoint</span></code></pre></div>
+
+<blockquote>
+  <p>Прим. переводчика: непонятно, что автор имел ввиду, но плагин Breakpoint для своей работы не нуждается в наличии библиотеки Compass. А вот препроцессор Sass ему необходим однозначно.</p>
+</blockquote>
+
+<p>Затем необходимо подключить плагин Breakpoint в конфигурационном файле <code>config.rb</code> и в файле <code>style.scss</code>:</p>
+
+<div class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="sr">//</span> <span class="n">config</span><span class="o">.</span><span class="n">rb</span>
+<span class="c1"># Require any additional compass plugins here.</span>
+<span class="nb">require</span> <span class="s1">&#39;susy&#39;</span>
+<span class="nb">require</span> <span class="s1">&#39;breakpoint&#39;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">style</span><span class="nc">.scss</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;susy&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;breakpoint&quot;</span><span class="p">;</span></code></pre></div>
+
+<p>Теперь все готово для того, чтобы двигаться дальше.</p>
+
+<h2 id="breakpoint">Работаем с плагином Breakpoint</h2>
+
+<p>Если сказать одним предложением, что мне нравиться в использовании плагина Breakpoint, то это легкость, с которой можно создавать контрольные точки в веб-дизайнах под мобильные устройства. Давайте посмотрим, как это делается.</p>
+
+<p>Для того, чтобы воспользоваться плагином Breakpoint, необходимо вызвать одноименный миксин и вставить его в код, передав требуемые аргументы. Эти аргументы преобразуются плагином Breakpoint в соответствующие медиа-запросы. Общий синтаксис миксина таков:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@include</span> <span class="nt">breakpoint</span><span class="o">(&lt;</span><span class="nt">args</span><span class="o">&gt;)</span><span class="p">{</span>
+  <span class="o">//</span> <span class="nt">content</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Прелесть плагина Breakpoint в том, что если вы передаете ему только один аргумент, то он автоматически преобразуется в <code>mobile-first</code>. Этот аргумент должен быть значением минимальной ширины (<code>min-width</code>) разрабатываемого вами сайта, его контрольной точкой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">1200px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">//</span> <span class="k">content</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>… что при компиляции в CSS-код даст результат:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">1200px</span><span class="o">)</span><span class="p">{</span>
+  <span class="nc">.container</span><span class="p">{</span>
+    <span class="o">//</span> <span class="k">content</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Миксин Breakpoint очень гибкий и с помощью него при необходимости можно создавать <a href="http://breakpoint-sass.com/#get_started" title="Сложные медиа-запросы">сложные медиа-запросы</a>.</p>
+
+<h2 id="breakpoint---susy-2">Использование Breakpoint совместно с Susy 2</h2>
+
+<p>Предположим, необходимо создать CSS-сетку, которая будет меняться в определенной контрольной точке <code>breakpoint</code>. Изначально все блоки CSS-сетки должны занимать всю ширину окна браузера в 900px. При превышении значения ширины окна в 900px CSS-сетка должна преобразовываться в 10-колоночный макет сайта, который был рассмотрен и создан в предыдущей статье.</p>
+
+<blockquote>
+  <p>Прим. переводчика - все в точности с принципом MobileFirst.</p>
+</blockquote>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_1.jpg" alt="Преобразование дизайна из Mobile View в Desktop View в Susy 2" /></p>
+
+<p>Для того, чтобы осуществить такую задачу, достаточно просто добавить нужную контрольную точку <code>breakpoint</code> в уже существующую таблицу стилей SCSS.</p>
+
+<p>В конкретном случае это будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+<span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+<span class="o">...</span>
+<span class="nc">.column_2</span><span class="p">{</span>
+  <span class="o">...</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">900px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">6</span> <span class="n">of</span> <span class="m">10</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_1_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_1</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_3_2</span><span class="p">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_4</span><span class="p">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span></code></pre></div>
+
+<p>То есть, для контрольной точки <code>min-width: 900px</code> создаются правила построения CSS-сетки с использованием плагина Susy 2. Если ширина окна браузера будет меньше 900px, все блоки будут располагаться на всю ширину вертикально (по умолчанию - ведь это и есть нормальный поток). При ширине окна больше 900px подключиться плагин Susy 2 и преобразует CSS-шаблон в 10-колоночный вид для Desktop. Все сделано с учетом принципа MobileFirst.</p>
+
+<p>Готовый пример переработанного кода можно посмотреть здесь - <a href="https://gist.github.com/roowa/11470192" title="Susy 2 + Breakpoint">Susy 2 + Breakpoint</a>.</p>
+
+<p>Все выглядит достаточно просто и работает нормально. Но что, если требуется решить чуть более сложную задачу?</p>
+
+<blockquote>
+  <p>Примечание автора: Если вам не нравиться использовать контрольные точки с помощью плагина Breakpoint, вы можете свободно применять старые добрые медиа-запросы <code>media queries</code>, как это делается в CSS.</p>
+</blockquote>
+
+<h2 id="susy-2">Добавляем несколько контрольных точек в Susy 2</h2>
+
+<p>Допустим, стоит задача создать еще одно состояние шаблона, промежуточное между состоянием “Mobile View” и состоянием “Desktop View”. Необходимо, чтобы при переходе от мобильного экрана к экрану монитора появилось еще одно состояние для планшетных компьютеров “Tablet View”, с отдельной информационной колонкой справа:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/05/susy_breakpoint_2.jpg" alt="Промежуточный дизайн Tablet View для планшетных компьютеров" /></p>
+
+<p>Этот случай выглядит немного сложнее, чем предыдущий. Главным образом потому, что блок <code>column_1</code> меняет свое положение и перемещается слева направо. Каким же образом можно осущесвить подобный маневр? Здесь необходимо применить небольшую хитрость.</p>
+
+<p>Немного проанализируем будущий шаблон Tablet View для планшетного дизайна. В нем блоки <code>column_1</code> и <code>column_3</code> будут занимать 2 колонки из общих 6 колонок; в тоже время как блок <code>column_2</code> будет занимать 4 колонки из 6. Кроме того, блок <code>column_1</code> будет располагаться над блоком <code>column_3</code>.</p>
+
+<p>Вся хитрость заключается в миксине <code>last</code> (прим. переводчика: логично предположить, если до этого момента внимательно изучался результирующий CSS-код работы плагина Susy 2. Вот и profit чтения исходных кодов страницы!).</p>
+
+<p>Давайте взглянем на готовый SCSS-код и сразу многое станет понятно:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/* Tablet View</span>
+<span class="c">----------------------------*/</span>
+<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+<span class="nc">.column_2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+    <span class="o">.</span><span class="n">column_2_1_1</span><span class="o">,.</span><span class="n">column_2_1_2</span><span class="err">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">6</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_1_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_1</span><span class="o">,</span> <span class="nc">.column_2_2_2</span><span class="o">,</span> <span class="nc">.column_2_4</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="n">full</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.column_2_2_2</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+      <span class="o">.</span><span class="n">column_2_3_1</span><span class="o">,.</span><span class="n">column_2_3_2</span><span class="err">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_3_2</span><span class="p">{</span>
+        <span class="o">@</span><span class="n">include</span> <span class="n">last</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="nc">.column_2_4</span><span class="p">{</span>
+        <span class="k">clear</span><span class="o">:</span> <span class="k">both</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Обратите внимание, что для блоков <code>.column_1</code> и <code>.column_3</code> изменилась их ширина и добавился миксин <code>last</code>. Если взглянуть на скомпилированный CSS-код, то увидим, что для этих блоков задано “плавание” вправо и убран правый <code>margin</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В то же время, для блока <code>.column_2</code> изменилась только его ширина, а “плавание” осталось прежним - влево. Вот в этом и заключается маленький секрет изменения раскладки блоков в шаблоне:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>В блоке <code>.column_2</code> также были произведены изменения ширины некоторых блоков с тем, чтобы шаблон в этом виде максимально соответсвовал своему предназначению - использованию на планшетных компьютерах. В частности, была увеличена ширина блоков <code>.column_2_2_1</code>, <code>.column_2_2_2</code>, <code>.column_2_4</code> для того, чтобы ими было удобно пользоваться на небольшом экране.</p>
+
+<p>Полный код получившегося примера можно посмотреть здесь - <a href="https://gist.github.com/roowa/11472003" title="Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View">Susy 2 + Breakpoint = Mobile View + Tablet View + Desktop View</a>.</p>
+
+<h2 id="susy-breakpoint">Миксин Susy-Breakpoint</h2>
+
+<p>Плагин Susy 2 имеет в своем составе дополнительный миксин <code>susy-breakpoint</code>. Цель создания и применения этого миксина - сокращенная форма записи кода контрольных точек в Sass, в точности следуя принципу этого препроцессора - DRY.</p>
+
+<p>Чтобы быть более понятным, приведу ниже кусочек кода, написанный с помощью миксина <code>susy-breakpoint</code> и точно такой же кусочек кода, написаный без этого миксина, как это делалось ранее в этой статье:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="nt">C</span> <span class="err">использованием</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
+<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+
+<span class="o">//</span> <span class="err">Без</span> <span class="err">использования</span> <span class="err">миксина</span> <span class="nt">susy-breakpoint</span>
+<span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">6</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>Видим, что миксин <code>susy-breakpoint</code> действительно использует сокращенную запись, в которой первый аргумент - это значение <code>breakpoint</code> (контрольной точки), а второй аргумент - число колонок, на которое разбита ширина шаблона.</p>
+
+<p>Тогда в миксине <code>span</code> достаточно указать число колонок из общего числа (которое равно 6), которое должен занимать указанный элемент. И что он является последним <code>last</code> с своем ряду (как дополнение).</p>
+
+<p>Приведем ниже измененый SCSS и CSS-код нашего разрабатываемого примера, с учетом использования миксина <code>susy-breakpoint</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.column_1</span><span class="o">,</span><span class="nc">.column_3</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">last</span><span class="p">);</span>
+  <span class="p">}</span>
+<span class="err">}</span>
+
+<span class="nc">.column_2</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">susy</span><span class="o">-</span><span class="n">breakpoint</span><span class="p">(</span><span class="m">600px</span><span class="o">,</span><span class="m">6</span><span class="p">)</span><span class="err">{</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">4</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+    <span class="o">...</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_1</span><span class="o">,</span> <span class="nc">.container</span> <span class="nc">.column_3</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">31.03448%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">@media</span> <span class="o">(</span><span class="nt">min-width</span><span class="o">:</span> <span class="nt">600px</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.container</span> <span class="nc">.column_2</span> <span class="p">{</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">65.51724%</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.44828%</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="o">*</span><span class="n">zoom</span><span class="o">:</span> <span class="m">1</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Лично я предпочитаю использовать первый метод, с применением плагина Breakpoint (прим. переводчика: мне он также кажется более наглядным и интуитивно понятным). Естественно, можно с одинаковым успехом пользоваться обоими сопособами. Все зависит от того, какой вам больше нравиться и легче применять на практике.</p>
+
+<p>В этом участке примеры вы, внимательный читатель, могли заметить, что допущена маленькая неточность, упущение. Связано оно с тем, что плавающему контейнеру разрешено занимать всю ширину окна браузера, даже если оно слишком большое. Давайте исправим этот недостаток.</p>
+
+<h2 id="section">Ограничение блока-контейнера по ширине</h2>
+
+<p>Так как в этом примере используется плавающий контейнер, то ограничить его по ширине очень просто:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>В результате будет произведено ограничение блока с классом <code>.container</code> по максимальной ео ширине:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>Точно такого же результата можно добиться, если просто записать:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span><span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">clearfix</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.container</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#fbeecb</span><span class="p">;</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">1140px</span><span class="p">;</span>
+  <span class="o">...</span></code></pre></div>
+
+<p>К сожалению, точно также нельзя поступить в случае с CSS-сетками фиксированной ширины <code>static grid</code>, потому что плагин Susy 2 производит все необходимые математические вычисления в CSS-сетке и расчет максимальной ширины блока-контейнера этой же CSS-сетки одновременно. Для построения CSS-сетки с фиксированной шириной необходим другой способ.</p>
+
+<p>Но рассмотрение этого способа оставим на следующий раз, так как на сегодня уже достаточно.</p>
+
+<p>Окончательный результат рассмотренного в этой статье шаблона можно посмотреть здесь - <a href="https://gist.github.com/roowa/11473471" title="Susy + Breakpoint = Final">Susy + Breakpoint = Final</a>.</p>
+
+<p>Данная статья является вольным переводом и обработкой оригинала - <a href="http://www.zell-weekeat.com/susy2-tutorial-2/" title="A Complete Tutorial to Susy 2 (Part 2)">A Complete Tutorial to Susy 2 (Part 2)</a>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-05-01T00:00:00+04:00"><a href="http://zencoder.ru/susy/brief-tutorial-susy-2/">May 01, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -1299,107 +1629,6 @@
 
 <hr />
 
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-04-21T00:00:00+04:00"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/">April 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/wordpress/permalink-in-wordpress/" rel="bookmark" title="Настройка permalink в WordPress" itemprop="url">Настройка permalink в WordPress</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В первую очередь, что за загадочное слово - <code>permalink</code>? Все просто - это сокращение от <em>permanent link - постоянная ссылка</em>.</p>
-</blockquote>
-
-<p>Постоянные ссылки нужны в системе WordPress для того, чтобы указывать на одну и ту же запись в перемещающейся ленте записей. При первоначальной настройке WordPress одной из задач является вопрос с постоянными ссылками. По умолчанию в WordPress permalink имеют ужасающий вид:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="p">/</span><span class="n">word1</span><span class="p">/</span><span class="k">?</span><span class="n">p</span><span class="p">=</span><span class="n">123</span></code></pre></div>
-
-<p>Ужасающий в том смысле, что такая ссылка для человека совершенно не читаемая. Сможете ли вы сказать, что находится по адресу, указанному в этой ссылке? Конечно нет!</p>
-
-<p>Это для системы CMS WordPress понятно, что в этой ссылке указан адрес на пост с <code>id=123</code> (<em>порядковый номер записи 123</em>). И если система покопается в своей базе данных, то она (<em>может быть</em>) найдет запись с таким идентификатором и выдаст ее “на гора”. А для человека такая запись ни о чем не говорит.</p>
-
-<p>Поэтому в настройках WordPress имеется специальный раздел, в котором можно настроить вид постоянных ссылок на понятный человеку (<em>ЧПУ - Человеко-Понятный Урл</em>). Размещен этот раздел по адресу “Настройки” - “Постоянные ссылки”.</p>
-
-<p>Система WordPress предлагает на выбор пять вариантов постоянных ссылок (permalink) - один по умолчанию и четыре готовых (на выбор):</p>
-
-<ul>
-  <li><strong>День и название поста</strong> - http://localhost:7788/third/2014/04/20/sample-post/</li>
-  <li><strong>Месяц и название поста</strong> - http://localhost:7788/third/2014/04/sample-post/</li>
-  <li><strong>Цифры</strong> - http://localhost:7788/third/archives/123</li>
-  <li><strong>Название записи</strong> - http://localhost:7788/third/sample-post/</li>
-</ul>
-
-<p>По большому счету, с каждым из этих четырех видов permalink все понятно. Я имею ввиду, в каком виде она предоставляет ссылку.</p>
-
-<p>Но, помимо этих четырех permalink, имеется еще один вариант:</p>
-
-<ul>
-  <li><strong>Произвольно</strong> - http://localhost:7788/third</li>
-</ul>
-
-<p>В этом случае администратору сайта предоставляется возможность настроить вид permalink произвольно, руководствуясь специальными переменными. Ниже приведен список таких переменных, с указанием примера в скобках:</p>
-
-<ul>
-  <li><strong>%year%</strong> - год публикации записи (2014)</li>
-  <li><strong>%monthnum%</strong> - порядковый номер месяца публикации записи (05)</li>
-  <li><strong>%day%</strong> - порядковый день месяца публикации записи (21)</li>
-  <li><strong>%hour%</strong> - час публикации записи (09)</li>
-  <li><strong>%minute%</strong> - минута публикации записи (12)</li>
-  <li><strong>%second%</strong> - секунда публикации записи (13)</li>
-  <li><strong>%post_id%</strong> - идентификатор записи (123)</li>
-  <li><strong>%postname%</strong> - имя записи (about-the-permalink)</li>
-  <li><strong>%category%</strong> - категория записи (wordpress)</li>
-  <li><strong>%author%</strong> - автор записи (zencoder)</li>
-  <li><strong>%tag%</strong> - метка записи (css)</li>
-</ul>
-
-<p>Благодаря этим переменным можно создать permalink практически любого вида и под любые потребности.</p>
-
-<p>К примеру, для <strong>блога с регулярными записями без тематики</strong> подойдет permalink следующей конструкции:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="k">%</span><span class="n">year</span><span class="p">%/</span><span class="k">%</span><span class="n">monthnum</span><span class="p">%/</span><span class="k">%</span><span class="n">day</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
-
-<span class="p">//</span> <span class="err">Пример:</span>
-<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="k">%</span><span class="n">year</span><span class="p">%/</span><span class="k">%</span><span class="n">monthnum</span><span class="p">%/</span><span class="k">%</span><span class="n">day</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
-
-<p>Для <strong>блога с нерегулярными записями и записи без тематики</strong> подойдет permalink вида:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="n">url</span><span class="p">/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
-
-<span class="p">//</span> <span class="err">Пример:</span>
-<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="n">url</span><span class="p">/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
-
-<p>Для <strong>блога с регулярными тематическими записями</strong> подойдет краткий permalink:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">/</span><span class="k">%</span><span class="n">category</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span>
-
-<span class="p">//</span> <span class="err">Пример:</span>
-<span class="n">http</span><span class="err">:</span><span class="p">//</span><span class="n">localhost</span><span class="err">:</span><span class="n">7788</span><span class="p">/</span><span class="n">third</span><span class="p">/</span><span class="k">%</span><span class="n">category</span><span class="p">%/</span><span class="k">%</span><span class="n">postname</span><span class="p">%/</span></code></pre></div>
-
-<p>Настройку постоянных ссылок необходимо выполнять заранее, то есть в самом начале создания сайта на WordPress. Иначе, когда записей будет много и вы решите изменить вид постоянных ссылок для своего сайта, повторная индексация записей может произойти со сбоями.</p>
-
-<p>Еще одним важным моментом при самостоятельной настройке permalink является то, что любая из них должна заканчиваться переменной %postname% или %post_id%. В этом случае каждая из существующих в системе WordPress permalink будет указывать на конкретную запись. Если вы посмотрите на примеры выше, то заметите, что ссылки построены именно по такому принципу.</p>
-
-<p>Данный материал является отрывком из книги Криса Койера “Digging Into WordPress”, пересказанным автором сайта своими словами.</p>
-
-<p>На этом все.</p>
-
-<hr />
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

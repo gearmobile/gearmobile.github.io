@@ -144,6 +144,594 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-06-22T00:00:00+04:00"><a href="http://zencoder.ru/slider-jcarousel/">June 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~17 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/slider-jcarousel/" rel="bookmark" title="Слайдер jCarousel" itemprop="url">Слайдер jCarousel</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Данная статья посвящена обзору еще одного js-плагина для создания <code>slideshow</code> из картинок - jCarousel.</p>
+</blockquote>
+
+<p>Автором данного скрипта является <a href="http://sorgalla.com/jcarousel/" title="Jan Sorgalla">Jan Sorgalla</a>. Хотя мне эти имя и фамилия ни о чем не говорит, но они запоминающиеся. Название данного плагина я запомнил по имени его автора раньше, чем по имени самого скрипта.</p>
+
+<p>Скрипт jCarousel по популярности в списке плагинов типа <code>carousel</code> занимает второе место после скрипта slick - <a href="http://plugins.jquery.com/tag/carousel/" title="jQuery Plugins">jQuery Plugins</a>. Кто вдруг не знает, термин <code>carousel</code> (карусель) является общим описанием плагинов и скриптов подобного типа.</p>
+
+<p>Плагин jCarousel основан на библиотеке jQuery и предоставляет стандартные возможности управления показом картинок - кнопки перемотки взад-вперед и пагинация картинок. Показ заголовка картинки не предусмотрен, но имеется возможность автоскроллинга изображений.</p>
+
+<h2 id="jcarousel">Особенности jCarousel</h2>
+
+<p>Первая особенность плагина заключается в том, что здесь почти ничего не генерируется автоматически, самим скриптом jCarousel. Только пагинация создается с помощью js-кода, все остальное нужно прописывать вручную в HTML-коде. Для меня это было весьма огорчительно, так как такой подход занимает много времени и сил.</p>
+
+<p>Вторая особенность плагина - он имеет модульную структуру. То есть, имеется основная составляющая скрипта jCarousel - <code>jquery.jcarousel-core.min.js</code>, которая на то и является основной, что предоставляет базовые возможности для создания слайдшоу.</p>
+
+<p>Если необходимо к слайдшоу добавить возможность прокрутки, то нужно скачать и подключить модуль <code>jquery.jcarousel-control.min.js</code>. Для включения возможности пагинации необходим еще один модуль - <code>jquery.jcarousel-pagination.min.js</code>.</p>
+
+<p>Для автоскролинга потребуется модуль <code>jquery.jcarousel-autoscroll.min.js</code>.</p>
+
+<p>В проекте перечисленные выше модули подключаются последовательно, в таком порядке (первые два пункта строго обязательны, остальные могут добавляться, убираться и перемещаться между собой произвольно):</p>
+
+<ul>
+  <li>библиотека jQuery - <code>jquery-1.11.1.min.js</code></li>
+  <li>основной модуль jCarousel Core - <code>jquery.jcarousel-core.min.js</code></li>
+  <li>модуль прокрутки - <code>jquery.jcarousel-control.min.js</code></li>
+  <li>модуль пагинации - <code>jquery.jcarousel-pagination.min.js</code></li>
+  <li>модуль автоскроллинга - <code>jquery.jcarousel-autoscroll.min.js</code></li>
+</ul>
+
+<p>Справедливости стоит сказать, что можно не заморачиваться с отдельными модулями и подключить все одним файлом, по типу “все включено” - <code>jquery.jcarousel.min.js</code>:</p>
+
+<ul>
+  <li>библиотека jQuery - <code>jquery-1.11.1.min.js</code></li>
+  <li>плагин jCarousel со всеми его возможностями - <code>jquery.jcarousel.min.js</code></li>
+</ul>
+
+<p>Страница для скачивания плагина jCarousel одним файлом (Full Download) или отдельными его модулями (Separate Downloads) расположена здесь - <a href="http://sorgalla.com/jcarousel/dist/" title="jCarousel Dist">jCarousel Dist</a>. Можно получить как “Production Version” (compressed), так и “Development Version” (uncompressed).</p>
+
+<p>В данной статье будут использоваться сжатые версии скрипта, так как в исходном коде плагина копаться не будем.</p>
+
+<p>Плагин требует для своей работы библиотеку jQuery <strong>версии не ниже 1.7</strong> - это также стоит учесть.</p>
+
+<h2 id="jcarousel-1">Подключение плагина jCarousel</h2>
+
+<p>Создаем набросок HTML-страницы и производим подключение плагина jCarousel. Для чистоты и наглядности буду применять подход модульности плагина. Как и любой другой плагин подобного рода, его управление производится через отдельный js-файл произвольного имени, в котором прописываются параметры скрипта. Я создал для этой цели js-файл <code>simple.js</code> и выполнил подключение таким образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-core.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/simple.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+ <span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>Шкурка <code>style.css</code> служит для стилизации слайдера jCarousel на HTML-странице, то есть в этом файле будут писаться CSS-стили для всех элементов слайдера jCarousel.</p>
+
+<h2 id="jcarousel-2">Базовая разметка слайдера jCarousel</h2>
+
+<p>Плагин для своей работы требует некоторую обязательную базовую HTML-разметку и CSS-стили к ней. HTML-разметка может быть не обязательно именно такой, как представлена ниже, но основная ее структура должна сохраняться:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;jcarousel&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 1&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 2&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 3&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 4&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 5&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 6&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--  end jcarousel  --&gt;</span></code></pre></div>
+
+<p>То есть, должен присутствовать блок-обертка с классом <code>class="jcarousel"</code> (имя класса может быть произвольным), внутри которого должен находиться еще один блок-обертка. И затем только идут элементы с картинками. HTML-структура, надо сказать, несколько громоздкая по стандартам сегодняшнего времени.</p>
+
+<p>К обязательной базовой HTML-разметке “прилагаются” не менее обязательные CSS-стили:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">jcarousel</span> <span class="p">{</span>
+  <span class="nx">position</span><span class="o">:</span> <span class="nx">relative</span><span class="p">;</span>
+  <span class="nx">overflow</span><span class="o">:</span> <span class="nx">hidden</span><span class="p">;</span>
+
+  <span class="nx">ul</span><span class="p">{</span>
+    <span class="nx">width</span><span class="o">:</span> <span class="mi">20000</span><span class="nx">em</span><span class="p">;</span>
+    <span class="nx">position</span><span class="o">:</span> <span class="nx">relative</span><span class="p">;</span>
+
+    <span class="nx">li</span><span class="p">{</span>
+      <span class="kr">float</span><span class="o">:</span> <span class="nx">left</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Код выше - это конечно не совсем CSS-код. Это SCSS, но наглядность (как мне кажется) от этого только выигрывает из-за ярко выраженного nesting, присущего Sass. По крайней мере, ничего не стоит за 5-10 секунд вручную перевести этот SCSS в обычный CSS, если кого вдруг это не устраивает.</p>
+
+<p>В данном примере я воспользовался сервисом <a href="http://placehold.it" title="Placehold.it">Placehold.it</a> для быстрой и удобной генерации картинок в создаваемом слайдшоу.</p>
+
+<p>Для активации слайдера в файле настроек <code>simple.js</code> скрипта jCarousel нужно прописать его инициализацию:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="c1">// Инициализация слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarousel</span><span class="p">({</span>
+    <span class="c1">// Базовые настройки скрипта пишутся здесь</span>
+  <span class="p">});</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Слайдер уже готов! Правда, увидеть его работу не получиться, так как не заданы настройки скрипта, не созданы элементы для его управления. Приступим к созданию элементов управления слайдера jCarousel.</p>
+
+<h2 id="jcarousel-3">Создание кнопок прокрутки в jCarousel</h2>
+
+<p>Как я уже упоминал ранее, при создании слайдера придется все создавать вручную, прописывая нужные HTML-элементы внутри HTML-документа.</p>
+
+<p>Какой уважающий себя слайдер картинок может существовать без кнопок перемотки изображений взад-вперед? Конечно - никакой! Поэтому потребуется их создать.</p>
+
+<p>Для этого ниже блока со слайдером дописываю две ссылки с классами <code>class="jcarousel-prev"</code> и <code>class="jcarousel-prev"</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;wrap_jcarousel&quot;</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="nx">div</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;jcarousel&quot;</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="nx">ul</span><span class="o">&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 1&quot;</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/li&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 2&quot;</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/li&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 3&quot;</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/li&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 4&quot;</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/li&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 5&quot;</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/li&gt;</span>
+      <span class="o">&lt;</span><span class="nx">li</span><span class="o">&gt;&lt;</span><span class="nx">img</span> <span class="nx">src</span><span class="o">=</span><span class="s2">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 6&quot;</span> <span class="nx">alt</span><span class="o">=</span><span class="s2">&quot;&quot;</span> <span class="o">/&gt;&lt;</span><span class="err">/li&gt;</span>
+    <span class="o">&lt;</span><span class="err">/ul&gt;</span>
+  <span class="o">&lt;</span><span class="err">/div&gt;&lt;!--  end jcarousel  --&gt;</span>
+  <span class="c">&lt;!--</span>  <span class="nx">CONTROLS</span>  <span class="o">--&gt;</span>
+  <span class="o">&lt;</span><span class="nx">a</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;jcarousel-prev&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="o">&gt;</span><span class="nx">Prev</span><span class="o">&lt;</span><span class="err">/a&gt;</span>
+  <span class="o">&lt;</span><span class="nx">a</span> <span class="kr">class</span><span class="o">=</span><span class="s2">&quot;jcarousel-next&quot;</span> <span class="nx">href</span><span class="o">=</span><span class="s2">&quot;#&quot;</span><span class="o">&gt;</span><span class="nx">Next</span><span class="o">&lt;</span><span class="err">/a&gt;</span>
+<span class="o">&lt;</span><span class="err">/div&gt;&lt;!--  end wrap_jcarousel  --&gt;</span></code></pre></div>
+
+<p>Блок слайдера, элементы прокрутки (и другие будущие элементы управления слайдером) я поместил внутрь одного общего блока-обертки <code>class="wrap_jcarousel"</code>, которому придал несложные CSS-стили:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="p">.</span><span class="nx">wrap_jcarousel</span><span class="p">{</span>
+  <span class="nx">width</span><span class="o">:</span> <span class="mi">600</span><span class="nx">px</span><span class="p">;</span>
+  <span class="nx">margin</span><span class="o">:</span> <span class="mi">10</span><span class="nx">px</span> <span class="nx">auto</span><span class="p">;</span>
+  <span class="nx">position</span><span class="o">:</span> <span class="nx">relative</span><span class="p">;</span></code></pre></div>
+
+<p>Кнопки перемотки внутри HTML-разметки созданы, однако необходимо прикрутить к ним действия с помощью js-скрипта. Для этого сначала подключаю модуль прокрутки <code>jquery.jcarousel-control.min.js</code> в HTML-документе:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-core.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-control.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/simple.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>… а затем в файле настроек <code>simple.js</code> активирую возможность прокрутки слайдера, добавив базовые js-строки:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarousel</span><span class="p">({</span>
+      <span class="c1">// Базовые настройки скрипта пишутся здесь</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Инициализация прокрутки слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-prev&#39;</span><span class="p">).</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;-=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-next&#39;</span><span class="p">).</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span>
+  <span class="p">});</span>
+<span class="p">});</span></code></pre></div>
+
+<p>После стилизации элементов управления и блока-обертки <code>class="wrap_jcarousel"</code> слайдер jCarousel может принять следующий вид:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/06/jCarousel_prev-next.jpg" alt="Слайдер jCarousel с кнопками прокрутки" /></p>
+
+<p>Попробуем прокрутить картинки взад и вперед с помощью кнопок - все работает!</p>
+
+<h2 id="jcarousel-4">Добавление пагинации в jCarousel</h2>
+
+<p>Для добавления пагинации в слайдере нужно создать в HTML-разметке дополнительный блок с классом <code>class="jcarousel-pagination"</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap_jcarousel&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;jcarousel&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 1&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 2&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 3&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 4&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 5&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 6&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--  end jcarousel  --&gt;</span>
+  <span class="c">&lt;!--  CONTROLS  --&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;jcarousel-prev&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Prev<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;jcarousel-next&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Next<span class="nt">&lt;/a&gt;</span>
+  <span class="c">&lt;!--  PAGINATION  --&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;jcarousel-pagination&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--  end wrap_jcarousel  --&gt;</span></code></pre></div>
+
+<p>Больше ничего в него добавлять не нужно - плагин сам сгенерирует его содержимое. Нам только необходимо подключить соответствующий модуль <code>jquery.jcarousel-pagination.min.js</code> для пагинации в слайдере:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-core.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-control.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-pagination.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/simple.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>… а затем активировать его в файле настроек <code>simple.js</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1">// Инициализация слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarousel</span><span class="p">({</span>
+      <span class="c1">// Базовые настройки скрипта пишутся здесь</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Инициализация прокрутки слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-prev&#39;</span><span class="p">).</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;-=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-next&#39;</span><span class="p">).</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Инициализация пагинации слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-pagination&#39;</span><span class="p">).</span><span class="nx">jcarouselPagination</span><span class="p">({</span>
+      <span class="nx">item</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
+      <span class="p">}</span>
+  <span class="p">});</span>
+
+<span class="p">});</span></code></pre></div>
+
+<p>Для стилизации пагинации с данном случае потребуется плагин Firebug под Mozilla Firefox для инспекции генерируемых скриптом jCarousel элементов. Примерный вид слайдера после применения некоторых CSS-стилей может быть таким:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/06/jCarousel_pagination.jpg" alt="Слайдер jCarousel с пагинацией" /></p>
+
+<p>Проверим работу пагинации и “пощелкаем” на кнопках с циферками - все работает!</p>
+
+<h2 id="jcarousel-5">Добавление автопрокрутки в jCarousel</h2>
+
+<p>Для автоматической прокрутки изображений в слайдере достаточно выполнить два несложных действия, которые выполнялись и ранее.</p>
+
+<p>Первое - подключить модуль автопрокрутки <code>jquery.jcarousel-autoscroll.min.js</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Слайдер jCarousel<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/style.css&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-core.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-control.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-pagination.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.jcarousel-autoscroll.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/simple.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>Второе - активировать автопрокрутку в файле настроек <code>simple.js</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1">// Инициализация слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarousel</span><span class="p">({</span>
+      <span class="c1">// Базовые настройки скрипта пишутся здесь</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Инициализация прокрутки слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-prev&#39;</span><span class="p">).</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;-=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-next&#39;</span><span class="p">).</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Инициализация пагинации слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-pagination&#39;</span><span class="p">).</span><span class="nx">jcarouselPagination</span><span class="p">({</span>
+      <span class="nx">item</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
+      <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Автопрокрутка слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarouselAutoscroll</span><span class="p">({</span>
+      <span class="nx">interval</span><span class="o">:</span> <span class="mi">3000</span><span class="p">,</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span><span class="p">,</span>
+      <span class="nx">autostart</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">});</span>
+
+<span class="p">});</span></code></pre></div>
+
+<p>Перезапускаю браузер, в котором открыт создаваемый мною слайдер и любуюсь результатом.</p>
+
+<h2 id="jcarousel-6">Дополнительные украшательства для jCarousel</h2>
+
+<p>Что еще можно сделать для созданного слайдера jCarousel? Можно добавить стили для неактивной кнопки прокрутки изображений и для активной кнопки пагинации. Активность и неактивность этих кнопок можно отслеживать в помощью js-строк и “вешать” на нужные состояния кнопок соответствующие CSS-классы.</p>
+
+<p>Для этого файл <code>simple.js</code> преобразую таким образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="c1">// Инициализация слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarousel</span><span class="p">({</span>
+      <span class="c1">// Базовые настройки скрипта пишутся здесь</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Прокрутка слайдера</span>
+
+  <span class="c1">// Кнопка PREV</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-prev&#39;</span><span class="p">)</span>
+  <span class="c1">// Триггер класса inactive</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:active&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:inactive&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="c1">// Инициализация кнопки PREV</span>
+  <span class="p">.</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;-=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Кнопка NEXT</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-next&#39;</span><span class="p">)</span>
+  <span class="c1">// Триггер класса inactive</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:active&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:inactive&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="c1">// Инициализация кнопки NEXT</span>
+  <span class="p">.</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Пагинация слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-pagination&#39;</span><span class="p">)</span>
+  <span class="c1">// Триггер класса active</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselpagination:active&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselpagination:inactive&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
+  <span class="p">})</span>
+  <span class="c1">// Инициализация пагинации</span>
+  <span class="p">.</span><span class="nx">jcarouselPagination</span><span class="p">({</span>
+      <span class="nx">item</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+          <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
+      <span class="p">}</span>
+  <span class="p">});</span>
+
+  <span class="c1">// Автопрокрутка слайдера</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarouselAutoscroll</span><span class="p">({</span>
+      <span class="nx">interval</span><span class="o">:</span> <span class="mi">3000</span><span class="p">,</span>
+      <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span><span class="p">,</span>
+      <span class="nx">autostart</span><span class="o">:</span> <span class="kc">true</span>
+  <span class="p">});</span>
+
+<span class="p">});</span></code></pre></div>
+
+<p>… а в <code>style.scss</code> добавлю строки:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="cm">/*  PREV NEXT BUTTONS  */</span>
+<span class="p">.</span><span class="nx">jcarousel</span><span class="o">-</span><span class="nx">prev</span><span class="p">,</span>
+<span class="p">.</span><span class="nx">jcarousel</span><span class="o">-</span><span class="nx">next</span><span class="p">{</span>
+  <span class="nx">position</span><span class="o">:</span> <span class="nx">absolute</span><span class="p">;</span>
+  <span class="nx">top</span><span class="o">:</span> <span class="mi">200</span><span class="nx">px</span><span class="p">;</span>
+  <span class="p">...</span>
+  <span class="o">&amp;</span><span class="p">.</span><span class="nx">inactive</span><span class="p">{</span>
+    <span class="nx">cursor</span><span class="o">:</span> <span class="k">default</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="p">...</span>
+<span class="cm">/*  PAGINATION  */</span>
+<span class="p">.</span><span class="nx">jcarousel</span><span class="o">-</span><span class="nx">pagination</span><span class="p">{</span>
+  <span class="nx">background</span><span class="o">-</span><span class="nx">color</span><span class="o">:</span> <span class="nx">transparent</span><span class="p">;</span>
+  <span class="nx">position</span><span class="o">:</span> <span class="nx">absolute</span><span class="p">;</span>
+  <span class="p">...</span>
+    <span class="o">&amp;</span><span class="p">.</span><span class="nx">active</span><span class="p">{</span>
+      <span class="nx">opacity</span><span class="o">:</span> <span class="p">.</span><span class="mi">7</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="p">}</span></code></pre></div>
+
+<p>Теперь при автоматической прокрутке изображений активная кнопка пагинации будет выделяться цветом. А при достижении конца прокрутки кнопка прокрутки становится неактивной, что визуально отмечается изменением вида курсора мыши при его наведении на кнопку.</p>
+
+<h2 id="jcarousel-7">Заключение jCarousel</h2>
+
+<p>В заключение можно сказать, что на странице примеров <a href="http://sorgalla.com/jcarousel/examples/" title="Examples">Examples</a> есть богатый материал для дополнительных экспериментов. В частности, интерес представляет адаптивная Responsive Carousel, которая изменяет количество картинок внутри блока в зависимости от ширины окна браузера.</p>
+
+<p>Полный код рассмотренного в данной статье примера создания слайдера приведен ниже.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap_jcarousel&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;jcarousel&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;ul&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 1&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 2&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 3&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 4&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 5&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+      <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/600x400/778899/fff&amp;text=Slide 6&quot;</span> <span class="na">alt=</span><span class="s">&quot;&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+    <span class="nt">&lt;/ul&gt;</span>
+  <span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--  end jcarousel  --&gt;</span>
+  <span class="c">&lt;!--  CONTROLS  --&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;jcarousel-prev&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Prev<span class="nt">&lt;/a&gt;</span>
+  <span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;jcarousel-next&quot;</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Next<span class="nt">&lt;/a&gt;</span>
+      <span class="c">&lt;!--  PAGINATION  --&gt;</span>
+  <span class="nt">&lt;p</span> <span class="na">class=</span><span class="s">&quot;jcarousel-pagination&quot;</span><span class="nt">&gt;&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span><span class="c">&lt;!--  end wrap_jcarousel  --&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/css3/border-radius&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/css3/box-shadow&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/typography/links/hover-link&quot;</span><span class="p">;</span>
+<span class="k">@import</span> <span class="s2">&quot;compass/typography/text/replacement&quot;</span><span class="p">;</span>
+
+<span class="o">$</span><span class="nt">nav_width</span><span class="o">:</span> <span class="nt">30px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">nav_height</span><span class="o">:</span> <span class="o">$</span><span class="nt">nav_width</span><span class="o">;</span>
+
+<span class="nc">.wrap_jcarousel</span><span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">600px</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">10px</span> <span class="k">solid</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">5</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">10px</span><span class="p">);</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="p">(</span><span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">3</span><span class="p">)</span> <span class="m">2px</span> <span class="m">2px</span> <span class="m">10px</span><span class="p">);</span>
+  <span class="o">.</span><span class="n">jcarousel</span> <span class="err">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+    <span class="k">overflow</span><span class="o">:</span> <span class="k">hidden</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">600px</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">400px</span><span class="p">;</span>
+    <span class="n">ul</span><span class="err">{</span>
+      <span class="k">width</span><span class="o">:</span> <span class="m">20000em</span><span class="p">;</span>
+      <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+      <span class="n">li</span><span class="err">{</span>
+        <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+        <span class="n">img</span><span class="err">{</span>
+          <span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
+        <span class="p">}</span>
+      <span class="err">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+
+  <span class="c">/*  PREV NEXT BUTTONS  */</span>
+  <span class="nc">.jcarousel-prev</span><span class="o">,</span>
+  <span class="nc">.jcarousel-next</span><span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">200px</span><span class="p">;</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="err">$</span><span class="n">nav_width</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="err">$</span><span class="n">nav_height</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="m">#778899</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="p">(</span><span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">8</span><span class="p">)</span> <span class="m">0</span> <span class="m">0</span> <span class="m">4px</span> <span class="k">inset</span><span class="p">);</span>
+    <span class="o">&amp;:</span><span class="n">hover</span><span class="err">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="m">#778899</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nc">.inactive</span><span class="p">{</span>
+      <span class="k">cursor</span><span class="o">:</span> <span class="k">default</span><span class="p">;</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+  <span class="nc">.jcarousel-prev</span><span class="p">{</span>
+    <span class="k">left</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.jcarousel-next</span><span class="p">{</span>
+    <span class="k">right</span><span class="o">:</span> <span class="m">-50px</span><span class="p">;</span>
+  <span class="p">}</span>
+
+  <span class="c">/*  PAGINATION  */</span>
+  <span class="nc">.jcarousel-pagination</span><span class="p">{</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">bottom</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+    <span class="k">left</span><span class="o">:</span> <span class="m">10px</span><span class="p">;</span>
+    <span class="n">a</span><span class="err">{</span>
+      <span class="k">text-decoration</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+      <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+      <span class="k">line-height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+      <span class="k">color</span><span class="o">:</span> <span class="m">#fff</span><span class="p">;</span>
+      <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+      <span class="k">width</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+      <span class="k">height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">8</span><span class="p">);</span>
+      <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
+      <span class="k">margin-left</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+      <span class="o">&amp;:</span><span class="n">first</span><span class="o">-</span><span class="n">child</span><span class="err">{</span>
+        <span class="k">margin-left</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+      <span class="p">}</span>
+      <span class="o">&amp;</span><span class="nd">:hover</span><span class="p">{</span>
+        <span class="k">background-color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,</span><span class="m">0</span><span class="o">,.</span><span class="m">6</span><span class="p">);</span>
+      <span class="p">}</span>
+      <span class="o">&amp;</span><span class="nc">.active</span><span class="p">{</span>
+        <span class="k">opacity</span><span class="o">:</span> <span class="o">.</span><span class="m">7</span><span class="p">;</span>
+      <span class="p">}</span>
+    <span class="err">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+
+<span class="c1">// Инициализация слайдера</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarousel</span><span class="p">({</span>
+  <span class="c1">// Базовые настройки скрипта пишутся здесь</span>
+<span class="p">});</span>
+
+<span class="c1">// Прокрутка слайдера</span>
+
+<span class="c1">// Кнопка PREV</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-prev&#39;</span><span class="p">)</span>
+
+<span class="c1">// Триггер класса inactive</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:active&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:inactive&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+
+<span class="c1">// Инициализация кнопки PREV</span>
+<span class="p">.</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+  <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;-=1&#39;</span>
+<span class="p">});</span>
+
+<span class="c1">// Кнопка NEXT</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-next&#39;</span><span class="p">)</span>
+
+<span class="c1">// Триггер класса inactive</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:active&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselcontrol:inactive&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;inactive&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+
+<span class="c1">// Инициализация кнопки NEXT</span>
+<span class="p">.</span><span class="nx">jcarouselControl</span><span class="p">({</span>
+  <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span>
+<span class="p">});</span>
+
+<span class="c1">// Пагинация слайдера</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel-pagination&#39;</span><span class="p">)</span>
+
+<span class="c1">// Триггер класса active</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselpagination:active&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+<span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;jcarouselpagination:inactive&#39;</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+  <span class="nx">$</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nx">removeClass</span><span class="p">(</span><span class="s1">&#39;active&#39;</span><span class="p">);</span>
+<span class="p">})</span>
+
+<span class="c1">// Инициализация пагинации</span>
+<span class="p">.</span><span class="nx">jcarouselPagination</span><span class="p">({</span>
+  <span class="nx">item</span><span class="o">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">page</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;&lt;a href=&quot;#&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&quot;&gt;&#39;</span> <span class="o">+</span> <span class="nx">page</span> <span class="o">+</span> <span class="s1">&#39;&lt;/a&gt;&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">});</span>
+
+<span class="c1">// Автопрокрутка слайдера</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.jcarousel&#39;</span><span class="p">).</span><span class="nx">jcarouselAutoscroll</span><span class="p">({</span>
+    <span class="nx">interval</span><span class="o">:</span> <span class="mi">3000</span><span class="p">,</span>
+    <span class="nx">target</span><span class="o">:</span> <span class="s1">&#39;+=1&#39;</span><span class="p">,</span>
+    <span class="nx">autostart</span><span class="o">:</span> <span class="kc">true</span>
+<span class="p">});</span>
+
+<span class="p">});</span></code></pre></div>
+
+<p>На этом все - удачного кодинга!</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-06-21T00:00:00+04:00"><a href="http://zencoder.ru/slider-jqfancytransitions/">June 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -953,98 +1541,6 @@
 <p>Сайт через виртуальную машину будет также доступен.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-03T00:00:00+04:00"><a href="http://zencoder.ru/css/xampp-linux-mint-images-not-showing/">June 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/xampp-linux-mint-images-not-showing/" rel="bookmark" title="XAMPP Linux Mint - не отображаются картинки" itemprop="url">XAMPP Linux Mint - не отображаются картинки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Столкнулся с небольшой, но достаточно неприятной проблемой.</p>
-</blockquote>
-
-<p>Занимался изучением настройки сверстанного HTML-шаблона под WordPress. То есть, другими словами - создания темы WordPress из готового HTML-шаблона.</p>
-
-<p>Для этой задачи у меня на Linux Mint 17 Cinnanom 64-bit установлен локальный сервер XAMPP. Если кто не знает, как сервер XAMPP устанавливается под Linux, то могут почитать в этой статье - “Установка XAMPP под Linux Mint 17”. Под локальным сервером у меня “крутятся” виртуальные хосты на основе движка WordPress.</p>
-
-<h2 id="wordpress">Предпросмотр темы не отображается в WordPress</h2>
-
-<p>После создания директории под новую тему - <code>Choose</code> закинул к нее скриншот готовой темы для preview в менедежере тем WordPress - <code>wp-admin/themes.php</code>. Но вот неожиданность - картинка-скриншот будущей темы Choose не отобразилась!</p>
-
-<p>Перепробовал достаточно способов, в том числе и с официального сайта XAMPP - <a href="https://www.apachefriends.org/ru/faq_linux.html" title="XAMPP - картинки не отображаются">XAMPP работает, но почему картинки не отображаются?</a>. То, что там описано - изменение двух строк файла <code>/opt/lampp/etc/httpd.conf</code>:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">#EnableMMAP</span> <span class="err">off</span>
-<span class="err">#EnableSendfile</span> <span class="err">off</span></code></pre></div>
-
-<p>… не сработало, так как в моем конфигурационном файле <code>httpd.conf</code> обе строчки были расскоментированы по умолчанию:</p>
-
-<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">EnableMMAP</span> <span class="err">off</span>
-<span class="err">EnableSendfile</span> <span class="err">off</span></code></pre></div>
-
-<p>Решение оказалось на удивление простым. Я и не подозревал, что настройка прав доступа в Linux может быть такой “коварной” штукой! Сначала обратил внимание на тот факт, что preview тем WordPress, которые идут “в комплекте” с ним - “Twenty Fourteen”, “Twenty Thirteen”, “Twenty Twelve” нормально отображаются на странице. А вот <code>preview</code> моей темы - не отображается:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/xampp_theme-wordpress_not_show.png" alt="Предпросмотр темы не отображается в WordPress" /></p>
-
-<p>Решил проверить догадку методом “научного тыка” - тупо сравнить два файла-preview <code>screenshot.png</code> из разных тем, своей “Choose” и стандартной “Twenty Fourteen”:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">twentyfourteen</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">1</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">twentyfourteen</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
-
-<span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
-<span class="n">-rw</span><span class="p">-------</span> <span class="n">1</span> <span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span></code></pre></div>
-
-<p>Вот оно! У файла <code>screenshot.png</code> из темы “Twenty Fourteen” имеются права на чтение <code>r</code> для - владельца, группы и всех остальных <code>-rw-r-r-</code>. У файла <code>screenshot.png</code> из моей темы “Choose” имеются права на просмотр <code>r</code> только для владельца данного файла <code>-rw- - -</code>.</p>
-
-<p>Ну что-же, нужно добавить <code>+</code> права чтения <code>r</code> для всех <code>a</code> пользователей файла <code>screenshot.png</code> темы “Choose”:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">chmod</span> <span class="n">a</span><span class="p">+</span><span class="n">r</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span></code></pre></div>
-
-<p>… и проверить результат:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">1</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">wp-content</span><span class="p">/</span><span class="n">themes</span><span class="p">/</span><span class="n">choose</span><span class="p">/</span><span class="n">screenshot</span><span class="p">.</span><span class="n">png</span></code></pre></div>
-
-<p>Перехожу в WordPress на страницу управления темами <code>wp-admin/themes.php</code> и смотрю, что получилось:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/xampp_theme-wordpress.png" alt="Рабочее preview создаваемой темы WordPress" /></p>
-
-<p>Картинка по центру изображения - это preview создаваемой темы “Choose” под WordPress. Как видно, все прошло удачно.</p>
-
-<h2 id="wordpress----xampp">Картинки темы WordPress не отображаются под XAMPP</h2>
-
-<p>Но вышеназванное решение оказалось лишь половиной дела. Вторая проблема заключалась в том, что при активации вновь созданной темы под WordPress изображения из нее не отображаются на странице.</p>
-
-<p>Фоновые изображения, картинки в HTML-файле - ничего не появляется на странице. Firebug не смог мне помочь - единственное, что он “подсказал” - “Файл невозможно загрузить”. Многословно, ничего не скажешь!</p>
-
-<p>Помог незаменимый ресурс для front-end разработчика - <a href="http://stackoverflow.com/" title="Stack Overflow">Stack Overflow</a>. Решение проблемы заключено в двух строках:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cd</span> <span class="p">/</span><span class="n">opt</span><span class="p">/</span><span class="n">lampp</span><span class="p">/</span><span class="n">htdocs</span>
-<span class="p">$</span> <span class="n">sudo</span> <span class="n">chmod</span> <span class="n">777</span> <span class="n">-R</span> <span class="p">.</span></code></pre></div>
-
-<p>То есть, переходим в директорию <code>htdocs</code> и меняем рекурсивно <code>-R</code> права на все действия <code>777</code> для всего содержимого текущей <code>.</code> директории. Не знаю, как там с вопросами безопасности в этом случае, но факт остается фактом - все стало работать, как и надо было:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/xampp_theme-wordpress_show_pictures.png" alt="Изображения темы WordPress корректно отображаются на странице" /></p>
-
-<p>В принципе, на этом все.</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->

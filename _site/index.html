@@ -144,6 +144,135 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-11T00:00:00+03:00"><a href="http://zencoder.ru/javascript/let-const/">November 11, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/let-const/" rel="bookmark" title="let и const в ES2015" itemprop="url">let и const в ES2015</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <h2 id="let--const--es6">let и const в ES6</h2>
+
+<p><em>Прочтение</em> и <em>переосмысление</em> замечательного руководства <a href="https://learn.javascript.ru/let-const">Переменные: let и const</a> по новшествам в ES6. Не более и не менее. Статья ни на что большее не претендует, разве слегка помощь хозяину в освоении новшевств ES2015.</p>
+
+<p>В ES6 <strong>взамен</strong> служебного слова <code>var</code>, служащего для объявления переменной, введены два служебных слова - <code>let</code> и <code>const</code>. Другими словами, это новый способ объявления переменных.</p>
+
+<p><strong>Например:</strong></p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+<span class="kr">const</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">20</span><span class="p">;</span></code></pre></div>
+
+<h3 id="let">let</h3>
+
+<h4 id="let-1">Область видимости let</h4>
+
+<p>Переменная, объявленная через <code>var</code>, является видимой внутри всего js-файла:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	<span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span></code></pre></div>
+
+<p>Код выше читается таким образом. Объявляется переменная <code>number</code> и присваивается ей значение <code>5</code>. Внутри функции переменная <code>number</code> <strong>не создается заново</strong>; берется “старая” переменная <code>number</code> и переопределяется значением <code>10</code>.</p>
+
+<p>Оба последующих <code>alert</code> выведут одно и тоже значение <code>10</code>, ибо “старая добрая” <code>number</code> как была в самом начале, так и осталась - просто ей придали другое значение.</p>
+
+<p>Переменная, объявленная через <code>let</code>, имеет область видимости только <strong>внутри блока</strong>, внутри которого она была объявлена:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	<span class="kd">let</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span> <span class="c1">// вернет значение 10</span>
+<span class="p">};</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="c1">// вернет значение 5</span></code></pre></div>
+
+<p>Здесь, фактически, две <strong>независимые переменные</strong> <code>number</code>, одна — <strong>глобальная</strong>, вторая — <strong>локальная</strong> (<em>внутри функции</em>).</p>
+
+<p>Заметим, что если объявление <code>let number</code> в первой строке удалить, то в последнем <code>alert</code> будет ошибка: <strong>переменная неопределена</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+	<span class="kd">let</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+	<span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span>
+<span class="p">};</span>
+<span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span> <span class="c1">// ошибка, так как переменная number не объявлена</span></code></pre></div>
+
+<p>Это потому что переменная <code>let</code> всегда видна именно в <strong>том блоке, где объявлена, и не более</strong>.</p>
+
+<h4 id="let----">Переменная <code>let</code> видна только после объявления</h4>
+
+<p>Как мы помним, переменные <code>var</code> существуют и <strong>до объявления</strong>. Они равны <code>undefined</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">)</span> <span class="c1">// number is undefined</span>
+<span class="kd">var</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span></code></pre></div>
+
+<p>С переменными <code>let</code> все проще. <strong>До объявления их вообще нет</strong>. Такой доступ приведет к ошибке:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">alert</span><span class="p">(</span><span class="nx">number</span><span class="p">);</span> <span class="c1">// error - переменной number не существует</span>
+<span class="kd">let</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span></code></pre></div>
+
+<p>Заметим также, что переменные <code>let</code> <strong>нельзя повторно объявлять</strong>. То есть, такой код выведет ошибку:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">number</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">number</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="c1">// ошибка - переменная `number` уже объявлена</span></code></pre></div>
+
+<p>Это — хоть и выглядит ограничением по сравнению с <code>var</code>, но на самом деле проблем не создает. Например, два таких цикла совсем <strong>не конфликтуют</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// каждый цикл имеет свою переменную `i`</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{}</span>
+<span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span><span class="o">=</span><span class="mi">0</span><span class="p">;</span> <span class="nx">i</span><span class="o">&lt;</span><span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{}</span>
+<span class="nx">alert</span><span class="p">(</span> <span class="nx">i</span> <span class="p">);</span> <span class="c1">// ошибка - глобальной `i` нет</span></code></pre></div>
+
+<p>При объявлении <strong>внутри цикла</strong> переменная <code>i</code> будет <strong>видна только в блоке цикла</strong>. Она <strong>не видна снаружи</strong>, поэтому будет ошибка в последнем <code>alert</code>.</p>
+
+<h4 id="section">При использовании в цикле, для каждой итерации создается своя переменная</h4>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">function</span> <span class="nx">makeArmy</span><span class="p">()</span> <span class="p">{</span>
+
+  <span class="kd">let</span> <span class="nx">shooters</span> <span class="o">=</span> <span class="p">[];</span>
+
+  <span class="k">for</span> <span class="p">(</span><span class="kd">let</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="mi">10</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">shooters</span><span class="p">.</span><span class="nx">push</span><span class="p">(</span><span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
+      <span class="nx">alert</span><span class="p">(</span> <span class="nx">i</span> <span class="p">);</span> <span class="c1">// выводит свой номер</span>
+    <span class="p">});</span>
+  <span class="p">}</span>
+
+  <span class="k">return</span> <span class="nx">shooters</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="kd">var</span> <span class="nx">army</span> <span class="o">=</span> <span class="nx">makeArmy</span><span class="p">();</span>
+
+<span class="nx">army</span><span class="p">[</span><span class="mi">0</span><span class="p">]();</span> <span class="c1">// 0</span>
+<span class="nx">army</span><span class="p">[</span><span class="mi">5</span><span class="p">]();</span> <span class="c1">// 5</span></code></pre></div>
+
+<p>Каждому повторению цикла соответствует своя независимая переменная <code>let</code>. Если внутри цикла есть вложенные объявления функций, то в замыкании каждой будет та переменная, которая была при соответствующей итерации.</p>
+
+<h3 id="const">const</h3>
+
+<p>Объявление <code>const</code> задает <strong>константу</strong>, то есть <strong>переменную, которую нельзя менять</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">count</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="nx">count</span> <span class="o">=</span> <span class="mi">15</span><span class="p">;</span> <span class="c1">// ошибка при изменении значения константы</span></code></pre></div>
+
+<p>В остальном объявление <code>const</code> полностью аналогично <code>let</code>.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-11-10T00:00:00+03:00"><a href="http://zencoder.ru/javascript/exports-module_exports/">November 10, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -173,12 +302,12 @@
 <p>Для понимания вышесказанного лучше всего создать пример приложения под Node.js. Давайте создадим файл с именем <code>greetings.js</code>, внутри которого размещены <strong>две функции</strong>:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
-	<span class="p">}</span>
+  <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+<span class="p">}</span>
 
-	<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
-	<span class="p">}</span></code></pre></div>
+<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
 <h3 id="section">Экспорт модуля</h3>
 
@@ -197,12 +326,12 @@
 </ol>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
-	<span class="p">}</span>
+  <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+<span class="p">}</span>
 
-	<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
-	<span class="p">}</span></code></pre></div>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
 
 <p>В приведенном выше коде можно было бы заменить выражение <code>exports</code> на <code>exports.module</code> и получить точно такой же результат. Если этот момент кажется вам непонятным, то помните, что выражение <code>exports</code> и выражение <code>exports.module</code> ссылаются на один и тот же объект.</p>
 
@@ -212,14 +341,14 @@
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
 
-		<span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
-		<span class="p">}</span>
+  <span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
 
-		<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
-		<span class="p">}</span>
-	<span class="p">}</span></code></pre></div>
+  <span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
 
 <h3 id="section-1">Импортирование модуля</h3>
 
@@ -231,45 +360,45 @@
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">require</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
 
-	  <span class="c1">// ...</span>
+  <span class="c1">// ...</span>
 
-	  <span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">;</span>
-	<span class="p">};</span></code></pre></div>
+  <span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">;</span>
+<span class="p">};</span></code></pre></div>
 
 <ol>
   <li>Давайте подключим модуль <code>greetings.js</code> в модуль <code>main.js</code>:</li>
 </ol>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
-	<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">);</span></code></pre></div>
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">);</span></code></pre></div>
 
 <p>Приведенная выше строка кода равнозначна нижеследующему коду:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
-	<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
 
-		<span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
-		<span class="p">}</span>
+<span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+<span class="p">}</span>
 
-		<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-			<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
-		<span class="p">}</span>
+<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+<span class="p">}</span>
 
-	<span class="p">}</span></code></pre></div>
+<span class="p">}</span></code></pre></div>
 
 <ol>
   <li>Теперь можно использовать функции модуля <code>greetings.js</code> внутри модуля <code>main.js</code> как методы объекта <code>greeting</code>:</li>
 </ol>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
-	<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">);</span>
 
-	<span class="c1">// Hello</span>
-	<span class="nx">greeting</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+<span class="c1">// Hello</span>
+<span class="nx">greeting</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
 
-	<span class="c1">// Hola</span>
-	<span class="nx">greeting</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span><span class="p">(</span><span class="s1">&#39;Hola&#39;</span><span class="p">);</span></code></pre></div>
+<span class="c1">// Hola</span>
+<span class="nx">greeting</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span><span class="p">(</span><span class="s1">&#39;Hola&#39;</span><span class="p">);</span></code></pre></div>
 
 <h3 id="section-2">Отличительные моменты</h3>
 
@@ -279,23 +408,23 @@
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// greetings.js</span>
 
-	<span class="c1">// var exports = module.exports = {};</span>
+<span class="c1">// var exports = module.exports = {};</span>
 
-	<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
-	<span class="p">}</span>
-	<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
-		<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
-	<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  <span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+<span class="p">}</span>
 
-	<span class="c1">// Эта строка кода выполняет повторное переопределение,</span>
+<span class="c1">// Эта строка кода выполняет повторное переопределение,</span>
 
-	<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="s1">&#39;Bonjour&#39;</span><span class="p">;</span></code></pre></div>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="s1">&#39;Bonjour&#39;</span><span class="p">;</span></code></pre></div>
 
 <p>Теперь сделаем подключение модуля <code>greetings.js</code> в модуль <code>main.js</code>:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
-	<span class="kd">var</span> <span class="nx">greetings</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">)</span></code></pre></div>
+<span class="kd">var</span> <span class="nx">greetings</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">)</span></code></pre></div>
 
 <p>На данный момент в нашем примере ничего не поменялось. В переменную <code>greetings</code> помещается код, доступный из модуля <code>greetings.js</code>. Не более того.</p>
 
@@ -304,24 +433,24 @@
 <p>Другими словами, последней командой <code>module.exports</code> экспортируется совсем другой модуль - <code>Bonjour</code>, у которого другие свойства и методы. Происходит <strong>переопределение</strong> экспортируемого модуля и вызов метода <code>sayHelloInEnglish</code> или <code>sayHelloInSpanish</code> вызовет ошибку:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
-	<span class="c1">// var greetings = require(&quot;./greetings.js&quot;);</span>
+<span class="c1">// var greetings = require(&quot;./greetings.js&quot;);</span>
 
-	<span class="cm">/*</span>
-<span class="cm">	 * TypeError: object Bonjour has no</span>
-<span class="cm">	 * method &#39;sayHelloInEnglish&#39;</span>
-<span class="cm">	 */</span>
-	<span class="nx">greetings</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span><span class="p">();</span>
+<span class="cm">/*</span>
+<span class="cm"> * TypeError: object Bonjour has no</span>
+<span class="cm"> * method &#39;sayHelloInEnglish&#39;</span>
+<span class="cm"> */</span>
+<span class="nx">greetings</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span><span class="p">();</span>
 
-	<span class="cm">/*</span>
-<span class="cm">	 * TypeError: object Bonjour has no</span>
-<span class="cm">	 * method &#39;sayHelloInSpanish&#39;</span>
-<span class="cm">	 */</span>
-	<span class="nx">greetings</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span><span class="p">();</span></code></pre></div>
+<span class="cm">/*</span>
+<span class="cm"> * TypeError: object Bonjour has no</span>
+<span class="cm"> * method &#39;sayHelloInSpanish&#39;</span>
+<span class="cm"> */</span>
+<span class="nx">greetings</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span><span class="p">();</span></code></pre></div>
 
 <p>Чтобы отследить ошибки при использовании модуля <code>greetings</code>, можно вывести их в консоль:</p>
 
 <div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// &quot;Bonjour&quot;</span>
-	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greetings</span><span class="p">);</span></code></pre></div>
+<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greetings</span><span class="p">);</span></code></pre></div>
 
 <h3 id="section-3">Заключение</h3>
 
@@ -713,182 +842,6 @@
 <h2 id="section">Заключение</h2>
 
 <p>Вот и все, что мне кажется нужным сказать о программе Workrave.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-08-30T00:00:00+03:00"><a href="http://zencoder.ru/sublime/text/sublime-linting/">August 30, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/sublime/text/sublime-linting/" rel="bookmark" title="SublimeLinter - обнаружение ошибок" itemprop="url">SublimeLinter - обнаружение ошибок</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Термин <em>linting</em> применяется для обозначения процесса обнаружения ошибок в исходных файлах программ, скриптов или документов. Программа такого рода должна иметься в инструментарии каждого разработчика, так как с помощью таких программ можно обнаруживать ошибки в процессе написания кода. Популярный редактор кода Sublime Text не имеет встроенных возможностей для обнаружения ошибок; однако такую ситуацию легко исправить.</p>
-
-<p>При помощи <em>linting</em>‘а можно обнаруживать небольшие ошибки кода “на лету”, в процессе написания этого кода - например, пропущенную точку с запятой в JavaScript-коде. Возможность обнаружения ошибок в редакторе Sublime Text осуществляется с помощью плагина <a href="http://www.sublimelinter.com/en/latest/about.html" title="SublimeLinter">SublimeLinter</a>, который необходимо установить прежде всего.</p>
-
-<p>Если в какой-либо строке кода этот редактор обнаружит ошибку, то данная строка будет подсвечена в gutter редактора Sublime. Более того, если поместить курсор мыши в строку с ошибкой, то в <em>status bar</em> редактора Sublime Text отобразится краткое описание ошибки, что поможет принять меры для ее правильного устранения.</p>
-
-<p>Ниже представлен наглядный пример подсветки ошибок в Sublime Text с помощью плагина SublimeLinter:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-fill.jpg" alt="SublimeLinter" title="SublimeLinter" /></p>
-
-<p>Плагин <a href="http://www.sublimelinter.com/en/latest/about.html" title="SublimeLinter">SublimeLinter</a> сам по себе не выполняет процесса “отлавливания” ошибок в коде, так как является всего-лишь фреймворком, основой для других плагинов (linter), каждый из которых создан для обнаружения ошибок в каком-то определенном языке - JavaScript, PHP, Ruby, Python, HTML, CSS и так далее.</p>
-
-<h2 id="sublimelinter--sublime-text">SublimeLinter в Sublime Text</h2>
-
-<p>Как уже упоминалось ранее, плагин SublimeLinter является фреймворком, основой для более маленьких плагинов (linter), которые осуществляют непосредственный поиск синтаксических ошибок в программном коде.</p>
-
-<p>Поэтому первоначально необходимо установить этот фреймворк (как плагин) в редактор Sublime Text и самый простой способ это сделать - воспользоваться менеджером пакетов <a href="https://packagecontrol.io/" title="Package Control">Package Control</a>. Для этого нажимаем сочетание клавиш <kbd>Shift+Ctrl+P</kbd> (Linux \ Windows) или <kbd>Shift+Cmd+P</kbd> (Mac OSX). В поле поиска вводим название устанавливаемого пакета - <a href="https://packagecontrol.io/packages/SublimeLinter" title="SublimeLinter Package Control">SublimeLinter</a>. Далее - производим установку.</p>
-
-<p>Теперь необходимо определиться с тем, в каких языках программирования необходимо “отлавливать” ошибки. Другими словами, на каких языках программирования вы пишете и в каких из них вам необходима поддержка SublimeLinter.</p>
-
-<p>Допустим, это серверный язык PHP. Тогда для включения возможности обнаружения ошибок в Sublime Text необходимо установить плагин <a href="https://packagecontrol.io/packages/SublimeLinter-php" title="Sublime​Linter-php">Sublime​Linter-php</a>, так же через менеджер пакетов <a href="https://packagecontrol.io/" title="Package Control">Package Control</a>. Стоит оговориться, что дополнительной зависимостью этого плагина является язык PHP, который предустановлен в операционных системах Linux\MacOSX, но который необходимо заранее установить отдельно в операционной системе Windows.</p>
-
-<p>Примером работы связки Sublime​Linter + Sublime​Linter-php в редакторе Sublime Text может послужить нижеследующее изображение:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-php-error.jpg" alt="SublimeLinter PHP" title="SublimeLinter PHP" /></p>
-
-<p>Рассмотрим другой случай, когда в редакторе Sublime Text используется язык программирования JavaScript. Тогда для возможности отлавливания ошибок в JS-коде необходимо установить плагин <a href="https://packagecontrol.io/packages/SublimeLinter-jshint" title="Sublime​Linter-jshint">Sublime​Linter-jshint</a>. В этом случае вопрос зависимостей этого пакета выглядит несколько сложнее. Плагин Sublime​Linter-jshint основывает свою работу на <a href="http://jshint.com/about/" title="JSHint">JSHint</a>, который необходимо установить в виде пакета под <a href="https://nodejs.org/" title="Node.js">Node.js</a> и устанавливается с помощью менеджера пакетов <abbr>npm</abbr>. Поэтому в операционной системе заранее должны быть установлены Node.js, <abbr>npm</abbr> и JSHint.</p>
-
-<p>Примером работы плагина Sublime​Linter-jshint может послужить нижеследующее изображение:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-js-error.jpg" alt="Sublime​Linter JSHint" title="Sublime​Linter JSHint" /></p>
-
-<p>Рассмотрим еще один случай, когда в редакторе Sublime Text используется язык таблиц каскадных стилей CSS (куда же без него?). Тогда необходимо доустановить в Sublime Text плагин <a href="https://packagecontrol.io/packages/SublimeLinter-csslint" title="Sublime​Linter-csslint">Sublime​Linter-csslint</a>.</p>
-
-<p>Рассмотрение подобных плагинов (linter) можно продолжать еще долго. Поэтому ограничимся только тремя вышеприведенными. Стоит сказать, что для поиска какого-либо конкретного плагина (linter) удобно воспользоваться online-сервисом <a href="https://packagecontrol.io/" title="Package Control">Package Control</a>, в поисковой строке которого достаточно ввести начало названия искомого пакета, например, так - “SublimeLinter-“. Система автоматически выдаст список все плагинов под фреймворк SublimeLinter.</p>
-
-<p>Как нетрудно заметить, окончание (суффикс) в названии каждого из плагинов является подсказкой, для поддержки какого языка был создан этот плагин. Например, для языка Ruby существует плагин Sublime​Linter-ruby, для препроцессора Haml имеется плагин Sublime​Linter-haml.</p>
-
-<p>Также стоит сказать, что необходимо внимательно читать описание к каждому из тех плагинов, которые планируется установить, так как каждый из них имеет разные зависимости. Наглядный пример зависимостей у плагинов Sublime​Linter-php и Sublime​Linter-jshint был приведен выше.</p>
-
-<h2 id="sublimelint">Настройка SublimeLint</h2>
-
-<p>В плагине SublimeLint имеется большое количество настроек. Однако, с большинством из них не составит труда разобраться. Ниже приведено краткое описание некоторых из них.</p>
-
-<h3 id="linting-modes">Linting Modes</h3>
-
-<p>Эта настройка отвечает за поведение плагина SublimeLinter - когда плагин должен оповещать об обнаруженной ошибке в коде программы или документа.</p>
-
-<ul>
-  <li><strong>Background</strong> - это поведение по умолчанию плагина SublimeLinter. Сообщения об обнаруженных ошибках будут появляться по мере их обнаружения (другими словами - по мере написания строк кода) и будут обновляться каждый раз, когда будет производиться исправление обнаруженных ошибок. Такой режим может показаться излишне назойливым, так как иногда сообщение об ошибке может появиться прежде, чем будет дописана до конца инструкция, в которой вкралась ошибка.</li>
-  <li><strong>Load\Save</strong> - в этом случае сообщения об ошибках будут отображаться плагином только после сохранения или загрузки сохраненного документа.</li>
-  <li><strong>Save Only</strong> - сообщения об обнаруженных ошибках будут отображаться только при сохранении документа.</li>
-  <li><strong>Manual</strong> - ручной вызов проверки на ошибки, из командной панели редактора Sublime Text.</li>
-</ul>
-
-<p>Лично я предпочитаю режим <strong>Load\Save</strong>, так как в этом случае плагин SublimeLinter не мешает работать с кодом до тех пор, пора не будет выполнено сохранение этого кода в файле. Режим <strong>Background</strong> может показаться излишне назойливым, так как сообщения об ошибках будут появляться постоянно, мешая работе.</p>
-
-<p>Для того, чтобы изменить поведение плагина SublimeLinter через настройку Linting Modes, необходимо зайти в командную панель редактора Sublime Text с помощью сочетания клавиш (<kbd>Shift+Ctrl+P</kbd> или <kbd>Shift+Cmd+P</kbd>) и ввести в строке поиска следующее:</p>
-
-<p><strong>sublimelinter lint mode</strong></p>
-
-<p>… откроется выпадающий список со всеми настройками плагина SublimeLinter, из которого необходимо выбрать <strong>SublimeLinter: Choose Lint Mode</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/choose-lint-mode.jpg" alt="SublimeLinter Lint Mode" title="SublimeLinter Lint Mode" /></p>
-
-<h3 id="mark-style">Mark Style</h3>
-
-<p>Настройка <strong>Mark Style</strong> отвечает за внешний вид выделения ошибки в строке кода. Значением по умолчанию является <strong>outline</strong>. Но можно выбрать любое другое значение из предустановленных настроек.</p>
-
-<p>В соответствии с <a href="http://www.sublimelinter.com/en/latest/mark_styles.html" title="SublimeLinter Mark Style">официальной документацией</a> SublimeLinter имеются несколько вариантов выделения ошибок в строке кода:</p>
-
-<ul>
-  <li>fill</li>
-  <li>outline</li>
-  <li>solid underline</li>
-  <li>squiggly underline</li>
-  <li>stippled underline</li>
-</ul>
-
-<p>Аналогично с режимом <strong>Linting Modes</strong>, режим <strong>Mark Style</strong> настраивается через командную панель редактора Sublime Text - <kbd>Shift+Ctrl+P</kbd> (Linux \ Windows) или <kbd>Shift+Cmd+P</kbd> (Mac OSX). В выпадающм списке нужно выбрать строку <strong>Sublime Linter: Choose Mark Style</strong>.</p>
-
-<p>Ниже представлены скриншоты всех пяти режимов выделения ошибок в строке, чтобы можно было сравнить и выбрать наиболее подходящий вариант.</p>
-
-<h4 id="fill">Fill</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-mode-fill.jpg" alt="Mark Style Fill" title="Mark Style Fill" /></p>
-
-<h4 id="outline">Outline</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-mode-outline.jpg" alt="Mark Style Outline" title="Mark Style Outline" /></p>
-
-<h4 id="solid-underline">Solid Underline</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-mode-solid-underline.jpg" alt="Mark Style Solid Underline" title="Mark Style Solid Underline" /></p>
-
-<h4 id="squiggly-underline">Squiggly Underline</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-mode-squiggly-outline.jpg" alt="Mark Style Squiggly Underline" title="Mark Style Squiggly Underline" /></p>
-
-<h4 id="stippled-underline">Stippled Underline</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-mode-stippled-outline.jpg" alt="Mark Style Stippled Underline" title="Mark Style Stippled Underline" /></p>
-
-<h3 id="gutter-themes">Gutter Themes</h3>
-
-<p>В дополнение к настройке выделения ошибок в строке кода, можно выполнить настройку иконок, который помещаются в области gutter редактора Sublime Text напротив строки с обнаруженной ошибкой. Такое выделение строки служит для большей информативности.</p>
-
-<p>В плагине SublimeLinter имеется <a href="http://www.sublimelinter.com/en/latest/gutter_themes.html#standard-gutter-themes" title="Standard gutter themes">набор предустановленных иконок</a>, наглядное изображение которых представлено ниже.</p>
-
-<h4 id="blueberry--cross">Blueberry – cross</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-blueberry-cross.jpg" alt="SublimeLinter Gutter Blueberry Cross" title="SublimeLinter Gutter Blueberry Cross" /></p>
-
-<h4 id="blueberry--round">Blueberry – round</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-blueberry-round.jpg" alt="SublimeLinter Gutter Blueberry Round" title="SublimeLinter Gutter Blueberry Round" /></p>
-
-<h4 id="circle">Circle</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-circle.jpg" alt="SublimeLinter Gutter Blueberry Circle" title="SublimeLinter Gutter Blueberry Circle" /></p>
-
-<h4 id="danish-royalty">Danish Royalty</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-danish-royalty.jpg" alt="SublimeLinter Gutter Danish Royalty" title="SublimeLinter Gutter Danish Royalty" /></p>
-
-<h4 id="hands">Hands</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-hands.jpg" alt="SublimeLinter Gutter Hands" title="SublimeLinter Gutter Hands" /></p>
-
-<h4 id="knob--simple">Knob – simple</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-knob-simple.jpg" alt="SublimeLinter Gutter Knob Simple" title="SublimeLinter Gutter Knob Simple" /></p>
-
-<h4 id="knob--symbol">Knob – symbol</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-knob-symbol.jpg" alt="SublimeLinter Gutter Knob Symbol" title="SublimeLinter Gutter Knob Symbol" /></p>
-
-<h4 id="koloria">Koloria</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/linter-gutter-koloria.jpg" alt="SublimeLinter Gutter Koloria" title="SublimeLinter Gutter Koloria" /></p>
-
-<h4 id="projecticons">ProjectIcons</h4>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/images/linter-gutter-projecticons.jpg" alt="SublimeLinter Gutter Project Icons" title="SublimeLinter Gutter Project Icons" /></p>
-
-<p>Изменить настройки отображения иконок можно, зайдя в командную панель редактора Sublime Text и выбрав в выпадающем списке строку <strong>Sublime Linter: Choose Gutter Theme</strong>.</p>
-
-<h2 id="section">Заключение</h2>
-
-<p>Плагин SublimeLinter является очень мощным и гибким, а количество поддерживаемых им язык - очень большое. Вы можете посетить <a href="https://packagecontrol.io/search/sublimelinter" title="Package Control Sublime Linter List">страницу поддерживаемых языков</a>, чтобы убедиться в богатом выборе поддерживаемых языков программирования, разметки и многих других.</p>
-
-<p>Рассмотренные в этой статье возможности плагина SublimeLinter являются далеко не исчерпывающими. На <a href="http://www.sublimelinter.com/en/latest/about.html" title="SublimeLinter">официальной странице документации</a> вы всегда найдете для себя что-то новое. Для этого нужно только периодически просматривать эту документацию.</p>
 
 <hr />
 
