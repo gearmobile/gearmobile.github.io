@@ -144,6 +144,944 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-07T00:00:00+04:00"><a href="http://zencoder.ru/javascript/slider-bxslider/">July 07, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/slider-bxslider/" rel="bookmark" title="Слайдер bxSlider" itemprop="url">Слайдер bxSlider</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Обзор еще одного слайдера под библиотеку jQuery под названием bxSlider.</p>
+</blockquote>
+
+<p>Данный слайдер обладает полным набором возможностей, адаптивный и легко устанавливается в проекте. Адрес проживания слайдера bxSlider - <a href="http://bxslider.com/" title="The Responsive jQuery Content Slider">The Responsive jQuery Content Slider</a>.</p>
+
+<p>Конкретно какими возможностями обладает bxSlider:</p>
+
+<ul>
+  <li>полностью адаптивный</li>
+  <li>может быть горизонтальным, вертикальным</li>
+  <li>может содержать в себе изображения, видео или HTML-контент</li>
+  <li>поддержка функций touch/swipe</li>
+  <li>для анимаций используются CSS transitions</li>
+  <li>маленький размер файла, легко видоизменяется и настраивается</li>
+  <li>поддержка браузерами Firefox, Chrome, Safari, iOS, Android, Ie7+</li>
+  <li>большое число настроек</li>
+</ul>
+
+<h2 id="bxslider">Установка слайдера bxSlider</h2>
+
+<p>Установка bxSlider ничем не отличается от установки ему подобных скриптов для создания carousel. Скачиваем с сайта архив - в нем есть все необходимое для подключения и работы. Помимо этого, там есть несколько дополнительных файлов типа <code>jquery.easing.1.3.js</code> и <code>jquery.fitvids.js</code>. Но нет библиотеки jQuery, которую автор рекомендует подключать в проект через CDN. Я подключу jQuery локально, версии 1.11.1.</p>
+
+<p>В HTML-файле перед закрывающим тегом body произвожу подключение скриптов в таком порядке:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">...
+<span class="c">&lt;!--  SCRIPTS  --&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-1.11.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.bxslider.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/bxslider.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>Файл <code>jquery.bxslider.min.js</code> беру из скачанного архива, файл <code>bxslider.js</code> - произвольного имени, для настроек плагина bxSlider.</p>
+
+<p>В <code>head</code> HTML-документа, помимо этого, производится подключение таблицы стилей для плагина bxSlider, которую также беру из скачанного архива. Данный шаг выполнять совершенно необязательно - можно обойтись без файла <code>jquery.bxslider.css</code> и тогда получим “чистый” слайдер, который можно видоизменять по своему с помощью CSS:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
+  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;title&gt;</span>Document<span class="nt">&lt;/title&gt;</span>
+  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/jquery.bxslider.css&quot;</span><span class="nt">&gt;</span>
+  ...
+ <span class="nt">&lt;/head&gt;</span></code></pre></div>
+
+<p>Плагин bxSlider подключен и готов к работе. Осталось создать HTML-разметку для него.</p>
+
+<h2 id="html----bxslider">HTML-разметка для слайдера bxSlider</h2>
+
+<p>Внутри тега <code>body</code> создаю разметку для будущего слайдера. Она проста и семантична, представляет из себя обычный маркированный список, в котором каждый элемент <code>li</code> является слайдом. Внутри <code>li</code> может размещаться изображение, видео или любой другой HTML-контент. Контейнер <code>ul</code> должен иметь класс с произвольным именем:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;slider&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/300x200&quot;</span> <span class="na">alt=</span><span class="s">&quot;bxSlider&quot;</span> <span class="nt">/&gt;&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span></code></pre></div>
+
+<h2 id="bxslider-1">Инициализация скрипта bxSlider</h2>
+
+<p>В созданном ранее js-файле <code>bxslider.js</code> произвожу инициализацию плагина bxSlider. Важно заметить, что строка инициализации должна быть обязательно заключена в “обертку” <code>$(document).ready()</code>, иначе слайдер не будет работать:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.slider&#39;</span><span class="p">).</span><span class="nx">bxSlider</span><span class="p">();</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Смотрю готовый результат:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_ready.png" alt="Запущенный слайдер bxSlider" /></p>
+
+<p>Слайдер bxSlider запущен и работает - есть кнопки пагинации и перемотки, изображения крутятся при нажатии на них. Пробую отключить таблицу стилей <code>jquery.bxslider.css</code> и смотрю результат. Действительно, слайдер bxSlider получается “голым”, но рабочим:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_clean.png" alt="Чистый слайдер bxSlider" /></p>
+
+<h2 id="bxslider-2">Стилизация слайдера bxSlider</h2>
+
+<p>Произведу небольшую стилизацию слайдера bxSlider. Для этого необходимо воспользоваться плагином Firebug под браузер Mozilla Firefox, чтобы инспектировать DOM-дерево и находить нужные HTML-элементы с их классами. Как можно было понять из базовой HTML-разметки, все элеметы управления слайдером генерируются скриптом автоматически.</p>
+
+<p>Стилизация слайдера bxSlider с помощью CSS-правил (в данном примере это SCSS) может быть такой:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">asidePos</span><span class="o">:</span> <span class="nt">50px</span><span class="o">;</span>
+<span class="o">$</span><span class="nt">color</span><span class="o">:</span> <span class="nf">#778899</span><span class="o">;</span>
+
+<span class="nc">.bx-wrapper</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">10px</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">300px</span><span class="p">;</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">5px</span> <span class="k">solid</span> <span class="m">#fff</span><span class="p">;</span>
+  <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="k">position</span><span class="o">:</span> <span class="k">relative</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">viewport</span><span class="err">{</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">shadow</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span> <span class="m">#ccc</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c">/*  Скрывать пагинацию  */</span>
+  <span class="nc">.bx-pager</span><span class="p">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="c">/*  Кнопки перемотки  */</span>
+  <span class="nc">.bx-prev</span><span class="o">,</span>
+  <span class="nc">.bx-next</span><span class="p">{</span>
+    <span class="k">position</span><span class="o">:</span> <span class="k">absolute</span><span class="p">;</span>
+    <span class="k">top</span><span class="o">:</span> <span class="m">92px</span><span class="p">;</span>
+    <span class="k">width</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">height</span><span class="o">:</span> <span class="m">20px</span><span class="p">;</span>
+    <span class="k">background-color</span><span class="o">:</span> <span class="err">$</span><span class="k">color</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+    <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
+    <span class="o">@</span><span class="n">include</span> <span class="n">single</span><span class="o">-</span><span class="n">transition</span><span class="p">(</span><span class="k">background-color</span><span class="o">,</span> <span class="m">.1s</span><span class="o">,</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">);</span>
+    <span class="o">&amp;:</span><span class="n">hover</span><span class="o">,&amp;:</span><span class="n">focus</span><span class="err">{</span>
+      <span class="k">outline</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">5%</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="o">&amp;</span><span class="nd">:active</span><span class="p">{</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">darken</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">10%</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+  <span class="nc">.bx-prev</span><span class="p">{</span>
+    <span class="k">left</span><span class="o">:</span> <span class="o">-</span><span class="err">$</span><span class="n">asidePos</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.bx-next</span><span class="p">{</span>
+    <span class="k">right</span><span class="o">:</span> <span class="o">-</span><span class="err">$</span><span class="n">asidePos</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nt">img</span><span class="p">{</span>
+    <span class="k">vertical-align</span><span class="o">:</span> <span class="k">top</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>И посмотрим результат наших трудов. Уже гораздо лучше, однако:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_styled.png" alt="Стилизованный слайдер bxSlider" /></p>
+
+<h2 id="bxslider-3">Настройка слайдера bxSlider</h2>
+
+<p>Плагин bxSlider имеет большое количество настроек, которые легко подключать в коде. Разнообразные (и многочисленные) примеры создания слайдера приведены на странице - <a href="http://bxslider.com/examples" title="Examples">Examples</a>. Эти примеры можно и стоит изучить (<em>хотя бы слегка, для будущего</em>).</p>
+
+<p>В этой статье давайте я воссоздам один из приведенных на странице <a href="http://bxslider.com/examples" title="Examples">Examples</a> примеров. Пусть это будет слайдер с автоматической прокруткой и кнопками управления прокруткой - запуско и остановкой. Такой готовый пример размещен здесь - <a href="http://bxslider.com/examples/auto-show-start-stop-controls" title="Auto show with start / stop controls">Auto show with start / stop controls</a>. Я просто сделаю свой собственный дубликат, со своими стилями.</p>
+
+<p>Для этого в SCSS-коде добавляю такие строки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="c">/*  auto controls  */</span>
+<span class="nc">.bx-controls-auto</span><span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">5px</span> <span class="m">0</span> <span class="m">0</span><span class="p">;</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">pie</span><span class="o">-</span><span class="n">clearfix</span><span class="p">;</span>
+  <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">controls</span><span class="o">-</span><span class="k">auto</span><span class="o">-</span><span class="n">item</span><span class="err">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
+    <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+    <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">start</span><span class="o">,</span>
+    <span class="o">.</span><span class="n">bx</span><span class="o">-</span><span class="n">stop</span><span class="err">{</span>
+      <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">squish</span><span class="o">-</span><span class="k">text</span><span class="p">;</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">single</span><span class="o">-</span><span class="n">transition</span><span class="p">(</span><span class="k">background-color</span><span class="o">,</span> <span class="m">.1s</span><span class="o">,</span> <span class="n">ease</span><span class="o">-</span><span class="n">in</span><span class="o">-</span><span class="n">out</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="nc">.bx-start</span><span class="p">{</span>
+      <span class="o">@</span><span class="n">include</span> <span class="n">arrow</span><span class="o">-</span><span class="k">right</span><span class="p">(</span><span class="m">7px</span><span class="o">,</span><span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">));</span>
+    <span class="p">}</span>
+    <span class="nc">.bx-stop</span><span class="p">{</span>
+      <span class="k">width</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+      <span class="k">height</span><span class="o">:</span> <span class="m">14px</span><span class="p">;</span>
+      <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="m">0</span> <span class="m">0</span> <span class="m">5px</span><span class="p">;</span>
+      <span class="k">background-color</span><span class="o">:</span> <span class="n">lighten</span><span class="p">(</span><span class="err">$</span><span class="k">color</span><span class="o">,</span><span class="m">20%</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="err">}</span>
+<span class="err">}</span></code></pre></div>
+
+<p>HTML-разметку на странице я не меняю, как вы могли заметить. Блок <code>.bx-controls-auto</code> генерируется скриптом bxSlider автоматически.</p>
+
+<p>Файл настроек <code>bxslider.js</code> подправляю, чтобы он выглядел таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$(</span><span class="nt">document</span><span class="o">)</span><span class="nc">.ready</span><span class="o">(</span><span class="nt">function</span><span class="o">()</span><span class="p">{</span>
+  <span class="err">$</span><span class="p">(</span><span class="s1">&#39;.slider&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">bxSlider</span><span class="p">(</span><span class="err">{</span>
+    <span class="k">auto</span><span class="o">:</span> <span class="n">true</span><span class="o">,</span>
+    <span class="n">autoControls</span><span class="o">:</span> <span class="n">true</span>
+  <span class="p">}</span><span class="o">);</span>
+<span class="err">}</span><span class="o">);</span></code></pre></div>
+
+<p>Смотрю результат в браузере:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/bxslider_autoplay.png" alt="Слайдер bxSlider с автоматической прокруткой" /></p>
+
+<p>Отлично! Появились кнопки запуска и остановки показа слайдшоу; сам слайдер стартует автоматически, при открытии страницы в окне браузера.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Плагин bxSlider мне однозначно понравился. Семнатичная простая разметка, использование произвольного имени класса (а не идентификатора), автоматическое генерирование HTML-элементов слайдера, большое количество настроек, хорошие эффекты, простота подключения.</p>
+
+<p>Все эти преимущества однозначно сделали плагин bxSlider номером один в моей копилке.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-05T00:00:00+04:00"><a href="http://zencoder.ru/css/masked-background-effect-with-css/">July 05, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~23 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/masked-background-effect-with-css/" rel="bookmark" title="Создаем эффект маскирования фона на CSS" itemprop="url">Создаем эффект маскирования фона на CSS</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Сегодня мы рассмотрим пошаговый процесс создания впечатляющей технологии, которую можно использовать для создания эффекта, очень похожего на параллакс, не используя при этом ни строчки Javascript; она может быть достигнута с помощью очень простого способа и на чистом CSS.</p>
+
+<p>Прежде чем продолжить чтение, посмотрите на <a href="http://goo.gl/AXcG4t" title="Демо Результат">демо-результат</a>, чтобы сразу оценить, что мы будет изучать в данной статье (чтобы увидеть эффект, вам необходимо воспользоваться настольным компьютером или ноутбуком).</p>
+
+<p>Данный прием может быть применен для создания страниц с описанием продукта или даже для своего рода презентаций типа Powerpoint/Keynote. В этом приеме кроется большой потенциал для создания иллюстрированных online-страниц.</p>
+
+<p>Ниже описан способ, как можно добиться такого результата.</p>
+
+<h2 id="css">Это все CSS</h2>
+
+<p>Основой данного приема является CSS-свойство <code>background-attachment: fixed</code>, которое доступно для использования веб-разработчиками, начиная с версии CSS2.1. Любое фоновое изображение, к которому применено данное свойство, начинает занимать фиксированное положение относительно окна браузера. Мы воспользуемся данным свойством для того, чтобы зафиксировать иллюстрации страницы в определенном месте, в то время как весь остальной контент будет перемещаться при прокрутке.</p>
+
+<p>Стоит обратить внимание на пару моментов относительно данного CSS-свойства - оно применяется для фоновых изображений и задает им фиксированное положение относительно окна браузера; на изображение с данным свойством не оказывают влияние CSS-свойство margin, как если бы это было с обычными фоновыми изображениями.</p>
+
+<p>Также необходимо помнить, что данное CSS-свойство прекрасно работает в десктопных версиях браузеров; однако в мобильной версии браузера Chrome оно работает некорректно, а в остальных мобильных браузерах возможно отображение страницы рывками. Поэтому, несмотря на то, что посетители с мобильных устройств будут прекрасно видеть все изображения на странице, сам эффект скроллинга лучше всего смогут оценить пользователи настольных систем.</p>
+
+<h2 id="section">Основные шаги</h2>
+
+<p>Основные шаги, которые нужно выполнить, чтобы получить тот результат, который был на демо-странице, следующие:</p>
+
+<ol>
+  <li>Создать элемент-контейнер и наполнить его содержимым</li>
+  <li>Задать для контейнера (в нашем случае это блок <code>div</code>) с одной стороны padding, равный 50%-м от ширины контейнера, таким образом сдвинув весь контент в противоположную сторону</li>
+  <li>Добавить на страницу фоновое изображение шириной, равной 50%-м от ширины контейнера и поместить его на противоположной стороне от контента</li>
+  <li>Задать для фонового изображения CSS-свойство <code>background-attachment: fixed;</code> и любоваться результатом!</li>
+</ol>
+
+<p>Давайте шаг за шагом детально разберемся с тем, как все это делается. Для статьи подготовлены исходные материалы, которые вы можете получить по <a href="http://goo.gl/J0XMVV" title="Исходные материалы статьи">данной ссылке</a>, так что в вашем распоряжении уже будут готовые изображения нужного размера.</p>
+
+<h2 id="section-1">1. Основная настройка</h2>
+
+<p>Для начала давайте создадим папку проекта и добавим в нее индексный файл <code>index.html</code>, а также папку <code>css</code> с вложенным в нее файлом стилей <code>style.css</code>. Скопируйте и поместите четыре изображения из скачанного архива в папку с именем <code>images</code>.</p>
+
+<p>Добавьте следующую HTML-разметку в файл <code>index.html</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content right illustration_01&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Scroll Down and Watch What Happens<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Alice was beginning to get very tired of sitting by her sister on the bank, and of having nothing to do: once or twice she had peeped into the book her sister was reading, but it had no pictures or conversations in it, `and what is the use of a book,&#39; thought Alice `without pictures or conversation?&#39;<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>So she was considering in her own mind (as well as she could, for the hot day made her feel very sleepy and stupid), whether the pleasure of making a daisy- chain would be worth the trouble of getting up and picking the daisies, when suddenly a White Rabbit with pink eyes ran close by her.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>There was nothing so very remarkable in that; nor did Alice think it so very much out of the way to hear the Rabbit say to itself, `Oh dear! Oh dear! I shall be late!&#39; (when she thought it over afterwards, it occurred to her that she ought to have wondered at this, but at the time it all seemed quite natural); but when the Rabbit actually took a watch out of its waistcoat- pocket, and looked at it, and then hurried on, Alice started to her feet, for it flashed across her mind that she had never before seen a rabbit with either a waistcoat-pocket, or a watch to take out of it, and burning with curiosity, she ran across the field after it, and fortunately was just in time to see it pop down a large rabbit-hole under the hedge.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>In another moment down went Alice after it, never once considering how in the world she was to get out again.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>The rabbit-hole went straight on like a tunnel for some way, and then dipped suddenly down, so suddenly that Alice had not a moment to think about stopping herself before she found herself falling down a very deep well.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Either the well was very deep, or she fell very slowly, for she had plenty of time as she went down to look about her and to wonder what was going to happen next. First, she tried to look down and make out what she was coming to, but it was too dark to see anything; then she looked at the sides of the well, and noticed that they were filled with cupboards and book-shelves; here and there she saw maps and pictures hung upon pegs. She took down a jar from one of the shelves as she passed; it was labelled `ORANGE MARMALADE&#39;, but to her great disappointment it was empty: she did not like to drop the jar for fear of killing somebody, so managed to put it into one of the cupboards as she fell past it.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>`Well!&#39; thought Alice to herself, `after such a fall as this, I shall think nothing of tumbling down stairs! How brave they&#39;ll all think me at home! Why, I wouldn&#39;t say anything about it, even if I fell off the top of the house!&#39; (Which was very likely true.)<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Данным действием мы создали основной HTML-каркас страницы, подключили к нему файл CSS-стилей и шрифт Roboto с сервиса Google Fonts. Внутри HTML-каркаса мы создали первый блок-контейнер <code>div</code> с содержимым, к которому будем применять CSS-свойства.</p>
+
+<p>Блок-контейнер div имеет три класса:</p>
+
+<ol>
+  <li><code>.content</code> - служит для задания CSS-свойств, общих для всех блоков-контейнеров;</li>
+  <li><code>.right</code> - задает контейнеру правило для смещения его содержимого вправо (немного позже мы будет создавать контейнеры со смещенным влево контентом);</li>
+  <li><code>.illustration_01</code> - создает правило для использования конкретного фонового изображения и для задания фонового цвета блока-контейнера.</li>
+</ol>
+
+<h2 id="section-2">Стилизация</h2>
+
+<p>Теперь у нас все готово для создания CSS-стилей нашей страницы. Начнем с добавления в файл style.css основных правил сброса стилей и форматирования шрифта:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">*</span> <span class="p">{</span>
+    <span class="n">box</span><span class="o">-</span><span class="n">sizing</span><span class="o">:</span> <span class="k">border</span><span class="o">-</span><span class="n">box</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="nt">html</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;Alike&#39;</span><span class="p">;</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#262626</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#d9d9d9</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">body</span> <span class="p">{</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">img</span> <span class="p">{</span>
+  <span class="k">max-width</span><span class="o">:</span> <span class="m">100%</span><span class="p">;</span>
+  <span class="k">height</span><span class="o">:</span> <span class="k">auto</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h1</span><span class="o">,</span><span class="nt">h2</span><span class="o">,</span><span class="nt">h3</span><span class="o">,</span><span class="nt">h4</span><span class="o">,</span><span class="nt">h5</span><span class="o">,</span><span class="nt">h6</span> <span class="p">{</span>
+  <span class="k">font-family</span><span class="o">:</span> <span class="s1">&#39;Roboto&#39;</span><span class="p">;</span>
+  <span class="k">line-height</span><span class="o">:</span> <span class="m">1.313em</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h1</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">3em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0.563em</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h2</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">2.25em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0.625em</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h3</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1.5em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">1.313em</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h4</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1.313em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">1.313em</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h5</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1.125em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">1.313em</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nt">h6</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1em</span><span class="p">;</span>
+  <span class="k">margin</span><span class="o">:</span> <span class="m">0.75em</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Затем переходим к классу <code>.content</code>. Добавим внизу таблицы стилей следующее содержимое:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">875</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">color</span><span class="o">:</span> <span class="m">#262626</span><span class="p">;</span>
+  <span class="k">background</span><span class="o">-</span><span class="k">size</span><span class="o">:</span> <span class="m">49%</span> <span class="k">auto</span><span class="p">;</span>
+  <span class="k">background-attachment</span><span class="o">:</span> <span class="k">fixed</span><span class="p">;</span>
+  <span class="k">background-repeat</span><span class="o">:</span> <span class="k">no-repeat</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В этом классе заключена почти вся магия нашего примера. Для текста задаем размер шрифта и цвет. Для фона блока-контейнера задаем свойство <code>background-size: 49% auto;</code>.</p>
+
+<p>Это означает, что фоновое изображение блока будет всегда растягиваться или сжиматься в своем размере, стремясь заполнить 49% от ширины страницы; высота изображения при этом будет изменяться пропорционально. В нашем примере мы используем значение 49% вместо 50%, потому что браузер Firefox иначе будет отображать артефакт в виде странной линии по середине окна браузера.</p>
+
+<p>Затем мы задаем правило <code>background-attachment: fixed;</code>, которое, как вы уже знаете из предыдущего описания, заставляет фоновое изображение занимать фиксированное положение относительно окна браузера.</p>
+
+<p>И наконец, мы задаем правило <code>background-repeat: no-repeat;</code> чтобы наше изображение повторялось только один раз на странице.</p>
+
+<p>Теперь добавим в стили еще один класс <code>.right</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.right</span> <span class="p">{</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">6.472em</span> <span class="m">3.236em</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">50%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Этот последний класс помещает текст контейнера в одной половине экрана, а фоновое изображение - в другой половине.</p>
+
+<p>Правило <code>background-position: 0 50%;</code> задает для фонового изображения нулевую позицию относительно левого края окна браузера и выравнивает его точно по центру по вертикали окна.</p>
+
+<p>Наконец, для класса <code>.illustration_01</code> добавляем следующее содержимое:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.illustration_01</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#00c17b</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;../images/minipadwhite.png&quot;)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Таким образом задается конкретное изображение и фоновый цвет контейнера.</p>
+
+<p>Проверим нашу страницу - мы должны увидеть следующий результат:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/image_01.png" alt="Страница с одним блоком-контейнером" /></p>
+
+<p>Когда вы будете прокручивать страницу вниз, то увидите, что содержимое этой страницы будет перемещаться, в то время как изображение будет оставаться на своем месте.</p>
+
+<h2 id="section-3">Добавляем второй контейнер</h2>
+
+<p>Давайте добавим еще один контейнер, в котором содержимое будет смещено влево. Добавьте HTML-контейнер ниже последнего блока <code>div</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content left illustration_02&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Fixed Background Scrolling Effect<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Down, down, down. Would the fall never come to an end! `I wonder how many miles I&#39;ve fallen by this time?&#39; she said aloud. `I must be getting somewhere near the centre of the earth. Let me see: that would be four thousand miles down , I think--&#39; (for, you see, Alice had learnt several things of this sort in her lessons in the schoolroom, and though this was not a very good opportunity for showing off her knowledge, as there was no one to listen to her, still it was good practice to say it over) `--yes, that&#39;s about the right distance--but then I wonder what Latitude or Longitude I&#39;ve got to?&#39; (Alice had no idea what Latitude was, or Longitude either, but thought they were nice grand words to say .)<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Presently she began again. `I wonder if I shall fall right through the earth! How funny it&#39;ll seem to come out among the people that walk with their heads downward! The Antipathies, I think--&#39; (she was rather glad there was no one listening, this time, as it didn&#39;t sound at all the right word) `--but I shall have to ask them what the name of the country is, you know. Please, Ma&#39; am, is this New Zealand or Australia?&#39; (and she tried to curtsey as she spoke-- fancy curtseying as you&#39;re falling through the air! Do you think you could manage it?) `And what an ignorant little girl she&#39;ll think me for asking! No, it&#39;ll never do to ask: perhaps I shall see it written up somewhere.&#39;<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Down, down, down. There was nothing else to do, so Alice soon began talking again. `Dinah&#39;ll miss me very much to-night, I should think!&#39; (Dinah was the cat .) `I hope they&#39;ll remember her saucer of milk at tea-time. Dinah my dear! I wish you were down here with me! There are no mice in the air, I&#39;m afraid, but you might catch a bat, and that&#39;s very like a mouse, you know. But do cats eat bats, I wonder?&#39; And here Alice began to get rather sleepy, and went on saying to herself, in a dreamy sort of way, `Do cats eat bats? Do cats eat bats?&#39; and sometimes, `Do bats eat cats?&#39; for, you see, as she couldn&#39;t answer either question, it didn&#39;t much matter which way she put it. She felt that she was dozing off, and had just begun to dream that she was walking hand in hand with Dinah, and saying to her very earnestly, `Now, Dinah, tell me the truth: did you ever eat a bat?&#39; when suddenly, thump! thump! down she came upon a heap of sticks and dry leaves, and the fall was over.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Alice was not a bit hurt, and she jumped up on to her feet in a moment: she looked up, but it was all dark overhead; before her was another long passage, and the White Rabbit was still in sight, hurrying down it. There was not a moment to be lost: away went Alice like the wind, and was just in time to hear it say, as it turned a corner, `Oh my ears and whiskers, how late it&#39;s getting!&#39; She was close behind it when she turned the corner, but the Rabbit was no longer to be seen: she found herself in a long, low hall, which was lit up by a row of lamps hanging from the roof.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>There were doors all round the hall, but they were all locked; and when Alice had been all the way down one side and up the other, trying every door, she walked sadly down the middle, wondering how she was ever to get out again.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Обратите внимание, что на этот раз мы используем класс <code>.left</code> вместо класса <code>.right</code>; также изменяем порядковый номер класса <code>.illustration_01</code> на <code>.illustration_02</code>.</p>
+
+<p>Добавляем два новых класса в таблицу стилей:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.left</span> <span class="p">{</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">50%</span> <span class="m">3.236em</span> <span class="m">6.472em</span><span class="p">;</span>
+  <span class="k">background-position</span><span class="o">:</span> <span class="m">100%</span> <span class="m">50%</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.illustration_02</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#e8697b</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;../images/minipadblack.png&quot;)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>На этот раз мы добавляем padding, равный 50%, с правой стороны блока-контейнера так, чтобы контент внутри блока смещался влево; фоновое изображение позиционируем по горизонтали на 100% - другими словами, вправо до упора. Также добавляем другой цвет для фоновой заливки блока и меняем файл изображения для фоновой картинки.</p>
+
+<p>Снова проверим результат нашей работы и прокрутим страницу вниз в окне браузера. Когда мы достигнем нижнего края первого блока-контейнера то увидим, как начнет появляться верхний край второго блока, постепенно скрывая при этом первое фоновое изображение и открывая второе:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/image_02.png" alt="Страница с двумя блоками-контейнерами" /></p>
+
+<h2 id="section-4">Добавляем блок-разделитель</h2>
+
+<p>Наш пример будет гораздо эффектнее смотреться, если мы добавим блок-разделитель между двумя блоками-контейнерами. Давайте так и поступим.</p>
+
+<p>Между двумя блоками div вставляем следующий HTML-код:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;separator&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Another Section Starts Here<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;/section&gt;</span></code></pre></div>
+
+<p>И для него в таблице стилей создаем отдельный класс с несколькими правилами:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.separator</span> <span class="p">{</span>
+  <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">875</span><span class="n">rem</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">0</span><span class="p">;</span>
+  <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь, если обновить нашу страницу-пример, то мы заметим, как между двумя контейнерами появился замечательный блок-разделитель:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/image_03.png" alt="Блок-разделитель" /></p>
+
+<h2 id="section-5">Третий и четвертый контейнеры</h2>
+
+<p>Пример почти готов и мы можем добавить в него оставшиеся блоки-разделители и блоки-контейнеры. Для этого вставим нижеследующий HTML-код в индексную страницу index.html:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;separator&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Another Section Starts Here<span class="nt">&lt;/h3&gt;</span>
+<span class="nt">&lt;/section&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content right illustration_03&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>Great For Product Presentations<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Suddenly she came upon a little three-legged table, all made of solid glass; there was nothing on it except a tiny golden key, and Alice&#39;s first thought was that it might belong to one of the doors of the hall; but, alas! either the locks were too large, or the key was too small, but at any rate it would not open any of them. However, on the second time round, she came upon a low curtain she had not noticed before, and behind it was a little door about fifteen inches high: she tried the little golden key in the lock, and to her great delight it fitted!<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Alice opened the door and found that it led into a small passage, not much larger than a rat-hole: she knelt down and looked along the passage into the loveliest garden you ever saw. How she longed to get out of that dark hall, and wander about among those beds of bright flowers and those cool fountains, but she could not even get her head though the doorway; `and even if my head would go through,&#39; thought poor Alice, `it would be of very little use without my shoulders. Oh, how I wish I could shut up like a telescope! I think I could, if I only know how to begin.&#39; For, you see, so many out-of-the-way things had happened lately, that Alice had begun to think that very few things indeed were really impossible.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>There seemed to be no use in waiting by the little door, so she went back to the table, half hoping she might find another key on it, or at any rate a book of rules for shutting people up like telescopes: this time she found a little bottle on it, (`which certainly was not here before,&#39; said Alice,) and round the neck of the bottle was a paper label, with the words `DRINK ME&#39; beautifully printed on it in large letters.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>It was all very well to say `Drink me,&#39; but the wise little Alice was not going to do that in a hurry. `No, I&#39;ll look first,&#39; she said, `and see whether it&#39;s marked &quot;poison&quot; or not&#39;; for she had read several nice little histories about children who had got burnt, and eaten up by wild beasts and other unpleasant things, all because they would not remember the simple rules their friends had taught them: such as, that a red-hot poker will burn you if you hold it too long; and that if you cut your finger very deeply with a knife, it usually bleeds; and she had never forgotten that, if you drink much from a bottle marked `poison,&#39; it is almost certain to disagree with you, sooner or later.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>However, this bottle was NOT marked `poison,&#39; so Alice ventured to taste it, and finding it very nice, (it had, in fact, a sort of mixed flavour of cherry- tart, custard, pine-apple, roast turkey, toffee, and hot buttered toast,) she very soon finished it off.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;separator&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h3&gt;</span>Another Section Starts Here<span class="nt">&lt;/h3&gt;</span>
+  <span class="nt">&lt;/section&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content left illustration_04&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>Simple Technique Using Pure CSS<span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;p&gt;</span>`What a curious feeling!&#39; said Alice; `I must be shutting up like a telescope .&#39;<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>And so it was indeed: she was now only ten inches high, and her face brightened up at the thought that she was now the right size for going though the little door into that lovely garden. First, however, she waited for a few minutes to see if she was going to shrink any further: she felt a little nervous about this; `for it might end, you know,&#39; said Alice to herself, `in my going out altogether, like a candle. I wonder what I should be like then?&#39; And she tried to fancy what the flame of a candle is like after the candle is blown out, for she could not remember ever having seen such a thing.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>After a while, finding that nothing more happened, she decided on going into the garden at once; but, alas for poor Alice! when she got to the door, she found he had forgotten the little golden key, and when she went back to the table for it, she found she could not possibly reach it: she could see it quite plainly through the glass, and she tried her best to climb up one of the legs of the table, but it was too slippery; and when she had tired herself out with trying, the poor little thing sat down and cried.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>`Come, there&#39;s no use in crying like that!&#39; said Alice to herself, rather sharply; `I advise you to leave off this minute!&#39; She generally gave herself very good advice, (though she very seldom followed it), and sometimes she scolded herself so severely as to bring tears into her eyes; and once she remembered trying to box her own ears for having cheated herself in a game of croquet she was playing against herself, for this curious child was very fond of pretending to be two people. `But it&#39;s no use now,&#39; thought poor Alice, `to pretend to be two people! Why, there&#39;s hardly enough of me left to make ONE respectable person!&#39;<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>Soon her eye fell on a little glass box that was lying under the table: she opened it, and found in it a very small cake, on which the words `EAT ME&#39; were beautifully marked in currants. `Well, I&#39;ll eat it,&#39; said Alice, `and if it makes me grow larger, I can reach the key; and if it makes me grow smaller, I can creep under the door; so either way I&#39;ll get into the garden, and I don&#39;t care which happens!&#39;<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>She ate a little bit, and said anxiously to herself, `Which way? Which way?&#39;, holding her hand on the top of her head to feel which way it was growing, and she was quite surprised to find that she remained the same size: to be sure, this generally happens when one eats cake, but Alice had got so much into the way of expecting nothing but out-of-the-way things to happen, that it seemed quite dull and stupid for life to go on in the common way.<span class="nt">&lt;/p&gt;</span>
+  <span class="nt">&lt;p&gt;</span>So she set to work, and very soon finished off the cake.<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;section</span> <span class="na">class=</span><span class="s">&quot;separator&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>THE END<span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/section&gt;</span></code></pre></div>
+
+<p>И добавим в таблицу стилей классы для двух оставшихся фоновых изображений:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.illustration_03</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#14b29a</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;../images/miniwhite.png&quot;)</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.illustration_04</span> <span class="p">{</span>
+  <span class="k">background-color</span><span class="o">:</span> <span class="m">#80b9f1</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&quot;../images/miniblack.png&quot;)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь потребуется вся ширина монитора для того, чтобы отобразились третий и четвертый блоки-контейнеры:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/image_04.png" alt="Третий и четвертый блоки-контейнеры" /></p>
+
+<p>Прокручиваем страницу до конца и видим последний блок-разделитель:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/image_05.png" alt="Последний блок-разделитель" /></p>
+
+<h2 id="section-6">Делаем страницу адаптивной</h2>
+
+<p>Последний штрих, который нам необходимо выполнить - это учесть вариант отображения нашей страницы на экранах устройств с разными размерами. Когда область просмотра страницы становится слишком маленькой для того, чтобы вмешать фоновые изображения, нам необходимо сделать так, чтобы картинки страницы из фоновых становились встраиваемыми (через тег <code>img</code>).</p>
+
+<p>Для этого в начале каждого из блоков-контейнеров вставим еще один блок <code>figure</code> с классом <code>.smallscreen</code>, внутри которого поместим тег <code>img</code> для вставки тех же самых изображений, которые мы использовали для фона нашей страницы.</p>
+
+<p>Для первого блока-контейнера добавим в его начало:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;smallscreen&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;image</span> <span class="na">src=</span><span class="s">&quot;images/minipadwhite.png&quot;</span><span class="nt">&gt;&lt;/image&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Второй блок-контейнер будет содержать:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;figure</span> <span class="na">class=</span><span class="s">&quot;smallscreen&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;image</span> <span class="na">src=</span><span class="s">&quot;images/minipadblack.png&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/figure&gt;</span></code></pre></div>
+
+<p>Начало третьего блока-контейнера:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;figure</span> <span class="na">class=</span><span class="s">&quot;smallscreen&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;image</span> <span class="na">src=</span><span class="s">&quot;images/miniwhite.png&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/figure&gt;</span></code></pre></div>
+
+<p>Четвертый контейнер:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;figure</span> <span class="na">class=</span><span class="s">&quot;smallscreen&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;image</span> <span class="na">src=</span><span class="s">&quot;images/miniblack.png&quot;</span><span class="nt">&gt;</span>
+<span class="nt">&lt;/figure&gt;</span></code></pre></div>
+
+<p>Класс <code>.smallscreen</code> мы будем использовать для того, чтобы по умолчанию скрывать изображения <code>&lt;image src="images/miniblack.png"&gt;</code>, но показывать их, когда размер экрана становиться маленьким.</p>
+
+<p>Для этого добавим в таблицу стилей следующее правило:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html">.smallscreen {
+  display: none;
+}</code></pre></div>
+
+<p>И затем добавим медиа-запросы, которые будут отвечать за то, отображать ли на странице изображение как фоновую картинку или же как встроенную (<em>обычную</em>) картинку. Они также будут отвечать за то, чтобы пропорционально уменьшать размер текста страницы и расстояния в разметке таким образом, чтобы ширина страницы точно отвечала различной ширине области просмотра экрана устройств.</p>
+
+<p>Для этого добавим медиа-запросы в таблицу стилей:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">106</span><span class="nc">.25rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.wrapper</span><span class="o">,</span>
+  <span class="nc">.separator</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">6875</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">93</span><span class="nc">.75rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.content</span><span class="o">,</span>
+  <span class="nc">.separator</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">5</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.right</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">4.854em</span> <span class="m">1.618em</span> <span class="m">50%</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.left</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">50%</span> <span class="m">1.618em</span> <span class="m">4.854em</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">81</span><span class="nc">.25rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.content</span><span class="o">,</span>
+  <span class="nc">.separator</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">3125</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.right</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">3.236em</span> <span class="m">1.618em</span> <span class="m">45%</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">-</span><span class="k">size</span><span class="o">:</span> <span class="m">44%</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">55%</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.left</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">45%</span> <span class="m">1.618em</span> <span class="m">3.236em</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">-</span><span class="k">size</span><span class="o">:</span> <span class="m">44%</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">100%</span> <span class="m">55%</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">68</span><span class="nc">.75rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.content</span><span class="o">,</span>
+  <span class="nc">.separator</span> <span class="p">{</span>
+    <span class="k">font-size</span><span class="o">:</span> <span class="m">1</span><span class="o">.</span><span class="m">125</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.right</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">3.236em</span> <span class="m">1.618em</span> <span class="m">40%</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">-</span><span class="k">size</span><span class="o">:</span> <span class="m">39%</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">0</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.left</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">40%</span> <span class="m">1.618em</span> <span class="m">3.236em</span><span class="p">;</span>
+    <span class="k">background</span><span class="o">-</span><span class="k">size</span><span class="o">:</span> <span class="m">39%</span> <span class="k">auto</span><span class="p">;</span>
+    <span class="k">background-position</span><span class="o">:</span> <span class="m">100%</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">50rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.smallscreen</span> <span class="p">{</span>
+    <span class="k">display</span><span class="o">:</span> <span class="k">block</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.right</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">3.236em</span><span class="p">;</span>
+    <span class="k">background-image</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.left</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">3.236em</span><span class="p">;</span>
+    <span class="k">background-image</span><span class="o">:</span> <span class="k">none</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">31</span><span class="nc">.25rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nc">.right</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">1.618em</span><span class="p">;</span>
+  <span class="p">}</span>
+  <span class="nc">.left</span> <span class="p">{</span>
+    <span class="k">padding</span><span class="o">:</span> <span class="m">1.618em</span> <span class="m">1.618em</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+<span class="k">@media</span> <span class="o">(</span><span class="nt">max-width</span><span class="o">:</span> <span class="nt">12rem</span><span class="o">)</span> <span class="p">{</span>
+  <span class="nt">html</span> <span class="p">{</span>
+    <span class="k">min-width</span><span class="o">:</span> <span class="m">12</span><span class="n">rem</span><span class="p">;</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В приведенном выше коде первые четыре медиа-запроса просто уменьшают размер теста страницы и padding внутри блоков-контейнеров таким образом, чтобы ширина страницы соответсвовала ширине экрана.</p>
+
+<p>В пятом медиа-запросе с правилом <code>max-width: 50rem</code> мы включаем код, который делает класс <code>.smallscreen</code> видимым, удаляет 50%-ый padding у содержимого блока-контейнера и скрывает фоновое изображение на странице. Когда медиа-запрос “обнаруживает”, что большое фоновое изоражение больше не вписывается в размер окна, он заменяет фоновое изображение на обычное, которое помещается в начале контента блока-контейнера.</p>
+
+<p>Теперь после обновления уменьшаем страницу и в результате получаем плавно изменяемую ширину, которая подстаивается под различные размеры областей просмотра, до тех пор, пока размер не станет самым маленьким:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/image_06.png" alt="Самый маленький размер экрана" /></p>
+
+<h2 id="section-7">Заключение</h2>
+
+<p>Даже после многих лет работы с CSS я не устаю удивляться все увеличивающемуся количеству потрясающих вещей, которые можно сделать с помощью CSS. И чем проще прием, тем более впечатляющий получается результат.</p>
+
+<p>Попробуйте сами создать описанный выше прием - это быстро и легко и должно вам понравиться!</p>
+
+<p>Оригинал статьи размещен здесь - <a href="http://webdesign.tutsplus.com/tutorials/a-visual-demonstration-of-background-attachment-fixed--cms-21112" title="Create a Masked Background Effect With CSS">Create a Masked Background Effect With CSS</a>”</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-03T00:00:00+04:00"><a href="http://zencoder.ru/javascript/jquery-mask-plugin/">July 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~2 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/jquery-mask-plugin/" rel="bookmark" title="Плагин jQuery Mask Plugin" itemprop="url">Плагин jQuery Mask Plugin</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Краткий обзор плагина jQuery Mask Plugin, упоминание о котором я нашел на Google+.</p>
+</blockquote>
+
+<p>Этот плагин понравился мне простотой установки и настройки. Работа плагина jQuery Mask Plugin заключается в том, чтобы форматировать вводимые пользователем в полях данных и приводить их к виду, заданному соответствующей маской в коде.</p>
+
+<p>Помимо этого, плагин jQuery Mask Plugin производит фильтрацию данных и не позволяет пользователю вводить недопустимое количество данных и данных другого формата.</p>
+
+<p>В общем, весьма полезный и удобный плагин, который можно положить в копилку веб-разработчика “на всякий случай”. Наверняка такой может пригодиться при случае. Поэтому приступаю к установке и настройке плагина jQuery Mask Plugin.</p>
+
+<h2 id="jquery-mask-plugin">Подключение jQuery Mask Plugin</h2>
+
+<p>Плагин jQuery Mask Plugin “живет” по этому адресу - <a href="http://igorescobar.github.io/jQuery-Mask-Plugin/" title="jQuery Mask Plugin">jQuery Mask Plugin</a>, где дано подробное описание работы этого скрипта. На этой странице дано краткое описание установки и настройки плагина “от автора” Igor Escobar - <a href="http://www.igorescobar.com/blog/2012/05/06/masks-with-jquery-mask-plugin/" title="Masks With Jquery Mask Plugin">Masks With Jquery Mask Plugin</a>.</p>
+
+<p>Подключение скрипта в рабочем проекте производится стандартно для всех плагинов, созданных под библиотеку jQuery. Сначала производится подключение самой библиотеки jQuery, а затем скрипта jQuery Mask Plugin:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery-2.1.1.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/jquery.mask.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>Плагин совместим со всеми версиями библиотеки jQuery. Более того, в архиве с исходниками находятся тестовые HTML-странички, с помощью которых можно проверить все возможности работы скрипта под конкретную библиотеку jQuery, конкретный браузер и конкретную ОС:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/jquerymask_test.jpg" alt="Тестовые страницы для плагина jQuery Mask Plugin" /></p>
+
+<h2 id="jquery-mask-plugin-1">Создание разметки под jQuery Mask Plugin</h2>
+
+<p>Для примера работы с плагином jQuery Mask Plugin создаю тестовую разметку с несколькими полями ввода:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h1&gt;</span>
+    jQuery Mask Plugin
+  <span class="nt">&lt;/h1&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Как видно из примера выше, каждое поле предназначено для ввода определенной информации пользователем, будь то дата, время, проценты, номер телефона или денежная сумма. В принципе, больше ничего сказать по поводу HTML нечего. Самое интересное будет в настройке скрипта.</p>
+
+<p>Расширенный пример с возможными вариантами масок можно посмотреть на странице примера - <a href="http://igorescobar.github.io/jQuery-Mask-Plugin/" title="Basic Usage Examples">Basic Usage Examples</a>. На ней также показаны примеры расширенной настройки плагина jQuery Mask Plugin.</p>
+
+<h2 id="jquery-mask-plugin-2">Инициализация плагина jQuery Mask Plugin</h2>
+
+<p>Создаю еще один js-файл, в котором будет производиться инициализация скрипта и заданы маски для каждого из полей ввода. Файл будет иметь произвольное имя <code>masks.js</code> и в нем будет такое содержимое:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="nb">document</span><span class="p">).</span><span class="nx">ready</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.date&#39;</span><span class="p">).</span><span class="nx">mask</span><span class="p">(</span><span class="s1">&#39;00/00/0000&#39;</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.time&#39;</span><span class="p">).</span><span class="nx">mask</span><span class="p">(</span><span class="s1">&#39;00:00:00&#39;</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.percent&#39;</span><span class="p">).</span><span class="nx">mask</span><span class="p">(</span><span class="s1">&#39;##0,00%&#39;</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.money&#39;</span><span class="p">).</span><span class="nx">mask</span><span class="p">(</span><span class="s1">&#39;000.000.000.000.000,00&#39;</span><span class="p">);</span>
+<span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.phone&#39;</span><span class="p">).</span><span class="nx">mask</span><span class="p">(</span><span class="s1">&#39;0(000)-000-00-00&#39;</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Видно, что из DOM-модели производится выборка элементов с указанными классами, к которым применяется функция <code>mask</code> с указанием в каждом конкретном случае маски. Ничего сложного в представленных масках нет, достаточно внимательно их изучить.</p>
+
+<p>Открываю в браузере созданный мною HTML-файл и вижу форму с полями ввода:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/jquerymask.jpg" alt="Форма ввода с плагином jQuery Mask Plugin" /></p>
+
+<h2 id="jquery-mask-plugin-3">Тестирование плагина jQuery Mask Plugin</h2>
+
+<p>Давайте попробуем ввести в созданные на примере поля данные. При вводе в каждом из полей хорошо видно, как данные приводятся именно к тому виду, который задан маской в js-коде. Более того, плагин не позволит ввести данные другого формата, то есть будет производиться фильтрация данных:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/jquerymask_result.jpg" alt="Результат работы плагина jQuery Mask Plugin" /></p>
+
+<p>В поле ввода номера телефона маска создана мною произвольно, буквально на лету. Этот факт говорит о том, что создание масок в плагине jQuery Mask Plugin - дело очень простое и легкое.</p>
+
+<p>На этом обзор плагина jQuery Mask Plugin можно завершить.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-07-03T00:00:00+04:00"><a href="http://zencoder.ru/css/css-grid-zurb-foundation-5/">July 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~10 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/css-grid-zurb-foundation-5/" rel="bookmark" title="Руководство по CSS Grid в Zurb Foundation 5" itemprop="url">Руководство по CSS Grid в Zurb Foundation 5</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Большинство современных веб-сайтов используют CSS-сетку для визуальной организации контента в строки и столбцы.</p>
+</blockquote>
+
+<p>И почти любой из современных front-end фреймворков имеют в своем составе полноценную систему CSS-сеток. Если читатель немного знаком с фреймворками, то система CSS-сеток в <a href="http://foundation.zurb.com/" title="Zurb Foundation 5">Zurb Foundation 5</a> должна почти полностью отвечать его потребностям. В пользу изучения CSS-сеток в фреймворке можно сказать, что она значительно снижает объем кода, который бы иначе потребовалось написать вручную.</p>
+
+<p>Первым шагом при создании разметки под Foundation нужно скачать файл архива данного фреймворка и включить его в свой собственный проект. Если вы новичек в этом деле, то я рекомендую вам <a href="http://foundation.zurb.com/docs/css.html" title="Getting Started With Foundation CSS">Getting Started With Foundation CSS</a>; однако, помимо этого вы можете пойти по пути <a href="http://foundation.zurb.com/docs/sass.html" title="Getting Started With Sass">Getting Started With Sass</a> или же <a href="http://foundation.zurb.com/docs/applications.html" title="Applications">Applications</a>.</p>
+
+<h2 id="css--foundation">Основы CSS-сетки Foundation</h2>
+
+<p>Фреймворк Foundation создает на HTML-странице строки и столбцы с помощью соответствующих CSS-классов, которые применяются к HTML-элементам. Идея сама по себе проста, однако стоит обратить внимание на тот факт, Foundation прежде всего является адаптивным фреймворком, который ориентирован на мобильные устройства в первую очередь. Это означает, что Foundation был создан для работы на мобильных устройствах, планшетах и на устройствах большего размера, таких как ноутбуки и десктопы - <em>именно в таком порядке</em>.</p>
+
+<p>При создании веб-сайтов под фреймворком Foundation наиболее правильным будет подход, ориентированный на мобильные устройства, в первую очередь. И только потом нужно плавно дорабатывать дизайн сайта так, чтобы он также хорошо смотрелся на на десктопных размерах устройств. Это может показаться нелогичным, но это наиболее правильный подход при работе с Foundation. Многоколоночная разметка плохо работает на мобильных браузерах, потому что мобильные устройства, как правило, имеют экран, у которого высота больше, чем ширина. Впихивание большой разметки в маленький экран - задача гораздо более трудная, нежели создание простой разметки под мобильный экран; а затем постепенное усложенение разметки под большие мониторы.</p>
+
+<h2 id="css-">Шаблон CSS-сетки</h2>
+
+<p>Прежде чем описывать CSS-классы для создания сетки, я бы хотел показать вам <a href="images/foundation_basic_template.png" title="HTML-шаблон Foundation">HTML-шаблон на сайте Zurb</a>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/foundation_basic_template.png" alt="HTML-шаблон Foundation" /></p>
+
+<p>CSS-сетка в фреймворке Foundation состоит из 12 колонок. По горизонтали страница разбивается на строки (row). Таким образом, колонки помещаются внутрь каждой из строк. Каждая группа колонок внутри строки row в сумме составляет 12, однако существуют дополнительные возможности для того, чтобы обойти это правило.</p>
+
+<p>В приведенном выше HTML-шаблоне секция заголовка <code>header</code> является строкой. Внутри этой строки помещен блок div для логотипа и блок div для навигации. Блок-логотип имеет класс <code>large-3</code>, что означает, что данный блок должен в сумме занимать три колонки по ширине. Блок навигации имеет класс <code>large-9</code>, что заставляет этот блок в сумме занимать ширину девяти колонок. Оба класса <code>large-3</code> и <code>large-9</code> в сумме составляют 12 колонок (3 + 9 = 12) и полностью занимают всю ширину блока <code>header</code>.</p>
+
+<p>Следующее, большое изображение по центру страницы также является строкой row, внутри которой расположена одна единственная колонка. Эта колонка имеет класс <code>large-12</code>, чтобы занимать ширину всех 12 колонок CSS-сетки в целом. Остальная часть этой страницы-примера построена по такому же принципу, используя строки <code>row</code> и колонки <code>columns</code>. на картинке ниже мною были добавлены оранжевые границы к блокам-колонкам для того, чтобы визуально облегчить понимание того, как была построена эта страница:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/07/foundation-example-outline.png" alt="Страница примера Foundation с очерченными границами блоков" /></p>
+
+<p>Если взглянуть на исходный код данной страницы-примера, то можно увидеть достаточно много кода, большая часть из которого не имеет отношения к созданию CSS-сетки на этой странице. Мною специально было произведено упрощение кода данного шаблона, чтобы оставить только те классы и элементы, которые создают CSS-сетку этой страницы. Изучите представленный мною ниже код с тем, чтобы затем перейти к более детальному описанию каждого из CSS-классов:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- Header and Nav --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-3 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- logo --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-9 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- navigation --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- First Band (Image) --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-12 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- large center image --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- Second Band (Image Left with Text) --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-4 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- left image --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-8 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- text content --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- Third Band (Image Right with Text) --&gt;</span>
+<span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-8 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- text content --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-4 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- right image --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+
+<span class="c">&lt;!-- Footer --&gt;</span>
+<span class="nt">&lt;footer</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-12 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-6 columns&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- copyright --&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-6 columns&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- footer links --&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/footer&gt;</span></code></pre></div>
+
+<h3 id="css--foundation-1">Классы CSS-сетки Foundation</h3>
+
+<p>Существует пять основных классов CSS-сетки, которые следует запомнить при работе в фреймворке Foundation 5:</p>
+
+<ul>
+  <li><code>row</code> - класс <code>.row</code> служит контейнером для вертикальных блоков-колонок; ни для каких других целей он не предназначен. При добавлении контента в HTML-страницу каждая новая строка занимает всю ее ширину. Например, такие блоки, как “шапка” сайта и его “подвал” обязаны иметь класс <code>row</code> с вложенными в него колонками.</li>
+  <li><code>columns</code> - внутри каждой строки любому HTML-элементу можно добавить класс <code>columns</code> для того, чтобы он смог занимать определенную часть от общей ширины в 12 колонок. Для удобства, можно использовать как класс <code>columns</code>, так и класс <code>column</code> - результат будет одинаковым. Каждый элемент, которому присвоен класс <code>columns</code> или <code>column</code> обязан иметь еще один класс, который определяет ширину этого элемента.</li>
+  <li><code>small-#</code> - фреймворк Foundation имеет в своем составе несколько CSS-классов, которые устанавливают адаптивную ширину колонки; каждый из таких классов имеет число, обозначающее, сколько именно колонок следует занимать для данного класса. Например, элемент с классом <code>small-4</code> будет занимать ширину четырех колонок. Если не указан никакой другой адаптивный размер, такой как <code>medium-#</code> или <code>large-#</code>, то указанные в этом классе CSS-правила унаследуются и для больших размеров экранов.</li>
+  <li><code>medium-#</code> - этот класс впервые был введен в Foundation 5 и он предназначен для экранов планшетных компьютеров. Если в коде HTML-элемент имеет как класс <code>small-#</code>, так и класс <code>medium-#</code>, то маленькие размеры колонок будут использоваться для показа на мобильных устройствах; средние размеры колонок будут использоваться на экранах планшетных компьютеров и десктопных также. Например, у вас в коде HTML-элемент может иметь одновременно класс <code>small-4</code> и класс <code>medium-8</code>, если необходимо, чтобы этот элемент занимал ширину четырех колонок на экране мобильного телефона, но увеличивал свой размер до восьми колонок на экране планшетного компьютера.</li>
+  <li><code>large-#</code> - как вы уже могли догадаться, класс <code>large-#</code> предназначен для создания колонок под экраны ноутбуков или десктопов. Однако, если для HTML-элемента будет задан только один класс для больших мониторов, без указания классов для средних и маленьких размеров экранов, то в результате разметка будет изменять свой вид и превращаться в одноколоночную при изменении размеров экрана. Это очень полезно в том случае, если разметка является многоколоночной для десктопного монитора, а для планшетного или мобильного - одноколоночной. В рассмотренном выше шаблоне-примере вы могли заметить, что все HTML-элементы имеют только один класс <code>large-#</code>; этот шаблон превращается в одноколоночный при меньший размерах экрана, потому что для элементов не заданы классы <code>small-#</code> и <code>medium-#</code>.</li>
+</ul>
+
+<p>Рассказанное выше звучит довольно запутанно, но на самом деле все просто. Если необходимо создать двухколоночную разметку сайта, которая будет превращаться в одноколоночную на экранах мобильных телефонов, необходимо поступить таким образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-8 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- text content --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-4 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- right image --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Представленная выше разметка создана для больших мониторов и имеет ассиметричную ширину (один блок шире другого). Для средних и маленьких экранов нужно создать ширину, занимающую ровно половину экрана (оба блока имеют равную ширину). Для этого каждому элементу нужно добавить класс <code>small-6</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;small-6 large-8 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- text content --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;small-6 large-4 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- right image --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Именно класс <code>small-6</code> заставляет оба блока быть равными по ширине. Эти классы переопределяют значения классов <code>large-8</code> и <code>large-4</code>.</p>
+
+<h2 id="css--1">Дополнительные возможности CSS-сетки</h2>
+
+<p>Как и следовало ожидать, у CSS-сетки фреймворка Foundation имеется гораздо больше возможностей, чем было описано выше. Данная статья имеет целью описать только ее основные возможности, но если вы хотите узнать больше, почитайте эту документацию - [Getting Started][8].</p>
+
+<h3 id="css--2">Вложенность в CSS-сетке</h3>
+
+<p>В CSS-сетке фреймворка Foundation имеется возможность вкладывать строки внутрь колонок. Такой прием называется “вложенность” и с ним нужно быть достаточно осторожным на практике, так как можно легко запутаться при написании кода:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-8 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- вложенность --&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;small-4 columns&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- вложенный контент --&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;small-8 columns&quot;</span><span class="nt">&gt;</span>
+        <span class="c">&lt;!-- nested right image --&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-4 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- right image --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<h3 id="foundation">Центрирование колонок в Foundation</h3>
+
+<p>В некоторых случаях может потребоваться создать HTML-элемент, который не должен занимать все 12 колонок сетки, но, тем не менее, этот элемент должен располагаться точно по центру. К примеру, может потребоваться добавить в “подвал” сайта изображение, которое по ширине немного уже, чем весь элемент <code>footer</code> в целом. Класс <code>small-centered</code> поместит маленький элемент точно по центру внутри его строки-контейнера. Если необходимо, чтобы элемент располагался по центру только для больших экранов, то к нему необходимо применить класс <code>large-centered</code>:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-8 large-centered columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- центрируемое содержимое --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<h3 id="css--foundation-2">Смещение в CSS-сетке Foundation</h3>
+
+<p>Аналогично ситуации с центрированием колонок в CSS-сетке фреймворка Foundation, возможна ситуация, когда необходимо создать HTML-элемент небольшого размера, который не должен занимать всю ширину своего блока-родителя, но должен быть смещен таким образом, чтобы иметь некоторое пространство слева от себя. И при этом занимать всю оставшуюся ширину блока-родителя.</p>
+
+<p>В этих случаях можно использовать классы смещения (offset), например, такой - <code>large-offset-3</code>. Такой класс заставит элемент сместиться вправо на указанную ширину. Также, как и с классами колонок, здесь есть варианты смешения для маленьких экранов (<code>small-offset-#</code>), средних экранов (<code>medium-offset-#</code>), маленьких экранов (<code>small-offset-#</code>):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-8 large-offset-3 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- смещаемый контент --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<h2 id="foundation-1">Незавершенные строки в Foundation</h2>
+
+<p>Возможность смещения колонок в Foundation - это прекрасная вещь. Но что, если необходимо оставить пустое пространство справа элемента, а не слева? Вообще-то, в случае, когда сумма всех столбцов в строке не равняется 12, фреймворк Foundation перемещает последующий элемент право так, чтобы заполнить пустое пространство.</p>
+
+<p>Такой подход позволяет решить некоторые проблемы, связанные с кросс-браузерностью, но если необходимо отменить такое поведение фреймворка, то просто добавьте класс <code>end</code> к последнему элементу, чтобы заставить его смещаться влево (<code>float: left</code>):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-2 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- левая колонка --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-3 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- центральная колонка --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-2 end columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- последняя колонка --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<h3 id="section">Порядок следования</h3>
+
+<p>При создании HTML-страниц с помощью строк row и колонок columns имеется уникальная возможность расположить элементы внутри этих страниц совсем не в том порядке, в каком они располагаются в браузере. Например, у вас имеется двухколоночная HTML-разметка, в которой есть левый боковой блок и блок с основным содержимым.</p>
+
+<p>Исходя из вопросов удобства пользованием сайтом и аспектов SEO, необходимо сделать так, чтобы блок с основным содержимым размещался первым в HTML-странице; но при этом в окне браузера визуально боковой блок должен находиться перед блоком с контентом.</p>
+
+<p>Два блока могут поменяться своими местами друг с другом используя такую возможность в фреймворке Foundation. Используя классы типа <code>large-pull-3</code> и <code>large-pull-9</code> можно изменить местоположение элементов (или группы элементов):</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;row&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-9 large-pull-3 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- основной блок --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;large-3 large-pull-9 columns&quot;</span><span class="nt">&gt;</span>
+    <span class="c">&lt;!-- боковой блок --&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<h3 id="section-1">И еще …</h3>
+
+<p>Данная статья является всего лишь введением в систему CSS-сеток фреймворка Foundation; но в нем есть еще много тем для изучения, таких как стилизация форм, модули и типографика. Обо всем этом вы можете почитать в главе <a href="http://foundation.zurb.com/docs/" title="Getting Started">Getting Started</a>.</p>
+
+<p>На этом перевод окончен. Оригинал статьи размещен здесь - <a href="http://blog.teamtreehouse.com/beginners-guide-grids-zurb-foundation-5">The Beginner’s Guide to Grids with Zurb Foundation 5</a>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-06-30T00:00:00+04:00"><a href="http://zencoder.ru/javascript/slider-slick/">June 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -299,676 +1237,6 @@
 <p>Плагин slick мне однозначно понравился. Простая установка и подключение, генерирование элементов управления показом слайдшоу, большое количество разнообразных настроек. С разнообразными вариантами настройки внешнего вида можно и нужно разобраться на странице примеров - <a href="http://kenwheeler.github.io/slick/" title="Demos">Demos</a>. И подогнать под необходимые конкретные условия, если потребуется.</p>
 
 <p>Удачного кодинга!</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-29T00:00:00+04:00"><a href="http://zencoder.ru/foundation-button-group-button-bar/">June 29, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/foundation-button-group-button-bar/" rel="bookmark" title="Foundation - button group и button bar" itemprop="url">Foundation - button group и button bar</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжение темы Foundation, в которой рассмотрен вопрос создания группы кнопок (button group) и панели кнопок (button bar).</p>
-</blockquote>
-
-<p>В предыдущем обзоре я с вами научился создавать кнопки на Foundation - “Foundation - создаем кнопки”. В этом обзоре мы научимся создавать группы кнопок (button group) - несколько кнопок, объединенных в группу. Такие кнопки могут применяться на странице для самых различных целей.</p>
-
-<h2 id="button-group--foundation">Группы кнопок (button group) на Foundation</h2>
-
-<p>С точки зрения HTML струкрута такой группы представляет из себя обычный маркированный список с вложенными ссылками. Все дело в CSS-классах фреймворка Foundation, которые применяются к этому списку. Ссылку мы создаем с помощью класса <code>.button</code>, как и в предыдущей статье. А для элемента <code>ul</code> мы присваиваем класс <code>.button-group</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>В результате получаем группу с набором кнопок внутри:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_group.png" alt="Button group на Foundation" /></p>
-
-<h2 id="button-group--foundation-1">Видоизменение группы кнопок (button group) на Foundation</h2>
-
-<p>Созданную таким образом группу кнопок можно видоизменять с помощью дополнительных классов, как это делалось ранее. К примеру создадим две группы кнопок и применим к ним дополнительные классы. <code>.radius</code>, <code>.round</code>, <code>.alert</code>, <code>.secondary</code>, <code>.success</code> Кстати, дополнительные классы можно применять не только к элементам <code>a</code>, но и к элементу <code>ul</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group radius&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button secondary&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group round&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button secondary&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Результат будет что-то в виде цветов итальянского флага:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_groups_additional.png" alt="Button group с дополнительными классами" /></p>
-
-<h2 id="button-bar--foundation">Панели кнопок (button bar) на Foundation</h2>
-
-<p>Группы кнопок, в свою очередь, можно объединять между собой, создавая панели кнопок (button bar). Для этой цели применяется элемент <code>div</code> в классом <code>.button-bar</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;button-bar&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success small round&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success small round&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success small round&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;button-group round&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert small&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert small&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert small&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Результат будет примерно таким:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_bar.png" alt="Button bar на Foundation" /></p>
-
-<h2 id="button-bar--foundation-1">Видоизменение панели кнопок (button bar) на Foundation</h2>
-
-<p>Точно также, как и группу кнопок с классом <code>.button-group</code>, панель кнопок <code>.button-bar</code> можно видоизменять с помощью все тех же дополнительных классов, как показано на примере выше.</p>
-
-<h2 id="button-group--button-bar-c--sass">Создание button group и button bar c помощью Sass</h2>
-
-<p>Ну и по становящейся уже традиции переходим к вопросу создания панели кнопок (button bar) на Foundation c помощью Sass. Для этой цели служат два миксина:</p>
-
-<ul>
-  <li><code>button-group-container</code></li>
-  <li><code>button-group-style</code></li>
-</ul>
-
-<p>Создаю HTML-разметку с произвольным именем класса <code>.horizontal</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;horizontal&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 1<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 2<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 3<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 4<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;</span>Link 5<span class="nt">&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>В файле <code>app.scss</code> прописываю для него следующие правила:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.horizontal</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">container</span><span class="p">;</span>
-  <span class="n">a</span><span class="err">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="o">&amp;&gt;</span><span class="nt">li</span><span class="p">{</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="o">-</span><span class="n">group</span><span class="o">-</span><span class="n">style</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span> <span class="c">/* end horizontal */</span></code></pre></div>
-
-<p>Результат получается таким:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_button_bar_sass.png" alt="Button bar с помощью Sass на Foundation" /></p>
-
-<p>У миксинов <code>button-group-container</code> и <code>button-group-style</code> имеются дополнительные параметры для тонкой настройки. Пример использования данных параметров показан на странице официальной документации - <a href="http://foundation.zurb.com/docs/components/button_groups.html" title="Button groups">Button groups</a>.</p>
-
-<h2 id="appscss">Редактирование файла app.scss</h2>
-
-<p>До этого момента так и не удосужился рассмотреть вопрос редактирования файла <code>app.scss</code>. Точнее, я уже упоминал о нем в начале обзора Foundation как о пользовательской таблице стилей, куда можно и нужно писать свои собственные CSS-правила. Вот теперь решил, что как раз настало время исправить свой недочет.</p>
-
-<p>В начале файла <code>app.scss</code> имеются две строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;settings&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>Назначение их должно быть понятно:</p>
-
-<ul>
-  <li>строка <code>@import "settings";</code> импортирует Sass-переменные и их значения в проект</li>
-  <li>строка <code>@import "foundation";</code> импортирует сам фреймворк Foundation в проект</li>
-</ul>
-
-<p>Однако, по аналогии с библиотекой Compass под препроцесор Sass, фреймворк Foundation позволяет выборочно импортировать в проект те свои возможности, которые необходимы на данный момент. Все эти возможности оформлены в виде отдельных модулей и прописаны каждый в отдельной строке файла <code>app.scss</code> в виде длинного закоментированного списка:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;settings&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span>
-
-<span class="o">//</span> <span class="nt">Or</span> <span class="nt">selectively</span> <span class="nt">include</span> <span class="nt">components</span>
-<span class="o">//</span>   <span class="k">@import</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/accordion&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/alert-boxes&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/block-grid&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/breadcrumbs&quot;</span><span class="o">,</span>
-<span class="o">...</span></code></pre></div>
-
-<p>Допустим, на данный момент нам необходим модуль фреймворка Foundation для создания групп (button group) и панелей (button bar) кнопок. Такой модуль располагается в строке (легко найти по названию!):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="s2">&quot;foundation/components/button-groups&quot;</span><span class="o">;</span></code></pre></div>
-
-<p>И чтобы подключить только его, нужно выключить весь фреймворк Foundation целиком - закоментировать строку:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">//</span> <span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span></code></pre></div>
-
-<p>и раскомментировать нижележащие строки следующим образом (только не забыть заменить запятую на точку с запятой в конце):</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;settings&quot;</span><span class="p">;</span>
-<span class="o">//</span> <span class="k">@import</span> <span class="s2">&quot;foundation&quot;</span><span class="p">;</span>
-
-<span class="o">//</span> <span class="nt">Or</span> <span class="nt">selectively</span> <span class="nt">include</span> <span class="nt">components</span>
-<span class="k">@import</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/accordion&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/alert-boxes&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/block-grid&quot;</span><span class="o">,</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/breadcrumbs&quot;</span><span class="o">,</span>
-<span class="s2">&quot;foundation/components/button-groups&quot;</span><span class="p">;</span>
-<span class="o">//</span> <span class="k">@import</span> <span class="s2">&quot;foundation/components/buttons&quot;</span><span class="p">;</span>
-<span class="o">//</span>   <span class="s2">&quot;foundation/components/clearing&quot;</span><span class="o">,</span></code></pre></div>
-
-<p>Вуаля! Все работает и не нужно “тащить” за собой целый воз плюшек, которые не нужны на данный момент.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-28T00:00:00+04:00"><a href="http://zencoder.ru/css/framework-foundation-introduction/">June 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/framework-foundation-introduction/" rel="bookmark" title="Фреймворк Foundation - Знакомство" itemprop="url">Фреймворк Foundation - Знакомство</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Начинаем изучение фреймворка Foundation. Этот фреймворк входит в двойку самых популярных и распространенных CSS-фреймворков на момент написания статьи (еще один - Twitter Bootstrap).</p>
-</blockquote>
-
-<p>Можно по разному относиться к фреймворкам - любить их или не любить. Однако, они есть и ими пользуются при создании сайтов. Данный факт говорит о том, что фреймворки - это все-таки не такое уж и Зло. Скорее всего, нужно выработать для себя такое отношение к фреймворкам, что это быстрый способ создать что-либо непритязательное - не слишком оригинальное по дизайну, со стандартизированными элементами и не слишком оптимизированным кодом (<em>читай - с большой долей мусора</em>). А вот если к шаблону предъявляются повышенные требования, вот тогда нужно писать весь код вручную.</p>
-
-<p>Но, как говорилось уже выше, фреймворки - они есть, и факт их существования говорит сам за себя. А поэтому, любой профессиональный веб-разработчик обязан знать и уметь работать с ними. В этой статье будет положено начало посильного знакомства с одним из двух популярных фреймворков - ZURB Foundation.</p>
-
-<h2 id="foundation">Сайт проекта Foundation</h2>
-
-<p>Официальный сайт проекта находится по этому адресу - <a href="http://foundation.zurb.com/" title="Foundation">Foundation</a>. Если внимательно присмотреться, то можно заметить, что на странице проекта и в других местах часто мелькает слово <a href="http://www.zurb.com/" title="ZURB">ZURB</a> - это название дизайнерской фирмы, которая и создала фреймворк.</p>
-
-<p>Если бегло пробежаться по документации, то можно увидеть множество “плюшек” у данного фреймворка:</p>
-
-<ul>
-  <li>фирменную консольную утилитку foundation для разворачивания или обновления проекта на Foundation</li>
-  <li>коллекцию <a href="https://github.com/zurb/foundation-5-sublime-snippets" title="сниппеты под Sublime Text">сниппетов под Sublime Text</a> для быстрого создания различных компонент HTML-страницы</li>
-  <li>тесная интерграция с препроцессором Sass</li>
-</ul>
-
-<p>Естественно, Foundation заявляется как полностью адаптивный фреймворк, нацеленный прежде всего на создание мобильных версий сайтов (Mobile First).</p>
-
-<h2 id="foundation-1">Способы установки Foundation</h2>
-
-<p>Как говориться на <a href="http://foundation.zurb.com/docs/" title="Getting Started">странице документации</a>, существует три способа установки фреймворка на локальном компьютере:</p>
-
-<ul>
-  <li><a href="http://foundation.zurb.com/docs/css.html" title="Getting Started With Foundation CSS">Getting Started With Foundation CSS</a> - самый простой и быстрый способ установки и начала работы. Нужно просто скачать и распаковать архив с готовым фреймворком</li>
-  <li><a href="http://foundation.zurb.com/docs/sass.html" title="Getting Started With Sass">Getting Started With Sass</a> - разворачивание фреймворка c поддержкой Sass/Compass. Установка на локальный компьютер производится автоматически, с помощью уже упоминавшейся консольной утилиты foundation</li>
-  <li><a href="http://foundation.zurb.com/docs/applications.html" title="Applications">Applications</a> - это что-то связано с разработкой приложений под Foundation. В общем, для front-end это не интересно</li>
-</ul>
-
-<p>В дальнейшей статье приступим в установке Foundation вторым способом, так как мы уже хорошо знаем и умеем пользоваться препроцессором Sass и его библиотекой Compass.</p>
-
-<h2 id="foundation-c--sass">Установка Foundation c поддержкой Sass</h2>
-
-<p>Для установки фреймворка на локальный компьютер с поддержкой Sass/Compass потребуется предварительное начилие на нем таких программных продуктов, как:</p>
-
-<ul>
-  <li>Git - нужен для работы Bower</li>
-  <li>Ruby - нужен для работы Sass/Compass</li>
-  <li>Nodejs - нужен для работы Grunt</li>
-</ul>
-
-<p>Foundation версии 5 использует для установки своих компонентов, а также для обновления себя самого в целом менеджер пакетов Bower, поэтому его наличие также жизненно необходимо в системе. Помимо этого, фреймворк может работать совместно с менеджером задач Grunt для конкатенации файлов; но наличие Grunt не является обязательным.</p>
-
-<p>Проверяю наличие трех вышеназванных пакетов в своей системе Linux Mint 17. Все три пакета были установлены мною гораздо раньше. Как выполнить установку Git, Ruby, Nodejs, Grunt и Bower под Linux Mint 17, можно почитать в этой статье - “Установка Node.js, npm и Bower под Linux Mint”:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="p">-</span><span class="n">-version</span>
-<span class="n">git</span> <span class="n">version</span> <span class="n">1</span><span class="p">.</span><span class="n">9</span><span class="p">.</span><span class="n">1</span>
-<span class="p">$</span> <span class="n">ruby</span> <span class="p">-</span><span class="n">-version</span>
-<span class="n">ruby</span> <span class="n">1</span><span class="p">.</span><span class="n">9</span><span class="p">.</span><span class="n">3p484</span> <span class="p">(</span><span class="n">2013</span><span class="p">-</span><span class="n">11</span><span class="p">-</span><span class="n">22</span> <span class="n">revision</span> <span class="n">43786</span><span class="p">)</span> <span class="p">[</span><span class="n">x86_64-linux</span><span class="p">]</span>
-<span class="p">$</span> <span class="n">nodejs</span> <span class="p">-</span><span class="n">-version</span>
-<span class="n">v0</span><span class="p">.</span><span class="n">10</span><span class="p">.</span><span class="n">25</span>
-<span class="p">$</span> <span class="n">bower</span> <span class="p">-</span><span class="n">-version</span>
-<span class="n">1</span><span class="p">.</span><span class="n">3</span><span class="p">.</span><span class="n">3</span></code></pre></div>
-
-<p>Установка Bower и Grunt, если они еще не были инсталлированы в системе, производится простой командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="n">-g</span> <span class="n">bower</span> <span class="n">grunt-cli</span></code></pre></div>
-
-<p>Все готово для установки консольной утилиты <code>foundation</code>. Вы спросите - что это еще за утилита такая и зачем она нужна? Все просто - это фирменная утилитка от Foundation и ее задача - автоматизированное разворачивание готового проекта на локальной машине.</p>
-
-<p>Устанавливаем утилиту foundation:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gem</span> <span class="n">install</span> <span class="n">foundation</span></code></pre></div>
-
-<p>Сама утилитка foundation очень проста. Вызову команду <code>help</code> и все станет понятно без слов:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">foundation</span> <span class="n">help</span>
-<span class="n">Commands</span><span class="err">:</span>
-  <span class="n">foundation</span> <span class="n">help</span> <span class="no">[COMMAND]</span>  <span class="c"># Describe available commands or one specific command</span>
-  <span class="n">foundation</span> <span class="n">new</span>             <span class="c"># create new project</span>
-  <span class="n">foundation</span> <span class="n">update</span>          <span class="c"># update an existing project</span>
-  <span class="n">foundation</span> <span class="n">upgrade</span>         <span class="c"># Upgrade your Foundation 4 compass project</span>
-  <span class="n">foundation</span> <span class="n">version</span>         <span class="c"># Display CLI version</span></code></pre></div>
-
-<h2 id="foundation-c--compass">Разворачивание Foundation c поддержкой Compass</h2>
-
-<p>C помощью утилиты foundation можно развернуть на локальной машине фреймворк c поддержкой:</p>
-
-<ul>
-  <li>Grunt и Libsass</li>
-  <li>Compass</li>
-</ul>
-
-<p>Я воспользуюсь вторым вариантом и запущу установку Foundation c поддержкой Compass. Для этого нужно выполнить команду:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">foundation</span> <span class="n">new</span> <span class="n">new_project_name</span></code></pre></div>
-
-<p>В моем случае имя нового проекта было оригинальным - foundation )) Пару секунд ожидания и я получаю папку с таким содержимым:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">-l</span>
-<span class="n">drwxr-xr-x</span> <span class="n">bower_components</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">bower</span><span class="p">.</span><span class="n">json</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">config</span><span class="p">.</span><span class="n">rb</span>
-<span class="n">-rw-rw-rw</span><span class="p">-</span> <span class="n">Foundation</span><span class="p">.</span><span class="n">md</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">humans</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span>
-<span class="n">drwxr-xr-x</span> <span class="n">js</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">README</span><span class="p">.</span><span class="n">md</span>
-<span class="n">-rw-r</span><span class="p">-</span><span class="n">-r</span><span class="p">--</span> <span class="n">robots</span><span class="p">.</span><span class="n">txt</span>
-<span class="n">drwxr-xr-x</span> <span class="n">scss</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/new_project_in_foundation.png" alt="Новый проект на Foundation" /></p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/new_project_in_foundation.png" alt="Новый проект на Foundation" /></p>
-
-<p>Видим здесь файлы <code>config.rb</code>, <code>bower.json</code>, <code>index.html</code>; папки <code>bower_components</code>, <code>js</code>, <code>scss</code>. Другими словами - это готовый проект!</p>
-
-<p>Немного подредактирую файл <code>config.rb</code> и запускаю Compass на мониторинг изменений в текущем проекте:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">compass</span> <span class="n">watch</span> <span class="p">.</span></code></pre></div>
-
-<p>Проект готов для работы! В следующем обзоре будет рассмотрен самый простой пример работы с данным фреймворком - я с вами научусь создавать кнопки на Foundation.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-28T00:00:00+04:00"><a href="http://zencoder.ru/css/foundation-create-buttons/">June 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~8 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/foundation-create-buttons/" rel="bookmark" title="Foundation - создаем кнопки" itemprop="url">Foundation - создаем кнопки</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Продолжение обзора фреймворка Foundation, в котором приступим к практической части и научимся создавать кнопки на этом фреймворке.</p>
-</blockquote>
-
-<p>Почему сразу такой быстрый переход к практике? Я сам всегда так учился всему и считаю, что это наилучший способ научиться что-либо делать. Нежели долго и нудно жевать сопли теории, чтобы когда-нибудь перейти к практике. Остальные основы Foundation я буду изучать с вами в дальнейшем, шаг за шагом.</p>
-
-<p>Итак, в [первой части знакомства с Foundation][1] я с вами установил фреймворк Foundation c поддержкой Sass/Compass под операционной системой Linux Mint 17 и подготовил его к работе. Давайте откроем созданный утилитой foundation индексный файл index.html и рассмотрим его содержимое. “Шапка” <code>head</code> этого HTML-документа не представляет из себя что-то особенное, кроме двух строк:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">href=</span><span class="s">&quot;css/app.css&quot;</span> <span class="nt">/&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;bower_components/modernizr/modernizr.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
-
-<p>В первой строке производится подключение файла CSS-стилей <code>app.css</code>, который служит для создания пользовательских CSS-правил. Другими словами, фреймворк Foundation представляет из себя набор готовых CSS-стилей (на то он и фреймворк). Но не всегда готовые CSS-стили отвечают конкретным требованиям дизайна страницы. Чтобы изменить или переопределить готовые CSS-стили фреймворка Foundation, служит таблица стилей <code>app.css</code> - именно туда нужно вносить свои собственные CSS-правила.</p>
-
-<p>Вторая строка - это подключение библиотеки Modernizr и больше тут сказать нечего.</p>
-
-<p>Если заглянуть в самый конец HTML-документа, то увидим три строки подключения js-скриптов перед закрывающим тегом <code>&lt;/body&gt;</code>:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;bower_components/jquery/dist/jquery.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;bower_components/foundation/js/foundation.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/app.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
-
-<p>Ситуация здесь почти такая же, как и с “шапкой” head документа. Подключается библиотека jQuery (куда же без нее?), коллекция готовых js-скриптов от Foundation <code>foundation.min.js</code> для создания разнообразных меню, табов и тому подобное. Скрипт <code>app.js</code> служит для тех же целей, что и таблица стилей <code>app.css</code> - для внесения пользовательских изменений.</p>
-
-<p>Между тегами <code>&lt;body&gt;&lt;/body&gt;</code> размещено содержимое документа в виде CSS-сетки Grid, к которой я вернусь немного позже. Сейчас я произвожу очистку этого содержимого, чтобы писать в нем свой собственный HTML-код.</p>
-
-<h2 id="foundation">Кнопки на Foundation</h2>
-
-<p>Создание кнопок на фреймворке Foundation <strong>занятие малоутомительное</strong>. Для этой цели используется тег <code>a</code>, которому присваивается имя готового CSS-класса <code>.button</code>. Помимо этого, имеются три или четыре группы классов, с помощью которых можно создавать различные варианты кнопок - разного цвета, формы и назначения.</p>
-
-<p>Кнопки, созданные на Foundation c помощью предопределенных классов, имеют полностью готовый вид, вплоть до CSS-свойства transition.</p>
-
-<h3 id="foundation-1">Обычная кнопка на Foundation</h3>
-
-<p>Как я уже упоминал выше, для создания кнопки под Foundation достаточно присвоить тегу <code>a</code> имя готового класса <code>.button</code>. Давайте так и сделаем:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button&quot;</span><span class="nt">&gt;</span>read more<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_simple_button.png" alt="Обычная кнопка на Foundation" /></p>
-
-<p>Все очень просто. Готовый результат можно посмотреть в браузере. Я же перейду к более интересному вопросу создания различных модификаций (вариантов) стандартной кнопки <code>.button</code>.</p>
-
-<h3 id="section">Кнопки разных размеров</h3>
-
-<p>Начнем с группы классов, служащих для создания кнопок различных размеров. В этой группе имеются четыре класса для создания четырех размеров кнопок:</p>
-
-<ul>
-  <li><code>.tiny</code> - крошечная кнопка</li>
-  <li><code>.small</code> - маленькая кнопка</li>
-  <li><code>.medium</code> - средняя кнопка</li>
-  <li><code>.large</code> - большая кнопка</li>
-</ul>
-
-<p>В качестве примера приведу ниже HTML-код создания таких кнопок:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button tiny&quot;</span><span class="nt">&gt;</span>tiny<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button small&quot;</span><span class="nt">&gt;</span>small<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button medium&quot;</span><span class="nt">&gt;</span>medium<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button large&quot;</span><span class="nt">&gt;</span>large<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_sizes_of_buttons.png" alt="Кнопки разных размеров на Foundation" /></p>
-
-<p>Как видно из приведенного выше кода, используется мультиклассовость - добавление к классу <code>.button</code> любого из классов размера кнопки - <code>.tiny</code>, <code>.small</code>, <code>.medium</code>, <code>.large</code>. Смешение CSS-правил обоих классов дает в результате нужный вид кнопки. Впрочем, все это должно быть известно из основ CSS.</p>
-
-<h3 id="foundation-2">Скругленные кнопки на Foundation</h3>
-
-<p>В фреймворке имеются два готовых класса для создания скругленной формы у кнопки. Первый класс - <code>.radius</code> задает радиус скругления углов у кнопки. Второй радиус <code>.round</code> создает круглую кнопку.</p>
-
-<ul>
-  <li><code>.radius</code> - радиус ускругления углов у кнопки</li>
-  <li><code>.round</code> - круглая кнопка</li>
-</ul>
-
-<p>HTML-код создания таких кнопок показан ниже:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button radius&quot;</span><span class="nt">&gt;</span>radius<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button round&quot;</span><span class="nt">&gt;</span>round<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_rounded_buttons.png" alt="Скругленные кнопки на Foundation" /></p>
-
-<h3 id="foundation-3">Информационные кнопки на Foundation</h3>
-
-<p>Не знаю, точно ли такое название отражает предназначение подобных кнопок, но на другом фреймворке - Twitter Bootstrap как имеется такое название для этих кнопок, поэтому решил и в Foundation назвать их также.</p>
-
-<ul>
-  <li><code>.secondary</code> - обычная кнопка</li>
-  <li><code>.success</code> - кнопка, информирующая об успешном выполнении задачи</li>
-  <li><code>.alert</code> - кнопка предупреждения о чем-либо</li>
-</ul>
-
-<p>HTML-код для создания информационных кнопок:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button secondary&quot;</span><span class="nt">&gt;</span>secondary<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button success&quot;</span><span class="nt">&gt;</span>success<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button alert&quot;</span><span class="nt">&gt;</span>alert<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_information_buttons.png" alt="Информационные кнопки на Foundation" /></p>
-
-<h3 id="section-1">Другие варианты кнопок</h3>
-
-<p>Есть еще два класса для создания двух состояний кнопки. Первый класс <code>.disabled</code> делает кнопку неактивной с помощью CSS-свойства <code>cursor: default;</code>. Второй класс <code>.expand</code> заставляет кнопку занимать всю ширину блока-родителя и становиться просто огромной!</p>
-
-<ul>
-  <li><code>.disabled</code> - кнопка делается неактивной</li>
-  <li><code>.expand</code> - кнопка на всю ширину блока-родителя</li>
-</ul>
-
-<p>HTML-код двух описанных выше кнопок:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button disabled&quot;</span><span class="nt">&gt;</span>disabled<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;button expand&quot;</span><span class="nt">&gt;</span>expand<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_other_buttons.png" alt="Другие варианты кнопок на Foundation" /></p>
-
-<h3 id="foundation-4">Тонкая настройка кнопок в Foundation</h3>
-
-<p>Помимо возможности использования готовых классов с предустановленными CSS-значениями, в фреймворке Foundation можно изменять значения по умолчанию из готового файла настроек. Данный файл называется <code>_settings.scss</code> и располагается в папке scss.</p>
-
-<p>В этом файле собраны настройки в виде переменных Sass для всех компонентов фреймворка Foundation, но в данном случае нам необходимы переменные, отвечающие за настройку кнопок. Данные переменные находятся в секции файла, начинающейся со строки <code>BUTTONS</code>:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">include-html-button-classes</span><span class="o">:</span> <span class="o">$</span><span class="nt">include-html-classes</span><span class="o">;</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">величины</span> <span class="nt">padding</span> <span class="err">кнопок</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-tny</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">10</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-sml</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">14</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-med</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">16</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-lrg</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">18</span><span class="o">);</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">блочной</span> <span class="err">модели</span> <span class="err">и</span> <span class="err">нижнего</span> <span class="nt">margin</span> <span class="err">кнопки</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-display</span><span class="o">:</span> <span class="nt">inline-block</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-margin-bottom</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">20</span><span class="o">);</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">шрифта</span> <span class="err">надписей</span> <span class="err">кнопок</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-family</span><span class="o">:</span> <span class="o">$</span><span class="nt">body-font-family</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-color</span><span class="o">:</span> <span class="nf">#fff</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-color-alt</span><span class="o">:</span> <span class="nf">#333</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-tny</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">11</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-sml</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">13</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-med</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">16</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-lrg</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">20</span><span class="o">);</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-weight</span><span class="o">:</span> <span class="o">$</span><span class="nt">font-weight-normal</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-font-align</span><span class="o">:</span> <span class="nt">center</span><span class="o">;</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">эффекта</span> <span class="nt">hover</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-function-factor</span><span class="o">:</span> <span class="nt">-20</span><span class="o">%;</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">границ</span> <span class="err">кнопок</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-border-width</span><span class="o">:</span> <span class="nt">0px</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-border-style</span><span class="o">:</span> <span class="nt">solid</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-bg</span><span class="o">:</span> <span class="o">$</span><span class="nt">primary-color</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-border-color</span><span class="o">:</span> <span class="nt">scale-color</span><span class="o">($</span><span class="nt">bg</span><span class="o">,</span> <span class="o">$</span><span class="nt">lightness</span><span class="o">:</span> <span class="o">$</span><span class="nt">button-function-factor</span><span class="o">);</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">радиуса</span> <span class="err">скругления</span> <span class="err">кнопок</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-radius</span><span class="o">:</span> <span class="o">$</span><span class="nt">global-radius</span><span class="o">;</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-round</span><span class="o">:</span> <span class="o">$</span><span class="nt">global-rounded</span><span class="o">;</span>
-
-<span class="o">//</span> <span class="err">Настройка</span> <span class="err">прозрачности</span> <span class="err">кнопки</span> <span class="err">с</span> <span class="err">классом</span> <span class="nt">disabled</span>
-<span class="o">//</span> <span class="o">$</span><span class="nt">button-disabled-opacity</span><span class="o">:</span> <span class="nt">0</span><span class="nc">.7</span><span class="o">;</span></code></pre></div>
-
-<p>В принципе, элементарных знаний CSS должно быть достаточно, чтобы понять предназначение всех этих переменных. Поэтому давайте ради примера выполним пару изменений, чтобы увидеть результат. Для этого находим в файле <code>_settings.scss</code> строку <code>BUTTONS</code> (за поиск в Sublime Text отвечает сочетание клавиш Ctrl+F) и раскомментируем строки с теми переменными, которые нам необходимы.</p>
-
-<p>Пусть это будут строки:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">button-tny</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">10</span><span class="o">);</span>
-<span class="o">$</span><span class="nt">button-font-color</span><span class="o">:</span> <span class="nf">#fff</span><span class="o">;</span></code></pre></div>
-
-<p>… в которых изменим значение переменных по умолчанию на:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">button-tny</span><span class="o">:</span> <span class="nt">rem-calc</span><span class="o">(</span><span class="nt">12</span><span class="o">);</span>
-<span class="o">$</span><span class="nt">button-font-color</span><span class="o">:</span> <span class="nf">#ddd</span><span class="o">;</span></code></pre></div>
-
-<p>Если теперь заглянуть в инспектор свойств Firebug, то увидим, что padding для кнопки с классом <code>.tiny</code> увеличился; а также изменился цвет шрифта надписи с белого <code>#fff</code> на серый <code>#ddd</code>.</p>
-
-<h3 id="sass">Создание кнопок с помощью Sass</h3>
-
-<p>Рассмотренный выше способ редактирования значений переменных для тонкой настройки кнопок хорош. Но все-таки он утомителен и времязатратен - это нужно открыть файл <code>_settings.scss</code>, найти в нем Sass-переменные, раскомментировать их и изменить их значение.</p>
-
-<p>Фреймворк Foundation имеет в своем арсенале еще один способ использования готовых CSS-классов и тонкой настройки Sass-переменных. Преимущество этого способа еще в том, что он по настоящему семантичен и позволяет не загромождать HTML-разметку чрезмерным количеством CSS-классов. Короче - этот способ использует Sass-миксины для подключения CSS-классов и изменения значений Sass-переменных.</p>
-
-<p>Допустим, в нашей HTML-разметке имеется ссылка:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;a</span> <span class="na">class=</span><span class="s">&quot;readmore&quot;</span><span class="nt">&gt;</span>Read More<span class="nt">&lt;/a&gt;</span></code></pre></div>
-
-<p>Чтобы превратить ее в кнопку на Foundation, нужно в файле <code>app.css</code> прописать следующее:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.readmore</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">;</span>
-<span class="p">}</span></code></pre></div>
-
-<p>В результате получим готовую кнопку! Чтобы иметь более тонкую настройку при создании кнопки, нужно передать миксину button переменные в качестве аргументов:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.readmore</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">(</span><span class="err">$</span><span class="k">padding</span><span class="o">,</span> <span class="err">$</span><span class="n">bg</span><span class="o">,</span> <span class="err">$</span><span class="n">radius</span><span class="o">,</span> <span class="err">$</span><span class="n">full</span><span class="o">-</span><span class="k">width</span><span class="o">,</span> <span class="err">$</span><span class="n">disabled</span><span class="o">,</span> <span class="err">$</span><span class="n">is</span><span class="o">-</span><span class="n">input</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Например, таким образом:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.readmore</span><span class="p">{</span>
-  <span class="o">@</span><span class="n">include</span> <span class="n">button</span><span class="p">(</span><span class="err">$</span><span class="n">bg</span><span class="o">:</span> <span class="m">#778899</span><span class="o">,</span> <span class="err">$</span><span class="n">radius</span><span class="o">:</span> <span class="n">true</span><span class="p">);</span>
-<span class="p">}</span></code></pre></div>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/foundation_mixin_button.png" alt="Кнопка с помощью миксина на Foundation" /></p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-06-24T00:00:00+04:00"><a href="http://zencoder.ru/javascript/slider-elastislide/">June 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/slider-elastislide/" rel="bookmark" title="Слайдер Elastislide" itemprop="url">Слайдер Elastislide</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Обзор слайдера Elastislide типа Carousel, созданного под библиотеку jQuery.</p>
-</blockquote>
-
-<p>Слайдер адаптивный, меняет свои размеры в зависимости от размера окна браузера. В качестве элементов управления применяются только кнопки перемотки вперед и назад. Кнопки генерируются скриптом Elastislide автоматически. Кроме этого, никаких других элементов управления не имеет.</p>
-
-<h2 id="elastislide">Подключение скрипта Elastislide</h2>
-
-<p>Для подключения скрипта к проекту необходимо выполнить несколько шагов. Первое, нужно создать HTML-разметку:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;elastic&quot;</span> <span class="na">class=</span><span class="s">&quot;elastislide-list&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 1&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 2&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 3&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 4&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 5&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Обязательное условие - нужно применить к списку идентификатор (с произвольным именем) и класс <code>elastislide-list</code>, на который будут “вешаться” CSS-стили. А так видим, что HTML-разметка минималистская, все отлично.</p>
-
-<p>Переходим на <a href="http://tympanus.net/codrops/2011/09/12/elastislide-responsive-carousel/" title="Elastslide">официальную страницу Elastislide</a> и скачиваем оттуда архив с исходниками (кнопка “Download Source”).</p>
-
-<p>Распаковываем архив и видим несколько папок и четыре HTML-файла с примерами работы слайдера Elastislide. Можно полюбоваться, какую красоту создает скрипт Elastislide.</p>
-
-<p>Из распакованного архива потребуются не все файлы, а только некоторые из них.</p>
-
-<h2 id="js-">Подключаем JS-файлы</h2>
-
-<p>Из папки JS распакованного архива забираем все три js-файла и подключаем их следующим образом:</p>
-
-<ul>
-  <li>файл <code>modernizr.custom.17475.js</code> подключаем в head HTML-документа:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/modernizr.custom.17475.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
-
-<ul>
-  <li>файлы <code>jquery.elastislide.js</code>, <code>jquerypp.custom.js</code>, <code>jquery-1.8.2.min.js</code> подключаем в теле HTML-документа, перед закрывающим тегом <code>&lt;/body&gt;</code>:</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/jquery-1.8.2.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/jquerypp.custom.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/jquery.elastislide.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
-
-<p>Конечно, библиотеку jQuery можно подключать не локально, а через любой из CDN’ов - это кому как нравиться. На оф. сайте в качестве примера так и делается. jQuery используется версии 1.8.2 - я ее тоже использовал; более поздние версии не проверял на работоспособность с Elastislide.</p>
-
-<ul>
-  <li>там же создаем еще один js-файл, в котором инициализируем скрипт Elastislide и пропишем настройки для него (если они понадобятся):</li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-  <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#elastic&#39;</span><span class="p">).</span><span class="nx">elastislide</span><span class="p">();</span>
-<span class="nt">&lt;/script&gt;</span></code></pre></div>
-
-<h2 id="css-">Подключение CSS-стилей</h2>
-
-<p>Остался еще один файл, который нужно подключить в проект - это готовые CSS-стили “от автора”, чтобы слайдер Elastislide заработал. Забираем из папки CSS распакованного архива CSS-файл <code>elastislide.css</code> и подключаем его в head HTML-документа:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/elastislide.css&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
-
-<p>Остальные два файла <code>custom.css</code> и <code>demo.css</code> в папке CSS нам не нужны - они созданы автором скрипта для презентационных целей в примерах.</p>
-
-<p>Итоговая картина подключения JS-скриптов, CSS-файла и HTML-разметки будет выглядеть следующим образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;head&gt;</span>
-  <span class="nt">&lt;meta</span> <span class="na">charset=</span><span class="s">&quot;utf-8&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;title&gt;</span>Elastislide<span class="nt">&lt;/title&gt;</span>
-  <span class="nt">&lt;link</span> <span class="na">rel=</span><span class="s">&quot;stylesheet&quot;</span> <span class="na">type=</span><span class="s">&quot;text/css&quot;</span> <span class="na">href=</span><span class="s">&quot;css/elastislide.css&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;js/modernizr.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;/head&gt;</span>
-
-<span class="nt">&lt;body&gt;</span>
-
-  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;elastic&quot;</span> <span class="na">class=</span><span class="s">&quot;elastislide-list&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 1&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 2&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 3&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 4&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li&gt;&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span><span class="nt">&gt;&lt;img</span> <span class="na">src=</span><span class="s">&quot;http://placehold.it/200x100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Elastic 5&quot;</span><span class="nt">&gt;&lt;/a&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/jquery-1.8.2.min.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/jquerypp.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span> <span class="na">src=</span><span class="s">&quot;js/jquery.elastislide.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-
-  <span class="c">&lt;!-- Кастомный скрипт для Elastislide --&gt;</span>
-  <span class="nt">&lt;script </span><span class="na">type=</span><span class="s">&quot;text/javascript&quot;</span><span class="nt">&gt;</span>
-    <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#elastic&#39;</span><span class="p">).</span><span class="nx">elastislide</span><span class="p">();</span>
-  <span class="nt">&lt;/script&gt;</span>
-
-<span class="nt">&lt;/body&gt;</span></code></pre></div>
-
-<p>Как результат успешного подключения всех файлов смотрим на картинку:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/06/elastislide_ready-slider.jpg" alt="Запущенный слайдер Elastislide" /></p>
-
-<p>Дальше уже можно смело редактировать файл <code>elastislide.css</code> для того, чтобы “подогнать” его под текущий дизайн страницы.</p>
-
-<p>На этом все.</p>
 
 <hr />
 
@@ -1257,6 +1525,12 @@
       <li>
         
           <a href="http://zencoder.ru/page46">46</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page47">47</a>
         
       </li>
     

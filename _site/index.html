@@ -144,6 +144,585 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-10T00:00:00+03:00"><a href="http://zencoder.ru/javascript/exports-module_exports/">November 10, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/exports-module_exports/" rel="bookmark" title="Различие между exports и module.exports" itemprop="url">Различие между exports и module.exports</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Попытка разобраться, в чем различие между <code>exports</code> и <code>module.exports</code>, основанная на статье <a href="http://www.sitepoint.com/understanding-module-exports-exports-node-js/">Understanding module.exports and exports in Node.js</a>.</p>
+
+<h2 id="moduleexports--exports--nodejs">Что такое module.exports и exports в Node.js</h2>
+
+<p>Как web-разработчики, мы часто сталкиваемся с ситуацией, когда необходимо иметь дело с малознакомым кодом. И тогда сам собою возникает логичный вопрос - сколько времени мне потребуется для того, чтобы разобраться с чужим кодом и понять принцип его работы?</p>
+
+<p>Типичный ответ на этот вопрос - ровно столько, чтобы начать самому писать код; а затем вернуться к изучению этой темы позже, когда позволит на это время. Ну что-же, как мне кажется, пришло время получше разобраться с такими понятиями, как <code>module.exports</code> и <code>exports</code> в Node.js. Спешу поделиться с вами тем, что я узнал по этому вопросу.</p>
+
+<h3 id="module">Что такое модуль (module)</h3>
+
+<p>Основная концепция модуля заключается в том, что он инкапсулирует логически связанный между собой код в <strong>единый блок</strong>. Можно сказать иначе - создание модуля заключается в помещении всех взаимосвязанных между собой функций в <strong>один единый файл</strong>.</p>
+
+<p>Для понимания вышесказанного лучше всего создать пример приложения под Node.js. Давайте создадим файл с именем <code>greetings.js</code>, внутри которого размещены <strong>две функции</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+	<span class="p">}</span></code></pre></div>
+
+<h3 id="section">Экспорт модуля</h3>
+
+<p>Польза от файла (модуля) <code>greetings.js</code> (<em>и функций, которые находятся в этом файле</em>) появляется в том случае, когда файл <code>greetings.js</code> можно использовать внутри других файлов (модулей).</p>
+
+<p>Для достижения этого необходимо слегка изменить исходный код файла <code>greetings.js</code>. Чтобы понять, что происходит на самом деле, в данном случае будем выполнять пошаговый процесс:</p>
+
+<ol>
+  <li>Представьте себе, что эта строка существует в качестве первой линии кода в <code>greetings.js</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">exports</span> <span class="o">=</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{}</span></code></pre></div>
+
+<ol>
+  <li>Видоизменим обе функции в файле <code>greetings.js</code> с помощью выражения <code>exports</code> таким образом, чтобы они были доступны для внешних файлов (модулей):</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+	<span class="p">}</span></code></pre></div>
+
+<p>В приведенном выше коде можно было бы заменить выражение <code>exports</code> на <code>exports.module</code> и получить точно такой же результат. Если этот момент кажется вам непонятным, то помните, что выражение <code>exports</code> и выражение <code>exports.module</code> ссылаются на один и тот же объект.</p>
+
+<ol>
+  <li>Это текущее значение выражения <code>module.exports</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="p">{</span>
+
+		<span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+	<span class="p">}</span></code></pre></div>
+
+<h3 id="section-1">Импортирование модуля</h3>
+
+<p>Давайте сделаем методы модуля <code>greetings.js</code> общедоступными для другого файла (модуля) с именем <code>main.js</code>. Этот процесс также разобьем пошагово для более лучшего понимания:</p>
+
+<ol>
+  <li>В Node.js используется команда <code>require</code> для импортирования одного модуля в другой модуль:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">require</span> <span class="o">=</span> <span class="kd">function</span><span class="p">(</span><span class="nx">path</span><span class="p">)</span> <span class="p">{</span>
+
+	  <span class="c1">// ...</span>
+
+	  <span class="k">return</span> <span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">;</span>
+	<span class="p">};</span></code></pre></div>
+
+<ol>
+  <li>Давайте подключим модуль <code>greetings.js</code> в модуль <code>main.js</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
+	<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>Приведенная выше строка кода равнозначна нижеследующему коду:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
+	<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="p">{</span>
+
+		<span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+
+		<span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+			<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+		<span class="p">}</span>
+
+	<span class="p">}</span></code></pre></div>
+
+<ol>
+  <li>Теперь можно использовать функции модуля <code>greetings.js</code> внутри модуля <code>main.js</code> как методы объекта <code>greeting</code>:</li>
+</ol>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
+	<span class="kd">var</span> <span class="nx">greeting</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">);</span>
+
+	<span class="c1">// Hello</span>
+	<span class="nx">greeting</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span><span class="p">(</span><span class="s1">&#39;Hello&#39;</span><span class="p">);</span>
+
+	<span class="c1">// Hola</span>
+	<span class="nx">greeting</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span><span class="p">(</span><span class="s1">&#39;Hola&#39;</span><span class="p">);</span></code></pre></div>
+
+<h3 id="section-2">Отличительные моменты</h3>
+
+<p>Команда <code>require</code> возвращает объект, свойства и методы которого доступны другим внешним модулям при помощи команды <code>module.exports</code>.</p>
+
+<p>Нижеприведенный пример поможет разобраться в данном вопросе:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// greetings.js</span>
+
+	<span class="c1">// var exports = module.exports = {};</span>
+
+	<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;Hello&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+	<span class="nx">exports</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+		<span class="k">return</span> <span class="s1">&#39;Hola&#39;</span><span class="p">;</span>
+	<span class="p">}</span>
+
+	<span class="c1">// Эта строка кода выполняет повторное переопределение,</span>
+
+	<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="s1">&#39;Bonjour&#39;</span><span class="p">;</span></code></pre></div>
+
+<p>Теперь сделаем подключение модуля <code>greetings.js</code> в модуль <code>main.js</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
+	<span class="kd">var</span> <span class="nx">greetings</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./greetings.js&#39;</span><span class="p">)</span></code></pre></div>
+
+<p>На данный момент в нашем примере ничего не поменялось. В переменную <code>greetings</code> помещается код, доступный из модуля <code>greetings.js</code>. Не более того.</p>
+
+<p>Однако, если мы попытаемся воспользоваться каким-либо из методов модуля <code>greetings.js</code> - <code>sayHelloInEnglish</code> или <code>sayHelloInSpanish</code>, то мы получим ошибку. Это произошло в следствие того, что было произведено переопределение экспортируемой структуры модуля при помощи команды <code>module.exports</code>.</p>
+
+<p>Другими словами, последней командой <code>module.exports</code> экспортируется совсем другой модуль - <code>Bonjour</code>, у которого другие свойства и методы. Происходит <strong>переопределение</strong> экспортируемого модуля и вызов метода <code>sayHelloInEnglish</code> или <code>sayHelloInSpanish</code> вызовет ошибку:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// main.js</span>
+	<span class="c1">// var greetings = require(&quot;./greetings.js&quot;);</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * TypeError: object Bonjour has no</span>
+<span class="cm">	 * method &#39;sayHelloInEnglish&#39;</span>
+<span class="cm">	 */</span>
+	<span class="nx">greetings</span><span class="p">.</span><span class="nx">sayHelloInEnglish</span><span class="p">();</span>
+
+	<span class="cm">/*</span>
+<span class="cm">	 * TypeError: object Bonjour has no</span>
+<span class="cm">	 * method &#39;sayHelloInSpanish&#39;</span>
+<span class="cm">	 */</span>
+	<span class="nx">greetings</span><span class="p">.</span><span class="nx">sayHelloInSpanish</span><span class="p">();</span></code></pre></div>
+
+<p>Чтобы отследить ошибки при использовании модуля <code>greetings</code>, можно вывести их в консоль:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// &quot;Bonjour&quot;</span>
+	<span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">greetings</span><span class="p">);</span></code></pre></div>
+
+<h3 id="section-3">Заключение</h3>
+
+<p>Импорт и экспорт модулей в Node.js является ежедневной задачей. Я надеюсь, что благодаря этой статье стала ясна разница между командой <code>exports</code> и командой <code>module.exports</code>. Более того, если у вас когда-либо произойдет ошибка при доступе к общедоступным методам модуля в будущем, то я надеюсь, что у вас есть лучшее понимание того, почему может возникнуть эти ошибки.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-09T00:00:00+03:00"><a href="http://zencoder.ru/javascript/require-nodejs/">November 09, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/require-nodejs/" rel="bookmark" title="Что такое require и module.exports" itemprop="url">Что такое require и module.exports</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Данная статья является <em>прочтением</em> и <em>переосмыслением</em> перевода <a href="http://habrahabr.ru/post/217901/">Node.js, Require и Exports</a> статьи-оригинала <a href="http://openmymind.net/2012/2/3/Node-Require-and-Exports/">Node.js, Require and Exports</a>.</p>
+
+<p>Помимо этого, существует еще одна неплохая статья, посвященная данной тематике - <a href="http://www.sitepoint.com/understanding-module-exports-exports-node-js/">Understanding module.exports and exports in Node.js</a>.</p>
+
+<p>Тематика данного поста посвящена двум командам Node.js - <code>require</code> и <code>module.exports</code>. Обе эти команды являются <em>служебными</em> и “принадлежат” Node.js.</p>
+
+<p>С помощью этих команд Node.js осуществляет взаимодействие своих модулей между друг другом.</p>
+
+<p>Команда <code>require</code> <strong>подключает</strong> один модуль к другому. Команда <code>module.exports</code> делает модуль <strong>доступным</strong> для других модулей.</p>
+
+<hr />
+
+<p>Ниже - краткое изложение статьи-оригинала …</p>
+
+<p>В Node.js все <em>штуки</em> видны друг другу только <strong>в рамках одного и того же файла</strong>. Под штуками я подразумеваю <em>переменные</em>, <em>функции</em>, <em>классы и их члены</em>.</p>
+
+<p>Например, у нас есть файл <code>misc.js</code> следующего содержания:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">summ</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">value</span> <span class="o">+</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Привычный <strong>доступ</strong> к константе <code>x</code> и переменной <code>summ</code> из <strong>другого файла невозможен</strong>. Это никак не связано с использованием <code>var</code>.</p>
+
+<p>Дело в том, что Node.js состоит из <strong>блоков</strong>, называемых <strong>модулями</strong>; и каждый <strong>отдельный файл</strong> по своей сути — <strong>отдельный блок</strong> (модуль), чья <strong>область видимости изолирована</strong> от других таких же блоков (модулей).</p>
+
+<p>Теперь перед тем как мы узнаем, как <strong>сделать эти штуки видимыми вне модуля</strong>, рассмотрим более подробно, как <strong>загружаются модули</strong> в Node.js.</p>
+
+<p>Сейчас речь пойдет о том месте, где пишется - <code>require</code>. Служебное слово <code>require</code> используют для <strong>загрузки модуля</strong>, обычно <strong>присваивая результат его работы какой-то переменной</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">someModule</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./some_module&#39;</span><span class="p">);</span></code></pre></div>
+
+<blockquote>
+  <p>Другими словами можно сказать, что в Node.js служебное слово <code>require</code> служит для подключения одного независимого модуля (файла) к другому независимому модулю (файлу). Принцип подключения через <code>require</code> заключается в создании в целевом модуле <strong>объекта</strong> и помещении в этот объект подключаемого модуля.</p>
+</blockquote>
+
+<p>Конечно же, до тех пор, пока наш модуль (<code>some_module</code>) ничего не <strong>отдает</strong>, все приведенные примеры бесполезны.</p>
+
+<p>А чтобы наш модуль (<code>some_module</code>) что-нибудь <strong>отдал</strong>, мы будем использовать служебное слово <code>module.exports</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kr">const</span> <span class="nx">x</span> <span class="o">=</span> <span class="mi">5</span><span class="p">;</span>
+<span class="kd">let</span> <span class="nx">summ</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">value</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">value</span> <span class="o">+</span> <span class="nx">x</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">x</span> <span class="o">=</span> <span class="nx">x</span><span class="p">;</span> <span class="c1">// сделали константу 5 доступной из других модулей</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">summ</span> <span class="o">=</span> <span class="nx">summ</span><span class="p">;</span> <span class="c1">// сделали переменную summ доступной из других модулей</span></code></pre></div>
+
+<p>Вот теперь наш модуль (<code>some_module</code>) стал гораздо <strong>более полезным</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">someModule</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./some_module&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>В результате в целевом модуле будет создан объект <code>someModule</code> со свойством <code>x = 5</code> (<code>someModule.x</code>) и методом <code>summ</code> (<code>someModule.summ</code>).</p>
+
+<p>Есть ещё такой способ отдать <em>штуки</em> из нашего модуля:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">User</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">name</span><span class="p">,</span> <span class="nx">email</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">name</span> <span class="o">=</span> <span class="nx">name</span><span class="p">;</span>
+	<span class="k">this</span><span class="p">.</span><span class="nx">email</span> <span class="o">=</span> <span class="nx">email</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">User</span><span class="p">;</span></code></pre></div>
+
+<blockquote>
+  <p>То есть, в исходном модуле создается объект <code>User</code> со свойствами <code>User.name</code> и <code>User.email</code>. Затем с помощью служебного слова <code>module.exports</code> объект <code>User</code> делается доступным для других модулей Node.js.</p>
+</blockquote>
+
+<p><strong>Разница</strong> между этими подходами <strong>не велика, но важна</strong>. Как видно, в данном случае мы экспортируем <strong>функцию напрямую</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">module</span><span class="p">.</span><span class="nx">exports</span><span class="p">.</span><span class="nx">User</span> <span class="o">=</span> <span class="nx">User</span><span class="p">;</span>
+<span class="c1">// vs</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">User</span><span class="p">;</span></code></pre></div>
+
+<p>Всё это к тому, что потом ее будет <strong>легче использовать</strong>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">user</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./user&#39;</span><span class="p">);</span>
+
+<span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">user</span><span class="p">.</span><span class="nx">User</span><span class="p">();</span>
+<span class="c1">// vs</span>
+<span class="kd">var</span> <span class="nx">u</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">user</span><span class="p">();</span></code></pre></div>
+
+<p>Выгода от использования такого способа заключается в том, что в данном случае нам не важно, будет ли ваш модуль представлять контейнер c экспортируемыми значениями или нет.</p>
+
+<p>Чтобы еще <strong>более красочно</strong> представить <strong>процесс взаимодействия модулей</strong>, давайте рассмотрим следующий пример:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">powerLevel</span> <span class="o">=</span> <span class="kd">function</span> <span class="p">(</span><span class="nx">level</span><span class="p">)</span> <span class="p">{</span>
+	<span class="k">return</span> <span class="nx">level</span> <span class="o">&gt;</span> <span class="mi">9000</span> <span class="o">?</span> <span class="s2">&quot;it&#39;s over 9000&quot;</span> <span class="o">:</span> <span class="nx">level</span><span class="p">;</span>
+<span class="p">};</span>
+<span class="nx">module</span><span class="p">.</span><span class="nx">exports</span> <span class="o">=</span> <span class="nx">powerLevel</span><span class="p">;</span></code></pre></div>
+
+<p>Когда вы подключите данный модуль используя <code>require</code>, фактически им будет являться <strong>функция</strong>, что позволит вам сделать следующее:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">someModule</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./powerlevel&#39;</span><span class="p">)(</span><span class="mi">9000</span><span class="p">);</span></code></pre></div>
+
+<p>Что, по сути, является <strong>упрощенной записью</strong> следующего кода:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">let</span> <span class="nx">someModule</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;./powerlevel&#39;</span><span class="p">);</span>
+<span class="nx">someModule</span><span class="p">(</span><span class="mi">9000</span><span class="p">);</span></code></pre></div>
+
+<p>Вот и все кратко о командах <code>require</code> и <code>module.exports</code>.</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-02T00:00:00+03:00"><a href="http://zencoder.ru/freelance/first-class-portfolio/">November 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/freelance/first-class-portfolio/" rel="bookmark" title="Создаем первоклассное портфолио" itemprop="url">Создаем первоклассное портфолио</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Данная статья <a href="http://speckyboy.com/2015/08/19/tips-for-creating-a-first-class-personal-portfolio/" title="Tips for Creating a First-Class Personal Portfolio">Tips for Creating a First-Class Personal Portfolio</a> показалась мне интересной в качестве повышения личного опыта. Советы в этой статье больше относятся к дизайнерам; но их в полной мере можно отнести и к Frontend Developer’у. Статья написана редактором и основателем <a href="http://speckyboy.com/" title="Speckyboy Design Magazine">Speckyboy Design Magazine</a> Полом Эндрю (<a href="http://speckyboy.com/author/apaulandrew/" title="Paul Andrew">Paul Andrew</a>). Ниже привожу <em>вольный перевод</em> статьи.</p>
+
+<h2 id="section">Логотип и слоган</h2>
+
+<p>Для начала начнем с основ. Ваш <strong>логотип - это ваш бренд</strong>; а <strong>ваш слоган - кто вы есть</strong>. С помощью логотипа и слогана вы должны <strong>привлечь внимание</strong> потенциальных клиентов и быстро ответить на их вопрос - “Почему?”. В противном случае посетитель быстро уйдет со страницы и тотчас забудет о вашем портфолио.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-01.png" alt="Уникальный логотип из портфолио Inal" title="Уникальный логотип из портфолио Inal" /> Уникальный логотип из портфолио <a href="http://www.inaldjafar.com/#/about">Inal</a></p>
+
+<p>Логотип должен представлять вас и ваш стиль перед потенциальным клиентом; слоган должен кратко и ясно сказать клиенту, что вы можете сделать для него ценного и полезного.</p>
+
+<p><strong>Итак, запомните:</strong> быстрый и краткий ответ на вопрос “Зачем” или же потенциальный клиент забудет о вашем портфолио раньше, нежели вы можете себе это представить.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-02.png" alt="Слоган из портфолио Mike Etheridge" title="Слоган из портфолио Mike Etheridge" /> Слоган из портфолио <a href="http://lickscreative.com/">Mike Etheridge</a></p>
+
+<h2 id="section-1">Простая навигация</h2>
+
+<p>Это истина, не требующая доказательств. Однако, все же стоить упомянуть еще раз: даже самый лучший сайт - это плохой сайт, если его навигация не интуитивно понятная.</p>
+
+<p>Если в портфолио нельзя быстро и легко увидеть примеры ваших работ, то становится неважным сам факт, насколько хороши ваши работы сами по себе.</p>
+
+<p>Потенциальный клиент будет чувствовать себя обманутым в своих ожиданиях и скорее всего отправиться искать другого исполнителя.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-03.png" alt="Простая и доступная навигация из портфолио Robin Man" title="Простая и доступная навигация из портфолио Robin Man" /> Простая и доступная навигация из портфолио <a href="http://www.robinman.com/">Robin Man</a></p>
+
+<p>Сделайте навигацию в вашем портфолио <strong>настолько простой, насколько это возможно</strong>. Упростите и укоротите пункты меню; сделайте страницы меньшими по размеру и объедините их; сделайте стиль навигации настолько же простым, насколько и понятным.</p>
+
+<h2 id="section-2">Доступные контакты</h2>
+
+<p>Какая самая главная задача, ради которой создается портфолио? Привлечь клиентов и получить хорошо оплачиваемые заказы от них. И самый простой способ сделать это - помощь потенциальному заказчику <strong>связаться с вами</strong>; тем самым вы увеличите шансы получить от клиента оплачиваемый заказ.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-04.png" alt="Кнопка &quot;Связаться со мной&quot; из портфолио Matthew Miller" title="Кнопка &quot;Связаться со мной&quot; из портфолио Matthew Miller" /> <a href="http://mmmatt.com/">Matthew Miller</a></p>
+
+<h2 id="section-3">Показывайте только лучшее</h2>
+
+<p>В портфолио должны быть представлены <strong>только самые лучшие работы</strong>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-05.png" alt="Страница из портфолио Camille Leonard" title="Страница из портфолио Camille Leonard" /> Страница из портфолио <a href="http://camille-leonard.fr/">Camille Leonard</a></p>
+
+<p>Думайте о своем портфолио как об альбоме с лучшими хитами. В вашем портфолио должны быть только <strong>самые лучшие</strong>, <strong>самые выразительные</strong>, <strong>самые яркие</strong> работы; все, что не отвечает этим требованиям, должно быть убрано из портфолио.</p>
+
+<p>Точно также, как безупречный альбом с лучшими хитами снова и снова привлекает новых фанатов, так и портфолио с безупречным дизайном должно снова и снова поражать воображение и привлекать новых заказчиков.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-06.png" alt="Продвинутая страница портфолио Kata Farkas" title="Продвинутая страница портфолио Kata Farkas" /> Продвинутая страница портфолио <a href="http://katafarkas.com/">Kata Farkas</a></p>
+
+<h2 id="section-4">Сортируйте ваши работы</h2>
+
+<p>Этот совет является частью ранее рассмотренного совета по созданию простой и понятной навигации портфолио. Отсортируйте образцы ваших работ таким образом, чтобы можно было легко и просто перемещаться между ними.</p>
+
+<p>Скажем так: даже если у вас имеется только десять самых лучших работ, то отсортировав их по логотипам, сайтам, баннерам и так далее, вы тем самым сделаете просмотр этих образцов <strong>более удобным и простым</strong>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-07.png" alt="Каталогизация работ в портфолио Huncwot" title="Каталогизация работ в портфолио Huncwot" /> Каталогизация работ в портфолио <a href="http://huncwot.com/">Huncwot</a></p>
+
+<h2 id="section-5">Добавьте отзывы</h2>
+
+<p>Подтверждение ваших навыков клиентами, с которыми вы уже работали, является наиболее эффективным способом свести в минимуму риски для новых потенциальных заказчиков.</p>
+
+<p>Судите сами: вы лично не уверены в профессиональных способностях дизайнера, которому хотели бы предложить работу; но при этом вы видите, что остальные люди высоко оценивают его работу; насколько высока вероятность того, что вы сами предложите ему работу?</p>
+
+<p>Основная цель наличия отзывов в портфолио - уменьшить риск для потенциальных заказчиков и расположить их к тому, чтобы дать вам шанс попробовать поработать с ними.</p>
+
+<h2 id="section-6">Что вы умеете</h2>
+
+<p>Как вы уже могли заметить, основная идея всех советов, представленных в этой статье - помочь заказчику определиться в своем выборе <strong>настолько легко, насколько это возможно</strong>. И данный совет ничем не отличается от всех предыдущих - четко и ясно расскажите потенциальному клиенту, <strong>какие виды работ вы готовы выполнить</strong>. Не заставляйте посетителей догадываться о том, чем именно вы занимаетесь - просто <strong>скажите им об этом</strong>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-08.png" alt="Страница с услугами из портфолио Studio Sweep" title="Страница с услугами из портфолио Studio Sweep" /> Страница с услугами из портфолио <a href="http://studiosweep.com/about/">Studio Sweep</a></p>
+
+<p>Так что общая картина выглядит примерно таким образом - посетитель заходит на ваш сайт с портфолио, сразу же видит присущий вашим работам стиль и их стоимость, оценивает ваши работы, читает отзывы предыдущих заказчиков и наконец последний недостающий кусочек в его мозаике - нужно посмотреть, что именно вы можете <strong>сделать для него</strong>.</p>
+
+<h2 id="section-7">Личная информация</h2>
+
+<p>Так как потенциальный заказчик, скорее всего, не будет встречаться с вами в личной беседе, добавьте в портфолио <strong>информацию о себе</strong>. Прежде всего, бизнес - <em>это очень личное</em>; это то, о чем договариваются люди (<em>не роботы</em>) лично между собой; и личные взаимоотношения между вами и потенциальным клиентом могут быть даже более важным моментом, нежели ваши профессиональные качества.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-09.png" alt="Страница с личной информацией из портфолио Calvin Teoh" title="Страница с личной информацией из портфолио Calvin Teoh" /> Страница с личной информацией из портфолио <a href="http://calvinteoh.com/">Calvin Teoh</a></p>
+
+<p>Вы можете добавить в свое портфолио <strong>простую страницу</strong> или же <strong>раздел</strong> с кратким описанием вас самих (<em>не ваши навыки и знания, а именно информацию о вас как о личности; о том, что вы любите и что не любите</em>).</p>
+
+<p>Вы можете также добавить <strong>ссылки на свои профили</strong> в различных социальных сетях, если вы чувствуете, что это поможет еще лучше раскрыть вас как личность. Тем самым вы еще больше упрочите потенциального клиента в его решении.</p>
+
+<h2 id="x-">X-фактор</h2>
+
+<p>Этот раздел можно считать продолжением предыдущего раздела, в котором говорилось о правильной подаче личной информации о себе. Сделайте так, чтобы ваша <strong>уникальность читалась в каждой черте вашего портфолио</strong>. В вашем конкретном случае вышесказанное относится к дизайну сайтов, размещенных в вашем портфолио.</p>
+
+<p>Почему? Да потому, что помимо вас существуют еще великое множество дизайнеров с профессиональным портфолио. И почему в таком случае потенциальный клиент должен будет прийти именно к вам, а не к любому из них?</p>
+
+<p>И снова вернемся к теме ответа на вопрос “Почему?” Если принимать во внимание X-фактор, то это поможет потенциальному заказчику ответить на его вопрос.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/portfolio-examples-10.png" alt="Уникальность дизайна из портфолио Colin Snow" title="Уникальность дизайна из портфолио Colin Snow" /> Уникальность дизайна из портфолио <a href="http://colinsnow.us/">Colin Snow</a></p>
+
+<p>В заключение можно привести ссылку на подборку из <strong>50 креативных портфолио</strong>, которые могут послужить образцом для подражания и примера - <a href="http://speckyboy.com/2013/08/15/creative-portfolios-of-50-designers/" title="50 Inspirational and Creative Portfolios Sites">50 Inspirational and Creative Portfolios Sites</a>.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-11-01T00:00:00+03:00"><a href="http://zencoder.ru/linux/workrave/">November 01, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/linux/workrave/" rel="bookmark" title="Workrave - бережем зрение" itemprop="url">Workrave - бережем зрение</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Тема этого поста не совсем относится к web-разработке, хотя косвенно касается ее. Данный пост будет посвящен здоровью - а точнее, <strong>проблеме поддержания зрения в более или менее нормальном состоянии</strong>.</p>
+
+<p>Frontend-разработчики, так как же как и программисты, проводят огромное количество часов за мониторами компьютеров. Такая непосильная нагрузка на зрение не может не сказаться отрицательно на последнем.</p>
+
+<p>Чтобы облегчить нагрузку на глаза, необходимо периодически давать возможность отдохнуть последним. Для этой цели существуют программы особого рода, которые относят к классу <a href="https://en.wikipedia.org/wiki/Repetitive_strain_injury" title="Repetitive Strain Injury">Repetitive Strain Injury (RSI)</a>. По-русски такой термин звучит как <a href="https://goo.gl/HlnEny" title="Спазм аккомодации">Спазм аккомодации</a>.</p>
+
+<p>Такое нарушение зрения хоть и не является болезненным, но все же это неприятное явление. Которое, если не лечить (или не предупредить) его, приводит к дальнейшему прогрессу близорукости со всеми вытекающими последствиями.</p>
+
+<p>В статье будет рассмотрен процесс знакомства с программой <a href="http://www.workrave.org/" title="Workrave">Workrave</a>, бесплатной и хорошо проработанной. Эта программа доступна под OS Linux любого семейства из соответствующего репозитория.</p>
+
+<p>Под OS X автор не нашел достойного бесплатного аналога программы <a href="http://www.workrave.org/" title="Workrave">Workrave</a>. Как заменитель, автор использует программу из класса <a href="https://en.wikipedia.org/wiki/Pomodoro_Technique" title="Pomodoro Technique">Pomodoro</a> - удобное сочетание <em>планирования рабочего времени</em> и <em>предупреждения <a href="https://en.wikipedia.org/wiki/Repetitive_strain_injury" title="Repetitive Strain Injury">RSI</a></em>.</p>
+
+<p>Под Windows программы класса <a href="https://en.wikipedia.org/wiki/Repetitive_strain_injury" title="Repetitive Strain Injury">Repetitive Strain Injury (RSI)</a> рассматриваться не будут, ибо - если вы используете Windows - мои вам соболезнования.</p>
+
+<h2 id="workrave">Workrave</h2>
+
+<p>В этом разделе я хочу поделиться своим видением процесса настройки и использования программы <a href="http://www.workrave.org/" title="Workrave">Workrave</a>. Почему так? Как мне кажется, <a href="http://www.workrave.org/documentation/" title="Workrave Documentation">документация</a> на официальном сайте Workrave весьма скудная и плохо организованная. Русскоязычные статьи по использованию программы Workrave есть, но меня не удовлетворило их качество.</p>
+
+<p>А вот настройка и использование программы Workrave автору кажется делом <strong>не совсем интуитивно понятным</strong>.</p>
+
+<p>Установка Workrave не должна вызывать каких-либо проблем. Она имеется в репозитории любого Linux-дистрибутива. После установки нужно обязательно ее настроить. Но - не забыть добавить программу в автозагрузку! ))</p>
+
+<p>Панель настроек <strong>Preferences</strong> разбита на <strong>три основных раздела</strong> - <strong>Timers</strong>, <strong>User Interface</strong>, <strong>Network</strong>.</p>
+
+<p>Раздел <strong>Timers</strong> - самый обширный и самый главный. С него и начнем.</p>
+
+<h3 id="workrave---timers">Workrave - Timers</h3>
+
+<p>Чтобы легко разобраться в настройках этого раздела, нужно понять принцип работы программы Workrave.</p>
+
+<p>Все время в Workrave делится на <strong>три категории</strong>:</p>
+
+<ul>
+  <li>краткие перерывы (<strong>Micro Break</strong>)</li>
+  <li>длинные перерывы (<strong>Rest Break</strong>)</li>
+  <li>дневной лимит работы (<strong>Daily Limit</strong>)</li>
+</ul>
+
+<p>Вот как это выглядит “на деле”.</p>
+
+<p>Пользователь работает за компьютером, на котором запущена программа Workrave <em>в фоновом режиме</em>. Она отслеживает продолжительность работы пользователя.</p>
+
+<p>Прошло 15 минут непрерывной работы на компьютером - настало время <strong>краткого перерыва</strong> (Micro Break) продолжительностью 30 секунд. Нужно отвести взгляд от монитора и по желанию - просто посмотреть вдаль или сделать какое-либо упражнение для глаз (<em>советую просто закрыть глаза - прекрасный способ дать отдохнуть</em>).</p>
+
+<p>Обмануть программу и продолжить работать не получиться - Workrave выводит <a href="https://goo.gl/8N25Dm" title="Модальное окно">модальное окно</a> с отсчетом времени, которое блокирует Desktop и не дает доступа к нему.</p>
+
+<p>Прошло 30 секунд - модальное окно пропадает и пошел отсчет нового 15-минутного отрезка работы. И так до тех пор, пока не настает черед <strong>длинного перерыва</strong> (Rest Break) продолжительностью 10 минут.</p>
+
+<p>Конечно, 10 минут торчать за компом (<em>бездельничая</em>) никто не будет, поэтому есть смысл встать, сходить за кофе и так далее - по вкусу.</p>
+
+<p><strong>Длинный перерыв</strong> (Rest Break) закончился - начался отчет нового длинного перерыва (Rest Break), состоящего из серии кратких перерывов (Micro Break).</p>
+
+<p>Когда общее время работы за компьютером достигнет четырех часов - все, пора бросать работу за компом, ибо настал <strong>Daily Limit</strong>!</p>
+
+<p>Приведенные выше цифры являются предустановками по умолчанию (<em>и то - я привел их по памяти, так как изменил на свои собственные</em>). Но суть не в цифрах - суть в принципе работы программы Workrave; а он, как мне кажется, стал понятен.</p>
+
+<p>Поэтому давайте откроем окно настроек программы Workrave и несколько углубимся в детали.</p>
+
+<p>На каждой из вкладок - <strong>Micro Break</strong>, <strong>Rest Break</strong>, <strong>Daily Limit</strong> имеется галочка <strong>Enable Timer</strong>, смысл которой должен быть понятен - включить или выключить этот тип таймера. Другими словами, нужен ли такой тип таймера в вашем рабочем процессе.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/workrave-microbreak.png" alt="Workrave Microbreak" title="Workrave Microbreak" /></p>
+
+<p>На вкладках <strong>Micro Break</strong> и <strong>Rest Break</strong> имеются одинаковые разделы <strong>Timers</strong>. Здесь устанавливаются продолжительность работы (<em>Time between breaks</em>) и продолжительность отдыха (<em>Break duration</em>) в каждом конкретном случае.</p>
+
+<p>Например, в моем случае для <strong>Micro Break</strong> я установил продолжительность работы (<em>Time between breaks</em>) в 19 минут, а продолжительность отдыха (<em>Break duration</em>) - в 1 минута. В сумме получается - 60 минут.</p>
+
+<p>Для <strong>Rest Break</strong> я установил (<em>Time between breaks</em>) в 1 час. То есть, один <strong>Rest Break</strong> состоит из трех <strong>Micro Break</strong>. Продолжительность отдыха (<em>Break duration</em>) для <strong>Rest Break</strong> я установил в 10 минут. Другими словами - один час поработал, встал и отдохнул 10 минут.</p>
+
+<p>Продолжительность дневной работы <strong>Daily Limit</strong> я установил в 6 часов с перерывом 20 минут. То есть - отработал 6 часов (или 6 <strong>Rest Breaks</strong>) и отдыхаешь 20 минут. Название <strong>Daily Limit</strong> (<em>Дневной лимит</em>) конечно чисто условное - можно установить и 12-часовой режим работы ))</p>
+
+<p>Таймер <strong>Postpone time</strong> служит для установки времени, на которое следует <strong>отложить прерыв</strong>. Здесь нужно немного подробнее остановиться.</p>
+
+<p>Дело в том, что на каждом <a href="https://goo.gl/8N25Dm" title="Модальное окно">модальном окне</a> программы Workrave имеется кнопка <strong>Postpone</strong> (<em>Отложить</em>).</p>
+
+<p>Смысл этой кнопки вот в чем - вам в голову пришла светлая идея и вы в азарте стучите по клавишам, чтобы материализовать ее; и тут бац - выскакивает надоедливое окно программы Workrave с предупреждением - “Бросай работать!”.</p>
+
+<p>И тут на помощь приходит кнопка <strong>Postpone</strong> - вы нажимаете ее и Workrave соглашается на три минуты (<em>значение по умолчанию</em>) заткнуться и не беспокоить вас, чтобы дать возможность закончить важный момент работы.</p>
+
+<p>Если вы не доверяете самому себе, то можно убрать кнопку <strong>Postpone</strong> из модального окна Workrave. Для этого в разделе <strong>Options</strong> нужно снять галочку <strong>Show ‘Postpone’ button</strong>. И тогда вы не сможете обмануть программу Workrave, так как не сможете отсрочить очередной запанированный перерыв.</p>
+
+<p>Помимо кнопки <strong>Postpone</strong>, в модальном окне Workrave имеется еще одна кнопка - <strong>Skip</strong>. Смысл ее понятен без перевода - это когда время не терпит и плевать на все перерывы. При нажатии на нее пропускается конкретный текущий таймер (<strong>Micro Break</strong> или <strong>Rest Break</strong>) и тотчас запускается отсчет нового таймера.</p>
+
+<p>Если был пропущен <strong>Micro Break</strong>, то начнется отсчет нового <strong>Micro Break</strong>; если был пропущен <strong>Rest Break</strong>, то начнется отсчет нового <strong>Rest Break</strong> с входящими в его состав <strong>Micro Breaks</strong>.</p>
+
+<p>Также есть возможность отключить кнопку <strong>Skip</strong> в модальном окне Workrave. Это делается в разделе <strong>Options</strong>, строка <strong>Show ‘Skip’ button</strong>.</p>
+
+<p>Секция <strong>Break prompting</strong> наименее важная и смысл ее существования сводится к одной вещи - предупреждать о готовящемся очередном перерыве (Prompt before breaking). Число попыток (Maximum number of prompts), которые программа Workrave сделает, чтобы выполнить перерыв, по умолчанию равно трем.</p>
+
+<p>На вкладке <strong>Rest Break</strong> имеются две дополнительные строки. Первая строка <strong>Number of exercises</strong> служит для установки количества упражнений. Что это такое - упражнения?</p>
+
+<p>Дело в том, что в программе Workrave имеются слайды с упражнениями-гимнастикой, служащей для снятия напряжения, разминки. Количество слайдов - это количество упражнений (от 1 до 10), которые программа Workrave будет предлагать вам сделать во время длительного перерыва (Rest Break).</p>
+
+<p>Вторая строка <strong>Start restbreak when screen is locked</strong> - это предложить программе запускать длительный перерыв (Rest Break) когда подойдет его время даже тогда, когда экран монитора заблокирован.</p>
+
+<p>Мне данная настройка кажется немножко лукавой, ибо монитор в Linux блокируется, как правило, при неактивности системы в течение заданного промежутка времени; или когда хозяин вышел отдохнуть и заблокировал монитор от взглядов любопытных коллег. Другими словами - пользователь и так отдыхает от монитора.</p>
+
+<p>Вкладка <strong>Daily Limit</strong> также практически ничем не отличается от предыдущих двух. За одним исключением - есть строка <strong>Regard micro-breaks as activity</strong>. Она просто говорит о том, что <strong>Daily Limit</strong> нужно запускать несмотря на то, что одновременно запущен краткий перерыв <strong>Micro Break</strong>.</p>
+
+<p>С самым большим и важным разделом <strong>Timers</strong> разобрались. Пора переходить к остальным двум.</p>
+
+<h3 id="workrave---user-interface">Workrave - User interface</h3>
+
+<p>Раздел <strong>User interface</strong> не столь важен для настройки программы Workrave. Первые две вкладки <strong>General</strong> и <strong>Sounds</strong> можно смело пропустить.</p>
+
+<p><strong>UPD.</strong> Хотя нет - на вкладке <strong>Sounds</strong> можно поиграться с настройкой звуковых эффектов предупреждения появления окна, самого появления и закрытия окна. На мой вкус, установленные для этих событий звуки уж слишком похожи друг на друга. Трудно отличить на слух, открывается оно или закрывается. Но для этого нужно подбирать свои собственные звуковые файлы - а это время нужно.</p>
+
+<p>На третьей вкладке <strong>Status Window</strong> убрать галочки в секции <strong>Display</strong> - строки <strong>Show status window</strong> и <strong>The status windows stays always on top of other windows</strong>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/workrave-preferences-user_interface-status_window.png" alt="User Interface Status Window" title="User Interface Status Window" /></p>
+
+<p>На вкладке <strong>Applet</strong> мне кажется весьма полезным убрать галочку <strong>Applet enabled</strong>.</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/11/workrave-preferences-user_interface-applet.png" alt="User Interface Applet" title="User Interface Applet" /></p>
+
+<p>Все эти действия позволят “запрятать” программу Workrave в фоновый режим и не мешать основной работе. Теперь напоминания о перерывах (<strong>Micro Rest</strong>, <strong>Rest Break</strong>, <strong>Daily Limit</strong>) будут появляться только тогда, когда наступит их черед.</p>
+
+<h3 id="workrave---network">Workrave - Network</h3>
+
+<p>Раздел <strong>Network</strong> для меня не представляет никакого интереса, поэтому я оставил его “как есть”. Но возможности данного раздела достаточно интересные.</p>
+
+<p>Как говорится в Википедии:</p>
+
+<blockquote>
+  <p>Workrave можно управлять по сети — например, чтобы контролировать отдых детей от компьютерных игр или получать сообщения о перерывах, пользуясь несколькими компьютерами.</p>
+</blockquote>
+
+<h2 id="section">Заключение</h2>
+
+<p>Вот и все, что мне кажется нужным сказать о программе Workrave.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-08-30T00:00:00+03:00"><a href="http://zencoder.ru/sublime/text/sublime-linting/">August 30, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -154,7 +733,7 @@
       
     </div><!-- /.entry-meta -->
     
-      <h1 class="entry-title"><a href="http://zencoder.ru/sublime/text/sublime-linting/" rel="bookmark" title="SublimeLinter - обнаружение ошибок в Sublime Text" itemprop="url">SublimeLinter - обнаружение ошибок в Sublime Text</a></h1>
+      <h1 class="entry-title"><a href="http://zencoder.ru/sublime/text/sublime-linting/" rel="bookmark" title="SublimeLinter - обнаружение ошибок" itemprop="url">SublimeLinter - обнаружение ошибок</a></h1>
     
   </header>
   <div class="entry-content">
@@ -174,7 +753,7 @@
 
 <p>Как уже упоминалось ранее, плагин SublimeLinter является фреймворком, основой для более маленьких плагинов (linter), которые осуществляют непосредственный поиск синтаксических ошибок в программном коде.</p>
 
-<p>Поэтому первоначально необходимо установить этот фреймворк (как плагин) в редактор Sublime Text и самый простой способ это сделать - воспользоваться менеджером пакетов <a href="https://packagecontrol.io/" title="Package Control">Package Control</a>. Для этого нажимаем сочетание клавиш <kbd>Shift+Ctrl+P</kbd> (Linux\Windows) или <kbd>Shift+Cmd+P</kbd> (Mac OSX). В поле поиска вводим название устанавливаемого пакета - <a href="https://packagecontrol.io/packages/SublimeLinter" title="SublimeLinter Package Control">SublimeLinter</a>. Далее - производим установку.</p>
+<p>Поэтому первоначально необходимо установить этот фреймворк (как плагин) в редактор Sublime Text и самый простой способ это сделать - воспользоваться менеджером пакетов <a href="https://packagecontrol.io/" title="Package Control">Package Control</a>. Для этого нажимаем сочетание клавиш <kbd>Shift+Ctrl+P</kbd> (Linux \ Windows) или <kbd>Shift+Cmd+P</kbd> (Mac OSX). В поле поиска вводим название устанавливаемого пакета - <a href="https://packagecontrol.io/packages/SublimeLinter" title="SublimeLinter Package Control">SublimeLinter</a>. Далее - производим установку.</p>
 
 <p>Теперь необходимо определиться с тем, в каких языках программирования необходимо “отлавливать” ошибки. Другими словами, на каких языках программирования вы пишете и в каких из них вам необходима поддержка SublimeLinter.</p>
 
@@ -310,497 +889,6 @@
 <p>Плагин SublimeLinter является очень мощным и гибким, а количество поддерживаемых им язык - очень большое. Вы можете посетить <a href="https://packagecontrol.io/search/sublimelinter" title="Package Control Sublime Linter List">страницу поддерживаемых языков</a>, чтобы убедиться в богатом выборе поддерживаемых языков программирования, разметки и многих других.</p>
 
 <p>Рассмотренные в этой статье возможности плагина SublimeLinter являются далеко не исчерпывающими. На <a href="http://www.sublimelinter.com/en/latest/about.html" title="SublimeLinter">официальной странице документации</a> вы всегда найдете для себя что-то новое. Для этого нужно только периодически просматривать эту документацию.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-08-13T00:00:00+03:00"><a href="http://zencoder.ru/javascript/chartjs/">August 13, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/chartjs/" rel="bookmark" title="Создание диаграмм с помощью Chart.js" itemprop="url">Создание диаграмм с помощью Chart.js</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>“Контент - это король”. Все мы слышали или читали эту фразу, в которой выражена важность качественного содержания ресурса для повышения конверсии сайта, как следствие хорошей поисковой оптимизации. Однако, в то время как качественное текстовое наполнение прекрасно работает для поисковых машин, часто бывает так, что посетителям сайта гораздо проще понять основную информацию сайта, глядя на изображение или диаграмму.</p>
-
-<p>Например, если конкретный сайт специализируется на освещении вопросов каких-либо исследований, описание самих исследований конечно же является важной информацией; но диаграмма, в которой обобщаются данные исследования, будет не менее полезной для посетителей данного сайта.</p>
-
-<p>В этой статье будет идти речь о JavaScript-библиотеке под названием Chart.js, которая использует HTML-элемент <code>canvas</code> для создания диаграмм на странице. После краткого обзора библиотеки в статье будут представлены два примера использования Chart.js.</p>
-
-<h2 id="chartjs">Что такое Chart.js</h2>
-
-<p><a href="http://www.chartjs.org/" title="Chart.js">Chart.js</a> является JavaScript-библиотекой, с помощью которой можно создавать на странице различные типы диаграмм; при этом используются возможности HTML5-элемента <code>canvas</code>. Если речь зашла об элементе <code>canvas</code>, то это означает, что необходимо использовать <code>polyfill</code> для обеспечения поддержки этого элемента в старых версиях браузеров. В качестве примера одного из таких <code>polyfill</code> можно привести <a href="https://github.com/arv/explorercanvas" title="ExplorerCanvas">ExplorerCanvas</a>, находящийся по указанной ссылке.</p>
-
-<p>Библиотека Chart.js не имеет каких-либо зависимостей; размер ее так мал, что составляет примерно 11Kb в минифицированном, конкатенированном и архивированном виде. Однако, есть возможность еще уменьшить размер библиотеки путем включения в нее только тех модулей, которые необходимы в конкретном случае; то есть, если нет необходимости в поддержке всех шести типов диаграмм, включенных по умолчанию в ядро Chart.js.</p>
-
-<p>К примеру, если на конкретной странице нужно создать только диаграмму линейного типа (bar chart), то можно подключить лишь ядро библиотеки Chart.js и модуль, с помощью которого создаются диаграммы подобного типа; таким образом, будет уменьшен общий размер библиотеки Chart.js и увеличена скорость загрузки сайта в целом.</p>
-
-<p>Другой замечательной особенностью библиотеки Chart.js является тот факт, что создаваемые ею диаграммы адаптивные; то есть, они могут изменять свой размер при изменения размеров окна браузера таким образом, чтобы эффективно занимать все доступное для этого пространство страницы.</p>
-
-<p>И наконец, в отличие от многих других библиотек подобного рода, которые можно найти на просторах Интернет, Chart.js имеет <a href="http://www.chartjs.org/docs/" title="Chart.js Documentation">подробную и хорошо изложенную документацию</a>, с помощью которой можно легко создавать как простые, так и сложные образцы диаграмм.</p>
-
-<p>В следующем разделе статьи будет рассмотрен процесс получения и подключения библиотеки Chart.js в текущий проект.</p>
-
-<h2 id="chartjs-1">Начало работы с Chart.js</h2>
-
-<p>Перед использованием библиотеки Chart.js ее необходимо скачать и подключить к странице, на которой планируется создать одну или несколько диаграмм. Существует два способа получить библиотеку Chart.js. Первый способ заключается в использовании <a href="https://github.com/nnnick/Chart.js" title="Chart.js GitHub">GitHub репозитория</a>. Второй способ - это воспользоваться менеджером Bower при помощи команды такого вида:</p>
-
-<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>bower install chartjs --save</code></pre></div>
-
-<p>Будучи скачанной, библиотека подключается на страницу как обычный JavaScript-файл. В приведенном ниже примере производится подключение Chart.js со всеми ее модулями по-умолчанию:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;path/to/Chart.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
-
-<p>В приведенном примере обратите внимание на заглавную букву в имени подключаемой библиотеки Chart.js. Это не совсем обычный способ, когда имя подключаемой библиотеки начинается с заглавной буквы. Поэтому, если после подключения Chart.js на странице отображается 404-я ошибка, то знайте, в чем заключается данная ошибка.</p>
-
-<p>После подключения библиотека Chart.js предоставляет все встроенные в нее методы через глобальную переменную с именем Chart. Теперь все готово для того, чтобы создать нашу первую диаграмму.</p>
-
-<p>Для этого необходимо инициализировать новый Chart-объект путем передачи ему 2d-контекста элемента <code>canvas</code>, который будет использоваться для создания в нем диаграммы. Чтобы понять основную идею этого шага, представим себе, что на странице имеется следующий элемент:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;skills&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
-
-<p>Если нужно в этом элементе нарисовать круговую диаграмму (pie chart), то пишется следующее выражение:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;skills&#39;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">skillsChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">Pie</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span></code></pre></div>
-
-<p>где аргумент <code>data</code>, не представленный в данном примере, является переменной, в которой содержатся данные для отображения в диаграмме.</p>
-
-<p>Теперь, когда нам известны основные принципы подключения Chart.js, пора переходить к конкретным примерам. Для краткости изложения материала я буду использовать в нижеследующих примерах полную версию библиотеки Chart.js; но при желании читатель может найти все необходимые модули по отдельности, в директории “src”.</p>
-
-<p>Примечание переводчика: автор статьи немногословен; в данном случае требуется некоторая расшифровка вышесказанного; примерный вид подключения ядра библиотеки Chart.js и необходимого модуля выглядит таким образом:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;../src/Chart.Core.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
-<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;../src/Chart.Doughnut.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
-
-<h2 id="section">Создание круговой диаграммы</h2>
-
-<p>В этом разделе статьи будет показан пример создания круговой диаграммы, в которой представлены профессиональные навыки гипотетического web-разработчика (в эту диаграмму будет включен язык Java, поэтому этим гипотетическим разработчиком я не могу быть ни в коей мере).</p>
-
-<p>Как уже можно было догадаться, первым шагом будет создание нового элемента <code>canvas</code>, в котором и будет прорисовываться круговая диаграмма:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;skills&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;300&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
-
-<p>Теперь необходимо воспользоваться данными, которые будут отображаться в диаграмме. В реальной жизни такие данные получаются с сервера каким-либо образом; в нашем же случае будет использоваться статический вариант, без использования сервера. Для круговой диаграммы необходимо получить массив объектов, каждый из которых обладает несколькими свойствами.</p>
-
-<p>Однако, для простоты и легкости понимания эти объекты будут обладать минимумом свойств - значение, которое будет отображено в диаграмме; цвет сектора на круговой диаграмме; надпись для сектора:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">pieData</span> <span class="o">=</span> <span class="p">[</span>
-  <span class="p">{</span>
-    <span class="nx">value</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
-    <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Java&#39;</span><span class="p">,</span>
-    <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;#811bd6&#39;</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nx">value</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
-    <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Scala&#39;</span><span class="p">,</span>
-    <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;#9cbaba&#39;</span>
-  <span class="p">},</span>
-  <span class="p">{</span>
-    <span class="nx">value</span><span class="o">:</span> <span class="mi">35</span><span class="p">,</span>
-    <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;HTML&#39;</span><span class="p">,</span>
-    <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;#6ae128&#39;</span>
-  <span class="p">}</span>
-<span class="p">]</span></code></pre></div>
-
-<p>В завершение, как было показано в предыдущем разделе статьи, необходимо получить 2d-контекст конкретного canvas-элемента и инициализировать новый Chart-объект:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;skills&#39;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">skillsChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">Pie</span><span class="p">(</span><span class="nx">pieData</span><span class="p">);</span></code></pre></div>
-
-<p>Ниже показан примерный результат того, что можно получить с помощью библиотеки Chart.js:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/pie-chartjs.png" alt="Pie Chart" /></p>
-
-<p>Результатом приведенного выше кода будет круговая диаграмма (pie chart), код которого можно увидеть на странице примера - <a href="http://jsfiddle.net/fq6hy784/" title="Pie Chart JSFiddle">Pie Chart JSFiddle</a>.</p>
-
-<h2 id="section-1">Создание столбцовой диаграммы</h2>
-
-<p>В следующем примере будет создана столбцовая (bar chart) диаграмма, на которой будет отображена динамика изменения количества клиентов гипотетической компании в зависимости от их национальности, за 2010 год и за 2014 год. Также, как и в предыдущем примере, для этой цели будет использоваться элемент <code>canvas</code>, размещенный на странице в виде такого примера:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;clients&quot;</span> <span class="na">width=</span><span class="s">&quot;500&quot;</span> <span class="na">height=</span><span class="s">&quot;400&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
-
-<p>Затем создаем данные для нашей вымышленной компании:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">barData</span> <span class="o">=</span> <span class="p">{</span>
-  <span class="nx">labels</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Italy&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;USA&#39;</span><span class="p">,</span><span class="s1">&#39;Germany&#39;</span><span class="p">,</span><span class="s1">&#39;France&#39;</span><span class="p">,</span><span class="s1">&#39;Japan&#39;</span><span class="p">],</span>
-  <span class="nx">datasets</span><span class="o">:</span> <span class="p">[</span>
-    <span class="p">{</span>
-      <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;2010 customers #&#39;</span><span class="p">,</span>
-      <span class="nx">fillColor</span><span class="o">:</span> <span class="s1">&#39;#382765&#39;</span><span class="p">,</span>
-      <span class="nx">data</span><span class="o">:</span> <span class="p">[</span><span class="mi">2500</span><span class="p">,</span><span class="mi">1902</span><span class="p">,</span><span class="mi">1041</span><span class="p">,</span><span class="mi">610</span><span class="p">,</span><span class="mi">1245</span><span class="p">,</span><span class="mi">952</span><span class="p">]</span>
-    <span class="p">},</span>
-    <span class="p">{</span>
-      <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;2014 customers #&#39;</span><span class="p">,</span>
-      <span class="nx">fillColor</span><span class="o">:</span> <span class="s1">&#39;#7bc225&#39;</span><span class="p">,</span>
-      <span class="nx">data</span><span class="o">:</span> <span class="p">[</span><span class="mi">3104</span><span class="p">,</span><span class="mi">1689</span><span class="p">,</span><span class="mi">1318</span><span class="p">,</span><span class="mi">589</span><span class="p">,</span><span class="mi">1199</span><span class="p">,</span><span class="mi">1436</span><span class="p">]</span>
-    <span class="p">}</span>
-  <span class="p">]</span>
-<span class="p">}</span></code></pre></div>
-
-<p>Как видно из примера, для создаваемой столбцовой диаграммы необходимо представить объект, содержащий свойство с именем <code>labels</code>, внутри которого размещены предметы сравнения - то, что будет сравниваться между собой. В нашем случае этими предметами являются названия стран: Italy, UK, USA, Germany, France, Japan.</p>
-
-<p>В дополнение к этому, нам необходимо предоставить еще одно свойство, по имени <code>datasets</code>, в котором размещены наборы объектов, каждый из которых содержит данные для сравнения. В нашем случае будет производиться сравнение между 2010 и 2014 годом, поэтому нам потребуется только два объекта.</p>
-
-<p>Внутри каждого из этих объектов необходимо задать <code>label</code> для визуальной подсказки на диаграмме, значение для каждого из объектов; а также цвет заливки для каждого из участков диаграммы.</p>
-
-<p>В результате, код для создания столбцовой диаграммы (bar chart) должен быть таким:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;clients&#39;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
-<span class="kd">var</span> <span class="nx">clientsChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">Bar</span><span class="p">(</span><span class="nx">barData</span><span class="p">);</span></code></pre></div>
-
-<p>Ниже показан примерный результат того, что можно получить с помощью библиотеки Chart.js:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/08/bar-chartjs.png" alt="Bar Chart" /></p>
-
-<p>Результатом созданного нами выше кода будет столбцовая диаграмма (bar chart), исходный код которого можно посмотреть по этой ссылке - <a href="http://jsfiddle.net/6bjy9nxh/" title="Bar Chart JSFiddle">Bar Chart JSFiddle</a>.</p>
-
-<h2 id="section-2">Заключение</h2>
-
-<p>В этой статье вы познакомились с Chart.js, JavaScript-библиотекой для быстрого и удобного создания красивых диаграмм. Как вы могли заметить, использование библиотеки не представляет каких-либо трудностей; мною были продемонстрированы примеры ее использования.</p>
-
-<p>Библиотека Chart.js также предоставляет несколько дополнительных возможностей, о которых я не упомянул в этой статье. Но вы можете легко восполнить свой пробел в этих знаниях и почитать <a href="http://www.chartjs.org/docs/" title="Chart.js Documentation">официальную документацию</a>.</p>
-
-<p>Знакомы ли были вы с этой библиотекой ранее и использовали ли ее в своей практике? Как часто и в каких проектах вы ее использовали? Если нет, то какую другую библиотеку подобного типа вы использовали?</p>
-
-<p>Оригинал статьи размещен здесь - <a href="http://www.sitepoint.com/creating-beautiful-charts-chart-js/" title="Creating Beautiful Charts with Chart.js">Creating Beautiful Charts with Chart.js</a>.</p>
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-08-03T00:00:00+03:00"><a href="http://zencoder.ru/css/adobe-extract/">August 03, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/adobe-extract/" rel="bookmark" title="Adobe Extract - замена Project Parfait" itemprop="url">Adobe Extract - замена Project Parfait</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>В июне 2014 года была написана <a href="http://webdesign.tutsplus.com/articles/quick-tip-converting-photoshop-files-to-code-with-project-parfait--cms-21179" title="Converting Photoshop Files to Code With Project Parfait">статья</a>, посвященная прекрасному инструменту для извлечения кода из PSD-макета - проекту компании Adobe под названием Project Parfait. Это был бесплатный online-инструмент, цель которого состояла в создании процесса преобразования PSD-макетов в код для команд разработчиков, использующих Photoshop как основной инструмент  при создании различных дизайнов.</p>
-
-<p>Компания Adobe произвела реинкарнацию проекта Project Parfait, добавив в него поддержку бесплатного дискового пространства и сервиса обмена <a href="https://creative.adobe.com/products/assets" title="Creative Cloud Assets">Creative Cloud Assets</a>, а также переименовав его в <strong>Extract</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/extractoverview.png" alt="Adobe Extract" title="Adobe Extract" /></p>
-
-<p>Проект Extract сохранил всю существующую функциональность Project Parfait, а интеграция с CC Files наряду с новой возможностью обмена файлами позволила улучшить и ускорить взаимодействие между веб-дизайнерами и веб-разработчиками.</p>
-
-<p>Ниже представлен пример работы в Extract.</p>
-
-<h2 id="section">Загрузка или синхронизация файлов</h2>
-
-<p>Использование Extract начинается с загрузки или синхронизации PSD-файлов в личном дисковом online-пространстве Creative Cloud, размер которого составляет как минимум 2GB и бесплатно предоставляется любому пользователю, зарегистрированному в Creative Cloud.</p>
-
-<p>Загрузить файлы на сервер можно двумя способами. Первый способ заключается в использовании <a href="http://www.adobe.com/ru/creativecloud.html" title="Adobe Creative Cloud">web-интерфейса</a>, доступного через любой web-браузер. Второй способ основан на использовании специального <a href="https://helpx.adobe.com/ru/creative-cloud/help/creative-cloud-desktop.html" title="Creative Cloud Desktop">desktop-приложения</a>, с помощью которого можно автоматически синхронизировать файлы на локальном компьютере с файлами в облачном сервисе Creative Cloud:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/ccfiles.png" alt="Creative Cloud" title="Creative Cloud" /></p>
-
-<p>Второй способ является наиболее простым и надежным, поэтому в дальнейших шагах этой статьи будет использоваться именно этот способ.</p>
-
-<p>Первым делом, необходимо <a href="https://helpx.adobe.com/ru/creative-cloud/help/creative-cloud-desktop.html" title="Creative Cloud Desktop">скачать приложение</a> и установить его в системе, а затем авторизоваться в нем с помощью личного Adobe ID. Открыв приложение, необходимо в нем перейти на вкладку <strong>Assets</strong>, а внутри этой вкладки перейти в еще одну вкладку <strong>Files</strong>. Должно получиться примерно следующее:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/ccapp.png" alt="Creative Cloud Application" title="Creative Cloud Application" /></p>
-
-<p>В этом окне опускаемся вниз и нажимаем кнопку <strong>Open Folder</strong>, что приведет к автоматическому открытию папки <strong>Creative Cloud Files</strong> на локальном компьютере. Находясь внутри этой папки, необходимо скопировать PSD-файл из другого источника сюда, что автоматически запустит синхронизацию с облачным пространством Creative Cloud.</p>
-
-<p>Когда операция загрузки на сервер Creative Cloud будет успешно завершена, на миниатюре PSD-файла появиться маленькая зеленая галочка, как в данном случае:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/ccfinder.png" alt="Creative Cloud Upload" title="Creative Cloud Upload" /></p>
-
-<p>Если теперь снова вернуться назад, в web-интерфейс Creative Cloud, то обнаружим там миниатюру только что загруженного PSD-файла, готового для открытия в Extract:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/clickthumbnail.png" alt="Creative Cloud Thumbnail" title="Creative Cloud Thumbnail" /></p>
-
-<h2 id="extract">Работа в Extract</h2>
-
-<p>Для того, чтобы открыть загруженный в Creative Cloud файл Photoshop, нужно щелкнуть мышью по миниатюре этого файла, затем снова щелкнуть мышью на этот раз по вкладке <strong>Extract</strong> (на изображении ниже она помечена как <strong>Preview</strong>). PSD-файл тотчас же отобразится в окне приложения Extract, готовый для извлечения из него CSS-кода:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/extracttab.png" alt="Extract Tab" title="Extract Tab" /></p>
-
-<p>Процесс извлечения кода из PSD-файла в Extract остался неизменным, каким он был в приложении Project Parfait, о чем было подробно описано в предыдущей статье “Конвертирование файлов Photoshop с помощью Project Parfait”. Однако, с того момента в Extract были добавлены несколько новых возможностей, которые будут рассмотрены ниже.</p>
-
-<h2 id="extract-1">Новые возможности Extract</h2>
-
-<p>Некоторые из новых возможностей приложения Extract были унаследованы им от Project Parfait спустя некоторое время после опубликования ранее упоминавшейся статьи-обзора “Конвертирование файлов Photoshop с помощью Project Parfait”. Другие же новшества появились в Extract благодаря его интеграции с сервисом Creative Cloud.</p>
-
-<h3 id="section-1">Прозрачность тени</h3>
-
-<p>Ранее тени на CSS генерировались без поддержки прозрачности, значениями в формате HEX. Теперь имеется поддержка прозрачности теней в сгенерированном CSS-коде, значениями в формате RGBA:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/rgbashadow.png" alt="Прозрачность тени" title="Прозрачность тени" /></p>
-
-<h3 id="section-2">Настройки шрифта</h3>
-
-<p>Теперь нет необходимости работать только с пикселями (px) в качестве размера шрифтов в сгенерированном CSS-коде. В Extract добавлена поддержка единиц измерения <code>em</code> и <code>rem</code> для шрифтов:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/preferredfontunit.png" alt="Единицы измерения шрифта" title="Единицы измерения шрифта" /></p>
-
-<p>Также добавлена возможность установки базового шрифта для всей страницы в целом. Размеры шрифтов всех остальных элементов страницы будут расчитываться на основе этого базового размера, в тех единицах измерения (<code>em</code> или <code>rem</code>), которые были выбраны ранее:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/basefontsize.png" alt="Базовый размер шрифта" title="Базовый размер шрифта" /></p>
-
-<h3 id="section-3">Препроцессоры и миксины</h3>
-
-<p>В Extract была добавлена поддержка препроцессоров <a href="http://sass-lang.com/" title="Sass">Sass(SCSS)</a> и <a href="http://lesscss.org/" title="LESS">LESS</a> совместно с библиотеками миксинов для этих препроцессоров. Таким образом, теперь можно выбрать - генерировать код не в чистом CSS, а в <a href="http://sass-lang.com/" title="Sass">SCSS</a> + <a href="http://bourbon.io/" title="Bourbon">Bourbon</a> или <a href="http://lesscss.org/" title="LESS">LESS</a> + <a href="http://lesshat.madebysource.com/" title="LESSHat">LESSHat</a>. Такая возможность дает большие преимущества для тех веб-разработчиков, которые используют какой-либо из этих препроцессоров:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/preprocessors.png" alt="Поддержка препроцессоров" title="Поддержка препроцессоров" /></p>
-
-<p>Я надеюсь, что в дальнейшем в Extract будет добавлена поддержка препроцессора <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a> (поклонником которого являюсь), совместно с библиотеками миксинов под этот препроцессор - <a href="http://visionmedia.github.io/nib/" title="Nib">Nib</a> и <a href="http://kouto-swiss.io/" title="Kuoto Swiss">Kuoto Swiss</a>. Этого было бы более чем достаточно в плане поддержки препроцессоров в Extract.</p>
-
-<p>Примечание переводчика: на момент перевода данной статьи в Extract добавлена поддержка препроцессора <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a> и его библиотеки миксинов <a href="http://visionmedia.github.io/nib/" title="Nib">Nib</a>; поддержка библиотеки <a href="http://kouto-swiss.io/" title="Kuoto Swiss">Kuoto Swiss</a> отсутствует; помимо этого, добавлена поддержка супер-популярной библиотеки <a href="http://compass-style.org/" title="Compass">Compass</a> под препроцессор <a href="http://sass-lang.com/" title="Sass">Sass</a>.</p>
-
-<h3 id="section-4">Действия</h3>
-
-<p>В результате интеграции сервиса Creative Cloud в Extract добавилось новое меню <strong>Actions</strong>, в котором можно выбрать действия над редактируемым PSD-файлом: скачать файл, переименовать файл, архивировать файл или переместить файл:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/actions.png" alt="Действия с файлом" title="Действия с файлом" /></p>
-
-<h3 id="section-5">Общий доступ</h3>
-
-<p>Также благодаря интеграции Creative Cloud в Extract появилась возможность предоставления общего доступа к файлам с помощью меню <strong>Share</strong>, откуда можно выложить выполненную работу прямо в своем портфолио на <a href="https://www.behance.net/" title="Behance">Behance</a>.</p>
-
-<p>Наиболее привлекательной возможностью меню <strong>Share</strong> является его опция <strong>Send Link</strong>. С помощью которой можно отправить ссылку на файл-наработку веб-разработчику. При переходе по этой ссылке файл автоматически загрузиться и откроется для редактирования в Extract, у этого веб-разработчика.</p>
-
-<p>Веб-разработчику даже нет необходимости иметь учетную запись в Creative Cloud для того, чтобы пользоваться инструментом Extract. Это означает, что любой из членов команды разработчиков, который специализируется на создании кода, теперь совсем не обязан иметь дело с такими программами для рисования графики, как Photoshop:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/07/sharing.png" alt="Общий доступ" title="Общий доступ" /></p>
-
-<h3 id="timeline">Timeline</h3>
-
-<p>Приложение Extract абсолютно бесплатно для использования. Проект Project Parfait все еще остается доступным вплоть до октября 2014 года, с целью предоставить достаточно времени всем разработчикам, использующим его, чтобы своевременно перейти на проект Extract.</p>
-
-<p>У вас нет никакой необходимости быть платным подписчиком, чтобы иметь возможность использовать приложение Extract; поэтому, даже если вы являетесь платным подписчиком программы Photoshop, вы можете свободно отправлять свои дизайнерские наработки другим веб-разработчикам для кодинга. С другой стороны, веб-разработчик, который получил от вас ссылку на вашу наработку, совсем необязательно должен быть платным подписчиком, чтобы открыть эту ссылку. И даже больше - этот разработчик может вообще не иметь учетной записи в Creative Cloud, чтобы пользоваться приложением Extract.</p>
-
-<p>Я приглашаю всех читателей этой статьи воспользоваться сервисом Adobe Extract и высказать свои пожелания по поводу использования этого ресурса.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-08-02T00:00:00+03:00"><a href="http://zencoder.ru/css/project-parfait/">August 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/css/project-parfait/" rel="bookmark" title="Project Parfait - CSS-код из PSD-макета" itemprop="url">Project Parfait - CSS-код из PSD-макета</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Вступление переводчика: приложения Project Parfait на момент перевода данной статьи уже не существует. Продолжателем и правоприемником этого проекта является приложение  <a href="https://www.adobe.com/ru/creativecloud/extract.html" title="Creative Cloud Extract">Adobe Extract</a>. Зачем же была переведена данная статья? Все просто - здесь подробно описан процесс извлечения CSS-кода, текста и изображений точно так, как это обстоит в приложении Extract. Другими словами, читая данную статью о Project Parfait, вы учитесь работать в Extract.</p>
-
-<p><a href="https://projectparfait.adobe.com/" title="Project Parfait">Project Parfait</a> - это новый продукт компании Adobe, на данный момент имеющий версию beta. С помощью него можно открыть в браузере любой файл формата PSD для того, чтобы извлечь из него такие составляющие, как текст, изображения или наборы CSS-правил. На момент написания статьи Project Parfait работает только в браузере Chrome, но компания Adobe планирует расширить его кросс-браузерную совместимость со всеми остальными браузерами по мере продвижения разработки Project Parfait.</p>
-
-<h2 id="psd--project-parfait">Загрузка PSD в Project Parfait</h2>
-
-<p>Задача открыть PSD файл в Project Parfait чрезвычайно проста. Для этого достаточно перейти по ссылке <a href="https://projectparfait.adobe.com/" title="Project Parfait">“https://projectparfait.adobe.com/”</a> и кликнуть мышью на большой синей кнопке <strong>Upload Your Own PSD</strong>, которая размещается в правом верхнем углу страницы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/upload.png" alt="Загрузка PSD в Project Parfait" title="Загрузка PSD в Project Parfait" /></p>
-
-<p>Затем нужно войти под своей учетной записью Adobe ID и перетащить (drag’n’drop) PSD-файл на пустую панель, после чего загрузка файла начнется автоматически:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/dragdrop.png" alt="Drag and Drop PSD" title="Drag and Drop PSD" /></p>
-
-<p>После того, как загрузка PSD-файла на сервер будет закончена, достаточно кликнуть мышью на миниатюре загруженного файла для того, чтобы он открылся в Project Parfait:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/psdopen.png" alt="Открытие файла в Project Parfait" title="Открытие файла в Project Parfait" /></p>
-
-<h2 id="css-">Извлечение CSS правил</h2>
-
-<p>Для того, чтобы сгенерировать набор CSS-правил, определяющих любой элемент дизайна страницы, достаточно выбрать этот элемент щелчком мыши. Соответствующий CSS-код автоматически отобразится в правой боковой панели, в поле <strong>CSS Inspector</strong>. Из этой панели можно скопировать часть сгенерированного кода; или же весь код целиком, нажав кнопку <strong>Copy All</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/cssinspector.png" alt="CSS Inspector" title="CSS Inspector" /></p>
-
-<p>Другим способом получения сгенерированного CSS-кода является следующий. Когда любой из элементов дизайна выбран щелчком мыши, у этого элемента появляется синее всплывающее окно, в котором имеется ссылка <strong>Copy CSS</strong>, с помощью которой можно получить весь CSS-код этого элемента:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/copycss.png" alt="Копирование CSS кода" title="Копирование CSS кода" /></p>
-
-<h2 id="section">Извлечение текста</h2>
-
-<p>Синее всплывающее окно, о котором говорилось выше, может послужить еще одной задаче - извлечения текста из PSD-макета. Для этого нужно воспользоваться ссылкой <strong>Copy Text</strong> внутри этого окна:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/copytext.png" alt="Копирование текста" title="Копирование текста" /></p>
-
-<h2 id="section-1">Извлечение изображений</h2>
-
-<p>Извлечение картинок из PSD-макета с помощью Project Parfait также очень просто. Для начала нужно выбрать на макете изображение, которое будет экспортировано. Если изображение состоит из нескольких слоев, то необходимо нажать и удерживать клавишу <strong>Shift</strong> для того, чтобы выбрать все нужные слои. Затем щелчком мыши активируем большую подчеркнутую стрелочку в всплывающем окне. Отобразится диалоговое окно <strong>Save As</strong>, в котором можно задать имя для экспортируемого изображения, формат файла и качество изображения:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/saveas.png" alt="Экспортирование изображения" title="Экспортирование изображения" /></p>
-
-<p>Как только изображение будет экспортировано, оно отобразится во вкладке <strong>Assets</strong> правой панели инструментов, откуда его можно будет скачать на локальный компьютер простым щелчком мыши на этом изображении:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/assets.png" alt="Изображение во вкладке Assets" title="Изображение во вкладке Assets" /></p>
-
-<h2 id="project-parfait">Недоработки Project Parfait</h2>
-
-<p>Проект Project Parfait совсем свежий - на момент написания статьи ему исполнился только месяц, поэтому в вопросе генерации CSS правил существуют некоторые недоработки и ряд CSS-свойств, которые этот продукт не может сгенерировать. Однако, число сторонников проекта Project Parfait на его <a href="https://forums.adobe.com/community/project_parfait" title="Project Parfait Forum">форуме</a> растет; как растет и колличество обновлений для этого продукта. Поэтому я уверен, что команда Adobe активно работает в этом направлении и в скором времени стоит ожидать значительных улучшений Project Parfait.</p>
-
-<p>Ниже представлен список недоработок Project Parfait.</p>
-
-<ul>
-  <li>значения прозрачности, которые задаются для всего слоя в целом, как правило устанавливаются с помощью соответствующего значения фонового цвета слоя, в RGBA формате; альфа-канал фонового цвета используется для задания прозрачности; при экспортировании всего элемента целиком, вместе с границами, тенями и так далее, это значение прозрачности будет применено к ним вместо того отдельного значения, которое было установлено в макете для каждой из составляющих данного элемента</li>
-  <li>невозможно определить наличие множественных теней у элемента макета; если выбран элемент, у которого есть внешние и внутренние тени одновременно, то в Project Parfait они будут проигнорированы</li>
-  <li>не поддерживается прозрачность теней для элемента дизайна; вместо значений в RGBA формате Project Parfait выдает тень с непрозрачными цветами в HEX-формате</li>
-  <li>нет никакого способа извлечь изображение в качестве pattern’а, которое является фоновым изображением для макета; нет даже возможности определить границы этого pattern’а, чтобы экспортировать его как простое изображение</li>
-  <li>границы, размещенные внутри слоя, не определяются Project Parfait; однако, границы, заданные через <strong>Live Shape Properties</strong>, могут быть легко экспортированы</li>
-  <li>градиенты, сгенерированные не через CSS-свойство <code>background-color</code>, необходимо дополнять fallback’ом для браузеров, которые не поддерживают CSS-градиенты</li>
-</ul>
-
-<h2 id="project-parfait-1">Что сейчас доступно в Project Parfait</h2>
-
-<h3 id="section-2">Работа с текстом</h3>
-
-<p>В Project Parfait прекрасно реализована работа с текстом PSD-макета.</p>
-
-<p>Задача определения и генерирования целочисленных значений, таких как 100, 300, 900 для определения насыщенности шрифтов, отлично работает. Это означает, что если в PSD-макете, созданном в Photoshop, для обозначения насыщенности шрифтов были применены такие специальные слова, как “Thin”, “Light”, “Black” и так далее, то при генерации CSS-правил в Project Parfait эти обозначения будут заменены на более правильные целочисленные значения.</p>
-
-<p>В Project Parfait также прекрасно реализована работа с интерлиньяжем (line height), значение которого вычисляется как относительная величина на основе размера шрифта выбранного элемента макета.</p>
-
-<p>В дополнение к вышесказанному, если в строке текста имеются фрагменты, отличающиеся от основного теста, то Project Parfait прекрасно их распознает и для каждого из таких фрагментов сформирует дополнительный набор CSS-правил, со специальным комментарием <code>/* Inline Style */</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/inlinestyle.png" alt="Текст с различными фрагментами" title="Текст с различными фрагментами" /></p>
-
-<h3 id="section-3">Работа со слоями</h3>
-
-<p>Иногда случается так, что слои макета организованы таким образом, что расположены один над другим; или же расположены так близко друг у другу, что становится трудно выбрать один из них для дальнейшей работы с ним. В Project Parfait все слои макета вынесены в отдельную вкладку <strong>Layers</strong>, где можно легко и удобно работать с ними:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/layerstab.png" alt="Слои в отдельной вкладке" title="Слои в отдельной вкладке" /></p>
-
-<h3 id="section-4">Цветовая палитра макета</h3>
-
-<p>Как только PSD-макет загружается на сервер, Project Parfait производит его анализ и определяется все цвета, которые использовались дизайнером в его работе. Цвета группируются в цветовую палитру, которая помещается в разделе <strong>Colors</strong> правой панели инструментов. Помимо этого, при выборе любого элемента на макете, если хотя бы один цвет из созданной Project Parfait цветовой палитры использовался в этом элементе, то данный цвет автоматически подсвечивается в разделе <strong>Colors</strong>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/colorextraction.png" alt="Цветовая палитра макета" title="Цветовая палитра макета" /></p>
-
-<p>Такая возможность может быть полезна для разработчиков, которые используют препроцессоры для кодинга. В этом случае значения используемых в макете цветов могут быть определены как переменные в самом начале процесса кодинга. Эти переменные затем будут использоваться по мере необходимости на протяжении всей разработки дизайна.</p>
-
-<h3 id="section-5">Работа с градиентами</h3>
-
-<p>Точно также, как Project Parfait может определять обычные цвета на макете, имеется возможность определения градиентов. Сгенерированные для них правила можно скопировать из правой панели инструментов и использовать в кодинге. И точно также, как и с простыми цветами, любой элемент на макете, в котором использованы градиенты, при его выделении автоматически подсвечивает набор CSS-правил, которые размещены в правой панели инструментов и использовались при стилизации этого элемента:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/gradientextraction.png" alt="Работа с градиентами" title="Работа с градиентами" /></p>
-
-<p>Для разработчиков, использующих препроцессоры, Project Parfait предоставляет удобный способ скопировать сгенерированные CSS-правила и использовать их как подмешивания (mixins) при разработке дизайна.</p>
-
-<h3 id="section-6">Общая информация о шрифтах</h3>
-
-<p>Точно также, как дело обстоит с цветами и градиентами, Project Parfait предоставляет обобщенную информацию обо всех шрифтах, которые были использованы в макете, а также о размерах и насыщенности этих шрифтов:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/fontsummary.png" alt="Общая информация о шрифтах" title="Общая информация о шрифтах" /></p>
-
-<p>Это означает, что как только PSD-макет был загружен в Project Parfait, уже имеется полная информация о том, какие шрифты и с каким параметрами необходимо использовать в дальнейшем при разработке дизайна. Также имеется возможность экспортировать все размеры шрифтов в виде переменных, котрые могут буть использованы в препроцессорах.</p>
-
-<h3 id="section-7">Общая информация о разметке</h3>
-
-<p>Когда при разработке дизайна работа выполняется непосредственно в программе Photoshop, то получение информации о ширине, высоте, дистанции, положении каждого из элементов дизайна - задача не и легких. По другому дело обстоит в Project Parfait.</p>
-
-<p>Для того, чтобы получить значения высоты, ширины или координаты любого элемента, достаточно его выбрать на макете щелчком мыши и во всплывающем синем окошке будут показана вся эта информация:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/sizeposinfo.png" alt="Размеры и координаты элемента" title="Размеры и координаты элемента" /></p>
-
-<p>Если необходимо узнать расстояние между соседними элементами на макете, для этого нужно нажать и держать клавишу <strong>Shift</strong>, а затем поочередно щелчком мыши выбрать все необходимые элементы. Отобразиться информационное окно, в котором будут представлены размеры по горизонтали и вертикали, в пикселях:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2015/06/distance.png" alt="Расстояние между элементами" title="Расстояние между элементами" /></p>
-
-<h2 id="project-parfait-">Project Parfait бесплатен</h2>
-
-<p>На данный момент проект Project Parfait является бесплатным для использования. Достаточно войти в систему под своим личным Adobe ID и все готово!</p>
-
-<p>Если вы являетесь дизайнером, который ищет улучшений для своего рабочего процесса; или вы разработчик, который стремится как можно проще и быстрее преобразовать PSD-макет с код, в обоих случая Project Parfait может послужить образцом нового подхода к веб-разработке.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-27T00:00:00+03:00"><a href="http://zencoder.ru/jquery/scope-selectors-jquery/">May 27, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~1 minute
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/scope-selectors-jquery/" rel="bookmark" title="Область применения селекторов jQuery" itemprop="url">Область применения селекторов jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>В библиотеке jQuery имется возможность использования области применения селекторов, с помощью <em>контекста</em>.</p>
-
-<p>Что такое <em>контекст</em> в jQuery? Давайте рассмотрим “стандартную” запись кода на JavaScript(jQuery):</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;someClass&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>Видим в этом коде, что функции <code>$()</code> передается <strong>один аргумент</strong> - в данном случае это селектор <code>li</code>. В качестве селектора может быть фрагмент разметки, имя класса или имя идентификатора. Но - в 90% случаев функции <code>$()</code> передается один аргумент.</p>
-
-<p>Однако это не является правилом. И функции <code>$()</code> можно передавать не один, а два аргумента.</p>
-
-<p>В этом случае второй аргумент является <strong>контекстом</strong> и служит для указания <strong>области дерева DOM</strong>, внутри которой необходимо осуществлять поиск.</p>
-
-<p>То есть, запись вида:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;someClass&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>… говорит - найти все элементы <code>li</code> во всем дереве DOM. Другими словами, отсутствие второго аргумента подразумевает область применения селекторов - все дерево DOM.</p>
-
-<p>А вот запись вида:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">,</span><span class="s1">&#39;#primo&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--first&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>… говорит, что нужно найти все селекторы <code>li</code> внутри элемента с идентификатором <code>#primo</code>. Другими словами, идентификатор <code>#primo</code> ограничивает область применения (или область видимости - как больше нравиться) селектора <code>li</code>.</p>
-
-<p>Можно слегка усложнить область видимости селекторов - указать не одну область, а две области:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">,</span><span class="s1">&#39;#primo,#tetro&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--first&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>… в этом случае будут возвращены только те элементы <code>li</code>, которые находятся внутри блока с идентификатором <code>#primo</code> и внутри блока с идентификатором <code>#tetro</code>. Другими словами, были заданы две области видимости для селектора <code>li</code>.</p>
-
-<p>В качестве второго аргумента (контекста) функции <code>$()</code> может быть передан не только селектор, имя класса или имя идентификатора (как в рассмотренном выше случае).</p>
-
-<p>Контекстом может быть результат работы другой функции! То есть, можно одной функции выборки передавать результат выборки другой функции!</p>
-
-<p>Например, таким гипотетическим образом:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#primo &gt; li&#39;</span><span class="p">)).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__link--decor&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>На этом все.</p>
 
 <hr />
 
@@ -1086,6 +1174,12 @@
       <li>
         
           <a href="http://zencoder.ru/page46">46</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page47">47</a>
         
       </li>
     

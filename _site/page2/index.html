@@ -144,6 +144,497 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-08-13T00:00:00+03:00"><a href="http://zencoder.ru/javascript/chartjs/">August 13, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/chartjs/" rel="bookmark" title="Создание диаграмм с помощью Chart.js" itemprop="url">Создание диаграмм с помощью Chart.js</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>“Контент - это король”. Все мы слышали или читали эту фразу, в которой выражена важность качественного содержания ресурса для повышения конверсии сайта, как следствие хорошей поисковой оптимизации. Однако, в то время как качественное текстовое наполнение прекрасно работает для поисковых машин, часто бывает так, что посетителям сайта гораздо проще понять основную информацию сайта, глядя на изображение или диаграмму.</p>
+
+<p>Например, если конкретный сайт специализируется на освещении вопросов каких-либо исследований, описание самих исследований конечно же является важной информацией; но диаграмма, в которой обобщаются данные исследования, будет не менее полезной для посетителей данного сайта.</p>
+
+<p>В этой статье будет идти речь о JavaScript-библиотеке под названием Chart.js, которая использует HTML-элемент <code>canvas</code> для создания диаграмм на странице. После краткого обзора библиотеки в статье будут представлены два примера использования Chart.js.</p>
+
+<h2 id="chartjs">Что такое Chart.js</h2>
+
+<p><a href="http://www.chartjs.org/" title="Chart.js">Chart.js</a> является JavaScript-библиотекой, с помощью которой можно создавать на странице различные типы диаграмм; при этом используются возможности HTML5-элемента <code>canvas</code>. Если речь зашла об элементе <code>canvas</code>, то это означает, что необходимо использовать <code>polyfill</code> для обеспечения поддержки этого элемента в старых версиях браузеров. В качестве примера одного из таких <code>polyfill</code> можно привести <a href="https://github.com/arv/explorercanvas" title="ExplorerCanvas">ExplorerCanvas</a>, находящийся по указанной ссылке.</p>
+
+<p>Библиотека Chart.js не имеет каких-либо зависимостей; размер ее так мал, что составляет примерно 11Kb в минифицированном, конкатенированном и архивированном виде. Однако, есть возможность еще уменьшить размер библиотеки путем включения в нее только тех модулей, которые необходимы в конкретном случае; то есть, если нет необходимости в поддержке всех шести типов диаграмм, включенных по умолчанию в ядро Chart.js.</p>
+
+<p>К примеру, если на конкретной странице нужно создать только диаграмму линейного типа (bar chart), то можно подключить лишь ядро библиотеки Chart.js и модуль, с помощью которого создаются диаграммы подобного типа; таким образом, будет уменьшен общий размер библиотеки Chart.js и увеличена скорость загрузки сайта в целом.</p>
+
+<p>Другой замечательной особенностью библиотеки Chart.js является тот факт, что создаваемые ею диаграммы адаптивные; то есть, они могут изменять свой размер при изменения размеров окна браузера таким образом, чтобы эффективно занимать все доступное для этого пространство страницы.</p>
+
+<p>И наконец, в отличие от многих других библиотек подобного рода, которые можно найти на просторах Интернет, Chart.js имеет <a href="http://www.chartjs.org/docs/" title="Chart.js Documentation">подробную и хорошо изложенную документацию</a>, с помощью которой можно легко создавать как простые, так и сложные образцы диаграмм.</p>
+
+<p>В следующем разделе статьи будет рассмотрен процесс получения и подключения библиотеки Chart.js в текущий проект.</p>
+
+<h2 id="chartjs-1">Начало работы с Chart.js</h2>
+
+<p>Перед использованием библиотеки Chart.js ее необходимо скачать и подключить к странице, на которой планируется создать одну или несколько диаграмм. Существует два способа получить библиотеку Chart.js. Первый способ заключается в использовании <a href="https://github.com/nnnick/Chart.js" title="Chart.js GitHub">GitHub репозитория</a>. Второй способ - это воспользоваться менеджером Bower при помощи команды такого вида:</p>
+
+<div class="highlight"><pre><code class="language-bash" data-lang="bash"><span class="nv">$ </span>bower install chartjs --save</code></pre></div>
+
+<p>Будучи скачанной, библиотека подключается на страницу как обычный JavaScript-файл. В приведенном ниже примере производится подключение Chart.js со всеми ее модулями по-умолчанию:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;path/to/Chart.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<p>В приведенном примере обратите внимание на заглавную букву в имени подключаемой библиотеки Chart.js. Это не совсем обычный способ, когда имя подключаемой библиотеки начинается с заглавной буквы. Поэтому, если после подключения Chart.js на странице отображается 404-я ошибка, то знайте, в чем заключается данная ошибка.</p>
+
+<p>После подключения библиотека Chart.js предоставляет все встроенные в нее методы через глобальную переменную с именем Chart. Теперь все готово для того, чтобы создать нашу первую диаграмму.</p>
+
+<p>Для этого необходимо инициализировать новый Chart-объект путем передачи ему 2d-контекста элемента <code>canvas</code>, который будет использоваться для создания в нем диаграммы. Чтобы понять основную идею этого шага, представим себе, что на странице имеется следующий элемент:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;skills&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
+
+<p>Если нужно в этом элементе нарисовать круговую диаграмму (pie chart), то пишется следующее выражение:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;skills&#39;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">skillsChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">Pie</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span></code></pre></div>
+
+<p>где аргумент <code>data</code>, не представленный в данном примере, является переменной, в которой содержатся данные для отображения в диаграмме.</p>
+
+<p>Теперь, когда нам известны основные принципы подключения Chart.js, пора переходить к конкретным примерам. Для краткости изложения материала я буду использовать в нижеследующих примерах полную версию библиотеки Chart.js; но при желании читатель может найти все необходимые модули по отдельности, в директории “src”.</p>
+
+<p>Примечание переводчика: автор статьи немногословен; в данном случае требуется некоторая расшифровка вышесказанного; примерный вид подключения ядра библиотеки Chart.js и необходимого модуля выглядит таким образом:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;../src/Chart.Core.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span>
+<span class="nt">&lt;script </span><span class="na">src=</span><span class="s">&quot;../src/Chart.Doughnut.js&quot;</span><span class="nt">&gt;&lt;/script&gt;</span></code></pre></div>
+
+<h2 id="section">Создание круговой диаграммы</h2>
+
+<p>В этом разделе статьи будет показан пример создания круговой диаграммы, в которой представлены профессиональные навыки гипотетического web-разработчика (в эту диаграмму будет включен язык Java, поэтому этим гипотетическим разработчиком я не могу быть ни в коей мере).</p>
+
+<p>Как уже можно было догадаться, первым шагом будет создание нового элемента <code>canvas</code>, в котором и будет прорисовываться круговая диаграмма:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;skills&quot;</span> <span class="na">width=</span><span class="s">&quot;300&quot;</span> <span class="na">height=</span><span class="s">&quot;300&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
+
+<p>Теперь необходимо воспользоваться данными, которые будут отображаться в диаграмме. В реальной жизни такие данные получаются с сервера каким-либо образом; в нашем же случае будет использоваться статический вариант, без использования сервера. Для круговой диаграммы необходимо получить массив объектов, каждый из которых обладает несколькими свойствами.</p>
+
+<p>Однако, для простоты и легкости понимания эти объекты будут обладать минимумом свойств - значение, которое будет отображено в диаграмме; цвет сектора на круговой диаграмме; надпись для сектора:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">pieData</span> <span class="o">=</span> <span class="p">[</span>
+  <span class="p">{</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="mi">25</span><span class="p">,</span>
+    <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Java&#39;</span><span class="p">,</span>
+    <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;#811bd6&#39;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;Scala&#39;</span><span class="p">,</span>
+    <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;#9cbaba&#39;</span>
+  <span class="p">},</span>
+  <span class="p">{</span>
+    <span class="nx">value</span><span class="o">:</span> <span class="mi">35</span><span class="p">,</span>
+    <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;HTML&#39;</span><span class="p">,</span>
+    <span class="nx">color</span><span class="o">:</span> <span class="s1">&#39;#6ae128&#39;</span>
+  <span class="p">}</span>
+<span class="p">]</span></code></pre></div>
+
+<p>В завершение, как было показано в предыдущем разделе статьи, необходимо получить 2d-контекст конкретного canvas-элемента и инициализировать новый Chart-объект:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;skills&#39;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">skillsChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">Pie</span><span class="p">(</span><span class="nx">pieData</span><span class="p">);</span></code></pre></div>
+
+<p>Ниже показан примерный результат того, что можно получить с помощью библиотеки Chart.js:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/08/pie-chartjs.png" alt="Pie Chart" /></p>
+
+<p>Результатом приведенного выше кода будет круговая диаграмма (pie chart), код которого можно увидеть на странице примера - <a href="http://jsfiddle.net/fq6hy784/" title="Pie Chart JSFiddle">Pie Chart JSFiddle</a>.</p>
+
+<h2 id="section-1">Создание столбцовой диаграммы</h2>
+
+<p>В следующем примере будет создана столбцовая (bar chart) диаграмма, на которой будет отображена динамика изменения количества клиентов гипотетической компании в зависимости от их национальности, за 2010 год и за 2014 год. Также, как и в предыдущем примере, для этой цели будет использоваться элемент <code>canvas</code>, размещенный на странице в виде такого примера:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;canvas</span> <span class="na">id=</span><span class="s">&quot;clients&quot;</span> <span class="na">width=</span><span class="s">&quot;500&quot;</span> <span class="na">height=</span><span class="s">&quot;400&quot;</span><span class="nt">&gt;&lt;/canvas&gt;</span></code></pre></div>
+
+<p>Затем создаем данные для нашей вымышленной компании:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">barData</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="nx">labels</span><span class="o">:</span> <span class="p">[</span><span class="s1">&#39;Italy&#39;</span><span class="p">,</span><span class="s1">&#39;UK&#39;</span><span class="p">,</span><span class="s1">&#39;USA&#39;</span><span class="p">,</span><span class="s1">&#39;Germany&#39;</span><span class="p">,</span><span class="s1">&#39;France&#39;</span><span class="p">,</span><span class="s1">&#39;Japan&#39;</span><span class="p">],</span>
+  <span class="nx">datasets</span><span class="o">:</span> <span class="p">[</span>
+    <span class="p">{</span>
+      <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;2010 customers #&#39;</span><span class="p">,</span>
+      <span class="nx">fillColor</span><span class="o">:</span> <span class="s1">&#39;#382765&#39;</span><span class="p">,</span>
+      <span class="nx">data</span><span class="o">:</span> <span class="p">[</span><span class="mi">2500</span><span class="p">,</span><span class="mi">1902</span><span class="p">,</span><span class="mi">1041</span><span class="p">,</span><span class="mi">610</span><span class="p">,</span><span class="mi">1245</span><span class="p">,</span><span class="mi">952</span><span class="p">]</span>
+    <span class="p">},</span>
+    <span class="p">{</span>
+      <span class="nx">label</span><span class="o">:</span> <span class="s1">&#39;2014 customers #&#39;</span><span class="p">,</span>
+      <span class="nx">fillColor</span><span class="o">:</span> <span class="s1">&#39;#7bc225&#39;</span><span class="p">,</span>
+      <span class="nx">data</span><span class="o">:</span> <span class="p">[</span><span class="mi">3104</span><span class="p">,</span><span class="mi">1689</span><span class="p">,</span><span class="mi">1318</span><span class="p">,</span><span class="mi">589</span><span class="p">,</span><span class="mi">1199</span><span class="p">,</span><span class="mi">1436</span><span class="p">]</span>
+    <span class="p">}</span>
+  <span class="p">]</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Как видно из примера, для создаваемой столбцовой диаграммы необходимо представить объект, содержащий свойство с именем <code>labels</code>, внутри которого размещены предметы сравнения - то, что будет сравниваться между собой. В нашем случае этими предметами являются названия стран: Italy, UK, USA, Germany, France, Japan.</p>
+
+<p>В дополнение к этому, нам необходимо предоставить еще одно свойство, по имени <code>datasets</code>, в котором размещены наборы объектов, каждый из которых содержит данные для сравнения. В нашем случае будет производиться сравнение между 2010 и 2014 годом, поэтому нам потребуется только два объекта.</p>
+
+<p>Внутри каждого из этих объектов необходимо задать <code>label</code> для визуальной подсказки на диаграмме, значение для каждого из объектов; а также цвет заливки для каждого из участков диаграммы.</p>
+
+<p>В результате, код для создания столбцовой диаграммы (bar chart) должен быть таким:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">context</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;clients&#39;</span><span class="p">).</span><span class="nx">getContext</span><span class="p">(</span><span class="s1">&#39;2d&#39;</span><span class="p">);</span>
+<span class="kd">var</span> <span class="nx">clientsChart</span> <span class="o">=</span> <span class="k">new</span> <span class="nx">Chart</span><span class="p">(</span><span class="nx">context</span><span class="p">).</span><span class="nx">Bar</span><span class="p">(</span><span class="nx">barData</span><span class="p">);</span></code></pre></div>
+
+<p>Ниже показан примерный результат того, что можно получить с помощью библиотеки Chart.js:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/08/bar-chartjs.png" alt="Bar Chart" /></p>
+
+<p>Результатом созданного нами выше кода будет столбцовая диаграмма (bar chart), исходный код которого можно посмотреть по этой ссылке - <a href="http://jsfiddle.net/6bjy9nxh/" title="Bar Chart JSFiddle">Bar Chart JSFiddle</a>.</p>
+
+<h2 id="section-2">Заключение</h2>
+
+<p>В этой статье вы познакомились с Chart.js, JavaScript-библиотекой для быстрого и удобного создания красивых диаграмм. Как вы могли заметить, использование библиотеки не представляет каких-либо трудностей; мною были продемонстрированы примеры ее использования.</p>
+
+<p>Библиотека Chart.js также предоставляет несколько дополнительных возможностей, о которых я не упомянул в этой статье. Но вы можете легко восполнить свой пробел в этих знаниях и почитать <a href="http://www.chartjs.org/docs/" title="Chart.js Documentation">официальную документацию</a>.</p>
+
+<p>Знакомы ли были вы с этой библиотекой ранее и использовали ли ее в своей практике? Как часто и в каких проектах вы ее использовали? Если нет, то какую другую библиотеку подобного типа вы использовали?</p>
+
+<p>Оригинал статьи размещен здесь - <a href="http://www.sitepoint.com/creating-beautiful-charts-chart-js/" title="Creating Beautiful Charts with Chart.js">Creating Beautiful Charts with Chart.js</a>.</p>
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-08-03T00:00:00+03:00"><a href="http://zencoder.ru/css/adobe-extract/">August 03, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/adobe-extract/" rel="bookmark" title="Adobe Extract - замена Project Parfait" itemprop="url">Adobe Extract - замена Project Parfait</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>В июне 2014 года была написана <a href="http://webdesign.tutsplus.com/articles/quick-tip-converting-photoshop-files-to-code-with-project-parfait--cms-21179" title="Converting Photoshop Files to Code With Project Parfait">статья</a>, посвященная прекрасному инструменту для извлечения кода из PSD-макета - проекту компании Adobe под названием Project Parfait. Это был бесплатный online-инструмент, цель которого состояла в создании процесса преобразования PSD-макетов в код для команд разработчиков, использующих Photoshop как основной инструмент  при создании различных дизайнов.</p>
+
+<p>Компания Adobe произвела реинкарнацию проекта Project Parfait, добавив в него поддержку бесплатного дискового пространства и сервиса обмена <a href="https://creative.adobe.com/products/assets" title="Creative Cloud Assets">Creative Cloud Assets</a>, а также переименовав его в <strong>Extract</strong>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/extractoverview.png" alt="Adobe Extract" title="Adobe Extract" /></p>
+
+<p>Проект Extract сохранил всю существующую функциональность Project Parfait, а интеграция с CC Files наряду с новой возможностью обмена файлами позволила улучшить и ускорить взаимодействие между веб-дизайнерами и веб-разработчиками.</p>
+
+<p>Ниже представлен пример работы в Extract.</p>
+
+<h2 id="section">Загрузка или синхронизация файлов</h2>
+
+<p>Использование Extract начинается с загрузки или синхронизации PSD-файлов в личном дисковом online-пространстве Creative Cloud, размер которого составляет как минимум 2GB и бесплатно предоставляется любому пользователю, зарегистрированному в Creative Cloud.</p>
+
+<p>Загрузить файлы на сервер можно двумя способами. Первый способ заключается в использовании <a href="http://www.adobe.com/ru/creativecloud.html" title="Adobe Creative Cloud">web-интерфейса</a>, доступного через любой web-браузер. Второй способ основан на использовании специального <a href="https://helpx.adobe.com/ru/creative-cloud/help/creative-cloud-desktop.html" title="Creative Cloud Desktop">desktop-приложения</a>, с помощью которого можно автоматически синхронизировать файлы на локальном компьютере с файлами в облачном сервисе Creative Cloud:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/ccfiles.png" alt="Creative Cloud" title="Creative Cloud" /></p>
+
+<p>Второй способ является наиболее простым и надежным, поэтому в дальнейших шагах этой статьи будет использоваться именно этот способ.</p>
+
+<p>Первым делом, необходимо <a href="https://helpx.adobe.com/ru/creative-cloud/help/creative-cloud-desktop.html" title="Creative Cloud Desktop">скачать приложение</a> и установить его в системе, а затем авторизоваться в нем с помощью личного Adobe ID. Открыв приложение, необходимо в нем перейти на вкладку <strong>Assets</strong>, а внутри этой вкладки перейти в еще одну вкладку <strong>Files</strong>. Должно получиться примерно следующее:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/ccapp.png" alt="Creative Cloud Application" title="Creative Cloud Application" /></p>
+
+<p>В этом окне опускаемся вниз и нажимаем кнопку <strong>Open Folder</strong>, что приведет к автоматическому открытию папки <strong>Creative Cloud Files</strong> на локальном компьютере. Находясь внутри этой папки, необходимо скопировать PSD-файл из другого источника сюда, что автоматически запустит синхронизацию с облачным пространством Creative Cloud.</p>
+
+<p>Когда операция загрузки на сервер Creative Cloud будет успешно завершена, на миниатюре PSD-файла появиться маленькая зеленая галочка, как в данном случае:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/ccfinder.png" alt="Creative Cloud Upload" title="Creative Cloud Upload" /></p>
+
+<p>Если теперь снова вернуться назад, в web-интерфейс Creative Cloud, то обнаружим там миниатюру только что загруженного PSD-файла, готового для открытия в Extract:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/clickthumbnail.png" alt="Creative Cloud Thumbnail" title="Creative Cloud Thumbnail" /></p>
+
+<h2 id="extract">Работа в Extract</h2>
+
+<p>Для того, чтобы открыть загруженный в Creative Cloud файл Photoshop, нужно щелкнуть мышью по миниатюре этого файла, затем снова щелкнуть мышью на этот раз по вкладке <strong>Extract</strong> (на изображении ниже она помечена как <strong>Preview</strong>). PSD-файл тотчас же отобразится в окне приложения Extract, готовый для извлечения из него CSS-кода:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/extracttab.png" alt="Extract Tab" title="Extract Tab" /></p>
+
+<p>Процесс извлечения кода из PSD-файла в Extract остался неизменным, каким он был в приложении Project Parfait, о чем было подробно описано в предыдущей статье “Конвертирование файлов Photoshop с помощью Project Parfait”. Однако, с того момента в Extract были добавлены несколько новых возможностей, которые будут рассмотрены ниже.</p>
+
+<h2 id="extract-1">Новые возможности Extract</h2>
+
+<p>Некоторые из новых возможностей приложения Extract были унаследованы им от Project Parfait спустя некоторое время после опубликования ранее упоминавшейся статьи-обзора “Конвертирование файлов Photoshop с помощью Project Parfait”. Другие же новшества появились в Extract благодаря его интеграции с сервисом Creative Cloud.</p>
+
+<h3 id="section-1">Прозрачность тени</h3>
+
+<p>Ранее тени на CSS генерировались без поддержки прозрачности, значениями в формате HEX. Теперь имеется поддержка прозрачности теней в сгенерированном CSS-коде, значениями в формате RGBA:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/rgbashadow.png" alt="Прозрачность тени" title="Прозрачность тени" /></p>
+
+<h3 id="section-2">Настройки шрифта</h3>
+
+<p>Теперь нет необходимости работать только с пикселями (px) в качестве размера шрифтов в сгенерированном CSS-коде. В Extract добавлена поддержка единиц измерения <code>em</code> и <code>rem</code> для шрифтов:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/preferredfontunit.png" alt="Единицы измерения шрифта" title="Единицы измерения шрифта" /></p>
+
+<p>Также добавлена возможность установки базового шрифта для всей страницы в целом. Размеры шрифтов всех остальных элементов страницы будут расчитываться на основе этого базового размера, в тех единицах измерения (<code>em</code> или <code>rem</code>), которые были выбраны ранее:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/basefontsize.png" alt="Базовый размер шрифта" title="Базовый размер шрифта" /></p>
+
+<h3 id="section-3">Препроцессоры и миксины</h3>
+
+<p>В Extract была добавлена поддержка препроцессоров <a href="http://sass-lang.com/" title="Sass">Sass(SCSS)</a> и <a href="http://lesscss.org/" title="LESS">LESS</a> совместно с библиотеками миксинов для этих препроцессоров. Таким образом, теперь можно выбрать - генерировать код не в чистом CSS, а в <a href="http://sass-lang.com/" title="Sass">SCSS</a> + <a href="http://bourbon.io/" title="Bourbon">Bourbon</a> или <a href="http://lesscss.org/" title="LESS">LESS</a> + <a href="http://lesshat.madebysource.com/" title="LESSHat">LESSHat</a>. Такая возможность дает большие преимущества для тех веб-разработчиков, которые используют какой-либо из этих препроцессоров:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/preprocessors.png" alt="Поддержка препроцессоров" title="Поддержка препроцессоров" /></p>
+
+<p>Я надеюсь, что в дальнейшем в Extract будет добавлена поддержка препроцессора <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a> (поклонником которого являюсь), совместно с библиотеками миксинов под этот препроцессор - <a href="http://visionmedia.github.io/nib/" title="Nib">Nib</a> и <a href="http://kouto-swiss.io/" title="Kuoto Swiss">Kuoto Swiss</a>. Этого было бы более чем достаточно в плане поддержки препроцессоров в Extract.</p>
+
+<p>Примечание переводчика: на момент перевода данной статьи в Extract добавлена поддержка препроцессора <a href="http://learnboost.github.io/stylus/" title="Stylus">Stylus</a> и его библиотеки миксинов <a href="http://visionmedia.github.io/nib/" title="Nib">Nib</a>; поддержка библиотеки <a href="http://kouto-swiss.io/" title="Kuoto Swiss">Kuoto Swiss</a> отсутствует; помимо этого, добавлена поддержка супер-популярной библиотеки <a href="http://compass-style.org/" title="Compass">Compass</a> под препроцессор <a href="http://sass-lang.com/" title="Sass">Sass</a>.</p>
+
+<h3 id="section-4">Действия</h3>
+
+<p>В результате интеграции сервиса Creative Cloud в Extract добавилось новое меню <strong>Actions</strong>, в котором можно выбрать действия над редактируемым PSD-файлом: скачать файл, переименовать файл, архивировать файл или переместить файл:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/actions.png" alt="Действия с файлом" title="Действия с файлом" /></p>
+
+<h3 id="section-5">Общий доступ</h3>
+
+<p>Также благодаря интеграции Creative Cloud в Extract появилась возможность предоставления общего доступа к файлам с помощью меню <strong>Share</strong>, откуда можно выложить выполненную работу прямо в своем портфолио на <a href="https://www.behance.net/" title="Behance">Behance</a>.</p>
+
+<p>Наиболее привлекательной возможностью меню <strong>Share</strong> является его опция <strong>Send Link</strong>. С помощью которой можно отправить ссылку на файл-наработку веб-разработчику. При переходе по этой ссылке файл автоматически загрузиться и откроется для редактирования в Extract, у этого веб-разработчика.</p>
+
+<p>Веб-разработчику даже нет необходимости иметь учетную запись в Creative Cloud для того, чтобы пользоваться инструментом Extract. Это означает, что любой из членов команды разработчиков, который специализируется на создании кода, теперь совсем не обязан иметь дело с такими программами для рисования графики, как Photoshop:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/07/sharing.png" alt="Общий доступ" title="Общий доступ" /></p>
+
+<h3 id="timeline">Timeline</h3>
+
+<p>Приложение Extract абсолютно бесплатно для использования. Проект Project Parfait все еще остается доступным вплоть до октября 2014 года, с целью предоставить достаточно времени всем разработчикам, использующим его, чтобы своевременно перейти на проект Extract.</p>
+
+<p>У вас нет никакой необходимости быть платным подписчиком, чтобы иметь возможность использовать приложение Extract; поэтому, даже если вы являетесь платным подписчиком программы Photoshop, вы можете свободно отправлять свои дизайнерские наработки другим веб-разработчикам для кодинга. С другой стороны, веб-разработчик, который получил от вас ссылку на вашу наработку, совсем необязательно должен быть платным подписчиком, чтобы открыть эту ссылку. И даже больше - этот разработчик может вообще не иметь учетной записи в Creative Cloud, чтобы пользоваться приложением Extract.</p>
+
+<p>Я приглашаю всех читателей этой статьи воспользоваться сервисом Adobe Extract и высказать свои пожелания по поводу использования этого ресурса.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-08-02T00:00:00+03:00"><a href="http://zencoder.ru/css/project-parfait/">August 02, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~7 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/project-parfait/" rel="bookmark" title="Project Parfait - CSS-код из PSD-макета" itemprop="url">Project Parfait - CSS-код из PSD-макета</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>Вступление переводчика: приложения Project Parfait на момент перевода данной статьи уже не существует. Продолжателем и правоприемником этого проекта является приложение  <a href="https://www.adobe.com/ru/creativecloud/extract.html" title="Creative Cloud Extract">Adobe Extract</a>. Зачем же была переведена данная статья? Все просто - здесь подробно описан процесс извлечения CSS-кода, текста и изображений точно так, как это обстоит в приложении Extract. Другими словами, читая данную статью о Project Parfait, вы учитесь работать в Extract.</p>
+
+<p><a href="https://projectparfait.adobe.com/" title="Project Parfait">Project Parfait</a> - это новый продукт компании Adobe, на данный момент имеющий версию beta. С помощью него можно открыть в браузере любой файл формата PSD для того, чтобы извлечь из него такие составляющие, как текст, изображения или наборы CSS-правил. На момент написания статьи Project Parfait работает только в браузере Chrome, но компания Adobe планирует расширить его кросс-браузерную совместимость со всеми остальными браузерами по мере продвижения разработки Project Parfait.</p>
+
+<h2 id="psd--project-parfait">Загрузка PSD в Project Parfait</h2>
+
+<p>Задача открыть PSD файл в Project Parfait чрезвычайно проста. Для этого достаточно перейти по ссылке <a href="https://projectparfait.adobe.com/" title="Project Parfait">“https://projectparfait.adobe.com/”</a> и кликнуть мышью на большой синей кнопке <strong>Upload Your Own PSD</strong>, которая размещается в правом верхнем углу страницы:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/upload.png" alt="Загрузка PSD в Project Parfait" title="Загрузка PSD в Project Parfait" /></p>
+
+<p>Затем нужно войти под своей учетной записью Adobe ID и перетащить (drag’n’drop) PSD-файл на пустую панель, после чего загрузка файла начнется автоматически:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/dragdrop.png" alt="Drag and Drop PSD" title="Drag and Drop PSD" /></p>
+
+<p>После того, как загрузка PSD-файла на сервер будет закончена, достаточно кликнуть мышью на миниатюре загруженного файла для того, чтобы он открылся в Project Parfait:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/psdopen.png" alt="Открытие файла в Project Parfait" title="Открытие файла в Project Parfait" /></p>
+
+<h2 id="css-">Извлечение CSS правил</h2>
+
+<p>Для того, чтобы сгенерировать набор CSS-правил, определяющих любой элемент дизайна страницы, достаточно выбрать этот элемент щелчком мыши. Соответствующий CSS-код автоматически отобразится в правой боковой панели, в поле <strong>CSS Inspector</strong>. Из этой панели можно скопировать часть сгенерированного кода; или же весь код целиком, нажав кнопку <strong>Copy All</strong>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/cssinspector.png" alt="CSS Inspector" title="CSS Inspector" /></p>
+
+<p>Другим способом получения сгенерированного CSS-кода является следующий. Когда любой из элементов дизайна выбран щелчком мыши, у этого элемента появляется синее всплывающее окно, в котором имеется ссылка <strong>Copy CSS</strong>, с помощью которой можно получить весь CSS-код этого элемента:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/copycss.png" alt="Копирование CSS кода" title="Копирование CSS кода" /></p>
+
+<h2 id="section">Извлечение текста</h2>
+
+<p>Синее всплывающее окно, о котором говорилось выше, может послужить еще одной задаче - извлечения текста из PSD-макета. Для этого нужно воспользоваться ссылкой <strong>Copy Text</strong> внутри этого окна:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/copytext.png" alt="Копирование текста" title="Копирование текста" /></p>
+
+<h2 id="section-1">Извлечение изображений</h2>
+
+<p>Извлечение картинок из PSD-макета с помощью Project Parfait также очень просто. Для начала нужно выбрать на макете изображение, которое будет экспортировано. Если изображение состоит из нескольких слоев, то необходимо нажать и удерживать клавишу <strong>Shift</strong> для того, чтобы выбрать все нужные слои. Затем щелчком мыши активируем большую подчеркнутую стрелочку в всплывающем окне. Отобразится диалоговое окно <strong>Save As</strong>, в котором можно задать имя для экспортируемого изображения, формат файла и качество изображения:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/saveas.png" alt="Экспортирование изображения" title="Экспортирование изображения" /></p>
+
+<p>Как только изображение будет экспортировано, оно отобразится во вкладке <strong>Assets</strong> правой панели инструментов, откуда его можно будет скачать на локальный компьютер простым щелчком мыши на этом изображении:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/assets.png" alt="Изображение во вкладке Assets" title="Изображение во вкладке Assets" /></p>
+
+<h2 id="project-parfait">Недоработки Project Parfait</h2>
+
+<p>Проект Project Parfait совсем свежий - на момент написания статьи ему исполнился только месяц, поэтому в вопросе генерации CSS правил существуют некоторые недоработки и ряд CSS-свойств, которые этот продукт не может сгенерировать. Однако, число сторонников проекта Project Parfait на его <a href="https://forums.adobe.com/community/project_parfait" title="Project Parfait Forum">форуме</a> растет; как растет и колличество обновлений для этого продукта. Поэтому я уверен, что команда Adobe активно работает в этом направлении и в скором времени стоит ожидать значительных улучшений Project Parfait.</p>
+
+<p>Ниже представлен список недоработок Project Parfait.</p>
+
+<ul>
+  <li>значения прозрачности, которые задаются для всего слоя в целом, как правило устанавливаются с помощью соответствующего значения фонового цвета слоя, в RGBA формате; альфа-канал фонового цвета используется для задания прозрачности; при экспортировании всего элемента целиком, вместе с границами, тенями и так далее, это значение прозрачности будет применено к ним вместо того отдельного значения, которое было установлено в макете для каждой из составляющих данного элемента</li>
+  <li>невозможно определить наличие множественных теней у элемента макета; если выбран элемент, у которого есть внешние и внутренние тени одновременно, то в Project Parfait они будут проигнорированы</li>
+  <li>не поддерживается прозрачность теней для элемента дизайна; вместо значений в RGBA формате Project Parfait выдает тень с непрозрачными цветами в HEX-формате</li>
+  <li>нет никакого способа извлечь изображение в качестве pattern’а, которое является фоновым изображением для макета; нет даже возможности определить границы этого pattern’а, чтобы экспортировать его как простое изображение</li>
+  <li>границы, размещенные внутри слоя, не определяются Project Parfait; однако, границы, заданные через <strong>Live Shape Properties</strong>, могут быть легко экспортированы</li>
+  <li>градиенты, сгенерированные не через CSS-свойство <code>background-color</code>, необходимо дополнять fallback’ом для браузеров, которые не поддерживают CSS-градиенты</li>
+</ul>
+
+<h2 id="project-parfait-1">Что сейчас доступно в Project Parfait</h2>
+
+<h3 id="section-2">Работа с текстом</h3>
+
+<p>В Project Parfait прекрасно реализована работа с текстом PSD-макета.</p>
+
+<p>Задача определения и генерирования целочисленных значений, таких как 100, 300, 900 для определения насыщенности шрифтов, отлично работает. Это означает, что если в PSD-макете, созданном в Photoshop, для обозначения насыщенности шрифтов были применены такие специальные слова, как “Thin”, “Light”, “Black” и так далее, то при генерации CSS-правил в Project Parfait эти обозначения будут заменены на более правильные целочисленные значения.</p>
+
+<p>В Project Parfait также прекрасно реализована работа с интерлиньяжем (line height), значение которого вычисляется как относительная величина на основе размера шрифта выбранного элемента макета.</p>
+
+<p>В дополнение к вышесказанному, если в строке текста имеются фрагменты, отличающиеся от основного теста, то Project Parfait прекрасно их распознает и для каждого из таких фрагментов сформирует дополнительный набор CSS-правил, со специальным комментарием <code>/* Inline Style */</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/inlinestyle.png" alt="Текст с различными фрагментами" title="Текст с различными фрагментами" /></p>
+
+<h3 id="section-3">Работа со слоями</h3>
+
+<p>Иногда случается так, что слои макета организованы таким образом, что расположены один над другим; или же расположены так близко друг у другу, что становится трудно выбрать один из них для дальнейшей работы с ним. В Project Parfait все слои макета вынесены в отдельную вкладку <strong>Layers</strong>, где можно легко и удобно работать с ними:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/layerstab.png" alt="Слои в отдельной вкладке" title="Слои в отдельной вкладке" /></p>
+
+<h3 id="section-4">Цветовая палитра макета</h3>
+
+<p>Как только PSD-макет загружается на сервер, Project Parfait производит его анализ и определяется все цвета, которые использовались дизайнером в его работе. Цвета группируются в цветовую палитру, которая помещается в разделе <strong>Colors</strong> правой панели инструментов. Помимо этого, при выборе любого элемента на макете, если хотя бы один цвет из созданной Project Parfait цветовой палитры использовался в этом элементе, то данный цвет автоматически подсвечивается в разделе <strong>Colors</strong>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/colorextraction.png" alt="Цветовая палитра макета" title="Цветовая палитра макета" /></p>
+
+<p>Такая возможность может быть полезна для разработчиков, которые используют препроцессоры для кодинга. В этом случае значения используемых в макете цветов могут быть определены как переменные в самом начале процесса кодинга. Эти переменные затем будут использоваться по мере необходимости на протяжении всей разработки дизайна.</p>
+
+<h3 id="section-5">Работа с градиентами</h3>
+
+<p>Точно также, как Project Parfait может определять обычные цвета на макете, имеется возможность определения градиентов. Сгенерированные для них правила можно скопировать из правой панели инструментов и использовать в кодинге. И точно также, как и с простыми цветами, любой элемент на макете, в котором использованы градиенты, при его выделении автоматически подсвечивает набор CSS-правил, которые размещены в правой панели инструментов и использовались при стилизации этого элемента:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/gradientextraction.png" alt="Работа с градиентами" title="Работа с градиентами" /></p>
+
+<p>Для разработчиков, использующих препроцессоры, Project Parfait предоставляет удобный способ скопировать сгенерированные CSS-правила и использовать их как подмешивания (mixins) при разработке дизайна.</p>
+
+<h3 id="section-6">Общая информация о шрифтах</h3>
+
+<p>Точно также, как дело обстоит с цветами и градиентами, Project Parfait предоставляет обобщенную информацию обо всех шрифтах, которые были использованы в макете, а также о размерах и насыщенности этих шрифтов:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/fontsummary.png" alt="Общая информация о шрифтах" title="Общая информация о шрифтах" /></p>
+
+<p>Это означает, что как только PSD-макет был загружен в Project Parfait, уже имеется полная информация о том, какие шрифты и с каким параметрами необходимо использовать в дальнейшем при разработке дизайна. Также имеется возможность экспортировать все размеры шрифтов в виде переменных, котрые могут буть использованы в препроцессорах.</p>
+
+<h3 id="section-7">Общая информация о разметке</h3>
+
+<p>Когда при разработке дизайна работа выполняется непосредственно в программе Photoshop, то получение информации о ширине, высоте, дистанции, положении каждого из элементов дизайна - задача не и легких. По другому дело обстоит в Project Parfait.</p>
+
+<p>Для того, чтобы получить значения высоты, ширины или координаты любого элемента, достаточно его выбрать на макете щелчком мыши и во всплывающем синем окошке будут показана вся эта информация:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/sizeposinfo.png" alt="Размеры и координаты элемента" title="Размеры и координаты элемента" /></p>
+
+<p>Если необходимо узнать расстояние между соседними элементами на макете, для этого нужно нажать и держать клавишу <strong>Shift</strong>, а затем поочередно щелчком мыши выбрать все необходимые элементы. Отобразиться информационное окно, в котором будут представлены размеры по горизонтали и вертикали, в пикселях:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2015/06/distance.png" alt="Расстояние между элементами" title="Расстояние между элементами" /></p>
+
+<h2 id="project-parfait-">Project Parfait бесплатен</h2>
+
+<p>На данный момент проект Project Parfait является бесплатным для использования. Достаточно войти в систему под своим личным Adobe ID и все готово!</p>
+
+<p>Если вы являетесь дизайнером, который ищет улучшений для своего рабочего процесса; или вы разработчик, который стремится как можно проще и быстрее преобразовать PSD-макет с код, в обоих случая Project Parfait может послужить образцом нового подхода к веб-разработке.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2015-05-27T00:00:00+03:00"><a href="http://zencoder.ru/jquery/scope-selectors-jquery/">May 27, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/scope-selectors-jquery/" rel="bookmark" title="Область применения селекторов jQuery" itemprop="url">Область применения селекторов jQuery</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <p>В библиотеке jQuery имется возможность использования области применения селекторов, с помощью <em>контекста</em>.</p>
+
+<p>Что такое <em>контекст</em> в jQuery? Давайте рассмотрим “стандартную” запись кода на JavaScript(jQuery):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;someClass&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>Видим в этом коде, что функции <code>$()</code> передается <strong>один аргумент</strong> - в данном случае это селектор <code>li</code>. В качестве селектора может быть фрагмент разметки, имя класса или имя идентификатора. Но - в 90% случаев функции <code>$()</code> передается один аргумент.</p>
+
+<p>Однако это не является правилом. И функции <code>$()</code> можно передавать не один, а два аргумента.</p>
+
+<p>В этом случае второй аргумент является <strong>контекстом</strong> и служит для указания <strong>области дерева DOM</strong>, внутри которой необходимо осуществлять поиск.</p>
+
+<p>То есть, запись вида:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;someClass&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>… говорит - найти все элементы <code>li</code> во всем дереве DOM. Другими словами, отсутствие второго аргумента подразумевает область применения селекторов - все дерево DOM.</p>
+
+<p>А вот запись вида:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">,</span><span class="s1">&#39;#primo&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--first&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>… говорит, что нужно найти все селекторы <code>li</code> внутри элемента с идентификатором <code>#primo</code>. Другими словами, идентификатор <code>#primo</code> ограничивает область применения (или область видимости - как больше нравиться) селектора <code>li</code>.</p>
+
+<p>Можно слегка усложнить область видимости селекторов - указать не одну область, а две области:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">,</span><span class="s1">&#39;#primo,#tetro&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--first&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>… в этом случае будут возвращены только те элементы <code>li</code>, которые находятся внутри блока с идентификатором <code>#primo</code> и внутри блока с идентификатором <code>#tetro</code>. Другими словами, были заданы две области видимости для селектора <code>li</code>.</p>
+
+<p>В качестве второго аргумента (контекста) функции <code>$()</code> может быть передан не только селектор, имя класса или имя идентификатора (как в рассмотренном выше случае).</p>
+
+<p>Контекстом может быть результат работы другой функции! То есть, можно одной функции выборки передавать результат выборки другой функции!</p>
+
+<p>Например, таким гипотетическим образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;#primo &gt; li&#39;</span><span class="p">)).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__link--decor&#39;</span><span class="p">);</span></code></pre></div>
+
+<p>На этом все.</p>
+
+<hr />
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2015-05-26T00:00:00+03:00"><a href="http://zencoder.ru/jquery/slice-jquery/">May 26, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -268,613 +759,6 @@
 <p>На этом все. Материал частично основан на ресурсе <a href="http://jquery.page2page.ru/" title="jQuery Page2Page">jquery.page2page</a> и не претендует на оригинальность.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-25T00:00:00+03:00"><a href="http://zencoder.ru/jquery/nth-child-jquery/">May 25, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/nth-child-jquery/" rel="bookmark" title="Метод nth-child библиотеки jQuery" itemprop="url">Метод nth-child библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Этот метод очень похож на то, как это дело <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/:nth-child" title="nth-child">обстоит в CSS</a>. С помощью него можно выбрать любой элемент в коллекции ему подобных, если они имеют одного общего родителя.</p>
-
-<p>Приведу пример HTML-разметки, над которой буду тренироваться:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>И начну учиться выбирать элементы из такого списка с помощью метода <code>.nth-child()</code>.</p>
-
-<h2 id="nth-childeven--nth-childodd">nth-child(even) и nth-child(odd)</h2>
-
-<p>Такой пример javascript-кода:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:nth-child(even)&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__item--right&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:nth-child(odd)&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__item--left&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>… этот javascript-код читается так:</p>
-
-<ul>
-  <li>создать переменную <code>list</code> и поместить в нее результат выборки <code>$('.test')</code></li>
-  <li>в переменной <code>list</code> найти все четные (even) элементы <code>li</code> - <code>.find('li:nth-child(even)')</code></li>
-  <li>и присвоить этим элементам <code>li</code> класс - <code>.addClass('test__item--right')</code></li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--right&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--right&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--right&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--right&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--right&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--right&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>… затем:</p>
-
-<ul>
-  <li>в переменной <code>list</code> найти все нечетные (odd) элементы <code>li</code> - <code>.find('li:nth-child(odd)')</code></li>
-  <li>и присвоить этим элементам <code>li</code> класс - <code>.addClass('test__item--left')</code></li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--left&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--left&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--left&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--left&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--left&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__item--left&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Как видим, все просто и в точности также, как это <a href="https://css-tricks.com/almanac/selectors/n/nth-child/" title=":nth-child">обстоит в CSS</a> с его селектором <code>nth-child</code>.</p>
-
-<h2 id="nth-childpattern">nth-child(pattern)</h2>
-
-<p>Такой пример javascript-кода:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:nth-child(2)&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--capitalize&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:nth-child(11)&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--uppercase&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<ul>
-  <li>найдет второй элемент <code>li</code> из коллекции - <code>.find('li:nth-child(2)')</code></li>
-  <li>и присвоить ему класс - <code>.addClass('test__link--capitalize')</code></li>
-  <li>найдет 11-й элемент <code>li</code> из коллекции - <code>.find('li:nth-child(11)')</code></li>
-  <li>и присвоить ему класс - <code>.addClass('test__link--uppercase')</code></li>
-</ul>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--capitalize&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--uppercase&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h2 id="section">Заключение</h2>
-
-<p>Вот и все, что можно сказать о методе <code>nth-child</code> библиотеки jQuery.</p>
-
-<p>Но чуть не забыл упомянуть такой важный момент! Как уже можно было заметить, нумерация при использовании метода <code>nth-child</code> начинается не с 0, а с 1!</p>
-
-<p>Впрочем, точно также обстоят дела и с селектором <code>nth-child</code> в CSS.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-24T00:00:00+03:00"><a href="http://zencoder.ru/jquery/first-jquery/">May 24, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~4 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/first-jquery/" rel="bookmark" title="Метод first и first-child библиотеки jQuery" itemprop="url">Метод first и first-child библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Рассмотрю два метода, которые похожи внешне и внутренне, как может показаться с первого взгляда. Однако, между ними есть тонкая разница.</p>
-
-<h2 id="first">Метод first</h2>
-
-<p>Метод <code>first()</code> призван возращать первый элемент из коллекции (выборки) этих элементов. Как всегда, чтобы не быть голословным и иметь наглядный пример перед глазами, приведу ниже HTML-разметку, на которой буду тренироваться:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;primo&quot;</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Вот такая большая разметка <code>div class="wrapper"</code> с четырьмя блоками <code>ul class="block"</code>, у каждого из которых есть элементы-потомки <code>li class="block__item"</code>.</p>
-
-<p>И создам небольшой скрипт на JS/jQuery такого плана:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.wrapper&#39;</span><span class="p">);</span>
-  <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--firstSimple&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Работа вышеприведенного js-кода будет сводиться к следующему:</p>
-
-<ul>
-  <li>создается переменная <code>wrapper</code>, в которую помещается результат выборки <code>$('.wrapper')</code></li>
-  <li>в переменной <code>wrapper</code> находим элемент <code>li</code>, который является первым в коллекции - <code>.find('li:first')</code></li>
-  <li>этому элементу добавляется класс - <code>.addClass('block__item--firstSimple')</code></li>
-</ul>
-
-<p>Код несложный и вроде бы все понятно. Но вот вопрос - а какой элемент <code>li</code> с точки зрения данного кода является первым в коллекции?</p>
-
-<p>Чтобы не ломать понапрасну голову, приведу сразу ответ:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;primo&quot;</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstSimple&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Вот так - только он один и только этот элемент является первым в коллекции элементов <code>li</code>.</p>
-
-<p>Это объяснимо, если слегка подумать. В переменной <code>wrapper</code> хранится коллекция элементов; и элементов <code>li</code> - в том числе.</p>
-
-<p>Коллекция элементов - это не что иное, как массив. А в массиве только один элемент может быть первым. То есть, иметь индекс 0.</p>
-
-<p>Именно поэтому метод <code>.first()</code> - это всего лишь синоним (alias) другого, более универсального метода <code>.eq()</code> и может быть записан таким способом - <code>.eq(0)</code> - вернуть элемент с нулевым индексом, то есть - первый элемент массива.</p>
-
-<p>Антагонистом метода <code>.first()</code> является метод <code>last()</code>, который возвращает последний элемент массива. И метод <code>.last()</code> также можно записать по другому - <code>.eq(-1)</code>; это также вернет последний элемент массива.</p>
-
-<p>Ок, с методом <code>.first()</code> вроде разобрались. Двигаемся дальше и рассмотрим метод <code>.first-child()</code>.</p>
-
-<h2 id="first-child">Метод first-child()</h2>
-
-<p>Казалось бы, в чем разница? Трудно догадаться, поэтому сразу приведу js-код с описанием работы. В качестве подопытной HTML-разметки будет выступать все та же, приведенная в самом начале статьи.</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">wrapper</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.wrapper&#39;</span><span class="p">);</span>
-  <span class="nx">wrapper</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li:first-child&#39;</span><span class="p">).</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--firstChild&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Что делает приведенный выше код? А вот что:</p>
-
-<ul>
-  <li>создает переменную <code>wrapper</code> и присваивает ей значение выборки - $(‘.wrapper’)</li>
-  <li>в переменной <code>wrapper</code> находим первый элемент <code>li</code> - <code>.find('li:first-child')</code></li>
-  <li>этому элементу присваивается класс - <code>.addClass('block__item--firstChild')</code></li>
-</ul>
-
-<p>Все просто и вроде бы точно также, как и в случае с методом <code>.first()</code>. Вроде бы да, но возникает вопрос - а какой элемент <code>li</code> данный код считает первым в данном случае?</p>
-
-<p>Чтобы не гадать, снова приведу готовый ответ:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrapper&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;primo&quot;</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-  <span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;block&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item block__item--firstChild&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-    <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;block__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;/ul&gt;</span>
-<span class="nt">&lt;/div&gt;</span></code></pre></div>
-
-<p>Вот она - разница в подходе отбора первого элемента. Другими словами, метод <code>.first-child()</code> находит все элементы, которые являются первыми потомками у своих непосредственных родителей. А в данном случае таких потомков насчиталось аж 4 штуки.</p>
-
-<p>Конечно, можно провести аналогию и рассмотреть метод <code>.last-child()</code>. Но мне кажется, смысла в этом особого нет - все и так понятно. Выборка будет производиться с точностью до наоборот и будут отбираться последние потомки своих неспосредственных родителей.</p>
-
-<p>На этом думаю закончить сравнительный обзор двух методов - <code>.first()</code> и <code>.first-child()</code>.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-23T00:00:00+03:00"><a href="http://zencoder.ru/jquery/next-jquery/">May 23, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/next-jquery/" rel="bookmark" title="Методы next и prev библиотеки jQuery" itemprop="url">Методы next и prev библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Рассмотрю методы для нахождения <strong>следующих</strong> и <strong>предыдущих</strong> элементов из выборки. Предполагается, что имеется группа элементов, у которых один родитель.</p>
-
-<p>Чтобы не ходить вокруг да около, приведу пример HTML-разметки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Видно, что у элемента-родителя <code>ul class="test"</code> имеется двенадцать элементов-потомков <code>li class="test__item"</code>.</p>
-
-<p>Так вот, в библиотеке jQuery имеются несколько методов, с помощью которых можно “погулять” по этому DOM-дереву. Расссмотрю каждый из них в отдельности.</p>
-
-<p>Но стоит сразу сказать - как всегда, эти методы очень краткие и предельно понятные. Вся “прелесть” начинается, когда методы объединяют в jQuery-цепочку.</p>
-
-<h2 id="next">Метод next()</h2>
-
-<p>С помощью этого метода возвращается элемент, находящий <strong>следующим</strong> по отношению к текущему элементу.</p>
-
-<p>Приведу такой JS-код:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="nx">next</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--nexted&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>… который выполняет следующее:</p>
-
-<ul>
-  <li>создать переменную <code>list</code> и поместить в нее результат выборки <code>$('.test')</code></li>
-  <li>в переменной <code>list</code> найти все элементы <code>li</code></li>
-  <li>вернуть элемент <code>li</code> с индексом 6 - <code>.eq(6)</code></li>
-  <li>найти следующий за ним элемент <code>li</code></li>
-  <li>присвоить ему класс <code>.test__link--nexted</code></li>
-</ul>
-
-<p>В результате выполнения этого кода класс <code>.test__link--nexted</code> будет присвоен элементу <code>li</code> с индексом 7 (или восьмому - по счету):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--nexted&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h2 id="prev">Метод prev()</h2>
-
-<p>Этот метод абсолютно аналогичен методу <code>next()</code> за тем исключением, что его действие направлено в противоположную сторону. Метод <code>prev()</code> возвращает элемент, который <strong>предшествует</strong> текущему элементу.</p>
-
-<p>То есть, такой JS-код:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">6</span><span class="p">).</span><span class="nx">prev</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;test__link--preved&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<ul>
-  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
-  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
-  <li>вернет элемент <code>li</code> с индексом 6 - <code>.eq(6)</code></li>
-  <li>найдет предшествующий ему элемент <code>li</code></li>
-  <li>присвоит ему класс <code>.test__link--preved</code></li>
-</ul>
-
-<p>Результатом выполнения этого кода класс <code>.test__link--preved</code> будет присвоен элементу <code>li</code> с индексом 5 (или шестому - по счету):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item test__link--preved&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h3 id="section">Краткое заключение</h3>
-
-<p>Обобщением вышесказанного является такое предложение. Методы <code>next()</code> и <code>prev()</code> возвращают один элемент, который является <strong>следующим</strong> или <strong>предшествует</strong> текущему элементу. Все элементы имеют <strong>одного общего родителя</strong> и поиск осуществляется только в этих рамках (другими словами - это sibling-элементы).</p>
-
-<h2 id="nextall--prevall">Методы nextAll() и prevAll()</h2>
-
-<p>Производными от рассмотренных мною выше методов <code>next()</code> и <code>prev()</code> являются методы <code>nextAll()</code> и <code>prevAll()</code>. Фактически, это те же самые методы <code>next()</code> и <code>prev()</code>, но в этих методах возвращается не один элемент, а <strong>все оставшиеся</strong> элементы, которые являются sibling по отношению к текущему элементу.</p>
-
-<p>То есть, такой JS-код:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">nextAll</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--squared&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<ul>
-  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
-  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
-  <li>вернет элемент <code>li</code> с индексом 3 - <code>.eq(3)</code></li>
-  <li>найдет все следующие за ним элементы <code>li</code> - <code>.nextAll()</code></li>
-  <li>присвоит всем найденным элементам <code>li</code> класс <code>.block__item--squared</code></li>
-</ul>
-
-<p>Результатом будет такой HTML-код:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--squared&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<p>Метод <code>prevAll()</code> работает аналогично, но “в другую сторону”. Этот метод возвращает <strong>все элементы</strong>, которые <strong>предшествуют</strong> текущему элементу.</p>
-
-<p>То есть, такой JS-код:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="kd">function</span><span class="p">(){</span>
-  <span class="kd">var</span> <span class="nx">list</span> <span class="o">=</span> <span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.test&#39;</span><span class="p">);</span>
-  <span class="nx">list</span><span class="p">.</span><span class="nx">find</span><span class="p">(</span><span class="s1">&#39;li&#39;</span><span class="p">).</span><span class="nx">eq</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span><span class="nx">prevAll</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;block__item--circled&#39;</span><span class="p">);</span>
-<span class="p">});</span></code></pre></div>
-
-<ul>
-  <li>создаст переменную <code>list</code> и поместит в нее результат выборки <code>$('.test')</code></li>
-  <li>в переменной <code>list</code> найдет все элементы <code>li</code></li>
-  <li>вернет элемент <code>li</code> с индексом 3 - <code>.eq(3)</code></li>
-  <li>найдет все элементы <code>li</code>, которые предшествуют ему - <code>.prevAll()</code></li>
-  <li>присвоит всем найденным элементам <code>li</code> класс <code>.block__item--circled</code></li>
-</ul>
-
-<p>Результатом работы этого js-скрипта будет такой HTML-код:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item block__item--circled&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h2 id="section-1">Общее заключение</h2>
-
-<p>Вывод по методам <code>nextAll()</code> и <code>prevAll()</code>. Эти методы работают с sibling-элементами, то есть - имеющими одного родителя. Эти методы возвращают все найденные элементы, которые предшествуют или расположены после текущего элемента.</p>
-
-<p>Методы <code>nextAll()</code> и <code>prevAll()</code> очень похожи также на рассмотренный мною в предыдущей статье метод <code>siblings</code>. Вот только действие метода <code>siblings</code> более “тупое” (если позволительно так сказать) - этот метод “фигачит” свое действие сразу в обе стороны от текущего элемента, по принципу - “от забора и до обеда”.</p>
-
-<p>Методы <code>nextAll()</code> и <code>prevAll()</code> более “интеллектуальные” - они “фигачат” свое действие только в одну сторону - указанную.</p>
-
-<p>Ну, а методы <code>next()</code> и <code>prev()</code> самые “умные” - “только один элемент, который ближайший и слева”; “только один элемент, который ближайший и справа”.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2015-05-22T00:00:00+03:00"><a href="http://zencoder.ru/jquery/siblings-jquery/">May 22, 2015</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/jquery/siblings-jquery/" rel="bookmark" title="Метод siblings библиотеки jQuery" itemprop="url">Метод siblings библиотеки jQuery</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <p>Небольшое отступление - в одних постах я говорю о функциях jQuery, в других - о методах jQuery. Где же правильно? В принципе, и то и то правильно. И функция jQuery, и метод jQuery. Но последний вариант более правильный, поэтому в дальнейшем буду “обзывать” подобные вещи методами.</p>
-
-<p>Метод <code>.siblings()</code> предназначен для выборки соседних элементов. С помощью этого метода выбираются все элементы, находящиеся на одном уровне DOM с элементом, служащим в качестве критерия отбора.</p>
-
-<p>Метод имеет один вариант использования (синтаксис):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html">.parent([selector])</code></pre></div>
-
-<p>Все очень похоже на то, как эти дела <a href="https://css-tricks.com/child-and-sibling-selectors/" title="Child and Sibling Selectors">обстоят в CSS</a>, но приведу простой пример для иллюстрации:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link proba&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;/nav&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.proba&#39;</span><span class="p">).</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>… <strong>читается это так</strong> - добавить класс <code>.selected</code> для всех элементов, соседних (sibling) с элементом, имеющим класс <code>.proba</code>. То есть, класс <code>.selected</code> будет добавлен всем элементам <code>a</code>, так как они находятся на одном уровне DOM с элементом <code>.proba</code> и являются соседними по отношению к нему.</p>
-
-<p>По умолчанию можно не передавать методу <code>.siblings()</code> аргумент в виде селектора - <code>.siblings('a')</code>, так как подразумеваются элементы, которые являются соседними в текущей HTML-разметке. Но можно передавать методу в качестве аргумента имя класса  - <code>.siblings('.test__link')</code>; или элемент с именем класса (идентификатора) - <code>.siblings('a.test__link')</code>.</p>
-
-<p>Краткие примеры использования метода <code>.siblings()</code>, взятые с ресурса <a href="http://jquery.page2page.ru/" title="Siblings jQuery">jQuery Page2Page</a>:</p>
-
-<ul>
-  <li><code>$("#block").siblings()</code> - найдет элементы, которые имеют общего родителя с элементом, обладающим идентификатором <code>#block</code></li>
-  <li><code>$(".lBlock").siblings()</code> - найдет элементы, которые имеют общих родителей с элементами класса <code>.lBlock</code></li>
-  <li><code>$(".lBlock").siblings(".cont")</code> - найдет элементы класса <code>.cont</code>, которые имеют общих родителей с элементами класса <code>.lBlock</code></li>
-</ul>
-
-<p>Важный момент - в этом случае класс <code>.selected</code> не будет добавлен к элементу <code>.proba</code>. Другими словами, в методе <code>.siblings()</code> к элементу, служащему в качестве критерия, не применяются действия этого метода.</p>
-
-<p>Чтобы было еще понятнее, о чем идет речь, представлю ниже результат работы описанного выше javascript-кода:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;nav</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link proba&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link selected&quot;</span><span class="nt">&gt;</span>test link item<span class="nt">&lt;/a&gt;</span>
-<span class="nt">&lt;/nav&gt;</span></code></pre></div>
-
-<p>Метод <code>.siblings()</code> прост и понятен. Единственным “подводным камнем” при работе с ним является такой момент - нужно быть внимательным с <strong>уровнями вложения элементов</strong>. Другими словами, в дереве DOM элементы не расположены на одном уровне (не являются sibling), однако разработчик упрямо пытается применить к этим элементам метод <code>.sibling()</code>. И потом сильно недоумевает, почему ничего не работает, хотя код то правильный!</p>
-
-<p>Приведу простой пример такой ошибки, с которой один раз сам столкнулся. Здесь пример кристально ясный и понятный, однако на деле все было не так прозрачно (в совокупности с другим кодом):</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">class=</span><span class="s">&quot;test&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link proba&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;test__item&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">&quot;#&quot;</span> <span class="na">class=</span><span class="s">&quot;test__link&quot;</span><span class="nt">&gt;</span>test item link<span class="nt">&lt;/a&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span><span class="p">(</span><span class="s1">&#39;.proba&#39;</span><span class="p">).</span><span class="nx">siblings</span><span class="p">().</span><span class="nx">addClass</span><span class="p">(</span><span class="s1">&#39;selected&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>Представленный выше javascript-код <strong>работать не будет</strong>, так как элементы <code>a</code> (а код был сделан в расчете на эти элементы) соседними (siblings) не являются. Это хорошо заметно, если внимательно рассмотреть HTML-код примера.</p>
-
-<p>Вот, в принципе, и все, что можно сказать о методе <code>.siblings()</code>.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -1160,6 +1044,12 @@
       <li>
         
           <a href="http://zencoder.ru/page46">46</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page47">47</a>
         
       </li>
     

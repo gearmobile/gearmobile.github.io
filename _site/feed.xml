@@ -4,7 +4,7 @@
 <generator uri="https://github.com/mojombo/jekyll">Jekyll</generator>
 <link rel="self" type="application/atom+xml" href="http://zencoder.ru/feed.xml" />
 <link rel="alternate" type="text/html" href="http://zencoder.ru" />
-<updated>2015-08-30T14:11:13+03:00</updated>
+<updated>2015-11-10T22:24:04+03:00</updated>
 <id>http://zencoder.ru/</id>
 <author>
   <name>zencoder</name>
@@ -14,7 +14,570 @@
 
 
 <entry>
-  <title type="html"><![CDATA[SublimeLinter - обнаружение ошибок в Sublime Text]]></title>
+  <title type="html"><![CDATA[Различие между exports и module.exports]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/javascript/exports-module_exports/" />
+  <id>http://zencoder.ru/javascript/exports-module_exports</id>
+  <published>2015-11-10T00:00:00+03:00</published>
+  <updated>2015-11-10T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Попытка разобраться, в чем различие между &lt;code&gt;exports&lt;/code&gt; и &lt;code&gt;module.exports&lt;/code&gt;, основанная на статье &lt;a href=&quot;http://www.sitepoint.com/understanding-module-exports-exports-node-js/&quot;&gt;Understanding module.exports and exports in Node.js&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;moduleexports--exports--nodejs&quot;&gt;Что такое module.exports и exports в Node.js&lt;/h2&gt;
+
+&lt;p&gt;Как web-разработчики, мы часто сталкиваемся с ситуацией, когда необходимо иметь дело с малознакомым кодом. И тогда сам собою возникает логичный вопрос - сколько времени мне потребуется для того, чтобы разобраться с чужим кодом и понять принцип его работы?&lt;/p&gt;
+
+&lt;p&gt;Типичный ответ на этот вопрос - ровно столько, чтобы начать самому писать код; а затем вернуться к изучению этой темы позже, когда позволит на это время. Ну что-же, как мне кажется, пришло время получше разобраться с такими понятиями, как &lt;code&gt;module.exports&lt;/code&gt; и &lt;code&gt;exports&lt;/code&gt; в Node.js. Спешу поделиться с вами тем, что я узнал по этому вопросу.&lt;/p&gt;
+
+&lt;h3 id=&quot;module&quot;&gt;Что такое модуль (module)&lt;/h3&gt;
+
+&lt;p&gt;Основная концепция модуля заключается в том, что он инкапсулирует логически связанный между собой код в &lt;strong&gt;единый блок&lt;/strong&gt;. Можно сказать иначе - создание модуля заключается в помещении всех взаимосвязанных между собой функций в &lt;strong&gt;один единый файл&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Для понимания вышесказанного лучше всего создать пример приложения под Node.js. Давайте создадим файл с именем &lt;code&gt;greetings.js&lt;/code&gt;, внутри которого размещены &lt;strong&gt;две функции&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+	&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hola&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;Экспорт модуля&lt;/h3&gt;
+
+&lt;p&gt;Польза от файла (модуля) &lt;code&gt;greetings.js&lt;/code&gt; (&lt;em&gt;и функций, которые находятся в этом файле&lt;/em&gt;) появляется в том случае, когда файл &lt;code&gt;greetings.js&lt;/code&gt; можно использовать внутри других файлов (модулей).&lt;/p&gt;
+
+&lt;p&gt;Для достижения этого необходимо слегка изменить исходный код файла &lt;code&gt;greetings.js&lt;/code&gt;. Чтобы понять, что происходит на самом деле, в данном случае будем выполнять пошаговый процесс:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Представьте себе, что эта строка существует в качестве первой линии кода в &lt;code&gt;greetings.js&lt;/code&gt;:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Видоизменим обе функции в файле &lt;code&gt;greetings.js&lt;/code&gt; с помощью выражения &lt;code&gt;exports&lt;/code&gt; таким образом, чтобы они были доступны для внешних файлов (модулей):&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+	&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hola&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;В приведенном выше коде можно было бы заменить выражение &lt;code&gt;exports&lt;/code&gt; на &lt;code&gt;exports.module&lt;/code&gt; и получить точно такой же результат. Если этот момент кажется вам непонятным, то помните, что выражение &lt;code&gt;exports&lt;/code&gt; и выражение &lt;code&gt;exports.module&lt;/code&gt; ссылаются на один и тот же объект.&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Это текущее значение выражения &lt;code&gt;module.exports&lt;/code&gt;:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+		&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+		&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hola&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;Импортирование модуля&lt;/h3&gt;
+
+&lt;p&gt;Давайте сделаем методы модуля &lt;code&gt;greetings.js&lt;/code&gt; общедоступными для другого файла (модуля) с именем &lt;code&gt;main.js&lt;/code&gt;. Этот процесс также разобьем пошагово для более лучшего понимания:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;В Node.js используется команда &lt;code&gt;require&lt;/code&gt; для импортирования одного модуля в другой модуль:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;path&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+	  &lt;span class=&quot;c1&quot;&gt;// ...&lt;/span&gt;
+
+	  &lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Давайте подключим модуль &lt;code&gt;greetings.js&lt;/code&gt; в модуль &lt;code&gt;main.js&lt;/code&gt;:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// main.js&lt;/span&gt;
+	&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;greeting&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./greetings.js&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Приведенная выше строка кода равнозначна нижеследующему коду:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// main.js&lt;/span&gt;
+	&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;greeting&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+
+		&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+		&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+			&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hola&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+		&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;Теперь можно использовать функции модуля &lt;code&gt;greetings.js&lt;/code&gt; внутри модуля &lt;code&gt;main.js&lt;/code&gt; как методы объекта &lt;code&gt;greeting&lt;/code&gt;:&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// main.js&lt;/span&gt;
+	&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;greeting&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./greetings.js&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;c1&quot;&gt;// Hello&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;greeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+	&lt;span class=&quot;c1&quot;&gt;// Hola&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;greeting&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Hola&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;Отличительные моменты&lt;/h3&gt;
+
+&lt;p&gt;Команда &lt;code&gt;require&lt;/code&gt; возвращает объект, свойства и методы которого доступны другим внешним модулям при помощи команды &lt;code&gt;module.exports&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Нижеприведенный пример поможет разобраться в данном вопросе:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// greetings.js&lt;/span&gt;
+
+	&lt;span class=&quot;c1&quot;&gt;// var exports = module.exports = {};&lt;/span&gt;
+
+	&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hello&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;()&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+		&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Hola&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;
+
+	&lt;span class=&quot;c1&quot;&gt;// Эта строка кода выполняет повторное переопределение,&lt;/span&gt;
+
+	&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Bonjour&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Теперь сделаем подключение модуля &lt;code&gt;greetings.js&lt;/code&gt; в модуль &lt;code&gt;main.js&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// main.js&lt;/span&gt;
+	&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;greetings&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./greetings.js&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;На данный момент в нашем примере ничего не поменялось. В переменную &lt;code&gt;greetings&lt;/code&gt; помещается код, доступный из модуля &lt;code&gt;greetings.js&lt;/code&gt;. Не более того.&lt;/p&gt;
+
+&lt;p&gt;Однако, если мы попытаемся воспользоваться каким-либо из методов модуля &lt;code&gt;greetings.js&lt;/code&gt; - &lt;code&gt;sayHelloInEnglish&lt;/code&gt; или &lt;code&gt;sayHelloInSpanish&lt;/code&gt;, то мы получим ошибку. Это произошло в следствие того, что было произведено переопределение экспортируемой структуры модуля при помощи команды &lt;code&gt;module.exports&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Другими словами, последней командой &lt;code&gt;module.exports&lt;/code&gt; экспортируется совсем другой модуль - &lt;code&gt;Bonjour&lt;/code&gt;, у которого другие свойства и методы. Происходит &lt;strong&gt;переопределение&lt;/strong&gt; экспортируемого модуля и вызов метода &lt;code&gt;sayHelloInEnglish&lt;/code&gt; или &lt;code&gt;sayHelloInSpanish&lt;/code&gt; вызовет ошибку:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// main.js&lt;/span&gt;
+	&lt;span class=&quot;c1&quot;&gt;// var greetings = require(&amp;quot;./greetings.js&amp;quot;);&lt;/span&gt;
+
+	&lt;span class=&quot;cm&quot;&gt;/*&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;	 * TypeError: object Bonjour has no&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;	 * method &amp;#39;sayHelloInEnglish&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;	 */&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;greetings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInEnglish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+
+	&lt;span class=&quot;cm&quot;&gt;/*&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;	 * TypeError: object Bonjour has no&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;	 * method &amp;#39;sayHelloInSpanish&amp;#39;&lt;/span&gt;
+&lt;span class=&quot;cm&quot;&gt;	 */&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;greetings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sayHelloInSpanish&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Чтобы отследить ошибки при использовании модуля &lt;code&gt;greetings&lt;/code&gt;, можно вывести их в консоль:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;c1&quot;&gt;// &amp;quot;Bonjour&amp;quot;&lt;/span&gt;
+	&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;greetings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3 id=&quot;section-3&quot;&gt;Заключение&lt;/h3&gt;
+
+&lt;p&gt;Импорт и экспорт модулей в Node.js является ежедневной задачей. Я надеюсь, что благодаря этой статье стала ясна разница между командой &lt;code&gt;exports&lt;/code&gt; и командой &lt;code&gt;module.exports&lt;/code&gt;. Более того, если у вас когда-либо произойдет ошибка при доступе к общедоступным методам модуля в будущем, то я надеюсь, что у вас есть лучшее понимание того, почему может возникнуть эти ошибки.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/javascript/exports-module_exports/&quot;&gt;Различие между exports и module.exports&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 10, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Что такое require и module.exports]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/javascript/require-nodejs/" />
+  <id>http://zencoder.ru/javascript/require-nodejs</id>
+  <published>2015-11-09T00:00:00+03:00</published>
+  <updated>2015-11-09T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Данная статья является &lt;em&gt;прочтением&lt;/em&gt; и &lt;em&gt;переосмыслением&lt;/em&gt; перевода &lt;a href=&quot;http://habrahabr.ru/post/217901/&quot;&gt;Node.js, Require и Exports&lt;/a&gt; статьи-оригинала &lt;a href=&quot;http://openmymind.net/2012/2/3/Node-Require-and-Exports/&quot;&gt;Node.js, Require and Exports&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Помимо этого, существует еще одна неплохая статья, посвященная данной тематике - &lt;a href=&quot;http://www.sitepoint.com/understanding-module-exports-exports-node-js/&quot;&gt;Understanding module.exports and exports in Node.js&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Тематика данного поста посвящена двум командам Node.js - &lt;code&gt;require&lt;/code&gt; и &lt;code&gt;module.exports&lt;/code&gt;. Обе эти команды являются &lt;em&gt;служебными&lt;/em&gt; и “принадлежат” Node.js.&lt;/p&gt;
+
+&lt;p&gt;С помощью этих команд Node.js осуществляет взаимодействие своих модулей между друг другом.&lt;/p&gt;
+
+&lt;p&gt;Команда &lt;code&gt;require&lt;/code&gt; &lt;strong&gt;подключает&lt;/strong&gt; один модуль к другому. Команда &lt;code&gt;module.exports&lt;/code&gt; делает модуль &lt;strong&gt;доступным&lt;/strong&gt; для других модулей.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;p&gt;Ниже - краткое изложение статьи-оригинала …&lt;/p&gt;
+
+&lt;p&gt;В Node.js все &lt;em&gt;штуки&lt;/em&gt; видны друг другу только &lt;strong&gt;в рамках одного и того же файла&lt;/strong&gt;. Под штуками я подразумеваю &lt;em&gt;переменные&lt;/em&gt;, &lt;em&gt;функции&lt;/em&gt;, &lt;em&gt;классы и их члены&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Например, у нас есть файл &lt;code&gt;misc.js&lt;/code&gt; следующего содержания:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;summ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Привычный &lt;strong&gt;доступ&lt;/strong&gt; к константе &lt;code&gt;x&lt;/code&gt; и переменной &lt;code&gt;summ&lt;/code&gt; из &lt;strong&gt;другого файла невозможен&lt;/strong&gt;. Это никак не связано с использованием &lt;code&gt;var&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;Дело в том, что Node.js состоит из &lt;strong&gt;блоков&lt;/strong&gt;, называемых &lt;strong&gt;модулями&lt;/strong&gt;; и каждый &lt;strong&gt;отдельный файл&lt;/strong&gt; по своей сути — &lt;strong&gt;отдельный блок&lt;/strong&gt; (модуль), чья &lt;strong&gt;область видимости изолирована&lt;/strong&gt; от других таких же блоков (модулей).&lt;/p&gt;
+
+&lt;p&gt;Теперь перед тем как мы узнаем, как &lt;strong&gt;сделать эти штуки видимыми вне модуля&lt;/strong&gt;, рассмотрим более подробно, как &lt;strong&gt;загружаются модули&lt;/strong&gt; в Node.js.&lt;/p&gt;
+
+&lt;p&gt;Сейчас речь пойдет о том месте, где пишется - &lt;code&gt;require&lt;/code&gt;. Служебное слово &lt;code&gt;require&lt;/code&gt; используют для &lt;strong&gt;загрузки модуля&lt;/strong&gt;, обычно &lt;strong&gt;присваивая результат его работы какой-то переменной&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someModule&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./some_module&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Другими словами можно сказать, что в Node.js служебное слово &lt;code&gt;require&lt;/code&gt; служит для подключения одного независимого модуля (файла) к другому независимому модулю (файлу). Принцип подключения через &lt;code&gt;require&lt;/code&gt; заключается в создании в целевом модуле &lt;strong&gt;объекта&lt;/strong&gt; и помещении в этот объект подключаемого модуля.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;Конечно же, до тех пор, пока наш модуль (&lt;code&gt;some_module&lt;/code&gt;) ничего не &lt;strong&gt;отдает&lt;/strong&gt;, все приведенные примеры бесполезны.&lt;/p&gt;
+
+&lt;p&gt;А чтобы наш модуль (&lt;code&gt;some_module&lt;/code&gt;) что-нибудь &lt;strong&gt;отдал&lt;/strong&gt;, мы будем использовать служебное слово &lt;code&gt;module.exports&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kr&quot;&gt;const&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;5&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;summ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;value&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;x&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// сделали константу 5 доступной из других модулей&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;summ&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;summ&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// сделали переменную summ доступной из других модулей&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Вот теперь наш модуль (&lt;code&gt;some_module&lt;/code&gt;) стал гораздо &lt;strong&gt;более полезным&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someModule&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./some_module&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;В результате в целевом модуле будет создан объект &lt;code&gt;someModule&lt;/code&gt; со свойством &lt;code&gt;x = 5&lt;/code&gt; (&lt;code&gt;someModule.x&lt;/code&gt;) и методом &lt;code&gt;summ&lt;/code&gt; (&lt;code&gt;someModule.summ&lt;/code&gt;).&lt;/p&gt;
+
+&lt;p&gt;Есть ещё такой способ отдать &lt;em&gt;штуки&lt;/em&gt; из нашего модуля:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;name&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;this&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;email&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;email&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;То есть, в исходном модуле создается объект &lt;code&gt;User&lt;/code&gt; со свойствами &lt;code&gt;User.name&lt;/code&gt; и &lt;code&gt;User.email&lt;/code&gt;. Затем с помощью служебного слова &lt;code&gt;module.exports&lt;/code&gt; объект &lt;code&gt;User&lt;/code&gt; делается доступным для других модулей Node.js.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;&lt;strong&gt;Разница&lt;/strong&gt; между этими подходами &lt;strong&gt;не велика, но важна&lt;/strong&gt;. Как видно, в данном случае мы экспортируем &lt;strong&gt;функцию напрямую&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// vs&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Всё это к тому, что потом ее будет &lt;strong&gt;легче использовать&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./user&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;User&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;
+&lt;span class=&quot;c1&quot;&gt;// vs&lt;/span&gt;
+&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;u&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;new&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;user&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;();&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Выгода от использования такого способа заключается в том, что в данном случае нам не важно, будет ли ваш модуль представлять контейнер c экспортируемыми значениями или нет.&lt;/p&gt;
+
+&lt;p&gt;Чтобы еще &lt;strong&gt;более красочно&lt;/strong&gt; представить &lt;strong&gt;процесс взаимодействия модулей&lt;/strong&gt;, давайте рассмотрим следующий пример:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;powerLevel&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;function&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;level&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
+	&lt;span class=&quot;k&quot;&gt;return&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;level&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;9000&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;it&amp;#39;s over 9000&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;level&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
+&lt;span class=&quot;p&quot;&gt;};&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;module&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;exports&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;powerLevel&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Когда вы подключите данный модуль используя &lt;code&gt;require&lt;/code&gt;, фактически им будет являться &lt;strong&gt;функция&lt;/strong&gt;, что позволит вам сделать следующее:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someModule&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./powerlevel&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Что, по сути, является &lt;strong&gt;упрощенной записью&lt;/strong&gt; следующего кода:&lt;/p&gt;
+
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;let&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;someModule&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;require&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;./powerlevel&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
+&lt;span class=&quot;nx&quot;&gt;someModule&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;mi&quot;&gt;9000&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Вот и все кратко о командах &lt;code&gt;require&lt;/code&gt; и &lt;code&gt;module.exports&lt;/code&gt;.&lt;/p&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/javascript/require-nodejs/&quot;&gt;Что такое require и module.exports&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 09, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Создаем первоклассное портфолио]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/freelance/first-class-portfolio/" />
+  <id>http://zencoder.ru/freelance/first-class-portfolio</id>
+  <published>2015-11-02T00:00:00+03:00</published>
+  <updated>2015-11-02T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Данная статья &lt;a href=&quot;http://speckyboy.com/2015/08/19/tips-for-creating-a-first-class-personal-portfolio/&quot; title=&quot;Tips for Creating a First-Class Personal Portfolio&quot;&gt;Tips for Creating a First-Class Personal Portfolio&lt;/a&gt; показалась мне интересной в качестве повышения личного опыта. Советы в этой статье больше относятся к дизайнерам; но их в полной мере можно отнести и к Frontend Developer’у. Статья написана редактором и основателем &lt;a href=&quot;http://speckyboy.com/&quot; title=&quot;Speckyboy Design Magazine&quot;&gt;Speckyboy Design Magazine&lt;/a&gt; Полом Эндрю (&lt;a href=&quot;http://speckyboy.com/author/apaulandrew/&quot; title=&quot;Paul Andrew&quot;&gt;Paul Andrew&lt;/a&gt;). Ниже привожу &lt;em&gt;вольный перевод&lt;/em&gt; статьи.&lt;/p&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;Логотип и слоган&lt;/h2&gt;
+
+&lt;p&gt;Для начала начнем с основ. Ваш &lt;strong&gt;логотип - это ваш бренд&lt;/strong&gt;; а &lt;strong&gt;ваш слоган - кто вы есть&lt;/strong&gt;. С помощью логотипа и слогана вы должны &lt;strong&gt;привлечь внимание&lt;/strong&gt; потенциальных клиентов и быстро ответить на их вопрос - “Почему?”. В противном случае посетитель быстро уйдет со страницы и тотчас забудет о вашем портфолио.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-01.png&quot; alt=&quot;Уникальный логотип из портфолио Inal&quot; title=&quot;Уникальный логотип из портфолио Inal&quot; /&gt; Уникальный логотип из портфолио &lt;a href=&quot;http://www.inaldjafar.com/#/about&quot;&gt;Inal&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Логотип должен представлять вас и ваш стиль перед потенциальным клиентом; слоган должен кратко и ясно сказать клиенту, что вы можете сделать для него ценного и полезного.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Итак, запомните:&lt;/strong&gt; быстрый и краткий ответ на вопрос “Зачем” или же потенциальный клиент забудет о вашем портфолио раньше, нежели вы можете себе это представить.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-02.png&quot; alt=&quot;Слоган из портфолио Mike Etheridge&quot; title=&quot;Слоган из портфолио Mike Etheridge&quot; /&gt; Слоган из портфолио &lt;a href=&quot;http://lickscreative.com/&quot;&gt;Mike Etheridge&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-1&quot;&gt;Простая навигация&lt;/h2&gt;
+
+&lt;p&gt;Это истина, не требующая доказательств. Однако, все же стоить упомянуть еще раз: даже самый лучший сайт - это плохой сайт, если его навигация не интуитивно понятная.&lt;/p&gt;
+
+&lt;p&gt;Если в портфолио нельзя быстро и легко увидеть примеры ваших работ, то становится неважным сам факт, насколько хороши ваши работы сами по себе.&lt;/p&gt;
+
+&lt;p&gt;Потенциальный клиент будет чувствовать себя обманутым в своих ожиданиях и скорее всего отправиться искать другого исполнителя.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-03.png&quot; alt=&quot;Простая и доступная навигация из портфолио Robin Man&quot; title=&quot;Простая и доступная навигация из портфолио Robin Man&quot; /&gt; Простая и доступная навигация из портфолио &lt;a href=&quot;http://www.robinman.com/&quot;&gt;Robin Man&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Сделайте навигацию в вашем портфолио &lt;strong&gt;настолько простой, насколько это возможно&lt;/strong&gt;. Упростите и укоротите пункты меню; сделайте страницы меньшими по размеру и объедините их; сделайте стиль навигации настолько же простым, насколько и понятным.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-2&quot;&gt;Доступные контакты&lt;/h2&gt;
+
+&lt;p&gt;Какая самая главная задача, ради которой создается портфолио? Привлечь клиентов и получить хорошо оплачиваемые заказы от них. И самый простой способ сделать это - помощь потенциальному заказчику &lt;strong&gt;связаться с вами&lt;/strong&gt;; тем самым вы увеличите шансы получить от клиента оплачиваемый заказ.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-04.png&quot; alt=&quot;Кнопка &amp;quot;Связаться со мной&amp;quot; из портфолио Matthew Miller&quot; title=&quot;Кнопка &amp;quot;Связаться со мной&amp;quot; из портфолио Matthew Miller&quot; /&gt; &lt;a href=&quot;http://mmmatt.com/&quot;&gt;Matthew Miller&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-3&quot;&gt;Показывайте только лучшее&lt;/h2&gt;
+
+&lt;p&gt;В портфолио должны быть представлены &lt;strong&gt;только самые лучшие работы&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-05.png&quot; alt=&quot;Страница из портфолио Camille Leonard&quot; title=&quot;Страница из портфолио Camille Leonard&quot; /&gt; Страница из портфолио &lt;a href=&quot;http://camille-leonard.fr/&quot;&gt;Camille Leonard&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Думайте о своем портфолио как об альбоме с лучшими хитами. В вашем портфолио должны быть только &lt;strong&gt;самые лучшие&lt;/strong&gt;, &lt;strong&gt;самые выразительные&lt;/strong&gt;, &lt;strong&gt;самые яркие&lt;/strong&gt; работы; все, что не отвечает этим требованиям, должно быть убрано из портфолио.&lt;/p&gt;
+
+&lt;p&gt;Точно также, как безупречный альбом с лучшими хитами снова и снова привлекает новых фанатов, так и портфолио с безупречным дизайном должно снова и снова поражать воображение и привлекать новых заказчиков.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-06.png&quot; alt=&quot;Продвинутая страница портфолио Kata Farkas&quot; title=&quot;Продвинутая страница портфолио Kata Farkas&quot; /&gt; Продвинутая страница портфолио &lt;a href=&quot;http://katafarkas.com/&quot;&gt;Kata Farkas&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-4&quot;&gt;Сортируйте ваши работы&lt;/h2&gt;
+
+&lt;p&gt;Этот совет является частью ранее рассмотренного совета по созданию простой и понятной навигации портфолио. Отсортируйте образцы ваших работ таким образом, чтобы можно было легко и просто перемещаться между ними.&lt;/p&gt;
+
+&lt;p&gt;Скажем так: даже если у вас имеется только десять самых лучших работ, то отсортировав их по логотипам, сайтам, баннерам и так далее, вы тем самым сделаете просмотр этих образцов &lt;strong&gt;более удобным и простым&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-07.png&quot; alt=&quot;Каталогизация работ в портфолио Huncwot&quot; title=&quot;Каталогизация работ в портфолио Huncwot&quot; /&gt; Каталогизация работ в портфолио &lt;a href=&quot;http://huncwot.com/&quot;&gt;Huncwot&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2 id=&quot;section-5&quot;&gt;Добавьте отзывы&lt;/h2&gt;
+
+&lt;p&gt;Подтверждение ваших навыков клиентами, с которыми вы уже работали, является наиболее эффективным способом свести в минимуму риски для новых потенциальных заказчиков.&lt;/p&gt;
+
+&lt;p&gt;Судите сами: вы лично не уверены в профессиональных способностях дизайнера, которому хотели бы предложить работу; но при этом вы видите, что остальные люди высоко оценивают его работу; насколько высока вероятность того, что вы сами предложите ему работу?&lt;/p&gt;
+
+&lt;p&gt;Основная цель наличия отзывов в портфолио - уменьшить риск для потенциальных заказчиков и расположить их к тому, чтобы дать вам шанс попробовать поработать с ними.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-6&quot;&gt;Что вы умеете&lt;/h2&gt;
+
+&lt;p&gt;Как вы уже могли заметить, основная идея всех советов, представленных в этой статье - помочь заказчику определиться в своем выборе &lt;strong&gt;настолько легко, насколько это возможно&lt;/strong&gt;. И данный совет ничем не отличается от всех предыдущих - четко и ясно расскажите потенциальному клиенту, &lt;strong&gt;какие виды работ вы готовы выполнить&lt;/strong&gt;. Не заставляйте посетителей догадываться о том, чем именно вы занимаетесь - просто &lt;strong&gt;скажите им об этом&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-08.png&quot; alt=&quot;Страница с услугами из портфолио Studio Sweep&quot; title=&quot;Страница с услугами из портфолио Studio Sweep&quot; /&gt; Страница с услугами из портфолио &lt;a href=&quot;http://studiosweep.com/about/&quot;&gt;Studio Sweep&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Так что общая картина выглядит примерно таким образом - посетитель заходит на ваш сайт с портфолио, сразу же видит присущий вашим работам стиль и их стоимость, оценивает ваши работы, читает отзывы предыдущих заказчиков и наконец последний недостающий кусочек в его мозаике - нужно посмотреть, что именно вы можете &lt;strong&gt;сделать для него&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;section-7&quot;&gt;Личная информация&lt;/h2&gt;
+
+&lt;p&gt;Так как потенциальный заказчик, скорее всего, не будет встречаться с вами в личной беседе, добавьте в портфолио &lt;strong&gt;информацию о себе&lt;/strong&gt;. Прежде всего, бизнес - &lt;em&gt;это очень личное&lt;/em&gt;; это то, о чем договариваются люди (&lt;em&gt;не роботы&lt;/em&gt;) лично между собой; и личные взаимоотношения между вами и потенциальным клиентом могут быть даже более важным моментом, нежели ваши профессиональные качества.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-09.png&quot; alt=&quot;Страница с личной информацией из портфолио Calvin Teoh&quot; title=&quot;Страница с личной информацией из портфолио Calvin Teoh&quot; /&gt; Страница с личной информацией из портфолио &lt;a href=&quot;http://calvinteoh.com/&quot;&gt;Calvin Teoh&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;Вы можете добавить в свое портфолио &lt;strong&gt;простую страницу&lt;/strong&gt; или же &lt;strong&gt;раздел&lt;/strong&gt; с кратким описанием вас самих (&lt;em&gt;не ваши навыки и знания, а именно информацию о вас как о личности; о том, что вы любите и что не любите&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Вы можете также добавить &lt;strong&gt;ссылки на свои профили&lt;/strong&gt; в различных социальных сетях, если вы чувствуете, что это поможет еще лучше раскрыть вас как личность. Тем самым вы еще больше упрочите потенциального клиента в его решении.&lt;/p&gt;
+
+&lt;h2 id=&quot;x-&quot;&gt;X-фактор&lt;/h2&gt;
+
+&lt;p&gt;Этот раздел можно считать продолжением предыдущего раздела, в котором говорилось о правильной подаче личной информации о себе. Сделайте так, чтобы ваша &lt;strong&gt;уникальность читалась в каждой черте вашего портфолио&lt;/strong&gt;. В вашем конкретном случае вышесказанное относится к дизайну сайтов, размещенных в вашем портфолио.&lt;/p&gt;
+
+&lt;p&gt;Почему? Да потому, что помимо вас существуют еще великое множество дизайнеров с профессиональным портфолио. И почему в таком случае потенциальный клиент должен будет прийти именно к вам, а не к любому из них?&lt;/p&gt;
+
+&lt;p&gt;И снова вернемся к теме ответа на вопрос “Почему?” Если принимать во внимание X-фактор, то это поможет потенциальному заказчику ответить на его вопрос.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/portfolio-examples-10.png&quot; alt=&quot;Уникальность дизайна из портфолио Colin Snow&quot; title=&quot;Уникальность дизайна из портфолио Colin Snow&quot; /&gt; Уникальность дизайна из портфолио &lt;a href=&quot;http://colinsnow.us/&quot;&gt;Colin Snow&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;В заключение можно привести ссылку на подборку из &lt;strong&gt;50 креативных портфолио&lt;/strong&gt;, которые могут послужить образцом для подражания и примера - &lt;a href=&quot;http://speckyboy.com/2013/08/15/creative-portfolios-of-50-designers/&quot; title=&quot;50 Inspirational and Creative Portfolios Sites&quot;&gt;50 Inspirational and Creative Portfolios Sites&lt;/a&gt;.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/freelance/first-class-portfolio/&quot;&gt;Создаем первоклассное портфолио&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 02, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[Workrave - бережем зрение]]></title>
+ <link rel="alternate" type="text/html" href="http://zencoder.ru/linux/workrave/" />
+  <id>http://zencoder.ru/linux/workrave</id>
+  <published>2015-11-01T00:00:00+03:00</published>
+  <updated>2015-11-01T00:00:00+03:00</updated>
+  <author>
+    <name>zencoder</name>
+    <uri>http://zencoder.ru</uri>
+    <email>gearmobile@gmail.com</email>
+  </author>
+  <content type="html">
+    &lt;p&gt;Тема этого поста не совсем относится к web-разработке, хотя косвенно касается ее. Данный пост будет посвящен здоровью - а точнее, &lt;strong&gt;проблеме поддержания зрения в более или менее нормальном состоянии&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Frontend-разработчики, так как же как и программисты, проводят огромное количество часов за мониторами компьютеров. Такая непосильная нагрузка на зрение не может не сказаться отрицательно на последнем.&lt;/p&gt;
+
+&lt;p&gt;Чтобы облегчить нагрузку на глаза, необходимо периодически давать возможность отдохнуть последним. Для этой цели существуют программы особого рода, которые относят к классу &lt;a href=&quot;https://en.wikipedia.org/wiki/Repetitive_strain_injury&quot; title=&quot;Repetitive Strain Injury&quot;&gt;Repetitive Strain Injury (RSI)&lt;/a&gt;. По-русски такой термин звучит как &lt;a href=&quot;https://goo.gl/HlnEny&quot; title=&quot;Спазм аккомодации&quot;&gt;Спазм аккомодации&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;Такое нарушение зрения хоть и не является болезненным, но все же это неприятное явление. Которое, если не лечить (или не предупредить) его, приводит к дальнейшему прогрессу близорукости со всеми вытекающими последствиями.&lt;/p&gt;
+
+&lt;p&gt;В статье будет рассмотрен процесс знакомства с программой &lt;a href=&quot;http://www.workrave.org/&quot; title=&quot;Workrave&quot;&gt;Workrave&lt;/a&gt;, бесплатной и хорошо проработанной. Эта программа доступна под OS Linux любого семейства из соответствующего репозитория.&lt;/p&gt;
+
+&lt;p&gt;Под OS X автор не нашел достойного бесплатного аналога программы &lt;a href=&quot;http://www.workrave.org/&quot; title=&quot;Workrave&quot;&gt;Workrave&lt;/a&gt;. Как заменитель, автор использует программу из класса &lt;a href=&quot;https://en.wikipedia.org/wiki/Pomodoro_Technique&quot; title=&quot;Pomodoro Technique&quot;&gt;Pomodoro&lt;/a&gt; - удобное сочетание &lt;em&gt;планирования рабочего времени&lt;/em&gt; и &lt;em&gt;предупреждения &lt;a href=&quot;https://en.wikipedia.org/wiki/Repetitive_strain_injury&quot; title=&quot;Repetitive Strain Injury&quot;&gt;RSI&lt;/a&gt;&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Под Windows программы класса &lt;a href=&quot;https://en.wikipedia.org/wiki/Repetitive_strain_injury&quot; title=&quot;Repetitive Strain Injury&quot;&gt;Repetitive Strain Injury (RSI)&lt;/a&gt; рассматриваться не будут, ибо - если вы используете Windows - мои вам соболезнования.&lt;/p&gt;
+
+&lt;h2 id=&quot;workrave&quot;&gt;Workrave&lt;/h2&gt;
+
+&lt;p&gt;В этом разделе я хочу поделиться своим видением процесса настройки и использования программы &lt;a href=&quot;http://www.workrave.org/&quot; title=&quot;Workrave&quot;&gt;Workrave&lt;/a&gt;. Почему так? Как мне кажется, &lt;a href=&quot;http://www.workrave.org/documentation/&quot; title=&quot;Workrave Documentation&quot;&gt;документация&lt;/a&gt; на официальном сайте Workrave весьма скудная и плохо организованная. Русскоязычные статьи по использованию программы Workrave есть, но меня не удовлетворило их качество.&lt;/p&gt;
+
+&lt;p&gt;А вот настройка и использование программы Workrave автору кажется делом &lt;strong&gt;не совсем интуитивно понятным&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Установка Workrave не должна вызывать каких-либо проблем. Она имеется в репозитории любого Linux-дистрибутива. После установки нужно обязательно ее настроить. Но - не забыть добавить программу в автозагрузку! ))&lt;/p&gt;
+
+&lt;p&gt;Панель настроек &lt;strong&gt;Preferences&lt;/strong&gt; разбита на &lt;strong&gt;три основных раздела&lt;/strong&gt; - &lt;strong&gt;Timers&lt;/strong&gt;, &lt;strong&gt;User Interface&lt;/strong&gt;, &lt;strong&gt;Network&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Раздел &lt;strong&gt;Timers&lt;/strong&gt; - самый обширный и самый главный. С него и начнем.&lt;/p&gt;
+
+&lt;h3 id=&quot;workrave---timers&quot;&gt;Workrave - Timers&lt;/h3&gt;
+
+&lt;p&gt;Чтобы легко разобраться в настройках этого раздела, нужно понять принцип работы программы Workrave.&lt;/p&gt;
+
+&lt;p&gt;Все время в Workrave делится на &lt;strong&gt;три категории&lt;/strong&gt;:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;краткие перерывы (&lt;strong&gt;Micro Break&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;длинные перерывы (&lt;strong&gt;Rest Break&lt;/strong&gt;)&lt;/li&gt;
+  &lt;li&gt;дневной лимит работы (&lt;strong&gt;Daily Limit&lt;/strong&gt;)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Вот как это выглядит “на деле”.&lt;/p&gt;
+
+&lt;p&gt;Пользователь работает за компьютером, на котором запущена программа Workrave &lt;em&gt;в фоновом режиме&lt;/em&gt;. Она отслеживает продолжительность работы пользователя.&lt;/p&gt;
+
+&lt;p&gt;Прошло 15 минут непрерывной работы на компьютером - настало время &lt;strong&gt;краткого перерыва&lt;/strong&gt; (Micro Break) продолжительностью 30 секунд. Нужно отвести взгляд от монитора и по желанию - просто посмотреть вдаль или сделать какое-либо упражнение для глаз (&lt;em&gt;советую просто закрыть глаза - прекрасный способ дать отдохнуть&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Обмануть программу и продолжить работать не получиться - Workrave выводит &lt;a href=&quot;https://goo.gl/8N25Dm&quot; title=&quot;Модальное окно&quot;&gt;модальное окно&lt;/a&gt; с отсчетом времени, которое блокирует Desktop и не дает доступа к нему.&lt;/p&gt;
+
+&lt;p&gt;Прошло 30 секунд - модальное окно пропадает и пошел отсчет нового 15-минутного отрезка работы. И так до тех пор, пока не настает черед &lt;strong&gt;длинного перерыва&lt;/strong&gt; (Rest Break) продолжительностью 10 минут.&lt;/p&gt;
+
+&lt;p&gt;Конечно, 10 минут торчать за компом (&lt;em&gt;бездельничая&lt;/em&gt;) никто не будет, поэтому есть смысл встать, сходить за кофе и так далее - по вкусу.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Длинный перерыв&lt;/strong&gt; (Rest Break) закончился - начался отчет нового длинного перерыва (Rest Break), состоящего из серии кратких перерывов (Micro Break).&lt;/p&gt;
+
+&lt;p&gt;Когда общее время работы за компьютером достигнет четырех часов - все, пора бросать работу за компом, ибо настал &lt;strong&gt;Daily Limit&lt;/strong&gt;!&lt;/p&gt;
+
+&lt;p&gt;Приведенные выше цифры являются предустановками по умолчанию (&lt;em&gt;и то - я привел их по памяти, так как изменил на свои собственные&lt;/em&gt;). Но суть не в цифрах - суть в принципе работы программы Workrave; а он, как мне кажется, стал понятен.&lt;/p&gt;
+
+&lt;p&gt;Поэтому давайте откроем окно настроек программы Workrave и несколько углубимся в детали.&lt;/p&gt;
+
+&lt;p&gt;На каждой из вкладок - &lt;strong&gt;Micro Break&lt;/strong&gt;, &lt;strong&gt;Rest Break&lt;/strong&gt;, &lt;strong&gt;Daily Limit&lt;/strong&gt; имеется галочка &lt;strong&gt;Enable Timer&lt;/strong&gt;, смысл которой должен быть понятен - включить или выключить этот тип таймера. Другими словами, нужен ли такой тип таймера в вашем рабочем процессе.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/workrave-microbreak.png&quot; alt=&quot;Workrave Microbreak&quot; title=&quot;Workrave Microbreak&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;На вкладках &lt;strong&gt;Micro Break&lt;/strong&gt; и &lt;strong&gt;Rest Break&lt;/strong&gt; имеются одинаковые разделы &lt;strong&gt;Timers&lt;/strong&gt;. Здесь устанавливаются продолжительность работы (&lt;em&gt;Time between breaks&lt;/em&gt;) и продолжительность отдыха (&lt;em&gt;Break duration&lt;/em&gt;) в каждом конкретном случае.&lt;/p&gt;
+
+&lt;p&gt;Например, в моем случае для &lt;strong&gt;Micro Break&lt;/strong&gt; я установил продолжительность работы (&lt;em&gt;Time between breaks&lt;/em&gt;) в 19 минут, а продолжительность отдыха (&lt;em&gt;Break duration&lt;/em&gt;) - в 1 минута. В сумме получается - 60 минут.&lt;/p&gt;
+
+&lt;p&gt;Для &lt;strong&gt;Rest Break&lt;/strong&gt; я установил (&lt;em&gt;Time between breaks&lt;/em&gt;) в 1 час. То есть, один &lt;strong&gt;Rest Break&lt;/strong&gt; состоит из трех &lt;strong&gt;Micro Break&lt;/strong&gt;. Продолжительность отдыха (&lt;em&gt;Break duration&lt;/em&gt;) для &lt;strong&gt;Rest Break&lt;/strong&gt; я установил в 10 минут. Другими словами - один час поработал, встал и отдохнул 10 минут.&lt;/p&gt;
+
+&lt;p&gt;Продолжительность дневной работы &lt;strong&gt;Daily Limit&lt;/strong&gt; я установил в 6 часов с перерывом 20 минут. То есть - отработал 6 часов (или 6 &lt;strong&gt;Rest Breaks&lt;/strong&gt;) и отдыхаешь 20 минут. Название &lt;strong&gt;Daily Limit&lt;/strong&gt; (&lt;em&gt;Дневной лимит&lt;/em&gt;) конечно чисто условное - можно установить и 12-часовой режим работы ))&lt;/p&gt;
+
+&lt;p&gt;Таймер &lt;strong&gt;Postpone time&lt;/strong&gt; служит для установки времени, на которое следует &lt;strong&gt;отложить прерыв&lt;/strong&gt;. Здесь нужно немного подробнее остановиться.&lt;/p&gt;
+
+&lt;p&gt;Дело в том, что на каждом &lt;a href=&quot;https://goo.gl/8N25Dm&quot; title=&quot;Модальное окно&quot;&gt;модальном окне&lt;/a&gt; программы Workrave имеется кнопка &lt;strong&gt;Postpone&lt;/strong&gt; (&lt;em&gt;Отложить&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;Смысл этой кнопки вот в чем - вам в голову пришла светлая идея и вы в азарте стучите по клавишам, чтобы материализовать ее; и тут бац - выскакивает надоедливое окно программы Workrave с предупреждением - “Бросай работать!”.&lt;/p&gt;
+
+&lt;p&gt;И тут на помощь приходит кнопка &lt;strong&gt;Postpone&lt;/strong&gt; - вы нажимаете ее и Workrave соглашается на три минуты (&lt;em&gt;значение по умолчанию&lt;/em&gt;) заткнуться и не беспокоить вас, чтобы дать возможность закончить важный момент работы.&lt;/p&gt;
+
+&lt;p&gt;Если вы не доверяете самому себе, то можно убрать кнопку &lt;strong&gt;Postpone&lt;/strong&gt; из модального окна Workrave. Для этого в разделе &lt;strong&gt;Options&lt;/strong&gt; нужно снять галочку &lt;strong&gt;Show ‘Postpone’ button&lt;/strong&gt;. И тогда вы не сможете обмануть программу Workrave, так как не сможете отсрочить очередной запанированный перерыв.&lt;/p&gt;
+
+&lt;p&gt;Помимо кнопки &lt;strong&gt;Postpone&lt;/strong&gt;, в модальном окне Workrave имеется еще одна кнопка - &lt;strong&gt;Skip&lt;/strong&gt;. Смысл ее понятен без перевода - это когда время не терпит и плевать на все перерывы. При нажатии на нее пропускается конкретный текущий таймер (&lt;strong&gt;Micro Break&lt;/strong&gt; или &lt;strong&gt;Rest Break&lt;/strong&gt;) и тотчас запускается отсчет нового таймера.&lt;/p&gt;
+
+&lt;p&gt;Если был пропущен &lt;strong&gt;Micro Break&lt;/strong&gt;, то начнется отсчет нового &lt;strong&gt;Micro Break&lt;/strong&gt;; если был пропущен &lt;strong&gt;Rest Break&lt;/strong&gt;, то начнется отсчет нового &lt;strong&gt;Rest Break&lt;/strong&gt; с входящими в его состав &lt;strong&gt;Micro Breaks&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Также есть возможность отключить кнопку &lt;strong&gt;Skip&lt;/strong&gt; в модальном окне Workrave. Это делается в разделе &lt;strong&gt;Options&lt;/strong&gt;, строка &lt;strong&gt;Show ‘Skip’ button&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;Секция &lt;strong&gt;Break prompting&lt;/strong&gt; наименее важная и смысл ее существования сводится к одной вещи - предупреждать о готовящемся очередном перерыве (Prompt before breaking). Число попыток (Maximum number of prompts), которые программа Workrave сделает, чтобы выполнить перерыв, по умолчанию равно трем.&lt;/p&gt;
+
+&lt;p&gt;На вкладке &lt;strong&gt;Rest Break&lt;/strong&gt; имеются две дополнительные строки. Первая строка &lt;strong&gt;Number of exercises&lt;/strong&gt; служит для установки количества упражнений. Что это такое - упражнения?&lt;/p&gt;
+
+&lt;p&gt;Дело в том, что в программе Workrave имеются слайды с упражнениями-гимнастикой, служащей для снятия напряжения, разминки. Количество слайдов - это количество упражнений (от 1 до 10), которые программа Workrave будет предлагать вам сделать во время длительного перерыва (Rest Break).&lt;/p&gt;
+
+&lt;p&gt;Вторая строка &lt;strong&gt;Start restbreak when screen is locked&lt;/strong&gt; - это предложить программе запускать длительный перерыв (Rest Break) когда подойдет его время даже тогда, когда экран монитора заблокирован.&lt;/p&gt;
+
+&lt;p&gt;Мне данная настройка кажется немножко лукавой, ибо монитор в Linux блокируется, как правило, при неактивности системы в течение заданного промежутка времени; или когда хозяин вышел отдохнуть и заблокировал монитор от взглядов любопытных коллег. Другими словами - пользователь и так отдыхает от монитора.&lt;/p&gt;
+
+&lt;p&gt;Вкладка &lt;strong&gt;Daily Limit&lt;/strong&gt; также практически ничем не отличается от предыдущих двух. За одним исключением - есть строка &lt;strong&gt;Regard micro-breaks as activity&lt;/strong&gt;. Она просто говорит о том, что &lt;strong&gt;Daily Limit&lt;/strong&gt; нужно запускать несмотря на то, что одновременно запущен краткий перерыв &lt;strong&gt;Micro Break&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;С самым большим и важным разделом &lt;strong&gt;Timers&lt;/strong&gt; разобрались. Пора переходить к остальным двум.&lt;/p&gt;
+
+&lt;h3 id=&quot;workrave---user-interface&quot;&gt;Workrave - User interface&lt;/h3&gt;
+
+&lt;p&gt;Раздел &lt;strong&gt;User interface&lt;/strong&gt; не столь важен для настройки программы Workrave. Первые две вкладки &lt;strong&gt;General&lt;/strong&gt; и &lt;strong&gt;Sounds&lt;/strong&gt; можно смело пропустить.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;UPD.&lt;/strong&gt; Хотя нет - на вкладке &lt;strong&gt;Sounds&lt;/strong&gt; можно поиграться с настройкой звуковых эффектов предупреждения появления окна, самого появления и закрытия окна. На мой вкус, установленные для этих событий звуки уж слишком похожи друг на друга. Трудно отличить на слух, открывается оно или закрывается. Но для этого нужно подбирать свои собственные звуковые файлы - а это время нужно.&lt;/p&gt;
+
+&lt;p&gt;На третьей вкладке &lt;strong&gt;Status Window&lt;/strong&gt; убрать галочки в секции &lt;strong&gt;Display&lt;/strong&gt; - строки &lt;strong&gt;Show status window&lt;/strong&gt; и &lt;strong&gt;The status windows stays always on top of other windows&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/workrave-preferences-user_interface-status_window.png&quot; alt=&quot;User Interface Status Window&quot; title=&quot;User Interface Status Window&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;На вкладке &lt;strong&gt;Applet&lt;/strong&gt; мне кажется весьма полезным убрать галочку &lt;strong&gt;Applet enabled&lt;/strong&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/11/workrave-preferences-user_interface-applet.png&quot; alt=&quot;User Interface Applet&quot; title=&quot;User Interface Applet&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Все эти действия позволят “запрятать” программу Workrave в фоновый режим и не мешать основной работе. Теперь напоминания о перерывах (&lt;strong&gt;Micro Rest&lt;/strong&gt;, &lt;strong&gt;Rest Break&lt;/strong&gt;, &lt;strong&gt;Daily Limit&lt;/strong&gt;) будут появляться только тогда, когда наступит их черед.&lt;/p&gt;
+
+&lt;h3 id=&quot;workrave---network&quot;&gt;Workrave - Network&lt;/h3&gt;
+
+&lt;p&gt;Раздел &lt;strong&gt;Network&lt;/strong&gt; для меня не представляет никакого интереса, поэтому я оставил его “как есть”. Но возможности данного раздела достаточно интересные.&lt;/p&gt;
+
+&lt;p&gt;Как говорится в Википедии:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Workrave можно управлять по сети — например, чтобы контролировать отдых детей от компьютерных игр или получать сообщения о перерывах, пользуясь несколькими компьютерами.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;h2 id=&quot;section&quot;&gt;Заключение&lt;/h2&gt;
+
+&lt;p&gt;Вот и все, что мне кажется нужным сказать о программе Workrave.&lt;/p&gt;
+
+&lt;hr /&gt;
+
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/linux/workrave/&quot;&gt;Workrave - бережем зрение&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on November 01, 2015.&lt;/p&gt;
+  </content>
+</entry>
+
+
+<entry>
+  <title type="html"><![CDATA[SublimeLinter - обнаружение ошибок]]></title>
  <link rel="alternate" type="text/html" href="http://zencoder.ru/sublime/text/sublime-linting/" />
   <id>http://zencoder.ru/sublime/text/sublime-linting</id>
   <published>2015-08-30T00:00:00+03:00</published>
@@ -41,7 +604,7 @@
 
 &lt;p&gt;Как уже упоминалось ранее, плагин SublimeLinter является фреймворком, основой для более маленьких плагинов (linter), которые осуществляют непосредственный поиск синтаксических ошибок в программном коде.&lt;/p&gt;
 
-&lt;p&gt;Поэтому первоначально необходимо установить этот фреймворк (как плагин) в редактор Sublime Text и самый простой способ это сделать - воспользоваться менеджером пакетов &lt;a href=&quot;https://packagecontrol.io/&quot; title=&quot;Package Control&quot;&gt;Package Control&lt;/a&gt;. Для этого нажимаем сочетание клавиш &lt;kbd&gt;Shift+Ctrl+P&lt;/kbd&gt; (Linux\Windows) или &lt;kbd&gt;Shift+Cmd+P&lt;/kbd&gt; (Mac OSX). В поле поиска вводим название устанавливаемого пакета - &lt;a href=&quot;https://packagecontrol.io/packages/SublimeLinter&quot; title=&quot;SublimeLinter Package Control&quot;&gt;SublimeLinter&lt;/a&gt;. Далее - производим установку.&lt;/p&gt;
+&lt;p&gt;Поэтому первоначально необходимо установить этот фреймворк (как плагин) в редактор Sublime Text и самый простой способ это сделать - воспользоваться менеджером пакетов &lt;a href=&quot;https://packagecontrol.io/&quot; title=&quot;Package Control&quot;&gt;Package Control&lt;/a&gt;. Для этого нажимаем сочетание клавиш &lt;kbd&gt;Shift+Ctrl+P&lt;/kbd&gt; (Linux \ Windows) или &lt;kbd&gt;Shift+Cmd+P&lt;/kbd&gt; (Mac OSX). В поле поиска вводим название устанавливаемого пакета - &lt;a href=&quot;https://packagecontrol.io/packages/SublimeLinter&quot; title=&quot;SublimeLinter Package Control&quot;&gt;SublimeLinter&lt;/a&gt;. Далее - производим установку.&lt;/p&gt;
 
 &lt;p&gt;Теперь необходимо определиться с тем, в каких языках программирования необходимо “отлавливать” ошибки. Другими словами, на каких языках программирования вы пишете и в каких из них вам необходима поддержка SublimeLinter.&lt;/p&gt;
 
@@ -180,7 +743,7 @@
 
 &lt;hr /&gt;
 
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/sublime/text/sublime-linting/&quot;&gt;SublimeLinter - обнаружение ошибок в Sublime Text&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on August 30, 2015.&lt;/p&gt;
+    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/sublime/text/sublime-linting/&quot;&gt;SublimeLinter - обнаружение ошибок&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on August 30, 2015.&lt;/p&gt;
   </content>
 </entry>
 
@@ -1902,419 +2465,6 @@
 &lt;hr /&gt;
 
     &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/juery/on-jquery/&quot;&gt;Функция on() библитеки jQuery&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 16, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Тернарный оператор JavaScript]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/javascript/ifelse/" />
-  <id>http://zencoder.ru/javascript/ifelse</id>
-  <published>2015-05-15T00:00:00+03:00</published>
-  <updated>2015-05-15T00:00:00+03:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;В JavaScript имеется обычный оператор условия &lt;code&gt;if-else&lt;/code&gt;, с которым я был знаком уже давно. Но вот недавно познакомился с его разновидностью - тернарным оператором &lt;code&gt;?&lt;/code&gt;. Да, именно так - оператор восклицательный знак.&lt;/p&gt;
-
-&lt;p&gt;На первый взгляд, такой тернарный оператор выглядит запутанно и совершенно непонятно. Но стоит вникнуть в суть, как все становится просто.&lt;/p&gt;
-
-&lt;p&gt;Сначала - что значит тернарный оператор? В JavaScript существуют &lt;em&gt;унарные&lt;/em&gt; операторы, &lt;em&gt;бинарные&lt;/em&gt; операторы и вот теперь, оказывается, есть &lt;em&gt;тернарный&lt;/em&gt; оператор. Опять-таки, все просто. Унарный оператор оперирует с одним операндом, бинарный оператор - с двумя операндами, тернарный оператор - с тремя операндами.&lt;/p&gt;
-
-&lt;p&gt;Синтаксис тернарного оператора &lt;code&gt;?&lt;/code&gt; таков:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;err&quot;&gt;условие&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;alpha&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;beta&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Читается такой оператор условия следующим образом: если выполняется условие &lt;code&gt;(условие)&lt;/code&gt;, то переменной &lt;code&gt;result&lt;/code&gt; присвоить значение &lt;code&gt;alpha&lt;/code&gt;; если условие &lt;code&gt;(условие)&lt;/code&gt; не выполняется, то переменной &lt;code&gt;result&lt;/code&gt; присвоить значение &lt;code&gt;beta&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Тернарный оператор условия очень похож на обычный оператор условия &lt;code&gt;if-else&lt;/code&gt;. Можно сказать, что это сокращенная версия обычного оператора условия &lt;code&gt;if-else&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Давайте сравним оба условия:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;оператор условия &lt;code&gt;if-else&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;тернарный оператор условия &lt;code&gt;?&lt;/code&gt;:&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Очень похоже, не правда ли? Здесь есть один важный момент - в данном случае у обоих операторов есть одна общая черта. И в первом, и во-втором случае переменной &lt;code&gt;result&lt;/code&gt; присваивается значение в зависимости от выполнения условия.&lt;/p&gt;
-
-&lt;p&gt;А вот такой вариант уже будет непохож на предыдущий:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;summOne&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;summTwo&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;){&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;summOne&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;summTwo&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;*&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;b&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Обратите внимание, что в этом условии результат присваивается &lt;strong&gt;разным переменным&lt;/strong&gt;. В данном случае тенарный оператор условия &lt;code&gt;?&lt;/code&gt; уже не подойдет; он не применим в данном случае.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Отсюда вывод&lt;/strong&gt;: тернарный оператор применим для случая, когда &lt;strong&gt;одной переменной&lt;/strong&gt; присваивается &lt;strong&gt;разный результат&lt;/strong&gt; в зависимости от условия.&lt;/p&gt;
-
-&lt;p&gt;Условие на тернарном операторе можно сделать разветвленными и тогда вид такого оператора дейсвительно будет выглядеть достаточно запутанным:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;login&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Enter your login&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;pass&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;login&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;black&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Welcome!&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;login&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;white&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Good bay!&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;login&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;green&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;See you next week!&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&amp;#39;I don\&amp;#39;t know you!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Хотя тут все просто на самом деле, если разобраться. Если прочитать это условие, то оно будет выглядеть таким образом.&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;Переменной &lt;code&gt;login&lt;/code&gt; присвоить значение, полученное от пользователя.&lt;/li&gt;
-  &lt;li&gt;Если значение переменной &lt;code&gt;login&lt;/code&gt; равно &lt;code&gt;black&lt;/code&gt;, то переменной &lt;code&gt;pass&lt;/code&gt; присвоить значение &lt;code&gt;Welcome!&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Иначе, если значение переменной &lt;code&gt;login&lt;/code&gt; равно &lt;code&gt;white&lt;/code&gt;, то переменной &lt;code&gt;pass&lt;/code&gt; присвоить значение &lt;code&gt;Good bay!&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Иначе, если значение переменной &lt;code&gt;login&lt;/code&gt; равно &lt;code&gt;green&lt;/code&gt;, то переменной &lt;code&gt;pass&lt;/code&gt; присвоить значение &lt;code&gt;See you next week!&lt;/code&gt;.&lt;/li&gt;
-  &lt;li&gt;Иначе переменной &lt;code&gt;pass&lt;/code&gt; присвоить значение &lt;code&gt;I don\'t know you!&lt;/code&gt;.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Приведу еще один пример нескольких операторов &lt;code&gt;?&lt;/code&gt;, нагло скопированный с ресурса &lt;a href=&quot;http://learn.javascript.ru/&quot; title=&quot;JavaScript&quot;&gt;learn.javascript.ru&lt;/a&gt; вместе с описанием его работы (все в угоду доходчивости изложения материала):&lt;/p&gt;
-
-&lt;hr /&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;возраст?&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-
-&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Здравствуй, малыш!&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Привет!&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;?&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Здравствуйте!&amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;:&lt;/span&gt;
-  &lt;span class=&quot;s1&quot;&gt;&amp;#39;Какой необычный возраст!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-
-&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Поначалу может быть сложно понять, что происходит. Однако, внимательно приглядевшись, мы замечаем, что это обычная последовательная проверка!&lt;/p&gt;
-
-&lt;p&gt;Вопросительный знак проверяет сначала &lt;code&gt;age &amp;lt; 3&lt;/code&gt;, если верно — возвращает ‘Здравствуй, малыш!’, если нет — идет за двоеточие и проверяет &lt;code&gt;age &amp;lt; 18&lt;/code&gt;. Если это верно — возвращает ‘Привет!’, иначе проверка &lt;code&gt;age &amp;lt; 100&lt;/code&gt; и ‘Здравствуйте!’… И наконец, если ничего из этого не верно, то ‘Какой необычный возраст!’.&lt;/p&gt;
-
-&lt;p&gt;То же самое через &lt;code&gt;if-else&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;3&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Здравствуй, малыш!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;18&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Привет!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;if&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;age&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;lt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;100&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Здравствуйте!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;else&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;{&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;message&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;Какой необычный возраст!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt;
-&lt;span class=&quot;p&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Вот так работает тернарный оператор &lt;code&gt;?&lt;/code&gt; в JavaScript. Ресурс &lt;a href=&quot;http://learn.javascript.ru/&quot; title=&quot;JavaScript&quot;&gt;learn.javascript.ru&lt;/a&gt; советует использовать тернарный оператор &lt;code&gt;?&lt;/code&gt; &lt;strong&gt;по назначению&lt;/strong&gt; и не заменять им обычный оператор условия &lt;code&gt;if-else&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Данный материал основан на ресурсе &lt;a href=&quot;http://learn.javascript.ru/&quot; title=&quot;JavaScript&quot;&gt;learn.javascript.ru&lt;/a&gt; и не претендует на оригинальность.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/javascript/ifelse/&quot;&gt;Тернарный оператор JavaScript&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 15, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Элементы UI Javascript]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/javascript/ui-javascript/" />
-  <id>http://zencoder.ru/javascript/ui-javascript</id>
-  <published>2015-05-13T00:00:00+03:00</published>
-  <updated>2015-05-13T00:00:00+03:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;В Javascript имеются три встроенных элемента для взаимодействия с пользователем страницы: &lt;code&gt;alert&lt;/code&gt;, &lt;code&gt;prompt&lt;/code&gt;, &lt;code&gt;confirm&lt;/code&gt;. Начнем с самого простого и двинемся по нарастающей.&lt;/p&gt;
-
-&lt;h2 id=&quot;alert&quot;&gt;Модальное окно alert&lt;/h2&gt;
-
-&lt;p&gt;Строка кода:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Message&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;… вводит на странице модальное окно. Модальными окнами называются окна, которые блокируют работу всей страницы в целом (и скриптов - в частности) до тех пор, пока пользователь не выполнит требуемое окном действие. Пока модальное окно запущено, пользователь не сможет прокручивать страницу, нажимать на ней какие-либо кнопки или переходить по ссылкам.&lt;/p&gt;
-
-&lt;p&gt;Конкретное место, где выводится модальное окно с вопросом — обычно это центр viewport браузера и внешний вид окна выбирает браузер. Разработчик не может на это влиять. С одной стороны — это недостаток, так как нельзя вывести окно в своем, особо красивом, дизайне.&lt;/p&gt;
-
-&lt;p&gt;В случае с alert требуемое от пользователя действие одно - нажать кнопку “ОК”.&lt;/p&gt;
-
-&lt;p&gt;Задача alert - донести до сведения пользователя страницы какую-либо информацию, будь то справочная информация, информация об ошибке и так далее. Функция alert - единственная, которая &lt;strong&gt;ничего не возвращает&lt;/strong&gt;!&lt;/p&gt;
-
-&lt;h2 id=&quot;prompt&quot;&gt;Модальное окно prompt&lt;/h2&gt;
-
-&lt;p&gt;Функция prompt также, как и alert, создает модальное окно. Но, в отличие от модального окна alert, окно prompt немного сложнее. Синтаксис функции prompt выглядит таким образом:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;result&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;prompt&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;title&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;default&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;То есть, функция prompt принимает два аргумента. Первый аргумент &lt;code&gt;title&lt;/code&gt; - это заголовок модального окна. Второй аргумент &lt;code&gt;default&lt;/code&gt; - это строка по умолчанию как образец ввода в поле.&lt;/p&gt;
-
-&lt;p&gt;Создаваемое функцией prompt окно имеет поле для ввода и две кнопки OK и Cancel. Вызов prompt возвращает то, что ввел посетитель — строку или специальное значение &lt;code&gt;null&lt;/code&gt;, если ввод отменен.&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ageUser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;prompt&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;How old are you?&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;30&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;alert&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Your are &amp;#39;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;ageUser&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39; old!&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Рекомендуется &lt;strong&gt;всегда указывать второй аргумент&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;test&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;prompt&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Тест&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&amp;#39;&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Окно prompt предназначено для получения у пользователя какой-либо информации в виде данных любого типа.&lt;/p&gt;
-
-&lt;h2 id=&quot;confirm&quot;&gt;Модальное окно confirm&lt;/h2&gt;
-
-&lt;p&gt;Это модальное окно служит для получения от пользователя подтверждения на заданный вопрос - ДА или НЕТ. Функция confirm выводит окно с вопросом question с двумя кнопками: OK и CANCEL. Результатом будет &lt;code&gt;true&lt;/code&gt; при нажатии OK и &lt;code&gt;false&lt;/code&gt; – при CANCEL(ESC):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;sex&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;confirm&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s1&quot;&gt;&amp;#39;Are you male?&amp;#39;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;sex&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;Заключение&lt;/h2&gt;
-
-&lt;p&gt;Рассмотренные три способа взаимодействия с пользователем являются &lt;strong&gt;самыми простыми&lt;/strong&gt;. Это простой способ вывести сообщение или получить информацию от посетителя. Поэтому их используют в тех случаях, &lt;strong&gt;когда важна простота&lt;/strong&gt;, а всякие «красивости» особой роли не играют.&lt;/p&gt;
-
-&lt;h2 id=&quot;section-1&quot;&gt;Итог&lt;/h2&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;alert&lt;/code&gt; выводит сообщение;&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;prompt&lt;/code&gt; выводит сообщение и ждет, пока пользователь введет текст, а затем возвращает введенное значение или &lt;code&gt;null&lt;/code&gt;, если ввод отменен (CANCEL/ESC);&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;confirm&lt;/code&gt; выводит сообщение и ждет, пока пользователь нажмет «OK» или «CANCEL» и возвращает &lt;code&gt;true/false&lt;/code&gt;;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Данная статья является пересказом соответствующего материала с ресурса &lt;a href=&quot;https://learn.javascript.ru/uibasic&quot; title=&quot;Javascript UI Basic&quot;&gt;learn.javascript.ru&lt;/a&gt; и не претендует на оригинальность.&lt;/p&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/javascript/ui-javascript/&quot;&gt;Элементы UI Javascript&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 13, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Операторы сравнения JavaScript]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/javascript/comparison-operators-javascript/" />
-  <id>http://zencoder.ru/javascript/comparison-operators-javascript</id>
-  <published>2015-05-12T00:00:00+03:00</published>
-  <updated>2015-05-12T00:00:00+03:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;p&gt;В этом разделе мы познакомимся с &lt;strong&gt;операторами сравнения&lt;/strong&gt; и с &lt;strong&gt;логическими значениями&lt;/strong&gt;, которые такие операторы возвращают.&lt;/p&gt;
-
-&lt;p&gt;Операторы сравнения:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;больше &lt;code&gt;&amp;gt;&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;меньше &lt;code&gt;&amp;lt;&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;больше или равно &lt;code&gt;&amp;gt;=&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;меньше или равно &lt;code&gt;&amp;lt;=&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;равно &lt;code&gt;==&lt;/code&gt;&lt;/li&gt;
-  &lt;li&gt;неравно &lt;code&gt;!=&lt;/code&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Операторы сравнения возвращают &lt;strong&gt;логическое&lt;/strong&gt; значение. Таких значений может быть &lt;strong&gt;только два&lt;/strong&gt;:&lt;/p&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;&lt;code&gt;true&lt;/code&gt; - да, верно, истина&lt;/li&gt;
-  &lt;li&gt;&lt;code&gt;false&lt;/code&gt; - нет, неверно, ложь&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Логические значения можно &lt;strong&gt;присваивать переменным&lt;/strong&gt; явно:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;;&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Можно присвоить переменной логическое значение &lt;strong&gt;как результат операции&lt;/strong&gt; (сравнения):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;kd&quot;&gt;var&lt;/span&gt; &lt;span class=&quot;nx&quot;&gt;m&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;6&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;=&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;8&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;section&quot;&gt;Сравнение строк&lt;/h3&gt;
-
-&lt;p&gt;Строки сравниваются побуквенно, слева-направо. Берутся две строки и начинается сравнение. Берется первый символ первой строки и сравнивается с первым символом второй строки. Если они равны, то берутся второй символ первой строки и сравнивается со вторым символом второй строки.&lt;/p&gt;
-
-&lt;p&gt;И так последовательно производится сравнение строк до того момента, пока не случится так, что определенный символ первой строки неравен соответствующему символу второй строки.&lt;/p&gt;
-
-&lt;p&gt;На этом дальнейшее сравнение строк прекращается и делается вывод, какая строка больше или меньше другой на основании того, больше или меньше соответствующие символы этой строки.&lt;/p&gt;
-
-&lt;p&gt;При сравнении строк соблюдаются определенные правила. Само сравнение букв (символов) производится на основании численных кодов символов, у каждого символа есть свой численный код.&lt;/p&gt;
-
-&lt;p&gt;Вывод, какой символ больше или меньше, производится на основании численных значений этих символов. Буквы нижнего регистра имеют большее численное значение, нежели буквы верхнего регистра. Буква &lt;code&gt;А&lt;/code&gt; имеет меньшее численное значение, нежели буква &lt;code&gt;Б&lt;/code&gt;. Отсутствие символа всегда считается меньше, чем присутствие символа.&lt;/p&gt;
-
-&lt;p&gt;Ниже приведены примеры (как же без них?), иллюстрирующие сравнение строк.&lt;/p&gt;
-
-&lt;p&gt;Первый символ первой строки больше первого символа второй строки, дальнейшее сравнение прекращается и делается вывод, что первая строка больше второй строки:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;Банан&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Аят&amp;quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;В этом примере сравнение идет последовательно (символ в символ) вплоть до третьего по порядку символа, на котором сравнение прерывается, так как символ “c” по числовому значению больше символа “н”. На основании этого делается вывод, что первая строка “Вася” больше второй строки “Ваня”:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Вася&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Ваня&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Любая буква (символ) больше отсутствия буквы. Например, первая строка больше второй, так как буква “е” в первой строке больше отсутствия таковой во второй строке:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Привет&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;Прив&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Интересный пример сравнения связан обработкой введенных пользователем данных. Все данные, вводимые пользователем на странице, являются &lt;strong&gt;строковым&lt;/strong&gt; типом. Поэтому сравнивать их, не выполнив предварительное преобразование типов, нельзя. Например:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;4&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;15&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;… с точки зрения JavaScript будет верным &lt;code&gt;true&lt;/code&gt;, так как строка “4” больше строки “15” (первый символ “4” больше первого символа “1”). Однако, в данном случае пользователем введены два числа 4 и 15, а не строки. Поэтому их необходимо привести к числовому типу и уже тогда сравнивать:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;4&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;+&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;15&amp;quot;&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;Сравнение разных типов&lt;/h3&gt;
-
-&lt;p&gt;Если производится сравнение данных различного типа, то JavaScript производит автоматическое (правильно такое преобразование называется &lt;strong&gt;неявным преобразованием&lt;/strong&gt;) преобразование всех данных к &lt;strong&gt;числовому&lt;/strong&gt; типу. И тогда производится сравнение чисел.&lt;/p&gt;
-
-&lt;p&gt;Строковый тип “34” приводится к числовому типу (числу) 34 и производится сравнение между числом 34 и числом 33:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;34&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;&amp;gt;&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;33&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Булев тип &lt;code&gt;false&lt;/code&gt; приводится к числовому типу 0 (&lt;code&gt;true == 1&lt;/code&gt;, &lt;code&gt;false == 0&lt;/code&gt;) и производится сравнение двух (одинаковых в данном случае) чисел 0:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;false&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// true&lt;/span&gt;
-  &lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;kc&quot;&gt;true&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;==&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;0&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Может понадобиться ситуация, когда нужно производить сравнение данных &lt;strong&gt;без автоматического преобразования типов&lt;/strong&gt;. Другими словами, если в операции сравнения присутствует строка, то она должна оставаться строкой; если булев тип, то он должен оставаться булевым типом.&lt;/p&gt;
-
-&lt;p&gt;Для этой цели используется оператор &lt;strong&gt;строгого равенства&lt;/strong&gt; (&lt;code&gt;===&lt;/code&gt;) и &lt;strong&gt;строгого неравенства&lt;/strong&gt; (&lt;code&gt;!==&lt;/code&gt;). То есть, к обычным операторам равенства (&lt;code&gt;==&lt;/code&gt;) и неравентсва (&lt;code&gt;!=&lt;/code&gt;) добавляется еще один символ (&lt;code&gt;=&lt;/code&gt;).&lt;/p&gt;
-
-&lt;p&gt;Если тип разный, то операция сравнения всегда возвращает значение &lt;code&gt;false&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-javascript&quot; data-lang=&quot;javascript&quot;&gt;&lt;span class=&quot;nx&quot;&gt;console&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;nx&quot;&gt;log&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt; &lt;span class=&quot;s2&quot;&gt;&amp;quot;example&amp;quot;&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;===&lt;/span&gt; &lt;span class=&quot;mi&quot;&gt;34&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;);&lt;/span&gt; &lt;span class=&quot;c1&quot;&gt;// false&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Строгое сравнение предпочтительно, если мы хотим быть уверены, что «сюрпризов» не будет.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Вывод&lt;/strong&gt;: любые сравнения с &lt;code&gt;undefined/null&lt;/code&gt;, кроме точного &lt;code&gt;===&lt;/code&gt;, следует делать с осторожностью. Желательно не использовать сравнения &lt;code&gt;&amp;gt;=&lt;/code&gt; &lt;code&gt;&amp;gt;&lt;/code&gt; &lt;code&gt;&amp;lt;&lt;/code&gt; &lt;code&gt;&amp;lt;=&lt;/code&gt; с ними, во избежание ошибок в коде.&lt;/p&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;Итог&lt;/h3&gt;
-
-&lt;ul&gt;
-  &lt;li&gt;В JavaScript есть логические значения &lt;code&gt;true&lt;/code&gt; (истина) и &lt;code&gt;false&lt;/code&gt; (ложь). Операторы сравнения возвращают их.&lt;/li&gt;
-  &lt;li&gt;Строки сравниваются &lt;strong&gt;побуквенно&lt;/strong&gt;.&lt;/li&gt;
-  &lt;li&gt;Значения разных типов приводятся к числу при сравнении, за исключением строгого равенства &lt;code&gt;===&lt;/code&gt; (&lt;code&gt;!==&lt;/code&gt;).&lt;/li&gt;
-  &lt;li&gt;Значения &lt;code&gt;null&lt;/code&gt; и &lt;code&gt;undefined&lt;/code&gt; равны &lt;code&gt;==&lt;/code&gt; друг другу и не равны ничему другому. В других сравнениях (с участием &lt;code&gt;&amp;gt;&lt;/code&gt; &lt;code&gt;&amp;lt;&lt;/code&gt;) их лучше не использовать, так как они ведут себя не как 0.&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;hr /&gt;
-
-&lt;p&gt;Данная статья является пересказом соответствующего материала с ресурса &lt;a href=&quot;https://learn.javascript.ru/comparison&quot; title=&quot;Javascript Comparison&quot;&gt;learn.javascript.ru&lt;/a&gt; и не претендует на оригинальность.&lt;/p&gt;
-
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/javascript/comparison-operators-javascript/&quot;&gt;Операторы сравнения JavaScript&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 12, 2015.&lt;/p&gt;
-  </content>
-</entry>
-
-
-<entry>
-  <title type="html"><![CDATA[Кратко о ZSH]]></title>
- <link rel="alternate" type="text/html" href="http://zencoder.ru/linux/oh-my-zsh/" />
-  <id>http://zencoder.ru/linux/oh-my-zsh</id>
-  <published>2015-05-05T00:00:00+03:00</published>
-  <updated>2015-05-05T00:00:00+03:00</updated>
-  <author>
-    <name>zencoder</name>
-    <uri>http://zencoder.ru</uri>
-    <email>gearmobile@gmail.com</email>
-  </author>
-  <content type="html">
-    &lt;blockquote&gt;
-  &lt;p&gt;Вот захотелось написать о ZSH и “Oh My ZSH” - в частности.&lt;/p&gt;
-&lt;/blockquote&gt;
-
-&lt;p&gt;Что такое ZSH? Это командная оболочка для Unix-подобных систем, к которым относятся как Linux, так и Mac OS X. Стандартной командной оболочкой в Linux и Mac OS X является BASH, которая полностью удовлетворяет все потребности пользователя.&lt;/p&gt;
-
-&lt;p&gt;Но если хочется нечто особенное, не такое как у всех и BASH приелась, то можно попробовать &lt;a href=&quot;http://www.zsh.org/&quot; title=&quot;ZSH&quot;&gt;ZSH&lt;/a&gt;. Эта оболочка может полностью заменить собой BASH и привнести с собой еще пару-тройку дополнительных возможностей. К слову сказать, под Linux имеются гораздо больше командных оболочек, нежели две BASH и ZSH. Но две последние самые популярные и используемые.&lt;/p&gt;
-
-&lt;p&gt;К оболочке ZSH имеется дополнительная надстройка &lt;a href=&quot;http://ohmyz.sh/&quot; title=&quot;Oh My ZSH&quot;&gt;Oh My ZSH&lt;/a&gt;, которая делает ее еще более красивой и функциональной. Каждый опытный пользователь Linux находит в ZSH что-то свое. Я нашел в ZSH (“Oh My ZSH”) красоту оформления с помощью большого выбора тем &lt;a href=&quot;https://github.com/robbyrussell/oh-my-zsh/wiki/themes&quot; title=&quot;Oh My ZSH Themes&quot;&gt;“Oh My ZSH Themes”&lt;/a&gt; и плагины &lt;a href=&quot;https://github.com/robbyrussell/oh-my-zsh/tree/master/plugins&quot; title=&quot;Oh My ZSH Plugins&quot;&gt;“Oh My ZSH Plugins”&lt;/a&gt;, которые делают работу в командной строке еще более удобной.&lt;/p&gt;
-
-&lt;h2 id=&quot;zsh&quot;&gt;Установка ZSH&lt;/h2&gt;
-
-&lt;p&gt;Установка ZSH проста и не должна вызвать какие-либо затруднения. Практически все сводится к одной команде и зависит от консольного менеджера закачек, уже имеющегося в системе.&lt;/p&gt;
-
-&lt;p&gt;Первый случай подойдет для системы Mac OS X (в ней &lt;code&gt;curl&lt;/code&gt; встроен по умолчанию):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;curl -L https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Второй случай подойдет для системы Linux (в ней &lt;code&gt;wget&lt;/code&gt; встроен по умолчанию):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo wget https://raw.github.com/robbyrussell/oh-my-zsh/master/tools/install.sh -O - &lt;span class=&quot;p&quot;&gt;|&lt;/span&gt; sh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;После выполнения команды в системе Mac OS X достаточно закрыть и снова открыть терминал (рекомендуется к использованию &lt;a href=&quot;http://www.iterm2.com/&quot; title=&quot; iTerm2&quot;&gt;“iTerm2”&lt;/a&gt;), чтобы ZSH вступил в действие и заменил собой BASH в качестве командной оболочки по умолчанию.&lt;/p&gt;
-
-&lt;p&gt;В системе Linux придется выполнить пару дополнительных действий. Первым шагом проверяем, что ZSH установилась нормально и работоспособная. Для этого запускаем ZSH вместо BASH:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;zsh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Приглашение командной строки изменится со стандартного BASH на более причудливое и красивое приглашение ZSH. Отлично - все работает.&lt;/p&gt;
-
-&lt;p&gt;Производим смену командной оболочки по умолчанию с BASH на ZSH:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-bash&quot; data-lang=&quot;bash&quot;&gt;&lt;span class=&quot;nv&quot;&gt;$ &lt;/span&gt;sudo chsh -s /bin/zsh&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;После следующей перезагрузки системы изменения автоматически вступят в силу. А пока они временные, но ничто не мешает ими пользоваться уже сейчас.&lt;/p&gt;
-
-&lt;h2 id=&quot;zsh-1&quot;&gt;Настройка ZSH&lt;/h2&gt;
-
-&lt;p&gt;Настройка ZSH сводится к редактированию файла &lt;code&gt;~/.zshrc&lt;/code&gt;, в котором размещены все настройки этой оболочки. Строчек там достаточно много, но две самые интересные и важные из них опишу ниже.&lt;/p&gt;
-
-&lt;p&gt;Строка &lt;code&gt;ZSH_THEME=&quot;robbyrussell&quot;&lt;/code&gt; отвечает за тему оформления оболочки ZSH. По умолчанию используется тема под названием &lt;code&gt;robbyrussell&lt;/code&gt;. Но ее можно заменить на любую другую из списка тем &lt;a href=&quot;https://github.com/robbyrussell/oh-my-zsh/wiki/themes&quot; title=&quot;Oh My ZSH Themes&quot;&gt;“Oh My ZSH Themes”&lt;/a&gt;, в котором представлены скриншоты, по которым легко выбрать любую тему. Все темы автоматически уже установлены в системе, поэтому достаточно указать нужную по ее имени.&lt;/p&gt;
-
-&lt;p&gt;Например, мне понравилась тема &lt;code&gt;pygmalion&lt;/code&gt;:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;ZSH_THEME&lt;span class=&quot;p&quot;&gt;=&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&amp;quot;pygmalion&amp;quot;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Вторая важная строка &lt;code&gt;plugins=&lt;/code&gt; конфигурационного файла &lt;code&gt;~/.zshrc&lt;/code&gt; отвечает за подключение плагинов. Строка первоначально имеет вид:&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;plugins&lt;span class=&quot;p&quot;&gt;=(&lt;/span&gt;git&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Это означает, что при запуске оболочки ZSH будет автоматически подгружен плагин &lt;code&gt;git&lt;/code&gt;. Плагины, как и темы, автоматическм устанавливаются в систему, поэтому достаточно указать только имя нужного плагина.&lt;/p&gt;
-
-&lt;p&gt;&lt;strong&gt;Важное замечание&lt;/strong&gt; - перед использованием каждого конкретного плагина необходимо прочитать его README, чтобы знать, как его использовать. К примеру, плагин &lt;code&gt;sublime&lt;/code&gt; служит для создания и использования псевдонимов (alias) при запуске редактора Sublime Text из командной строки. Плагин &lt;code&gt;bundler&lt;/code&gt; служит для создания и использования псевдонимов (alias) при запуске утилиты &lt;code&gt;bundle&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;Пример строки с плагинами может быть таким (&lt;em&gt;в моем случае&lt;/em&gt;):&lt;/p&gt;
-
-&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-vim&quot; data-lang=&quot;vim&quot;&gt;plugins&lt;span class=&quot;p&quot;&gt;=(&lt;/span&gt;git sublime bundler&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-
-&lt;p&gt;Именно так - разделителями служат &lt;em&gt;символы пробела&lt;/em&gt; между именами плагинов.&lt;/p&gt;
-
-&lt;p&gt;Ниже представлены два видео об установке и настройке “Oh My Zsh” под операционной системой Mac OS X. Видео на английском языке, но все понятно и так. Видео не мое - автор его Scott Tolinski, ведущий моего любимого канала Level Up Tuts.&lt;/p&gt;
-
-&lt;p&gt;Установка “Oh My Zsh”:&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/GWBTg6lZ1N0&quot; frameborder=&quot;0&quot;&gt; &lt;/iframe&gt;
-
-&lt;p&gt;Настройка “Oh My Zsh”:&lt;/p&gt;
-
-&lt;iframe width=&quot;560&quot; height=&quot;315&quot; src=&quot;https://www.youtube.com/embed/-EbWsaWLZIg&quot; frameborder=&quot;0&quot;&gt; &lt;/iframe&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;Заключение&lt;/h2&gt;
-
-&lt;p&gt;В принципе, рассказанного выше минимума уже достаточно для комфортной работы в ZSH. В заключение можно лишь привести снимок терминала, чтобы иметь представление о красоте ZSH (с прикрученным “Oh My Zsh”):&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;http://zencoder.ru/images/uploads/2015/05/oh-my-zsh.png&quot; alt=&quot;Oh My ZSH&quot; title=&quot;Oh My ZSH&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;На этом все.&lt;/p&gt;
-
-&lt;hr /&gt;
-
-    &lt;p&gt;&lt;a href=&quot;http://zencoder.ru/linux/oh-my-zsh/&quot;&gt;Кратко о ZSH&lt;/a&gt; was originally published by zencoder at &lt;a href=&quot;http://zencoder.ru&quot;&gt;Zencoder&lt;/a&gt; on May 05, 2015.&lt;/p&gt;
   </content>
 </entry>
 

@@ -144,6 +144,688 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-15T00:00:00+03:00"><a href="http://zencoder.ru/svg/svg-fallback-png/">November 15, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/svg/svg-fallback-png/" rel="bookmark" title="SVG fallback с помощью PNG" itemprop="url">SVG fallback с помощью PNG</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Примечание переводчика: статья просто отличная и написана мастером своего дела Nick.</p>
+</blockquote>
+
+<p>Немного лирики “для тех, кто в танке” - fallback можно в данном контексте перевести как - “откат”. То есть, если браузер по каким-то причинам не поддерживает SVG, то на web-странице выполняется “откат” - SVG-изображения заменяются на PNG-изображения.</p>
+
+<p>В этом и заключается вся фишка данного способа. Но вот реализаций этого способа несколько и они рассмотрены ниже. Лично меня впечатлил второй способ (<em>впрочем, не только меня - можно почитать комментарии к <a href="http://callmenick.com/2014/04/02/svg-fallback-with-png/" title="SVG Fallback with PNG Images">статье-оригиналу</a></em>).</p>
+
+<p>Далее - текст автора по имени Nick (<em>в вольном переводе</em>).</p>
+
+<p>В следующих четырех сниппетах я рассмотрю применение метода SVG fallback c помощью PNG-изображений четырьмя различными способами. Все четыре способа направлены на одну цель - обеспечение кросс-браузерной поддержки SVG на web-странице.</p>
+
+<p>Если вы еще не используете SVG в своих проектах, то вам следует уже начать это делать. SVG великолепен и является прекрасным способом минимизации и упрощения спрайтов; в частности, когда это касается таких вещей, как иконки. Если на создаваемом вами сайте все изображения сохранены в формате PNG, то для вас самое время перескочить на SVG-поезд.</p>
+
+<p>Ниже показаны сниппеты, которые тремя различными путями осуществляют применение SVG, а также SVG fallback к изображениям формата PNG, если браузер не поддерживает SVG.</p>
+
+<p>Что мы будем рассматривать:</p>
+
+<ul>
+  <li>SVG в качестве фонового изображения, <code>fallback</code> с помощью Modernizr</li>
+  <li>SVG в качестве фонового изображения, <code>fallback</code> с помощью CSS</li>
+  <li>SVG в качестве встраиваемого изображения (тег <code>img</code>), onerror fallback</li>
+  <li>SVG в качестве встраиваемого изображения (тег <code>img</code>), , fallback с помощью Modernizr</li>
+</ul>
+
+<p>Modernizr является прекрасным инструментом для определения возможностей браузера. Она автоматически добавляет ко всем HTML-элементам в DOM классы в зависимости от того, поддерживает браузер ту или иную возможность или нет. В нашем случае, Modernizr будет добавлять класс <code>svg</code> или <code>no-svg</code> для всех элементов в DOM в зависимости от того, поддерживает ли браузер SVG.</p>
+
+<h2 id="svg-----fallback---modernizr">SVG в качестве фонового изображения, fallback с помощью Modernizr</h2>
+
+<p>Используя Modernizr, мы отпеределяем, поддерживает браузер SVG или нет. Если SVG используется в качестве фонового изображения, то тогда проще сохранить изображения для страницы в двух верысиях - SVG и PNG (прим. переводчика: например, IcoMoon умеет так делать). В таблице стилей CSS тогда нужно добавить дополнительный класс. При таком подходе исключается двойная загрузка файлов (SVG и PNG), так как класса <code>no-svg</code> просто не существует в DOM, если браузер поддерживает SVG, и наоборот.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.tomato</span> <span class="p">{</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;img/tomato.svg&#39;)</span><span class="p">;</span>
+<span class="p">}</span>
+<span class="nc">.no-svg</span> <span class="nc">.tomato</span> <span class="p">{</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;img/tomato.png&#39;)</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="svg-----fallback---css">SVG в качестве фонового изображения, fallback с помощью CSS</h2>
+
+<p>Этот способ будет даже немного покруче, так как он не зависит от какой-либо библиотеки. Даже если библиотека Modernizr подключена у вас в проекте, в этом случае она уже не играет никакой роли. Но если вы подключили библиотеку Modernizr в проект только для того, чтобы реализовать откат (fallback) для фоновых изображений SVG, то вам лучше воспользоваться рассматриваемым методом.</p>
+
+<p>Данный метод основан на маленькой хитрости, заключающейся в том, что поддержка множественных фоновых изображений (multiple background) в браузерах почти точно такая же, что и поддержка SVG. Другими словами, если браузер не поддерживает множественные фоны (multiple background), то он не будет поддерживать и SVG. В результате по коду произойдет откат (fallback) до первой строки, в которой прописано отображение PNG-версии файла.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.tomato</span> <span class="p">{</span>
+  <span class="k">background</span><span class="o">:</span> <span class="sx">url(&#39;img/tomato.png&#39;)</span><span class="p">;</span>
+  <span class="k">background-image</span><span class="o">:</span> <span class="sx">url(&#39;img/tomato.svg&#39;)</span><span class="o">,</span> <span class="k">none</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="svg------img-onerror-fallback">SVG в качестве встраиваемого изображения (тег img), onerror fallback</h2>
+
+<p>Для этого метода необходимо редактирование HTML-кода. Основан метод на использовании Javascript-функции <code>onerror</code>, которая встраивается внутрь HTML-тега <code>&lt;img&gt;</code>. Благодаря этой функции осуществляется откат (fallback), если браузер не смог загрузить изображение по пути, указанному в атрибуте <code>src</code>.</p>
+
+<p>Однако, с етим методом нужно быть осторожным. Если отката (fallback) не произойдет, то некоторые браузеры могут “зависнуть” в бесконечном цикле. Это явно не хорошо.</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;tomato.svg&quot;</span> <span class="na">onerror=</span><span class="s">&quot;this.src=&#39;tomato.png&#39;&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
+
+<p>Данный метод также может быть несколько трудоемким, если необходимо подключить к странице много SVG-изображений и при этом нет прямого доступа к исходному коду файла.</p>
+
+<p>Однако, если у вас стоит именно такая задача, то вам можно воспользоваться четвертым способом, рассмотренным ниже.</p>
+
+<p>Зависания браузера в бесконечном цикле можно избежать благодаря небольшой поправке, которую подсказал Roy Reed:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;tomato.svg&quot;</span> <span class="na">onerror=</span><span class="s">&quot;this.src=&#39;tomato.png&#39;; this.onerror=null;&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
+
+<h2 id="svg------img-fallback---modernizr">SVG в качестве встраиваемого изображения (тег img), fallback с помощью Modernizr</h2>
+
+<p>Этому методу также нужна поддержка библиотеки Modernizr для определения возможностей. Как обычно, с помощью этой библиотеки определяем возможности конкретного пользовательского браузера.</p>
+
+<p>Если браузер поддерживает SVG, то строку с тегом <code>img</code> отставляем “как есть”:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;tomato.svg&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
+
+<p>Если же браузер пользователя не поддерживает SVG, то запускается мальнький скрипт, который отыскивает в DOM все img-элементы с атрибутом <code>src="*.svg"</code> и производит у файлов-изображений замену расширения с <code>svg</code> на <code>png</code>.</p>
+
+<p>Чтобы метод сработал, необходимо иметь две версии (SVG и PNG) одного файла; имена файлов должны быть идентичными.</p>
+
+<p>Ниже показан HTML и Javascript. Чтобы пример сработал, убедитесь, что подключили библиотеку Modernizr:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;tomato.svg&quot;</span> <span class="nt">/&gt;</span></code></pre></div>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="k">if</span><span class="p">(</span><span class="o">!</span><span class="nx">Modernizr</span><span class="p">.</span><span class="nx">svg</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kd">var</span> <span class="nx">imgs</span> <span class="o">=</span> <span class="nb">document</span><span class="p">.</span><span class="nx">getElementsByTagName</span><span class="p">(</span><span class="s1">&#39;img&#39;</span><span class="p">);</span>
+  <span class="kd">var</span> <span class="nx">svgExtension</span> <span class="o">=</span> <span class="sr">/.*\.svg$/</span>
+  <span class="kd">var</span> <span class="nx">l</span> <span class="o">=</span> <span class="nx">imgs</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+  <span class="k">for</span><span class="p">(</span><span class="kd">var</span> <span class="nx">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="nx">i</span> <span class="o">&lt;</span> <span class="nx">l</span><span class="p">;</span> <span class="nx">i</span><span class="o">++</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span><span class="p">(</span><span class="nx">imgs</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">src</span><span class="p">.</span><span class="nx">match</span><span class="p">(</span><span class="nx">svgExtension</span><span class="p">))</span> <span class="p">{</span>
+      <span class="nx">imgs</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">src</span> <span class="o">=</span> <span class="nx">imgs</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">src</span><span class="p">.</span><span class="nx">slice</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;png&#39;</span><span class="p">;</span>
+      <span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="nx">imgs</span><span class="p">[</span><span class="nx">i</span><span class="p">].</span><span class="nx">src</span><span class="p">);</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<h2 id="section">Заключение</h2>
+
+<p>Я считаю нужным сказать еще раз, что если на данный момент в своих проектах вы не используете SVG, то вам следует перейти на его использование.</p>
+
+<p>Поддержка SVG на сегодня достаточно хорошая, а в скором времени этот формат будет использоваться повсеместно. Применение SVG в проекте имеет множество преимуществ.</p>
+
+<p>Для новичков - вам мне стоит беспокоиться об версии PNG-изображений специально для Retina-дисплеев. SVG-изображения не зависят от разрешения экрана, поэтому с поддержкой адаптивных дизайнов у таких изображений проблем нет.</p>
+
+<p>SVG-изображения могут быть встроены прямо в HTML-документ в качестве одного их его элементов; при этом отпадает необходимость в сохранении SVG-изображения в качестве отдельного файла.</p>
+
+<p>Если открыть любой SVG-файл в редакторе кода, то можно увидеть SVG-код, на котором написан данный файл.</p>
+
+<p>Возможности SVG очень велики, поэтому смело запрыгивайте на платформу SVG-поезда и не бойтесь его использовать на практике! SVG дружелюбен и приятен в обращении.</p>
+
+<p>На этом все.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-13T00:00:00+03:00"><a href="http://zencoder.ru/svg/svg-css-part-1/">November 13, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/svg/svg-css-part-1/" rel="bookmark" title="Стилизация SVG с помощью CSS - Часть 1" itemprop="url">Стилизация SVG с помощью CSS - Часть 1</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>От переводчика. Привожу вольный перевод великолепной статьи “<a href="http://www.smashingmagazine.com/2014/11/03/styling-and-animating-svgs-with-css/" title="Styling And Animating SVGs With CSS">Styling And Animating SVGs With CSS</a>” от <a href="http://sarasoueidan.com/" title="Sara Soueidan">Sara Soueidan</a>.</p>
+</blockquote>
+
+<p>Данная статья является одной из пяти в серии, посвященной формату SVG. Больше мне сказать нечего - читайте Сару.</p>
+
+<p>CSS может использоваться для стилизации и анимации векторной графики точно также, как для стилизации и анимации HTML-элементов. В этой статье, которая является производной от <a href="https://www.youtube.com/watch?v=lf7L8X6ZBu8">моего недавнего выступления</a> на конференциях <a href="http://2014.cssconf.eu/" title="CSSconf EU">CSSconf EU</a> и <a href="http://2014.fromthefront.it/" title="From the Front">From the Front</a>, где я рассказывала о перспективах и приемах работы с форматом векторной графики SVG и возможностях ее стилизации при помощи CSS.</p>
+
+<p>Я покажу, каким образом можно экспотировать и оптимизировать SVG-файлы, способы вставки этих файлов в web-документ, способы стилизации и анимации SVG-файлов, на практике применим стили и анимацию к SVG-файлам-примерам.</p>
+
+<h2 id="section">Введение</h2>
+
+<p>Масштабируемая векторная графика (SVG) представляет из себя векторные изображение для двухмерной графики (2D), в основе которой лежит формат XML. Подобная графика имеет поддержку интерактивности и анимации. Другими словами, SVG-файлы представляют из себя XML-теги, которые генерируют фигуры и изображения; к этим фигурам и изображениям могут быть применены стили и эффекты с помощью CSS точно также, как это делается с обычными HTML-элементами.</p>
+
+<p>Анимация или интерактивность в SVG-файлах могут быть достигнута двумя способами - с помощью CSS или с помощью Javascript. В этой статье будет рассмотрен первый способ - как это сделать с помощью CSS.</p>
+
+<p>Существует много причин, почему нужно делать выбор в пользу SVG и почему нужно использовать этот формат сегодня:</p>
+
+<ul>
+  <li>графика в формате SVG является масштабируемой и не зависящей от разрешения. Такая графика выглядит великолепно везде, будь то экраны с высоким разрешением Retina или же печатный вариант;</li>
+  <li>изображения имеют <a href="http://caniuse.com/#feat=svg" title="Can I Use - SVG support">отличную поддержку браузеров</a>. Создать <code>fallbacks</code> для браузеров, не имеющих поддержки, очень легко и в этой статье будет показано, как это сделать.</li>
+  <li>поскольку файлы в своей основе являются текстом, то они хорошо поддаются архивации, что позволяет сделать их значительно меньше по размеру, чем файлы форматов JPEG или PNG.</li>
+  <li>файлы стилизуются и анимируются с помощью CSS или Javascript</li>
+  <li>файлы формата SVG имеют встроенную поддержку <code>clipping</code>, <code>masking</code>, <code>background blend modes</code> и <code>filters</code>. Эти возможности эквиваленты возможностям обычного графического редактора, такого как Photoshop.</li>
+  <li>к файлам можно получить доступ. Другими словами, к ним можно получить легкий доступ через DOM API, что делает их прекрасным инструментом для инфографики и визуализации данных. Это дает ему преимущество перед HTML5 Canvas, поскольку контент последнего недоступен. С другой стороны, можно легко инспектировать каждый элемент файла с помощью инспектора элементов браузера точно также, как это делается с обычными HTML-элементами. Помимо этого, файлы доступны для экранных устройств чтения, если это необходимо. В последней части этой статье будет более подробно рассмотрен вопрос доступности файлов.</li>
+  <li>существует достаточно инструментов для создания, редактирования и оптимизации файлов. Помимо этого, существуют инструменты для облегчения и ускорения работы с SVG-файлами, что позволяет значительно ускорить рабочий процесс. Эти инструменты также будут рассмотрены позже.</li>
+</ul>
+
+<h2 id="svg------">Экспортирование SVG из графических редакторов и их оптимизация</h2>
+
+<p>Из всех редакторов векторной графики имеется три самых популярных:</p>
+
+<ol>
+  <li><a href="http://www.adobe.com/mena_en/products/illustrator.html" title="Adobe Illustrator">Adobe Illustrator</a></li>
+  <li><a href="https://inkscape.org/en/" title="Inkscape">Inkscape</a></li>
+  <li><a href="http://bohemiancoding.com/sketch/" title="Sketch">Sketch</a></li>
+</ol>
+
+<p>Adobe Illustrator - платное приложение от Adobe. Очень популярный редактор с прекрасным интерфейсом и множеством возможностей, что делает его любимым инструментом многих дизайнеров.</p>
+
+<p>Inkscape является бесплатной альтернативой. Несмотря на более скромный интерфейс, этот редактор имеет все необходимые возможности для работы с векторной графикой.</p>
+
+<p>Sketch - это приложение только под Mac OS X. Оно также не бесплатное, но уже успело стать достаточно популярным и собрать свою группу поклонников. Обладает множеством инструментов и возможностей, что делает работу в этом редакторе быстрее и удобнее.</p>
+
+<p>Для создания векторной графики можно выбрать любой из этих трех редакторов. После создания SVG-файлов перед их вставкой на web-страницу нужно выполнить две операции: экспортирование из редактора и очистка этих файлов от лишних данных.</p>
+
+<p>В этой статье я буду показывать экспортирование и оптимизацию SVG-файлов на примере редактора Adobe Illustrator. Этот процесс практически ничем не отличается от подобного в других редакторах. За исключением некоторых специфических настроек самого Illustrator, о чем будет упоминаться по ходу этой статьи.</p>
+
+<p>Для экспортирования графики в SVG-формат в Illustrator нужно перейти в меню по пути “File” - “Save as”, а затем выбрать формат <code>.svg</code> из выпадающего списка форматов. Настройки в окне поменяются в соответствии с выбранным форматом <code>.svg</code>. Например, можно будет выбрать версию SVG; встраивать изображения в виде графики или же сохранить их отдельно, с созданием внешней ссылки на них; выбрать способ стилизации (с помощью презентационных аттрибутов или же при помощи CSS-стилей в элементе <code>style</code>).</p>
+
+<p>Ниже показано изображение с окном экспорта SVG, в котором представлен наилучший набор настроек для сохранения файлов SVG для web:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/ai-options-quick-preview.png" alt="Окно настроек экспорта SVG в Adobe Illustrator" /></p>
+
+<p>Почему представленный выбор настроек является наилучшим, рассказано Michaël Chaize в прекрасной статье <a href="http://creativedroplets.com/export-svg-for-the-web-with-illustrator-cc/" title="Export SVG for the Web With Illustrator CC">Export SVG for the Web With Illustrator CC</a>.</p>
+
+<p>Вне зависимости от того, какой графический редактор был выбран, в любом случае экспортируемый этим редактором SVG-файл не будет иметь чистого и оптимизированного кода. SVG-файлы, экспортированные из графических редакторов, как правило содержат много дополнительной информации, такой как метаданные самого редактора, комментарии, пустые группы, дефолтные значения, не оптимальные значения и другие подобные значения, которые можно безопасно удалить или конвертировать без оказания какого-либо эффекта на качество SVG-изображений. В случае, когда SVG-файлы созданы не вами, почти всегда они являются не оптимизированными; поэтому нужно в обязательном порядке использовать стороннее приложение для оптимизации SVG-графики.</p>
+
+<p>Имеется несколько инструментов для оптимизации SVG-кода. Peter Collingridge создал online-инструмент <a href="http://petercollingridge.appspot.com/svg-editor" title="SVG Editor">SVG Editor</a>, в котором можно как вставлять напрямую, так и загружать свои собственные SVG-файлы. Инструмент обладает многими возможностями по оптимизации - удалением вспомогательного кода, комментариев, пустых групп и так далее. Одной из интересных настроек является управление числом знаков после запятой для координат точек:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/svg-editor-quick-preview.png" alt="Окно настроек SVG Editor" /></p>
+
+<p>SVG Editor обладает возможностью автоматически перемещать SVG-изображение в самую верхнюю часть документа. Приятной особенностью данного инструмента является возможность предварительного просмотра, что позволяет сразу решить, какие изменения оставить, а какие - нет. Некоторые настройки могут привести к нарушению кода SVG-файла.</p>
+
+<p>Например, одного знака после запятой обычно хватает для оптимизации SVG-изображения. Но если вы работаете с SVG-файлом, который имеет много path, то при уменьшении числа знаков после запятой с четырех до одного может привести к нарушению SVG-изображения. Поэтому возможность предпросмотра является большим плюсом данного редактора.</p>
+
+<p>Редактор SVG Editor является online-инструментом. Если вы предпочитаете offline инструмент, то попробуйте <a href="https://github.com/svg/svgo" title="SVGO">SVGO</a> (O - сокращение от “оптимизатор”). Этот инструмент основан на Node.js, имеет простой и понятный <a href="https://github.com/svg/svgo-gui" title="SVGO">drag-and-drop интерфейс</a>. Если вам не нравиться использовать online-инструменты, то SVGO будет хорошей альтернативой.</p>
+
+<p>Ниже представлено простое изображение формата “до и после”, иллюстрирующее процесс оптимизации SVG-файла в online-редакторе SVG Editor. Красным цветом выделены paths и наглядно показано, насколько эффективен процесс оптимизации в данном случае:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/optimized-path.jpg" alt="Оптимизация SVG в SVG Editor" /></p>
+
+<p>Обратите внимание на размер исходного SVG-файла и размер его оптимизированной версии. Вне всяких сомнений, оптимизированная версия более удобочитаемая.</p>
+
+<p>После оптимизации SVG-файлов они готовы для встраивания их на web-страницу, для дальнейшей стилизации и анимации с помощью CSS.</p>
+
+<h2 id="ps">P.S.</h2>
+
+<p>На практике воспользовался обоими инструментами оптимизации SVG - SVG Editor и SVGO. Могу сказать по личному опыту, что SVGO обладает значительно лучшим коэффициентом оптимизации. К слову сказать, это отечественная разработка команды Yandex.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-12T00:00:00+03:00"><a href="http://zencoder.ru/css/asymmetric-layout-susy/">November 12, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~5 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/asymmetric-layout-susy/" rel="bookmark" title="Создание Asymmetric Layout в Susy" itemprop="url">Создание Asymmetric Layout в Susy</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>От переводчика. Данная статья является вольным переводом поста <a href="http://www.zell-weekeat.com/asymmetric-layouts-with-susy/" title="Creating Asymmetric Layouts With Susy">Creating Asymmetric Layouts With Susy</a> автора Zell Liew.</p>
+</blockquote>
+
+<p>Цель статьи - на простом примере показать, каким образом можно создавать ассиметричную разметку (asymmetric layout) с помощью Susy 2. Обзор ни в коей мере не является каким-либо пособием - это просто очень краткий экскурс по возможностям Susy 2 в области (asymmetric layout). Далее - вольный перевод с разрешения автора.</p>
+
+<hr />
+
+<p>Когда я впервые услышал об ассиметричной разметке (asymmetric layout), на тот момент такую можно было сделать только с помощью фреймворка <a href="http://singularity.gs/" title="Singularity GS">Singularity GS</a>. Подобная разметка была чем-то невероятно крутым и я очень захотел сделать подобную же - с неравной шириной столбцов <code>columns</code>. Но на тот момент я был полностью доволен системой Susyone и мне очень не хотелось переключаться на другой инструмент.</p>
+
+<p>Можете представить мой восторг, когда вышла новая версия Susy 2, в которой была включена поддержка ассиметричной разметки (asymmetric layout).</p>
+
+<p>В этой статье я покажу, как просто можно создавать ассиметричную разметку (asymmetric layout) с помощью Susy 2.</p>
+
+<h2 id="section">Что мы будем делать</h2>
+
+<p>В этой статье мы будем создавать с помощью Susy простую fluid-разметку. В этой разметке есть две боковых панели и два вложенных блока-потомка внутри центрального блока с контентом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/asym-grid-1-basic-setup.png" alt="Asymmetric Layout Basic Setup" /></p>
+
+<h2 id="susy">Глобальные переменные Susy</h2>
+
+<p>Для того, чтобы использовать возможность создания ассиметричной разметки (asymmetric layout) в Susy, в ее глобальной переменной <code>$susy</code>нужно внести два параметра: <code>columns</code> и <code>output</code>. Параметр <code>columns</code> должен быть Sass-списком для того, чтобы можно было работать с ассиметричной разметкой (asymmetric layouts).</p>
+
+<p>Sass-список является строкой значений, разделенных пробелом и выглядит он примерно таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">list</span> <span class="o">:</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">2</span> <span class="nt">1</span><span class="o">;</span></code></pre></div>
+
+<p>Внутри данного списка <code>$list</code> располагаются пять значений: <code>1</code>, <code>2</code>, <code>3</code>, <code>2</code>, <code>1</code>. Если поместить этот список в качестве параметра в глобальную переменную <code>$susy</code>, то в результате получим ассиметричную разметку (asymmetric layout), состоящую из пяти столбцов.</p>
+
+<p>Также же необходимо добавить еще один параметр <code>output: isolate</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span> <span class="o">:</span> <span class="o">(</span>
+  <span class="nt">columns</span><span class="o">:</span> <span class="nt">1</span> <span class="nt">2</span> <span class="nt">3</span> <span class="nt">2</span> <span class="nt">1</span><span class="o">,</span>
+  <span class="nt">output</span><span class="o">:</span> <span class="nt">isolate</span>
+<span class="o">)</span></code></pre></div>
+
+<p>После установки этих параметров все готово для создания заметки с помощью Susy.</p>
+
+<h2 id="asymmetric-layout">Создание ассиметричной разметки (asymmetric layout)</h2>
+
+<p>Как правило, первым важным шагом является добавление миксина <code>container</code> для блока-обертки. Помимо этого, в данном примере для блока-обертки добавим еще высоту на 100% viewport, так как внутри блока нет содержимого и иначе мы его просто не увидим:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.wrap</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">container</span><span class="p">(</span><span class="m">1140px</span><span class="p">);</span>
+  <span class="k">height</span><span class="o">:</span> <span class="m">100</span><span class="n">vh</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/asym-grid-1.png" alt="Asymmetric Layout" /></p>
+
+<p>Прежде чем продолжить создание разметки, необходимо разобраться с еще одним вопросом.</p>
+
+<p>Так как в глобальных настройках Susy используется параметр <code>output: isolate</code>, необходимо уточнить месторасположение каждой отдельной части разметки. Для этой цели нужно использовать параметр <code>$location</code>.</p>
+
+<p>Параметр <code>$location</code> указывает месторасположение каждого отдельного <code>span</code> и может принимать следующие значения:</p>
+
+<ul>
+  <li><code>first</code></li>
+  <li><code>last</code></li>
+  <li><code>at &lt;number&gt;</code></li>
+</ul>
+
+<p>Если какой-либо отдельный блок по разметке располагается первым, то для него необходимо использовать ключевое слово <code>first</code>. Если блок располагается последним, то для него нужно использовать слово <code>last</code>. Если же блок располагается в разметке, к примеру, начиная со 2-го столбца, то в миксине <code>span</code> нужно использовать ключевое слово <code>at 2</code>.</p>
+
+<p>Теперь, обладая всеми этими знаниями, можно создать разметку для трех блоков: <code>.sidebar-one</code>, <code>.content</code> и <code>.sidebar-two</code>.</p>
+
+<p>Блок <code>.sidebar-one</code> по нашей схеме располагается первым и занимает ширину в один столбец:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sidebar-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок <code>.sidebar-two</code> является последним в схеме разметки и также занимает ширину в один столбец:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.sidebar-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок <code>.content</code> имеет ширину в три столбца и начинается со второго столбца:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">at</span> <span class="m">2</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Теперь все три блока должны точно расположиться в создаваемой нами ассиметричной разметке (asymmetric layout). Два оставшися блока <code>.nest-one</code> и <code>.nest-two</code> временно опустим для более ясной картины:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/asym-grid-2.png" alt="Созданная Asymmetric Layout" /></p>
+
+<p>Создание разметки для вложенных блоков <code>.nest-one</code> и <code>.nest-two</code> немного сложнее, нежели для основных блоков разметки. Имеется ввиду, что при разметке блоков-потомков необходимо учитывать факт их вложенности.</p>
+
+<p>Оба наших блока расположены внутри блока <code>.content</code>, а мы знаем, что данный блок имеет структуру (2 3 2), которая также является ассиметричной разметкой (asymmetric layout).</p>
+
+<p>Поэтому, при создании разметки для вложенных элементов необходимо включить эти значения в качестве аргументов для миксина <code>span</code>.</p>
+
+<p>Блок с классом <code>.nest-one</code> является первым блоком в разметке и занимает ширину в один (1) столбец ассиметричной сетки (asymmetric layout). Блок с классом <code>.nest-two</code> является последним блоком в разметке и занимает ширину в два (2) столбца.</p>
+
+<p>Такая разметка создается с помощью следующего кода:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.nest-one</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="p">(</span><span class="m">2</span> <span class="m">3</span> <span class="m">2</span><span class="p">)</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.nest-two</span><span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="p">(</span><span class="m">2</span> <span class="m">3</span> <span class="m">2</span><span class="p">)</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Как видим по исходному коду, при создании разметки нет необходимости указывать точную ширину (px,%) каждого блока. Благодаря Susy создание ассиметричной разметки (asymmetric layout) выполняется просто, с применением той теории, о которой только что говорилось. Достаточно только указать число столбцов, которое должен занимать каждый блок.</p>
+
+<h2 id="section-1">Более сложный пример разметки</h2>
+
+<p>Пример ассиметричной разметки, представленный в этой статье, достаточно простой. Более сложным случаем является создание адаптивной ассиметричной разметки (asymmetric layout).</p>
+
+<p>В качестве примера могу привести <a href="https://gridsetapp.com/specs/typekit-demos/chaparral.html?gridset=show" title="Образец ассиметричной разметки">образец ассиметричной разметки</a>, созданной Nathan Ford с применением приложения <a href="https://gridsetapp.com/" title="GridsetApp">GridsetApp</a>. Этот образец является хорошим примером адаптивной страницы, которая дает представление о том, что может Susy.</p>
+
+<p>Примечание переводчика: на этом самое существенное и интересное в этой статье заканчивается. Дальше идет реклама книги автора. Собственно, данная статья для этого и писалась, конечно. Но ради даже такого простого примера ассиметричной разметки (asymmetric layout) на Susy стоило превести этот пост.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-11-11T00:00:00+03:00"><a href="http://zencoder.ru/css/gutter-susy/">November 11, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~10 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/css/gutter-susy/" rel="bookmark" title="Как управлять положением gutters в Susy" itemprop="url">Как управлять положением gutters в Susy</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>При изучении Susy одним из вопросов, который всегда стоял передо мной, заключался в следующем: “Как удалить <code>padding</code> или <code>margin</code> у первого и последнего столбца <code>column</code> в разметке Susy без применения CSS-свойств <code>first-child</code> и <code>last-child?</code>”.</p>
+</blockquote>
+
+<p>Этот вопрос является один из самых главных для всех, кто только начинает изучение Susy. Если посмотреть в корень данного вопроса, то его основную суть можно свести к следующему (<em>если судить по многочисленным постам в Интернет</em>): необходимо использовать значение <code>inside</code> вместо значения <code>after</code>. Для того, чтобы точно ответить на этот вопрос, необходимо хорошо понимать, каким образом положение отступов <code>gutter</code> в целом оказывает влияние на всю разметку, созданную в Susy.</p>
+
+<p>Как мне кажется, вопрос о расположении отступов <code>gutter</code> в разметке Susy является самой важной настройкой, поскольку он оказывает влияние на весь код в целом. Если у вас перед прочтением статьи существовал такой вопрос, то данная статья именно для вас.</p>
+
+<h2 id="gutter">Что такое - расположение отступов gutter</h2>
+
+<p>Расположение отступа <code>gutter</code> позволяет полностью менять всю разметку страницы, созданную в Susy. Данный параметр определяет, где должны находиться отступы <code>gutter</code> относительно столбцов <code>columns</code>. Также данная настройка определяет, будут ли отступы <code>gutter</code> являться CSS-свойством <code>padding</code> или <code>margin</code>.</p>
+
+<p>Эта параметр находиться среди глобальных настроек переменной <code>$susy</code>. Как вариант, данный параметр можно использовать локально, внутри миксина <code>span</code>. Давайте начнем с рассмотрения случая, когда расположение отступа <code>gutter</code> управляется из глобальной переменной <code>$susy</code>.</p>
+
+<p>По умолчанию, расположение отступов в Susy определено ключевым словом <code>after</code>. Помимо этого, существуют еще варианты: <code>before</code>, <code>split</code>, <code>inside</code> и <code>inside-static</code>. Ниже представлен полный вариант синтаксиса параметра <code>gutter-position</code> в глобальной переменной <code>$susy</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="o">$</span><span class="nt">susy</span><span class="o">:</span> <span class="o">(</span>
+  <span class="nt">gutter-position</span><span class="o">:</span> <span class="nt">after</span> <span class="o">(</span> <span class="nt">before</span> <span class="o">|</span> <span class="nt">after</span> <span class="o">|</span> <span class="nt">split</span> <span class="o">|</span> <span class="nt">inside</span> <span class="o">|</span> <span class="nt">inside-static</span> <span class="o">)</span>
+<span class="o">);</span></code></pre></div>
+
+<p>Ключевые слова в круглых скобках являются возможными вариантами значения параметра <code>gutter-position</code>.</p>
+
+<p>Для ясности понимания тонкостей разметки в Susy при использовании параметра <code>gutter-position</code> необходимо создать простую структуру:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_01.png" alt="Базовая разметка в Susy" /></p>
+
+<h2 id="gutter-position-after">Gutter-position: after</h2>
+
+<p>Значением по умолчанию для параметра <code>gutter-position</code> является ключевое слово <code>after</code>. Данное значение заставляет Susy располагать отступы gutters после каждого столбца разметки. В этом режиме необходимо удалить отступ у последнего столбца в разметке. В этом случае отступы gutters являются CSS-свойством margin и размещаются в разметке следующим образом:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_02.png" alt="Gutter-position: after" /></p>
+
+<p>При использовании значения по умолчанию для параметра <code>gutter-position</code> миксин <code>span</code> создает три CSS-правила - <code>width</code>, <code>margin-right</code> и <code>float: left</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результирующий CSS-код:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">73.68421%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В этом коде свойство <code>margin-right</code> - это отступ <code>gutter</code>, созданный Susy в данной разметке.</p>
+
+<p>Можно использовать ключевое слово <code>last</code> для удаления крайнего <code>margin</code> у столбца:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.last</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате получим результат в виде <code>margin-right: 0</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.last</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">21.05263%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">0</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В рассматриваемой нами разметке область контента занимает 3 столбца из 4. При этом область боковой панели размещается в одном столбце из 4-х. Кроме того, боковая панель является последним элементом разметки, поэтому код для подобного случая будет таким:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span> <span class="n">last</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>after</code> параметра <code>gutter-position</code> является наиболее интуитивно понятным случаем создания разметки в Susy. При использовании значения по умолчанию единственный момент, о котором следует помнить - это убрать отступ у последнего столбца разметки с помощью ключевого слова <code>last</code>.</p>
+</blockquote>
+
+<h2 id="gutter-position-before">Gutter-position: before</h2>
+
+<p>Значение <code>before</code> является одним из вариантов предыдущего значения - <code>after</code>. Суть этого значения также простая. Вместо размещения отступов gutter после столбцов (как в случае с <code>after</code>), при значении <code>before</code> отступы gutters размещаются перед столбцами. В этом случае необходимо удалить отступ у первого столбца в разметке. Отступы gutter также являются в данном случае CSS-свойством <code>margin</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_03.png" alt="Gutter-position: before" /></p>
+
+<p>При использовании значения <code>before</code> для параметра <code>gutter-position</code> миксин <code>span</code> генерирует три CSS-правила: <code>width</code>, <code>margin-left</code> и <code>float: left</code> с помощью кода:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Результирующий CSS-код будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.test</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">73.68421%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">5.26316%</span><span class="p">;</span> <span class="c">/* Notice this is margin left, not right */</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Так как значение <code>before</code> является прямой противоположностью значения <code>after</code>, то его очень легко понять, если до этого вы хорошо разобрались с <code>after</code>. Вместо использования ключевого слова <code>last</code> для удаления отступа у последнего столбца разметки, в данном случае нужно использовать ключевое слово <code>first</code> для удаления отступа у первого столбца разметки:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">first</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p>В результате получим точно такую же разметку, что и в предыдущем случае.</p>
+
+<blockquote>
+  <p>Краткое заключение: при использовании значения <code>before</code> разметка получается точно такой же, как и в предыдущем случае. Единственное отличие заключается в применении ключевого слова <code>first</code> для первого столбца разметки.</p>
+</blockquote>
+
+<h2 id="gutter-position-split">Gutter-position: split</h2>
+
+<p>Значение <code>split</code> параметра <code>gutter-position</code> кардинально отличается от двух предыдущих значений  <code>before</code> и <code>after</code>. Если установлено значение <code>split</code>, то ширина отступа <code>gutter</code> делиться пополам (надвое) и обе половинки отступа располагаются по обеим сторонам одного столбца. В этом режиме отступы <code>gutters</code> генерируются в CSS-коде в виде CSS-свойства <code>margin</code>. В этом случае нет необходимости удалять отступы для крайних столбцов разметки:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_04.png" alt="Gutter-position: split" /></p>
+
+<p>Если, как в нашем случае, имеются только два блока (с классом <code>.content</code>  и <code>.sidebar</code>), то создание такой разметки выполняется просто. Для этого достаточно воспользоваться функцией <code>span</code>, как обычно:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.sidebar</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_05.png" alt="Разметка с двумя блоками" /></p>
+
+<p>Однако, ситуация становиться не такой ясной, если блок <code>.content</code> или блок <code>.sidebar</code> будут содержать внутри себя блоки-потомки.</p>
+
+<p>Давайте добавим два блока <code>div</code> с классом <code>.child-one</code> и классом <code>.child-two</code> внутрь блока <code>.content</code> для того, чтобы проиллюстрировать эту ситуацию:</p>
+
+<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;content&quot;</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;h2&gt;</span>
+    Content
+  <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;child-one&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Child One
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;child-two&quot;</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;h2&gt;</span>
+      Child Two
+    <span class="nt">&lt;/h2&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre></div>
+
+<p>Для обоих вновь созданных блока применим тот же подход, что и ранее. Блок с классом <code>.child-one</code> будет иметь ширину 2-х столбцов из 3-х; блок с классом <code>.child-two</code> будет иметь ширину 1-го столбца из 3-х.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_06.png" alt="Разметка с двумя дополнительными блоками" /></p>
+
+<p>Обратите внимание на тот факт, что границы обоих блоков <code>.child-one</code> и <code>.child-two</code> не совпадают с границами фоновой сетки!</p>
+
+<p>Это происходит потому, что при задании для параметра <code>gutter-position</code> значения <code>split</code> нужно учитывать взаимосвязь между блоками-родителями и блоками-потомками. В данном конкретном случае блоком-родителем является <code>.content</code>, а блоками-потомками являются <code>.child-one</code> и <code>.child-two</code>.</p>
+
+<p>Для создания правильной разметки в данном случае необходимо добавить для блока-родителя ключевое слово <code>nest</code> для того, чтобы показать, что этот блок как раз и является блоком-родителем:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">nest</span><span class="p">);</span> <span class="o">//</span> <span class="err">Добавлен</span> <span class="err">ключ</span> <span class="n">nest</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_07.png" alt="Применение ключевого слова nest" /></p>
+
+<p>Теперь посмотрите, как точно оба блока .child-one<code>и</code>.child-two` вписались в границы сетки, “нарисованной” фоновым изображением!</p>
+
+<p>На первый взгляд, ситуация является немного запутанной. Для того, чтобы не путаться, нужно всегда помнить, что в случае необходимости вписать блоки-потомки точно в границы сетки, нужно использовать ключевое слово для их блока-родителя.</p>
+
+<p>Если “копнуть” поглубже и проанализировать сгенерированный CSS-код, то можно заметить, что для блоков <code>.child-one</code> и <code>.child-two</code> он совершенно различный:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">75%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">60%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="k">width</span><span class="o">:</span> <span class="m">26.66667%</span><span class="p">;</span>
+  <span class="k">float</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
+  <span class="k">margin-left</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+  <span class="k">margin-right</span><span class="o">:</span> <span class="m">3.33333%</span><span class="p">;</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Блок-родитель имеет плавание влево <code>float: left</code> и ширину, которая указана в процентах; при этом ширина отступов <code>gutters</code> этого блока не учитывается (75% равно 3/4).</p>
+
+<p>Блоки-потомки имеют все те же свойства, что и блок-родитель. Но при этом отступы gutters имеют место быть для этих блоков.</p>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>split</code> кардинально отличается от двух рассмотренных ранее значений <code>before</code> и <code>after</code>. При использовании значения <code>split</code> необходимо добавлять ключевое слово <code>nest</code> к блоку-родителю и использовать миксин <code>span</code> для всех блоков-потомков.</p>
+</blockquote>
+
+<h2 id="gutter-position-insideinside-static">Gutter-position: inside/inside-static</h2>
+
+<p>Оба значения <code>inside</code> и <code>inside-static</code> очень похожи на предыдущее значение <code>split</code>. Отступы gutters также делятся пополам (надвое) и обе половинки располагаются по обеим сторонам каждого столбца. Однако, в этом случае в CSS-выводе отступы являются свойством <code>padding</code>, а не <code>margin</code>. Также в этом случае нет необходимости удалять отступы у крайних столбцов в разметке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_08.png" alt="Gutter-position: inside" /></p>
+
+<p>Отступы <code>gutters</code> в случае <code>gutter-position: inside</code> имеют тот же принцип, что и при значении <code>split</code>. Если для блока-родителя не будет указано ключевое слово <code>nest</code>, то блоки-потомки выйдут за границы разметки.</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_09.png" alt="Блоки-потомки выходят за границы разметки" /></p>
+
+<p>Если просто добавить ключевое слово <code>nest</code> для блока-родителя <code>.content</code>, то в результате получим следующее:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.content</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">3</span> <span class="n">of</span> <span class="m">4</span> <span class="n">nest</span><span class="p">);</span> <span class="o">//</span> <span class="n">The</span> <span class="n">nest</span> <span class="n">key</span> <span class="n">is</span> <span class="n">needed</span>
+<span class="p">}</span>
+<span class="nc">.child-one</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">2</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span>
+<span class="nc">.child-two</span> <span class="p">{</span>
+  <span class="o">@</span><span class="n">include</span> <span class="n">span</span><span class="p">(</span><span class="m">1</span> <span class="n">of</span> <span class="m">3</span><span class="p">);</span>
+<span class="p">}</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/11/gutters_10.png" alt="Блоки-потомки в границах разметки" /></p>
+
+<p>Значение <code>inside-static</code> работает точно также, как и значение <code>inside</code>. Единственное исключение заключается в том, что отступы gutters получаются в фиксированных единицах измерения, а не в процентах. Кроме этого, в глобальной переменной <code>$susy</code> необходимо задать параметр <code>column-width</code> с указанием ширины столбца <code>column</code>.</p>
+
+<blockquote>
+  <p>Краткое заключение: значение <code>inside</code> работает точно также, как и значение <code>split</code>. При использовании значения <code>inside</code> необходимо добавлять ключевое слово <code>nest</code> к блоку-родителю и использовать миксин <code>span</code> для всех блоков-потомков.</p>
+</blockquote>
+
+<p>Значение <code>inside</code> и <code>split</code> имеют одинаковый сгенерированный CSS-код, поэтому можно с легкостью менять между собой эти значения в глобальной переменной <code>$susy</code> для параметра <code>gutter-position</code>.</p>
+
+<h2 id="section">Заключение</h2>
+
+<p>Различные типы разметки в Susy создаются с помощью выбора расположения отступов <code>gutters</code>. Различное местоположение отступов <code>gutters</code> в каждом случае имеет свои тонкости и требует понимания процесса, если вы хотите эффективно их использовать.</p>
+
+<p>Существует два основных способа создания разметки при содействии отступов <code>gutters</code>:</p>
+
+<ul>
+  <li>
+    <p>значения <code>before</code> и <code>after</code> имеют создают отступы <code>gutters</code> с одной стороны каждого столбца <code>column</code>; для крайнего столбца необходимо удалить отступ <code>gutter</code> с помощью ключевого слова <code>first</code> или <code>last</code>.</p>
+  </li>
+  <li>
+    <p>значения <code>inside</code>, <code>inside-static</code>, <code>split</code> разделяют каждый отступ <code>gutter</code> на две равные половины, которые располагаются по обе стороны каждого столбца <code>column</code>. Такие отступы не нуждаются в удалении.</p>
+  </li>
+</ul>
+
+<p>Эта статья является небольшой выдержкой из книги <a href="http://zell-weekeat.com/learnsusy" title="Learning Susy">Learning Susy</a>, а точнее - из главы 8, посвященной позиционированию отступов <code>gutter</code> в разметке Susy. В книге вопрос позиционирования рассмотрен подробнее на основе более сложного примера. Если материал, поданный в статье, вам понравился, то книга понравиться еще больше.</p>
+
+<blockquote>
+  <p>Примечание переводчика: данный пост является переводом статьи <a href="http://www.zell-weekeat.com/susy-gutter-positions/" title="Understanding Gutter Positions in Susy">Understanding Gutter Positions in Susy</a>, созданным мною с любезного разрешения ее автора Zell Liew.</p>
+</blockquote>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-11-09T00:00:00+03:00"><a href="http://zencoder.ru/photoshop/pattern-photoshop-cc-2014/">November 09, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -191,537 +873,6 @@
 <p>Вот такую небольшую головоломку подкинули нам разработчики Photoshop. Но хоть и через заднее место, но выход все же есть.</p>
 
 <hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-08T00:00:00+03:00"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/">November 08, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/linux/exfat-mac-os-linux/" rel="bookmark" title="ExFAT - файловая система для Mac OS X и Linux" itemprop="url">ExFAT - файловая система для Mac OS X и Linux</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Тема достаточно освещенная, но для меня, как новичка в мире Mac OS X - очередное маленькое открытие. Вопрос связан с одной небольшой проблемой - выбором файловой системы для флешек.</p>
-</blockquote>
-
-<p>Для пары Windows + Linux обычным решением является файловая система NTFS. Обе операционные системы с ней прекрасно работают - чтение+запись.</p>
-
-<p>Для пары Mac OS X + Linux такой выбор не подойдет, так как NTFS в Mac OS X имеет поддержку только чтения. Для записи нужно ставить сторонний софт, типа Paragon. Это не является решением - нужна нативная поддержка в обеих системах.</p>
-
-<p>Решением является файловая система ExFAT. В Mac OS X у нее есть поддержка “из коробки”. В Linux поддержки “из коробки” нет - но проблема решается установкой дополнительных пакетов (как почти всегда).</p>
-
-<p>Более того, в Сети <a href="http://en.wikipedia.org/wiki/ExFAT">пишут о системе ExFAT</a> как изначально созданной для флеш-накопителей. Что она умеет бережно относится к флешкам и поддерживает размер более 4Gb.</p>
-
-<p>Все отлично - ставлю ее на обе свои флешки: Apacer 8Gb и Transcend 16Gb. Начну с более сложного - с системы Linux.</p>
-
-<h2 id="exfat-----linux">ExFAT - установка в Linux</h2>
-
-<p>Для включения поддержки файловой системы в Linux нужно установить пару пакетов - <code>exfat-fuse</code> и <code>exfat-utils</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">exfat-fuse</span> <span class="n">exfat-utils</span></code></pre></div>
-
-<p>Скажу, что приведенная выше команда на моей системе Linux Mint 17 Cinnamon оказалась действенной - все пакеты установились без проблем и поддержка ExFAT в системе появилась сразу же.</p>
-
-<p>В Интернете почти на всех ресурсах приведена другая команда для установки пакетов <code>exfat-fuse</code> и <code>exfat-utils</code> (причем - один в один, перепечатывают друг у друга вслепую):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="nb">add-apt</span><span class="n">-repository</span> <span class="n">ppa</span><span class="err">:</span><span class="n">relan</span><span class="p">/</span><span class="n">exfat</span>
-<span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">update</span>
-<span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">fuse</span> <span class="n">fuse-exfat</span> <span class="n">exfat-utils</span></code></pre></div>
-
-<p>Однако, эта команда на моей системе не запустилась - выдала ошибку ключа при подключении репозитория <code>ppa:relan/exfat</code>. Именно этот факт и послужил для меня поводом написать этот краткий обзор.</p>
-
-<p>Все - дело сделано. Теперь отформатирую флешку под файловую систему ExFAT в Linux.</p>
-
-<p>Для этого сначала нахожу, где она расположена в файловой системе (в моем случае это устройство <code>/dev/sdb1</code>):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">fdisk</span> <span class="n">-l</span></code></pre></div>
-
-<p>… и затем произвожу форматирование флешки командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">mkfs</span><span class="p">.</span><span class="n">exfat</span> <span class="n">-n</span> <span class="n">large_flash</span> <span class="p">/</span><span class="n">dev</span><span class="p">/</span><span class="n">sdb1</span></code></pre></div>
-
-<p>где ключ <code>-n</code> - это задание для флешки имени как устройства.</p>
-
-<p>Форматирование происходит буквально за пару секунд, ждать не придется. Первая флешка готова и операция форматирования выполнена под Linux.</p>
-
-<h2 id="exfat-----mac-os-x">ExFAT - форматирование под Mac OS X</h2>
-
-<p>Как уже говорилось мною выше, система Mac OS X имеет нативную поддержку файловой системы ExFAT. То есть, ничего дополнительно ставить не придется - все готово “из коробки”.</p>
-
-<p>Операции по форматированию накопителей и другим действиям с жесткими дисками производится в стандартной утилите “Disk Utility”.</p>
-
-<p>Вставляю вторую флешку и запускаю “Disk Utility”:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/small_flash_exfat.png" alt="Создание ExFAT в дисковой утилите Disk Utility" class="center-image responsive-image" /></p>
-
-<p>Разобраться с работой этой утилиты нетрудно, но вкратце опишу.</p>
-
-<p>Слева находиться окно со всеми подключенными дисками, которые утилита сумела обнаружить.</p>
-
-<p>Справа на вкладке “Erase” производиться настройка и выполнение форматирования (в терминологии Mac OS X форматирование называется “Erase”). В списке “Format” выбирается нужная файловая система (кстати, выбор небогатый).</p>
-
-<p>В списке “Name” выбирается диск, который будет форматироваться. Там же находиться одноименная кнопка “Erase” для запуска форматирования.</p>
-
-<p>Ниже располагается информативное (я был приятно впечатлен объемом и качеством подачи информации в нем) окно, в котором можно увидеть всю информацию по подключенному диску. Внимательный читатель заметит, что флешка у меня уже отформатирована в ExFAT - обзор делал “по горячим следам”.</p>
-
-<p>В принципе - и все. Осталось нажать кнопку “Erase” и моя флешка отформатируется под систему ExFAT.</p>
-
-<p>Если ее открыть в Finder, то теперь мне будут доступны как чтение с нее, так и запись на нее.</p>
-
-<h2 id="section">Заключение</h2>
-
-<p>Вот так “неожиданно” я решил проблему совместимости флешки под Mac OS X и Linux. Более того, данная система ExFAT является разработкой Microsoft, поэтому с ее поддержкой в Windows вообще нет проблем.</p>
-
-<p>А если учитывать обещанный создателями ExFAT бережный способ обращения с флеш-накопителями, то этому решению вообще цены нет.</p>
-
-<p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-04T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/">November 04, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~6 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/parallax-js-vertical-scrolling/" rel="bookmark" title="Parallax.js - создаем parallax со скроллингом" itemprop="url">Parallax.js - создаем parallax со скроллингом</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В данном примере рассмотрим создание parallax с эффектом вертикального скроллинга. Это самый популярный вид parallax’а для страниц типа Landing Page.</p>
-</blockquote>
-
-<p>Создавать эффект будет с помощью скрипта Parallax.js. По странному стечению обстоятельств данный скрипт имеет точно такое же имя, что и скрипт из предыдущего примера - “Parallax.js - создаем простой parallax”. Однако, <strong>это разные скрипты</strong> и авторы у них разные; данный скрипт расположен на странице GitHub по адресу - <a href="https://github.com/pixelcog/parallax.js/" title="Parallax.js">Parallax.js</a>.</p>
-
-<p>Домашняя страничка скрипта выполнена также с эффектом parallax - <a href="http://pixelcog.com/parallax.js/" title="Simple Parallax Scrolling">Simple Parallax Scrolling</a>.</p>
-
-<h2 id="parallaxjs----html-">Parallax.js - создаем HTML-разметку</h2>
-
-<p>Разметка для скрипта Parallax.js проста. Это обычный блок, который может быть <code>div</code>, <code>section</code> или что-либо еще. Обязательным условием является подключение для блока класса <code>class="parallax-window"</code> и двух data-атрибутов: <code>data-parallax="scroll"</code> и <code>data-image-src="images/one.jpg"</code>.</p>
-
-<p>Второй атрибут в качестве своего значения имеет относительный путь к файлу изображения, которое будет устанавливаться в виде фона. В дополнение можно задать еще несколько атрибутов для ускорения загрузки изображений браузером:</p>
-
-<ul>
-  <li><code>data-natural-width</code> - реальная ширина изображения</li>
-  <li><code>data-natural-height</code> - реальная высота изображения</li>
-</ul>
-
-<p>Ниже приведу созданные мною четыре блока <code>section</code> с содержимым:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="c">&lt;!-- begin one --&gt;</span>
-<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/one.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap one&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h1&gt;</span>Welcome to Parallax!<span class="nt">&lt;/h1&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Temporibus consequatur, nulla neque voluptatum deserunt at voluptatibus eos. Magni sapiente rem, suscipit assumenda provident, quaerat doloribus libero? Eaque doloremque, quo sequi!<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Sint nemo cum, dignissimos blanditiis iusto quasi, quis! Ducimus aperiam sunt libero deleniti numquam rerum esse architecto, officiis amet, officia recusandae aut.<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Itaque reiciendis vitae, amet! Quas saepe consequuntur, nisi quia, cupiditate dignissimos laborum incidunt soluta repellat, libero id quibusdam mollitia maiores omnis tempore.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/section&gt;</span>
-<span class="c">&lt;!-- end one --&gt;</span>
-
-<span class="c">&lt;!-- begin two --&gt;</span>
-<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/two.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap two&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h2&gt;</span>Parallax is great!<span class="nt">&lt;/h2&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi accusamus deserunt ipsum nesciunt odit vero corporis eaque, quibusdam, enim, beatae, repellendus iusto. Amet corporis beatae, inventore officiis est aut. Ab!<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime possimus sint a facere dignissimos! Labore at, beatae consequuntur corporis perspiciatis! Asperiores illum esse repellat veniam vero totam debitis! Quos, consectetur.<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Nulla, totam maxime dolorum similique, ipsa a. Ea illo eligendi, ex, officia id eum sit sint nobis aperiam, error nihil ab dolorum.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/section&gt;</span>
-<span class="c">&lt;!-- end two --&gt;</span>
-
-<span class="c">&lt;!-- begin three --&gt;</span>
-<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/three.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap three&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h3&gt;</span>Parallax is easy!<span class="nt">&lt;/h3&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cumque quia ex doloremque et, eum soluta culpa ipsum placeat consectetur, error at, accusamus iure! Doloribus corporis, earum quo modi omnis hic.<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum ab distinctio omnis repellendus exercitationem maiores ad sed, deleniti dolorem tempore praesentium nobis suscipit nihil quidem qui nostrum debitis ipsam culpa.<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Impedit, repellendus, qui. Aspernatur reiciendis eligendi, totam eaque iusto illo officia. Facere dicta harum, dolore sit perferendis in neque mollitia eligendi dignissimos?<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/section&gt;</span>
-<span class="c">&lt;!-- end three --&gt;</span>
-
-<span class="c">&lt;!-- begin four --&gt;</span>
-<span class="nt">&lt;section</span> <span class="na">data-parallax=</span><span class="s">&quot;scroll&quot;</span> <span class="na">data-image-src=</span><span class="s">&quot;images/four.jpg&quot;</span> <span class="na">class=</span><span class="s">&quot;parallax-window&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">&quot;wrap&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;h4&gt;</span>Let&#39;s start use it!<span class="nt">&lt;/h4&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius ab voluptates alias corporis, laborum provident corrupti assumenda dignissimos vel repellendus obcaecati, aspernatur earum ipsum rem. Voluptatum ipsum nostrum in! Rerum.<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit alias illum minus asperiores culpa, modi veritatis quibusdam, aperiam accusantium repellendus at possimus qui cupiditate dolorem quod accusamus a. Mollitia, repudiandae.<span class="nt">&lt;/p&gt;</span>
-    <span class="nt">&lt;p&gt;</span>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Distinctio quo nulla officia sapiente a tenetur maxime sunt mollitia accusantium aut, eius minus maiores fugit necessitatibus obcaecati ex eos quibusdam sequi.<span class="nt">&lt;/p&gt;</span>
-  <span class="nt">&lt;/div&gt;</span>
-<span class="nt">&lt;/section&gt;</span>
-<span class="c">&lt;!-- end four --&gt;</span></code></pre></div>
-
-<h2 id="parallaxjs----">Parallax.js - стилизация страницы</h2>
-
-<p>Стилизацию страницы буду выполнять на Sass/Compass с использованием вертикального ритма “Vertical Rhythm” - в данном случае он подойдет как раз к месту, как мне кажется:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
-<span class="o">$</span><span class="nt">base-font-size</span><span class="o">:</span> <span class="nt">24px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">base-line-height</span><span class="o">:</span> <span class="nt">36px</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">rhythm-unit</span><span class="o">:</span> <span class="s2">&quot;rem&quot;</span><span class="o">;</span>
-<span class="o">$</span><span class="nt">rem-with-px-fallback</span><span class="o">:</span> <span class="nt">true</span><span class="o">;</span>
-
-<span class="k">@include</span> <span class="nt">establish-baseline</span><span class="p">;</span>
-
-<span class="nc">.parallax-window</span> <span class="p">{</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">1080px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="o">.</span><span class="n">wrap</span><span class="err">{</span>
-    <span class="k">margin-top</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-    <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">1200px</span><span class="p">;</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">0</span> <span class="k">auto</span><span class="p">;</span>
-    <span class="o">@</span><span class="n">include</span> <span class="n">leader</span><span class="p">(</span><span class="err">$</span><span class="n">lines</span><span class="o">:</span> <span class="m">7</span><span class="o">,</span> <span class="err">$</span><span class="n">property</span><span class="o">:</span> <span class="k">padding</span><span class="p">);</span>
-    <span class="n">p</span><span class="err">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">rhythm</span><span class="o">-</span><span class="n">margins</span><span class="p">;</span>
-    <span class="p">}</span>
-    <span class="nt">h1</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">2</span><span class="o">.</span><span class="m">074</span><span class="n">rem</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nt">h2</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">728</span><span class="n">rem</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nt">h3</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">44</span><span class="n">rem</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="nt">h4</span><span class="p">{</span>
-      <span class="o">@</span><span class="n">include</span> <span class="n">adjust</span><span class="o">-</span><span class="k">font-size</span><span class="o">-</span><span class="n">to</span><span class="p">(</span><span class="m">1</span><span class="o">.</span><span class="m">2</span><span class="n">rem</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="o">&amp;</span><span class="nc">.one</span><span class="p">{</span>
-      <span class="k">text-align</span><span class="o">:</span> <span class="k">center</span><span class="p">;</span>
-      <span class="k">color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,</span><span class="m">255</span><span class="o">,.</span><span class="m">8</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="o">&amp;</span><span class="nc">.two</span><span class="p">{</span>
-      <span class="k">text-align</span><span class="o">:</span> <span class="k">left</span><span class="p">;</span>
-      <span class="k">color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="m">0</span><span class="o">,</span> <span class="o">.</span><span class="m">8</span><span class="p">);</span>
-    <span class="p">}</span>
-    <span class="o">&amp;</span><span class="nc">.three</span><span class="p">{</span>
-      <span class="k">text-align</span><span class="o">:</span> <span class="k">right</span><span class="p">;</span>
-      <span class="k">color</span><span class="o">:</span> <span class="n">rgba</span><span class="p">(</span><span class="m">255</span><span class="o">,</span> <span class="m">255</span><span class="o">,</span> <span class="m">255</span><span class="o">,</span> <span class="o">.</span><span class="m">8</span><span class="p">);</span>
-    <span class="p">}</span>
-  <span class="err">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>В этом коде наиболее важными строками являются две - без них скроллинга не получиться:</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nc">.parallax-window</span> <span class="p">{</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">1080px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="k">transparent</span><span class="p">;</span>
-  <span class="o">...</span></code></pre></div>
-
-<h2 id="parallaxjs----javascript">Parallax.js - добавление Javascript</h2>
-
-<p>Разметка и стили готовы - осталось подключить скрипт Parallax.js и библиотеку jQuery:</p>
-
-<pre>
-</pre>
-
-<p>jQuery “забираем” с Google, а скрипт Parallax.js - с GitHub-страницы проекта - <a href="http://pixelcog.com/parallax.js/" title="Simple Parallax Scrolling">Parallax.js</a>. Все это “добро” пихаем в самый низ, подвал HTML-документа - перед закрывающим тегом <code>&lt;/body&gt;</code>.</p>
-
-<p>В дальнейшие украшательства вдаваться не буду - это дело техники. Мне важен сам принцип создания parallax с эффектом вертикального скроллинга.</p>
-
-<p>В принципе, у меня все готово для того, чтобы полюбоваться результатом. Открываю страницу в браузере и любуюсь (не забывая скролить саму страницу):</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/ParallaxJX-_Scrolling.png" alt="Страница на Parallax.js с вертикальным скроллингом" /></p>
-
-<p>Отлично! Получился прямо таки совсем неплохой parallax с вертикальным скроллингом. Готовый пример со всеми исходниками можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs_scroll" title="Parallax.js Scrolling">Parallax.js Scrolling</a>.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-03T00:00:00+03:00"><a href="http://zencoder.ru/javascript/parallax-js/">November 03, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/javascript/parallax-js/" rel="bookmark" title="Parallax.js - создаем простой parallax" itemprop="url">Parallax.js - создаем простой parallax</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Небольшой обзор новой для меня темы - создание эффекта <code>parallax</code> на странице сайта. Вместе с вами буду учиться создавать такой эффект и начну с самого простого - Parallax.js.</p>
-</blockquote>
-
-<p>Чтобы посмотреть, что примерно мы должны в результате получить, посмотрим на домашнюю страницу этого проекта - <a href="http://matthew.wagerfield.com/parallax/" title="Parallax.js">Parallax.js</a>. Исходный код скрипта и документация расположена на GitHub - <a href="https://github.com/wagerfield/parallax" title="Parallax.js">Parallax.js</a></p>
-
-<h2 id="parallax">Кратко о parallax</h2>
-
-<p>Что такое <code>parallax</code> как эффект сам по себе, хорошо видно на самой страничке и расписывать его я не буду. В Интернет есть лучшее и более подробное описание эффекта <code>parallax</code>. Единственное, что можно сказать по поводу <code>parallax</code> - появился он в основном как необходимость, дань моде. Своим существованием практически полностью обязан популярным на сегодняшний день <code>landing page</code> и призван скрасить и разнообразить их относительную монотонность.</p>
-
-<p>Способов реализации <code>parallax</code> на сегодня сушествует множество. Но практически все они основаны на одном принципе - изменении скорости прокрутки фонового изображения на странице относительно других объектов на ней (<em>поправьте меня, если я неправ</em>).</p>
-
-<p>Одним из преимуществ метода на основе скрипта Parallax.js является то, что в этом случае не требуется библиотеки jQuery. Скрипт может работать и с ней, но ее присутствие совсем необязательно. Получается выгода в весе страницы и скорости ее загрузки в браузере.</p>
-
-<h2 id="parallaxjs----">Parallax.js - начальная разметка</h2>
-
-<p>HTML-разметка для нашего будущего <code>parallax</code> удивительно простая - это маркированный список <code>ul</code> с идентификатором (<em>имя его произвольное</em>) и элементами списка <code>li</code> (<em>имя класса обязательно и неизменно</em>).</p>
-
-<p>Еще одним обязательным атрибутом для элементов списка <code>li</code> является атрибут <code>data-depth</code>, у которого значение может меняться в диапазоне от 0 до 1. Чем выше значение в 1, тем выше скорость перемещения объекта на странице.</p>
-
-<p>Внутрь элементов списка помещается изображение, которое будет анимироваться с помощью эффекта <code>parallax</code>.</p>
-
-<p>Ниже приведен пример такой разметки:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;scene&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.10&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/one.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/two.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.20&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/three.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/four.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span> <span class="nt">/&gt;</span>
-  <span class="nt">&lt;/li&gt;</span>
-<span class="nt">&lt;/ul&gt;</span></code></pre></div>
-
-<h2 id="parallaxjs----parallax">Parallax.js - стилизация parallax</h2>
-
-<p>Произведем небольшую стилизацию нашего будущего <code>parallax</code> с помощью Sass/Compass. Для элемента <code>ul</code> добавим фоновое изображение, чтобы был лучше виден эффект parallax.</p>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass/&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
-<span class="nf">#scene</span><span class="p">{</span>
-  <span class="k">width</span><span class="o">:</span> <span class="m">95%</span><span class="p">;</span>
-  <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
-  <span class="k">min-height</span><span class="o">:</span> <span class="m">775px</span><span class="p">;</span>
-  <span class="k">background</span><span class="o">:</span> <span class="sx">url(../images/bg.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
-  <span class="n">img</span><span class="err">{</span>
-    <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
-    <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-    <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
-    <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/one.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">200px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/two.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1000px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/three.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">500px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">700px</span><span class="p">;</span>
-  <span class="p">}</span>
-  <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/four.png&quot;</span><span class="o">]</span><span class="p">{</span>
-    <span class="k">margin</span><span class="o">:</span> <span class="m">600px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">300px</span><span class="p">;</span>
-  <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<h2 id="parallaxjs----javascript">Parallax.js - добавляем javascript</h2>
-
-<p>Наш <code>parallax</code> почти готов - осталось “вдохнуть в него жизнь” с помощью Javascript.</p>
-
-<p>Тут все просто. Первой строкой подключается файл скрипта Parallax.js. Второй строкой сначала в теле документа отыскивается элемент с идентификатором <code>scene</code>, который помещается внутрь переменной <code>scene</code>. Затем создается новый экземпляр <code>parallax</code> объекта Parallax и ему передается в качестве аргумента эта переменная <code>scene</code>.</p>
-
-<p>Все - смотрим результат:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/ParallaxJS.png" alt="Готовый эффект на Parallax.js" /></p>
-
-<p>Достаточно подвигать мышью над фотографией красавчика на заднем плане, чтобы увидеть, как разноцветные кружки перемещаются с разной скоростью.</p>
-
-<p>Мы получили эффект parallax.</p>
-
-<p>Ниже приведен полный код HTML и CSS рассмотренного нами примера:</p>
-
-<div class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;ul</span> <span class="na">id=</span><span class="s">&quot;scene&quot;</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.10&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/one.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/two.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.20&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/three.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-  <span class="nt">&lt;li</span> <span class="na">class=</span><span class="s">&quot;layer&quot;</span> <span class="na">data-depth=</span><span class="s">&quot;0.80&quot;</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;img</span> <span class="na">src=</span><span class="s">&quot;images/four.png&quot;</span> <span class="na">height=</span><span class="s">&quot;100&quot;</span> <span class="na">width=</span><span class="s">&quot;100&quot;</span> <span class="na">alt=</span><span class="s">&quot;Image&quot;</span>
-  <span class="err">&lt;/</span><span class="na">li</span><span class="nt">&gt;</span>
-<span class="nt">&lt;/ul&gt;</span><span class="c">&lt;!-- scripts --&gt;</span></code></pre></div>
-
-<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="k">@import</span> <span class="s2">&quot;compass&quot;</span><span class="p">;</span>
-<span class="k">@import</span> <span class="s2">&quot;compass/reset&quot;</span><span class="p">;</span>
-
-<span class="nt">scene</span><span class="p">{</span>
-<span class="k">width</span><span class="o">:</span> <span class="m">95%</span><span class="p">;</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">20px</span> <span class="k">auto</span> <span class="m">0</span><span class="p">;</span>
- <span class="k">min-height</span><span class="o">:</span> <span class="m">775px</span><span class="p">;</span>
- <span class="k">background</span><span class="o">:</span> <span class="sx">url(../images/bg.jpg)</span> <span class="m">0</span> <span class="m">0</span> <span class="k">no-repeat</span><span class="p">;</span>
- <span class="n">img</span><span class="err">{</span>
- <span class="k">display</span><span class="o">:</span> <span class="k">inline</span><span class="o">-</span><span class="k">block</span><span class="p">;</span>
- <span class="k">width</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
- <span class="k">height</span><span class="o">:</span> <span class="m">100px</span><span class="p">;</span>
- <span class="o">@</span><span class="n">include</span> <span class="k">border</span><span class="o">-</span><span class="n">radius</span><span class="p">(</span><span class="m">50%</span><span class="p">);</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/one.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">200px</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/two.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">200px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">1000px</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/three.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">500px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">700px</span><span class="p">;</span>
- <span class="p">}</span>
- <span class="nt">img</span><span class="o">[</span><span class="nt">src</span><span class="o">=</span><span class="s2">&quot;images/four.png&quot;</span><span class="o">]</span><span class="p">{</span>
- <span class="k">margin</span><span class="o">:</span> <span class="m">600px</span> <span class="m">0</span> <span class="m">0</span> <span class="m">300px</span><span class="p">;</span>
- <span class="p">}</span>
-<span class="err">}</span></code></pre></div>
-
-<p>Полный исходный код примера можно посмотреть на GitHub - <a href="https://github.com/gearmobile/zencoder/tree/master/parallaxjs" title="Parallax.js">Parallax.js</a></p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-11-02T00:00:00+03:00"><a href="http://zencoder.ru/macos/spectacle-window-management-mac-os-x/">November 02, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/macos/spectacle-window-management-mac-os-x/" rel="bookmark" title="Spectacle - менеджер окон Mac OS X" itemprop="url">Spectacle - менеджер окон Mac OS X</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>С недавних пор (чуть больше двух недель) я стал счастливым обладателем Mac OS X. Если быть точнее - это iMac (21.5-inch, Mid 2014).</p>
-</blockquote>
-
-<p>Неделю чувствовал себя не своей “тарелке” под ним, еще неделю привыкал. Потом все уже пошло по накатанной - система хороша, ничего не скажешь. Для работы - лучше не придумаешь.</p>
-
-<p>Но речь в этой статье не о прелестях Mac OS X - их и без меня (с моими скромными талантами) превознесли до небес. Тема этой небольшой статьи - маленькое приложение Spectacle. Эта небольшая программка призвана <em>улучшить-ускорить-облегчить</em> работу в оконной среде Mac, служа в качестве менеджера этих самых окон.</p>
-
-<p>Другими словами - Spectacle - это оконный менеджер для Mac OS X. Это приложение является не единственным в своем роде. Существуют еще программы - платная (<em>и самая известная</em>) - <a href="http://mizage.com/divvy/" title="Divvy">Divvy</a>, также платная (<em>стоит целых 2$</em>) - <a href="https://itunes.apple.com/en/app/bettersnaptool/id417375580?mt=12" title="BetterSnapTool">BetterSnapTool</a> и бесплатная - <a href="http://www.boastr.de/" title="BetterTouchTool">BetterTouchTool</a>. Однако, Spectacle (<em>в отличие от Divvy, которая стоит $13.99</em>) - бесплатен.</p>
-
-<p>Проживает программка по адресу - <a href="http://spectacleapp.com/" title="Spectacle">Spectacle</a>. Домашняя страничка приложения очень проста - также, как и само приложение. Кстати, там же можно полюбоваться демо - что умеет делать данная программа.</p>
-
-<h2 id="spectacle">Установка Spectacle</h2>
-
-<p>Установка программы Spectacle под Mac OS X стандартная. Скачиваем с официального сайта архив приложения, распаковываем его и перетаскиваем программку в папку “Applications”.</p>
-
-<h2 id="spectacle-1">Настройки Spectacle</h2>
-
-<p>При запуске программы Spectacle она появиться в области индикаторов строки меню в виде значка:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/spectacle_icon.png" alt="Значок Spectacle" /></p>
-
-<p>При щелчке мыши на нем откроется длинный список <em>загадочных клавиатурных сокращений</em>. Эти сокращения можно редактировать, если открыть окно настроек программы:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/11/spectacle_settings.png" alt="Настройки Spectacle" /></p>
-
-<p>Там же расположен checkbox - “Launch Spectacle at login” - думаю, все понятно и в переводе не нуждается.</p>
-
-<h2 id="spectacle-2">Управление окнами с помощью Spectacle</h2>
-
-<p>Чтобы разобраться, что это за <em>клавиатурные сокращения</em>, достаточно пять минут поиграться с ними и все станет понятно. Выберем любое приложение (<em>в моем случае это будет окно Terminal</em>) в качестве подопытного кролика и будем нажимать hotkeys.</p>
-
-<p>Следующие hotkeys заставят окно терминала занимать ровно половину экрана монитора, смещаясь при этом в нужную сторону:</p>
-
-<ul>
-  <li>занять левую половину окна — <kbd>⌥⌘←</kbd></li>
-  <li>занять правую половину окна — <kbd>⌥⌘→</kbd></li>
-  <li>занять верхнюю половину окна — <kbd>⌥⌘↑</kbd></li>
-  <li>занять нижнюю половину окна — <kbd>⌥⌘↓</kbd></li>
-</ul>
-
-<p>Нижеследующие hotkeys заставят окно терминала “побегать” по углам экрана монитора. То есть, поместиться в нужный угол экрана, при этом размер окна останется без изменения:</p>
-
-<ul>
-  <li>сместиться в левый верхний угол — <kbd>⌃⌘←</kbd></li>
-  <li>сместиться в правый верхний угол — <kbd>⌃⌘→</kbd></li>
-  <li>сместится в нижний левый угол — <kbd>⌃⇧⌘←</kbd></li>
-  <li>сместиться в нижний правый угол — <kbd>⌃⇧⌘→</kbd></li>
-</ul>
-
-<p>Еще пара полезных команд для управления окном:</p>
-
-<ul>
-  <li>окно программы по центру экрана - <kbd>⌥⌘C</kbd></li>
-  <li>окно во всю ширину экрана - <kbd>⌥⌘F</kbd></li>
-</ul>
-
-<p>Программа Spectacle умеет перемещать окно приложения таким образом, чтобы оно занимало ровно треть площади экрана монитора. Сочетание - <kbd>⌃⌥→</kbd> заставит окно перемещаться сперва вертикально, а потом горизонтально по экрану, при этом занимая треть площади. Сочетание - <kbd>⌃⌥←</kbd> заставит окно двигаться в обратном порядке. Попробуйте у себя - интересный эффект получается.</p>
-
-<p>Изменение размера окна приложения достигается с помощью двух сочетаний клавиш:</p>
-
-<ul>
-  <li>увеличение размера окна - <kbd>⌃⌥⇧→</kbd></li>
-  <li>уменьшение размера окна - <kbd>⌃⌥⇧←</kbd></li>
-</ul>
-
-<p>Перемещение окна между виртуальными дисплеями:</p>
-
-<ul>
-  <li>переместить окно на следующий дисплей - <kbd>⌃⌥⌘→</kbd></li>
-  <li>переместить окно на предыдущий дисплей - <kbd>⌃⌥⌘←</kbd></li>
-</ul>
-
-<p>Очень полезной и приятной (<em>а более того - нужной</em>) особенностью Spectacle является то, что программа запоминает местоположение и размер окна для каждого приложения. В следующий раз, когда запуститься (<em>например, у меня - окно терминала</em>) приложение, его окно расположиться точно в нужном месте экрана монитора.</p>
-
-<p>Если нужно сбросить настройки для окна проложения, то для этого существует комбинация - <kbd>⌥⌘Z</kbd>. Вернуть обратно настройки для окна приложения - <kbd>⌥⇧⌘Z</kbd>.</p>
-
-<h2 id="spectacle-3">Заключение о Spectacle</h2>
-
-<p>Программа Spectacle мне понравилась однозначно. Первый фактор - она бесплатна. Второй - она (<em>можно сказать</em>) незаменима для удобной настройки workflow.</p>
-
-<p>Первое упоминание об этой программе я увидел у Sorax. До этого пытался “подружиться” с Divvy, которую рекомендовали ребята из Loftblog. Однако, как-то не получилось у меня с ней работать.</p>
-
-<p>А вот Spectacle понравилась с первого взгляда. Как мне кажется, из программа разряда “must have”.</p>
-
-<hr />
-
 
   </div><!-- /.entry-content -->
 </article><!-- /.hentry -->
@@ -1007,6 +1158,12 @@
       <li>
         
           <a href="http://zencoder.ru/page46">46</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page47">47</a>
         
       </li>
     

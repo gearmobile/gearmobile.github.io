@@ -144,6 +144,546 @@
   <header>
     
     <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-31T00:00:00+04:00"><a href="http://zencoder.ru/git/github-how-to-delete-repository/">August 31, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~1 minute
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-how-to-delete-repository/" rel="bookmark" title="Как удалить репозиторий на GitHub" itemprop="url">Как удалить репозиторий на GitHub</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Как новичок в работе с системой <a href="https://github.com/" title="GitHub">GitHub</a>, столкнулся с вопросом - как удалить созданный на GitHub репозиторий?</p>
+</blockquote>
+
+<p>Оказалось, что ничего сложного в этом нет. Однако, задача эта и не такая простая, как может показаться. По крайней мере, чисто интуитивно у меня не получилось ее выполнить - пришлось искать ответ в Сети.</p>
+
+<p>Итак, у меня есть учетная запись на GitHub, под которой создана пара репозиториев. Один из этих репозиториев был создан в учебных целях, поэтому для моей дальнейшей работы он мне не пригодиться и его можно удалить.</p>
+
+<h2 id="github">Список репозиториев на GitHub</h2>
+
+<p>Для начала открою свою страничку на GitHub и посмотрю, какие репозитории у меня уже есть:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-list_of_repos.png" alt="Список репозиториев на GitHub" /></p>
+
+<p>Один из репозиторев - <code>arbeit</code> - можно удалить.</p>
+
+<p>Для этой цели нужно просто зайти в него по ссылке:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit.png" alt="Репозиторий arbeit на GitHub" /></p>
+
+<p>В правом нижнем углу окна браузера, в списке, имеется строка <code>Settings</code>. Открываем ее, сразу же копируем имя репозитория в поле <code>Repository name</code> (оно нам понадобиться еще здесь) и прокручиваем страницу вниз, пока не находим раздел с устрашающим названием <code>Danger Zone</code>. В этой опасной зоне находим подраздел <code>Delete this repository</code> с одноименной кнопкой <code>Delete this repository</code>.</p>
+
+<p>Жмем на эту кнопку и получаем в результате окно с предупреждением об удаленни репозитория. В окне запроса имени удаляемого репозитория вводим (или вставляем из буфера обмена) - <code>arbeit</code>:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-delete_repo_arbeit.png" alt="Запрос имени удаляемого репозитория" /></p>
+
+<p>Снова жму на кнопку, на этот раз с еще более страшным напоминанием о последствиях совершаемого мною шага. И все! Репозиторий <code>arbeit</code> удален:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github-repo_arbeit_deleted.png" alt="Удаленный репозиторий на GitHub" /></p>
+
+<p>Ничего сложного, но так сразу и не догадаешься, что нужно делать. Разработчики GitHub постарались и обезопасили пользователей от случайного удаления репозиториев с данными.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-30T00:00:00+04:00"><a href="http://zencoder.ru/git/github-and-git/">August 30, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~9 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/git/github-and-git/" rel="bookmark" title="GitHub и Git - создание и работа с репозиторием" itemprop="url">GitHub и Git - создание и работа с репозиторием</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Данная статья является попыткой осмыслить (<em>в первую очередь для себя, конечно</em>) такой вопрос, как создание git-репозитория на GitHub, клонирование этого репозитория на локальный компьютер, внесение изменений в клонированный репозиторий, отправка изменений обратно на GitHub.</p>
+</blockquote>
+
+<p>Вот такие получаются шаги, которые нужно осветить. Profit у всех этих сложностей, описанных мною выше, один - но большой! Заключается он в том, что проект, над которым вы работаете (<em>даже в гордом одиночестве</em>) находится на удаленном сервере, к которому можно подключиться из любого места и с любой машины. Так как он находиться на remote server, то с ним ничего не случиться, даже если ваша машина упадет\утонет\разобьется.</p>
+
+<p>В статье большая часть времени будет посвящена автоматизации процесса авторизации на сервисе GitHub с помощью такой вещи, как ssh-ключи. Такие ключи предназначены как раз для возможности авторизации пользователя на каком-либо сервисе, без необходимости каждый раз вводить логин\пароль. Естественно, на стороне сервиса должна быть настроена такая возможность - на GitHub она настроена и даже является почти обязательным условием настройки аккаунта.</p>
+
+<p>Все действия, описанные в этой статье, будут производиться под операционной системой Linux Mint 17 Cinnamon, в консоли. Поэтому пользователи Mac OS X найдут для себя почти все идентичным. Система Windows остается в стороне.</p>
+
+<h2 id="ssh---linux">Создание SSH-ключей под Linux</h2>
+
+<p>Первоначально необходимо создать (<em>если их еще нет</em>) ssh-ключи, которые будем использоваться для авторизации на GitHub. В системе Linux такие ключи расположены в домашней директории пользователя и выглядят примерно так:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="p">~/.</span><span class="n">ssh</span>
+  <span class="n">id_rsa</span> <span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span> <span class="n">known_hosts</span></code></pre></div>
+
+<p>Один из этих ключей <code>id_rsa</code> - это приватный ключ, который должен храниться только у пользователя. Другой ключ <code>id_rsa.pub</code> - это публичный ключ, который предоставляется всем и который я отправлю на GitHub. Представленные выше имена ключей являются создаваемыми по умолчанию, но можно указать и свои собственные.</p>
+
+<p>Если показанная выше команда “скажет” вам, что директории <code>.ssh</code> не существует, то это означает, что у вас с системе установлен пакет SSH, отвечающий за создание и обработку ssh-ключей.</p>
+
+<h2 id="ssh">Установка пакета SSH</h2>
+
+<p>Под Linux Mint его нужно установить командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">ssh</span></code></pre></div>
+
+<h2 id="ssh-">Создание пары ssh-ключей</h2>
+
+<p>Теперь можно приступать к созданию пары ssh-ключей. Выполняется это командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span></code></pre></div>
+
+<p>Чтобы было немного понятно, что это я сделал в данной команде, немного расшифрую ее. Утилита <code>ssh-keygen</code> входит в комплект пакета <code>ssh</code> и предназначена для одной цели - создания ssh-ключей. Часть команды - <code>-t rsa</code> - указывает, что необходимо создать ssh-ключи типа <code>rsa</code>.</p>
+
+<p>Обязательный параметр <code>"g***e@gmail.com"</code> - электронный адрес, к которому “привязывается” создаваемый ssh-ключ; данный email будет также использоваться мною для регистрации на GitHub.</p>
+
+<p>Как только будет введена представленная выше команда, утилита <code>ssh-keygen</code> запросит имя файла и местоположение для создаваемых ssh-ключей. Можно ничего не вводить, а просто нажать <kbd>Enter</kbd>. В этом случае программулька создаст и положит их по пути по умолчанию (который показан ею в скобочках):</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span>
+  <span class="n">Generating</span> <span class="n">public</span><span class="p">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="p">.</span>
+  <span class="n">Enter</span> <span class="n">file</span> <span class="k">in</span> <span class="n">which</span> <span class="n">to</span> <span class="n">save</span> <span class="n">the</span> <span class="n">key</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span><span class="err">:</span></code></pre></div>
+
+<p>Утилита задаст еще один вопрос, который крайне не рекомендуется игнорировать:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span>
+  <span class="n">Generating</span> <span class="n">public</span><span class="p">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="p">.</span>
+  <span class="n">Enter</span> <span class="n">file</span> <span class="k">in</span> <span class="n">which</span> <span class="n">to</span> <span class="n">save</span> <span class="n">the</span> <span class="n">key</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span><span class="err">:</span>
+  <span class="n">Enter</span> <span class="n">passphrase</span> <span class="p">(</span><span class="n">empty</span> <span class="k">for</span> <span class="n">no</span> <span class="n">passphrase</span><span class="p">)</span><span class="err">:</span></code></pre></div>
+
+<p>Здесь <code>passphrase</code> - это пароль к создаваемым ssh-ключам. Каждый раз, когда придется использовать эти ключи, нужно вводить данный пароль. Это обезопасит их в случае кражи. В качестве пароля можно использовать любую текстовую строку.</p>
+
+<p>После успешного ввода <code>passphrase</code> ssh-ключи будут созданы:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-keygen</span> <span class="n">-t</span> <span class="n">rsa</span> <span class="n">-C</span> <span class="s2">&quot;g***e@gmail.com&quot;</span>
+  <span class="n">Generating</span> <span class="n">public</span><span class="p">/</span><span class="n">private</span> <span class="n">rsa</span> <span class="n">key</span> <span class="n">pair</span><span class="p">.</span>
+  <span class="n">Enter</span> <span class="n">file</span> <span class="k">in</span> <span class="n">which</span> <span class="n">to</span> <span class="n">save</span> <span class="n">the</span> <span class="n">key</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span><span class="err">:</span>
+  <span class="n">Enter</span> <span class="n">passphrase</span> <span class="p">(</span><span class="n">empty</span> <span class="k">for</span> <span class="n">no</span> <span class="n">passphrase</span><span class="p">)</span><span class="err">:</span>
+  <span class="n">Enter</span> <span class="n">same</span> <span class="n">passphrase</span> <span class="n">again</span><span class="err">:</span>
+  <span class="n">Your</span> <span class="n">identification</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">.</span>
+  <span class="n">Your</span> <span class="n">public</span> <span class="n">key</span> <span class="n">has</span> <span class="n">been</span> <span class="n">saved</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span><span class="p">.</span></code></pre></div>
+
+<p>В состав пакета <code>ssh</code> входит утилита <code>ssh-agent</code>, задача которой в управлении созданными ssh-ключами. Передадим ей в пользование только созданные мною ssh-ключи:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">eval</span> <span class="s2">&quot;</span><span class="p">$(</span><span class="n">ssh-agent</span> <span class="n">-s</span><span class="p">)</span><span class="s2">&quot;</span>
+  <span class="n">Agent</span> <span class="n">pid</span> <span class="n">17461</span>
+  <span class="p">$</span> <span class="n">ssh-add</span> <span class="p">~/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span>
+  <span class="n">Enter</span> <span class="n">passphrase</span> <span class="k">for</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="err">:</span>
+  <span class="n">Identity</span> <span class="n">added</span><span class="err">:</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span> <span class="p">(/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">)</span></code></pre></div>
+
+<p>Можно посмотреть, что утилита <code>shh-add</code> “подхватила” и распознала предоставленные ею ssh-ключи:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh-add</span> <span class="n">-l</span>
+  <span class="n">2048</span> <span class="n">e4</span><span class="err">:</span><span class="n">4d</span><span class="err">:</span><span class="n">fe</span><span class="err">:</span><span class="n">73</span><span class="err">:</span><span class="n">cb</span><span class="err">:</span><span class="n">b9</span><span class="err">:</span><span class="n">bb</span><span class="err">:</span><span class="n">ee</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">32</span><span class="err">:</span><span class="n">6b</span><span class="err">:</span><span class="n">f5</span><span class="err">:</span><span class="n">f1</span><span class="err">:</span><span class="n">6a</span><span class="err">:</span><span class="n">db</span><span class="err">:</span><span class="n">38</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span> <span class="p">(</span><span class="n">RSA</span><span class="p">)</span></code></pre></div>
+
+<p>Под операционную систему Linux имеется консольная утилита <code>xclip</code>, которая умеет получать содержимое любого файла и отправлять это содержимое в буфер обмена, и все это в консоли. По умолчанию такой утилиты нет в системе (<em>в том числе и у меня</em>), поэтому первоначально установлю ее:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">apt-get</span> <span class="n">install</span> <span class="n">xclip</span></code></pre></div>
+
+<p>… а затем передам ей на вход содержимое публичного ключа <code>id_rsa.pub</code>, который буду применять на сервисе GitHub:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">xclip</span> <span class="n">-sel</span> <span class="n">clip</span> <span class="p">&lt;</span> <span class="p">~/.</span><span class="n">ssh</span><span class="p">/</span><span class="n">id_rsa</span><span class="p">.</span><span class="n">pub</span></code></pre></div>
+
+<p>Если вам, уважаемый читатель, такой путь покажется слишком сложным, то можно открыть файл <code>id_rsa.pub</code> в любом редакторе кода и скопировать его содержимое в буфер обмена.</p>
+
+<h2 id="ssh---github">Добавление ssh-ключа на GitHub</h2>
+
+<p>Переходим на сервис GitHub и создаем на нем новую учетную запись. Описывать процесс создания такой записи на GitHub не буду, так как там все просто. Более интересный момент - это добавление ssh-ключа в профиль пользователя GitHub.</p>
+
+<p>Для этого нажимаю на значок шестеренки в правом верхнем углу окна браузера - настройки профиля пользователя. В открывшемся окне (в его левой части) находим строку <code>SSH key</code> и нажимаем ее:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_ssh_keys.png" alt="SSH ключи на GitHub" /></p>
+
+<p>Откроется окно для добавления новых ssh-ключей в учетную запись пользователя на GitHub. Здесь все элементарно просто - нажимаем кнопку <code>Add SSH key</code>. В поле <code>Title</code> вводим название (произвольное) для импортируемого ssh-ключа.</p>
+
+<p>В поле <code>Key</code> просто нажимаем <kbd>Ctrl+V</kbd> - содержимое буфера обмена (которое я получил ранее с помощью утилиты <code>xclip</code>) вставиться в это поле:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_add_ssh_keys.png" alt="Добавление ssh-ключа на GitHub" /></p>
+
+<p>Жму на зеленую кнопку <code>Add key</code> внизу окна. Ключ добавлен на GitHub и появиться в списке SSH-ключей:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_added_ssh_keys.png" alt="Добавленный на GitHub ssh-ключ" /></p>
+
+<h2 id="ssh---github-1">Проверка SSH-соединения с GitHub</h2>
+
+<p>В предыдущих шагах мною были созданы пара ssh-ключей, а также учетная запись на GitHub. В эту учетную запись был импортирован публичный ssh-ключ. Теперь неплохо было бы проверить, что все шаги пройдены мною успешно и ssh-связь с сервисом GitHub устанавливается. Проще сказать - что сервис GitHub авторизует меня у себя с помощью ssh-ключей.</p>
+
+<p>Для этой цели ввожу команду:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ssh</span> <span class="n">-T</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span>
+  <span class="n">The</span> <span class="n">authenticity</span> <span class="n">of</span> <span class="n">host</span> <span class="s1">&#39;github.com (192.30.252.131)&#39;</span> <span class="n">can</span><span class="err">&#39;</span><span class="n">t</span> <span class="n">be</span> <span class="n">established</span><span class="p">.</span>
+  <span class="n">RSA</span> <span class="n">key</span> <span class="n">fingerprint</span> <span class="n">is</span> <span class="n">16</span><span class="err">:</span><span class="n">27</span><span class="err">:</span><span class="n">ac</span><span class="err">:</span><span class="n">a5</span><span class="err">:</span><span class="n">76</span><span class="err">:</span><span class="n">28</span><span class="err">:</span><span class="n">2d</span><span class="err">:</span><span class="n">36</span><span class="err">:</span><span class="n">63</span><span class="err">:</span><span class="n">1b</span><span class="err">:</span><span class="n">56</span><span class="err">:</span><span class="n">4d</span><span class="err">:</span><span class="n">eb</span><span class="err">:</span><span class="n">df</span><span class="err">:</span><span class="n">a6</span><span class="err">:</span><span class="n">48</span><span class="p">.</span>
+  <span class="n">Are</span> <span class="n">you</span> <span class="n">sure</span> <span class="n">you</span> <span class="n">want</span> <span class="n">to</span> <span class="k">continue</span> <span class="n">connecting</span> <span class="p">(</span><span class="n">yes</span><span class="p">/</span><span class="n">no</span><span class="p">)?</span> <span class="n">yes</span></code></pre></div>
+
+<p>На ошибку в строке <code>The authenticity of host 'github.com (192.30.252.131)' can't be established.</code> не стоит обращать внимание. В запросе командной строки печатаем <code>yes</code> и получаем:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">Warning</span><span class="err">:</span> <span class="n">Permanently</span> <span class="n">added</span> <span class="s1">&#39;github.com,192.30.252.131&#39;</span> <span class="p">(</span><span class="n">RSA</span><span class="p">)</span> <span class="n">to</span> <span class="n">the</span> <span class="n">list</span> <span class="n">of</span> <span class="n">known</span> <span class="n">hosts</span><span class="p">.</span>
+<span class="n">Hi</span> <span class="n">gearmobile</span><span class="p">!</span> <span class="n">You</span><span class="err">&#39;</span><span class="n">ve</span> <span class="n">successfully</span> <span class="n">authenticated</span><span class="p">,</span> <span class="n">but</span> <span class="n">GitHub</span> <span class="n">does</span> <span class="n">not</span> <span class="n">provide</span> <span class="n">shell</span> <span class="n">access</span><span class="p">.</span></code></pre></div>
+
+<p>Отлично! GitHub “узнал” меня и поприветствовал в строке <code>Hi gearmobile! You've successfully authenticated, but GitHub does not provide shell access.</code>. Это говорит о том, что ssh-соединение моей машины с GitHub установлено успешно и GitHub авторизует меня.</p>
+
+<p>Однако, при настройке ssh-соединения возможны и ошибки. В этом случае может помочь статья - <a href="https://help.github.com/articles/error-permission-denied-publickey" title="Error: Permission denied (publickey)">Error: Permission denied (publickey)</a>.</p>
+
+<h2 id="github">Создание нового репозитория на GitHub</h2>
+
+<p>Создаем новый репозиторий на GitHub. Ввожу новое уникальное имя для репозитория, краткое его описание и включаю галочку “Initialize this repository with a README”:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/github_create_new_repo.png" alt="Создание нового репозитория на GitHub" /></p>
+
+<p>Отлично! На GitHub я только что создал новый репозиторий <code>arbeit</code>. Теперь можно скопировать (склонировать) его на свою локальную машину командами:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">arbeit</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">clone</span> <span class="n">git</span><span class="nv">@github</span><span class="p">.</span><span class="n">com</span><span class="err">:</span><span class="n">gearmobile</span><span class="p">/</span><span class="n">arbeit</span><span class="p">.</span><span class="n">git</span>
+  <span class="n">Cloning</span> <span class="n">into</span> <span class="s1">&#39;arbeit&#39;</span><span class="p">...</span>
+  <span class="n">Warning</span><span class="err">:</span> <span class="n">Permanently</span> <span class="n">added</span> <span class="n">the</span> <span class="n">RSA</span> <span class="n">host</span> <span class="n">key</span> <span class="k">for</span> <span class="n">IP</span> <span class="n">address</span> <span class="s1">&#39;192.30.252.130&#39;</span> <span class="n">to</span> <span class="n">the</span> <span class="n">list</span> <span class="n">of</span> <span class="n">known</span> <span class="n">hosts</span><span class="p">.</span>
+  <span class="n">remote</span><span class="err">:</span> <span class="n">Counting</span> <span class="n">objects</span><span class="err">:</span> <span class="n">3</span><span class="p">,</span> <span class="n">done</span><span class="p">.</span>
+  <span class="n">remote</span><span class="err">:</span> <span class="n">Compressing</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">2</span><span class="p">/</span><span class="n">2</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+  <span class="n">remote</span><span class="err">:</span> <span class="n">Total</span> <span class="n">3</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">),</span> <span class="n">reused</span> <span class="n">0</span> <span class="p">(</span><span class="n">delta</span> <span class="n">0</span><span class="p">)</span>
+  <span class="n">Receiving</span> <span class="n">objects</span><span class="err">:</span> <span class="n">100</span><span class="p">%</span> <span class="p">(</span><span class="n">3</span><span class="p">/</span><span class="n">3</span><span class="p">),</span> <span class="n">done</span><span class="p">.</span>
+  <span class="n">Checking</span> <span class="n">connectivity</span><span class="p">...</span> <span class="n">done</span></code></pre></div>
+
+<p>Переходим в локальную копию репозитория <code>arbeit</code>. Вношу изменения, а затем последовательно:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;Added changes&#39;</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">push</span></code></pre></div>
+
+<p>Команда <code>git commit -m 'Added changes'</code> фиксирует изменения в локальном репозитории. Команда <code>git push</code> отправляет внесенные и зафиксированные изменения в локальном репозитории на удаленный репозиторий.</p>
+
+<p>Вот, таким образом я наладил Git-работу своей машины с GitHub.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-28T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gitignore/">August 28, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~3 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gitignore/" rel="bookmark" title="gitignore - игнорирование файлов в Git" itemprop="url">gitignore - игнорирование файлов в Git</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>В системе Git можно настроить возможность автоматического игнорирования файлов.</p>
+</blockquote>
+
+<p>То есть, можно указать Git, что файлы определенного типа не нужно отслеживать. Выполняется такая настройка с помощью специального файла <code>.gitignore</code>. Подобная возможность отключения отслеживания файлов в системе Git может понадобиться в случае, когда автоматически генерируются служебные файлы.</p>
+
+<p>К примеру, если развертывать в проекте Compass, то будет создан каталог <code>.sass</code>, в который данный фреймворк помещает свой кэш, генерируемый автоматически при каждом изменении любого из файлов проекта.</p>
+
+<p>Давайте на практике разберемся, каким образом можно настроить игнорирование файлов в Git с помощью <code>.gitignore</code>.</p>
+
+<h2 id="section">Создание нового проекта</h2>
+
+<p>Создаю новый проект с именем <code>git_ignore</code>, в котором помещаю несколько файлов разного типа:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">git_ignore</span>
+<span class="p">$</span> <span class="n">cd</span> <span class="n">git_ignore</span><span class="p">/</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="n">index</span><span class="p">.</span><span class="n">html</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
+
+<p>Инициализирую репозиторий Git в директории <code>.git_ignore</code>, индексирую созданные файлы и фиксирую их:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">init</span>
+<span class="n">Initialized</span> <span class="n">empty</span> <span class="n">Git</span> <span class="n">repository</span> <span class="k">in</span> <span class="p">/</span><span class="n">home</span><span class="p">/</span><span class="n">aaron</span><span class="p">/</span><span class="n">Projects</span><span class="p">/</span><span class="n">git_ignore</span><span class="p">/.</span><span class="n">git</span><span class="p">/</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span>
+<span class="p">$</span> <span class="n">git</span> <span class="n">commit</span> <span class="n">-m</span> <span class="s1">&#39;First Commit&#39;</span></code></pre></div>
+
+<p>Вывод команды <code>git status</code> показывает, что все чисто:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+<span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+<span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span></code></pre></div>
+
+<h2 id="gitignore">Настройка игнорирования в .gitignore</h2>
+
+<p>Для настройки игнорирования определенных типов файлов в системе Git необходимо первоначально создать файл <code>.gitignore</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="p">.</span><span class="n">gitignore</span></code></pre></div>
+
+<p>Откроем созданный файл <code>.gitignore</code> в любом редакторе:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">nano</span> <span class="n">-w</span> <span class="p">.</span><span class="n">gitignore</span></code></pre></div>
+
+<p>… и пропишем в нем следующие строки:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="err">*.txt</span>
+<span class="err">*.md</span></code></pre></div>
+
+<p>Тем самым мы говорим Git, что нужно игнорировать все файлы с расширением <code>.txt</code> и <code>.md</code> внутри директории <code>git_ignore</code>. То есть, система контроля не будет отслеживать изменения во всех файлах этих типов.</p>
+
+<p>Проиндексируем и зафиксируем изменения (создание файла настроек <code>.gitignore</code>), а затем проверим данный факт. Для этого в рабочей директории <code>git_ignore</code> создаю еще несколько типов файлов:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">touch</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span> <span class="n">readme</span><span class="p">.</span><span class="n">txt</span> <span class="n">humans</span><span class="p">.</span><span class="n">md</span></code></pre></div>
+
+<p>Затем выполняю индексацию всех файлов, которые были добавлены или изменены в рабочем каталоге:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">add</span> <span class="p">.</span></code></pre></div>
+
+<p>И смотрю, что мне показывает команда <code>git status</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+  <span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+  <span class="n">Changes</span> <span class="n">to</span> <span class="n">be</span> <span class="n">committed</span><span class="err">:</span>
+    <span class="p">(</span><span class="n">use</span> <span class="s2">&quot;git reset HEAD &lt;file&gt;...&quot;</span> <span class="n">to</span> <span class="n">unstage</span><span class="p">)</span>
+
+    <span class="n">new</span> <span class="n">file</span><span class="err">:</span>   <span class="n">main</span><span class="p">.</span><span class="n">css</span></code></pre></div>
+
+<p>Система Git увидела только новый файл <code>main.css</code>. Два других файла - <code>readme.txt</code> и <code>humans.md</code> - проигнорированы системой. Отлично! Зафиксирую изменения.</p>
+
+<p>Можно создать еще пару файлов в разных директориях и посмотреть на вывод команды <code>git status</code> в консоли:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gitignore.png" alt="Результат настройки файла .gitignore" /></p>
+
+<h2 id="gitignore-1">Усложнить задачу игнорирования в .gitignore</h2>
+
+<p>Можно усложнить задачу игнорирования в Git, добавив в файл <code>.gitignore</code> директорию, содержимое которой также должно игнорироваться. Пускай это будет обычная директория <code>ignore</code> и скрытая директория <code>.ignore</code> (с точкой перед именем):</p>
+
+<p>Добавлю в файл <code>.gitignore</code> пару строк таким образом:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">cat</span> <span class="p">.</span><span class="n">gitignore</span>
+<span class="p">*.</span><span class="n">txt</span>
+<span class="p">*.</span><span class="n">md</span>
+<span class="n">ignore</span><span class="p">/</span>
+<span class="p">.</span><span class="n">ignore</span><span class="p">/</span></code></pre></div>
+
+<p>Проиндексирую изменения, а затем выполню операции по созданию директорий и файлов внутри них:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">mkdir</span> <span class="n">ignore</span>
+<span class="p">$</span> <span class="n">mkdir</span> <span class="p">.</span><span class="n">ignore</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="n">ignore</span><span class="p">/</span><span class="n">reset</span><span class="p">.</span><span class="n">css</span>
+<span class="p">$</span> <span class="n">touch</span> <span class="p">.</span><span class="n">ignore</span><span class="p">/</span><span class="n">normilize</span><span class="p">.</span><span class="n">css</span></code></pre></div>
+
+<p>Вновь ввожу команду просмотра состояния репозитория Git:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">git</span> <span class="n">status</span>
+  <span class="n">On</span> <span class="n">branch</span> <span class="n">master</span>
+  <span class="n">nothing</span> <span class="n">to</span> <span class="n">commit</span><span class="p">,</span> <span class="n">working</span> <span class="n">directory</span> <span class="n">clean</span></code></pre></div>
+
+<p>Все сработало - Git не захотел видеть директории <code>ignore</code>, <code>.ignore</code>, а также их содержимое. Отлично!</p>
+
+<h2 id="gitignore-2">Шаблоны в файле .gitignore</h2>
+
+<p>Для файла <code>.gitignore</code> доступны шаблоны, с помощью которых можно задать маски для выборки необходимых типой файлов. Однако, обширная тема шаблонов выходит за рамки данной статьи. При желании можно почитать по теме шаблонов в книге “<a href="http://git-scm.com/book/ru" title="Pro Git - профессиональный контроль версий">Pro Git - профессиональный контроль версий</a>”.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
+      <span class="entry-date date published updated"><time datetime="2014-08-27T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-livereload/">August 27, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
+      
+      <span class="entry-reading-time">
+        <i class="fa fa-clock-o"></i>
+        
+        Reading time ~6 minutes
+      </span><!-- /.entry-reading-time -->
+      
+    </div><!-- /.entry-meta -->
+    
+      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-livereload/" rel="bookmark" title="Gulp - плагин gulp-livereload" itemprop="url">Gulp - плагин gulp-livereload</a></h1>
+    
+  </header>
+  <div class="entry-content">
+    <blockquote>
+  <p>Сегодня рассмотрим еще один очень нужный и полезный плагин для web-разработчика. Это плагин <code>gulp-livereload</code> под Gulp, который должен иметь каждый веб-разработчик в своей копилке.</p>
+</blockquote>
+
+<p>Суть плагина <code>gulp-livereload</code> в автоматизации обновления страниц в окне браузера. Это тоже самое, что и связка - плагин LiveReload под Sublime Text + плагин LiveReload под браузер. Но в данном случае получается связка - плагин <code>gulp-livereload</code> + плагин LiveReload под браузер.</p>
+
+<p>Сказать честно, предыдущий опыт настройки LiveReload, описанный в этой статье - “Установка LiveReload в Sublime Text 2” меня полностью не удовлетворял и я им не пользовался. Причина заключалась в том, что иногда эта связка работала, а иногда - почему-то нет. Нестальность работы плагина под Sublime Text (у меня) отбивала всякое желание иметь с ним дело.</p>
+
+<p>А вот связка плагин <code>gulp-livereload</code> + плагин LiveReload под браузер работает стабильно. Кроме того, если Node.js + Gulp уже настроен для текущего проекта, то не возникает никакой проблемы в установке дополнительного плагина <code>gulp-livereload</code>.</p>
+
+<h2 id="gulp-livereload">Установка плагина gulp-livereload</h2>
+
+<p>Плагин <code>gulp-livereload</code> проживает по указанному адресу - <a href="https://www.npmjs.org/package/gulp-livereload" title="Gulp-livereload">gulp-livereload</a>. Установка в проект производиться командой:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-livereload</span></code></pre></div>
+
+<p>В виде зависимостей проекта запись в файле <code>package.json</code> должна выглядеть (<em>как минимум</em>) так:</p>
+
+<div class="highlight"><pre><code class="language-json" data-lang="json"><span class="p">{</span>
+ <span class="nt">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;test&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;version&quot;</span><span class="p">:</span> <span class="s2">&quot;0.0.1&quot;</span><span class="p">,</span>
+ <span class="nt">&quot;devDependencies&quot;</span><span class="p">:</span> <span class="p">{</span>
+  <span class="nt">&quot;gulp&quot;</span><span class="p">:</span> <span class="s2">&quot;~3.8.7&quot;</span><span class="p">,</span>
+  <span class="nt">&quot;gulp-livereload&quot;</span><span class="p">:</span> <span class="s2">&quot;~2.1.1&quot;</span>
+ <span class="p">}</span>
+<span class="p">}</span></code></pre></div>
+
+<p>Добавляем переменную <code>livereload</code> в файл <code>gulpfile.js</code> для инициализации плагина <code>gulp-livereload</code> и дальнейшей работы с ним:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span></code></pre></div>
+
+<h2 id="livereload--">Установка плагина LiveReload под браузер</h2>
+
+<p>Следующим шагом будет установка расширения LiveReload под браузер. В моем случае это будет Mozilla Firefox, однако расширение LiveReload существует и под два других популярных браузера - Google Chrome и Safari.</p>
+
+<p>Для установки расширения под Firefox не стоит искать его на странице расширений Mozilla - <a href="https://addons.mozilla.org/en-US/firefox/addon/livereload/" title="LiveReload">LiveReload 0.6.4</a>. Там находится устаревшая версия плагина, которая наверняка не подойдет для вашего браузера.</p>
+
+<p>Лучше посетим домашнюю страницу проекта LiveReload с описанием установки расширений под каждый из браузеров - <a href="http://feedback.livereload.com/knowledgebase/articles/86242-how-do-i-install-and-use-the-browser-extensions-" title="How do I install and use the browser extensions?">How do I install and use the browser extensions</a>. Скачиваем по указанной на странице ссылке расширение под нужный браузер (Firefox) и автоматически устанавливаем его.</p>
+
+<p>На панели инструментов браузера появиться значок плагина LiveReload в виде круга из двух стрелок. Однократное нажатие на значок запускает плагин - он принимает вид, похожий на компас со стрелкой. Еще одно нажатие выключает плагин LiveReload.</p>
+
+<h2 id="gulp-livereload-1">Создание задачи под gulp-livereload</h2>
+
+<p>В принципе, плагин <code>gulp-livereload</code> не требует для себя создания отдельной задачи. Все, что нужно для него - это запуск его как локального сервера. Если вы скажете, что не устанавливали сервер LiveReload, то могу успокоить вас - устанавливали! Инсталляция плагина <code>gulp-livereload</code> подразумевает автоматическую установку сервера LiveReload.</p>
+
+<p>Поэтому нам нужно всего лишь предварительно активировать, запустить его. Кстати, если у вас вдруг при попытке включения плагина LiveReload в браузере появляется окно с такой ошибкой:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_error_start_server.png" alt="Ошибка запуска сервера LiveReload" /></p>
+
+<p>… то это говорит всего лишь о том, что перед этим не был запушен в консоли сам сервер LiveReload. Для этого я создам задачу <code>watch</code>, внутрь которой помещу вызов функции <code>livereload()</code>:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Все - мне больше ничего не нужно дописывать для задачи компилирования из Sass в CSS (эта задача приведена здесь в качестве примера использования плагина <code>gulp-livereload</code>):</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Complie Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Полностью листинг файла <code>gulpfile.js</code> в данном случае будет выглядеть таким образом:</p>
+
+<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">gulp</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp&#39;</span><span class="p">),</span>
+    <span class="nx">sassSCSS</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-sass&#39;</span><span class="p">),</span>
+    <span class="nx">minifyHTML</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-minify-html&#39;</span><span class="p">),</span>
+    <span class="nx">rename</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-rename&#39;</span><span class="p">),</span>
+    <span class="nx">livereload</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-livereload&#39;</span><span class="p">);</span>
+
+<span class="c1">// Default Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span>
+
+<span class="c1">// Watch Task</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">livereload</span><span class="p">.</span><span class="nx">listen</span><span class="p">();</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;sass&#39;</span><span class="p">]).</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;change&#39;</span><span class="p">,</span> <span class="nx">livereload</span><span class="p">.</span><span class="nx">changed</span><span class="p">);</span>
+<span class="p">});</span>
+
+<span class="c1">// Sass Complie Task</span>
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+ <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/*.scss&#39;</span><span class="p">)</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sassSCSS</span><span class="p">())</span>
+  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">));</span>
+<span class="p">});</span></code></pre></div>
+
+<p>Все готово для тестирования работы плагина <code>gulp-livereload</code>.</p>
+
+<h2 id="gulp-livereload-2">Тестирование плагина gulp-livereload</h2>
+
+<p>Осталось выполнить две маленькие вещи. Первая - включаю плагин LiveReload в браузере. Вторая - запускаю Gulp для мониторинга изменений и работы плагина <code>gulp-livereload</code>:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">17</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">19</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span></code></pre></div>
+
+<p>Видим, как последняя строка в консоли говорит нам, что сервер LiveReload запустился и прослушивает порт по умолчанию - 35729. Вношу изменения в файл стилей <code>style.scss</code>:</p>
+
+<div class="highlight"><pre><code class="language-css" data-lang="css"><span class="nt">figure</span><span class="p">{</span>
+  <span class="k">border</span><span class="o">:</span> <span class="m">1px</span> <span class="k">solid</span> <span class="m">#000</span><span class="p">;</span>
+  <span class="k">padding</span><span class="o">:</span> <span class="m">5px</span><span class="p">;</span>
+ <span class="p">}</span></code></pre></div>
+
+<p>… и смотрю на вывод в консоли:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span></code></pre></div>
+
+<p>Изменение было отслежено, файл перекомпилирован задачей <code>sass</code>. А что же плагин <code>gulp-livereload</code> - он тоже подхватил изменения?</p>
+
+<p>Смотрим:</p>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_01.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>О, да! Изменение было подхвачено плагином <code>gulp-livereload</code> - “картинка” в окне браузера изменилась без перезагрузки последнего.</p>
+
+<p>Еще раз проверим и внесем какое-нибудь изменение в файле стилей:</p>
+
+<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
+<span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">10</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">15</span> <span class="n">ms</span>
+<span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">11</span> <span class="err">μ</span><span class="n">s</span>
+<span class="n">Live</span> <span class="n">reload</span> <span class="n">server</span> <span class="n">listening</span> <span class="n">on</span><span class="err">:</span> <span class="n">35729</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">3</span><span class="p">.</span><span class="n">58</span> <span class="n">ms</span>
+<span class="n">style</span><span class="p">.</span><span class="n">scss</span> <span class="n">was</span> <span class="n">reloaded</span><span class="p">.</span>
+<span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
+<span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">97</span> <span class="n">ms</span></code></pre></div>
+
+<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-livereload_02.png" alt="Изменения в gulp-livereload" /></p>
+
+<p>Отлично! Вот мы и изучили еще одну полезную сторону работы с Gulp - использование плагина <code>gulp-livereload</code>.</p>
+
+<hr />
+
+
+  </div><!-- /.entry-content -->
+</article><!-- /.hentry -->
+
+<article class="hentry">
+  <header>
+    
+    <div class="entry-meta">
       <span class="entry-date date published updated"><time datetime="2014-08-26T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-imagemin/">August 26, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
       
       <span class="entry-reading-time">
@@ -302,530 +842,6 @@
 <p>Таким образом, достаточно положить в директорию <code>images</code> какое-либо изображение и оно тут же преобразуется в точно такое же изображение, но меньшего размера! Удобно, не правда ли?</p>
 
 <p>На этом все.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-24T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-plumber/">August 24, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~2 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-plumber/" rel="bookmark" title="Gulp-plumber - отслеживание ошибок в Gulp" itemprop="url">Gulp-plumber - отслеживание ошибок в Gulp</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Кто не знаком с тем, что при написании кода очень часто возникают ошибки или банальные опечатки?</p>
-</blockquote>
-
-<p>И даже если установлены такие палочки-выручалочки, как Emmet, это не всегда спасает из ситуации. А если представить, что вы пишете большой проект и в нем закралась ошибка, то нелегко будет ее найти в куче кода.</p>
-
-<p>При использовании Gulp, который автоматически отслеживает события и выполняет соотвествующие задачи, ситуация несколько “облегчается” тем, что при возникновении ошибки можно увидеть тот момент, когда она произошла.</p>
-
-<p>Например, Gulp настроен на автоматическое фиксирование изменений через <code>gulp.watch</code>. Если возникла ошибка, то выполнение мониторинга в Gulp прерывается:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_error.png" alt="Прерванная работа Gulp" /></p>
-
-<p>Но даже в этом случае довольно трудно разобраться, где именно закралась ошибка. В этой ситуации может помочь плагин <a href="https://www.npmjs.org/package/gulp-plumber" title="Gulp-plumber">gulp-plumber</a>, который формирует вывод об ошибке. Но при этом работа Gulp не прерывается.</p>
-
-<p>Давайте установим и попробуем в работе плагин <code>gulp-plumber</code>.</p>
-
-<h2 id="gulp-plumber">Установка плагина gulp-plumber</h2>
-
-<p>Установка плагина <code>gulp-plumber</code> стандартная, через менеджер пакетов <code>npm</code> с ключом <code>--save-dev</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-plumber</span></code></pre></div>
-
-<h2 id="gulp-plumber-1">Использование плагина gulp-plumber</h2>
-
-<p>Для применения плагина <code>gulp-plumber</code> в проекте необходимо создать переменную <code>plumber</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">plumber</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-plumber&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>А затем дописать строку <code>.pipe(plumber())</code> в ту задачу, в которой необходимо включить возможность отслеживания ошибок. Например, пусть это будет задача минификации всех js-файлов проекта <code>uglify</code>. Тогда в ней сразу после строки <code>gulp.src('js/*.js')</code> добавляем строку <code>.pipe(plumber())</code>, чтобы отслеживались возможные ошибки во всех нижеследующих задачах, таких как <code>.pipe(uglify())</code> или <code>.pipe(gulp.dest('build/js'))</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span> <span class="c1">// plumber</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Точно также можно поступить, если необходим контроль ошибок в другой задаче, к примеру конкатенации CSS-файлов:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">plumber</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concatCSS</span><span class="p">(</span><span class="s1">&#39;concatenate.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">minifyCSS</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<h2 id="gulp-plumber-2">Запуск мониторинга ошибок gulp-plumber</h2>
-
-<p>Для удобства проверки работы плагина <code>gulp-plumber</code> создам задачу <code>gulp.watch</code> и помещу ее в задачу по умолчанию <code>default</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
-<span class="p">});</span>
-
-<span class="c1">// Default Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
-
-<p>Запускаю в консоли процесс мониторинга в Gulp командой:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span></code></pre></div>
-
-<p>… и смотрю на вывод в консоли:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_watch.png" alt="Gulp в фоновом режиме" /></p>
-
-<p>Теперь намеренно вношу ошибку в файл <code>jquery-1.11.1.js</code> и снова перевожу взгзляд на консоль:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-error.png" alt="Плагин gulp-plumber отследил ошибку" /></p>
-
-<p>Отлично! Плагин <code>gulp-plumber</code> выполнил свою задачу - сформировал ясный и четкий отчет об ошибке. И при этом не прервал работу самого Gulp.</p>
-
-<p>Возвратим все назад и исправим ошибку, допущенную ранее. Снова взглянем на консоль:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp_plumber-success.png" alt="Плагин gulp-plumber - ошибка исправлена" /></p>
-
-<p>Плагин <code>gulp-plumber</code> снова справился со своей задачей - ошибка нами исправлена и он прилежно ее зафиксировал.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-23T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-watch/">August 23, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~7 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-watch/" rel="bookmark" title="Gulp - мониторинг изменений gulp.watch" itemprop="url">Gulp - мониторинг изменений gulp.watch</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В Gulp имеется встроенная функция <code>gulp.watch</code> для отслеживания изменений в любом из файлов проекта.</p>
-</blockquote>
-
-<p>Это очень удобно в работе, так как отпадает необходимость вручную запускать определенную задачу каждый раз, когда нужно зафиксировать эти изменения. В предыдущих статьях мы так и делали - запускали вручную на выполнение задачи по умолчанию или же определенную именованную задачу.</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp.png" alt="Gulp watch" class="center-image" /></p>
-
-<p>Сейчас давайте рассмотрим возможность запуска автоматического мониторинга в Gulp с помощью встроенной функции <code>gulp.watch</code>. Допустим, у нас имеются две именованные задачи, одна из которых выполняет минификацию js-файлов <code>gulp-uglify</code>, а вторая - конкатенацию css-файлов <code>gulp-concat</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
-<span class="p">});</span>
-
-<span class="c1">// Concat Task</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Нам нужно сделать так, чтобы Gulp запускал их каждый раз самостоятельно, когда мы внесем изменения в любой из js-файлов или css-файлов, а затем сохраним эти изменения.</p>
-
-<p>Для этого создадим еще одну именованную задачу <code>watch</code>, цель которой - отслеживание изменений в указанных файлах. Создаем все как обычно (или - почти как обычно):</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Создаем задачу по имени <code>watch</code>, а внутри тела функции поместим встроенную функцию <code>gulp.watch</code>. В качестве аргументов этой функции мы передаем ей два параметра.</p>
-
-<p><strong>Первый параметр</strong> - что и где Gulp должен отслеживать; <code>js/*.js</code> говорит о том, что необходимо отслеживать изменения всех файлов с расширением <code>.js</code>, помещенных в директории <code>js</code>.</p>
-
-<p><strong>Второй параметр</strong> - что должен делать Gulp, если обнаружит изменения в указанном месте. В данном случае мы говорим ему, что необходимо запустить задачу по имени <code>uglify</code>.</p>
-
-<p>Как видим, имя задачи передается функции <code>gulp.watch</code> в виде массива; отсюда можно сделать вывод, что задач может быть не одна, а несколько - в виде последовательности.</p>
-
-<p>Перейдем от слов к делу и запустим в консоли выполнение мониторинга с помощью функции <code>gulp.watch</code>. Команда для мониторинга в Gulp выглядит таким образом:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">55</span><span class="err">:</span><span class="n">26</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">06</span> <span class="n">ms</span></code></pre></div>
-
-<p>Видим, что задача по имени <code>watch</code> запустилась и вроде как закончилась (<code>Finished 'watch' after 7.06 ms</code>). Но на самом деле Gulp находиться в фоновом режиме и отслеживает изменения js-файлов.</p>
-
-<p>Чтобы проверить это, отредактируем и сохраним js-файл (в моем случае это <code>jquery.js</code>):</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="nx">$</span> <span class="nx">gulp</span> <span class="nx">watch</span>
-    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Using</span> <span class="nx">gulpfile</span> <span class="o">~</span><span class="err">/Projects/gulp_test/gulpfile.js</span>
-    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">55</span><span class="o">:</span><span class="mi">26</span><span class="p">]</span> <span class="nx">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="nx">after</span> <span class="mf">7.06</span> <span class="nx">ms</span>
-    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="p">]</span> <span class="nx">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="mi">10</span><span class="o">:</span><span class="mi">59</span><span class="o">:</span><span class="mi">17</span><span class="p">]</span> <span class="nx">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="nx">after</span> <span class="mf">8.96</span> <span class="nx">ms</span></code></pre></div>
-
-<p>Вау! Видим, что в консоли появились две строчки - это отработала задача <code>uglify</code>. То есть, Gulp “увидел”, что я внес изменение в файле <code>jquery.js</code> и мгновенно запустил задачу <code>uglify</code>, чтобы зафиксировать это изменение. Мониторинг с помощью функции <code>gulp.watch</code> работает!</p>
-
-<p>Давайте немного усложним задачу и добавим мониторинг <code>gulp.watch</code> в директории <code>css</code>. При любом изменении файлов в этой папке должна запускаться задача <code>concat</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Watch Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;watch&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;uglify&#39;</span><span class="p">]);</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">watch</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">]);</span>
-  <span class="p">});</span></code></pre></div>
-
-<p>Снова запустим Gulp для мониторинга изменений в проекте.</p>
-
-<blockquote>
-  <p>Кстати, а вы знаете, как останавливать Gulp, запущенный в фоновом режиме? Если нет, то это просто - в консоли Linux это выполняется сочетанием клавиш <kbd>Ctrl+C</kbd>.</p>
-</blockquote>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">24</span> <span class="n">ms</span></code></pre></div>
-
-<p>Внесем и сохраним изменения в файле <code>normalize.css</code>, размещенном в директории <code>css</code>. Вернемся в консоль:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">watch</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">08</span><span class="err">:</span><span class="n">55</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">24</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">04</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">11</span><span class="err">:</span><span class="n">04</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">12</span> <span class="n">ms</span></code></pre></div>
-
-<p>О! Видим, что <code>gulp.watch</code> “подхватил” изменение в файле <code>normalize.css</code> и запустил соответствующую этому изменению задачу <code>concat</code>. Отлично - все работает!</p>
-
-<p>Мониторинг <code>gulp.watch</code> можно добавить в задачу по умолчанию (<code>default</code>). Давайте создадим такую конструкцию:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
-
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="s1">&#39;watch&#39;</span><span class="p">]);</span></code></pre></div>
-
-<p>Теперь, если запустить задачу <code>default</code> в консоли, то увидим следующее:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">18</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">65</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">96</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">23</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
-
-<p>Задачи запустились и выполнились именно в той последовательности, в какой они прописаны в массиве. Сперва выполнились две задачи на конкатенацию <code>concat</code> и минификацию <code>uglify</code>, а затем запустилась задача на мониторинг <code>watch</code>.</p>
-
-<p>Gulp “повис” в фоновом режиме и отслеживает изменения с помощью функции <code>gulp.watch</code> в указанных директориях. Проверим это и внесем легкое изменение в любом из файлов (пусть это будут снова <code>normalize.css</code> и <code>jquery.js</code>):</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">18</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">65</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;watch&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;watch&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">96</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">20</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">23</span> <span class="err">μ</span><span class="n">s</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">37</span> <span class="n">ms</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
-    <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">49</span> <span class="n">ms</span></code></pre></div>
-
-<p>Функция <code>gulp.watch</code> прилежно отследила оба эти изменения и запустила соотвествующие им задачи:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">...</span>
-  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">31</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">37</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">11</span><span class="err">:</span><span class="n">26</span><span class="err">:</span><span class="n">46</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">1</span><span class="p">.</span><span class="n">49</span> <span class="n">ms</span></code></pre></div>
-
-<p>Отлично! Мы изучили вопрос создания задачи мониторинга в Gulp с помощью функции <code>gulp.watch</code>!</p>
-
-<hr />
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-22T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-named-task/">August 22, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~3 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-named-task/" rel="bookmark" title="Gulp - именованная задача (named task)" itemprop="url">Gulp - именованная задача (named task)</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>В предыдущей статье “Gulp - установка и запуск плагина gulp-uglify”, где мы учились устанавливать и запускать плагины под Gulp, мы создавали задачу под этот плагин.</p>
-</blockquote>
-
-<p>Сами не зная того, тогда мы создали именованную задачу (named task). Как вы помните из вводной статьи “Gulp - знакомство и первый запуск”, в этом менеджере имеется два типа задач - задача по умолчанию (default) и именованная задача (named task).</p>
-
-<p>В этом разделе мы углубимся в вопрос задач в Gulp и рассмотрим детально, каким образом создается именованная задача (named task) или несколько именованных задач (named tasks), как можно объединять именованные задачи (named tasks) в последовательности, как можно вызывать выполнение одной задачи из другой задачи.</p>
-
-<h2 id="named-task--gulp">Создание named task в Gulp</h2>
-
-<p>В менеджере Gulp может существовать тысячи задач, каждая из которых нацелена на получение конкретного результата. Давайте создадим отдельную задачу для конкатенации файлов. Для этой цели существует плагин <code>gulp-concat</code>. На странице документации этого плагина описан процесс установки и настройки - <a href="https://www.npmjs.org/package/gulp-concat" title="Gulp-concat">gulp-concat</a>.</p>
-
-<p>Установим плагин <code>gulp-concat</code> в проект:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-concat</span></code></pre></div>
-
-<p>И создадим в файле <code>gulpfile.js</code> отдельную задачу для этого плагина:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Concat Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-  <span class="p">})</span></code></pre></div>
-
-<p>… а также создадим отдельную переменную для этого плагина:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="kd">var</span> <span class="nx">concat</span> <span class="o">=</span> <span class="nx">require</span><span class="p">(</span><span class="s1">&#39;gulp-concat&#39;</span><span class="p">);</span></code></pre></div>
-
-<p>Кстати, если вы еще не задались вопросом, а что это за странные строки - <code>gulp.src</code>, <code>gulp.dest</code>, <code>gulp.task</code>, то могу вкратце сказать, что это встроенные функции Gulp, каждая из которых выполняет свою задачу.</p>
-
-<p>Осталось запустить в консоли именованную задачу (named task) <code>concat</code>, которая произведет слияние в один файл всех файлов с расширением .css, расположенных в директории css:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">concat</span>
-  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">09</span><span class="err">:</span><span class="n">53</span><span class="err">:</span><span class="n">28</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">91</span> <span class="n">ms</span></code></pre></div>
-
-<p>Отлично - мы создали named task!</p>
-
-<h2 id="named-tasks--gulp">Создание последовательности named tasks в Gulp</h2>
-
-<p>В Gulp можно создавать последовательность задач, в которой выполнение всех задач будет производиться в том порядке, в котором они помещены в очередь. Для этого несколько отдельных именованных задач (named tasks) помещают внутрь задачи по умолчанию (default).</p>
-
-<p>Вместо callback-функции разместим массив, состоящий из списка имен тех именованных задач (named tasks), которые мы хотим поместить в очередь. Фактически, в данном случае выполнение одной задачи будет производиться через вызов другой задачи.</p>
-
-<p>Допустим, у нас имеются две именованные задачи (named tasks):</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Uglify Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;uglify&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;js/*.js&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">uglify</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/js&#39;</span><span class="p">))</span>
-<span class="p">});</span>
-
-<span class="c1">// Concat Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;css/*.css&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;one.css&#39;</span><span class="p">))</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Поместим их в задачу по умолчанию:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Default Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;default&#39;</span><span class="p">,</span> <span class="p">[</span><span class="s1">&#39;concat&#39;</span><span class="p">,</span> <span class="s1">&#39;uglify&#39;</span><span class="p">]);</span></code></pre></div>
-
-<p>Теперь в консоли достаточно запустить одну команду <code>gulp</code> на выполнение задачи по умолчанию (default). Тем самым мы запустим выполнение последовательности нескольких отдельных команд - <code>'concat', 'uglify'</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;concat&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;concat&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">17</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;uglify&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;uglify&#39;</span> <span class="n">after</span> <span class="n">2</span><span class="p">.</span><span class="n">64</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;default&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">10</span><span class="err">:</span><span class="n">05</span><span class="err">:</span><span class="n">36</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;default&#39;</span> <span class="n">after</span> <span class="n">7</span><span class="p">.</span><span class="n">04</span> <span class="err">μ</span><span class="n">s</span></code></pre></div>
-
-<p>В выводе консоли видим, что сначала запустилась задача <code>concat</code> и выполнилась за 7.17 миллисекунд, затем запустилась задача <code>uglify</code> и на ее выполнение ушло 2.64 милисекунды. И затем запустилась задача по умолчанию <code>default</code>, которая выполнилась за 7.04 миллисекунд.</p>
-
-<p>Все прошло успешно.</p>
-
-<hr />
-
-
-  </div><!-- /.entry-content -->
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  <header>
-    
-    <div class="entry-meta">
-      <span class="entry-date date published updated"><time datetime="2014-08-21T00:00:00+04:00"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/">August 21, 2014</a></time></span><span class="author vcard"><span class="fn"><a href="http://zencoder.ru/about/" title="About zencoder">zencoder</a></span></span>
-      
-      <span class="entry-reading-time">
-        <i class="fa fa-clock-o"></i>
-        
-        Reading time ~5 minutes
-      </span><!-- /.entry-reading-time -->
-      
-    </div><!-- /.entry-meta -->
-    
-      <h1 class="entry-title"><a href="http://zencoder.ru/gulp/gulp-ruby-sass/" rel="bookmark" title="Gulp - плагин gulp-ruby-sass" itemprop="url">Gulp - плагин gulp-ruby-sass</a></h1>
-    
-  </header>
-  <div class="entry-content">
-    <blockquote>
-  <p>Рассмотрим очень нужный и полезный плагин <code>gulp-ruby-sass</code> под Gulp для компиляции файлов Sass в файлы формата CSS. Для разработчиков, которые пользуются препроцессором Sass данный плагин <code>gulp-ruby-sass</code> просто необходим.</p>
-</blockquote>
-
-<p>Для компиляции Sass в CSS под Gulp имеется несколько плагинов. Например, <code>gulp-sass</code> или <code>gulp-ruby-sass</code>. Более стабильным плагином является <code>gulp-ruby-sass</code>. Вот его мы и установим.</p>
-
-<h2 id="gulp-ruby-sass">Установка плагина gulp-ruby-sass</h2>
-
-<p>Команда установки уже стандартная для нас:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">sudo</span> <span class="n">npm</span> <span class="n">install</span> <span class="p">-</span><span class="n">-save-dev</span> <span class="n">gulp-ruby-sass</span></code></pre></div>
-
-<p>В директории <code>sass</code> заранее помещены мною два scss-файла <code>main.scss</code> и <code>style.scss</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">sass</span><span class="p">/</span>
-<span class="n">main</span><span class="p">.</span><span class="n">scss</span>  <span class="n">style</span><span class="p">.</span><span class="n">scss</span></code></pre></div>
-
-<p>После этого создаю именованную задачу <code>sass</code> для плагина <code>gulp-ruby-sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">())</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>И запускаем задачу <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">48</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">12</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">31</span><span class="err">:</span><span class="n">49</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Оба файла скомпилированы <code>main.scss</code> и <code>style.scss</code> и помещены по пути <code>build/css</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
-  <span class="n">main</span><span class="p">.</span><span class="n">css</span>  <span class="n">one</span><span class="p">.</span><span class="n">css</span>  <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Взглянем на содержимое хотя бы одного из них (пускай это будет <code>main.css</code>), чтобы убедиться в том, что это уже CSS-файл, а не SCSS-файл:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin.png" alt="Компиляция Sass в CSS с помощью gulp-ruby-sass" /></p>
-
-<p>Да, действительно, перед нами CSS-файл!</p>
-
-<h2 id="gulp-ruby-sass-1">Добавление опций к плагину gulp-ruby-sass</h2>
-
-<p>До этого момента все плагины, которые мы устанавливали и настраивали в виде задач, были без опций. То есть, в потоке мы просто вызывали плагин через переменную и передавали ему данные для обработки. На этом работа плагина заканчивалась.</p>
-
-<p>Однако внимательный читатель мог уже при первом знакостве с плагинами заметить, что в руководстве почти к каждому из них, помимо описания установки, есть раздел, посвященный опциям данного плагина. Другими словами, плагин может не просто обрабатывать данные, а обрабатывать так, как нам это нужно.</p>
-
-<p>Что касается плагина <code>gulp-ruby-sass</code>, то данный плагин может производить компиляцию из Sass в CSS <strong>несколькими способами</strong>. Достаточно почитать раздел <strong>API</strong> к документации к нему - <a href="https://www.npmjs.org/package/gulp-ruby-sass" title="Gulp-Ruby-Sass">gulp-ruby-sass</a>.</p>
-
-<p>Мы же воспользуемся всего одной опцией из этого списка и сделаем так, чтобы результат компиляции был <strong>более сжатым</strong>. Для этого немного изменим созданную ранее задачу <code>sass</code> и добавим опцию <code>style: 'compressed'</code> к переменной <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">({</span>
-    <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;compressed&#39;</span>
-  <span class="p">}))</span>
-  <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-<span class="p">});</span></code></pre></div>
-
-<p>Снова запустим задачу <code>sass</code> из консоли:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">57</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">8</span><span class="p">.</span><span class="n">68</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">14</span><span class="err">:</span><span class="n">52</span><span class="err">:</span><span class="n">58</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>И взглянем на результат компиляции файла <code>main.scss</code> в файл <code>main.css</code>:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin_compressed.png" alt="Компиляция gulp-ruby-sass с опцией compressed" /></p>
-
-<p>Отлично! Видим, что плагин <code>gulp-ruby-sass</code> действительно отработал с опцией <code>compressed</code> и произвел не просто компиляцию из SCSS в CSS, но и сжатие CSS-файла <code>main.css</code> - удалены все лишние пробелы и табуляция, выкинуты лишние точки с запятой, а все CSS-правила размещены в одну строку.</p>
-
-<h2 id="section">Объединение нескольких плагинов в одной задаче</h2>
-
-<p>До недавнего момента при работе в Gulp мы всегда поступали таким образом - “один плагин - одна задача”. Однако, Gulp гораздо гибче и мощнее, чем можно было бы подумать. В частности, в одной задаче можно объединить несколько ранее установленных плагинов именно благодаря поточности Gulp.</p>
-
-<p>Чтобы было более понятно, разберем все вышесказанное на живом примере. Дополним задачу <code>sass</code> плагином конкатенации, чтобы “склеить” два результирующих файла <code>main.css</code> и <code>style.css</code> в один файл <code>compile.css</code>. Как вы уже догадались, для этой цели мы воспользуемся уже установленным ранее плагином <code>gulp-concat</code>.</p>
-
-<p>Видоизменим задачу <code>sass</code>, добавив строку <code>.pipe(concat('compile.css'))</code> после строки с вызовом плагина <code>gulp-ruby-sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-javascript" data-lang="javascript"><span class="c1">// Sass Compile Task</span>
-  <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">&#39;sass&#39;</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{</span>
-    <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="s1">&#39;sass/**/*.scss&#39;</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">sass</span><span class="p">({</span>
-      <span class="nx">style</span><span class="o">:</span> <span class="s1">&#39;compressed&#39;</span>
-    <span class="p">}))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">concat</span><span class="p">(</span><span class="s1">&#39;compile.css&#39;</span><span class="p">))</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s1">&#39;build/css&#39;</span><span class="p">))</span>
-  <span class="p">});</span></code></pre></div>
-
-<p>Вновь запустим в консоли задачу <code>sass</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="p">$</span> <span class="n">gulp</span> <span class="n">sass</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Using</span> <span class="n">gulpfile</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span><span class="p">/</span><span class="n">gulpfile</span><span class="p">.</span><span class="n">js</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Starting</span> <span class="s1">&#39;sass&#39;</span><span class="p">...</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">44</span><span class="p">]</span> <span class="n">Finished</span> <span class="s1">&#39;sass&#39;</span> <span class="n">after</span> <span class="n">9</span><span class="p">.</span><span class="n">05</span> <span class="n">ms</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">directory</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">main</span><span class="p">.</span><span class="n">css</span>
-  <span class="p">[</span><span class="n">15</span><span class="err">:</span><span class="n">14</span><span class="err">:</span><span class="n">45</span><span class="p">]</span> <span class="n">gulp-ruby-sass</span><span class="err">:</span> <span class="n">write</span> <span class="n">style</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Посмотрим содержимое по пути <code>build/css</code>:</p>
-
-<div class="highlight"><pre><code class="language-powershell" data-lang="powershell"><span class="n">aaron</span><span class="nv">@zmk</span> <span class="p">~/</span><span class="n">Projects</span><span class="p">/</span><span class="n">gulp_test</span> <span class="p">$</span> <span class="n">ls</span> <span class="n">build</span><span class="p">/</span><span class="n">css</span><span class="p">/</span>
-  <span class="n">compile</span><span class="p">.</span><span class="n">css</span>  <span class="n">one</span><span class="p">.</span><span class="n">css</span></code></pre></div>
-
-<p>Файл <code>compile.css</code> появился по указанному пути. Взглянем на его содержимое в редакторе Sublime Text:</p>
-
-<p><img src="http://zencoder.ru/images/uploads/2014/08/gulp-ruby-sass_plugin_compressed_concat.png" alt="Компиляция gulp-ruby-sass и конкатенация Sass в CSS под Gulp" /></p>
-
-<p>Пример получился не совсем удачный, но, тем не менее, наглядный. Видим, чтобы оба плагина отработали. Была произведена компиляция, а затем “склейка” двух файлов в один.</p>
-
-<p>Конечно, благодаря поточности в Gulp, в одну задачу можно добавлять не два плагина, а гораздо больше.</p>
 
 <hr />
 
@@ -1114,6 +1130,12 @@
       <li>
         
           <a href="http://zencoder.ru/page46">46</a>
+        
+      </li>
+    
+      <li>
+        
+          <a href="http://zencoder.ru/page47">47</a>
         
       </li>
     
