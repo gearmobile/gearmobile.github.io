@@ -52,7 +52,7 @@ let someModule = require('./some_module');
 {% highlight javascript %}
 const x = 5;
 let summ = function (value) {
-	return value + x;
+  return value + x;
 };
 module.exports.x = x; // сделали константу 5 доступной из других модулей
 module.exports.summ = summ; // сделали переменную summ доступной из других модулей
@@ -70,8 +70,8 @@ let someModule = require('./some_module');
 
 {% highlight javascript %}
 let User = function (name, email) {
-	this.name = name;
-	this.email = email;
+  this.name = name;
+  this.email = email;
 };
 module.exports = User;
 {% endhighlight %}
@@ -82,7 +82,9 @@ module.exports = User;
 
 {% highlight javascript %}
 module.exports.User = User;
+
 // vs
+
 module.exports = User;
 {% endhighlight %}
 
@@ -92,7 +94,9 @@ module.exports = User;
 var user = require('./user');
 
 var u = new user.User();
+
 // vs
+
 var u = new user();
 {% endhighlight %}
 
@@ -102,7 +106,7 @@ var u = new user();
 
 {% highlight javascript %}
 let powerLevel = function (level) {
-	return level > 9000 ? "it's over 9000" : level;
+  return level > 9000 ? "it's over 9000" : level;
 };
 module.exports = powerLevel;
 {% endhighlight %}
