@@ -85,6 +85,7 @@ module.exports.User = User;
 // vs
 module.exports = User;
 {% endhighlight %}
+
 Всё это к тому, что потом ее будет **легче использовать**:
 
 {% highlight javascript %}
@@ -119,5 +120,4 @@ let someModule = require('./powerlevel');
 someModule(9000);
 {% endhighlight %}
 
-Вот и все кратко о командах `require` и `module.exports`.
-***
+Это все кратко о командах `require` и `module.exports`.
