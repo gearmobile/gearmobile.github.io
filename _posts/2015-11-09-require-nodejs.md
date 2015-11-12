@@ -27,7 +27,7 @@ share: true
 {% highlight javascript %}
 const x = 5;
 let summ = function (value) {
-	return value + x;
+  return value + x;
 }
 {% endhighlight %}
 
@@ -120,3 +120,4 @@ someModule(9000);
 {% endhighlight %}
 
 Вот и все кратко о командах `require` и `module.exports`.
+***
