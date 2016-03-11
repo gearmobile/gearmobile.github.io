@@ -362,7 +362,7 @@ width: 43px;
 Как и в предыдущих случаях с переменными в спрайте библиотеки Compass, вместо `folder-name` необходимо подставить имя каталога, в котором размещены файлы изображений. В нашем случае имя переменной будет выглядеть следующим образом:
 
 {% highlight css %}
-$webicons-sprite-dimentions: true;
+$webicons-sprite-dimensions: true;
   ...
 @include 'webicons/*.png';
 {% endhighlight %}
