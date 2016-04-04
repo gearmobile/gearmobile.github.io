@@ -36,7 +36,7 @@ share: true
 
 * **Шаг седьмой** - в контекстном меню находим строку "Create Launcher"; текст строки может отличаться в зависимости от того, что именно используется на конкретном Linux - [Cinnamon](https://en.wikipedia.org/wiki/Cinnamon_%28software%29 title="Cinnamon") или [Xcfe](http://www.xfce.org/ title="Xfce"); тут главное - увидеть знакомое слово "Launcher"; в результате должно открыться примерно такое окно (в данном случае это Xfce):
 
-![Create Launcher]({{site.url}}/images/uploads/2016/04/create-launcher.png title="Create Launcher")
+![Create Launcher]({{site.url}}/images/uploads/2016/04/create-launcher.png "Create Launcher")
 
 * **Шаг восьмой** - вводим значения в поля этого окна; во все поля вводить данные необязательно; нужно ввести только **имя приложения** в поле "Name" - WebStorm; в поле "Command" вручную вводить **путь к исполняемому файлу приложения** нет необходимости - достаточно нажать на значок рядом с полем и откроется диалоговое окно "Select an Application"; дальше можно легко и удобно найти IDE WebStorm по пути `opt/WebStorm-141.456/bin/webstorm.sh`
 
@@ -44,7 +44,7 @@ share: true
 
 Если все шаги выполнены правильно, то в результате должно получиться примерно такое окно с заполненными полями:
 
-![Create Launcher Ready]({{site.url}}/images/uploads/2016/04/create-launcher-ready.png title="Create Launcher Ready")
+![Create Launcher Ready]({{site.url}}/images/uploads/2016/04/create-launcher-ready.png "Create Launcher Ready")
 
 Это минимальная конфигурация, достаточная для нормального запуска приложения из Desktop. При первом запуске WebStorm-приложения Linux-система задаст вопрос - сделать ли запускаемый файл *исполняемым*. Естественно, соглашаемся - ведь нам нужно запустить и работать в WebStorm-приложении!
 
