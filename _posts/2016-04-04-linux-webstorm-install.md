@@ -40,7 +40,7 @@ share: true
 
 * **Шаг восьмой** - вводим значения в поля этого окна; во все поля вводить данные необязательно; нужно ввести только **имя приложения** в поле "Name" - WebStorm; в поле "Command" вручную вводить **путь к исполняемому файлу приложения** нет необходимости - достаточно нажать на значок рядом с полем и откроется диалоговое окно "Select an Application"; дальше можно легко и удобно найти IDE WebStorm по пути `opt/WebStorm-141.456/bin/webstorm.sh`
 
-* **Шаг девятый** - в поле "Icon" добавляем фирменную иконку приложения WebStorm (*чтобы легко углядеть WebStorm на Desktop*); снова жмем на значок (уже в поле "Icon"); откроется диалоговое окно "Select an Icon"; в этом окне в выпадающем списке поля "Select icon from" выбираем самую нижнюю строку - "Image Files"; снова идем по пути `opt/WebStorm-141.456/bin/webide.png`
+* **Шаг девятый** - в поле "Icon" добавляем фирменную иконку приложения WebStorm (*чтобы легко углядеть WebStorm на Desktop*); снова жмем на значок (уже в поле "Icon"); откроется диалоговое окно "Select an Icon"; в этом окне в выпадающем списке поля "Select icon from" выбираем самую нижнюю строку - "Image Files"; снова идем по пути `~/opt/WebStorm-141.456/bin/webide.png`
 
 Если все шаги выполнены правильно, то в результате должно получиться примерно такое окно с заполненными полями:
 
@@ -48,9 +48,11 @@ share: true
 
 Это минимальная конфигурация, достаточная для нормального запуска приложения из Desktop. При первом запуске WebStorm-приложения Linux-система задаст вопрос - сделать ли запускаемый файл *исполняемым*. Естественно, соглашаемся - ведь нам нужно запустить и работать в WebStorm-приложении!
 
-Как я уже упоминал ранее, установка двух других IDE - Aptana Studio и Visual Studio Code ничем не отличается от установки WebStorm. Единственный момент - для Visual Studio Code нужно покопаться с поисках фирменной иконки, которая расположена по пути `~/opt/VSCode-linux-x64/resources/app/resources/linux/code.png`, а исполняемый файл приложения  - по пути `~/opt/VSCode-linux-x64/code`.
+Как я уже упоминал ранее, установка двух других IDE - Aptana Studio и Visual Studio Code ничем не отличается от установки WebStorm. Единственный момент - для Visual Studio Code нужно покопаться с поисках фирменной иконки, которая расположена по пути: `~/opt/VSCode-linux-x64/resources/app/resources/linux/code.png`, а исполняемый файл приложения  - по пути: `~/opt/VSCode-linux-x64/code`.
 
 К слову сказать, лично я был приятно удивлен Visual Studio Code и разочарован Aptana Studio. WebStorm - вне конкуренции!
+
+## WebStorm темы для редактора
 
 Немного отклониться от темы в сторону темы редактора под WebStorm. В Sublime Text это была однозначно - [Material Theme](https://github.com/equinusocio/material-theme title="Material Theme"). Под WebStorm есть порт этой темы - [Material Theme JetBrains](https://github.com/ChrisRM/material-theme-jetbrains). Документация хорошо расписана и автор даже постарался создать возможность легкой и "кошерной" установки темы - через репозиторий JetBrains, из самого WebStorm.
 
@@ -62,7 +64,7 @@ share: true
 * [11 тем для WebIDE (PHPStorm & WebStorm)](https://habrahabr.ru/sandbox/36027/ "11 тем для WebIDE (PHPStorm & WebStorm)")
 * [PHPStorm Themes](http://www.phpstorm-themes.com/ "PHPStorm Themes")
 
-Можно еще установить модный шрифт [Hack](http://sourcefoundry.org/hack/).
+В дополнение можно еще установить модный шрифт [Hack](http://sourcefoundry.org/hack/) (на любителя). Или покопаться здесь - [Top 11 Programming Fonts](http://wesbos.com/programming-fonts/ "Top 11 Programming Fonts"), чтобы выбрать что-то подходящее.
 
 P.S.
 
