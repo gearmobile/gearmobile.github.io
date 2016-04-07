@@ -56,6 +56,12 @@ share: true
 
 Но, как мне кажется, эта тема заметно уступает своему "оригиналу" из-под Sublime Text (автор сам об этом [упоминает](https://github.com/ChrisRM/material-theme-jetbrains#contribution)).
 
+Хорошая коллекция тем под WebStorm расположена по этим адресам:
+
+* [Color Themes for WebStorm](http://color-themes.com/?view=index "Color Themes for WebStorm")
+* [11 тем для WebIDE (PHPStorm & WebStorm)](https://habrahabr.ru/sandbox/36027/ "11 тем для WebIDE (PHPStorm & WebStorm)")
+* [PHPStorm Themes](http://www.phpstorm-themes.com/ "PHPStorm Themes")
+
 Можно еще установить модный шрифт [Hack](http://sourcefoundry.org/hack/).
 
 P.S.
