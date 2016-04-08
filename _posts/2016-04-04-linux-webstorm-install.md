@@ -12,11 +12,13 @@ share: true
 
 И вот тут произошло так, что в один прекрасный день я просто попробовал поработать в WebStorm с JavaScript. И все! Я уже не мог вернуться на Sublime Text!
 
-Описать конкретно, что именно мне понравилось в WebStorm vs Sublime Text, я так вот в двух словах и не могу. Но скажу только одно - работа в WebStorm действительно удобная; в этом IDE есть много продуманных и отшлифованных вещей, которые сильно облегчают жизнь.
+Описать конкретно, что именно мне понравилось в WebStorm vs Sublime Text, я так вот в двух словах и не могу. Но скажу только одно - работа в WebStorm действительно удобная; в этом IDE есть много продуманных и отшлифованных вещей, которые сильно облегчают жизнь кодера.
 
 После того, как я оценил работу в WebStorm на Mac OS X, мне захотелось иметь этот IDE и на ноутбуке с [Linux Mint 17.2 Cinnamon](https://linuxmint.com/ "Linux Mint"). Не могу сказать точно, почему так, но мне работать под Linux как-то комфортнее, чем под Mac OS X. Наверное, просто сказывается сила привычки - я linuxoid со стажем.
 
-Но вот незадача - под Linux я привык пользоваться супер-удобными менеджерами пакетов, такими как `apt-get` или `pacman`. А вот что касается Visual Studio Code, Aptana Studio или WebStorm - то официальных портов этих IDE в Debian \ Ubuntu-репозиториях нет (*поправьте меня, если я ошибаюсь*).
+Но вот незадача - под Linux я привык пользоваться супер-удобными менеджерами пакетов, такими как `apt-get` или `pacman`.
+
+А вот что касается Visual Studio Code, Aptana Studio или WebStorm - то официальных портов этих IDE в Debian \ Ubuntu-репозиториях нет (*поправьте меня, если я ошибаюсь*).
 
 На официальных сайтах этих IDE описывается только процесс установки под операционную систему Linux **вручную**. Не сказать, что там плохо описан этот процесс, но мне он не помог совсем.
 
@@ -46,7 +48,7 @@ share: true
 
 ![Create Launcher Ready]({{site.url}}/images/uploads/2016/04/create-launcher-ready.png "Create Launcher Ready")
 
-Это минимальная конфигурация, достаточная для нормального запуска приложения из Desktop. При первом запуске WebStorm-приложения Linux-система задаст вопрос - сделать ли запускаемый файл *исполняемым*. Естественно, соглашаемся - ведь нам нужно запустить и работать в WebStorm-приложении!
+Это минимальная конфигурация, достаточная для нормального запуска приложения из Desktop. При первом запуске WebStorm-приложения Linux-система задаст вопрос - сделать ли запускаемый файл *исполняемым*. Естественно, соглашаемся - ведь нам нужно запустить и работать в WebStorm-приложении.
 
 Как я уже упоминал ранее, установка двух других IDE - Aptana Studio и Visual Studio Code ничем не отличается от установки WebStorm. Единственный момент - для Visual Studio Code нужно покопаться с поисках фирменной иконки, которая расположена по пути: `~/opt/VSCode-linux-x64/resources/app/resources/linux/code.png`, а исполняемый файл приложения  - по пути: `~/opt/VSCode-linux-x64/code`.
 
@@ -54,8 +56,10 @@ share: true
 
 ## WebStorm темы
 
-Немного отклониться от темы в сторону темы редактора под WebStorm. В Sublime Text это была однозначно - [Material Theme](https://github.com/equinusocio/material-theme "Material Theme").
+Хочу немного отклониться в сторону выбора темы оформления под IDE WebStorm. В Sublime Text это была однозначно - [Material Theme](https://github.com/equinusocio/material-theme "Material Theme").
+
 Под WebStorm есть порт этой темы - [Material Theme JetBrains](https://github.com/ChrisRM/material-theme-jetbrains "Material Theme JetBrains").
+
 Документация хорошо расписана и автор даже постарался создать возможность легкой и "кошерной" установки темы - через репозиторий JetBrains, из самого WebStorm.
 
 Но, как мне кажется, эта тема заметно уступает своему "оригиналу" из-под Sublime Text (автор сам об этом [упоминает](https://github.com/ChrisRM/material-theme-jetbrains#contribution "Material Theme JetBrains")).
@@ -66,7 +70,7 @@ share: true
 * [11 тем для WebIDE (PHPStorm & WebStorm)](https://habrahabr.ru/sandbox/36027/ "11 тем для WebIDE (PHPStorm & WebStorm)")
 * [PHPStorm Themes](http://www.phpstorm-themes.com/ "PHPStorm Themes")
 
-В дополнение можно еще установить модный шрифт [Hack](http://sourcefoundry.org/hack/) (на любителя). Или покопаться здесь - [Top 11 Programming Fonts](http://wesbos.com/programming-fonts/ "Top 11 Programming Fonts"), чтобы выбрать что-то подходящее.
+В дополнение можно еще установить модный шрифт [Hack](http://sourcefoundry.org/hack/) (*на любителя*). Или покопаться здесь - [Top 11 Programming Fonts](http://wesbos.com/programming-fonts/ "Top 11 Programming Fonts"), чтобы выбрать что-то подходящее.
 
 К примеру, автор блога [WesBos](http://wesbos.com/ "WesBos") долго пользовался OpenSource-шрифтом [Inconsolata](http://www.levien.com/type/myfonts/inconsolata.html "Inconsolata"), а потом взял и [купил](http://wesbos.com/uses/ "WesBos - Uses") шрифт [Operator Mono](http://www.typography.com/fonts/operator/overview/ "Operator Mono") за $200. 
 
