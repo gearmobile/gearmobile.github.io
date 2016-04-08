@@ -68,6 +68,8 @@ share: true
 
 В дополнение можно еще установить модный шрифт [Hack](http://sourcefoundry.org/hack/) (на любителя). Или покопаться здесь - [Top 11 Programming Fonts](http://wesbos.com/programming-fonts/ "Top 11 Programming Fonts"), чтобы выбрать что-то подходящее.
 
+К примеру, автор блога [WesBos](http://wesbos.com/ "WesBos") долго пользовался OpenSource-шрифтом [Inconsolata](http://www.levien.com/type/myfonts/inconsolata.html "Inconsolata"), а потом взял и [купил](http://wesbos.com/uses/ "WesBos - Uses") шрифт [Operator Mono](http://www.typography.com/fonts/operator/overview/ "Operator Mono") за $200. 
+
 ### P.S.
 
 Еще в тему установки программных пакетов для разработки под системой Linux стоит сказать, что под Ubuntu существует удобный пакет [Ubuntu Make](https://wiki.ubuntu.com/ubuntu-make title="Ubuntu Make") (*он же Ubuntu Developer Tools Center в прошлом*).
