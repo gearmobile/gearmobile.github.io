@@ -28,13 +28,13 @@ share: true
 
 * **Шаг третий** - распаковывается архив с IDE WebStorm (который в Desktop)
 
-* **Шаг четвертый** - в терминале запускается Midnight Commander с правами *root*: `sudo mc`; если вы вдруг не знаете, что такое [Midnight Commander](http://www.midnight-commander.org/ "Midnight Commander") - то в самое время узнать о нем, так как это программа из разряда must have под системой Linux
+* **Шаг четвертый** - в терминале запускается Midnight Commander с правами *root*: `sudo mc`; если вы вдруг не знаете, что такое [Midnight Commander](http://www.midnight-commander.org/ "Midnight Commander") - то в самое время узнать о нем, так как это программа из разряда **must have** под системой Linux
 
 * **Шаг пятый** - в Midnight Commander копируем распакованный архив WebStorm по пути `~/opt/`; в итоге в `~/opt/` должна появиться папка примерно такого вида - "WebStorm-141.456" (`~/opt/WebStorm-141.456`)
 
 * **Шаг шестой** - на любом пустом месте Desktop делаем правый клик мыши (ПКМ), чтобы вызвать *контекстное меню*
 
-* **Шаг седьмой** - в контекстном меню находим строку "Create Launcher"; текст строки может отличаться в зависимости от того, что именно используется на конкретном Linux - [Cinnamon](https://en.wikipedia.org/wiki/Cinnamon_%28software%29 "Cinnamon") или [Xcfe](http://www.xfce.org/ "Xfce"); тут главное - увидеть знакомое слово "Launcher"; в результате должно открыться примерно такое окно (в данном случае это Xfce):
+* **Шаг седьмой** - в контекстном меню находим строку "Create Launcher"; текст строки может отличаться в зависимости от того, что именно используется на конкретном Linux - [Cinnamon](https://en.wikipedia.org/wiki/Cinnamon_%28software%29 "Cinnamon") или [Xfce](http://www.xfce.org/ "Xfce"); тут главное - увидеть знакомое слово "Launcher"; в результате должно открыться примерно такое окно (в данном случае это Xfce):
 
 ![Create Launcher]({{site.url}}/images/uploads/2016/04/create-launcher.png "Create Launcher")
 
