@@ -1,7 +1,7 @@
 ---
 title: "Canvas - Raw Pixel"
 layout: post
-categories: linux
+categories: javascript
 tags: [javascript, html5, canvas, raw pixel]
 share: true
 ---
