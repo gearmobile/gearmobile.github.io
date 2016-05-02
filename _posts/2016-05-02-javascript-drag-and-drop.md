@@ -249,7 +249,7 @@ var element = document.getElementById(elementID);
 И помещаем его внутрь текущего активного элемента:
 
 {% highlight javascript %}
-`event.target.appendChild(element);`.
+event.target.appendChild(element);
 {% endhighlight %}
 
 Далее убираем у перетаскиваемого элемента атрибут `draggable` - он больше не перетаскиваемый. Визуально сигнализируем об этом, изменив вид курсора мыши:
