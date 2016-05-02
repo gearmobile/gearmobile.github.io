@@ -179,7 +179,7 @@ function dragStart (event) {
 
 В третьей строке для объекта dataTransfer с помощью метода `setData()` задается имя переменной `text` и значение для этой переменной - ID текущего элемента.
 
-## Функции dragEnter (event), dragLeave (event), dragOver (event)
+## Функции dragEnter(), dragLeave(), dragOver()
 
 Три функции, каждая из которых отслеживает событие, возникающее на элементе `dropZone`:
 
@@ -226,15 +226,47 @@ function dragDrop (event) {
 
 В строке `event.preventDefault();` мы снова отменяем действие по-умолчанию. На этот раз это касается самого перетаскиваемого элемента - ведь он может быть ссылкой и браузер выполнит переход по ней (действие по-умолчанию), что нам совсем не нужно.
 
-В строке `var elementID = event.dataTransfer.getData('text');` мы из объекта dataTransfer получаем ID перетаскиваемого элемента. Вы же помните, что в функции `dragStart (event)` с помощью строки `event.dataTransfer.setData('text', event.target.getAttribute('id'));` мы его как раз получали?
+В строке:
 
-Далее находим перетаскиваемый элемент по его ID - `var element = document.getElementById(elementID);`.
+{% highlight javascript %}
+var elementID = event.dataTransfer.getData('text');
+{% endhighlight %}
 
-И помещаем его внутрь текущего активного элемента - `event.target.appendChild(element);`.
+... мы из объекта dataTransfer получаем ID перетаскиваемого элемента. Вы же помните, что в функции `dragStart (event)` с помощью строки:
 
-Далее убираем у перетаскиваемого элемента атрибут `draggable` - он больше не перетаскиваемый. Визуально сигнализируем об этом, изменив вид курсора мыши - `element.style.cursor = 'default';`. И сообщаем об изменившемся статусе в заголовке - `dropStatus.innerHTML = 'Element ' + elementID + ' dropped into the ' + event.target.getAttribute('id');`.
+{% highlight javascript %}
+event.dataTransfer.setData('text', event.target.getAttribute('id'));
+{% endhighlight %}
 
-Отдельного упоминания стоит строка `droppedIN = true;`. Это флаг, с помощью которого мы определяем, произошло ли событие `drop` или нет. Может случиться так, что объект мы перетащили в область элемента `dropZone`, но передумали его помещать туда. И "отпустили" перетаскиваемый элемент за областью элемента `dropZone`. В результате событие `dragend` произошло, но событие `drop` не выполнилось.
+...мы его как раз получали?
+
+Далее находим перетаскиваемый элемент по его ID:
+
+{% highlight javascript %}
+var element = document.getElementById(elementID);
+{% endhighlight %}
+
+И помещаем его внутрь текущего активного элемента:
+
+{% highlight javascript %}
+`event.target.appendChild(element);`.
+{% endhighlight %}
+
+Далее убираем у перетаскиваемого элемента атрибут `draggable` - он больше не перетаскиваемый. Визуально сигнализируем об этом, изменив вид курсора мыши:
+
+{% highlight javascript %}
+element.style.cursor = 'default';
+{% endhighlight %}
+
+И сообщаем об изменившемся статусе в заголовке:
+
+{% highlight javascript %}
+dropStatus.innerHTML = 'Element ' + elementID + ' dropped into the ' + event.target.getAttribute('id');
+{% endhighlight %}
+
+Отдельного упоминания стоит строка `droppedIN = true;`. Это флаг, с помощью которого мы определяем, произошло ли событие `drop` или нет.
+
+Может случиться так, что объект мы перетащили в область элемента `dropZone`, но передумали его помещать туда. И "отпустили" перетаскиваемый элемент за областью элемента `dropZone`. В результате событие `dragend` произошло, но событие `drop` не выполнилось.
 
 Такую ситуацию обрабатывает функция `dragEnd()`:
 
@@ -272,7 +304,7 @@ function readZone () {
 * [Drag and Drop Application Development DnD Tutorial](https://www.developphp.com/video/JavaScript/Drag-and-Drop-Application-Development-DnD-Tutorial "Drag and Drop Application Development DnD Tutorial")
 * [Встроенные функции перетаскивания в HTML5](http://www.html5rocks.com/ru/tutorials/dnd/basics/ "Встроенные функции перетаскивания в HTML5")
 
-Есть более детальный обзор и более интересный пример задачи на JavaScript Drag-and-Drop:
+Есть более детальный обзор и более интересный пример задачи на JavaScript Drag-and-Drop размещен здесь:
 
 * [Мышь: Drag'n'Drop](https://learn.javascript.ru/drag-and-drop "Мышь: Drag'n'Drop")
 * [Мышь: Drag'n'Drop более глубоко](https://learn.javascript.ru/drag-and-drop-objects "Мышь: Drag'n'Drop более глубоко")
