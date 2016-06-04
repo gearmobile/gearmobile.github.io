@@ -102,8 +102,7 @@ currentCount.html( currentCount.html() * 1 + 1 );
 
 ***
 
-P.S
-Сразу на ум пришло одно у самого себя - заменить `$( window )` на переменную. Но уже лень менять. )
+**P.S.** Сразу на ум пришло одно у самого себя - заменить `$( window )` на переменную. Но уже лень менять. )
 
 [1]: http://api.jquery.com/off/ "Off() - Remove an event handler"
 [2]: http://api.jquery.com/one/ "One() - Attach a handler to an event"
