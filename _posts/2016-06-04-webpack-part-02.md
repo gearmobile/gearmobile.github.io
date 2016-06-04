@@ -24,7 +24,7 @@ module.exports = {
   output: {
     filename: './build.js'
   },
-  library: 'lib' // имя создаваемой библиотеки
+  library: 'lib'
 }
 {% endhighlight %}
 
