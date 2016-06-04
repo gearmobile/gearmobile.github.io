@@ -33,8 +33,7 @@ module.exports = {
 В результате экспортируемый модуль будет помещен в переменную lib (в библиотеку):
 
 {% highlight javascript %}
-/* экспорт модуля someModule в библиотеку lib под именем exportedModule */
-exports.exportedModule = someModule;
+exports.exportedModule = someModule; // экспорт модуля someModule в библиотеку lib под именем exportedModule
 {% endhighlight %}
 
 И затем можно уже использовать этот модуль как метод библиотеки lib:
