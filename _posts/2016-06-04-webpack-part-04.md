@@ -32,7 +32,7 @@ module.exports = {
 }
 {% endhighlight %}
 
-Значениями строки могут быть любой из списка - (Webpack Devtool)[http://webpack.github.io/docs/configuration.html#devtool "Webpack Devtool"].
+Значениями строки могут быть любой из списка - [Webpack Devtool](http://webpack.github.io/docs/configuration.html#devtool "Webpack Devtool").
 
 Более того, значения можно комбинировать. Например, превратить `source-map` в `cheap-inline-module-source-map`.
 
