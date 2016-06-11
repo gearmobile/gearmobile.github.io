@@ -6,22 +6,27 @@ tags: [javascript, underscore.js]
 share: true
 ---
 
-Статья посвящена моему знакомству с [underscore.js][1]. Я рад, что познакомился с этой библиотекой.
+Статья посвящена моему знакомству с [underscore.js][1]. Я рад, что познакомился с этой библиотекой. Кто плохо владеет english, то здесь находится переведенная на русский язык документация - [underscore.js russian][8];
 
-Что такое [underscore.js][1]? Это библиотека с набором javascript-методов для удобной работы с массивами, коллекциями, функциями, объектами, а также просто утилиты.
+Что такое [underscore.js][1]? Это отличная библиотека с набором javascript-методов для удобной работы с массивами, коллекциями, функциями, объектами, а также просто утилиты.
 
 Чтобы оценить полезность и удобство работы с этой библиотекой, нужно на практике рассмотреть примеры работы методов underscore.js. Поэтому ниже будут представлены именно примеры.
 
+Фиг его знает, но статья получилась больше смахивающей на пересказ официальной документации. Это потому, что я каждый метод (почти каждый) пробовал в действии, чтобы понять его работу.
+
 ## Введение
 
-Библиотека underscore.js живет по этому адресу - [underscore.js][1]. Подключается как любая другая javascript-библиотека или javascript-плагин - через тег script.
+Библиотека underscore.js живет по этому адресу - [underscore.js][1]. Подключается как любая другая javascript-библиотека или javascript-плагин - через тег script. Есть вариант установки под Nodejs:
 
-В документе вызывается через символ подчеркивания - `_` (отсюда и название библиотеки).
+{% highlight bash %}
+npm install underscore
+{% endhighlight %}
+
+В документе вызывается через символ подчеркивания - `_` (отсюда и название библиотеки). Кстати, расширенный вариант underscore - [lodash][6] также обыгрывает этот вариант самоназвания ( lodash == low dash ).
 
 ## underscore.js - работа с коллекциями
 
 Список методов для работы с коллекциями достаточно обширен - [Collection Functions][2]. Рассмотрим некоторые из них.
-
 
 ### Метод _.each()
 
@@ -53,7 +58,7 @@ _.each( a2, function (el) { _.each( el, function (element) { console.log(element
 
 ### Метод _.map()
 
-Метод `map()` получает на вход массив и выдает новый массив, созданный на основе какого-то условия.
+Метод `map()` получает на вход массив и возвращает новый массив, созданный путем преобразования элементов оригинального массива \ коллекции.
 
 Например, код ниже берет массив a3, вызывает каждый из элементов этого массива, умножает этот элемент на 3 и помещает в новый массив a4, как элемент этого массива:
 
@@ -131,6 +136,61 @@ var shuffledArrObj = _.shuffle(a2);
 var shuffledArr = _.shuffle(a3);
 {% endhighlight %}
 
+### Метод _.find()
+
+С помощью этого метода можно искать элементы в коллекциях\массивах. Метод возвращает первый элемент, который удовлетворяет условию, заданному в функции:
+
+{% highlight javascript %}
+var findExample = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
+var findResult = _.find( findExample, function (el) {
+    return el % 2 == 0;
+});
+{% endhighlight %}
+
+### Метод _.reduce()
+
+Этот метод выполняет "склеивание" элементов массива \ коллекции - все значения элементов будут объединены в одно значение. Функция-обработчик имеет вид function ( memo, value ), где memo - это начальное значение редукции:
+
+{% highlight javascript %}
+var reduceExample = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
+var reduceResult = _.reduce( reduceExample, function (memo, el) {
+    return memo + el;
+});
+{% endhighlight %}
+
+Метод `reduceRight()` будет делать тоже самое, что и метод `reduce()`, но только справа-налево.
+
+### Метод _.filter()
+
+Метод для поиска элементов массива по какому-то условию. Возвращает новый массив:
+
+{% highlight javascript %}
+var filterExample = [ 1,2,3,4,5,6,7,8,9 ];
+var filterResult = _.filter( filterExample, function (el) {
+    return el % 3 === 0
+});
+{% endhighlight %}
+
+Замечание по поводу метода `filter()` и его различия с методом `map()`.
+
+"... underscore\lodash - методы map() и filter() - у них есть различие между собой? в оф. документации говорится, что метод map() возвращает массив преобразованных элементов; метод filter() возвращает массив элементов, удовлетворяющих условию. но ведь я могу (?) подставить в оба метода любую (?) фунцию?  
+и метод filter() будет возвращать массив преобразованных элементов? или я что-то не понимаю? ..."
+
+"... Теоретически - да, они идентичны. Но у них разное назначение - если хочется фильтровать, то используй filter, хочешь преобразовывать - map. Могу предположить (я не знаю точно), что из соображений быстродействия filter передает в функцию объект по ссылке, а не его копию, поэтому изменения объекта будут работать, но это значит, что ты отдаешься во власть реализации метода. И никто не гарантирует, что в один день underscore/lodash не начнет передавать копию объекта. В этом случае твой код может поломаться. Поэтому я бы использовал функции по назначению. ..."
+
+### Метод _.pluck()
+
+Метод служит для возвращения массива, содержащего значения ключа, указанного в условии.
+
+Синтаксис метода до чрезвычайности прост - указываем имя обрабатываемой коллекции и названия ключа, значение которого хотим получить:
+
+{% highlight javascript %}
+var school = [ { name: 'Mary', age: 12 }, { name: 'John', age: 10 }, { name: 'Peter', age: 13 }, { name: 'David', age: 11 }, { name: 'George', age: 15 } ];
+var schoolNames = _.pluck( school, 'name');
+{% endhighlight %}
+
+Название метода смешное - привет, [Кин-дза-дза!][9]. В официальной документации говорится, что это самый часто используемый метод библиотеки underscore.
+
 ## underscore.js - работа с массивами
 
 Рассмотренные выше несколько методов underscore.js могут одинаково хорошо работать как с массивами, так и с коллекциями.
@@ -145,6 +205,8 @@ var shuffledArr = _.shuffle(a3);
 var a1 = [ 1, 2, 3 ];
 var firstEl = _.first(a1);
 {% endhighlight %}
+
+Есть метод `last()`, который аналогичен методу `firts()`, но возвращает последний элемент коллекции\массива.
 
 ### Метод _.flatten()
 
@@ -251,27 +313,143 @@ Chao, John
 
 Такой способ привязки функции к объекту носит название [карринг][5] и мы только что познакомились с ним на практике.
 
+Есть еще методы `debounce()`, `once()`, `after()` - с ними еще не познакомился. Но они весьма любопытны и полезны.
 
+## underscore.js - работа с объектами
 
+### Метод _.keys()
 
+Преобразует ключи объекта в массив:
 
-// FILE NAME
-// year-month-day-name
-2013-01-15-archlinux-slim.md
-
-// CODE SNIPPET
 {% highlight javascript %}
-// ...
+var fruits = { apple: 10, melon: 20, potato: 30, tomato: 50 };
+var fruitSorts = _.keys( fruits );
 {% endhighlight %}
 
-// INLINE LINK
-[link]( "link title")
+### Метод _.values()
 
-// ANNOUNCEED LINK
-[text][1]
+Преобразует значения ключей объекта в массив:
 
-// INLINE IMAGE
-![image title]({{site.url}}/images/uploads/2015/08/images/image.jpg "image alt")
+{% highlight javascript %}
+var fruitsvalues = _.values( fruits );
+{% endhighlight %}
+
+### Метод _.pairs()
+
+Преобразует пары ключ-значение объекта в массив, состоящий из подмассивов:
+
+{% highlight javascript %}
+var fruitsPairs = _.pairs( fruits );
+{% endhighlight %}
+
+### Метод _.invert()
+
+Инвертирует пару ключ:значение в объекте:
+
+{% highlight javascript %}
+var fruitsInvert = _.invert( fruits );
+{% endhighlight %}
+
+### Метод _.pick()
+
+Вернет новый объект, в котором будут только указанные ключи:
+
+{% highlight javascript %}
+var fruitsPicked = _.pick( fruits, [ 'melon', 'tomato' ] );
+{% endhighlight %}
+
+### Метод _.clone()
+
+Возвращает полную копию оригинального объекта:
+
+{% highlight javascript %}
+var man = { weight: 80, age: 30, height: 180, gender: 'male' };
+var manDouble = _.clone( man );
+man.age = 32;
+manDouble.gender = 'female';
+console.log( man );
+console.log( manDouble );
+{% endhighlight %}
+
+### Метод _.extend()
+
+Копируем свойства одного объекта в другой:
+
+{% highlight javascript %}
+var brick = { weight: 200, width: 250, height: 150, thickness: 100 };
+var color = { color: 'red' };
+var brickFull = _.extend( brick, color );
+{% endhighlight %}
+
+## underscore.js - утилиты
+
+### Метод _.random()
+
+Возвращает случайное число из диапазона min - max ( включительно нижнюю и верхнюю границы )
+
+{% highlight javascript %}
+var rnd = _.random( 0, 255 );
+{% endhighlight %}
+
+### Метод _.now()
+
+Возвращает текущее время:
+
+{% highlight javascript %}
+var currTime = _.now();
+console.log( currTime );
+{% endhighlight %}
+
+### Метод _.times()
+
+Запускаем функцию на исполнение три раза:
+
+{% highlight javascript %}
+_.times(3, function () {
+    console.log( 'Holla!' );
+});
+{% endhighlight %}
+
+## underscore.js - template
+
+Интересная возможность создания шаблонов. Кто знаком с HTML-шаблонизаторами (такими, как [Pug][10] (бывший [Jade][11])), станет все сразу понятно с первого взгляда.
+
+Кому не станет ясно с первого взгляда, есть хорошая статья у Ильи Катора - [Шаблонизатор LoDash][12].
+
+Но по коду, как мне кажется, станет ясно без объяснений:
+
+{% highlight html %}
+<button id="add" type="button">add underscore template</button>
+<div class="canvas"></div>
+{% endhighlight %}
+
+{% highlight javascript %}
+var users = [ 'Peter', 'Mary', 'John', 'Josef' ];
+var messages = [ 'Hello', 'Holla', 'Welcome', 'Greeting' ];
+var block;
+var compiled = _.template( "<dl class='info'><dt><%= name %></dt><dd><%= message %></dd></dl>" );
+
+function insertBlock () {
+    block = compiled({ name: users[ _.random( 0, users.length-1 ) ], message: messages[ _.random( 0, messages.length-1 ) ] });
+    document.querySelector('.canvas').innerHTML += block;
+}
+
+document.querySelector('#add').addEventListener('click', insertBlock, false);
+{% endhighlight %}
+
+## Заключение
+
+Личное впечатление от underscore.js - я очень доволен, что познакомился с этой библиотекой! Она крайне полезная, удобная и приятная в работе. Теперь буду стараться использовать ее там, где это понадобится.
+
+Как мне позже подсказали на frontendbelarus.slack.com, библиотека underscore.js является родоначальником другой библиотеки - [lodash][6]:
+
+"... Lodash — расширенная версия underscore ..."
+
+"... Когда-то был только underscore, но потом John-David Dalton форкнул его и стал расширять своими методами и оптимизировать производительность. Сейчас стандарт де-факто — это Lodash ..."
+
+"... некоторое время назад был план их объединения в одну библиотеку, не знаю, насколько им это удалось ..."
+
+Еще стоит заметить один немаловажный факт - некоторые методы underscore\lodash [планируются\внесены][13] в стандарт ES6 (например, методы `map()` и `filter()`).
 
 ***
 [1]: http://underscorejs.org/ "Underscore.js"
@@ -279,3 +457,11 @@ Chao, John
 [3]: http://underscorejs.org/#arrays "Underscore.js - Arrays"
 [4]: http://underscorejs.org/#functions "Underscore.js - Functions"
 [5]: https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%80%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5 "Каррирование"
+[6]: https://lodash.com/ "Lodash"
+[7]: https://www.youtube.com/watch?v=cD9utLH3QOk "Lo-Dash and JavaScript Performance Optimizations"
+[8]: http://underscorejs.ru/# "Underscore.js - Русская документация"
+[9]: https://ru.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD-%D0%B4%D0%B7%D0%B0-%D0%B4%D0%B7%D0%B0! "Кин-дза-дза!"
+[10]: https://www.npmjs.com/package/pug "Pug"
+[11]: http://jade-lang.com/ "Jade"
+[12]: https://learn.javascript.ru/template-lodash "Шаблонизатор LoDash"
+[13]: https://www.sitepoint.com/lodash-features-replace-es6/ "10 Lodash Features You Can Replace with ES6"
