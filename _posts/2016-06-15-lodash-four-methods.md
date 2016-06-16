@@ -22,6 +22,20 @@ var array = require('lodash/array');
 var chunk = require('lodash/chunk');
 {% endhighlight %}
 
+Или вот так - нам нужны только два модуля `random` и `foreach` для генерации случайный фоновых заливок у коллекции блоков.
+
+Тогда можно поступить так - устанавливаем всего два модуля вместо всей библиотеки lodash и используем их, ибо только они нам нужны сейчас:
+
+{% highlight javascript %}
+var random = require('lodash.random');
+var forEach = require('lodash.foreach');
+
+var items = document.querySelectorAll('.gallery__item');
+forEach( items, function (el) {
+    el.style.backgroundColor = 'rgb(' + random(255) + ',' + random(255) + ',' + random(255) + ')';
+});
+{% endhighlight %}
+
 В этой статье я познакомлюсь с пятью методами LoDash, которые я отложил "на потом" при знакомстве с Underscore.js. Это методы для работы с функциями - `.delay()`, `.once()`, `.after()`, `.before()`, `.debounce()`.
 
 ## lodash - .delay()
