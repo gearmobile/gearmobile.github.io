@@ -24,7 +24,14 @@ var chunk = require('lodash/chunk');
 
 Или вот так - нам нужны только два модуля `random` и `foreach` для генерации случайный фоновых заливок у коллекции блоков.
 
-Тогда можно поступить так - устанавливаем всего два модуля вместо всей библиотеки lodash и используем их, ибо только они нам нужны сейчас:
+Тогда можно поступить так - устанавливаем всего два модуля вместо всей библиотеки lodash:
+
+{% highlight bash %}
+$ npm i --save lodash.random
+$ npm i --save lodash.foreach
+{% endhighlight %}
+
+...  и используем их, ибо только они нам нужны сейчас:
 
 {% highlight javascript %}
 var random = require('lodash.random');
