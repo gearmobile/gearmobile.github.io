@@ -249,11 +249,11 @@ document.querySelector('#image').src = clock.canvas.toDataURL();
 
 ***
 
-[1]: http://codepen.io/gearmobile/pen/aZmzwa "JavaScript Canvas Clock - Start"
+[1]: http://codepen.io/gearmobile/full/aZmzwa/ "JavaScript Canvas Clock - Start"
 [2]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toDateString "toDateString"
 [3]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/toLocaleTimeString "toLocaleTimeString"
-[4]: http://codepen.io/gearmobile/pen/oLzgrN "JavaScript Canvas Clock - Date and Time"
+[4]: http://codepen.io/gearmobile/full/oLzgrN "JavaScript Canvas Clock - Date and Time"
 [5]: http://www.w3schools.com/canvas/canvas_gradients.asp "HTML Canvas Gradients"
-[6]: http://codepen.io/gearmobile/pen/oLzXbX "JavaScript Canvas Clock - Radial Gradient"
+[6]: http://codepen.io/gearmobile/full/oLzXbX "JavaScript Canvas Clock - Radial Gradient"
 [7]: https://developer.mozilla.org/en-US/docs/Web/HTTP/data_URIs "data URIs"
-[8]: http://codepen.io/gearmobile/pen/bewdLK "JavaScript Canvas Clock - Image"
+[8]: http://codepen.io/gearmobile/full/bewdLK "JavaScript Canvas Clock - Image"
