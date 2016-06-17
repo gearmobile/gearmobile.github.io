@@ -22,7 +22,7 @@ share: true
 [text][1]
 
 // INLINE IMAGE
-![image title]({{site.url}}/images/uploads/2015/08/images/image.jpg "image alt") 
+![image title]({{site.url}}/images/uploads/2015/08/image.jpg "image alt") 
 
 ***
 [1]: http://speckyboy.com/2015/01/26/six-common-freelancing-myths/ "Six Common Freelancing Myths"

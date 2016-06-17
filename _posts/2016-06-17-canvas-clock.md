@@ -245,6 +245,11 @@ document.querySelector('#image').src = clock.canvas.toDataURL();
 
 Смотрим окончательный готовый результат (слегка измененный) - [JavaScript Canvas Clock - Image][8].
 
+## P.S.
+Тут вышла заминка - даже CodePen с трудом справляется с такой задачей (но если подождать, то можно увидеть). Поэтому продублировал результат простой картинкой на странице, чтобы можно было видеть, как должно получиться:
+
+![JavaScript Canvas Clock - Image]({{site.url}}/images/uploads/2016/06/clock-canvas.png "JavaScript Canvas Clock - Image") 
+
 На этом все.
 
 ***
