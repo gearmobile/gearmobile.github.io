@@ -32,7 +32,7 @@ sudo service mongod stop
 
 ### Перезапуск MongoDB
 
-Если нужно перезапустить сервер MongoDB, то это выполянется командой:
+Если нужно перезапустить сервер MongoDB, то это выполняется командой:
 
 {% highlight bash %}
 sudo service mongod restart
