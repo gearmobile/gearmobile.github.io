@@ -13,23 +13,41 @@ share: true
 
 MongoDB управляется так же, как и все остальные процессы в системе Linux.
 
-### Запуск MongoDB:
+### Запуск MongoDB
+
+Сервер MongoDB запускается командой:
 
 {% highlight bash %}
-service mongod start
+sudo service mongod start
 {% endhighlight %}
 
-### Остановка MongoDB:
+Будет "висеть" в фоновом режиме и слушать команды на порту 27017.
+
+### Остановка MongoDB
+
+Остановить сервер MongoDB останавливается командой:
 
 {% highlight bash %}
 sudo service mongod stop
 {% endhighlight %}
 
-### Перезапуск MongoDB:
+### Перезапуск MongoDB
+
+Если нужно перезапустить сервер MongoDB, то это выполянется командой:
 
 {% highlight bash %}
 sudo service mongod restart
 {% endhighlight %}
+
+### Статус MongoDB
+
+Посмотреть статус сервера MongoDB можно командой:
+
+{% highlight bash %}
+sudo service mongod status
+{% endhighlight %}
+
+Покажет, запущен сервер MongoDB и его текущее состояние.
 
 ***
 [1]: https://www.mongodb.com "MongoDB"
