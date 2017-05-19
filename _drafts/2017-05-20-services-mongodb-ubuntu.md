@@ -8,7 +8,6 @@ share: true
 
 ![MongoDB]({{site.url}}/images/uploads/2017/05/mongodb-logo.jpg "MongoDB")
 
-
 ## Управление MongoDB
 
 MongoDB управляется так же, как и все остальные процессы в системе Linux.
