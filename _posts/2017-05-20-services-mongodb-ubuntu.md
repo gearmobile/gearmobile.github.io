@@ -1,7 +1,7 @@
 ---
-title: "MongoDB - установка на Ubuntu"
+title: "MongoDB - управление службой"
 layout: post
-categories: linux
+categories: mongodb
 tags: [linux, mongodb]
 share: true
 ---
