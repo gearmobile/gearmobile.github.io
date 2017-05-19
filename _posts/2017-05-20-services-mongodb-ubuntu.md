@@ -24,7 +24,7 @@ sudo service mongod start
 
 ### Остановка MongoDB
 
-Остановить сервер MongoDB останавливается командой:
+Остановить сервер MongoDB можно командой:
 
 {% highlight bash %}
 sudo service mongod stop
