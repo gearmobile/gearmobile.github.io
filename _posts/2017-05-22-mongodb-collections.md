@@ -21,7 +21,7 @@ share: true
 В базе данных создать collection можно командой:
 
 {% highlight bash %}
-db.createCollection()
+db.createCollection('NAME_COLLECTION')
 {% endhighlight %}
 
 Например, я создам две коллекции cats и dogs в базе данных animals. Для этого создам базу данных animals:
@@ -46,7 +46,7 @@ switched to db animals
 { "ok" : 1 }
 {% endhighlight %}
 
-Посмотреть список существующих колекций базы данных мжно командой:
+Посмотреть список существующих колекций базы данных можно командой:
 
 {% highlight bash %}
 show collections
@@ -92,7 +92,7 @@ dogs
 >
 {% endhighlight %}
 
-В результате коллекция bird успешно перименована в birds.
+В результате коллекция bird успешно переименована в birds.
 
 ## Удаление collection
 
@@ -105,10 +105,6 @@ db.COLLECTION_NAME.drop()
 Например, я хочу удалить коллекцию birds из базы данных animals:
 
 {% highlight bash %}
-> show collections
-birds
-cats
-dogs
 > db.birds.drop()
 true
 > show collections
