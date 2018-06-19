@@ -131,8 +131,33 @@ const resultC = promote.apply(senior, [ 'super senior developer', 3200 ])
 
 Этот метод похож на предыдущие два - call и apply. Однако, у него есть два отличия - этот метод появился в стандарте ES5; и второе отличие - этот метод позволяет выполнить отложенный вызов функции.
 
-То есть - метод call или apply вызываются на исполнение сразу, и результат их работы мы получаем сразу.
+То есть - метод call или apply вызываются на исполнение сразу, и результат их работы мы получаем сразу. С методом bind немного иначе:
 
+{% highlight javascript %}
+const resultAA = promote.bind(junior)
+const resultBB = promote.bind(middle)
+const resultCC = promote.bind(senior)
+{% endhighlight %}
+
+Что мы сдесь сделали? Мы вызвали функции promote() и передали ей контекст выполнения; результат - экземпляр функции promote() с уже встроенным контекстом выполнения; экземпляр помещен в константу resultAA, resultBB или resultCC. Другими словами - это готовые функции с контекстом.
+
+Осталось вызвать любую из них и передать ей аргументы, которые она ожидает:
+
+{% highlight javascript %}
+const resultAAA = resultAA('super junior developer', 1200)
+const resultBBB = resultBB('super middle developer', 2200)
+const resultCCC = resultCC('super senior developer', 3200)
+{% endhighlight %}
+
+Получим результат:
+
+{% highlight javascript %}
+super junior developer earns 1200 dollars
+super middle developer earns 2200 dollars
+super senior developer earns 3200 dollars
+{% endhighlight %}
+
+Видим - действиетльно мы получили отложенный вызов каждой из функций.
 
 
 // FILE NAME
