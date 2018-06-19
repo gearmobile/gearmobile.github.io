@@ -45,8 +45,43 @@ const user1 = {
 const result1 = getName.call(user1)
 {% endhighlight %}
 
-Что будет происходить здесь? В этом случае ключевое слово this будет указывать на объект user1, у которого есть свойство name. Как результат - в константе result1 будет находиться значение Ivan.
+Что будет происходить здесь? В этом случае ключевое слово this (в теле функции getName) будет указывать на объект user1, у которого есть свойство name. Как результат - в константе result1 будет находиться значение Ivan.
 
+Если создадим еще один объект:
+
+{% highlight javascript %}
+const user2 = {
+  name: 'Joshua',
+  position: 'ui designer',
+  salary: 2200
+}
+{% endhighlight %}
+
+И на нем вызовем функцию getName():
+
+{% highlight javascript %}
+const result2 = getName.call(user2)
+{% endhighlight %}
+
+Что будет? В этом случае функция getName будет ссылаться уже на объект user2! И в константе result2 уже будет значение свойства name объекта user2 - Joshua.
+
+### call - более сложный вариант
+
+Рассмотрим более сложный случай - когда фунция принимает аргумент(ы). Допустим, такая функция,
+
+{% highlight javascript %}
+function promote(position, salary) {
+  this.salary = salary
+  this.position = position
+  return this.position + ' earns ' + this.salary + 'dollars'
+}
+{% endhighlight %}
+
+И есть два объекта:
+
+{% highlight javascript %}
+const
+{% endhighlight %}
 
 
 // FILE NAME
