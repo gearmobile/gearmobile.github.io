@@ -1,5 +1,5 @@
 ---
-title: "Underscore.js -  приятное знакомство"
+title: 'Underscore.js -  приятное знакомство'
 layout: post
 categories: javascript
 tags: [javascript, underscore.js]
@@ -22,32 +22,32 @@ share: true
 npm install underscore
 {% endhighlight %}
 
-В документе вызывается через символ подчеркивания - `_` (отсюда и название библиотеки). Кстати, расширенный вариант underscore - [lodash][6] также обыгрывает этот вариант самоназвания ( lodash == low dash ).
+В документе вызывается через символ подчеркивания - \_ (отсюда и название библиотеки). Кстати, расширенный вариант underscore - [lodash][6] также обыгрывает этот вариант самоназвания ( lodash == low dash ).
 
 ## underscore.js - работа с коллекциями
 
 Список методов для работы с коллекциями достаточно обширен - [Collection Functions][2]. Рассмотрим некоторые из них.
 
-### Метод _.each()
+### Метод each()
 
 Служит для перебора всех элементов коллекции и применения функции к каждому из элементов. Код ниже пробежится по всем элементам коллекции a1 и выведет каждый из этих элементов в консоль браузера:
 
 {% highlight javascript %}
 var a1 = [ 1, 2, 3 ];
-_.each( a1, function (el) { console.log(el) });
+\_.each( a1, function (el) { console.log(el) });
 {% endhighlight %}
 
-Более сложный пример применения метода `each()`. Уже здесь начинается демонстрация привлекательности underscore.js.
+Более сложный пример применения метода each(). Уже здесь начинается демонстрация привлекательности underscore.js.
 
 Код ниже является ни чем иным, как двойным циклом - один цикл вложен в другой цикл. Но с использованием underscore.js код становится буквально изящным - всего одна строка!
 
 {% highlight javascript %}
 var a2 = [
-    { name: 'John', spec: 'Ruby', sal: 2000 },
-    { name: 'Mary', spec: 'Python', sal: 3000 },
-    { name: 'Peter', spec: 'JavaScript', sal: 4000 },
-    { name: 'Jefferson', spec: 'HTML', sal: 1000 },
-    { name: 'Abdul', spec: 'C++', sal: 10000 }
+{ name: 'John', spec: 'Ruby', sal: 2000 },
+{ name: 'Mary', spec: 'Python', sal: 3000 },
+{ name: 'Peter', spec: 'JavaScript', sal: 4000 },
+{ name: 'Jefferson', spec: 'HTML', sal: 1000 },
+{ name: 'Abdul', spec: 'C++', sal: 10000 }
 ];
 _.each( a2, function (el) { _.each( el, function (element) { console.log(element) } ) });
 {% endhighlight %}
@@ -56,129 +56,129 @@ _.each( a2, function (el) { _.each( el, function (element) { console.log(element
 
 Для каждого элемента массива запускается внутренний цикл, который пробегается по свойствам элемента массива (ведь элемент массива - это объект в данном случае).
 
-### Метод _.map()
+### Метод map()
 
-Метод `map()` получает на вход массив и возвращает новый массив, созданный путем преобразования элементов оригинального массива \ коллекции.
+Метод map() получает на вход массив и возвращает новый массив, созданный путем преобразования элементов оригинального массива \ коллекции.
 
 Например, код ниже берет массив a3, вызывает каждый из элементов этого массива, умножает этот элемент на 3 и помещает в новый массив a4, как элемент этого массива:
 
 {% highlight javascript %}
 var a3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-var a4 = _.map( a3, function (el) { return el*3 } );
+var a4 = \_.map( a3, function (el) { return el\*3 } );
 {% endhighlight %}
 
-Точно также этот метод работает с коллекцией. Например, увеличим значение только одного определенного ключа коллекции a2. Вернется новый массив a5 с измененным значением ключа `sal`:
+Точно также этот метод работает с коллекцией. Например, увеличим значение только одного определенного ключа коллекции a2. Вернется новый массив a5 с измененным значением ключа sal:
 
 {% highlight javascript %}
 var a2 = [
-    { name: 'John', spec: 'Ruby', sal: 2000 },
-    { name: 'Mary', spec: 'Python', sal: 3000 },
-    { name: 'Peter', spec: 'JavaScript', sal: 4000 },
-    { name: 'Jefferson', spec: 'HTML', sal: 1000 },
-    { name: 'Abdul', spec: 'C++', sal: 10000 }
+{ name: 'John', spec: 'Ruby', sal: 2000 },
+{ name: 'Mary', spec: 'Python', sal: 3000 },
+{ name: 'Peter', spec: 'JavaScript', sal: 4000 },
+{ name: 'Jefferson', spec: 'HTML', sal: 1000 },
+{ name: 'Abdul', spec: 'C++', sal: 10000 }
 ];
-var a5 = _.map( a2, function (el) { el.sal += 500 } );
+var a5 = \_.map( a2, function (el) { el.sal += 500 } );
 {% endhighlight %}
 
-Функция для обработки элементов коллекции может быть любой. К примеру, можно создать новый массив, состоящий только из значений ключей `spec`, `name` или `sal`:
+Функция для обработки элементов коллекции может быть любой. К примеру, можно создать новый массив, состоящий только из значений ключей spec, name или sal:
 
 {% highlight javascript %}
 var a2 = [
-    { name: 'John', spec: 'Ruby', sal: 2000 },
-    { name: 'Mary', spec: 'Python', sal: 3000 },
-    { name: 'Peter', spec: 'JavaScript', sal: 4000 },
-    { name: 'Jefferson', spec: 'HTML', sal: 1000 },
-    { name: 'Abdul', spec: 'C++', sal: 10000 }
+{ name: 'John', spec: 'Ruby', sal: 2000 },
+{ name: 'Mary', spec: 'Python', sal: 3000 },
+{ name: 'Peter', spec: 'JavaScript', sal: 4000 },
+{ name: 'Jefferson', spec: 'HTML', sal: 1000 },
+{ name: 'Abdul', spec: 'C++', sal: 10000 }
 ];
 var specs = _.map( a2, function (el) { return el.spec } );
 var names = _.map( a2, function (el) { return el.name } );
-var salaries = _.map( a2, function (el) { return el.sal } );
+var salaries = \_.map( a2, function (el) { return el.sal } );
 {% endhighlight %}
 
-### Метод _.partition()
+### Метод partition()
 
-Метод `partition()` создает из одного массива новый массив, который состоит из двух подмассивов.
+Метод partition() создает из одного массива новый массив, который состоит из двух подмассивов.
 
 Первый подмассив будет содержать элементы, которые **удовлетворяют** условию. Второй подмассив - элементы, которые **не удовлетворяют** условию.
 
 {% highlight javascript %}
 var a3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-var splitArr = _.partition( a3, function (el) { if ( el % 2 === 0 ) { return el } } );
+var splitArr = \_.partition( a3, function (el) { if ( el % 2 === 0 ) { return el } } );
 {% endhighlight %}
 
-Метод `_.partition()` также хорошо умеет работать и с коллекциями. К примеру, код ниже отсортирует массив из объектов на основе условия - значения ключа sal:
+Метод \_.partition() также хорошо умеет работать и с коллекциями. К примеру, код ниже отсортирует массив из объектов на основе условия - значения ключа sal:
 
 {% highlight javascript %}
 var a2 = [
-    { name: 'John', spec: 'Ruby', sal: 2000 },
-    { name: 'Mary', spec: 'Python', sal: 3000 },
-    { name: 'Peter', spec: 'JavaScript', sal: 4000 },
-    { name: 'Jefferson', spec: 'HTML', sal: 1000 },
-    { name: 'Abdul', spec: 'C++', sal: 10000 }
+{ name: 'John', spec: 'Ruby', sal: 2000 },
+{ name: 'Mary', spec: 'Python', sal: 3000 },
+{ name: 'Peter', spec: 'JavaScript', sal: 4000 },
+{ name: 'Jefferson', spec: 'HTML', sal: 1000 },
+{ name: 'Abdul', spec: 'C++', sal: 10000 }
 ];
-var splitSalary = _.partition( a2, function (el) { if ( el.sal < 4000 ) { return el } } );
+var splitSalary = \_.partition( a2, function (el) { if ( el.sal < 4000 ) { return el } } );
 {% endhighlight %}
 
-### Метод _.shuffle()
+### Метод shuffle()
 
-При каждом запуске изменяет метод `shuffle()` в случайном порядке индекс элементов существующего массива. В результате получается новый массив на основе существующего массива:
+При каждом запуске изменяет метод shuffle() в случайном порядке индекс элементов существующего массива. В результате получается новый массив на основе существующего массива:
 
 {% highlight javascript %}
 var a2 = [
-    { name: 'John', spec: 'Ruby', sal: 2000 },
-    { name: 'Mary', spec: 'Python', sal: 3000 },
-    { name: 'Peter', spec: 'JavaScript', sal: 4000 },
-    { name: 'Jefferson', spec: 'HTML', sal: 1000 },
-    { name: 'Abdul', spec: 'C++', sal: 10000 }
+{ name: 'John', spec: 'Ruby', sal: 2000 },
+{ name: 'Mary', spec: 'Python', sal: 3000 },
+{ name: 'Peter', spec: 'JavaScript', sal: 4000 },
+{ name: 'Jefferson', spec: 'HTML', sal: 1000 },
+{ name: 'Abdul', spec: 'C++', sal: 10000 }
 ];
 var a3 = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
 var shuffledArrObj = _.shuffle(a2);
 var shuffledArr = _.shuffle(a3);
 {% endhighlight %}
 
-### Метод _.find()
+### Метод find()
 
 С помощью этого метода можно искать элементы в коллекциях\массивах. Метод возвращает первый элемент, который удовлетворяет условию, заданному в функции:
 
 {% highlight javascript %}
 var findExample = [ 1, 2, 3, 4, 5, 6, 7, 8, 9 ];
-var findResult = _.find( findExample, function (el) {
-    return el % 2 == 0;
+var findResult = \_.find( findExample, function (el) {
+return el % 2 == 0;
 });
 {% endhighlight %}
 
-### Метод _.reduce()
+### Метод reduce()
 
 Этот метод выполняет "склеивание" элементов массива \ коллекции - все значения элементов будут объединены в одно значение. Функция-обработчик имеет вид function ( memo, value ), где memo - это начальное значение редукции:
 
 {% highlight javascript %}
 var reduceExample = [ 1, 2, 3, 4, 5, 6, 7, 8 ];
-var reduceResult = _.reduce( reduceExample, function (memo, el) {
-    return memo + el;
+var reduceResult = \_.reduce( reduceExample, function (memo, el) {
+return memo + el;
 });
 {% endhighlight %}
 
-Метод `reduceRight()` будет делать тоже самое, что и метод `reduce()`, но только справа-налево.
+Метод reduceRight() будет делать тоже самое, что и метод reduce(), но только справа-налево.
 
-### Метод _.filter()
+### Метод filter()
 
 Метод для поиска элементов массива по какому-то условию. Возвращает новый массив:
 
 {% highlight javascript %}
 var filterExample = [ 1,2,3,4,5,6,7,8,9 ];
-var filterResult = _.filter( filterExample, function (el) {
-    return el % 3 === 0
+var filterResult = \_.filter( filterExample, function (el) {
+return el % 3 === 0
 });
 {% endhighlight %}
 
-Замечание по поводу метода `filter()` и его различия с методом `map()`.
+Замечание по поводу метода filter() и его различия с методом map().
 
 "... underscore\lodash - методы map() и filter() - у них есть различие между собой? в оф. документации говорится, что метод map() возвращает массив преобразованных элементов; метод filter() возвращает массив элементов, удовлетворяющих условию. но ведь я могу (?) подставить в оба метода любую (?) фунцию?  
 и метод filter() будет возвращать массив преобразованных элементов? или я что-то не понимаю? ..."
 
 "... Теоретически - да, они идентичны. Но у них разное назначение - если хочется фильтровать, то используй filter, хочешь преобразовывать - map. Могу предположить (я не знаю точно), что из соображений быстродействия filter передает в функцию объект по ссылке, а не его копию, поэтому изменения объекта будут работать, но это значит, что ты отдаешься во власть реализации метода. И никто не гарантирует, что в один день underscore/lodash не начнет передавать копию объекта. В этом случае твой код может поломаться. Поэтому я бы использовал функции по назначению. ..."
 
-### Метод _.pluck()
+### Метод pluck()
 
 Метод служит для возвращения массива, содержащего значения ключа, указанного в условии.
 
@@ -186,10 +186,10 @@ var filterResult = _.filter( filterExample, function (el) {
 
 {% highlight javascript %}
 var school = [ { name: 'Mary', age: 12 }, { name: 'John', age: 10 }, { name: 'Peter', age: 13 }, { name: 'David', age: 11 }, { name: 'George', age: 15 } ];
-var schoolNames = _.pluck( school, 'name');
+var schoolNames = \_.pluck( school, 'name');
 {% endhighlight %}
 
-Название метода смешное - привет, [Кин-дза-дза!][9]. В официальной документации говорится, что это самый часто используемый метод библиотеки underscore.
+Название метода смешное (имхо) - привет, [Кин-дза-дза!][9]. В официальной документации говорится, что это самый часто используемый метод библиотеки underscore.
 
 ## underscore.js - работа с массивами
 
@@ -197,26 +197,26 @@ var schoolNames = _.pluck( school, 'name');
 
 Однако, помимо этих методов, у underscore.js есть методы исключительно для работы с массивами. По этой ссылке можно ознакомиться со списком таких методов - [Underscore.js - Arrays][3].
 
-### Метод _.first()
+### Метод first()
 
 Этот метод возвращает первый элемент массива - все просто и понятно:
 
 {% highlight javascript %}
 var a1 = [ 1, 2, 3 ];
-var firstEl = _.first(a1);
+var firstEl = \_.first(a1);
 {% endhighlight %}
 
-Есть метод `last()`, который аналогичен методу `firts()`, но возвращает последний элемент коллекции\массива.
+Есть метод last(), который аналогичен методу firts(), но возвращает последний элемент коллекции\массива.
 
-### Метод _.flatten()
+### Метод flatten()
 
 Этот метод преобразует массив с вложенными подмассивами (многоуровневый массив) в один, **одноуровневый** массив:
 
 {% highlight javascript %}
-var fltArr = _.flatten( [ 11, 12, 13, [ 21, 22, 23, [ 31, 32, 33, [ 41, 42, 43, [ 51, 52, 53, [ 61 ] ] ] ] ] ] );
+var fltArr = \_.flatten( [ 11, 12, 13, [ 21, 22, 23, [ 31, 32, 33, [ 41, 42, 43, [ 51, 52, 53, [ 61 ] ] ] ] ] ] );
 {% endhighlight %}
 
-### Метод _.zip()
+### Метод zip()
 
 Этот метод интересен и является примером того, насколько библиотека underscore.js удобная и изящная. Допустим, имеются три массива:
 
@@ -226,23 +226,23 @@ var r2 = [ '2-1', '2-2', '2-3' ];
 var r3 = [ '3-1', '3-2', '3-3' ];
 {% endhighlight %}
 
-Если передать эти три массива на вход методу `zip()`, то он преобразует их в один массив, состоящий из трех подмассивов. При этом элементы этих подмассивов будут выглядеть таким образом:
+Если передать эти три массива на вход методу zip(), то он преобразует их в один массив, состоящий из трех подмассивов. При этом элементы этих подмассивов будут выглядеть таким образом:
 
 {% highlight javascript %}
-var r4 = _.zip( r1 , r2 , r3 );
+var r4 = \_.zip( r1 , r2 , r3 );
 r4 = [ [ '1-1', '2-1', '3-1' ], [ '1-2', '2-2', '3-2' ], [ '1-3', '2-3', '3-3' ] ];
 {% endhighlight %}
 
 Теперь представьте, что вам пришлось бы затратить достаточно времени для написания кода на нативном JavaScript, чтобы обработать такой пример.
 
-### Метод _.object()
+### Метод object()
 
 Этот метод преобразует несколько массивов в один объект:
 
 {% highlight javascript %}
 var names = [ 'Peter', 'Mary', 'John' ];
 var ages = [ 30, 20, 40 ];
-var peoples = _.object( names, ages );
+var peoples = \_.object( names, ages );
 peoples = {Peter: 30, Mary: 20, John: 40};
 {% endhighlight %}
 
@@ -250,11 +250,11 @@ peoples = {Peter: 30, Mary: 20, John: 40};
 
 Методы работы с функциями с underscore.js "расположены" здесь - [Underscore.js - Functions][4]. Их не так много. Они немного сложнее для понимания. Хотя ничего сложного нет.
 
-### Метод _.bind()
+### Метод bind()
 
 Этот метод "привязывает" исполнение функции только к определенному объекту. Чтобы было понятнее, начнем из далека, из классики.
 
-Создадим три объекта, у каждого из которых будет ключ `name`:
+Создадим три объекта, у каждого из которых будет ключ name:
 
 {% highlight javascript %}
 var someObj1 = {};
@@ -265,15 +265,15 @@ someObj2.name = 'Mary';
 someObj3.name = 'John';
 {% endhighlight %}
 
-Создадим функцию `greeting` такого вида:
+Создадим функцию greeting такого вида:
 
 {% highlight javascript %}
 var greeting = function (el) {
-    console.log( el + ', ' + this.name );
+console.log( el + ', ' + this.name );
 };
 {% endhighlight %}
 
-А теперь вызовем функцию `greeting` на каждом из двух первых объектов:
+А теперь вызовем функцию greeting на каждом из двух первых объектов:
 
 {% highlight javascript %}
 greeting.apply( someObj1, ['Hello'] );
@@ -287,17 +287,17 @@ Hello, Peter
 Holla, Mary
 {% endhighlight %}
 
-... потому что `this.name` каждый раз будет ссылаться на разный объект - в зависимости от того, на котором из объектов было вызвано исполнение функции.
+... потому что this.name каждый раз будет ссылаться на разный объект - в зависимости от того, на котором из объектов было вызвано исполнение функции.
 
-А теперь воспользуемся методом `bind()` библиотеки underscore.js таким образом:
+А теперь воспользуемся методом bind() библиотеки underscore.js таким образом:
 
 {% highlight javascript %}
-var greetingBind = _.bind( greeting, someObj3 );
+var greetingBind = \_.bind( greeting, someObj3 );
 {% endhighlight %}
 
-Что мы сделали в этом коде? Мы создали новый экземпляр `greetingBind` функции `greeting` и привязали исполнение этого нового экземпляра на объект someObj3.
+Что мы сделали в этом коде? Мы создали новый экземпляр greetingBind функции greeting и привязали исполнение этого нового экземпляра на объект someObj3.
 
-И только на него. Теперь нам не надо даже указывать, что функцию нужно исполнять на объекте someObj3 - мы просто вызываем функцию `greetingBind` на исполнение и передаем ей аргумент:
+И только на него. Теперь нам не надо даже указывать, что функцию нужно исполнять на объекте someObj3 - мы просто вызываем функцию greetingBind на исполнение и передаем ей аргумент:
 
 {% highlight javascript %}
 greetingBind('Welcome');
@@ -313,100 +313,100 @@ Chao, John
 
 Такой способ привязки функции к объекту носит название [карринг][5] и мы только что познакомились с ним на практике.
 
-Есть еще методы `debounce()`, `once()`, `after()` - с ними еще не познакомился. Но они весьма любопытны и полезны.
+Есть еще методы debounce(), once(), after() - с ними еще не познакомился. Но они весьма любопытны и полезны.
 
 ## underscore.js - работа с объектами
 
-### Метод _.keys()
+### Метод keys()
 
 Преобразует ключи объекта в массив:
 
 {% highlight javascript %}
 var fruits = { apple: 10, melon: 20, potato: 30, tomato: 50 };
-var fruitSorts = _.keys( fruits );
+var fruitSorts = \_.keys( fruits );
 {% endhighlight %}
 
-### Метод _.values()
+### Метод values()
 
 Преобразует значения ключей объекта в массив:
 
 {% highlight javascript %}
-var fruitsvalues = _.values( fruits );
+var fruitsvalues = \_.values( fruits );
 {% endhighlight %}
 
-### Метод _.pairs()
+### Метод pairs()
 
 Преобразует пары ключ-значение объекта в массив, состоящий из подмассивов:
 
 {% highlight javascript %}
-var fruitsPairs = _.pairs( fruits );
+var fruitsPairs = \_.pairs( fruits );
 {% endhighlight %}
 
-### Метод _.invert()
+### Метод invert()
 
 Инвертирует пару ключ:значение в объекте:
 
 {% highlight javascript %}
-var fruitsInvert = _.invert( fruits );
+var fruitsInvert = \_.invert( fruits );
 {% endhighlight %}
 
-### Метод _.pick()
+### Метод pick()
 
 Вернет новый объект, в котором будут только указанные ключи:
 
 {% highlight javascript %}
-var fruitsPicked = _.pick( fruits, [ 'melon', 'tomato' ] );
+var fruitsPicked = \_.pick( fruits, [ 'melon', 'tomato' ] );
 {% endhighlight %}
 
-### Метод _.clone()
+### Метод clone()
 
 Возвращает полную копию оригинального объекта:
 
 {% highlight javascript %}
 var man = { weight: 80, age: 30, height: 180, gender: 'male' };
-var manDouble = _.clone( man );
+var manDouble = \_.clone( man );
 man.age = 32;
 manDouble.gender = 'female';
 console.log( man );
 console.log( manDouble );
 {% endhighlight %}
 
-### Метод _.extend()
+### Метод extend()
 
 Копируем свойства одного объекта в другой:
 
 {% highlight javascript %}
 var brick = { weight: 200, width: 250, height: 150, thickness: 100 };
 var color = { color: 'red' };
-var brickFull = _.extend( brick, color );
+var brickFull = \_.extend( brick, color );
 {% endhighlight %}
 
 ## underscore.js - утилиты
 
-### Метод _.random()
+### Метод random()
 
 Возвращает случайное число из диапазона min - max ( включительно нижнюю и верхнюю границы )
 
 {% highlight javascript %}
-var rnd = _.random( 0, 255 );
+var rnd = \_.random( 0, 255 );
 {% endhighlight %}
 
-### Метод _.now()
+### Метод now()
 
 Возвращает текущее время:
 
 {% highlight javascript %}
-var currTime = _.now();
+var currTime = \_.now();
 console.log( currTime );
 {% endhighlight %}
 
-### Метод _.times()
+### Метод times()
 
 Запускаем функцию на исполнение три раза:
 
 {% highlight javascript %}
-_.times(3, function () {
-    console.log( 'Holla!' );
+\_.times(3, function () {
+console.log( 'Holla!' );
 });
 {% endhighlight %}
 
@@ -420,6 +420,7 @@ _.times(3, function () {
 
 {% highlight html %}
 <button id="add" type="button">add underscore template</button>
+
 <div class="canvas"></div>
 {% endhighlight %}
 
@@ -427,11 +428,11 @@ _.times(3, function () {
 var users = [ 'Peter', 'Mary', 'John', 'Josef' ];
 var messages = [ 'Hello', 'Holla', 'Welcome', 'Greeting' ];
 var block;
-var compiled = _.template( "<dl class='info'><dt><%= name %></dt><dd><%= message %></dd></dl>" );
+var compiled = \_.template( "<dl class='info'><dt><%= name %></dt><dd><%= message %></dd></dl>" );
 
 function insertBlock () {
-    block = compiled({ name: users[ _.random( 0, users.length-1 ) ], message: messages[ _.random( 0, messages.length-1 ) ] });
-    document.querySelector('.canvas').innerHTML += block;
+block = compiled({ name: users[ _.random( 0, users.length-1 ) ], message: messages[ _.random( 0, messages.length-1 ) ] });
+document.querySelector('.canvas').innerHTML += block;
 }
 
 document.querySelector('#add').addEventListener('click', insertBlock, false);
@@ -451,17 +452,18 @@ document.querySelector('#add').addEventListener('click', insertBlock, false);
 
 Еще стоит заметить один немаловажный факт - некоторые методы underscore\lodash [планируются\внесены][13] в стандарт ES6 (например, методы `map()` и `filter()`).
 
-***
-[1]: http://underscorejs.org/ "Underscore.js"
-[2]: http://underscorejs.org/#collections "Underscore.js - Collections"
-[3]: http://underscorejs.org/#arrays "Underscore.js - Arrays"
-[4]: http://underscorejs.org/#functions "Underscore.js - Functions"
-[5]: https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%80%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5 "Каррирование"
-[6]: https://lodash.com/ "Lodash"
-[7]: https://www.youtube.com/watch?v=cD9utLH3QOk "Lo-Dash and JavaScript Performance Optimizations"
-[8]: http://underscorejs.ru/# "Underscore.js - Русская документация"
-[9]: https://ru.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD-%D0%B4%D0%B7%D0%B0-%D0%B4%D0%B7%D0%B0! "Кин-дза-дза!"
-[10]: https://www.npmjs.com/package/pug "Pug"
-[11]: http://jade-lang.com/ "Jade"
-[12]: https://learn.javascript.ru/template-lodash "Шаблонизатор LoDash"
-[13]: https://www.sitepoint.com/lodash-features-replace-es6/ "10 Lodash Features You Can Replace with ES6"
+---
+
+[1]: http://underscorejs.org/ 'Underscore.js'
+[2]: http://underscorejs.org/#collections 'Underscore.js - Collections'
+[3]: http://underscorejs.org/#arrays 'Underscore.js - Arrays'
+[4]: http://underscorejs.org/#functions 'Underscore.js - Functions'
+[5]: https://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D1%80%D1%80%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5 'Каррирование'
+[6]: https://lodash.com/ 'Lodash'
+[7]: https://www.youtube.com/watch?v=cD9utLH3QOk 'Lo-Dash and JavaScript Performance Optimizations'
+[8]: http://underscorejs.ru/# 'Underscore.js - Русская документация'
+[9]: https://ru.wikipedia.org/wiki/%D0%9A%D0%B8%D0%BD-%D0%B4%D0%B7%D0%B0-%D0%B4%D0%B7%D0%B0! 'Кин-дза-дза!'
+[10]: https://www.npmjs.com/package/pug 'Pug'
+[11]: http://jade-lang.com/ 'Jade'
+[12]: https://learn.javascript.ru/template-lodash 'Шаблонизатор LoDash'
+[13]: https://www.sitepoint.com/lodash-features-replace-es6/ '10 Lodash Features You Can Replace with ES6'
