@@ -65,7 +65,29 @@ it('should accept values', () => {
 
 `compileComponents()` - ?
 
-`inject()` - ?
+[angular core testing utils list](https://angular.io/api/core/testing)
+
+`inject()` - позволяет добавлять зависимости в функции `beforeEach()` и `it()`.
+
+* внедрение зависимости в `beforeEach()`:
+~~~ js
+beforeEach( inject([Dependency, AClass], (dep, object) => {
+  // some code that uses `dep` and `object`
+  // ...
+}));
+~~~
+
+* внедрение зависимости в `it`:
+~~~ js
+it('...', inject([AClass], (object) => {
+  object.doSomething();
+  expect(...);
+})
+~~~
+
+`flush()` - ?
+
+`expectOne()` - ?
 
 `spyOn()` - функция Jasmine, которая перехватывает все вызовы реального метода.
 
