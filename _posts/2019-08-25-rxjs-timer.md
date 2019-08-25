@@ -33,7 +33,7 @@ const source = timer(0, 1000);
 source.subscribe(data => console.log(new Date()));
 {% endhighlight %}
 
-... это получился простейший таймер (_не обратного отсчета_). При использовании в Angular можно задействовать встроенный _pipe_ - _date: 'hh:mm:ss'_.
+... это получился простейший таймер (_не обратного отсчета_) - [https://stackblitz.com/edit/learn-rxjs-timer-example?file=index.ts](rxjs - timer). При использовании в Angular можно задействовать встроенный _pipe_ - _date: 'hh:mm:ss'_.
 
 Интересная особенность - первым параметром можно задать дату запуска таймера - _signature: timer(initialDelay: number | Date, period: number, scheduler: Scheduler): Observable_.
 Не пробовал, но надо взять на заметку.
