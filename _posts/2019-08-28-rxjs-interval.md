@@ -7,9 +7,10 @@ share: true
 ---
 
 Метод _interval_ является упрощенным вариантом метода _timer_.
+
 Подключение - _import { interval } from 'rxjs';_
 
-Синтаксис - _interval(intervalTime)_
+Синтаксис - _interval(period: number, scheduler: Scheduler): Observable_
 
 **Пример кода**:
 
@@ -24,5 +25,5 @@ source.subscribe(data => console.log(data));
 
 Ссылки:
 
-- [](Learn RxJs - interval)
-- [](RxJS Marbles - interval)
+- [<https://www.learnrxjs.io/operators/creation/interval.html>](Learn RxJs - interval)
+- [<https://rxmarbles.com/#interval>](RxJS Marbles - interval)

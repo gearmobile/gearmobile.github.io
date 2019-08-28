@@ -53,5 +53,5 @@ source.subscribe(data => console.log(new Date()));
 
 Ссылки:
 
-- [https://www.learnrxjs.io/operators/creation/timer.html](Learn RxJs - timer)
-- [https://rxmarbles.com/#timer](RxJS Marbles - timer)
+- [<https://www.learnrxjs.io/operators/creation/timer.html>](Learn RxJs - timer)
+- [<https://rxmarbles.com/#timer>](RxJS Marbles - timer)
