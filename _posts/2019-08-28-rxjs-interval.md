@@ -11,7 +11,7 @@ share: true
 
 Синтаксис - _interval(intervalTime)_
 
-Пример кода:
+**Пример кода**:
 
 {% highlight typescript %}
 const source = interval(1000);
