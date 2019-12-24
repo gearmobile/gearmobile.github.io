@@ -1,14 +1,30 @@
 ---
-title: "title"
+title: "RxJs - pluck"
 layout: post
-categories: category
-tags: [tag]
+categories: RxJs
+tags: [rxjs, pluck]
 share: true
 ---
 
 // FILE NAME
 // year-month-day-name
-2013-01-15-archlinux-slim.md
+2019-12-24-rxjs-pluck.md
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // CODE SNIPPET
 {% highlight javascript %}
@@ -22,7 +38,7 @@ share: true
 [text][1]
 
 // INLINE IMAGE
-![image title]({{site.url}}/images/uploads/2015/08/image.jpg "image alt") 
+![image title]({{site.url}}/images/uploads/2015/08/image.jpg "image alt")
 
 ***
 [1]: http://speckyboy.com/2015/01/26/six-common-freelancing-myths/ "Six Common Freelancing Myths"
