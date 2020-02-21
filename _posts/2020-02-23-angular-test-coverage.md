@@ -21,10 +21,16 @@ ng test --watch=false --code-coverage
 Для этого в файле нужно найти поле _coverageIstanbulReporter_ и дописать в нем ключ _thresholds_ со значениями:
 
 {% highlight bash %}
-statements: 70,
-lines: 70,
-branches: 70,
-functions: 70
+coverageIstanbulReporter: {
+  reports: [ 'html', 'lcovonly' ],
+  fixWebpackSourcePaths: true,
+  thresholds: {
+    statements: 70,
+    lines: 70,
+    branches: 70,
+    functions: 70
+  }
+}
 {% endhighlight %}
 
 ... где 70 - это 70 процентов (%) - пороговое значение _threshold_ для каждой из частей проекта.
