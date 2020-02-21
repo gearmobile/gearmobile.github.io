@@ -15,7 +15,6 @@ share: true
 {% highlight typescript %}
 ...
 "indent": [true, "tabs", 2]
-"indent": [true, "spaces", 2]
 ...
 {% endhighlight %}
 
