@@ -27,7 +27,7 @@ share: true
 
 
 // CODE SNIPPET
-{% highlight javascript %}
+{% highlight typescript %}
 // ...
 {% endhighlight %}
 
