@@ -14,10 +14,10 @@ share: true
 
 Пошагово:
 
-1. создать папку _scripts_ внутри директории _assets_ - _src/assets/scripts_
-2. поместить js-скрипт внутрь созданной папки - _src/assets/scripts/awesome.js_
-3. открыть файл _angular.json_ в корне проекта
-4. добавить путь к скрипту в ключе _scripts_:
+1. создать папку `scripts` внутри директории `assets` - `src/assets/scripts`
+2. поместить js-скрипт внутрь созданной папки - `src/assets/scripts/awesome.js`
+3. открыть файл `angular.json` в корне проекта
+4. добавить путь к скрипту в ключе `scripts`:
 
 {% highlight json %}
 {
@@ -32,7 +32,7 @@ share: true
 
 ## Пример номер два
 
-Есть еще способ добавления - при помощи _Renderer2_:
+Есть еще способ добавления - при помощи `Renderer2`:
 
 {% highlight typescript %}
 constructor(
