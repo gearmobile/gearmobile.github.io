@@ -14,7 +14,7 @@ share: true
 ls /usr/share/cmus
 {% endhighlight %}
 
-Также список тем можно посмотреть в репозитории пакета, на GitHub - [CMUS Themes](https://github.com/cmus/cmus/tree/master/data).
+Также список тем можно посмотреть в репозитории пакета, на GitHub - [CMUS Themes][2].
 
 Изменить тему оформления можно командой:
 
@@ -26,3 +26,4 @@ ls /usr/share/cmus
 
 ***
 [1]: https://cmus.github.io/ "Сonsole music player for Unix-like operating systems"
+[2]: https://github.com/cmus/cmus/tree/master/data
