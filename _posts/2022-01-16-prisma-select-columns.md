@@ -30,7 +30,9 @@ SELECT * FROM users AS u WHERE u.user_id = 2;
 SELECT u.user_name, u.user_gender, u.user_birthday FROM users AS u WHERE u.user_id = 2;
 {% endhighlight %}
 
-Как же выполнить точно такой же запрос - в Prisma? Это можно сделать при помощи дополнительной опции [select][2]. В принципе - в оф. доке все описано - "... select defines which fields are included in the object that Prisma Client returns ..." - "... select определяет, какие поля будут включены в объект, который возвращает Prisma Client ...".
+Как же выполнить точно такой же запрос - в Prisma? Это можно сделать при помощи дополнительной опции [select][2].
+
+В принципе - в оф. доке все описано - "... select defines which fields are included in the object that Prisma Client returns ..." - "... select определяет, какие поля будут включены в объект, который возвращает Prisma Client ...".
 
 И вот пример, как это можно сделать:
 
@@ -47,6 +49,9 @@ const user = await prismaClient.users.findUnique({
 })
 {% endhighlight %}
 
+Ссылка для более детального чтения, с примерами -  [Model query options][3]
+
 ***
 [1]: https://www.prisma.io/ "Next-generation Node.js and TypeScript ORM"
 [2]: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-query-options "Model query options"
+[3]: https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#model-query-options "Model query options"
