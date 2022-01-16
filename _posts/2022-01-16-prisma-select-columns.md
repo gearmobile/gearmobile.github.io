@@ -2,11 +2,11 @@
 title: "Prisma - колонки выборочно"
 layout: post
 categories: Prisma
-tags: [prisma, orm]
+tags: [prisma, orm, select, column]
 share: true
 ---
 
-## Как в Prisma - получать колоноки выборочно
+## Как в Prisma - получать колонки выборочно
 
 Самый простой пример получения **всех** данных (колонок) из таблицы в базе данных - при помощи [Prisma][1] такой:
 
