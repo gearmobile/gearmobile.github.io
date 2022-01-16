@@ -14,7 +14,7 @@ share: true
 ls /usr/share/cmus
 {% endhighlight %}
 
-Также список тем можно посмотреть в репозитории пакета, на GitHub - [https://github.com/cmus/cmus/tree/master/data](https://github.com/cmus/cmus/tree/master/data).
+Также список тем можно посмотреть в репозитории пакета, на GitHub - [CMUS Themes](https://github.com/cmus/cmus/tree/master/data).
 
 Изменить тему оформления можно командой:
 
