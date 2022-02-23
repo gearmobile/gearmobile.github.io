@@ -1,5 +1,5 @@
 ---
-title: "Prisma - как подключить к Nest-проекту"
+title: "Prisma - подключить в Nest-проекте"
 layout: post
 categories: Prisma
 tags: [prisma, postgres, nest]
@@ -122,7 +122,7 @@ model Users {
 }
 {% endhighlight %}
 
-(кстати - под VSC и WS - есть специальные плагины для подсветки синтаксиса и форматирования файлов с расширением *.prisma)
+(кстати - под [VSC][3] и [WS][4] - есть специальные плагины для подсветки синтаксиса и форматирования файлов с расширением *.prisma; для VSC плагин работает отлично, для WS - так себе).
 
 И все - можно выполнить миграцию в базу данных командой:
 
@@ -223,3 +223,5 @@ Indexes:
 ***
 [1]: https://www.prisma.io/ "Next-generation Node.js and TypeScript ORM"
 [2]: https://typeorm.io/#/
+[3]: https://marketplace.visualstudio.com/items?itemName=Prisma.prisma "Prisma VS Code Extension"
+[4]: https://plugins.jetbrains.com/plugin/14240-prisma "Prisma"
