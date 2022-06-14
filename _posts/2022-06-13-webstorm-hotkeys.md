@@ -37,7 +37,7 @@ share: true
 
 В панели поиска - ищем по словосочетанию; например - "Move Caret to Line End":
 
-Ниже - пример, как можно настроить свои сочетания (а-ля iMac):
+Ниже - пример, как можно настроить свои сочетания (а-ля mac):
 
 - Move Caret to Line End: Alt + L
 - Move Caret to Link End with Selection: Alt + Shift + L
@@ -45,38 +45,5 @@ share: true
 - Move Caret to Line Start: Alt + J
 - Move Caret to Link Start with Selection: Alt + Shift + J
 
-- Add Selection for Next Occurrence Alt + E
-- Unselect Occurrence Alt + Shift + E
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// CODE SNIPPET
-{% highlight typescript %}
-// ...
-{% endhighlight %}
-
-// INLINE LINK
-[link]( "link title")
-
-// ANNOUNCEED LINK
-[text][1]
-
-// INLINE IMAGE
-![image title]({{site.url}}/images/uploads/2015/08/image.jpg "image alt")
-
-***
-[1]: http://speckyboy.com/2015/01/26/six-common-freelancing-myths/ "Six Common Freelancing Myths"
+- Add Selection for Next Occurrence: Alt + E
+- Unselect Occurrence: Alt + Shift + E
