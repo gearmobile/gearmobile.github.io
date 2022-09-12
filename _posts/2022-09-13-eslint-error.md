@@ -1,8 +1,8 @@
 ---
 title: "ESLint: TypeError: this.libOptions.parse is not a function"
 layout: post
-categories: TS
-tags: [code, ts]
+categories: Code
+tags: [bug, eslint]
 share: true
 ---
 
