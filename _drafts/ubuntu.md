@@ -16,35 +16,39 @@ share: true
 
 Шаги исправления просты.
 
+В терминале нужно открыть для редактирования файл logind.conf:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// CODE SNIPPET
-{% highlight typescript %}
-// ...
+{% highlight bash %}
+sudo nano /etc/systemd/logind.conf
 {% endhighlight %}
 
-// INLINE LINK
-[link]( "link title")
+В открытом файле - найти строку HandleLidSwitch; по-умолчанию она будет иметь такой вид:
 
-// ANNOUNCEED LINK
-[text][1]
+{% highlight text %}
+...
+#HandleLidSwitch=suspend
+...
+{% endhighlight %}
 
-// INLINE IMAGE
-![image title]({{site.url}}/images/uploads/2015/08/image.jpg "image alt")
+Нужно ее раскомментировать - убрать символ #; и изменить значение на ignore. Итоговый вариант файла будет выглядеть так:
 
-***
-[1]: http://speckyboy.com/2015/01/26/six-common-freelancing-myths/ "Six Common Freelancing Myths"
+{% highlight text %}
+...
+[Login]
+...
+#UserStopDelaySec=10
+#HandlePowerKey=poweroff
+#HandleSuspendKey=suspend
+#HandleHibernateKey=hibernate
+HandleLidSwitch=ignore
+#HandleLidSwitchExternalPower=suspend
+#HandleLidSwitchDocked=ignore
+#HandleRebootKey=reboot
+...
+{% endhighlight %}
+
+После этого - достаточно выполнить команду:
+
+{% highlight bash %}
+sudo systemctl restart systemd-logind.service
+{% endhighlight %}
