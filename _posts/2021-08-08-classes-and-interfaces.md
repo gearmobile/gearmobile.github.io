@@ -41,7 +41,7 @@ class Person {
 const person: Person = new Person('John', 12);
 {% endhighlight %}
 
-Еще одно **преимущество** использования класса в TypeScript - возможность использования оператора `instanceof`:
+Еще одно **преимущество** использования класса в TypeScript - возможность использования оператора **instanceof**:
 
 {% highlight typescript %}
 class Person {
@@ -58,7 +58,7 @@ if (person instanceof Person) {
 }
 {% endhighlight %}
 
-... в этом случае условие выполнится и проверка сработает, так как `person` является экземпляром класса `Person`.
+... в этом случае условие выполнится и проверка сработает, так как **person** является экземпляром класса **Person**.
 
 **Недостаток** использования класса в TypeScript - при транспиляции в JavaScript в результирующем коде останется этот класс - или ввиде функции (ES5):
 
@@ -97,4 +97,4 @@ if (person instanceof Person) {
 }
 {% endhighlight %}
 
-... однако, использовать оператор `instanceof` в данном случае уже не получится - будет ошибка `'Person' only refers to a type, but is being used as a value here`.
+... однако, использовать оператор **instanceof** в данном случае уже не получится - будет ошибка **'Person' only refers to a type, but is being used as a value here**.
