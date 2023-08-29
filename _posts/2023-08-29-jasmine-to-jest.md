@@ -8,11 +8,11 @@ share: true
 
 ### Соответствия matcher'ов в Jasmine и Jest
 
-- callThrough() --> mockImplementation()
-- callFake() --> mockImplementation()
-- returnValue() --> mockReturnValue()
-- spyOnProperty() --> spyOn()
-- toHaveBeenCalledOnceWith() --> toHaveBeenCalledTimes(1)
+- and.callThrough() --> mockImplementation()
+- and.callFake() --> mockImplementation()
+- and.returnValue() --> mockReturnValue()
+- and.spyOnProperty() --> spyOn()
+- and.toHaveBeenCalledOnceWith() --> toHaveBeenCalledTimes(1)
 - spyOn(...).and.callFake(() => {}) --> jest.spyOn(...).mockImplementation(() => {})
 - jasmine.createSpy('name') --> jest.fn()
 
