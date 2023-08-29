@@ -1,7 +1,7 @@
 ---
-title: "Jasmine в Jest"
+title: "Jasmine vs Jest"
 layout: post
-categories: Jest
+categories: Test
 tags: [jasmine, jest, test]
 share: true
 ---
