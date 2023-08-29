@@ -6,6 +6,8 @@ tags: [jasmine, jest, test]
 share: true
 ---
 
+![Jest]({{site.url}}/images/uploads/2023/08/jest.webp)
+
 ### Соответствия matcher'ов в Jasmine и Jest
 
 - and.callThrough() --> mockImplementation()
