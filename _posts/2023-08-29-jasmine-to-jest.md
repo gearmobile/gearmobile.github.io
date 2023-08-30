@@ -17,6 +17,8 @@ share: true
 - and.toHaveBeenCalledOnceWith() --> toHaveBeenCalledTimes(1)
 - spyOn(...).and.callFake(() => {}) --> jest.spyOn(...).mockImplementation(() => {})
 - jasmine.createSpy('name') --> jest.fn()
+- toBeTrue --> toBe(true)
+- toBeFalse --> toBe(false)
 
 toHaveBeenCalled() - это алиас для toBeCalled()
 
