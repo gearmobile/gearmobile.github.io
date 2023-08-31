@@ -15,8 +15,8 @@ share: true
 - Alt + 9 - открыть\закрыть панель Git
 - Ctrl + Shift + K - push коммита
 
-- Alt + LeftArrow - перемещение влево по открытым tabs
-- Alt + RightArrow - перемещение вправо по открытым tabs
+- Alt + LeftArrow - перемещение влево по открытым вкладкам редактора
+- Alt + RightArrow - перемещение вправо по открытым вкладкам редактора
 - Alt + M - ammend commit
 - Alt + Enter - сделать импорт зависимости
 
