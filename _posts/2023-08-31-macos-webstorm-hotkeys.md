@@ -1,5 +1,5 @@
 ---
-title: "Macos + Webstorm - горячие клавиши для разработки"
+title: "Macos + Webstorm - горячие клавиши"
 layout: post
 categories: Hotkeys
 tags: [webstorm, hotkeys]

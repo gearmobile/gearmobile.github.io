@@ -1,5 +1,5 @@
 ---
-title: "Linux + Webstorm - горячие клавиши для разработки"
+title: "Linux + Webstorm - горячие клавиши"
 layout: post
 categories: Hotkeys
 tags: [webstorm, hotkeys]
