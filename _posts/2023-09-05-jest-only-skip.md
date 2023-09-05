@@ -6,7 +6,7 @@ tags: [jest, test]
 share: true
 ---
 
-В Karma\Jasmine есть варианы для запуска выборочных тестов - `fit`, `fdescribe`. В этом посте - разберусь, какие есть варианты для этого - в Jest.
+В Karma\Jasmine есть варианы для запуска выборочных тестов - fit, fdescribe. В этом посте - разберусь, какие есть варианты для этого - в Jest.
 
 ## Использование .only для запуска только одного теста
 
@@ -24,7 +24,7 @@ describe('my suite', () => {
 });
 {% endhighlight %}
 
-В Jest для `test.only` есть алиас по аналогии с Jasmine - `fit`; то есть по идее - можно написать так:
+В Jest для test.only есть алиас по аналогии с Jasmine - fit; то есть по идее - можно написать так:
 
 {% highlight typescript %}
 describe('my suite', () => {
@@ -59,7 +59,7 @@ describe('my suite', () => {
 });
 {% endhighlight %}
 
-В Jest для `test.only` есть алиас по аналогии с Jasmine - `fit`; то есть по идее - можно написать так:
+В Jest для test.only есть алиас по аналогии с Jasmine - fit; то есть по идее - можно написать так:
 
 {% highlight typescript %}
 describe('my suite', () => {
@@ -80,7 +80,7 @@ describe('my suite', () => {
 
 ## Использование .only для запуска набора тестов
 
-Для выбора набора тестов для запуска - также можно использовать `.only`. В данном случае - запустятся тесты только из первого набора ('first suite'), для которого установлено `describe.only`; второй набор тестов ('second suite') - будет пропущен:
+Для выбора набора тестов для запуска - также можно использовать .only. В данном случае - запустятся тесты только из первого набора ('first suite'), для которого установлено describe.only; второй набор тестов ('second suite') - будет пропущен:
 
 {% highlight typescript %}
 describe.only('first suite', () => {
@@ -96,7 +96,7 @@ describe('second suite', () => {
 });
 {% endhighlight %}
 
-У `.only` есть - алиас `fdescribe`; то есть, в Jest можно (по идее) написать по аналогии с Jasmine:
+У .only есть - алиас fdescribe; то есть, в Jest можно (по идее) написать по аналогии с Jasmine:
 
 {% highlight typescript %}
 fdescribe('first suite', () => {
@@ -116,7 +116,7 @@ describe('second suite', () => {
 
 ## Использование .only для запуска нескольких наборов тестов
 
-Аналогично предыдущему вварианту, можно указать `.only` для запуска нескольких наборов тестов; в данном случае - будут запущены только два первых набора тестов:
+Аналогично предыдущему вварианту, можно указать .only для запуска нескольких наборов тестов; в данном случае - будут запущены только два первых набора тестов:
 
 {% highlight typescript %}
 describe.only('my suite', () => {
@@ -137,7 +137,7 @@ describe('skipped other suite', () => {
 });
 {% endhighlight %}
 
-У `.only` есть - алиас `fdescribe`; то есть, в Jest можно (по идее) написать по аналогии с Jasmine:
+У .only есть - алиас fdescribe; то есть, в Jest можно (по идее) написать по аналогии с Jasmine:
 
 {% highlight typescript %}
 fdescribe('my suite', () => {
