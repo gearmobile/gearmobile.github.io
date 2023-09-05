@@ -35,7 +35,7 @@ share: true
 
 ## Настроить свои горячие клавиши
 
-Переходим: Settings > Keymap
+Переходим: **Settings > Keymap**
 
 В панели поиска - ищем по словосочетанию; например - "Move Caret to Line End":
 
