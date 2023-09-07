@@ -43,6 +43,7 @@ share: true
 - Option + Cmd + I - открыть\закрыть Devepoler Tools (браузера)
 - Option + ArrowUp - выделить все слово, на котором стоит курсор
 - Option + Enter - вручную импортировать зависимость
+- Option + Cmd + Z - откатить изменения
 
 ### Ссылки
 
