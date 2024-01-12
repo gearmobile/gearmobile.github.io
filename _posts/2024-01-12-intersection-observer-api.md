@@ -20,7 +20,7 @@ share: true
 
 ### При использовании провайдеров используются следующие токены
 
-1. **INTERSECTION_THRESHOLD**
+#### INTERSECTION_THRESHOLD
 
 Использование:
 
@@ -31,7 +31,7 @@ share: true
 }
 {% endhighlight %}
 
-2. **INTERSECTION_ROOT_MARGIN**
+#### INTERSECTION_ROOT_MARGIN
 
 Использование:
 
@@ -42,7 +42,7 @@ share: true
 }
 {% endhighlight %}
 
-3. **IntersectionObserverService**
+#### IntersectionObserverService
 
 Данный сервис унаследован _Observable<IntersectionObserverEntry[]>_ и является основной единицей использования при отслеживании пересечения элементов:
 
