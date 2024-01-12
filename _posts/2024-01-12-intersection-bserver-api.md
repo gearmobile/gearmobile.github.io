@@ -2,7 +2,7 @@
 title: "Что такое Intersection Observer API"
 layout: post
 categories: Development
-tags: [typescript, provider]
+tags: [typescript, intersection observer api]
 share: true
 ---
 
