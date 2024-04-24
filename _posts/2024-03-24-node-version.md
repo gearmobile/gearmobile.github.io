@@ -36,7 +36,7 @@ Error: error:0308010C:digital envelope routines::unsupported
 }
 ```
 
-... если посмотреть на `package.json` проекта - там будет `webpack`:
+... если посмотреть на _package.json_ проекта - там будет _webpack_:
 
 ```js
 "devDependencies": {
