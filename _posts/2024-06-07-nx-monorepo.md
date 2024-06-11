@@ -1,5 +1,5 @@
 ---
-title: "NX = Angular + Nest.js"
+title: "Nx monorepo Nestjs + Angular"
 layout: post
 categories: Development
 tags: [nx, monorepo, angular, nest.js, prisma, sql]
