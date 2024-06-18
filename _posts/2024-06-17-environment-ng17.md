@@ -14,7 +14,6 @@ ng generate environments
 CREATE src/environments/environment.ts (31 bytes)
 CREATE src/environments/environment.development.ts (31 bytes)
 UPDATE angular.json (3799 bytes)
-
 ```
 
 ---
