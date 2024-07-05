@@ -40,7 +40,7 @@ export const saveCounter = createEffect(
 );
 ```
 
-... здесь запись _ofType(CounterActions.incrementCounter, CounterActions.decrementCounter)_, трактуется как _||_; то есть, оператор _ofType_ будет фильтровать поток _actions$_ на экшен _incrementCounter_ или экшен _decrementCounter_.
+... здесь запись _ofType(CounterActions.incrementCounter, CounterActions.decrementCounter)_, трактуется как ИЛИ; то есть, оператор _ofType_ будет фильтровать поток _actions$_ на экшен _incrementCounter_ или экшен _decrementCounter_.
 
 Оператор _withLatestFrom_ здесь также - подписан и слушает родительский поток _actions$_. Если фильтр _ofType_ сработает - из потока _actions$_ прийдет евент в оператор _withLatestFrom_, поэтому в свою очередь оператор _withLatestFrom_ заберет значение из потока _countSelect_, объединит оба значения и вернет новый поток - в евентом, содержащим оба эти значения - _([payload, count])_.
 
