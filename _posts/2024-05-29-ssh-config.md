@@ -10,10 +10,10 @@ share: true
 
 В KDE, будь-то Manjaro или Kubuntu - нет пакета **gnome-keyring** и поэтому в каждой новой терминальной сессии или открытом редакторе при работе с Git - нужно будет авторизоваться и подгружать ssh-ключи при помощи команд:
 
-```bash
+{% endhighlight bash %}
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/awesome_ssh_key
-```
+{% endhighlight %}
 
 Делать это каждый раз утомительно - отвлекает внимание и занимает лишнее время. Можно немного автоматизировать процесс при помощи конфигурационного файла **config**.
 
@@ -21,24 +21,24 @@ ssh-add ~/.ssh/awesome_ssh_key
 
 В папке **.ssh** создаем файл конфигурации **config**:
 
-```bash
+{% endhighlight bash %}
 cd ~/.ssh
 touch config
-```
+{% endhighlight %}
 
 Открываем файл конфигурации **config**:
 
-```bash
+{% endhighlight bash %}
 nano ~/.ssh/config
-```
+{% endhighlight %}
 
 Добавляем в него такое содержимое:
 
-```bash
+{% endhighlight bash %}
 IdentityFile ~/.ssh/github_key
 IdentityFile ~/.ssh/gitlab_key
 IdentityFile ~/.ssh/id_rsa_buhlServer
-```
+{% endhighlight %}
 
 Как видим, первые две строки - это путь в ssh-ключам, в моем случае под GitHub и GitLab. Третья строка - если често, не знаю что делает. Но - благодаря этим трем строкам оба ssh-ключа теперь автоматически подгружаются и используются в любой терминальной сессии или редакторе кода.
 
