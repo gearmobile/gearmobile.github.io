@@ -10,7 +10,7 @@ share: true
 
 В KDE, будь-то Manjaro или Kubuntu - нет пакета **gnome-keyring** и поэтому в каждой новой терминальной сессии или открытом редакторе при работе с Git - нужно будет авторизоваться и подгружать ssh-ключи при помощи команд:
 
-{% endhighlight bash %}
+{% highlight bash %}
 eval "$(ssh-agent -s)"
 ssh-add ~/.ssh/awesome_ssh_key
 {% endhighlight %}
@@ -21,20 +21,20 @@ ssh-add ~/.ssh/awesome_ssh_key
 
 В папке **.ssh** создаем файл конфигурации **config**:
 
-{% endhighlight bash %}
+{% highlight bash %}
 cd ~/.ssh
 touch config
 {% endhighlight %}
 
 Открываем файл конфигурации **config**:
 
-{% endhighlight bash %}
+{% highlight bash %}
 nano ~/.ssh/config
 {% endhighlight %}
 
 Добавляем в него такое содержимое:
 
-{% endhighlight bash %}
+{% highlight bash %}
 IdentityFile ~/.ssh/github_key
 IdentityFile ~/.ssh/gitlab_key
 IdentityFile ~/.ssh/id_rsa_buhlServer

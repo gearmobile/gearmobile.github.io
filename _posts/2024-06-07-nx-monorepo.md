@@ -14,13 +14,13 @@ share: true
 
 Устанавливаем Nx глобально в системе - для более удобной последующей работы:
 
-{% endhighlight bash %}
+{% highlight bash %}
 nx globally npm i -g nx
 {% endhighlight %}
 
 Переходим к процессу развертывания - инициализируем новый workspace командой [Installation](https://nx.dev/getting-started/installation):
 
-{% endhighlight bash %}
+{% highlight bash %}
 npx create-nx-workspace
 
 Need to install the following packages:
@@ -30,7 +30,7 @@ Ok to proceed? (y)
 
 ... задаем имя для нового проекта:
 
-{% endhighlight bash %}
+{% highlight bash %}
 Where would you like to create your workspace? ‣ awesome-project 
 {% endhighlight %}
 
@@ -48,7 +48,7 @@ Node:          Configures a Node API application with your framework of choice.
 
 ... на вопрос о выборе типа репозитория - выбираем - **Integrated Monorepo**:
 
-{% endhighlight bash %}
+{% highlight bash %}
 ? Package-based monorepo, integrated monorepo, or standalone project? …
 
 Package-based Monorepo:     Nx makes it fast, but lets you run things your way.
@@ -70,7 +70,7 @@ Skip for now
 
 ... процесс инициализации занимает некоторое время, после чего получаем готовый пустой workspace:
 
-{% endhighlight bash %}
+{% highlight bash %}
  NX   Creating your v19.2.3 workspace.
 
 ✔ Installing dependencies with npm
@@ -79,38 +79,38 @@ Skip for now
 
 ... переходим во вновь созданный проект:
 
-{% endhighlight bash %}
+{% highlight bash %}
 cd awesome-project
 {% endhighlight %}
 
 ... добавляем необходимые Nx-зависимости:
 
-{% endhighlight bash %}
+{% highlight bash %}
 npm i -D @nx/angular @nx/nest @nx/js
 {% endhighlight %}
 
 ... затем генерируем в workspace фронтенд на angular - [@nx/angular](https://nx.dev/nx-api/angular):
 
-{% endhighlight bash %}
+{% highlight bash %}
 nx g @nx/angular:app frontend-part
 {% endhighlight %}
 
 ... затем генерируем бекенд на nestjs - [@nx/nest](https://nx.dev/nx-api/nest):
 
 
-{% endhighlight bash %}
+{% highlight bash %}
 nx g @nx/nest:app backend-part
 {% endhighlight %}
 
 ... генерируем shared library [@nx/js:library](https://nx.dev/nx-api/js/generators/library):
 
-{% endhighlight bash %}
+{% highlight bash %}
 nx g @nx/js:lib shared-lib
 {% endhighlight %}
 
 С этого момента у нас есть базовая настройка. Мы можете импортировать общую библиотеку следующим образом::
 
-{% endhighlight typescript %}
+{% highlight typescript %}
 import { sharedLib } from "@my-project/shared-lib";
 {% endhighlight %}
 
