@@ -8,6 +8,6 @@ share: true
 
 Настроить в Angular ChangeDetectionStrategy.OnPush в качестве стратегии по умолчанию:
 
-```bash
+{% highlight bash %}
 ng config schematics.@schematics/angular.component.changeDetection OnPush
-```
+{% endhighlight %}
