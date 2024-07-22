@@ -36,7 +36,7 @@ share: true
 
 ### Разбор примера
 
-```ts
+{% highlight typescript %}
 export const productsLoadEffect = createEffect(
   (actions$ = inject(Actions), productsService = inject(ProductsService)) =>
     actions$.pipe(
@@ -110,7 +110,7 @@ export const productsRemoveEffect = createEffect(
     ),
   { functional: true },
 );
-```
+{% endhighlight %}
 
 1. так как нет никаких параметров (фильтры, сортировка, пагинация), то нет смысла делать несколько запросов для загрузки одних и тех же данных
 2. Добавление новых продуктов не требует жесткого порядка, нам без разницы какой запрос на добавление нового продукта выполнится раньше, первый или второй, главное чтобы они добавились, поэтому mergeMap

@@ -16,17 +16,17 @@ share: true
 
 Пример схематичный:
 
-```ts
+{% highlight typescript %}
 hello$.pipe(
   withLatestFrom(this.toggleService.isEnabled('some-feature'))
 )
-```
+{% endhighlight %}
 
 ... то есть - в данном случае, если значение пришло из родительского потока _hello$_ - оператор _withLatestFrom_ заберет значение из метода сервиса _isEnabled_ и вернет - поток из этих двух значений.
 
 Пример реальный, из эффекта NgRx:
 
-```ts
+{% highlight typescript %}
 export const saveCounter = createEffect(
   () =>
     inject(Actions).pipe(
@@ -38,7 +38,7 @@ export const saveCounter = createEffect(
     ),
   { dispatch: false, functional: true }
 );
-```
+{% endhighlight %}
 
 ... здесь запись _ofType(CounterActions.incrementCounter, CounterActions.decrementCounter)_, трактуется как ИЛИ; то есть, оператор _ofType_ будет фильтровать поток _actions$_ на экшен _incrementCounter_ или экшен _decrementCounter_.
 
