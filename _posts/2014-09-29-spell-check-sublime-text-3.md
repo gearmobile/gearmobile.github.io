@@ -38,7 +38,7 @@ $ cp * ~/.config/sublime-text-3/Packages/
 
 ![Директория плагинов редактора Sublime Text]({{site.url}}/images/uploads/2014/09/spellcheck_sublime_config.png)
 
-Переходим по пути `.config` - `sublime-text-3` - `Packages` и с помощью клавиш <kbd>Ctrl+C</kbd> + <kbd>Ctrl+V</kbd> производим вставку файлов русского словаря.
+Переходим по пути .config - sublime-text-3 - Packages и с помощью клавиш <kbd>Ctrl+C</kbd> + <kbd>Ctrl+V</kbd> производим вставку файлов русского словаря.
 
 **Третий способ** - с помощью редактора Sublime Text. Для этого в самом редакторе переходим по пути "Preferences" - "Browse Packages...". Откроется окно с плагинами Sublime Text. Далее - действовать, как во втором примере.
 

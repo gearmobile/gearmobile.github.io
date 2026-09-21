@@ -27,15 +27,15 @@ share: true
 
 ![Распакованный архив шаблона ZT Futa]({{site.url}}/images/uploads/2013/10/zt_futa_archive.png)
 
-Первый файл - `zt_futa25_installpackage.zip` - собственно сам шаблон. А вот второй файл - `zt_futa25_quickstart.zip` - это и есть QuickStart, на что недвусмысленно указывает само его название, которое у разных производителей может отличаться. Но практически у всех в названии шаблона будет присутствовать слово `quickstart`.
+Первый файл - zt_futa25_installpackage.zip - собственно сам шаблон. А вот второй файл - zt_futa25_quickstart.zip - это и есть QuickStart, на что недвусмысленно указывает само его название, которое у разных производителей может отличаться. Но практически у всех в названии шаблона будет присутствовать слово quickstart.
 
 Теперь нужно подготовить хостинг. У меня это локальный хостинг XAMPP. Запускаю его, перехожу в панель управления базами данных phpMyAdmin и создаю новую базу данных под будущий сайт "ZT Futa":
 
 ![База данных ZT Futa]({{site.url}}/images/uploads/2013/10/db_zt_futa.png)
 
-Перезапускаю MySQL, перехожу в TotalCommander по пути `c:\Xampp\htdocs` и создаю папку `zt_futa.lc`. В ней будет размещаться будущий сайт.
+Перезапускаю MySQL, перехожу в TotalCommander по пути c:\Xampp\htdocs и создаю папку zt_futa.lc. В ней будет размещаться будущий сайт.
 
-Распаковываю архив `zt_futa25_quickstart.zip` в папку `c:\Xamppht\docs\zt_futa.lc`. Посмотрим, что получилось в результате:
+Распаковываю архив zt_futa25_quickstart.zip в папку c:\Xamppht\docs\zt_futa.lc. Посмотрим, что получилось в результате:
 
 ![Распакованный архив ZT Futa QuickStart]({{site.url}}/images/uploads/2013/10/zt_futa_unpacked.png)
 

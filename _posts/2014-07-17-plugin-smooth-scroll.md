@@ -33,22 +33,22 @@ $(document).ready(function(){
 });
 {% endhighlight %}
 
-... то есть - всем ссылкам страницы присвоить метод `smoothScroll()`, что дает плавный скроллинг. В принципе, этого достаточно - больше ничего и не надо.
+... то есть - всем ссылкам страницы присвоить метод smoothScroll(), что дает плавный скроллинг. В принципе, этого достаточно - больше ничего и не надо.
 
 ## Варианты выборки в Smooth Scroll
 
 Помимо показанной выше строчки, скрипт Smooth Scroll имеет несколько других вариантов режима работы. Другими словами, эти режимы работы - все навсего усложненный первый вариант, вариации на тему выборки HTML-элемента в библиотеке jQuery.
 
-Примеры выборок взяты мною из файла `readme.md`, переводить их мне совсем не хочется; да и нет в этом необходимости - все понятно даже по коду:
+Примеры выборок взяты мною из файла readme.md, переводить их мне совсем не хочется; да и нет в этом необходимости - все понятно даже по коду:
 
   * Allows for easy implementation of smooth scrolling for same-page links.
-  * Works like this: `$('a').smoothScroll();`
-  * Specify a containing element if you want: `$('#container a').smoothScroll();`
-  * Exclude links if they are within a containing element: `$('#container a').smoothScroll({excludeWithin: ['.container2']});`
-  * Exclude links if they match certain conditions: `$('a').smoothScroll({exclude: ['.rough','#chunky']});`
-  * Adjust where the scrolling stops: `$('.backtotop').smoothScroll({offset: -100});`
-  * Add a callback function that is triggered before the scroll starts: `$(&#8216;a&#8217;).smoothScroll({beforeScroll: function() { alert(&#8216;ready to go!&#8217;); }});
-  * Add a callback function that is triggered after the scroll is complete: `$('a').smoothScroll({afterScroll: function() { alert('we made it!'); }});`
+  * Works like this: $('a').smoothScroll();
+  * Specify a containing element if you want: $('#container a').smoothScroll();
+  * Exclude links if they are within a containing element: $('#container a').smoothScroll({excludeWithin: ['.container2']});
+  * Exclude links if they match certain conditions: $('a').smoothScroll({exclude: ['.rough','#chunky']});
+  * Adjust where the scrolling stops: $('.backtotop').smoothScroll({offset: -100});
+  * Add a callback function that is triggered before the scroll starts: $(&#8216;a&#8217;).smoothScroll({beforeScroll: function() { alert(&#8216;ready to go!&#8217;); }});
+  * Add a callback function that is triggered after the scroll is complete: $('a').smoothScroll({afterScroll: function() { alert('we made it!'); }});
 
 ## Пример работы Smooth Scroll
 
