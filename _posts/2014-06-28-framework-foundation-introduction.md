@@ -63,7 +63,7 @@ $ bower --version
 $ npm install -g bower grunt-cli
 {% endhighlight %}
 
-Все готово для установки консольной утилиты `foundation`. Вы спросите - что это еще за утилита такая и зачем она нужна? Все просто - это фирменная утилитка от Foundation и ее задача - автоматизированное разворачивание готового проекта на локальной машине.
+Все готово для установки консольной утилиты foundation. Вы спросите - что это еще за утилита такая и зачем она нужна? Все просто - это фирменная утилитка от Foundation и ее задача - автоматизированное разворачивание готового проекта на локальной машине.
 
 Устанавливаем утилиту foundation:
 
@@ -71,7 +71,7 @@ $ npm install -g bower grunt-cli
 $ gem install foundation
 {% endhighlight %}
 
-Сама утилитка foundation очень проста. Вызову команду `help` и все станет понятно без слов:
+Сама утилитка foundation очень проста. Вызову команду help и все станет понятно без слов:
 
 {% highlight powershell %}
 $ foundation help
@@ -116,9 +116,9 @@ drwxr-xr-x scss
 
 ![Новый проект на Foundation]({{site.url}}/images/uploads/2014/06/new_project_in_foundation.png)
 
-Видим здесь файлы `config.rb`, `bower.json`, `index.html`; папки `bower_components`, `js`, `scss`. Другими словами - это готовый проект!
+Видим здесь файлы config.rb, bower.json, index.html; папки bower_components, js, scss. Другими словами - это готовый проект!
 
-Немного подредактирую файл `config.rb` и запускаю Compass на мониторинг изменений в текущем проекте:
+Немного подредактирую файл config.rb и запускаю Compass на мониторинг изменений в текущем проекте:
 
 {% highlight powershell %}
 $ compass watch .

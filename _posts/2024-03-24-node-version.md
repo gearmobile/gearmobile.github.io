@@ -8,7 +8,7 @@ share: true
 
 Довольно часто в своей практике сталкиваюсь с такой ошибкой, когда запускаю локально сторонний проект:
 
-```bash
+{% highlight bash %}
 $ npm run start
 
 > dom-moving-item@1.0.0 start
@@ -34,11 +34,11 @@ Error: error:0308010C:digital envelope routines::unsupported
   reason: 'unsupported',
   code: 'ERR_OSSL_EVP_UNSUPPORTED'
 }
-```
+{% endhighlight %}
 
 ... если посмотреть на _package.json_ проекта - там будет _webpack_:
 
-```js
+{% highlight javascript %}
 "devDependencies": {
     "@babel/cli": "^7.15.7",
     "@babel/core": "^7.15.5",
@@ -66,11 +66,11 @@ Error: error:0308010C:digital envelope routines::unsupported
     "core-js": "^3.18.2",
     "push-dir": "^0.4.1"
 }
-```
+{% endhighlight %}
 
 ... причина ошибки - разные версии Node.js на локальной машине и на машине, на которой велась разработка проекта (хотя в деталях не совсем понимаю, в чем именно заключается разница - в самом прокте); если на локальной машине установлен nvm, можно сначала проверить текущую версию Node:
 
-```bash
+{% highlight bash %}
 $ nvm list
        v14.21.3
        v16.20.2
@@ -91,16 +91,16 @@ lts/fermium -> v14.21.3
 lts/gallium -> v16.20.2
 lts/hydrogen -> v18.19.1
 lts/iron -> v20.11.1 (-> N/A)
-```
+{% endhighlight %}
 
 ... а затем переключаться между версиями Node.js - пока не попадем пальцем в небо:
 
-```bash
+{% highlight bash %}
 $ nvm use 16.20.2
 Now using node v16.20.2 (npm v8.19.4)
-```
+{% endhighlight %}
 
-```bash
+{% highlight bash %}
 $ npm run start
 
 > dom-moving-item@1.0.0 start
@@ -141,6 +141,6 @@ modules by path ./node_modules/mini-css-extract-plugin/dist/hmr/*.js 5.14 KiB
 4 modules
 webpack 5.57.1 compiled successfully in 1880 ms
 ℹ ｢wdm｣: Compiled successfully.
-```
+{% endhighlight %}
 
 ... значит, у пользователя на машине стояла версия 16 Node.js, когда он разрабатывал свой проект; возможная ошибка кроется в логах и конткретно в этом файле - _webpack/lib/DefinePlugin.js_.

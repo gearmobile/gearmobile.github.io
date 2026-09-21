@@ -8,7 +8,7 @@ share: true
 
 > Установка и настройка загрузчика SLiM операционной системы ArchLinux.
 
-Почему именно этот загрузчик? Потому что он полностью отвечает философии этой системы - прост, легок, минимален в настройках. И к тому же красив. Это хорошая альтернатива стандартному `gdm`.
+Почему именно этот загрузчик? Потому что он полностью отвечает философии этой системы - прост, легок, минимален в настройках. И к тому же красив. Это хорошая альтернатива стандартному gdm.
 
 Дефолтная тема имеет вид:
 
@@ -38,7 +38,7 @@ $ sudo pacman -Ss slim themes
 $ sudo pacman -S archlinux-themes-slim slim-themes
 {% endhighlight %}
 
-Все темы автоматически распаковываются в директорию `/usr/share/slim/themes/`.
+Все темы автоматически распаковываются в директорию /usr/share/slim/themes/.
 
 {% highlight powershell %}
 $ ls /usr/share/slim/themes/
@@ -47,13 +47,13 @@ $ ls /usr/share/slim/themes/
   archlinux-retro capernoited fingerprint mindlock rainbow subway
 {% endhighlight %}
 
-SLiM поддерживает сторонние темы. Для установки таких тем сперва нужно скачать ее, а затем распаковать в директорию с темами. Все темы находятся по пути `/usr/share/slim/themes/`.
+SLiM поддерживает сторонние темы. Для установки таких тем сперва нужно скачать ее, а затем распаковать в директорию с темами. Все темы находятся по пути /usr/share/slim/themes/.
 
 ### Пример установки сторонней темы
 
-1. Скачиваем понравившуюся по ссылке, указанной на домашней странице проекта - `slim.berlios.de/themes`. Пусть это будет тема `10th birthday of Gentoo (Blue)`.
+1. Скачиваем понравившуюся по ссылке, указанной на домашней странице проекта - slim.berlios.de/themes. Пусть это будет тема 10th birthday of Gentoo (Blue).
 
-2. Создаем для скачанной темы папку `gentoo_blue` по пути `/usr/share/slim/themes/`:
+2. Создаем для скачанной темы папку gentoo_blue по пути /usr/share/slim/themes/:
 
 {% highlight powershell %}
 $ sudo mkdir /usr/share/slim/themes/gentoo_blue
@@ -75,7 +75,7 @@ $ ls /usr/share/slim/themes/gentoo_blue/
   background.jpg panel.png slim.theme
 {% endhighlight %}
 
-5. Теперь открываем конфигурационный файл SLiM, находящийся по адресу `/etc/slim.conf`:
+5. Теперь открываем конфигурационный файл SLiM, находящийся по адресу /etc/slim.conf:
 
 {% highlight powershell %}
 $ sudo nano -w /etc/slim.conf
@@ -89,7 +89,7 @@ $ sudo nano -w /etc/slim.conf
 current_theme default
 {% endhighlight %}
 
-и меняем значение строки `current_theme` с `default` на название папки со скачаной и распакованной темой, то есть, в нашем случае это папка `gentoo_blue`:
+и меняем значение строки current_theme с default на название папки со скачаной и распакованной темой, то есть, в нашем случае это папка gentoo_blue:
 
 {% highlight powershell %}
 # current theme, use comma separated list to specify a set to
@@ -101,18 +101,18 @@ current_theme gentoo_blue
 
 ![Gentoo SLiM Theme]({{site.url}}/images/uploads/2013/11/gentoo_slim.png)
 
-Скриншот экрана приветствия\входа в систему можно сделать, нажав кнопочку <kbd>F11</kbd>kbd>. Скрин будет сохранен в формате `.png` с именем `slim` в корневой папке:
+Скриншот экрана приветствия\входа в систему можно сделать, нажав кнопочку <kbd>F11</kbd>kbd>. Скрин будет сохранен в формате .png с именем slim в корневой папке:
 
 {% highlight powershell %}
 $ ls /slim.png
   /slim.png
 {% endhighlight %}
 
-Для создания скриншота необходимо наличие в системе пакета `imagemagick`.
+Для создания скриншота необходимо наличие в системе пакета imagemagick.
 
 ## P.S.
 
-Можно настроить так, чтобы тема выбиралась случайно из набора. Для этого нужно в конфигурационном файле `/etc/slim.conf` в строке `current_theme` прописать через запятую список тех тем, которые мы хотим видеть.
+Можно настроить так, чтобы тема выбиралась случайно из набора. Для этого нужно в конфигурационном файле /etc/slim.conf в строке current_theme прописать через запятую список тех тем, которые мы хотим видеть.
 
 Например, так:
 
