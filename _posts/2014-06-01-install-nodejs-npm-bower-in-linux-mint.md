@@ -199,7 +199,7 @@ $ bower info [name_package]
 
 Видим, как в панели проектов Sublime Text, в папке bower_components появилась целая куча подпапок, являющихся частью единого целого - фреймворка Foundation:
 
-![Установленный через Bower пакет Foundation в Sublime Text]({{ http://zencoder.ru/ }}/images/uploads/2014/06/st-bower_components.png){: .center-image .responsive-image }
+![Установленный через Bower пакет Foundation в Sublime Text](http://zencoder.ru/images/uploads/2014/06/st-bower_components.png){: .center-image .responsive-image }
 
 ## Настройка плагина Bower
 
@@ -207,7 +207,7 @@ $ bower info [name_package]
 
 В текущую директорию автоматически добавиться файл .bowerrc типа json, в котором будет всего лишь одна строка - имя директории, в которую производится установка пакетов через плагин Bower:
 
-![Файл настроек пакета Bower]({{ http://zencoder.ru/ }}/images/uploads/2014/06/st-bower_configure_project.png){: .center-image .responsive-image }
+![Файл настроек пакета Bower](http://zencoder.ru/images/uploads/2014/06/st-bower_configure_project.png){: .center-image .responsive-image }
 
 Для эксперимента изменим имя папки с:
 
@@ -223,7 +223,7 @@ $ bower info [name_package]
 
 ... удалим старую директорию bower_components с пакетом foundation и установим через Bower другой пакет - underscore. В результате получим следущее:
 
-![Новое имя директории с пакетами в Bower]({{ http://zencoder.ru/ }}/images/uploads/2014/06/st-bower_configure_project_new_name.png){: .center-image .responsive-image }
+![Новое имя директории с пакетами в Bower](http://zencoder.ru/images/uploads/2014/06/st-bower_configure_project_new_name.png){: .center-image .responsive-image }
 
 ## Пакетная установка в менеджере Bower
 
