@@ -36,7 +36,7 @@ Where would you like to create your workspace? ‣ awesome-project
 
 ... на вопрос о выборе предпочтительного стека отвечаем - **None** - сами наполним workspace нужными стеками чуть позднее:
 
-{% endhighlight bash %}
+{% highlight bash %}
 ? Which stack do you want to use? …
 
 None:          Configures a TypeScript/JavaScript project with minimal structure.
@@ -58,7 +58,7 @@ Standalone:                 Nx creates a single project and makes it fast.
 
 ... на предложение воспользоваться Nx Cloud отвечаем, что не хотим - **Skip for now**:
 
-{% endhighlight bash %}
+{% highlight bash %}
 ? Do you want Nx Cloud to make your CI fast? …
 
 (it's free and can be disabled any time)
